@@ -1,21 +1,26 @@
 <template>
-  <div id="app"><md-icon class="md-size-2x">add</md-icon>
-    <nav>    
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-      <vs-button>Hello World</vs-button>
-  
-    </nav>
-    <router-view/>
+  <div id="app">
+    <router-view />
   </div>
 </template>
 
+<script>
+
+export default{
+  data(){
+
+  }
+}
+</script>
+
 <style>
+body{
+  height: 100vh;
+}
 #app {
   font-family: 'Prompt';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #003765;
 }
 
@@ -23,7 +28,12 @@
 nav {
   padding: 30px;
 }
-
+input[type=input],
+[type=email],
+[type=password] {
+    padding: 12px 16px;
+    margin: 8px 0;
+}
 nav a {
   font-weight: bold;
   color: #2c3e50;
