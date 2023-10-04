@@ -1,9 +1,10 @@
 <template>
-  <div id="app">
-    <nav>
+  <div id="app"><md-icon class="md-size-2x">add</md-icon>
+    <nav>    
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link>
       <vs-button>Hello World</vs-button>
+  
     </nav>
     <router-view/>
   </div>
