@@ -54,7 +54,7 @@
                                     </vs-checkbox>
                                 </div>
                             </div>
-                            <div class="text-[#D44769] text-center flex justify-center items-center" @click="tab = 3">Forgot
+                            <div class="text-[#D44769] text-center flex justify-center items-center cursor-pointer" @click="tab = 3">Forgot
                                 password</div>
                         </div>
                     </div>
