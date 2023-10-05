@@ -1,12 +1,18 @@
 <template>
   <div id="app">
-    <router-view />
+    <div v-if="$store.state.login"> 
+      <router-view />
+    </div>
+    <div v-else>
+      <Login/>
+    </div>
   </div>
 </template>
 
 <script>
-
+import Login from './views/login-register/Login.vue';
 export default{
+  components:{Login},
   data(){
 
   }

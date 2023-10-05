@@ -1,21 +1,23 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LoginRegis from '@/views/login-register/Login.vue'
-import Register from '@/views/login-register/Register.vue'
+import DashBoard from '@/views/dashboard/DashBoard'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/',
+    name: 'home',
+    component: DashBoard 
+  },
+
+  {
     path: '/login',
     name: 'login',
     component: LoginRegis
   },
-  {
-    path: '/register',
-    name: 'register',
-    component: Register 
-  },
+ 
 
 ]
 
