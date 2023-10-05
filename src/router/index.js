@@ -2,13 +2,14 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LoginRegis from '@/views/login-register/Login.vue'
 import DashBoard from '@/views/dashboard/DashBoard'
+import Home from '@/views/home/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'home',
+    path: '/dashboard',
+    name: 'dashboard',
     component: DashBoard 
   },
 
@@ -16,6 +17,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginRegis
+  },
+  {
+    path: '/',
+    name: 'home',
+    component:Home
   },
  
 
