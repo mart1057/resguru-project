@@ -292,7 +292,9 @@ export default {
             })
         },
         loginSubmit() {
-            this.$store.dispatch('loginUser', this.dataLogin)
+            const loading = this.$vs.loading()
+            this.$store.dispatch('loginUser', this.dataLogin)  
+            loading.close()
         },
         registerSubmit() {
             if (this.dataRegister.email != '' & this.dataRegister.name != '' & this.dataRegister.last != '' & this.dataRegister.phone != '' & this.dataRegister.pass != '' & this.dataRegister.pass_con != '' & this.dataRegister.sex != '' & this.dataRegister.birth.year != '' & this.dataRegister.birth.mouth != '' & this.dataRegister.birth.day != '') {
