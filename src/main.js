@@ -18,11 +18,13 @@ import 'vue-material/dist/vue-material.min.css'
 import 'vue-material/dist/theme/default.css'
 
 import axios from 'axios'
+import VueAxios from 'vue-axios'
 
 Vue.config.productionTip = false
 Vue.use(Vuesax).use(IconsPlugin).use(BootstrapVue)
 Vue.use(VueMaterial)
-Vue.use(axios);
+// Vue.use(axios);
+Vue.use(VueAxios, axios)
 
 new Vue({
   router,

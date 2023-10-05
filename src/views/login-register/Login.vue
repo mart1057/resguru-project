@@ -14,7 +14,7 @@
                         <div class="flex justify-center items-center">ย้อนกลับ</div>
                     </div>
                 </div>
-                <div class="ml-[-20px] mb-[-20px]">
+                <div class="ml-[-20px]">
                     <svg width="307" height="323" viewBox="0 0 307 323" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g opacity="0.1">
                             <path
@@ -80,7 +80,9 @@ export default {
 </script>
 <style scoped>
 #login {
-    padding: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
     background-color: #003765 !important;
     height: 100vh !important;
 }

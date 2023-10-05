@@ -1,7 +1,11 @@
 <template>
     <div id="login">
+        <!-- <div class="text-[red] flex flex-col justify-between h-[100vh!important]">
+            <div>f</div>
+            <div>f</div>
+        </div> -->
         <div class="h-[100%] flex">
-            <div class="flex flex-col justify-between h-[100%] w-[30%]">
+            <div class="flex flex-col justify-between h-[100vh!important] w-[30%]">
                 <div>
                     <img :src="Logo01" />
                     <div class="text-[white] flex mt-[16px] cursor-pointer">
@@ -14,7 +18,7 @@
                         <div class="flex justify-center items-center">ย้อนกลับ</div>
                     </div>
                 </div>
-                <div class="ml-[-20px] mb-[-20px]">
+                <div class="ml-[-20px] ">
                     <svg width="307" height="323" viewBox="0 0 307 323" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g opacity="0.1">
                             <path
@@ -30,7 +34,7 @@
             <div class="w-[40%]  flex flex-col justify-center items-center">
                 <div class="text-[white] text-[28px] mt-[20px]">สร้างบัญชี</div>
                 <div
-                    class=" mt-[50px]  text-[12px] w-[549px] rounded-[20px] bg-[white] pt-[14px] pl-[30px] pr-[30px] pb-[14px]">
+                    class=" mt-[20px]  text-[12px] w-[549px] rounded-[20px] bg-[white] pt-[14px] pl-[30px] pr-[30px] pb-[14px]">
                     <div>
                         <div class="grid grid-cols-2 w-[100%] gap-4 mt-[10px] ">
                             <div>
@@ -190,7 +194,9 @@ export default {
 </script>
 <style scoped>
 #login {
-    padding: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 20px;
     background-color: #003765 !important;
     min-height: 100vh !important;
 }
