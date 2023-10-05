@@ -57,6 +57,9 @@
                             <div class="text-[#D44769] text-center flex justify-center items-center">Forgot password</div>
                         </div>
                     </div>
+                    <div v-if="$store.state.err" class="flex justify-center text-[red]">
+                        <div>{{ dataRegister.err }}</div>
+                    </div>
                     <div class="mt-[18px]">
                         <button @click="loginSubmit()"
                             class="bg-[#003765] w-[100%] h-[38px] rounded-[12px] text-center text-[white]">เข้าสู่ระบบ</button>
