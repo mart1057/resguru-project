@@ -45,7 +45,9 @@
                                 fill="#F4D55E" />
                         </svg>
                     </div>
-                    <div class="text-[white] text-[32px]  w-[100%] text-center mt-[60px] flex flex-col justify-center items-center">สำหรับเจ้าของห้องพัก</div>
+                    <div
+                        class="text-[white] text-[32px]  w-[100%] text-center mt-[60px] flex flex-col justify-center items-center">
+                        สำหรับเจ้าของห้องพัก</div>
                 </div>
                 <div class="ml-[-20px]">
                     <svg width="307" height="323" viewBox="0 0 307 323" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -60,11 +62,124 @@
                     </svg>
                 </div>
             </div>
+        </div>
+        <div class="text-center w-[55%] pt-[50px]">
+            <div class="text-[24px] font-bold">เลือกห้องพักของคุณ</div>
+            <div class="pl-[60px] text-[18px] flex justify-start items-start mt-[50px]">รายการหอพัก</div>
+            <div class="pl-[40px] flex flex-col justify-center items-center">
+                <div class="grid grid-cols-2 gap-5 mt-[10px] ">
+                    <div class="w-[360px] border border-[#B9CCDC]  rounded-[16px] flex cursor-pointer">
+                        <div class="w-[30%] bg-[#c9edee] h-[100%] rounded-[16px] flex flex-col items-center justify-center">
+                            <div class="w-[90px] h-[90px] rounded-[22px] bg-slate-300"></div>
+                            <div class="text-[12px] mt-[4px]">Professional</div>
+                        </div>
+                        <div class="w-[70%] p-[8px] flex flex-col">
+                            <div class="flex justify-between">
+                                <div class="text-[14px] font-bold">Avenue Apartments</div>
+                                <div class="flex justify-center items-center cursor-pointer"><svg width="4" height="12"
+                                        viewBox="0 0 4 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <ellipse cx="2.0013" cy="2.16667" rx="1.66667" ry="1.66667"
+                                            transform="rotate(90 2.0013 2.16667)" fill="#5C6B79" />
+                                        <circle cx="2.0013" cy="7.99967" r="1.66667" transform="rotate(90 2.0013 7.99967)"
+                                            fill="#5C6B79" />
+                                        <ellipse cx="2.0013" cy="13.8337" rx="1.66667" ry="1.66667"
+                                            transform="rotate(90 2.0013 13.8337)" fill="#5C6B79" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div
+                                class="w-[100%] rounded-[16px] border border-[#B9CCDC] flex justify-between pl-[8px] pr-[8px] mt-[8px]">
+                                <div class="text-[12px]">สร้างเมื่อวันที่</div>
+                                <div class="text-[12px]">12/02/2022</div>
+                            </div>
+                            <div
+                                class="w-[100%] rounded-[16px] border border-[#B9CCDC]  flex justify-between pl-[8px] pr-[8px] mt-[8px]">
+                                <div class="text-[12px]">จำนวน ชั้น/ห้อง</div>
+                                <div class="text-[12px]">2/12</div>
+                            </div>
+                            <div>
+                                <button
+                                    class="w-[100%] h-[28px] mt-[14px] flex justify-center items-center rounded-[16px] border border-[#B9CCDC] bg-[#c9edee]">
+                                    <div class="flex justify-center items-center mr-[4px]"><svg width="16" height="17"
+                                            viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M1.09025 16.2914C0.854023 16.2914 0.656878 16.2124 0.498814 16.0543C0.340751 15.8962 0.261719 15.6991 0.261719 15.4629V12.935C0.261719 12.8246 0.281702 12.7194 0.321669 12.6195C0.36162 12.5196 0.424488 12.4267 0.510273 12.341L8.32486 4.52638L7.32003 3.53919C7.17782 3.40287 7.10907 3.24099 7.11378 3.05354C7.11849 2.8661 7.19193 2.70128 7.33412 2.55907C7.47045 2.42276 7.63233 2.35461 7.81977 2.35461C8.00722 2.35461 8.17203 2.42276 8.31422 2.55907L9.7351 3.97642L12.7037 1.00782C12.8424 0.869142 13.0181 0.799805 13.2308 0.799805C13.4435 0.799805 13.6192 0.869142 13.7578 1.00782L15.5171 2.76706C15.6558 2.90574 15.7251 3.08143 15.7251 3.29415C15.7251 3.50686 15.6558 3.68255 15.5171 3.82123L12.5309 6.80745L13.994 8.27061C14.1304 8.40694 14.2 8.56647 14.2029 8.74921C14.2059 8.93194 14.1362 9.09442 13.994 9.23662C13.8518 9.37881 13.6885 9.44991 13.504 9.44991C13.3195 9.44991 13.1561 9.37881 13.0139 9.23662L12.0091 8.24589L4.21216 16.0428C4.12636 16.1286 4.03352 16.1915 3.93363 16.2315C3.83375 16.2714 3.72857 16.2914 3.61809 16.2914H1.09025ZM1.6367 14.9164H3.4242L11.0325 7.26226L9.29086 5.52059L1.6367 13.1289V14.9164ZM11.5543 5.83792L14.0981 3.29415L13.2308 2.42684L10.687 4.97061L11.5543 5.83792Z"
+                                                fill="#003765" />
+                                        </svg>
+                                    </div>เปลี่ยนธีมสี
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="w-[360px] border border-[#B9CCDC]  rounded-[16px]  flex">
+                        <div class="w-[30%] bg-[#c9edee] h-[100%] rounded-[16px] flex flex-col items-center justify-center">
+                            <div class="w-[90px] h-[90px] rounded-[22px] bg-slate-300"></div>
+                            <div class="text-[12px] mt-[4px]">Professional</div>
+                        </div>
+                        <div class="w-[70%] p-[8px] flex flex-col">
+                            <div class="flex justify-between">
+                                <div class="text-[14px] font-bold">Avenue Apartments</div>
+                                <div class="flex justify-center items-center cursor-pointer"><svg width="4" height="12"
+                                        viewBox="0 0 4 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <ellipse cx="2.0013" cy="2.16667" rx="1.66667" ry="1.66667"
+                                            transform="rotate(90 2.0013 2.16667)" fill="#5C6B79" />
+                                        <circle cx="2.0013" cy="7.99967" r="1.66667" transform="rotate(90 2.0013 7.99967)"
+                                            fill="#5C6B79" />
+                                        <ellipse cx="2.0013" cy="13.8337" rx="1.66667" ry="1.66667"
+                                            transform="rotate(90 2.0013 13.8337)" fill="#5C6B79" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div
+                                class="w-[100%] rounded-[16px] border border-indigo-600 flex justify-between pl-[8px] pr-[8px] mt-[8px]">
+                                <div class="text-[12px]">สร้างเมื่อวันที่</div>
+                                <div class="text-[12px]">12/02/2022</div>
+                            </div>
+                            <div
+                                class="w-[100%] rounded-[16px] border border-[#B9CCDC]  flex justify-between pl-[8px] pr-[8px] mt-[8px]">
+                                <div class="text-[12px]">จำนวน ชั้น/ห้อง</div>
+                                <div class="text-[12px]">2/12</div>
+                            </div>
+                            <div>
+                                <button
+                                    class="w-[100%] h-[28px] mt-[14px] flex justify-center items-center rounded-[16px] border border-[#B9CCDC] bg-[#c9edee]">
+                                    <div class="flex justify-center items-center mr-[4px]"><svg width="16" height="17"
+                                            viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M1.09025 16.2914C0.854023 16.2914 0.656878 16.2124 0.498814 16.0543C0.340751 15.8962 0.261719 15.6991 0.261719 15.4629V12.935C0.261719 12.8246 0.281702 12.7194 0.321669 12.6195C0.36162 12.5196 0.424488 12.4267 0.510273 12.341L8.32486 4.52638L7.32003 3.53919C7.17782 3.40287 7.10907 3.24099 7.11378 3.05354C7.11849 2.8661 7.19193 2.70128 7.33412 2.55907C7.47045 2.42276 7.63233 2.35461 7.81977 2.35461C8.00722 2.35461 8.17203 2.42276 8.31422 2.55907L9.7351 3.97642L12.7037 1.00782C12.8424 0.869142 13.0181 0.799805 13.2308 0.799805C13.4435 0.799805 13.6192 0.869142 13.7578 1.00782L15.5171 2.76706C15.6558 2.90574 15.7251 3.08143 15.7251 3.29415C15.7251 3.50686 15.6558 3.68255 15.5171 3.82123L12.5309 6.80745L13.994 8.27061C14.1304 8.40694 14.2 8.56647 14.2029 8.74921C14.2059 8.93194 14.1362 9.09442 13.994 9.23662C13.8518 9.37881 13.6885 9.44991 13.504 9.44991C13.3195 9.44991 13.1561 9.37881 13.0139 9.23662L12.0091 8.24589L4.21216 16.0428C4.12636 16.1286 4.03352 16.1915 3.93363 16.2315C3.83375 16.2714 3.72857 16.2914 3.61809 16.2914H1.09025ZM1.6367 14.9164H3.4242L11.0325 7.26226L9.29086 5.52059L1.6367 13.1289V14.9164ZM11.5543 5.83792L14.0981 3.29415L13.2308 2.42684L10.687 4.97061L11.5543 5.83792Z"
+                                                fill="#003765" />
+                                        </svg>
+                                    </div>เปลี่ยนธีมสี
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="w-[360px] border border-[#B9CCDC] rounded-[16px] h-[147px] flex justify-center items-center cursor-pointer">
+                        <div>
+                            <div class="flex justify-center items-center">
+                                <svg width="55" height="55" viewBox="0 0 55 55" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <circle cx="27.5" cy="27.5" r="27.5" fill="#F3F7FA" />
+                                    <mask id="mask0_967_26014" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5"
+                                        y="5" width="45" height="45">
+                                        <rect x="5.5" y="5.49902" width="44" height="44" fill="#D9D9D9" />
+                                    </mask>
+                                    <g mask="url(#mask0_967_26014)">
+                                        <path
+                                            d="M27.4994 39.8739C27.1096 39.8739 26.7831 39.7422 26.5199 39.4787C26.2566 39.2151 26.125 38.8886 26.125 38.499V28.8739H16.5C16.1104 28.8739 15.7838 28.7421 15.5203 28.4785C15.2568 28.2148 15.125 27.8881 15.125 27.4984C15.125 27.1086 15.2568 26.7821 15.5203 26.5189C15.7838 26.2556 16.1104 26.124 16.5 26.124H26.125V16.499C26.125 16.1094 26.2568 15.7828 26.5204 15.5193C26.7841 15.2558 27.1108 15.124 27.5005 15.124C27.8903 15.124 28.2168 15.2558 28.4801 15.5193C28.7433 15.7828 28.8749 16.1094 28.8749 16.499V26.124H38.5C38.8895 26.124 39.2161 26.2558 39.4796 26.5195C39.7432 26.7831 39.8749 27.1098 39.8749 27.4996C39.8749 27.8893 39.7432 28.2158 39.4796 28.4791C39.2161 28.7423 38.8895 28.8739 38.5 28.8739H28.8749V38.499C28.8749 38.8886 28.7431 39.2151 28.4795 39.4787C28.2158 39.7422 27.8891 39.8739 27.4994 39.8739Z"
+                                            fill="#B9CCDC" />
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class="mt-[4px]">สร้างห้องพัก</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        content
-    </div>
-</div></template>
+</template>
 <script>
 import Logo01 from '@/assets/img/Logo-01.png'
 import axios from 'axios'
