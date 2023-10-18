@@ -68,7 +68,38 @@
                 <div>
                     <div class="w-[100%] flex justify-center items-center">
                         <div
-                            class="text-[white] text-[32px]  w-[150px] h-[150px] rounded-[22px] bg-black text-center flex  justify-center items-center">
+                            class="text-[white] text-[32px]  w-[150px] h-[150px] rounded-[22px] bg-[#F3F7FA] text-center flex flex-col justify-end  cursor-pointer">
+                            <svg width="43" height="40" viewBox="0 0 43 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <g filter="url(#filter0_d_902_20136)">
+                                    <circle cx="20" cy="20" r="12" fill="#5C6B79" fill-opacity="0.5" />
+                                    <mask id="mask0_902_20136" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="13"
+                                        y="12" width="15" height="15">
+                                        <rect x="13" y="12" width="14.4" height="14.4" fill="#D9D9D9" />
+                                    </mask>
+                                    <g mask="url(#mask0_902_20136)">
+                                        <path
+                                            d="M19.5242 22.8692C20.2127 22.8692 20.7963 22.6298 21.2752 22.1509C21.754 21.6721 21.9934 21.0884 21.9934 20.4C21.9934 19.7115 21.754 19.1279 21.2752 18.649C20.7963 18.1702 20.2127 17.9308 19.5242 17.9308C18.8357 17.9308 18.2521 18.1702 17.7733 18.649C17.2944 19.1279 17.055 19.7115 17.055 20.4C17.055 21.0884 17.2944 21.6721 17.7733 22.1509C18.2521 22.6298 18.8357 22.8692 19.5242 22.8692ZM14.9088 24.9C14.6058 24.9 14.3492 24.795 14.1392 24.585C13.9292 24.375 13.8242 24.1184 13.8242 23.8154V16.9846C13.8242 16.6815 13.9292 16.425 14.1392 16.215C14.3492 16.005 14.6058 15.9 14.9088 15.9H16.7411L17.5258 15.0496C17.625 14.9421 17.7445 14.8569 17.8844 14.7941C18.0242 14.7314 18.1708 14.7 18.3242 14.7H20.9319C21.0856 14.7 21.2144 14.752 21.3183 14.8559C21.4222 14.9599 21.4742 15.0887 21.4742 15.2423V16.8L14.9088 16.9846H14.7242V23.8154C14.7242 23.8692 14.7415 23.9134 14.7761 23.9481C14.8107 23.9827 14.855 24 14.9088 24H24.1396C24.1934 24 24.2377 23.9827 24.2723 23.9481C24.3069 23.9134 24.3242 23.8692 24.3242 23.8154V18.45H24.6819C24.6542 18.45 24.6682 18.465 24.724 18.495C24.7797 18.525 24.8447 18.5656 24.919 18.6167C24.9932 18.6679 25.0626 18.7271 25.1272 18.7944C25.1919 18.8617 25.2242 18.9277 25.2242 18.9923V23.8154C25.2242 24.1184 25.1192 24.375 24.9092 24.585C24.6992 24.795 24.4426 24.9 24.1396 24.9H14.9088ZM24.33 15.6H23.58C23.4525 15.6 23.3456 15.5568 23.2593 15.4706C23.1731 15.3843 23.13 15.2774 23.13 15.1498C23.13 15.0222 23.1731 14.9154 23.2593 14.8292C23.3456 14.7431 23.4525 14.7 23.58 14.7H24.33V13.95C24.33 13.8225 24.3731 13.7156 24.4594 13.6294C24.5457 13.5431 24.6526 13.5 24.7802 13.5C24.9077 13.5 25.0146 13.5431 25.1007 13.6294C25.1869 13.7156 25.2299 13.8225 25.2299 13.95V14.7H25.98C26.1075 14.7 26.2143 14.7431 26.3006 14.8294C26.3868 14.9157 26.4299 15.0226 26.4299 15.1502C26.4299 15.2778 26.3868 15.3846 26.3006 15.4708C26.2143 15.5569 26.1075 15.6 25.98 15.6H25.2299V16.35C25.2299 16.4775 25.1868 16.5844 25.1005 16.6706C25.0142 16.7569 24.9073 16.8 24.7798 16.8C24.6522 16.8 24.5454 16.7569 24.4592 16.6706C24.373 16.5844 24.33 16.4775 24.33 16.35V15.6Z"
+                                            fill="#E8EFF4" />
+                                    </g>
+                                </g>
+                                <defs>
+                                    <filter id="filter0_d_902_20136" x="-3" y="0" width="46" height="46"
+                                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feColorMatrix in="SourceAlpha" type="matrix"
+                                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                        <feOffset dy="3" />
+                                        <feGaussianBlur stdDeviation="5.5" />
+                                        <feComposite in2="hardAlpha" operator="out" />
+                                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
+                                        <feBlend mode="normal" in2="BackgroundImageFix"
+                                            result="effect1_dropShadow_902_20136" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_902_20136"
+                                            result="shape" />
+                                    </filter>
+                                </defs>
+                            </svg>
+
                         </div>
                     </div>
                     <div class="flex justify-center items-center w-[100%] pl-[50px] pr-[50px]">
@@ -92,26 +123,42 @@
                             <div class="grid grid-cols-4 w-[100%]  gap-4 mt-[10px] ">
                                 <div>
                                     <div class="font-bold">เขต</div>
-                                    <div class="">
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    <div class="mt-[5px]">
+                                        <vs-select  color="#003765">
+                                            <vs-option>
+                                                555
+                                            </vs-option>
+                                        </vs-select>
                                     </div>
                                 </div>
                                 <div>
                                     <div class="font-bold">แขวง</div>
-                                    <div class="">
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    <div class="mt-[5px]">
+                                        <vs-select  color="#003765">
+                                            <vs-option>
+                                                555
+                                            </vs-option>
+                                        </vs-select>
                                     </div>
                                 </div>
                                 <div>
                                     <div class="font-bold">จังหวัด</div>
-                                    <div class="">
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    <div class="mt-[5px]">
+                                        <vs-select  color="#003765">
+                                            <vs-option>
+                                                555
+                                            </vs-option>
+                                        </vs-select>
                                     </div>
                                 </div>
                                 <div>
                                     <div class="font-bold">รหัสไปรษณี</div>
-                                    <div class="">
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    <div class="mt-[5px]">
+                                        <vs-select  color="#003765">
+                                            <vs-option>
+                                                555
+                                            </vs-option>
+                                        </vs-select>
                                     </div>
                                 </div>
                             </div>
@@ -146,15 +193,21 @@
                             <div class="grid grid-cols-2 w-[100%]  gap-4 mt-[10px] ">
                                 <div>
                                     <div class="font-bold">วันตัดรอบบิลค่าน้ำ-ค่าไฟ</div>
-                                    <div class="">
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    <div class="mt-[5px]">
+                                        <vs-select  color="#003765">
+                                            <vs-option>
+                                                555
+                                            </vs-option>
+                                        </vs-select>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="pl-[50px] pr-[50px] flex justify-end"><button class="h-[36px] bg-[#003765] text-white pl-[24px]  pr-[24px] text-center rounded-[12px]">สร้าง</button></div>
+                <div class="pl-[50px] pr-[50px] flex justify-end"><button
+                        class="h-[36px] bg-[#003765] text-white pl-[24px]  pr-[24px] text-center rounded-[12px]">สร้าง</button>
+                </div>
             </div>
 
         </div>
