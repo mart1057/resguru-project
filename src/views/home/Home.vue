@@ -63,19 +63,33 @@
                 </div>
             </div>
         </div>
-        <div class="text-center w-[55%] pt-[50px]">
-            <div class="text-[24px] font-bold">เลือกห้องพักของคุณ</div>
-            <div class="pl-[60px] text-[18px] flex justify-start items-start mt-[50px]">รายการหอพัก</div>
-            <div class="pl-[40px] flex flex-col justify-center items-center">
+        <div class="w-[55%] pt-[50px]">
+            <div class="text-center text-[24px] font-bold">เลือกห้องพักของคุณ</div>
+            <div class="flex flex-col justify-between">
+                <div class=" text-[18px]  mt-[50px] grid grid-cols-2 gap-5">
+
+                    <div></div>
+                </div>
+            </div>
+            <div class="flex flex-col justify-center items-center">
                 <div class="grid grid-cols-2 gap-5 mt-[10px] ">
-                    <div class="w-[360px] border border-[#B9CCDC]  rounded-[16px] flex cursor-pointer">
+                    <div class="w-[360px] text-[18px]  rounded-[16px] flex cursor-pointer">
+                        <div>รายการหอพัก</div>
+                    </div>
+                </div>
+            </div>
+            <div class="flex flex-col justify-center items-center mt-[10px]">
+                <div class="grid grid-cols-2 gap-5 mt-[10px]">
+                    <div class="w-[360px] border border-[#B9CCDC]  rounded-[16px] flex cursor-pointer"
+                        v-for="data in building">
                         <div class="w-[30%] bg-[#c9edee] h-[100%] rounded-[16px] flex flex-col items-center justify-center">
-                            <div class="w-[90px] h-[90px] rounded-[22px] bg-slate-300"></div>
+                            <img :src="'http://203.170.190.170:1337' + data.attributes.buildingLogo?.data?.attributes.url"
+                                class="w-[90px] h-[90px] rounded-[22px]" />
                             <div class="text-[12px] mt-[4px]">Professional</div>
                         </div>
                         <div class="w-[70%] p-[8px] flex flex-col">
                             <div class="flex justify-between">
-                                <div class="text-[14px] font-bold">Avenue Apartments</div>
+                                <div class="text-[14px] font-bold">{{ data.attributes.buildingName }}</div>
                                 <div class="flex justify-center items-center cursor-pointer"><svg width="4" height="12"
                                         viewBox="0 0 4 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <ellipse cx="2.0013" cy="2.16667" rx="1.66667" ry="1.66667"
@@ -90,7 +104,7 @@
                             <div
                                 class="w-[100%] rounded-[16px] border border-[#B9CCDC] flex justify-between pl-[8px] pr-[8px] mt-[8px]">
                                 <div class="text-[12px]">สร้างเมื่อวันที่</div>
-                                <div class="text-[12px]">12/02/2022</div>
+                                <div class="text-[12px]">{{ covertDate(data.attributes.createdAt) }}</div>
                             </div>
                             <div
                                 class="w-[100%] rounded-[16px] border border-[#B9CCDC]  flex justify-between pl-[8px] pr-[8px] mt-[8px]">
@@ -111,7 +125,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-[360px] border border-[#B9CCDC]  rounded-[16px]  flex">
+                    <!-- <div class="w-[360px] border border-[#B9CCDC]  rounded-[16px]  flex">
                         <div class="w-[30%] bg-[#c9edee] h-[100%] rounded-[16px] flex flex-col items-center justify-center">
                             <div class="w-[90px] h-[90px] rounded-[22px] bg-slate-300"></div>
                             <div class="text-[12px] mt-[4px]">Professional</div>
@@ -150,11 +164,13 @@
                                                 fill="#003765" />
                                         </svg>
                                     </div>เปลี่ยนธีมสี
+
                                 </button>
+                                <input type="color" hidden /> <label>assds</label>
                             </div>
                         </div>
-                    </div>
-                    <div
+                    </div> -->
+                    <div @click="routeTo()"
                         class="w-[360px] border border-[#B9CCDC] rounded-[16px] h-[147px] flex justify-center items-center cursor-pointer">
                         <div>
                             <div class="flex justify-center items-center">
@@ -183,11 +199,46 @@
 <script>
 import Logo01 from '@/assets/img/Logo-01.png'
 import axios from 'axios'
+import router from '@/router'
 export default {
     data() {
         return {
             Logo01,
+            building: []
         }
-    }
+    },
+    mounted() {
+        this.getBuilding()
+    },
+    methods: {
+        routeTo() {
+            router.push({
+                path: '/create_building',
+            })
+        },
+        covertDate(createDate) {
+            var date = new Date(createDate);
+
+            // Extract the day, month, and year components
+            var day = date.getUTCDate();
+            var month = date.getUTCMonth() + 1; // Months are zero-based, so add 1 to get the correct month.
+            var year = date.getUTCFullYear();
+
+            // Format the components as "dd/mm/yyyy"
+            var formattedDate = day + '/' + month + '/' + year;
+            return formattedDate
+        },
+        getBuilding() {
+            const loading = this.$vs.loading()
+            fetch('http://203.170.190.170:1337/api' + '/buildings?populate=*')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log(resp.data);
+                    this.building = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        }
+    },
 }
 </script>

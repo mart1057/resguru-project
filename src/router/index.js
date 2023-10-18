@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import LoginRegis from '@/views/login-register/Login.vue'
 import DashBoard from '@/views/dashboard/DashBoard'
 import Home from '@/views/home/Home.vue'
+import CreateBuilding from '@/views/home/CreateBuilding.vue'
 
 Vue.use(VueRouter)
 
@@ -22,6 +23,11 @@ const routes = [
     path: '/',
     name: 'home',
     component:Home
+  },
+  {
+    path: '/create_building',
+    name: 'create_building',
+    component:CreateBuilding 
   },
  
 
