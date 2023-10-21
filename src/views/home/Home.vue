@@ -82,10 +82,10 @@
                 <div class="grid grid-cols-2 gap-5 mt-[10px]">
                     <div class="w-[360px] border border-[#B9CCDC]  rounded-[16px] flex cursor-pointer"
                         v-for="data in building">
-                        <div class="w-[30%]  h-[100%] rounded-[16px] flex flex-col items-center justify-center" :style="{background:color}">
+                        <div class="w-[30%]  h-[100%] rounded-[16px] flex flex-col items-center justify-center"  :style="{background:data.attributes.colorCode}">
                             <img :src="'http://203.170.190.170:1337' + data.attributes.buildingLogo?.data?.attributes.url"
                                 class="w-[90px] h-[90px] rounded-[22px]" />
-                            <div class="text-[12px] mt-[4px]">Professional</div>
+                            <div class="text-[12px] mt-[4px]" :class="data.attributes.colorCode == '#ffffff'?'':'text-[white]'">Professional</div>
                         </div>
                         <div class="w-[70%] p-[8px] flex flex-col">
                             <div class="flex justify-between">
@@ -113,16 +113,16 @@
                             </div>
                             <div>
                                 <div class="color"> <button
-                                        class="w-[100%] h-[28px] mt-[14px] flex justify-center items-center rounded-[16px] border border-[#B9CCDC] " :style="{background:color}">
+                                        class="w-[100%] h-[28px] mt-[14px] flex justify-center items-center rounded-[16px] border border-[#B9CCDC] " :style="{background:data.attributes.colorCode}">
                                         <div class="flex justify-center items-center mr-[4px]"><svg width="16" height="17"
                                                 viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <path
                                                     d="M1.09025 16.2914C0.854023 16.2914 0.656878 16.2124 0.498814 16.0543C0.340751 15.8962 0.261719 15.6991 0.261719 15.4629V12.935C0.261719 12.8246 0.281702 12.7194 0.321669 12.6195C0.36162 12.5196 0.424488 12.4267 0.510273 12.341L8.32486 4.52638L7.32003 3.53919C7.17782 3.40287 7.10907 3.24099 7.11378 3.05354C7.11849 2.8661 7.19193 2.70128 7.33412 2.55907C7.47045 2.42276 7.63233 2.35461 7.81977 2.35461C8.00722 2.35461 8.17203 2.42276 8.31422 2.55907L9.7351 3.97642L12.7037 1.00782C12.8424 0.869142 13.0181 0.799805 13.2308 0.799805C13.4435 0.799805 13.6192 0.869142 13.7578 1.00782L15.5171 2.76706C15.6558 2.90574 15.7251 3.08143 15.7251 3.29415C15.7251 3.50686 15.6558 3.68255 15.5171 3.82123L12.5309 6.80745L13.994 8.27061C14.1304 8.40694 14.2 8.56647 14.2029 8.74921C14.2059 8.93194 14.1362 9.09442 13.994 9.23662C13.8518 9.37881 13.6885 9.44991 13.504 9.44991C13.3195 9.44991 13.1561 9.37881 13.0139 9.23662L12.0091 8.24589L4.21216 16.0428C4.12636 16.1286 4.03352 16.1915 3.93363 16.2315C3.83375 16.2714 3.72857 16.2914 3.61809 16.2914H1.09025ZM1.6367 14.9164H3.4242L11.0325 7.26226L9.29086 5.52059L1.6367 13.1289V14.9164ZM11.5543 5.83792L14.0981 3.29415L13.2308 2.42684L10.687 4.97061L11.5543 5.83792Z"
-                                                    fill="#003765" />
+                                                    :fill="data.attributes.colorCode == '#ffffff'?'#003765':'#ffffff'" />
                                             </svg>
-                                        </div>เปลี่ยนธีมสี 
+                                        </div><span :class="data.attributes.colorCode == '#ffffff'?'':'text-[white]'">เปลี่ยนธีมสี</span>
                                     </button>
-                                    <input type="color" v-model="color" class="custom-picker" />
+                                    <input type="color" v-model="data.attributes.colorCode" class="custom-picker" />
                                 </div>
                             </div>
                         </div>
