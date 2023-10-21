@@ -29,7 +29,7 @@
                     </div>
                 </div>
                 <div class="flex justify-center items-center">
-                    <div><svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <div class="cursor-pointer"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_1490_26602" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
                                 width="28" height="28">
                                 <rect width="28" height="28" fill="#D9D9D9" />
@@ -58,7 +58,7 @@
                                 </template>
                             </vs-avatar>
                         </div>
-                        <div class="ml-[4px]">
+                        <div class="ml-[8px]">
                             <vs-avatar>
                                 <template #text>
                                     Lily

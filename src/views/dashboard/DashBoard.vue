@@ -2,6 +2,7 @@
     <div class="flex mt-[10px]">
         <div class="w-[55%]">
             <UserPlan />
+            <PayMent/>
         </div>
         <div class="w-[45%]">
 
@@ -11,8 +12,9 @@
 </template>
 <script>
 import UserPlan from '@/views/dashboard/components/UserPlan'
+import PayMent from '@/views/dashboard/components/PayMent'
 export default {
-    components: { UserPlan },
+    components: { UserPlan,PayMent  },
     data() {
         return {
 
@@ -31,3 +33,7 @@ export default {
 
 }
 </script>
+<style>
+
+
+</style>

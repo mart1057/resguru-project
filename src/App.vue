@@ -2,7 +2,7 @@
   <div id="app">
     <div v-if="$store.state.login"> 
       <Toolbar v-if="$store.state.main"/>
-      <router-view class="pl-[20px] pr-[20px] pt-[10px]"/>
+      <router-view :class="$store.state.main?'pl-[20px] pr-[20px] pt-[10px]':''"/>
     </div>
     <div v-else>
       <Login/>
@@ -31,6 +31,8 @@ body{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #003765;
+  min-height: 100vh;
+  background-color: #F2F5F7;
 }
 
 
