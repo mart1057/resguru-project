@@ -2,7 +2,7 @@
   <div id="app">
     <div v-if="$store.state.login"> 
       <Toolbar v-if="$store.state.main"/>
-      <router-view />
+      <router-view class="pl-[20px] pr-[20px] pt-[10px]"/>
     </div>
     <div v-else>
       <Login/>

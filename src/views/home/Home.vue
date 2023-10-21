@@ -224,16 +224,10 @@ export default {
             })
         },
         routeToMain() {
-            const loading = this.$vs.loading({
-                opacity: 1,
-            })
             router.push({
                 path: '/dashboard',
             })
             this.$store.state.main = true
-            setTimeout(() => {
-                loading.close()
-            }, 1000)
         },
         covertDate(createDate) {
             var date = new Date(createDate);
