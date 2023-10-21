@@ -98,7 +98,7 @@
                     </svg>
                 </div>
             </div>
-            <div class="w-[40%]  flex flex-col justify-center items-center">
+            <div class="w-[40%]  flex flex-col justify-center items-center mt-[-40px]">
                 <div class="text-[white] text-[28px] mt-[20px]">สร้างบัญชี</div>
                 <div
                     class=" mt-[20px]  text-[12px] w-[549px] rounded-[20px] bg-[white] pt-[14px] pl-[30px] pr-[30px] pb-[14px]">
@@ -383,7 +383,7 @@ export default {
     data() {
         return {
             Logo01,
-            tab: 1,
+            tab: 2,
             value: '',
             days: [...Array(31).keys()].map((day) => day + 1),
             mouths: [...Array(12).keys()].map((day) => day + 1),
