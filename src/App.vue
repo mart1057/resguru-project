@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <div v-if="$store.state.login"> 
+      <Toolbar v-if="$store.state.main"/>
       <router-view />
     </div>
     <div v-else>
@@ -10,9 +11,11 @@
 </template>
 
 <script>
+import Toolbar from './components/ToolBar.vue';
+import { sidebarWidth, toolbarHeight } from '@/components/state'
 import Login from './views/login-register/Login.vue';
 export default{
-  components:{Login},
+  components:{Login,Toolbar},
   data(){
 
   }

@@ -383,7 +383,7 @@ export default {
     data() {
         return {
             Logo01,
-            tab: 2,
+            tab: 1,
             value: '',
             days: [...Array(31).keys()].map((day) => day + 1),
             mouths: [...Array(12).keys()].map((day) => day + 1),

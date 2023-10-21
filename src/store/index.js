@@ -10,6 +10,7 @@ export default new Vuex.Store({
     userInfo: {},
     login:false,
     errLogin: '',
+    main:false,
   },
   getters: {
   },
