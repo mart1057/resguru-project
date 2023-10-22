@@ -147,23 +147,31 @@
                     </div>
                 </div>
             </div>
-            <div class="w-[60%]"></div>
+            <div class="w-[60%]">
+                <apexchart :options="options" :series="data"></apexchart>
+            </div>
         </div>
 
     </div>
 </template>
 <script>
+import VueApexCharts from "vue-apexcharts";
 export default {
+    components: {
+        apexchart: VueApexCharts,
+    },
     data() {
         return {
             tab: 1,
             years: [],
             mouths: [...Array(12).keys()].map((day) => day + 1),
+            data: [10, 5],
         }
     },
     created() {
         this.runYears
     },
+    
     methods: {
         runYears() {
             for (var year = 1923; year <= 2023; year++) {
@@ -171,7 +179,44 @@ export default {
             }
         }
 
-    }
+    },
+    computed: {
+        options() {
+            return {
+                chart: {
+                    type: "donut",
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                legend: {
+                    show: false,
+                },
+                labels: ["Expiring", "Expired"],
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            labels: {
+                                show: true,
+                                total: {
+                                    show: true,
+                                    label: "รายรับทั้งหมด",
+                                    fontSize: "14px",
+                                    fontWeight: "bold",
+                                    color: "#6B7490",
+                                },
+                            },
+                        },
+                    },
+                },
+                colors: ["#F61B21", "#FFB51E"]
+
+                // noData: {
+                //     text: this.loading ? "Loading..." : "No Data",
+                // },
+            };
+        },
+    },
 }
 </script>
 <style scoped>#payment {
