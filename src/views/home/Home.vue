@@ -215,6 +215,7 @@ export default {
         }
     },
     mounted() {
+        this.$store.state.main = false
         this.getBuilding()
     },
     methods: {

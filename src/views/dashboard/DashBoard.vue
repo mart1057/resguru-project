@@ -29,6 +29,7 @@ export default {
 
     },
     created() {
+        this.$store.state.main = true
         const loading = this.$vs.loading({
             opacity: 1,
         })

@@ -36,7 +36,40 @@
             </div>
         </div>
         <div class="mt-[18px]">
-            content
+            <vs-table>
+                <template #thead>
+                    <vs-tr>
+                        <vs-th>
+                            เลขห้อง
+                        </vs-th>
+                        <vs-th>
+                            เดือนก่อน
+                        </vs-th>
+                        <vs-th>
+                            เดือนนี้
+                        </vs-th>
+                        <vs-th>
+                            หน่วยที่ใช้
+                        </vs-th>
+                    </vs-tr>
+                </template>
+                <template #tbody>
+                    <vs-tr :key="i" v-for="(tr, i) in users" :data="tr">
+                        <vs-td>
+                            {{ tr.name }}
+                        </vs-td>
+                        <vs-td>
+                            {{ tr.email }}
+                        </vs-td>
+                        <vs-td>
+                            {{ tr.id }}
+                        </vs-td>
+                        <vs-td>
+                            {{ tr.email }}
+                        </vs-td>
+                    </vs-tr>
+                </template>
+            </vs-table>
         </div>
     </div>
 </template>
@@ -44,7 +77,51 @@
 export default {
     data() {
         return {
-            tab: 1
+            tab: 1,
+            users: [
+                {
+                    "id": 452,
+                    "name": "101",
+                    "username": "Leanne Graham",
+                    "email": "495",
+                    "website": 1,
+                },
+                {
+                    "id": 589,
+                    "name": "102",
+                    "username": "Leanne Graham",
+                    "email": "559",
+                    "website": 2,
+                },
+                {
+                    "id": 3,
+                    "name": "103",
+                    "username": "Leanne Graham",
+                    "email": "596",
+                    "website": 1,
+                },
+                {
+                    "id": 422,
+                    "name": "104",
+                    "username": "Leanne Graham",
+                    "email": "598",
+                    "website": 3,
+                },
+                {
+                    "id": 53,
+                    "name": "105",
+                    "username": "Leanne Graham",
+                    "email": "69",
+                    "website": 1,
+                },
+                {
+                    "id": 69,
+                    "name": "106",
+                    "username": "Leanne Graham",
+                    "email": "442",
+                    "website": 3,
+                },
+            ]
         }
     }
 }

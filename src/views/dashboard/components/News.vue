@@ -16,7 +16,43 @@
             </div>
         </div>
         <div class="mt-[18px]">
-            content
+            <div class="flex w-[100%]  items-center justify-between">
+                <div class="flex justify-start items-center w-[80%]">
+                    <input class="h-[40px] w-[100%] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหา" type="input" />
+                </div>
+                <button class="cursor-pointer flex justify-center items-center bg-[#003765] pl-[16px] h-[38px] pr-[16px] pt-[11px] pb-[11px] rounded-[12px] rounded-[8px] text-[white]">
+                    ทั้งหมด</button>
+            </div>
+        </div>
+        <div class="mt-[18px]">
+            <vs-table>
+                <template #thead>
+                    <vs-tr>
+                        <vs-th>
+                            วันที่
+                        </vs-th>
+                        <vs-th>
+                            ข้อความ
+                        </vs-th>
+                        <vs-th>
+                            โดย
+                        </vs-th>
+                    </vs-tr>
+                </template>
+                <template #tbody>
+                    <vs-tr :key="i" v-for="(tr, i) in users" :data="tr">
+                        <vs-td>
+                            {{ tr.email }}
+                        </vs-td>
+                        <vs-td>
+                            {{ tr.username }}
+                        </vs-td>
+                        <vs-td>
+                            {{ tr.username }}
+                        </vs-td>
+                    </vs-tr>
+                </template>
+            </vs-table>
         </div>
     </div>
 </template>
@@ -24,7 +60,79 @@
 export default {
     data() {
         return {
-            tab: 1
+            tab: 1,
+            users: [
+                {
+                    "id": 1,
+                    "name": "101",
+                    "username": "Leanne Graham",
+                    "email": "12/04/66",
+                    "website": 1,
+                },
+                {
+                    "id": 2,
+                    "name": "102",
+                    "username": "Leanne Graham",
+                    "email": "12/04/66",
+                    "website": 2,
+                },
+                {
+                    "id": 3,
+                    "name": "103",
+                    "username": "Leanne Graham",
+                    "email": "12/04/66",
+                    "website": 1,
+                },
+                {
+                    "id": 4,
+                    "name": "104",
+                    "username": "Leanne Graham",
+                    "email": "12/04/66",
+                    "website": 3,
+                },
+                {
+                    "id": 5,
+                    "name": "105",
+                    "username": "Leanne Graham",
+                    "email": "12/04/66",
+                    "website": 1,
+                },
+                {
+                    "id": 6,
+                    "name": "106",
+                    "username": "Leanne Graham",
+                    "email": "12/04/66",
+                    "website": 3,
+                },
+                {
+                    "id": 7,
+                    "name": "107",
+                    "username": "Leanne Graham",
+                    "email": "12/04/66",
+                    "website": 1,
+                },
+                {
+                    "id": 8,
+                    "name": "108",
+                    "username": "Leanne Graham",
+                    "email": "12/04/66",
+                    "website": 3,
+                },
+                {
+                    "id": 9,
+                    "name": "109",
+                    "username": "Leanne Graham",
+                    "email": "12/04/66",
+                    "website": 1,
+                },
+                {
+                    "id": 10,
+                    "name": "110",
+                    "username": "Leanne Graham",
+                    "email": "12/04/66",
+                    "website": 2,
+                }
+            ]
         }
     }
 }

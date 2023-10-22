@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <div v-if="$store.state.login"> 
-      <Toolbar v-if="$store.state.main"/>
-      <router-view :class="$store.state.main?'pl-[20px] pr-[20px] pt-[10px]':''"/>
+      <Toolbar v-if="$store.state.main == true"/>
+      <router-view :class="$store.state.main == true?'pl-[20px] pr-[20px] pt-[10px]':''"/>
     </div>
     <div v-else>
       <Login/>

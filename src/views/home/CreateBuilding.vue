@@ -222,6 +222,9 @@ export default {
             Logo01,
         }
     },
+    mounted() {
+        this.$store.state.main = false
+    },
     methods: {
         //    getBuilding(){
         //     fetch('/buildings')
