@@ -240,15 +240,19 @@
 </template>
 <script>
 export default {
-    data: () => ({
-        active: 'home',
-        sidebar: true
-    })
+    data() {
+        return {
+            active: 'home',
+            sidebar: true
+        }
+
+    }
 }
 </script>
 
 <style>
-.vs-sidebar__item.active:after{
+
+.vs-sidebar__item.active:after {
     background-color: #F5D65E;
 }
 
@@ -305,4 +309,5 @@ export default {
     -moz-animation-delay: 1s;
     -o-animation-duration: 1s;
     animation-delay: 0.1s;
-}</style>
+}
+</style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="flex mt-[10px] justify-between">
+    <div class="flex mt-[10px] justify-between tt">
         <div class="w-[55%]">
             <UserPlan />
             <PayMent/>
@@ -42,6 +42,4 @@ export default {
 }
 </script>
 <style>
-
-
 </style>

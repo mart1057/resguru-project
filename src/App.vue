@@ -25,8 +25,10 @@ export default{
 <style>
 body{
   height: 100vh;
+  overflow: hidden !important; /* Hide scrollbars */
 }
-#app {
+#app { 
+  
   font-family: 'Prompt';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
