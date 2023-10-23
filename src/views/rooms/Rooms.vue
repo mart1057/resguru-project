@@ -30,7 +30,7 @@
                     </div>
                 </div>
                 <div class="flex">
-                    <div class="h-[36px] w-[132px] bg-[#003765] flex  justify-center rounded-[12px] mt-[12px]">
+                    <div class="h-[36px] w-[132px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]"  @click="create = true">
                         <div class="flex justify-center items-center">
                             <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -38,7 +38,7 @@
                                     fill="white" />
                             </svg>
                         </div>
-                        <div class="text-white font-bold ml-[8px]   flex justify-center items-center">เพิ่มการจอง</div>
+                        <div @click="create = true"  class="text-white font-bold ml-[8px]   flex justify-center items-center">เพิ่มการจอง</div>
                     </div>
                     <div class="flex justify-start items-center   mt-[5px] ml-[14px]">
                         <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาตามหมายเลขห้อง"
@@ -90,7 +90,9 @@
                             <div class="text-[14px] mt-[12px] font-bold text-[#003765]">ชัชพล บุญพันธุ์</div>
                         </div>
                     </div>
-                    <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">มีผู้เข้าพัก</div>
+                    <div
+                        class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">
+                        มีผู้เข้าพัก</div>
                 </div>
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px]">
                     <div class="flex">
@@ -100,7 +102,9 @@
                             <div class="text-[14px] mt-[12px] font-bold text-[#003765]">ชัชพล บุญพันธุ์</div>
                         </div>
                     </div>
-                    <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">มีผู้เข้าพัก</div>
+                    <div
+                        class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">
+                        มีผู้เข้าพัก</div>
                 </div>
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px]">
                     <div class="flex">
@@ -110,7 +114,9 @@
                             <div class="text-[14px] mt-[12px] font-bold text-[#003765]">ชัชพล บุญพันธุ์</div>
                         </div>
                     </div>
-                    <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">มีผู้เข้าพัก</div>
+                    <div
+                        class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">
+                        มีผู้เข้าพัก</div>
                 </div>
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px]">
                     <div class="flex">
@@ -120,17 +126,77 @@
                             <div class="text-[14px] mt-[12px] font-bold text-[#003765]">ชัชพล บุญพันธุ์</div>
                         </div>
                     </div>
-                    <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">มีผู้เข้าพัก</div>
+                    <div
+                        class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">
+                        มีผู้เข้าพัก</div>
                 </div>
             </div>
         </div>
+        <b-modal centered v-model="create" size="xl" hide-backdrop hide-header-close hide-header hide-footer
+            class="p-[-20px] text-custom">
+            <div>
+                <div class="flex justify-between pl-[20px] pr-[20px]">
+                    <div class="text-custom flex justify-center items-center text-[18px] font-bold">เพิ่มการจอง</div>
+                    <div @click="create = false" class="cursor-pointer">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
+                                width="24" height="24">
+                                <rect width="24" height="24" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_417_4814)">
+                                <path
+                                    d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                                    fill="#5C6B79" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <!-- <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
+                <div class="pl-[20px] pr-[20px] mt-[24px]">
+                    <div class="font-bold text-custom">การจองห้อง</div>
+                    <div class=" mt-[24px]">
+                        <div class="w-[100%] flex">
+                            <div class="w-[20%] text-custom flex items-start">ข้อมูลผู้จอง</div>
+                            <dvi>
+                                <div class="grid grid-cols-1  text-custom  ">
+                                    <div>
+                                        <vs-select placeholder="เลือกผู้ใช้จากระบบ">
+                                            <vs-option label="อาคาร A" value="1">
+                                                อาคาร A
+                                            </vs-option>
+                                            <vs-option label="อาคาร B" value="2">
+                                                อาคาร B
+                                            </vs-option>
+                                        </vs-select>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-3  text-custom mt-[14px]  ">
+                                    <div>
+                                        <vs-select placeholder="ชื่อ">
+                                            <vs-option label="อาคาร A" value="1">
+                                                อาคาร A
+                                            </vs-option>
+                                            <vs-option label="อาคาร B" value="2">
+                                                อาคาร B
+                                            </vs-option>
+                                        </vs-select>
+                                    </div>
+                                </div>
+                            </dvi>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </b-modal>
     </div>
 </template>
 <script>
 export default {
     data() {
         return {
-
+            create: true
         }
 
     },
@@ -147,6 +213,10 @@ export default {
 }
 </script>
 <style>
+.text-custom {
+    font-family: 'Prompt';
+}
+
 /* .vs-select__input{
     height: 36px !important;
     width: 350px !important;

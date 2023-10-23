@@ -1,5 +1,5 @@
 <template>
-    <div class="flex w-[100%]">
+    <div class="flex w-[100%]" id="create">
         <div class="bg-[#003765] w-[40%] rounded-r-[40px]">
             <div class="flex flex-col justify-between w-[100%] h-[100vh!important] ">
                 <div class="pl-[50px] pt-[30px]">
@@ -232,3 +232,9 @@ export default {
     },
 }
 </script>
+<style>
+#create{
+    background-color: white;
+}
+
+</style>
