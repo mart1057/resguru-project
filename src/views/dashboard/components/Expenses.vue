@@ -165,7 +165,7 @@ export default {
             tab: 1,
             years: [],
             mouths: [...Array(12).keys()].map((day) => day + 1),
-            data: [10, 5],
+            data: [10, 5,6,8],
         }
     },
     created() {
@@ -192,7 +192,7 @@ export default {
                 legend: {
                     show: false,
                 },
-                labels: ["Expiring", "Expired"],
+                labels: ["จ่ายรายเดือน", "มัดจำห้องพัก","ประกันความเสียหาย","อื่น ๆ"],
                 plotOptions: {
                     pie: {
                         donut: {
@@ -204,12 +204,13 @@ export default {
                                     fontSize: "14px",
                                     fontWeight: "bold",
                                     color: "#6B7490",
+                                    fontFamily: "Prompt",
                                 },
                             },
                         },
                     },
                 },
-                colors: ["#F61B21", "#FFB51E"]
+                colors: ["#F5D65E", "#008EF4","#D44769","#9A77FF"]
 
                 // noData: {
                 //     text: this.loading ? "Loading..." : "No Data",
@@ -219,6 +220,11 @@ export default {
     },
 }
 </script>
-<style scoped>#payment {
+<style scoped>
+#payment {
     background-color: rgb(255, 255, 255);
-}</style>
+}
+
+
+
+</style>
