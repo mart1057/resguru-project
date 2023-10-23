@@ -84,7 +84,7 @@
             <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px] ">
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px]">
                     <div class="flex">
-                        <div class="w-[136px] h-[100%] rounded-[22px] bg-[red]"></div>
+                        <div class="w-[136px] h-[100%] rounded-[22px] bg-[#8396A6]"></div>
                         <div class="ml-[14px]">
                             <div class="text-[18px] font-bold text-[#141629]">ห้อง 101</div>
                             <div class="text-[14px] mt-[12px] font-bold text-[#003765]">ชัชพล บุญพันธุ์</div>
@@ -96,7 +96,7 @@
                 </div>
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px]">
                     <div class="flex">
-                        <div class="w-[136px] h-[100%] rounded-[22px] bg-[red]"></div>
+                        <div class="w-[136px] h-[100%] rounded-[22px] bg-[#8396A6]"></div>
                         <div class="ml-[14px]">
                             <div class="text-[18px] font-bold text-[#141629]">ห้อง 102</div>
                             <div class="text-[14px] mt-[12px] font-bold text-[#003765]">ชัชพล บุญพันธุ์</div>
@@ -108,7 +108,7 @@
                 </div>
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px]">
                     <div class="flex">
-                        <div class="w-[136px] h-[100%] rounded-[22px] bg-[red]"></div>
+                        <div class="w-[136px] h-[100%] rounded-[22px] bg-[#8396A6]"></div>
                         <div class="ml-[14px]">
                             <div class="text-[18px] font-bold text-[#141629]">ห้อง 103</div>
                             <div class="text-[14px] mt-[12px] font-bold text-[#003765]">ชัชพล บุญพันธุ์</div>
@@ -120,7 +120,7 @@
                 </div>
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px]">
                     <div class="flex">
-                        <div class="w-[136px] h-[100%] rounded-[22px] bg-[red]"></div>
+                        <div class="w-[136px] h-[100%] rounded-[22px] bg-[#8396A6]"></div>
                         <div class="ml-[14px]">
                             <div class="text-[18px] font-bold text-[#141629]">ห้อง 104</div>
                             <div class="text-[14px] mt-[12px] font-bold text-[#003765]">ชัชพล บุญพันธุ์</div>
