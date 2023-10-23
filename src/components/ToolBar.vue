@@ -97,7 +97,7 @@
                 </vs-sidebar-item>
                 <vs-sidebar-item id="market">
                     <template #icon>
-                        <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg"  @click="routerTo('/rooms')">
                             <mask id="mask0_3262_11863" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
                                 width="24" height="25">
                                 <rect y="0.75" width="24" height="24" fill="#D9D9D9" />
@@ -109,7 +109,7 @@
                             </g>
                         </svg>
                     </template>
-                    <span class="text-[white]">ผังห้องพัก</span>
+                    <span class="text-[white]"  @click="routerTo('/rooms')">ผังห้องพัก</span>
                 </vs-sidebar-item>
                 <vs-sidebar-item id="Musicooo">
                     <template #icon>
@@ -246,12 +246,20 @@ export default {
             sidebar: true
         }
 
+    },
+    methods: {
+        routerTo(path) {
+            this.$router.push({
+                path: path,
+            })
+            this.sidebar = false
+        }
+
     }
 }
 </script>
 
 <style>
-
 .vs-sidebar__item.active:after {
     background-color: #F5D65E;
 }
