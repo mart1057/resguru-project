@@ -30,7 +30,8 @@
                     </div>
                 </div>
                 <div class="flex">
-                    <div class="h-[36px] w-[132px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]"  @click="create = true">
+                    <div class="h-[36px] w-[132px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]"
+                        @click="create = true">
                         <div class="flex justify-center items-center">
                             <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -38,7 +39,8 @@
                                     fill="white" />
                             </svg>
                         </div>
-                        <div @click="create = true"  class="text-white font-bold ml-[8px]   flex justify-center items-center">เพิ่มการจอง</div>
+                        <div @click="create = true"
+                            class="text-white font-bold ml-[8px]   flex justify-center items-center">เพิ่มการจอง</div>
                     </div>
                     <div class="flex justify-start items-center   mt-[5px] ml-[14px]">
                         <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาตามหมายเลขห้อง"
@@ -156,8 +158,8 @@
                     <div class="font-bold text-custom">การจองห้อง</div>
                     <div class=" mt-[24px]">
                         <div class="w-[100%] flex">
-                            <div class="w-[20%] text-custom flex items-start">ข้อมูลผู้จอง</div>
-                            <dvi>
+                            <div class="w-[30%] text-custom flex items-start">ข้อมูลผู้จอง</div>
+                            <dvi class=" w-[70%] ">
                                 <div class="grid grid-cols-1  text-custom  ">
                                     <div>
                                         <vs-select placeholder="เลือกผู้ใช้จากระบบ">
@@ -170,9 +172,10 @@
                                         </vs-select>
                                     </div>
                                 </div>
-                                <div class="grid grid-cols-3  text-custom mt-[14px]  ">
+                                <div class="grid grid-cols-8  text-custom mt-[14px]  ">
                                     <div>
-                                        <vs-select placeholder="ชื่อ">
+                                        <div>คำนำหน้า</div>
+                                        <vs-select placeholder="ชื่อ" id="mr" class="mt-[6px]">
                                             <vs-option label="อาคาร A" value="1">
                                                 อาคาร A
                                             </vs-option>
@@ -181,12 +184,112 @@
                                             </vs-option>
                                         </vs-select>
                                     </div>
+                                    <div class="col-span-3 ml-[8px]">
+                                        <div>ชื่อ</div>
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    </div>
+                                    <div class="col-span-3  ml-[8px]">
+                                        <div>สกุล</div>
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    </div>
+                                    <div class="ml-[8px]">
+                                        <div>ชื่อเล่น</div>
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    </div>
                                 </div>
                             </dvi>
-
+                        </div>
+                        <div class="w-[100%] flex mt-[14px]">
+                            <div class="w-[30%] text-custom flex items-start"></div>
+                            <div class="grid grid-cols-8  text-custom w-[70%] ">
+                                <div class="col-span-4">
+                                    <div>เบอร์โทรศัพท์ <span class="text-[#5C6B79]">(ไม่ต้องใส่ขีด ตัวอย่าง.
+                                            0815578945)</span></div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                </div>
+                                <div class="col-span-4  ml-[8px]">
+                                    <div>เลือกห้อง</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-[100%] flex mt-[14px]">
+                            <div class="w-[30%] text-custom flex items-start"></div>
+                            <div class="grid grid-cols-6  text-custom w-[70%] ">
+                                <div class="col-span-2">
+                                    <div>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
+                                    <vs-select placeholder="ชื่อ" class="mt-[6px]">
+                                        <vs-option label="อาคาร A" value="1">
+                                            อาคาร A
+                                        </vs-option>
+                                        <vs-option label="อาคาร B" value="2">
+                                            อาคาร B
+                                        </vs-option>
+                                    </vs-select>
+                                </div>
+                                <div class="col-span-2  ml-[8px]">
+                                    <div class="text-[white]">.</div>
+                                    <vs-select placeholder="ชื่อ" class="mt-[6px]">
+                                        <vs-option label="อาคาร A" value="1">
+                                            อาคาร A
+                                        </vs-option>
+                                        <vs-option label="อาคาร B" value="2">
+                                            อาคาร B
+                                        </vs-option>
+                                    </vs-select>
+                                </div>
+                                <div class="col-span-2 ml-[8px]">
+                                    <div class="text-[white]">.</div>
+                                    <vs-select placeholder="ชื่อ" class="mt-[6px]">
+                                        <vs-option label="อาคาร A" value="1">
+                                            อาคาร A
+                                        </vs-option>
+                                        <vs-option label="อาคาร B" value="2">
+                                            อาคาร B
+                                        </vs-option>
+                                    </vs-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-[100%] flex mt-[14px]">
+                            <div class="w-[30%] text-custom flex items-start">รายละเอียดการจอง</div>
+                            <div class="grid grid-cols-8  text-custom w-[70%] ">
+                                <div class="col-span-4">
+                                    <div>วันที่เข้าพัก</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                </div>
+                                <div class="col-span-4  ml-[8px]">
+                                    <div>เลือกห้อง</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-[100%] flex mt-[14px]">
+                            <div class="w-[30%] text-custom flex items-start">รายละเอียดการชำระเงิน</div>
+                            <div class="grid grid-cols-8  text-custom w-[70%] ">
+                                <div class="col-span-4">
+                                    <div>ค่ามัดจำ (บาท)</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                </div>
+                                <!-- <div class="col-span-4  ml-[8px]">
+                                    <div>เลือกห้อง</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                </div> -->
+                            </div>
                         </div>
                     </div>
-
+                </div>
+                <div class="flex justify-end mt-[30px]">
+                    <div>
+                        <vs-button dark shadow @click="create = false">
+                            <div class="text-custom">ยกเลิก</div>
+                        </vs-button>
+                    </div>
+                    <div>
+                        <vs-button @click="create = false" color="#003765">
+                            <div class="text-custom">บันทึก</div>
+                        </vs-button>
+                    </div>
                 </div>
             </div>
         </b-modal>
@@ -215,6 +318,10 @@ export default {
 <style>
 .text-custom {
     font-family: 'Prompt';
+}
+
+#mr {
+    width: 90px;
 }
 
 /* .vs-select__input{

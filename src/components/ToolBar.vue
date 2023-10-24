@@ -243,7 +243,7 @@ export default {
     data() {
         return {
             active: 'home',
-            sidebar: true
+            sidebar: false
         }
 
     },
