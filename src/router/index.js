@@ -5,6 +5,7 @@ import DashBoard from '@/views/dashboard/DashBoard'
 import Home from '@/views/home/Home.vue'
 import CreateBuilding from '@/views/home/CreateBuilding.vue'
 import Rooms from '@/views/rooms/Rooms'
+import RoomDetail from '@/views/rooms/RoomDetail'
 
 Vue.use(VueRouter)
 
@@ -34,6 +35,11 @@ const routes = [
     path: '/rooms',
     name: 'rooms',
     component:Rooms
+  },
+  {
+    path: '/room-detail',
+    name: 'room-detail',
+    component:RoomDetail
   },
  
  
