@@ -202,7 +202,15 @@ export default {
         return {
             tab: 1
         }
-    }
+    },
+    created() {
+        const loading = this.$vs.loading({
+            opacity: 1,
+        })
+        setTimeout(() => {
+            loading.close()
+        }, 1000)
+    },
 }
 </script>
 <style></style>
