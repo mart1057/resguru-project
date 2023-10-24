@@ -122,7 +122,7 @@
         <div class="mt-[24px]">
             <div class="text-[24px] font-bold">อาคาร A ชั้น 1</div>
             <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px] ">
-                <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer" @click="routeTo()">
+                <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer" @click="routeTo('/room-detail')">
                     <div class="flex">
                         <div class="w-[136px] h-[100%] rounded-[22px] bg-[#8396A6]"></div>
                         <div class="ml-[14px]">
@@ -351,9 +351,9 @@ export default {
         }, 1000)
     },
     methods:{
-        routeTo() {
+        routeTo(path) {
             this.$router.push({
-                path: '/room-detail',
+                path: path,
             })
         },
     }
