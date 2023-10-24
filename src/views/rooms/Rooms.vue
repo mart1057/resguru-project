@@ -46,22 +46,60 @@
                         <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาตามหมายเลขห้อง"
                             type="input" />
                     </div>
-                    <div class="h-[36px] w-[132px]  flex  justify-center rounded-[12px] mt-[12px] ml-[14px] cursor-pointer">
-                        <div class="flex justify-center items-center">
-                            <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <mask id="mask0_3262_4178" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-                                    width="22" height="23">
-                                    <rect y="0.5" width="22" height="22" fill="#D9D9D9" />
-                                </mask>
-                                <g mask="url(#mask0_3262_4178)">
-                                    <path
-                                        d="M10.0846 16.7707C9.88982 16.7707 9.72655 16.7048 9.59479 16.573C9.46302 16.4411 9.39714 16.2778 9.39714 16.0829C9.39714 15.888 9.46302 15.7248 9.59479 15.5932C9.72655 15.4615 9.88982 15.3957 10.0846 15.3957H11.9179C12.1127 15.3957 12.276 15.4616 12.4078 15.5935C12.5395 15.7253 12.6054 15.8886 12.6054 16.0835C12.6054 16.2784 12.5395 16.4416 12.4078 16.5733C12.276 16.7049 12.1127 16.7707 11.9179 16.7707H10.0846ZM3.66795 7.25144C3.47315 7.25144 3.30988 7.18553 3.17813 7.05369C3.04635 6.92186 2.98047 6.75851 2.98047 6.56364C2.98047 6.36876 3.04635 6.20551 3.17813 6.07389C3.30988 5.94227 3.47315 5.87646 3.66795 5.87646H18.3346C18.5294 5.87646 18.6927 5.94238 18.8245 6.07421C18.9562 6.20603 19.0221 6.36938 19.0221 6.56426C19.0221 6.75913 18.9562 6.92237 18.8245 7.05399C18.6927 7.18563 18.5294 7.25144 18.3346 7.25144H3.66795ZM6.41795 12.0111C6.22315 12.0111 6.05988 11.9451 5.92813 11.8133C5.79635 11.6815 5.73047 11.5181 5.73047 11.3233C5.73047 11.1284 5.79635 10.9651 5.92813 10.8335C6.05988 10.7019 6.22315 10.6361 6.41795 10.6361H15.5846C15.7794 10.6361 15.9427 10.702 16.0745 10.8338C16.2062 10.9657 16.2721 11.129 16.2721 11.3239C16.2721 11.5188 16.2062 11.682 16.0745 11.8136C15.9427 11.9452 15.7794 12.0111 15.5846 12.0111H6.41795Z"
-                                        fill="#003765" />
-                                </g>
-                            </svg>
+                    <vs-tooltip bottom shadow not-hover v-model="popup_filter">
+                        <div @click="popup_filter = true"
+                            class="h-[36px] w-[132px]  flex  justify-center rounded-[12px] mt-[12px] ml-[14px] cursor-pointer">
+                            <div class="flex justify-center items-center">
+                                <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <mask id="mask0_3262_4178" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
+                                        y="0" width="22" height="23">
+                                        <rect y="0.5" width="22" height="22" fill="#D9D9D9" />
+                                    </mask>
+                                    <g mask="url(#mask0_3262_4178)">
+                                        <path
+                                            d="M10.0846 16.7707C9.88982 16.7707 9.72655 16.7048 9.59479 16.573C9.46302 16.4411 9.39714 16.2778 9.39714 16.0829C9.39714 15.888 9.46302 15.7248 9.59479 15.5932C9.72655 15.4615 9.88982 15.3957 10.0846 15.3957H11.9179C12.1127 15.3957 12.276 15.4616 12.4078 15.5935C12.5395 15.7253 12.6054 15.8886 12.6054 16.0835C12.6054 16.2784 12.5395 16.4416 12.4078 16.5733C12.276 16.7049 12.1127 16.7707 11.9179 16.7707H10.0846ZM3.66795 7.25144C3.47315 7.25144 3.30988 7.18553 3.17813 7.05369C3.04635 6.92186 2.98047 6.75851 2.98047 6.56364C2.98047 6.36876 3.04635 6.20551 3.17813 6.07389C3.30988 5.94227 3.47315 5.87646 3.66795 5.87646H18.3346C18.5294 5.87646 18.6927 5.94238 18.8245 6.07421C18.9562 6.20603 19.0221 6.36938 19.0221 6.56426C19.0221 6.75913 18.9562 6.92237 18.8245 7.05399C18.6927 7.18563 18.5294 7.25144 18.3346 7.25144H3.66795ZM6.41795 12.0111C6.22315 12.0111 6.05988 11.9451 5.92813 11.8133C5.79635 11.6815 5.73047 11.5181 5.73047 11.3233C5.73047 11.1284 5.79635 10.9651 5.92813 10.8335C6.05988 10.7019 6.22315 10.6361 6.41795 10.6361H15.5846C15.7794 10.6361 15.9427 10.702 16.0745 10.8338C16.2062 10.9657 16.2721 11.129 16.2721 11.3239C16.2721 11.5188 16.2062 11.682 16.0745 11.8136C15.9427 11.9452 15.7794 12.0111 15.5846 12.0111H6.41795Z"
+                                            fill="#003765" />
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class=" font-bold ml-[8px] flex justify-center items-center">ฟิลเตอร์</div>
                         </div>
-                        <div class=" font-bold ml-[8px] flex justify-center items-center">ฟิลเตอร์</div>
-                    </div>
+                        <template #tooltip>
+                            <div class="w-[100%]">
+                                <div class="center">
+                                    <vs-checkbox v-model="option">
+                                        <div class="text-custom">ห้องค้างชำระ</div>
+                                    </vs-checkbox>
+                                </div>
+                                <div class="center">
+                                    <vs-checkbox v-model="option">
+                                        <div class="text-custom">ห้องชำระเงินแล้ว</div>
+                                    </vs-checkbox>
+                                </div>
+                                <div class="center">
+                                    <vs-checkbox v-model="option">
+                                        <div class="text-custom">ห้องว่าง</div>
+                                    </vs-checkbox>
+                                </div>
+                                <div class="center">
+                                    <vs-checkbox v-model="option">
+                                        <div class="text-custom">ห้องติดจอง</div>
+                                    </vs-checkbox>
+                                </div>
+                                <div class="center">
+                                    <vs-checkbox v-model="option">
+                                        <div class="text-custom">ห้องไกล้หมดสัญญา</div>
+                                    </vs-checkbox>
+                                </div>
+                                <div class="center">
+                                    <vs-checkbox v-model="option">
+                                        <div class="text-custom">ห้องแจ้งย้ายออก</div>
+                                    </vs-checkbox>
+                                </div>
+                            </div>
+                        </template>
+                    </vs-tooltip>
                 </div>
             </div>
             <div class="flex items-center mb-[8px] mt-[14px]">
@@ -299,7 +337,8 @@
 export default {
     data() {
         return {
-            create: true
+            create: false,
+            popup_filter: false
         }
 
     },
