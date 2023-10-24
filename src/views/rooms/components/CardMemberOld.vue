@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="grid grid-cols-7 w-[100%] gap-4 mt-[14px]">
-            <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[12px] ">
+            <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[12px] cursor-pointer " @click="create = true">
                 <div class="w-[78px] h-[78px] rounded-[22px] bg-[#8396A6]"></div>
                 <div>ชัชพล บุญพันธุ์</div>
                 <div class="flex">
@@ -800,7 +800,7 @@
 export default {
     data() {
         return {
-            create: true
+            create: false
         }
     },
 }
