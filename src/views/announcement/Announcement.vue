@@ -32,7 +32,8 @@
                                                 fill="white" />
                                         </svg>
                                     </div>
-                                    <div class="text-white font-bold ml-[8px]   flex justify-center items-center">
+                                    <div class="text-white font-bold ml-[8px]   flex justify-center items-center"
+                                        @click="create_ann = true">
                                         สร้างประกาศ
                                     </div>
                                 </div>
@@ -61,7 +62,8 @@
                                     </svg>
 
                                 </div>
-                                <div class="text-[14px] font-bold ml-[8px] flex justify-center items-center">ประวัติย้อยหลัง</div>
+                                <div class="text-[14px] font-bold ml-[8px] flex justify-center items-center">ประวัติย้อยหลัง
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -89,21 +91,21 @@
                             </vs-tr>
                         </template>
                         <template #tbody>
-                            <vs-tr :key="i" v-for="(tr, i) in users" :data="tr" :is-selected="!!selected.includes(tr)">
+                            <vs-tr :key="i" v-for="(tr, i) in users" :data="tr" >
                                 <vs-td checkbox>
                                     <vs-checkbox :val="tr" v-model="selected" />
                                 </vs-td>
                                 <vs-td>
-                                    {{ tr.website }}
+                                    <div @click="create_ann = true"> {{ tr.website }}</div>
                                 </vs-td>
                                 <vs-td>
-                                    {{ tr.website }}
+                                    <div @click="create_ann = true"> {{ tr.website }}</div>
                                 </vs-td>
                                 <vs-td>
-                                    {{ tr.username }}
+                                    <div @click="create_ann = true">{{ tr.username }}</div>
                                 </vs-td>
                                 <vs-td>
-                                    <div class="flex">
+                                    <div class="flex" @click="create_ann = true">
                                         <div>
                                             <vs-avatar circle>
                                                 <img src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-picture-icon-png-people-person-profile--4.png"
@@ -119,6 +121,65 @@
                 </div>
             </div>
         </div>
+        <b-modal centered v-model="create_ann" size="l" hide-backdrop hide-header-close hide-header hide-footer
+            class="p-[-20px] text-custom">
+            <div>
+                <div class="flex justify-between pl-[20px] pr-[20px]">
+                    <div class="text-custom flex justify-center items-center text-[18px] font-bold">สร้างประกาศ</div>
+                    <div @click="create_ann = false" class="cursor-pointer">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
+                                width="24" height="24">
+                                <rect width="24" height="24" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_417_4814)">
+                                <path
+                                    d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                                    fill="#5C6B79" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <!-- <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
+                <div class="pl-[20px] pr-[20px] mt-[24px]">
+                    <div>
+                        <div class="text-custom text-[14px] text-[#003765]">เรื่องที่ประกาศ</div>
+                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom text-[14px] text-[#003765]">รายละเอียดการแจ้ง</div>
+                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom text-[14px] text-[#003765]">วันที่สิ้นสุด</div>
+                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom text-[14px] text-[#003765]">รูปภาพ</div>
+                        <div class="flex mt-[4px]">
+                            <div
+                                class="flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
+                                เลือกรูปภาพ</div>
+                            <div class="text-[#5C6B79] text-custom  flex justify-center items-center ml-[8px] text-[12px]">
+                                ยังไม่ได้เลือกไฟล์</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="flex justify-end mt-[30px]">
+                    <div>
+                        <vs-button dark shadow @click="create = false">
+                            <div class="text-custom">ยกเลิก</div>
+                        </vs-button>
+                    </div>
+                    <div>
+                        <vs-button @click="create = false" color="#003765">
+                            <div class="text-custom">ประกาศ</div>
+                        </vs-button>
+                    </div>
+                </div>
+            </div>
+        </b-modal>
     </div>
 </template>
 <script>
@@ -129,6 +190,7 @@ export default {
             popup_filter: false,
             allCheck: false,
             selected: [],
+            create_ann: false,
             users: [
                 {
                     "id": 1,

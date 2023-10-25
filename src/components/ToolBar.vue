@@ -167,7 +167,7 @@
                             </g>
                         </svg>
                     </template>
-                    <span class="text-[white]">ประกาศ</span>
+                    <span class="text-[white]" @click="routerTo('/announcement')">ประกาศ</span>
                 </vs-sidebar-item>
                 <vs-sidebar-item id="chatz">
                     <template #icon>

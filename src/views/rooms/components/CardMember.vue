@@ -1,7 +1,8 @@
 <template>
     <div>
         <div class="grid grid-cols-7 w-[100%] gap-4 mt-[14px]">
-            <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[14px] cursor-pointer " @click="create = true">
+            <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[14px] cursor-pointer "
+                @click="create = true">
                 <div
                     class="h-[24px] w-[auto] mt-[-22px] text-[12px] flex items-center justify-center p-[8px] rounded-[8px]  bg-[#D7F1E3] text-[#39B974]">
                     ทำสัญญาแล้ว
@@ -125,7 +126,8 @@
                         ลบผู้เช่า</div>
                 </div>
             </div>
-            <div class="h-[212px] border rounded-[12px] flex flex-col justify-center items-center p-[14px] cursor-pointer" @click="create = true">
+            <div class="h-[212px] border rounded-[12px] flex flex-col justify-center items-center p-[14px] cursor-pointer"
+                @click="create = true">
                 <div class="flex flex-col">
                     <div>
                         <svg width="76" height="76" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -174,15 +176,18 @@
                                 <div class="grid grid-cols-4 gap-2  text-custom  ">
                                     <div class="col-span-2">
                                         <div>อีเมลล์</div>
-                                        <input type="input" placeholder="ทะเบียนรถ" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" placeholder="ทะเบียนรถ"
+                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                     <div class="col-span-1">
                                         <div>เลขมิเตอร์ค่าน้ำเริ่มต้น</div>
-                                        <input type="input" placeholder="ค่าน้ำ" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" placeholder="ค่าน้ำ"
+                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                     <div class="col-span-1">
                                         <div>เลขมิเตอร์ค่าน้ำไฟเริ่มต้น</div>
-                                        <input type="input" placeholder="ค่าไฟ" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" placeholder="ค่าไฟ"
+                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8  text-custom mt-[14px]  ">
@@ -277,12 +282,15 @@
                             <div class="w-[30%] text-custom flex items-start"></div>
                             <div class="grid grid-cols-6  text-custom w-[70%] ">
                                 <div class="col-span-3 mt-[6px]">
-                                        <div>แนบรูปบัตรประชาชน</div>
-                                        <div class="flex mt-[4px]">
-                                            <div class="flex justify-center items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">อัพโหลดรูปภาพ</div>
-                                            <div class="text-[#5C6B79] flex justify-center items-center ml-[8px] text-[12px]">ยังไม่ได้เลือกไฟล์</div>
-                                        </div>
+                                    <div>แนบรูปบัตรประชาชน</div>
+                                    <div class="flex mt-[4px]">
+                                        <div
+                                            class="flex justify-center items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
+                                            อัพโหลดรูปภาพ</div>
+                                        <div class="text-[#5C6B79] flex justify-center items-center ml-[8px] text-[12px]">
+                                            ยังไม่ได้เลือกไฟล์</div>
                                     </div>
+                                </div>
                             </div>
                         </div>
                         <div class="w-[100%] flex mt-[14px]">
@@ -353,19 +361,25 @@
                                     </div>
                                     <div class="col-span-3  ml-[8px]">
                                         <div class="text-[white]">.</div>
-                                        <input type="input" placeholder="ทะเบียนรถ" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" placeholder="ทะเบียนรถ"
+                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                     <div class="col-span-3  ml-[8px]">
                                         <div class="text-[white]">.</div>
-                                        <input type="input" placeholder="รายละเอียดรถ"  class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" placeholder="รายละเอียดรถ"
+                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8  text-custom w-[100%] ">
                                     <div class="col-span-3 mt-[6px]">
                                         <div>แนบรูปภาพยานพหนะคันที่ 1</div>
                                         <div class="flex mt-[4px]">
-                                            <div class="flex justify-center items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">อัพโหลดรูปภาพ</div>
-                                            <div class="text-[#5C6B79] flex justify-center items-center ml-[8px] text-[12px]">ยังไม่ได้เลือกไฟล์</div>
+                                            <div
+                                                class="flex justify-center items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
+                                                อัพโหลดรูปภาพ</div>
+                                            <div
+                                                class="text-[#5C6B79] flex justify-center items-center ml-[8px] text-[12px]">
+                                                ยังไม่ได้เลือกไฟล์</div>
                                         </div>
                                     </div>
                                 </div>
@@ -386,9 +400,8 @@
                     </div>
                 </div>
             </div>
-        </b-modal>
-    </div>
-</template>
+    </b-modal>
+</div></template>
 <script>
 export default {
     data() {
