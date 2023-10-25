@@ -161,7 +161,7 @@
                                 <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]"
                                     placeholder="ค้นหาตามหมายเลขห้อง" type="input" />
                             </div>
-                            <vs-tooltip bottom shadow not-hover v-model="popup_filter">
+                            <!-- <vs-tooltip bottom shadow not-hover v-model="popup_filter">
                                 <div @click="popup_filter = true" v-if="tab == 4"
                                     class="h-[36px] w-[132px]  flex  justify-center rounded-[12px] mt-[12px] ml-[14px] cursor-pointer">
                                     <div class="flex justify-center items-center">
@@ -214,7 +214,7 @@
                                         </div>
                                     </div>
                                 </template>
-                            </vs-tooltip>
+                            </vs-tooltip> -->
                             <vs-tooltip bottom shadow not-hover v-model="popup_filter">
                                 <div @click="popup_filter = true"
                                     class="h-[36px] w-[132px]  flex  justify-center rounded-[12px] mt-[12px] _ cursor-pointer">
