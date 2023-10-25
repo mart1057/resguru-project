@@ -46,6 +46,9 @@
         <div v-else-if="tab == 2">
             <Contract />
         </div>
+        <div v-else-if="tab == 3">
+            <Facilites />
+        </div>
         <div v-else-if="tab == 4">
             <CardMemberOld />
         </div>
@@ -55,11 +58,12 @@
 import CardMember from './components/CardMember.vue'
 import CardMemberOld from './components/CardMemberOld.vue'
 import Contract from '@/views/rooms/components/Contract.vue'
+import  Facilites from '@/views/rooms/components/Facilities.vue'
 export default {
-    components: { CardMember, CardMemberOld, Contract },
+    components: { CardMember, CardMemberOld, Contract, Facilites },
     data() {
         return {
-            tab: 2
+            tab: 3
         }
     },
     created() {
