@@ -118,9 +118,11 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class="text-[24px] font-bold ml-[8px] flex justify-center items-center">{{
-                                tab == 1 ? 'มิเตอร์น้ำ' : tab == 2 ? 'มิเตอร์ไฟฟ้า' : tab == 3 ? 'ค่าส่วนกลาง' : 'บริการอื่น
-                                                            ๆ' }}</div>
+                            <div class="text-[24px] font-bold ml-[8px] flex justify-center items-center">
+                                {{
+                                tab == 1 ? 'มิเตอร์น้ำ' : tab == 2 ? 'มิเตอร์ไฟฟ้า' : tab == 3 ? 'ค่าส่วนกลาง' : 'บริการอื่นๆ' 
+                                }}
+                                </div>
                         </div>
                         <div class="flex border pl-[14px] pr-[14px]  rounded-[12px] cursor-pointer ">
                             <div class="flex justify-center items-center">
