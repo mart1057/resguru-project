@@ -660,6 +660,34 @@
                 </div>
             </div>
         </div>
+        <vs-dialog width="550px" not-center v-model="move_confirm" not-close>
+            <template #header>
+                <div class="pl-[16px]  pr-[16px] pt-[16px]">
+                    <div class="font-bold">ยืนยันการย้ายออก</div>
+                </div>
+            </template>
+            <div class="con-content pl-[16px]  pr-[16px]">
+                <div class="text-[#D44769]">
+                    คุณได้ตรวจสอบความถูกต้องของผู้เช่าห้อง 101 ก่อนจะย้ายออกแล้วหรือไม่ ?
+                </div>
+                <div class="center mt-[4px]">
+                    <vs-checkbox v-model="option">
+                        ตรวจสอบแล้ว
+                    </vs-checkbox>
+                </div>
+            </div>
+
+            <template #footer>
+                <div class="con-footer flex justify-end">
+                    <vs-button @click="move_confirm = false" transparent>
+                        <div class="text-[#5C6B79] text-[14px]">ยกเลิก</div>
+                    </vs-button>
+                    <vs-button @click="active = !active" color="#D44769">
+                        <div class="text-[white] text-[14px]">ยืนยันการย้ายออก</div>
+                    </vs-button>
+                </div>
+            </template>
+        </vs-dialog>
     </div>
 </template>
 <script>
@@ -667,7 +695,8 @@ export default {
     data() {
         return {
             create: false,
-            tab: false
+            tab: false,
+            move_confirm: true
         }
     },
 }

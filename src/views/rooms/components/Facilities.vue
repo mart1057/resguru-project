@@ -250,7 +250,7 @@
 export default {
     data() {
         return {
-            create: false
+            create: false,
         }
     },
 }
