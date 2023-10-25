@@ -37,6 +37,10 @@
                         :class="tab == 4 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : ' text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         ย้ายออก
                     </div>
+                    <div @click="tab =  5" class="cursor-pointer  ml-[8px]"
+                        :class="tab == 5 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : ' text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
+                        ผู้เช่ารายเก่า
+                    </div>
                 </div>
             </div>
         </div>
@@ -50,6 +54,9 @@
             <Facilites />
         </div>
         <div v-else-if="tab == 4">
+            <MoveOut/>
+        </div>
+        <div v-else-if="tab == 5">
             <CardMemberOld />
         </div>
     </div>
@@ -59,11 +66,12 @@ import CardMember from './components/CardMember.vue'
 import CardMemberOld from './components/CardMemberOld.vue'
 import Contract from '@/views/rooms/components/Contract.vue'
 import  Facilites from '@/views/rooms/components/Facilities.vue'
+import MoveOut from './components/MoveOut.vue'
 export default {
-    components: { CardMember, CardMemberOld, Contract, Facilites },
+    components: { CardMember, CardMemberOld, Contract, Facilites,MoveOut  },
     data() {
         return {
-            tab: 3
+            tab: 4
         }
     },
     created() {
