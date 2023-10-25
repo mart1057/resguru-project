@@ -93,7 +93,7 @@
                                 fill="#B9CCDC" />
                         </svg>
                     </template>
-                    <span class="text-[white]">แดชบอร์ด</span>
+                    <span class="text-[white]" @click="routerTo('/dashboard')">แดชบอร์ด</span>
                 </vs-sidebar-item>
                 <vs-sidebar-item id="market">
                     <template #icon>
@@ -125,7 +125,7 @@
                             </g>
                         </svg>
                     </template>
-                    <span class="text-[white]">มิเตอร์</span>
+                    <span class="text-[white] "  @click="routerTo('/fee')">มิเตอร์</span>
                 </vs-sidebar-item>
                 <vs-sidebar-item id="donate">
                     <template #icon>

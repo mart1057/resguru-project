@@ -7,7 +7,7 @@ import CreateBuilding from '@/views/home/CreateBuilding.vue'
 import Rooms from '@/views/rooms/Rooms'
 import RoomDetail from '@/views/rooms/RoomDetail'
 import Main from '@/views/meter/Main'
-import MainVue from '@/views/meter/Main.vue'
+import Announcement from '@/views/announcement/Announcement'
 
 Vue.use(VueRouter)
 
@@ -48,6 +48,12 @@ const routes = [
     name: 'fee',
     component:Main
   },
+  {
+    path: '/announcement',
+    name: 'announcement',
+    component:Announcement
+  },
+  
   
  
 ]
