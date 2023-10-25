@@ -208,7 +208,7 @@
                         </div>
                         <div class="flex w-[100%] mt-[14px]">
                             <div class="w-[20%]">
-                                <div class="text-custom text-[#5C6B79]">หมายเหตุ</div>
+                                <div class="text-custom text-[#5C6B79]">รูปภาพก่อนเข้าพัก</div>
                             </div>
                             <div class="flex">
                                 <div
