@@ -25,7 +25,7 @@ export default{
 <style>
 body{
   height: 100vh;
-  overflow: hidden !important; /* Hide scrollbars */
+  /* overflow: hidden !important; Hide scrollbars */
 }
 #app { 
   
