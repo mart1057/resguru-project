@@ -505,8 +505,8 @@
                     </div>
                 </div>
                 <div class="w-[10%]">
-                    <div
-                        class="bg-[#CFFBDA] text-[#0B9A3C] rounded-[12px] pt-[7px] pb-[7px] pl-[12px] pr-[12px] text-center">
+                    <div @click="payment = true"
+                        class="bg-[#CFFBDA] text-[#0B9A3C] rounded-[12px] pt-[7px] pb-[7px] pl-[12px] pr-[12px] text-center cursor-pointer">
                         บันทึกหนี้สูญแล้ว</div>
                 </div>
             </div>
@@ -636,7 +636,7 @@
                                 <div class="text-[white] ml-[4px] ">พิมพ์</div>
                             </div>
                         </button>
-                        <button
+                        <button @click="move_confirm = true"
                             class="bg-[#D44769] ml-[8px] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
                             <div class="flex">
                                 <div class="flex justify-center items-center ">
@@ -653,7 +653,15 @@
                                         </g>
                                     </svg>
                                 </div>
-                                <div class="text-[white] ml-[4px] ">เคลียร์บิลและย้ายออก</div>
+                                <div class="text-[white] ml-[4px]  ">เคลียร์บิลและย้ายออก</div>
+                            </div>
+                        </button>
+                        <button
+                            class="bg-[#003765] ml-[8px] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
+                            <div class="flex">
+                                <div class="flex justify-center items-center ">
+                                </div>
+                                <div class="text-[white] ml-[4px]  ">บันทึกแบบร่าง</div>
                             </div>
                         </button>
                     </div>
@@ -676,14 +684,94 @@
                     </vs-checkbox>
                 </div>
             </div>
-
             <template #footer>
                 <div class="con-footer flex justify-end">
                     <vs-button @click="move_confirm = false" transparent>
                         <div class="text-[#5C6B79] text-[14px]">ยกเลิก</div>
                     </vs-button>
-                    <vs-button @click="active = !active" color="#D44769">
+                    <vs-button @click="move_confirm = !move_confirm,move_done = true" color="#D44769">
                         <div class="text-[white] text-[14px]">ยืนยันการย้ายออก</div>
+                    </vs-button>
+                </div>
+            </template>
+        </vs-dialog>
+
+        <vs-dialog width="300px" not-center v-model="payment" not-close>
+            <template #header>
+                <div class="pl-[16px]  pr-[16px] pt-[16px]">
+                    <div class="font-bold">การชำระเงิน</div>
+                </div>
+            </template>
+            <div class="con-content pl-[16px]  pr-[16px]">
+                <div class="text-[#141629]">
+                    ห้อง 101 ได้ทำการชำระเงินแล้ว ?
+                </div>
+                <div class="center mt-[12px] flex justify-center ">
+                    <vs-select placeholder="เลือก">
+                        <vs-option label="อาคาร A" value="1">
+                            อาคาร A
+                        </vs-option>
+                        <vs-option label="อาคาร B" value="2">
+                            อาคาร B
+                        </vs-option>
+                    </vs-select>
+                </div>
+            </div>
+            <template #footer>
+                <div class="con-footer flex justify-around  mt-[4px]">
+                    <vs-button @click="payment = false" transparent>
+                        <div class="text-[#5C6B79] text-[14px]">ยกเลิก</div>
+                    </vs-button>
+                    <vs-button @click="payment = !payment" color="#39B974">
+                        <div class="text-[white] text-[14px]">ยืนยัน</div>
+                    </vs-button>
+                </div>
+            </template>
+        </vs-dialog>
+
+        <vs-dialog width="300px" not-center v-model="move_done" not-close>
+            <template #header>
+                <div class="pl-[16px]  pr-[16px] pt-[16px]">
+                    <div class="flex">
+                        <div class="font-bold text-[#39B974]">ย้ายออกเสร็จสิ้น</div>
+                        <div class="ml-[8px]">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <mask id="mask0_1413_28277" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
+                                    width="20" height="20">
+                                    <rect width="20" height="20" fill="#D9D9D9" />
+                                </mask>
+                                <g mask="url(#mask0_1413_28277)">
+                                    <path
+                                        d="M10.0001 17.9166C8.90513 17.9166 7.87593 17.7089 6.91249 17.2933C5.94903 16.8777 5.11096 16.3138 4.39828 15.6014C3.68559 14.8891 3.12137 14.0514 2.70564 13.0883C2.2899 12.1253 2.08203 11.0963 2.08203 10.0014C2.08203 8.90644 2.28984 7.87725 2.70547 6.9138C3.12109 5.95034 3.68516 5.11227 4.39766 4.39959C5.11016 3.6869 5.948 3.12268 6.9112 2.70695C7.87438 2.29121 8.90354 2.08334 9.99868 2.08334C10.6921 2.08334 11.3641 2.17175 12.0147 2.34857C12.6654 2.52539 13.2877 2.781 13.8817 3.11541C14.0419 3.20516 14.1467 3.33443 14.1958 3.50322C14.2449 3.67202 14.2161 3.82961 14.1093 3.97597C14.0024 4.12233 13.8611 4.21394 13.6854 4.2508C13.5097 4.28766 13.3401 4.26122 13.1766 4.17147C12.6894 3.89904 12.1769 3.69124 11.6389 3.54807C11.101 3.40491 10.5542 3.33332 9.99868 3.33332C8.15145 3.33332 6.57854 3.98263 5.27993 5.28124C3.98132 6.57985 3.33201 8.15277 3.33201 9.99999C3.33201 11.8472 3.98132 13.4201 5.27993 14.7187C6.57854 16.0174 8.15145 16.6667 9.99868 16.6667C11.8459 16.6667 13.4188 16.0174 14.7174 14.7187C16.016 13.4201 16.6653 11.8472 16.6653 9.99999C16.6653 9.83871 16.6592 9.68247 16.6469 9.53126C16.6346 9.38007 16.6135 9.22487 16.5836 9.06568C16.5558 8.88822 16.5863 8.71859 16.6749 8.55678C16.7636 8.39499 16.8971 8.29005 17.0754 8.24197C17.2433 8.1939 17.399 8.21473 17.5427 8.30447C17.6864 8.39422 17.7722 8.52349 17.7999 8.69228C17.8384 8.90275 17.8672 9.11565 17.8865 9.33097C17.9057 9.54629 17.9153 9.76929 17.9153 9.99999C17.9153 11.0951 17.7075 12.1243 17.292 13.0875C16.8764 14.0507 16.3125 14.8885 15.6001 15.601C14.8877 16.3135 14.05 16.8776 13.087 17.2932C12.124 17.7088 11.095 17.9166 10.0001 17.9166ZM8.81599 11.7885L16.598 3.99359C16.7134 3.87822 16.8563 3.81706 17.0267 3.81011C17.1971 3.80317 17.3475 3.86491 17.478 3.99534C17.5975 4.1149 17.6573 4.26068 17.6573 4.4327C17.6573 4.6047 17.5969 4.75106 17.4762 4.87178L9.34322 13.0176C9.19258 13.1682 9.01684 13.2436 8.81599 13.2436C8.61513 13.2436 8.43938 13.1682 8.28874 13.0176L6.00189 10.7307C5.88651 10.6154 5.82748 10.4703 5.8248 10.2957C5.82214 10.121 5.88116 9.9733 6.00189 9.85257C6.12261 9.73184 6.26898 9.67147 6.44099 9.67147C6.61299 9.67147 6.75935 9.73184 6.88007 9.85257L8.81599 11.7885Z"
+                                        fill="#39B974" />
+                                </g>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </template>
+            <div class="con-content pl-[16px]  pr-[16px]">
+                <div class="text-[#141629]">
+                    กรุณากำหนดสถานะของห้อง 101
+                </div>
+                <div class="center mt-[12px] flex justify-center ">
+                    <vs-select placeholder="เลือก">
+                        <vs-option label="อาคาร A" value="1">
+                            อาคาร A
+                        </vs-option>
+                        <vs-option label="อาคาร B" value="2">
+                            อาคาร B
+                        </vs-option>
+                    </vs-select>
+                </div>
+            </div>
+            <template #footer>
+                <div class="con-footer flex justify-around  mt-[4px]">
+                    <vs-button @click="move_done = false" transparent>
+                        <div class="text-[#5C6B79] text-[14px]">ยกเลิก</div>
+                    </vs-button>
+                    <vs-button @click="move_done = !move_done" color="#39B974">
+                        <div class="text-[white] text-[14px]">ยืนยัน</div>
                     </vs-button>
                 </div>
             </template>
@@ -696,7 +784,9 @@ export default {
         return {
             create: false,
             tab: false,
-            move_confirm: true
+            move_confirm: false,
+            payment: false,
+            move_done: false
         }
     },
 }
