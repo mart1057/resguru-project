@@ -6,6 +6,8 @@ import Home from '@/views/home/Home.vue'
 import CreateBuilding from '@/views/home/CreateBuilding.vue'
 import Rooms from '@/views/rooms/Rooms'
 import RoomDetail from '@/views/rooms/RoomDetail'
+import Main from '@/views/meter/Main'
+import MainVue from '@/views/meter/Main.vue'
 
 Vue.use(VueRouter)
 
@@ -41,9 +43,13 @@ const routes = [
     name: 'room-detail',
     component:RoomDetail
   },
+  {
+    path: '/fee',
+    name: 'fee',
+    component:Main
+  },
+  
  
- 
-
 ]
 
 const router = new VueRouter({
