@@ -204,6 +204,12 @@ export default {
                 }
             ]
         }
-    }
+    },
+    created() {
+        const loading = this.$vs.loading({})
+        setTimeout(() => {
+            loading.close()
+        }, 1000)
+    },
 }
 </script>

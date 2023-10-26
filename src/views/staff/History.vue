@@ -407,6 +407,12 @@ export default {
         return {
             create: false
         }
-    }
+    },
+     created() {
+        const loading = this.$vs.loading({})
+        setTimeout(() => {
+            loading.close()
+        }, 1000)
+    },
 }
 </script>
