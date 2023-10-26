@@ -1,5 +1,5 @@
 <template>
-    <div class="p-[20px]">
+    <div class="p-[20px] pt-[20px]">
         <div class="h-[auto] bg-[white] rounded-[12px] pt-[28px] pl-[28px] pr-[28px] flex flex-col justify-end">
             <div>
                 <div class="flex justify-between">

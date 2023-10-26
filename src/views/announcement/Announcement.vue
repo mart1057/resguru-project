@@ -1,8 +1,8 @@
 <template>
-    <div class="pl-[20px] pr-[20px] pt-[10px]">
-        <div class="h-[100%] rounded-[12px] mt-[14px]">
+    <div class="pl-[20px] pr-[20px] pt-[20px]">
+        <div class="h-[100%] rounded-[12px]">
             <div
-                class="h-[auto] bg-[white] rounded-[12px] pt-[28px] pl-[28px] pr-[28px] flex flex-col justify-end mt-[14px]">
+                class="h-[auto] bg-[white] rounded-[12px] pt-[28px] pl-[28px] pr-[28px] flex flex-col justify-end ">
                 <div>
                     <div class="flex justify-between">
                         <div class="flex">
@@ -80,7 +80,7 @@
                                     วันที่ประกาศ
                                 </vs-th>
                                 <vs-th>
-                                    วันที่ดำเนินการ
+                                    วันที่สิ้นสุด
                                 </vs-th>
                                 <vs-th>
                                     เรื่องที่ประกาศ
@@ -209,7 +209,7 @@
                                         <div class="text-custom">วันที่ประกาศ</div>
                                     </vs-th>
                                     <vs-th>
-                                        <div class="text-custom">วันที่ดำเนินการ</div>
+                                        <div class="text-custom">วันที่สิ้นสุด</div>
                                     </vs-th>
                                     <vs-th>
                                         <div class="text-custom">เรื่องที่ประกาศ</div>
