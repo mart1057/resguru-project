@@ -68,7 +68,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="center mt-[14px]">
+                <div class="center mt-[24px]">
                     <vs-table v-model="selected">
                         <template #thead>
                             <vs-tr>

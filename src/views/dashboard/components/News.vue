@@ -12,7 +12,7 @@
                 <div class="text-[18px] font-bold flex items-center ml-[4px]">ข่าวสารประจำตึก</div>
             </div>
             <div class="flex justify-center items-center">
-                <div class="flex justify-center items-center">ดูทั้งหมด</div>
+                <div class="flex justify-center items-center cursor-pointer" @click=" routerTo('/announcement')">ดูทั้งหมด</div>
             </div>
         </div>
         <div class="mt-[18px]">
@@ -133,6 +133,14 @@ export default {
                     "website": 2,
                 }
             ]
+        }
+    },
+    methods:{
+        routerTo(path) {
+            this.$router.push({
+                path: path,
+            })
+            
         }
     }
 }
