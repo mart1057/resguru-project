@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="text-[24px] font-bold mt-[24px]">รายละเอียดการแจ้งทั้งหมด</div>
+        <div class="text-[24px] font-bold mt-[24px]">พนักงาน</div>
         <div class="grid grid-cols-4 w-[100%] gap-4 mt-[14px]">
             <div class="bg-white rounded-[12px] h-[150px] flex flex-col p-[12px] cursor-pointer ">
                 <div class="flex justify-between">
