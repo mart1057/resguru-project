@@ -369,9 +369,6 @@ export default {
     },
     methods: {
         routerTo(path) {
-            if(path == '/'){
-                this.profile =  false
-            }
             this.$router.push({
                 path: path,
             })

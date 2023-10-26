@@ -270,7 +270,7 @@
                                 </template>
                             </vs-tooltip>
                         </div>
-                        <div v-if="tab == 1 || tab == 2 || tab == 3"
+                        <div v-if="tab == 1 || tab == 2"
                             class="h-[36px] pl-[8px] pr-[8px] bg-[#39B974] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]">
                             <div class="flex justify-center items-center">
                                 <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
