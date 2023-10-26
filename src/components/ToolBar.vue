@@ -288,7 +288,7 @@
                     </template>
                     <span class="text-[white]" @click="routerTo('/announcement')">ประกาศ</span>
                 </vs-sidebar-item>
-                <vs-sidebar-item id="chatz">
+                <vs-sidebar-item id="chatz" to="/staff">
                     <template #icon>
                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_3262_11898" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -302,7 +302,7 @@
                             </g>
                         </svg>
                     </template>
-                    <span class="text-[white]">บริการและการจัดการพนักงาน</span>
+                    <span class="text-[white]" @click="routerTo('/staff')">บริการและการจัดการพนักงาน</span>
                 </vs-sidebar-item>
                 <vs-sidebar-item id="chatx">
                     <template #icon>

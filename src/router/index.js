@@ -6,9 +6,10 @@ import Home from '@/views/home/Home.vue'
 import CreateBuilding from '@/views/home/CreateBuilding.vue'
 import Rooms from '@/views/rooms/Rooms'
 import RoomDetail from '@/views/rooms/RoomDetail'
-import Main from '@/views/meter/Main'
+import MainMeter from '@/views/meter/MainMeter'
 import Announcement from '@/views/announcement/Announcement'
 import RentalContract from '@/views/rental-contract/RentalContract.vue'
+import MainStaff from '@/views/staff/MainStaff'
 
 Vue.use(VueRouter)
 
@@ -47,7 +48,7 @@ const routes = [
   {
     path: '/fee',
     name: 'fee',
-    component:Main
+    component:MainMeter
   },
   {
     path: '/announcement',
@@ -58,6 +59,11 @@ const routes = [
     path: '/rental-contract',
     name: 'rental-contract',
     component:RentalContract
+  },
+  {
+    path: '/staff',
+    name: 'staff',
+    component:MainStaff
   },
   
   
