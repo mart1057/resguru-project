@@ -54,8 +54,8 @@
                             Professional
                         </div>
                         <div class="flex ml-[10px] items-center">
-                            <vs-tooltip bottom shadow not-hover v-model="profile">
-                                <div @click="profile = true" class="cursor-pointer">
+                            <vs-tooltip bottom shadow interactivity >
+                                <div  class="cursor-pointer">
                                     <vs-avatar size="40" primary>
                                         <template #text>
                                             Lily
