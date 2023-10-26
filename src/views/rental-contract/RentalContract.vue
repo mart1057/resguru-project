@@ -20,7 +20,7 @@
                         <div class="text-[24px] font-bold ml-[8px] flex justify-center items-center">การจัดการสัญญาเช่า
                         </div>
                     </div>
-                    <div class="flex border pl-[14px] pr-[14px]  rounded-[12px] cursor-pointer ">
+                    <!-- <div class="flex border pl-[14px] pr-[14px]  rounded-[12px] cursor-pointer ">
                         <div class="flex justify-center items-center">
                             <svg width="18" height="19" viewBox="0 0 18 19" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -29,7 +29,7 @@
                             </svg>
                         </div>
                         <div class="text-[14px] font-bold ml-[8px] flex justify-center items-center">ตั้งค่าผังห้อง</div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="flex">
                     <div class="h-[36px] pr-[10px] pl-[8px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]"
@@ -523,7 +523,7 @@
 export default {
     data() {
         return {
-            create: true,
+            create: false,
             popup_filter: false
         }
 
