@@ -383,7 +383,7 @@
             class="p-[-20px] text-custom">
             <div>
                 <div class="flex justify-between pl-[20px] pr-[20px]">
-                    <div class="text-custom flex justify-center items-center text-[18px] font-bold">เพิ่มการจอง</div>
+                    <div class="text-custom flex justify-center items-center text-[18px] font-bold">รายละเอียดสัญญาเช่า ห้อง 101</div>
                     <div @click="create = false" class="cursor-pointer">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -400,46 +400,27 @@
                 </div>
                 <!-- <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
                 <div class="pl-[20px] pr-[20px] mt-[24px]">
-                    <div class="font-bold text-custom">การจองห้อง</div>
+                    <div class="font-bold text-custom">รายละเอียดสัญญาเช่า</div>
                     <div class=" mt-[24px]">
                         <div class="w-[100%] flex">
-                            <div class="w-[30%] text-custom flex items-start">ข้อมูลผู้จอง</div>
+                            <div class="w-[30%] text-custom flex items-start text-[#5C6B79]">ข้อมูลหลัก</div>
                             <dvi class=" w-[70%] ">
-                                <div class="grid grid-cols-1  text-custom  ">
+                                <div class="grid grid-cols-8  text-custom">
                                     <div>
-                                        <vs-select placeholder="เลือกผู้ใช้จากระบบ">
-                                            <vs-option label="อาคาร A" value="1">
-                                                อาคาร A
-                                            </vs-option>
-                                            <vs-option label="อาคาร B" value="2">
-                                                อาคาร B
-                                            </vs-option>
-                                        </vs-select>
-                                    </div>
-                                </div>
-                                <div class="grid grid-cols-8  text-custom mt-[14px]  ">
-                                    <div>
-                                        <div>คำนำหน้า</div>
-                                        <vs-select placeholder="ชื่อ" id="mr" class="mt-[6px]">
-                                            <vs-option label="อาคาร A" value="1">
-                                                อาคาร A
-                                            </vs-option>
-                                            <vs-option label="อาคาร B" value="2">
-                                                อาคาร B
-                                            </vs-option>
-                                        </vs-select>
+                                        <div class="text-[#003765]">คำนำหน้า</div>
+                                        <div class="mt-[12px]">นาย</div>
                                     </div>
                                     <div class="col-span-3 ml-[8px]">
-                                        <div>ชื่อ</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <div class="text-[#003765]">ชื่อ</div>
+                                        <div class="mt-[12px]">ชัชพล</div>
                                     </div>
                                     <div class="col-span-3  ml-[8px]">
-                                        <div>สกุล</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <div class="text-[#003765]">สกุล</div>
+                                        <div class="mt-[12px]">บุญพันธุ์</div>
                                     </div>
                                     <div class="ml-[8px]">
-                                        <div>ชื่อเล่น</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <div class="text-[#003765]">ชื่อเล่น</div>
+                                        <div class="mt-[12px]">สามารถ</div>
                                     </div>
                                 </div>
                             </dvi>
@@ -447,56 +428,79 @@
                         <div class="w-[100%] flex mt-[14px]">
                             <div class="w-[30%] text-custom flex items-start"></div>
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
-                                <div class="col-span-4">
-                                    <div>เบอร์โทรศัพท์ <span class="text-[#5C6B79]">(ไม่ต้องใส่ขีด ตัวอย่าง.
-                                            0815578945)</span></div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                <div class="col-span-4 mt-[14px]">
+                                    <div class="text-[#003765]">เบอร์โทรศัพท์</div>
+                                    <div class="mt-[12px]">099-999-9999</div>
                                 </div>
-                                <div class="col-span-4  ml-[8px]">
-                                    <div>เลือกห้อง</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                <div class="col-span-4  ml-[8px]  mt-[14px]">
+                                    <div class="text-[#003765]">หมายเลขบัตรประชาชน</div>
+                                    <div class="mt-[12px]">123424556656568</div>
                                 </div>
                             </div>
                         </div>
                         <div class="w-[100%] flex mt-[14px]">
                             <div class="w-[30%] text-custom flex items-start"></div>
                             <div class="grid grid-cols-6  text-custom w-[70%] ">
-                                <div class="col-span-2">
-                                    <div>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
-                                    <vs-select placeholder="ชื่อ" class="mt-[6px]">
-                                        <vs-option label="อาคาร A" value="1">
-                                            อาคาร A
-                                        </vs-option>
-                                        <vs-option label="อาคาร B" value="2">
-                                            อาคาร B
-                                        </vs-option>
-                                    </vs-select>
-                                </div>
-                                <div class="col-span-2  ml-[8px]">
-                                    <div class="text-[white]">.</div>
-                                    <vs-select placeholder="ชื่อ" class="mt-[6px]">
-                                        <vs-option label="อาคาร A" value="1">
-                                            อาคาร A
-                                        </vs-option>
-                                        <vs-option label="อาคาร B" value="2">
-                                            อาคาร B
-                                        </vs-option>
-                                    </vs-select>
-                                </div>
-                                <div class="col-span-2 ml-[8px]">
-                                    <div class="text-[white]">.</div>
-                                    <vs-select placeholder="ชื่อ" class="mt-[6px]">
-                                        <vs-option label="อาคาร A" value="1">
-                                            อาคาร A
-                                        </vs-option>
-                                        <vs-option label="อาคาร B" value="2">
-                                            อาคาร B
-                                        </vs-option>
-                                    </vs-select>
+                                <div class="col-span-2 mt-[14px]">
+                                    <div class="text-[#003765]">วัน/เดือน/ปีเกิด (ค.ศ.)</div>
+                                    <div class="mt-[12px]">10 ตุลาคม 1999</div>
                                 </div>
                             </div>
                         </div>
                         <div class="w-[100%] flex mt-[14px]">
+                            <div class="w-[30%] text-custom flex items-start"></div>
+                            <div class="grid grid-cols-6  text-custom w-[70%] ">
+                                <div class="col-span-2 mt-[14px]">
+                                    <div class="text-[#003765]">ที่อยู่</div>
+                                    <div class="mt-[12px]">242/41 Tansamai BKK 10260</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-[100%] flex mt-[14px]">
+                            <div class="w-[30%] text-custom flex items-start"></div>
+                            <div class="grid grid-cols-8  text-custom w-[70%] ">
+                                <div class="col-span-4 mt-[14px]">
+                                    <div class="text-[#003765]">วันที่ทำสัญญา</div>
+                                    <div class="mt-[12px]">10/10/2023</div>
+                                </div>
+                                <div class="col-span-4  ml-[8px]  mt-[14px]">
+                                    <div class="text-[#003765]">ระยะเวลาสัญญา</div>
+                                    <div class="mt-[12px]">ไม่ระบุ</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-[100%] flex mt-[14px]">
+                            <div class="w-[30%] text-custom flex items-start"></div>
+                            <div class="grid grid-cols-8  text-custom w-[70%] ">
+                                <div class="col-span-4 mt-[14px]">
+                                    <div  class="text-[#003765]">ประเภทห่องเช่า</div>
+                                    <div class="mt-[12px]">ห้องเปล่า</div>
+                                </div>
+                                <div class="col-span-4  ml-[8px]  mt-[14px]">
+                                    <div  class="text-[#003765]">ค่าประกันห้อง</div>
+                                    <div class="mt-[12px]">500</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-[100%] flex mt-[14px]">
+                            <div class="w-[30%] text-custom flex items-start"></div>
+                            <div class="grid grid-cols-8  text-custom w-[70%] ">
+                                <div class="col-span-4 mt-[14px]">
+                                    <div  class="text-[#003765]">วันสิ้นสุดสัญญา</div>
+                                    <div class="mt-[12px]">10/10/2024</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-[100%] flex mt-[14px]">
+                            <div class="w-[30%] text-custom flex items-start"></div>
+                            <div class="grid grid-cols-8  text-custom w-[70%] ">
+                                <div class="col-span-4 mt-[14px]">
+                                    <div  class="text-[#003765]">วางเงินมัดจำ</div>
+                                    <div class="mt-[12px]">1,000</div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="w-[100%] flex mt-[14px]">
                             <div class="w-[30%] text-custom flex items-start">รายละเอียดการจอง</div>
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
                                 <div class="col-span-4">
@@ -508,32 +512,7 @@
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                 </div>
                             </div>
-                        </div>
-                        <div class="w-[100%] flex mt-[14px]">
-                            <div class="w-[30%] text-custom flex items-start">รายละเอียดการชำระเงิน</div>
-                            <div class="grid grid-cols-8  text-custom w-[70%] ">
-                                <div class="col-span-4">
-                                    <div>ค่ามัดจำ (บาท)</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
-                                </div>
-                                <!-- <div class="col-span-4  ml-[8px]">
-                                    <div>เลือกห้อง</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
-                                </div> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex justify-end mt-[30px]">
-                    <div>
-                        <vs-button dark shadow @click="create = false">
-                            <div class="text-custom">ยกเลิก</div>
-                        </vs-button>
-                    </div>
-                    <div>
-                        <vs-button @click="create = false" color="#003765">
-                            <div class="text-custom">บันทึก</div>
-                        </vs-button>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -544,7 +523,7 @@
 export default {
     data() {
         return {
-            create: false,
+            create: true,
             popup_filter: false
         }
 
