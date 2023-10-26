@@ -95,19 +95,23 @@
             </div>
         </div>
         <!-- //////////////////////////// card /////////////////////// -->
-        <div>
+        <div v-if="tab == 1">
             <NotificationList />
+        </div>
+        <div v-if="tab == 2">
+            <Employee />
         </div>
     </div>
 </template>
 <script>
 import NotificationList from './components/NotificationList.vue'
+import Employee from './components/Employee.vue'
 export default {
-    components: { NotificationList },
+    components: { NotificationList, Employee },
     data() {
         return {
             popup_filter: false,
-            tab: 1
+            tab: 2
         }
     },
     created() {
