@@ -256,7 +256,7 @@
                     </template>
                     <span class="text-[white]">การจ่ายเงิน</span>
                 </vs-sidebar-item>
-                <vs-sidebar-item id="drink">
+                <vs-sidebar-item id="drink" to="/rental-contract">
                     <template #icon>
                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_3262_11884" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -270,7 +270,7 @@
                             </g>
                         </svg>
                     </template>
-                    <span class="text-[white]">การจัดการสัญญาเช่า</span>
+                    <span class="text-[white]" @click="routerTo('/rental-contract')">การจัดการสัญญาเช่า</span>
                 </vs-sidebar-item>
                 <vs-sidebar-item id="shopping" to="/announcement">
                     <template #icon>

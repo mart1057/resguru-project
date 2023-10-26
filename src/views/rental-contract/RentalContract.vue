@@ -1,0 +1,377 @@
+<template>
+    <div class="p-[20px] pt-[20px]">
+        <div class="h-[auto] bg-[white] rounded-[12px] pt-[28px] pl-[28px] pr-[28px] flex flex-col justify-end">
+            <div>
+                <div class="flex justify-between">
+                    <div class="flex">
+                        <div><svg width="41" height="41" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <mask id="mask0_721_15844" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
+                                    width="41" height="41">
+                                    <rect width="41" height="41" fill="#D9D9D9" />
+                                </mask>
+                                <g mask="url(#mask0_721_15844)">
+                                    <path
+                                        d="M6.60148 35.1521C5.90283 35.1521 5.30109 34.8997 4.79628 34.3949C4.29147 33.8901 4.03906 33.2883 4.03906 32.5897V7.8188C4.03906 7.12015 4.29147 6.51841 4.79628 6.01357C5.30109 5.50875 5.90283 5.25635 6.60148 5.25635H17.7057C18.4043 5.25635 19.0061 5.50875 19.5109 6.01357C20.0157 6.51841 20.2681 7.12015 20.2681 7.8188V12.0897H34.3948C35.0934 12.0897 35.6952 12.3421 36.2 12.8469C36.7048 13.3517 36.9572 13.9535 36.9572 14.6521V32.5897C36.9572 33.2883 36.7048 33.8901 36.2 34.3949C35.6952 34.8997 35.0934 35.1521 34.3948 35.1521H6.60148ZM6.60148 32.5897H10.8724V28.3188H6.60148V32.5897ZM6.60148 25.7563H10.8724V21.4855H6.60148V25.7563ZM6.60148 18.923H10.8724V14.6521H6.60148V18.923ZM6.60148 12.0897H10.8724V7.8188H6.60148V12.0897ZM13.4348 32.5897H17.7057V28.3188H13.4348V32.5897ZM13.4348 25.7563H17.7057V21.4855H13.4348V25.7563ZM13.4348 18.923H17.7057V14.6521H13.4348V18.923ZM13.4348 12.0897H17.7057V7.8188H13.4348V12.0897ZM20.2681 32.5897H34.3948V14.6521H20.2681V18.923H24.0134V21.4855H20.2681V25.7563H24.0134V28.3188H20.2681V32.5897ZM27.7586 21.4855V18.923H30.321V21.4855H27.7586ZM27.7586 28.3188V25.7563H30.321V28.3188H27.7586Z"
+                                        fill="#003765" />
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="text-[24px] font-bold ml-[8px] flex justify-center items-center">ผังห้องพัก</div>
+                    </div>
+                    <div class="flex border pl-[14px] pr-[14px]  rounded-[12px] cursor-pointer ">
+                        <div class="flex justify-center items-center"><svg width="18" height="19" viewBox="0 0 18 19"
+                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M10.3845 18.2081H7.60814C7.40247 18.2081 7.22442 18.1391 7.074 18.001C6.92357 17.8629 6.83308 17.691 6.80253 17.4854L6.53635 15.4158C6.29073 15.3336 6.03894 15.2184 5.78097 15.0703C5.52301 14.9222 5.29236 14.7636 5.08905 14.5943L3.17464 15.4017C2.97838 15.4781 2.78359 15.4857 2.59026 15.4246C2.39693 15.3635 2.24504 15.2425 2.13456 15.0615L0.756079 12.6606C0.645605 12.4796 0.611818 12.2863 0.654718 12.0806C0.697603 11.8749 0.801897 11.7092 0.967599 11.5835L2.62466 10.3301C2.6035 10.1938 2.58851 10.0569 2.5797 9.91937C2.57088 9.78187 2.56647 9.64496 2.56647 9.50864C2.56647 9.37818 2.57088 9.24567 2.5797 9.1111C2.58851 8.97654 2.6035 8.82934 2.62466 8.66952L0.967599 7.41614C0.801897 7.2904 0.697603 7.1247 0.654718 6.91903C0.611818 6.71338 0.645605 6.52006 0.756079 6.33908L2.13456 3.95579C2.23564 3.7654 2.38372 3.642 2.5788 3.5856C2.77388 3.52919 2.96955 3.53918 3.16581 3.61557L5.08022 4.41413C5.30117 4.23901 5.5371 4.07889 5.78801 3.93375C6.03893 3.78859 6.28544 3.67195 6.52753 3.58381L6.80253 1.51427C6.83308 1.3086 6.92357 1.13673 7.074 0.998647C7.22442 0.860552 7.40247 0.791504 7.60814 0.791504H10.3845C10.5902 0.791504 10.7697 0.860552 10.9231 0.998647C11.0764 1.13673 11.1684 1.3086 11.199 1.51427L11.4651 3.59263C11.7401 3.69252 11.989 3.80916 12.2117 3.94255C12.4344 4.07594 12.6592 4.23313 12.886 4.41413L14.8357 3.61557C15.0319 3.53918 15.2252 3.53007 15.4156 3.58823C15.606 3.64641 15.7564 3.76599 15.8669 3.94697L17.2454 6.33908C17.3559 6.52006 17.3897 6.71338 17.3468 6.91903C17.3039 7.1247 17.1996 7.2904 17.0339 7.41614L15.3416 8.69594C15.3745 8.84403 15.3924 8.98242 15.3953 9.1111C15.3983 9.23979 15.3997 9.36936 15.3997 9.49981C15.3997 9.62439 15.3968 9.75102 15.3909 9.87971C15.3851 10.0084 15.3639 10.1556 15.3275 10.3213L17.0021 11.5835C17.1737 11.7034 17.2795 11.8676 17.3194 12.0762C17.3594 12.2848 17.3242 12.4796 17.2137 12.6606L15.8352 15.0474C15.7247 15.2283 15.5705 15.3503 15.3724 15.4132C15.1744 15.476 14.9773 15.4693 14.781 15.3929L12.886 14.5855C12.6592 14.7665 12.4277 14.9266 12.1914 15.0659C11.9552 15.2052 11.7131 15.3189 11.4651 15.407L11.199 17.4854C11.1684 17.691 11.0764 17.8629 10.9231 18.001C10.7697 18.1391 10.5902 18.2081 10.3845 18.2081ZM9.0113 12.2498C9.77402 12.2498 10.423 11.9821 10.9583 11.4468C11.4936 10.9115 11.7613 10.2625 11.7613 9.49981C11.7613 8.73712 11.4936 8.08811 10.9583 7.55279C10.423 7.01749 9.77402 6.74984 9.0113 6.74984C8.23921 6.74984 7.58786 7.01749 7.05725 7.55279C6.52665 8.08811 6.26135 8.73712 6.26135 9.49981C6.26135 10.2625 6.52665 10.9115 7.05725 11.4468C7.58786 11.9821 8.23921 12.2498 9.0113 12.2498ZM9.0113 10.8748C8.62936 10.8748 8.30471 10.7411 8.03735 10.4738C7.76999 10.2064 7.6363 9.88176 7.6363 9.49981C7.6363 9.11787 7.76999 8.79322 8.03735 8.52586C8.30471 8.2585 8.62936 8.12482 9.0113 8.12482C9.39325 8.12482 9.7179 8.2585 9.98526 8.52586C10.2526 8.79322 10.3863 9.11787 10.3863 9.49981C10.3863 9.88176 10.2526 10.2064 9.98526 10.4738C9.7179 10.7411 9.39325 10.8748 9.0113 10.8748ZM8.08407 16.8332H9.88567L10.2153 14.3775C10.6831 14.2553 11.1105 14.0817 11.4978 13.8566C11.885 13.6316 12.2584 13.3422 12.618 12.9884L14.8956 13.9457L15.7982 12.3873L13.8097 10.8889C13.8861 10.6515 13.9381 10.4188 13.9657 10.1908C13.9933 9.96285 14.0071 9.73251 14.0071 9.49981C14.0071 9.26125 13.9933 9.03091 13.9657 8.80879C13.9381 8.58668 13.8861 8.35986 13.8097 8.12834L15.8158 6.61232L14.9132 5.05398L12.6092 6.0253C12.3025 5.69741 11.935 5.40772 11.5066 5.15624C11.0782 4.90473 10.6449 4.72669 10.2065 4.62209L9.91741 2.16648H8.09817L7.79498 4.61327C7.32723 4.72374 6.89534 4.89298 6.49929 5.12097C6.10325 5.34896 5.72542 5.64276 5.36581 6.00239L3.08824 5.05398L2.18567 6.61232L4.16532 8.08781C4.08893 8.30521 4.03546 8.53143 4.00491 8.76648C3.97435 9.00153 3.95907 9.24892 3.95907 9.50864C3.95907 9.7472 3.97435 9.98107 4.00491 10.2102C4.03546 10.4394 4.08599 10.6656 4.1565 10.8889L2.18567 12.3873L3.08824 13.9457L5.35699 12.9831C5.70485 13.3404 6.0768 13.6331 6.47285 13.861C6.86889 14.089 7.30666 14.2641 7.78616 14.3864L8.08407 16.8332Z"
+                                    fill="#003765" />
+                            </svg>
+                        </div>
+                        <div class="text-[14px] font-bold ml-[8px] flex justify-center items-center">ตั้งค่าผังห้อง</div>
+                    </div>
+                </div>
+                <div class="flex">
+                    <div class="h-[36px] w-[132px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]"
+                        @click="create = true">
+                        <div class="flex justify-center items-center">
+                            <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M6.99968 12.6875C6.8048 12.6875 6.64155 12.6216 6.50993 12.4898C6.37831 12.3581 6.3125 12.1948 6.3125 12V7.18746H1.49998C1.30519 7.18746 1.14191 7.12155 1.01016 6.98973C0.878385 6.8579 0.8125 6.69455 0.8125 6.49968C0.8125 6.3048 0.878385 6.14155 1.01016 6.00993C1.14191 5.87831 1.30519 5.8125 1.49998 5.8125H6.3125V0.999977C6.3125 0.805185 6.37841 0.641904 6.51023 0.510133C6.64206 0.378378 6.80541 0.3125 7.00028 0.3125C7.19516 0.3125 7.35841 0.378378 7.49003 0.510133C7.62165 0.641904 7.68745 0.805185 7.68745 0.999977V5.8125H12.5C12.6948 5.8125 12.8581 5.87841 12.9898 6.01023C13.1216 6.14206 13.1875 6.30541 13.1875 6.50028C13.1875 6.69516 13.1216 6.85841 12.9898 6.99003C12.8581 7.12164 12.6948 7.18746 12.5 7.18746H7.68745V12C7.68745 12.1948 7.62155 12.3581 7.48973 12.4898C7.3579 12.6216 7.19455 12.6875 6.99968 12.6875Z"
+                                    fill="white" />
+                            </svg>
+                        </div>
+                        <div @click="create = true"
+                            class="text-white font-bold ml-[8px]   flex justify-center items-center">เพิ่มการจอง</div>
+                    </div>
+                    <div class="flex justify-start items-center   mt-[5px] ml-[14px]">
+                        <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาตามหมายเลขห้อง"
+                            type="input" />
+                    </div>
+                    <vs-tooltip bottom shadow not-hover v-model="popup_filter">
+                        <div @click="popup_filter = true"
+                            class="h-[36px] w-[132px]  flex  justify-center rounded-[12px] mt-[12px] ml-[14px] cursor-pointer">
+                            <div class="flex justify-center items-center">
+                                <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <mask id="mask0_3262_4178" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
+                                        y="0" width="22" height="23">
+                                        <rect y="0.5" width="22" height="22" fill="#D9D9D9" />
+                                    </mask>
+                                    <g mask="url(#mask0_3262_4178)">
+                                        <path
+                                            d="M10.0846 16.7707C9.88982 16.7707 9.72655 16.7048 9.59479 16.573C9.46302 16.4411 9.39714 16.2778 9.39714 16.0829C9.39714 15.888 9.46302 15.7248 9.59479 15.5932C9.72655 15.4615 9.88982 15.3957 10.0846 15.3957H11.9179C12.1127 15.3957 12.276 15.4616 12.4078 15.5935C12.5395 15.7253 12.6054 15.8886 12.6054 16.0835C12.6054 16.2784 12.5395 16.4416 12.4078 16.5733C12.276 16.7049 12.1127 16.7707 11.9179 16.7707H10.0846ZM3.66795 7.25144C3.47315 7.25144 3.30988 7.18553 3.17813 7.05369C3.04635 6.92186 2.98047 6.75851 2.98047 6.56364C2.98047 6.36876 3.04635 6.20551 3.17813 6.07389C3.30988 5.94227 3.47315 5.87646 3.66795 5.87646H18.3346C18.5294 5.87646 18.6927 5.94238 18.8245 6.07421C18.9562 6.20603 19.0221 6.36938 19.0221 6.56426C19.0221 6.75913 18.9562 6.92237 18.8245 7.05399C18.6927 7.18563 18.5294 7.25144 18.3346 7.25144H3.66795ZM6.41795 12.0111C6.22315 12.0111 6.05988 11.9451 5.92813 11.8133C5.79635 11.6815 5.73047 11.5181 5.73047 11.3233C5.73047 11.1284 5.79635 10.9651 5.92813 10.8335C6.05988 10.7019 6.22315 10.6361 6.41795 10.6361H15.5846C15.7794 10.6361 15.9427 10.702 16.0745 10.8338C16.2062 10.9657 16.2721 11.129 16.2721 11.3239C16.2721 11.5188 16.2062 11.682 16.0745 11.8136C15.9427 11.9452 15.7794 12.0111 15.5846 12.0111H6.41795Z"
+                                            fill="#003765" />
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class=" font-bold ml-[8px] flex justify-center items-center">ฟิลเตอร์</div>
+                        </div>
+                        <template #tooltip>
+                            <div class="w-[100%]">
+                                <div class="center">
+                                    <vs-checkbox v-model="option">
+                                        <div class="text-custom">ห้องค้างชำระ</div>
+                                    </vs-checkbox>
+                                </div>
+                                <div class="center">
+                                    <vs-checkbox v-model="option">
+                                        <div class="text-custom">ห้องชำระเงินแล้ว</div>
+                                    </vs-checkbox>
+                                </div>
+                                <div class="center">
+                                    <vs-checkbox v-model="option">
+                                        <div class="text-custom">ห้องว่าง</div>
+                                    </vs-checkbox>
+                                </div>
+                                <div class="center">
+                                    <vs-checkbox v-model="option">
+                                        <div class="text-custom">ห้องติดจอง</div>
+                                    </vs-checkbox>
+                                </div>
+                                <div class="center">
+                                    <vs-checkbox v-model="option">
+                                        <div class="text-custom">ห้องไกล้หมดสัญญา</div>
+                                    </vs-checkbox>
+                                </div>
+                                <div class="center">
+                                    <vs-checkbox v-model="option">
+                                        <div class="text-custom">ห้องแจ้งย้ายออก</div>
+                                    </vs-checkbox>
+                                </div>
+                            </div>
+                        </template>
+                    </vs-tooltip>
+                </div>
+            </div>
+            <div class="flex items-center mb-[8px] mt-[14px]">
+                <div class="mr-[14px]">
+                    <vs-select placeholder="เลือกอาคาร">
+                        <vs-option label="อาคาร A" value="1">
+                            อาคาร A
+                        </vs-option>
+                        <vs-option label="อาคาร B" value="2">
+                            อาคาร B
+                        </vs-option>
+                    </vs-select>
+                </div>
+                <div class="mr-[14px] font-bold cursor-pointer">อาคาร A ชั้น 1</div>
+                <div class="text-[#8396A6] cursor-pointer">อาคาร A ชั้น 2</div>
+            </div>
+        </div>
+
+        <!-- //////////////////////////// card /////////////////////// -->
+        <div class="mt-[24px]">
+            <div class="text-[24px] font-bold">อาคาร A ชั้น 1</div>
+            <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px] ">
+                <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer" @click="routeTo('/room-detail')">
+                    <div class="flex">
+                        <div class="w-[136px] h-[100%] rounded-[22px] bg-[#8396A6]"></div>
+                        <div class="ml-[14px]">
+                            <div class="text-[18px] font-bold text-[#141629]">ห้อง 101</div>
+                            <div class="text-[14px] mt-[12px] font-bold text-[#003765]">ชัชพล บุญพันธุ์</div>
+                        </div>
+                    </div>
+                    <div
+                        class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">
+                        มีผู้เข้าพัก</div>
+                </div>
+                <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px]">
+                    <div class="flex">
+                        <div class="w-[136px] h-[100%] rounded-[22px] bg-[#8396A6]"></div>
+                        <div class="ml-[14px]">
+                            <div class="text-[18px] font-bold text-[#141629]">ห้อง 102</div>
+                            <div class="text-[14px] mt-[12px] font-bold text-[#003765]">ชัชพล บุญพันธุ์</div>
+                        </div>
+                    </div>
+                    <div
+                        class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">
+                        มีผู้เข้าพัก</div>
+                </div>
+                <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px]">
+                    <div class="flex">
+                        <div class="w-[136px] h-[100%] rounded-[22px] bg-[#8396A6]"></div>
+                        <div class="ml-[14px]">
+                            <div class="text-[18px] font-bold text-[#141629]">ห้อง 103</div>
+                            <div class="text-[14px] mt-[12px] font-bold text-[#003765]">ชัชพล บุญพันธุ์</div>
+                        </div>
+                    </div>
+                    <div
+                        class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">
+                        มีผู้เข้าพัก</div>
+                </div>
+                <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px]">
+                    <div class="flex">
+                        <div class="w-[136px] h-[100%] rounded-[22px] bg-[#8396A6]"></div>
+                        <div class="ml-[14px]">
+                            <div class="text-[18px] font-bold text-[#141629]">ห้อง 104</div>
+                            <div class="text-[14px] mt-[12px] font-bold text-[#003765]">ชัชพล บุญพันธุ์</div>
+                        </div>
+                    </div>
+                    <div
+                        class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">
+                        มีผู้เข้าพัก</div>
+                </div>
+            </div>
+        </div>
+        <b-modal centered v-model="create" size="xl" hide-backdrop hide-header-close hide-header hide-footer
+            class="p-[-20px] text-custom">
+            <div>
+                <div class="flex justify-between pl-[20px] pr-[20px]">
+                    <div class="text-custom flex justify-center items-center text-[18px] font-bold">เพิ่มการจอง</div>
+                    <div @click="create = false" class="cursor-pointer">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
+                                width="24" height="24">
+                                <rect width="24" height="24" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_417_4814)">
+                                <path
+                                    d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                                    fill="#5C6B79" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <!-- <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
+                <div class="pl-[20px] pr-[20px] mt-[24px]">
+                    <div class="font-bold text-custom">การจองห้อง</div>
+                    <div class=" mt-[24px]">
+                        <div class="w-[100%] flex">
+                            <div class="w-[30%] text-custom flex items-start">ข้อมูลผู้จอง</div>
+                            <dvi class=" w-[70%] ">
+                                <div class="grid grid-cols-1  text-custom  ">
+                                    <div>
+                                        <vs-select placeholder="เลือกผู้ใช้จากระบบ">
+                                            <vs-option label="อาคาร A" value="1">
+                                                อาคาร A
+                                            </vs-option>
+                                            <vs-option label="อาคาร B" value="2">
+                                                อาคาร B
+                                            </vs-option>
+                                        </vs-select>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-8  text-custom mt-[14px]  ">
+                                    <div>
+                                        <div>คำนำหน้า</div>
+                                        <vs-select placeholder="ชื่อ" id="mr" class="mt-[6px]">
+                                            <vs-option label="อาคาร A" value="1">
+                                                อาคาร A
+                                            </vs-option>
+                                            <vs-option label="อาคาร B" value="2">
+                                                อาคาร B
+                                            </vs-option>
+                                        </vs-select>
+                                    </div>
+                                    <div class="col-span-3 ml-[8px]">
+                                        <div>ชื่อ</div>
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    </div>
+                                    <div class="col-span-3  ml-[8px]">
+                                        <div>สกุล</div>
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    </div>
+                                    <div class="ml-[8px]">
+                                        <div>ชื่อเล่น</div>
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    </div>
+                                </div>
+                            </dvi>
+                        </div>
+                        <div class="w-[100%] flex mt-[14px]">
+                            <div class="w-[30%] text-custom flex items-start"></div>
+                            <div class="grid grid-cols-8  text-custom w-[70%] ">
+                                <div class="col-span-4">
+                                    <div>เบอร์โทรศัพท์ <span class="text-[#5C6B79]">(ไม่ต้องใส่ขีด ตัวอย่าง.
+                                            0815578945)</span></div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                </div>
+                                <div class="col-span-4  ml-[8px]">
+                                    <div>เลือกห้อง</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-[100%] flex mt-[14px]">
+                            <div class="w-[30%] text-custom flex items-start"></div>
+                            <div class="grid grid-cols-6  text-custom w-[70%] ">
+                                <div class="col-span-2">
+                                    <div>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
+                                    <vs-select placeholder="ชื่อ" class="mt-[6px]">
+                                        <vs-option label="อาคาร A" value="1">
+                                            อาคาร A
+                                        </vs-option>
+                                        <vs-option label="อาคาร B" value="2">
+                                            อาคาร B
+                                        </vs-option>
+                                    </vs-select>
+                                </div>
+                                <div class="col-span-2  ml-[8px]">
+                                    <div class="text-[white]">.</div>
+                                    <vs-select placeholder="ชื่อ" class="mt-[6px]">
+                                        <vs-option label="อาคาร A" value="1">
+                                            อาคาร A
+                                        </vs-option>
+                                        <vs-option label="อาคาร B" value="2">
+                                            อาคาร B
+                                        </vs-option>
+                                    </vs-select>
+                                </div>
+                                <div class="col-span-2 ml-[8px]">
+                                    <div class="text-[white]">.</div>
+                                    <vs-select placeholder="ชื่อ" class="mt-[6px]">
+                                        <vs-option label="อาคาร A" value="1">
+                                            อาคาร A
+                                        </vs-option>
+                                        <vs-option label="อาคาร B" value="2">
+                                            อาคาร B
+                                        </vs-option>
+                                    </vs-select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-[100%] flex mt-[14px]">
+                            <div class="w-[30%] text-custom flex items-start">รายละเอียดการจอง</div>
+                            <div class="grid grid-cols-8  text-custom w-[70%] ">
+                                <div class="col-span-4">
+                                    <div>วันที่เข้าพัก</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                </div>
+                                <div class="col-span-4  ml-[8px]">
+                                    <div>เลือกห้อง</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-[100%] flex mt-[14px]">
+                            <div class="w-[30%] text-custom flex items-start">รายละเอียดการชำระเงิน</div>
+                            <div class="grid grid-cols-8  text-custom w-[70%] ">
+                                <div class="col-span-4">
+                                    <div>ค่ามัดจำ (บาท)</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                </div>
+                                <!-- <div class="col-span-4  ml-[8px]">
+                                    <div>เลือกห้อง</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-end mt-[30px]">
+                    <div>
+                        <vs-button dark shadow @click="create = false">
+                            <div class="text-custom">ยกเลิก</div>
+                        </vs-button>
+                    </div>
+                    <div>
+                        <vs-button @click="create = false" color="#003765">
+                            <div class="text-custom">บันทึก</div>
+                        </vs-button>
+                    </div>
+                </div>
+            </div>
+        </b-modal>
+    </div>
+</template>
+<script>
+export default {
+    data() {
+        return {
+            create: false,
+            popup_filter: false
+        }
+
+    },
+    created() {
+        const loading = this.$vs.loading({
+            opacity: 1,
+        })
+        setTimeout(() => {
+            loading.close()
+        }, 1000)
+    },
+    methods:{
+        routeTo(path) {
+            this.$router.push({
+                path: path,
+            })
+        },
+    }
+
+
+}
+</script>
+<style>
+.text-custom {
+    font-family: 'Prompt';
+}
+
+#mr {
+    width: 90px;
+}
+
+/* .vs-select__input{
+    height: 36px !important;
+    width: 350px !important;
+} */
+</style>

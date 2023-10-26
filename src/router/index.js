@@ -8,6 +8,7 @@ import Rooms from '@/views/rooms/Rooms'
 import RoomDetail from '@/views/rooms/RoomDetail'
 import Main from '@/views/meter/Main'
 import Announcement from '@/views/announcement/Announcement'
+import RentalContract from '@/views/rental-contract/RentalContract.vue'
 
 Vue.use(VueRouter)
 
@@ -53,6 +54,12 @@ const routes = [
     name: 'announcement',
     component:Announcement
   },
+  {
+    path: '/rental-contract',
+    name: 'rental-contract',
+    component:RentalContract
+  },
+  
   
   
  
