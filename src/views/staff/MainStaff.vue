@@ -101,17 +101,21 @@
         <div v-if="tab == 2">
             <Employee />
         </div>
+        <div v-if="tab == 3">
+            <History />
+        </div>
     </div>
 </template>
 <script>
 import NotificationList from './components/NotificationList.vue'
 import Employee from './components/Employee.vue'
+import History from '@/views/staff/History'
 export default {
-    components: { NotificationList, Employee },
+    components: { NotificationList, Employee, History },
     data() {
         return {
             popup_filter: false,
-            tab: 2
+            tab: 3
         }
     },
     created() {

@@ -23,8 +23,19 @@
                                 <div class="font-bold text-[18px] ">ห้อง 201 แจ้งซ่อม <span
                                         class="text-[10px] font-normal text-[#8396A6]">10/10/2023</span></div>
                                 <div
-                                    class="bg-[#FFF2BC] text-[#D48C00] pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[12px]">
-                                    กำลังดำเนินการ</div>
+                                    class="bg-[#CFFBDA] text-[#0B9A3C] pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[12px]">
+                                    เสร็จสิ้น</div>
+                            </div>
+                            <div class="flex justify-between mt-[4px]">
+                                <div class="flex flex-col">
+                                    <div>
+                                        <div class="text-[12px] text-[#8396A6]">วันเ/วลา</div>
+                                    </div>
+                                    <div>วัน เสาร์, 30/06/2023, เวลา 13.00 น.</div>
+                                </div>
+                                <!-- <div class="flex flex-col justify-between items-center">
+                                    <div class="text-[12px] text-[#8396A6]">7 วันที่แล้ว</div>
+                                </div> -->
                             </div>
                             <div class="flex justify-between mt-[4px]">
                                 <div class="flex flex-col">
@@ -33,35 +44,41 @@
                                     </div>
                                     <div>ก็อกน้ำมีปัญหา น้ำไม่ไหล</div>
                                 </div>
-                                <div class="flex flex-col justify-between items-center">
-                                    <div class="text-[12px] text-[#8396A6]">ไม่กี่วินาทีที่แล้ว</div>
-                                </div>
+                                <!-- <div class="flex flex-col justify-between items-center">
+                                    <div class="text-[12px] text-[#8396A6]">7 วันที่แล้ว</div>
+                                </div> -->
                             </div>
                             <div class="grid grid-cols-2 w-[100%] gap-2">
                                 <div>
                                     <div class="text-[12px] text-[#8396A6] mt-[8px]">กำหนดพนักงานดูแล</div>
                                     <div>
                                         <div class="mt-[5px]">
-                                            <vs-select color="#003765">
-                                                <vs-option>
-                                                    555
-                                                </vs-option>
-                                            </vs-select>
+                                            <div>ชัชพล บุญพันธุ์</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="text-[12px] text-[#8396A6] mt-[8px]">วันเวลา</div>
-                                    <div class="w-[100%]">
-                                        <div class="mt-[5px] w-[100%]  con-selects">
-                                            <vs-input type="date" v-model="value7" />
+                                    <div class="text-[12px] text-[#8396A6] mt-[8px]">รูปภาพ</div>
+                                    <div class="w-[100%] flex mt-[5px]">
+                                        <div class="flex items-center">
+                                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <mask id="mask0_2580_22981" style="mask-type:alpha"
+                                                    maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                                    <rect width="24" height="24" fill="#D9D9D9" />
+                                                </mask>
+                                                <g mask="url(#mask0_2580_22981)">
+                                                    <path
+                                                        d="M5.3077 20.5C4.80257 20.5 4.375 20.325 4.025 19.975C3.675 19.625 3.5 19.1974 3.5 18.6923V5.3077C3.5 4.80257 3.675 4.375 4.025 4.025C4.375 3.675 4.80257 3.5 5.3077 3.5H18.6923C19.1974 3.5 19.625 3.675 19.975 4.025C20.325 4.375 20.5 4.80257 20.5 5.3077V18.6923C20.5 19.1974 20.325 19.625 19.975 19.975C19.625 20.325 19.1974 20.5 18.6923 20.5H5.3077ZM5.99997 12.9308L9.3673 9.56345C9.54807 9.38268 9.75896 9.2923 9.99998 9.2923C10.241 9.2923 10.4519 9.38268 10.6327 9.56345L14 12.9308L17.3673 9.56345C17.5481 9.38268 17.759 9.2923 18 9.2923C18.241 9.2923 18.4519 9.38268 18.6327 9.56345L19 9.93078V5.3077C19 5.21795 18.9711 5.14423 18.9134 5.08653C18.8557 5.02883 18.782 4.99998 18.6923 4.99998H5.3077C5.21795 4.99998 5.14423 5.02883 5.08653 5.08653C5.02883 5.14423 4.99997 5.21795 4.99997 5.3077V11.9308L5.99997 12.9308ZM5.3077 19H18.6923C18.782 19 18.8557 18.9711 18.9134 18.9134C18.9711 18.8557 19 18.782 19 18.6923V12.0538L18 11.0538L14.6327 14.4211C14.4519 14.6019 14.241 14.6923 14 14.6923C13.759 14.6923 13.5481 14.6019 13.3673 14.4211L9.99998 11.0538L6.63265 14.4211C6.45188 14.6019 6.24099 14.6923 5.99997 14.6923C5.75896 14.6923 5.54807 14.6019 5.3673 14.4211L4.99997 14.0538V18.6923C4.99997 18.782 5.02883 18.8557 5.08653 18.9134C5.14423 18.9711 5.21795 19 5.3077 19ZM4.99997 19V12.0538V13.5538V4.99998V19Z"
+                                                        fill="#165D98" />
+                                                </g>
+                                            </svg>
+                                        </div>
+                                        <div class=" w-[100%] ml-[4px] flex items-center con-selects">
+                                            IMG_30/06/2023 
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div
-                                class="bg-[#003765] w-[100%] h-[36px] rounded-[12px] mt-[14px]  text-[white] flex items-center justify-center">
-                                จบงาน
                             </div>
                         </div>
                     </div>
@@ -78,48 +95,65 @@
                         </div>
                         <div class=" w-[100%] pt-[8px] p-[12px]">
                             <div class="flex justify-between items-center">
-                                <div class="font-bold text-[18px] ">ห้อง 107 แจ้งทำความสะอาด<span
+                                <div class="font-bold text-[18px] ">ห้อง 201 แจ้งซ่อม <span
                                         class="text-[10px] font-normal text-[#8396A6]">10/10/2023</span></div>
                                 <div
-                                    class="bg-[#FFF2BC] text-[#D48C00] pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[12px]">
-                                    กำลังดำเนินการ</div>
+                                    class="bg-[#CFFBDA] text-[#0B9A3C] pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[12px]">
+                                    เสร็จสิ้น</div>
+                            </div>
+                            <div class="flex justify-between mt-[4px]">
+                                <div class="flex flex-col">
+                                    <div>
+                                        <div class="text-[12px] text-[#8396A6]">วันเ/วลา</div>
+                                    </div>
+                                    <div>วัน เสาร์, 30/06/2023, เวลา 13.00 น.</div>
+                                </div>
+                                <!-- <div class="flex flex-col justify-between items-center">
+                                    <div class="text-[12px] text-[#8396A6]">7 วันที่แล้ว</div>
+                                </div> -->
                             </div>
                             <div class="flex justify-between mt-[4px]">
                                 <div class="flex flex-col">
                                     <div>
                                         <div class="text-[12px] text-[#8396A6]">รายละเอียด</div>
                                     </div>
-                                    <div>แจ้งทำความสะอาด</div>
+                                    <div>ก็อกน้ำมีปัญหา น้ำไม่ไหล</div>
                                 </div>
-                                <div class="flex flex-col justify-between items-center">
-                                    <div class="text-[12px] text-[#8396A6]">ไม่กี่วินาทีที่แล้ว</div>
-                                </div>
+                                <!-- <div class="flex flex-col justify-between items-center">
+                                    <div class="text-[12px] text-[#8396A6]">7 วันที่แล้ว</div>
+                                </div> -->
                             </div>
                             <div class="grid grid-cols-2 w-[100%] gap-2">
                                 <div>
                                     <div class="text-[12px] text-[#8396A6] mt-[8px]">กำหนดพนักงานดูแล</div>
                                     <div>
                                         <div class="mt-[5px]">
-                                            <vs-select color="#003765">
-                                                <vs-option>
-                                                    555
-                                                </vs-option>
-                                            </vs-select>
+                                            <div>ชัชพล บุญพันธุ์</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="text-[12px] text-[#8396A6] mt-[8px]">วันเวลา</div>
-                                    <div class="w-[100%]">
-                                        <div class="mt-[5px] w-[100%]  con-selects">
-                                            <vs-input type="date" v-model="value7" />
+                                    <div class="text-[12px] text-[#8396A6] mt-[8px]">รูปภาพ</div>
+                                    <div class="w-[100%] flex mt-[5px]">
+                                        <div class="flex items-center">
+                                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <mask id="mask0_2580_22981" style="mask-type:alpha"
+                                                    maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                                    <rect width="24" height="24" fill="#D9D9D9" />
+                                                </mask>
+                                                <g mask="url(#mask0_2580_22981)">
+                                                    <path
+                                                        d="M5.3077 20.5C4.80257 20.5 4.375 20.325 4.025 19.975C3.675 19.625 3.5 19.1974 3.5 18.6923V5.3077C3.5 4.80257 3.675 4.375 4.025 4.025C4.375 3.675 4.80257 3.5 5.3077 3.5H18.6923C19.1974 3.5 19.625 3.675 19.975 4.025C20.325 4.375 20.5 4.80257 20.5 5.3077V18.6923C20.5 19.1974 20.325 19.625 19.975 19.975C19.625 20.325 19.1974 20.5 18.6923 20.5H5.3077ZM5.99997 12.9308L9.3673 9.56345C9.54807 9.38268 9.75896 9.2923 9.99998 9.2923C10.241 9.2923 10.4519 9.38268 10.6327 9.56345L14 12.9308L17.3673 9.56345C17.5481 9.38268 17.759 9.2923 18 9.2923C18.241 9.2923 18.4519 9.38268 18.6327 9.56345L19 9.93078V5.3077C19 5.21795 18.9711 5.14423 18.9134 5.08653C18.8557 5.02883 18.782 4.99998 18.6923 4.99998H5.3077C5.21795 4.99998 5.14423 5.02883 5.08653 5.08653C5.02883 5.14423 4.99997 5.21795 4.99997 5.3077V11.9308L5.99997 12.9308ZM5.3077 19H18.6923C18.782 19 18.8557 18.9711 18.9134 18.9134C18.9711 18.8557 19 18.782 19 18.6923V12.0538L18 11.0538L14.6327 14.4211C14.4519 14.6019 14.241 14.6923 14 14.6923C13.759 14.6923 13.5481 14.6019 13.3673 14.4211L9.99998 11.0538L6.63265 14.4211C6.45188 14.6019 6.24099 14.6923 5.99997 14.6923C5.75896 14.6923 5.54807 14.6019 5.3673 14.4211L4.99997 14.0538V18.6923C4.99997 18.782 5.02883 18.8557 5.08653 18.9134C5.14423 18.9711 5.21795 19 5.3077 19ZM4.99997 19V12.0538V13.5538V4.99998V19Z"
+                                                        fill="#165D98" />
+                                                </g>
+                                            </svg>
+                                        </div>
+                                        <div class=" w-[100%] ml-[4px] flex items-center con-selects">
+                                            IMG_30/06/2023 
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div
-                                class="bg-[#003765] w-[100%] h-[36px] rounded-[12px] mt-[14px]  text-[white] flex items-center justify-center">
-                                จบงาน
                             </div>
                         </div>
                     </div>
@@ -144,8 +178,19 @@
                                 <div class="font-bold text-[18px] ">ห้อง 201 แจ้งซ่อม <span
                                         class="text-[10px] font-normal text-[#8396A6]">10/10/2023</span></div>
                                 <div
-                                    class="bg-[#FFF2BC] text-[#D48C00] pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[12px]">
-                                    กำลังดำเนินการ</div>
+                                    class="bg-[#FFE1E8] text-[#EA2F5C] pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[12px]">
+                                    ยกเลิก</div>
+                            </div>
+                            <div class="flex justify-between mt-[4px]">
+                                <div class="flex flex-col">
+                                    <div>
+                                        <div class="text-[12px] text-[#8396A6]">วันเ/วลา</div>
+                                    </div>
+                                    <div>วัน เสาร์, 30/06/2023, เวลา 13.00 น.</div>
+                                </div>
+                                <!-- <div class="flex flex-col justify-between items-center">
+                                    <div class="text-[12px] text-[#8396A6]">7 วันที่แล้ว</div>
+                                </div> -->
                             </div>
                             <div class="flex justify-between mt-[4px]">
                                 <div class="flex flex-col">
@@ -154,35 +199,41 @@
                                     </div>
                                     <div>ก็อกน้ำมีปัญหา น้ำไม่ไหล</div>
                                 </div>
-                                <div class="flex flex-col justify-between items-center">
-                                    <div class="text-[12px] text-[#8396A6]">4 วันที่แล้ว</div>
-                                </div>
+                                <!-- <div class="flex flex-col justify-between items-center">
+                                    <div class="text-[12px] text-[#8396A6]">7 วันที่แล้ว</div>
+                                </div> -->
                             </div>
                             <div class="grid grid-cols-2 w-[100%] gap-2">
                                 <div>
                                     <div class="text-[12px] text-[#8396A6] mt-[8px]">กำหนดพนักงานดูแล</div>
                                     <div>
                                         <div class="mt-[5px]">
-                                            <vs-select color="#003765">
-                                                <vs-option>
-                                                    555
-                                                </vs-option>
-                                            </vs-select>
+                                            <div>ชัชพล บุญพันธุ์</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="text-[12px] text-[#8396A6] mt-[8px]">วันเวลา</div>
-                                    <div class="w-[100%]">
-                                        <div class="mt-[5px] w-[100%]  con-selects">
-                                            <vs-input type="date" v-model="value7" />
+                                    <div class="text-[12px] text-[#8396A6] mt-[8px]">รูปภาพ</div>
+                                    <div class="w-[100%] flex mt-[5px]">
+                                        <div class="flex items-center">
+                                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <mask id="mask0_2580_22981" style="mask-type:alpha"
+                                                    maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                                    <rect width="24" height="24" fill="#D9D9D9" />
+                                                </mask>
+                                                <g mask="url(#mask0_2580_22981)">
+                                                    <path
+                                                        d="M5.3077 20.5C4.80257 20.5 4.375 20.325 4.025 19.975C3.675 19.625 3.5 19.1974 3.5 18.6923V5.3077C3.5 4.80257 3.675 4.375 4.025 4.025C4.375 3.675 4.80257 3.5 5.3077 3.5H18.6923C19.1974 3.5 19.625 3.675 19.975 4.025C20.325 4.375 20.5 4.80257 20.5 5.3077V18.6923C20.5 19.1974 20.325 19.625 19.975 19.975C19.625 20.325 19.1974 20.5 18.6923 20.5H5.3077ZM5.99997 12.9308L9.3673 9.56345C9.54807 9.38268 9.75896 9.2923 9.99998 9.2923C10.241 9.2923 10.4519 9.38268 10.6327 9.56345L14 12.9308L17.3673 9.56345C17.5481 9.38268 17.759 9.2923 18 9.2923C18.241 9.2923 18.4519 9.38268 18.6327 9.56345L19 9.93078V5.3077C19 5.21795 18.9711 5.14423 18.9134 5.08653C18.8557 5.02883 18.782 4.99998 18.6923 4.99998H5.3077C5.21795 4.99998 5.14423 5.02883 5.08653 5.08653C5.02883 5.14423 4.99997 5.21795 4.99997 5.3077V11.9308L5.99997 12.9308ZM5.3077 19H18.6923C18.782 19 18.8557 18.9711 18.9134 18.9134C18.9711 18.8557 19 18.782 19 18.6923V12.0538L18 11.0538L14.6327 14.4211C14.4519 14.6019 14.241 14.6923 14 14.6923C13.759 14.6923 13.5481 14.6019 13.3673 14.4211L9.99998 11.0538L6.63265 14.4211C6.45188 14.6019 6.24099 14.6923 5.99997 14.6923C5.75896 14.6923 5.54807 14.6019 5.3673 14.4211L4.99997 14.0538V18.6923C4.99997 18.782 5.02883 18.8557 5.08653 18.9134C5.14423 18.9711 5.21795 19 5.3077 19ZM4.99997 19V12.0538V13.5538V4.99998V19Z"
+                                                        fill="#165D98" />
+                                                </g>
+                                            </svg>
+                                        </div>
+                                        <div class=" w-[100%] ml-[4px] flex items-center con-selects">
+                                            IMG_30/06/2023 
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div
-                                class="bg-[#003765] w-[100%] h-[36px] rounded-[12px] mt-[14px]  text-[white] flex items-center justify-center">
-                                จบงาน
                             </div>
                         </div>
                     </div>
