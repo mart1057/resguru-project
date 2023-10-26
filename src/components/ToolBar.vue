@@ -85,7 +85,7 @@
                             fill="#F5D65E" />
                     </svg>
                 </template>
-                <vs-sidebar-item id="home">
+                <vs-sidebar-item id="home" to="/dashboard">
                     <template #icon>
                         <svg width="16" height="18" viewBox="0 0 16 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -95,7 +95,7 @@
                     </template>
                     <span class="text-[white]" @click="routerTo('/dashboard')">แดชบอร์ด</span>
                 </vs-sidebar-item>
-                <vs-sidebar-item id="market">
+                <vs-sidebar-item id="market" to="/rooms">
                     <template #icon>
                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg"  @click="routerTo('/rooms')">
                             <mask id="mask0_3262_11863" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -111,7 +111,7 @@
                     </template>
                     <span class="text-[white]"  @click="routerTo('/rooms')">ผังห้องพัก</span>
                 </vs-sidebar-item>
-                <vs-sidebar-item id="Musicooo">
+                <vs-sidebar-item id="Musicooo" to="/fee">
                     <template #icon>
                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_3262_11870" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -153,7 +153,7 @@
                     </template>
                     <span class="text-[white]">การจัดการสัญญาเช่า</span>
                 </vs-sidebar-item>
-                <vs-sidebar-item id="shopping">
+                <vs-sidebar-item id="shopping" to="/announcement">
                     <template #icon>
                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_3262_11891" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -249,10 +249,13 @@ export default {
     },
     methods: {
         routerTo(path) {
-            this.$router.push({
-                path: path,
-            })
-            this.sidebar = false
+            // this.$router.push({
+            //     path: path,
+            // })
+            setTimeout(() => {
+              this.sidebar = false  
+            }, 200);
+            
         }
 
     }
