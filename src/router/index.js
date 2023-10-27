@@ -10,6 +10,7 @@ import MainMeter from '@/views/meter/MainMeter'
 import Announcement from '@/views/announcement/Announcement'
 import RentalContract from '@/views/rental-contract/RentalContract.vue'
 import MainStaff from '@/views/staff/MainStaff'
+import Expenses from '@/views/expenses/Expenses'
 
 Vue.use(VueRouter)
 
@@ -64,6 +65,11 @@ const routes = [
     path: '/staff',
     name: 'staff',
     component:MainStaff
+  },
+  {
+    path: '/expenses',
+    name: 'expenses',
+    component:Expenses
   },
   
   

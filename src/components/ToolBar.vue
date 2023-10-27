@@ -304,7 +304,7 @@
                     </template>
                     <span class="text-[white]" @click="routerTo('/staff')">บริการและการจัดการพนักงาน</span>
                 </vs-sidebar-item>
-                <vs-sidebar-item id="chatx">
+                <vs-sidebar-item id="chatx" to="/expenses">
                     <template #icon>
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -312,7 +312,7 @@
                                 fill="#B9CCDC" />
                         </svg>
                     </template>
-                    <span class="text-[white]">รายรับ-รายจ่าย</span>
+                    <span class="text-[white]"  @click="routerTo('/expenses')">รายรับ-รายจ่าย</span>
                 </vs-sidebar-item>
 
                 <template #footer>
