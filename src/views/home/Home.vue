@@ -81,8 +81,8 @@
             <div class="flex flex-col justify-center items-center mt-[10px]">
                 <div class="grid grid-cols-2 gap-5 mt-[10px]">
                     <div class="w-[360px] border border-[#B9CCDC]  rounded-[16px] flex cursor-pointer"
-                        v-for="data in building" @click="routeToMain()">
-                        <div class="w-[30%]  h-[100%] rounded-[16px] flex flex-col items-center justify-center"
+                        v-for="data in building">
+                        <div class="w-[30%]  h-[100%] rounded-[16px] flex flex-col items-center justify-center"  @click="routeToMain()"
                             :style="{ background: data.attributes.colorCode }">
                             <img :src="'http://203.170.190.170:1337' + data.attributes.buildingLogo?.data?.attributes.url"
                                 class="w-[90px] h-[90px] rounded-[22px]" />
@@ -90,28 +90,30 @@
                                 :class="data.attributes.colorCode == '#ffffff' ? '' : 'text-[white]'">Professional</div>
                         </div>
                         <div class="w-[70%] p-[8px] flex flex-col">
-                            <div class="flex justify-between">
-                                <div class="text-[14px] font-bold">{{ data.attributes.buildingName }}</div>
-                                <div class="flex justify-center items-center cursor-pointer"><svg width="4" height="12"
-                                        viewBox="0 0 4 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <ellipse cx="2.0013" cy="2.16667" rx="1.66667" ry="1.66667"
-                                            transform="rotate(90 2.0013 2.16667)" fill="#5C6B79" />
-                                        <circle cx="2.0013" cy="7.99967" r="1.66667" transform="rotate(90 2.0013 7.99967)"
-                                            fill="#5C6B79" />
-                                        <ellipse cx="2.0013" cy="13.8337" rx="1.66667" ry="1.66667"
-                                            transform="rotate(90 2.0013 13.8337)" fill="#5C6B79" />
-                                    </svg>
+                            <div  @click="routeToMain()">
+                                <div class="flex justify-between">
+                                    <div class="text-[14px] font-bold">{{ data.attributes.buildingName }}</div>
+                                    <div class="flex justify-center items-center cursor-pointer"><svg width="4" height="12"
+                                            viewBox="0 0 4 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <ellipse cx="2.0013" cy="2.16667" rx="1.66667" ry="1.66667"
+                                                transform="rotate(90 2.0013 2.16667)" fill="#5C6B79" />
+                                            <circle cx="2.0013" cy="7.99967" r="1.66667"
+                                                transform="rotate(90 2.0013 7.99967)" fill="#5C6B79" />
+                                            <ellipse cx="2.0013" cy="13.8337" rx="1.66667" ry="1.66667"
+                                                transform="rotate(90 2.0013 13.8337)" fill="#5C6B79" />
+                                        </svg>
+                                    </div>
                                 </div>
-                            </div>
-                            <div
-                                class="w-[100%] rounded-[16px] border border-[#B9CCDC] flex justify-between pl-[8px] pr-[8px] mt-[8px]">
-                                <div class="text-[12px]">สร้างเมื่อวันที่</div>
-                                <div class="text-[12px]">{{ covertDate(data.attributes.createdAt) }}</div>
-                            </div>
-                            <div
-                                class="w-[100%] rounded-[16px] border border-[#B9CCDC]  flex justify-between pl-[8px] pr-[8px] mt-[8px]">
-                                <div class="text-[12px]">จำนวน ชั้น/ห้อง</div>
-                                <div class="text-[12px]">2/12</div>
+                                <div
+                                    class="w-[100%] rounded-[16px] border border-[#B9CCDC] flex justify-between pl-[8px] pr-[8px] mt-[8px]">
+                                    <div class="text-[12px]">สร้างเมื่อวันที่</div>
+                                    <div class="text-[12px]">{{ covertDate(data.attributes.createdAt) }}</div>
+                                </div>
+                                <div
+                                    class="w-[100%] rounded-[16px] border border-[#B9CCDC]  flex justify-between pl-[8px] pr-[8px] mt-[8px]">
+                                    <div class="text-[12px]">จำนวน ชั้น/ห้อง</div>
+                                    <div class="text-[12px]">2/12</div>
+                                </div>
                             </div>
                             <div>
                                 <div class="color"> <button
@@ -257,9 +259,10 @@ export default {
 }
 </script>
 <style>
-#home{
+#home {
     background-color: white;
 }
+
 .color {
     position: relative;
     width: 100%;
@@ -275,4 +278,5 @@ export default {
     width: 100%;
     opacity: 0;
     cursor: pointer;
-}</style>
+}
+</style>
