@@ -246,7 +246,7 @@
                     </template>
                     <span class="text-[white] " @click="routerTo('/fee')">มิเตอร์</span>
                 </vs-sidebar-item>
-                <vs-sidebar-item id="donate">
+                <vs-sidebar-item id="donate" to="/payment">
                     <template #icon>
                         <svg width="20" height="16" viewBox="0 0 20 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -254,7 +254,7 @@
                                 fill="#B9CCDC" />
                         </svg>
                     </template>
-                    <span class="text-[white]">การจ่ายเงิน</span>
+                    <span class="text-[white]"   @click="routerTo('/payment')">การจ่ายเงิน</span>
                 </vs-sidebar-item>
                 <vs-sidebar-item id="drink" to="/rental-contract">
                     <template #icon>

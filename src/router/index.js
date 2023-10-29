@@ -11,6 +11,7 @@ import Announcement from '@/views/announcement/Announcement'
 import RentalContract from '@/views/rental-contract/RentalContract.vue'
 import MainStaff from '@/views/staff/MainStaff'
 import Expenses from '@/views/expenses/Expenses'
+import PayMent from '@/views/payment/PayMent'
 
 Vue.use(VueRouter)
 
@@ -70,6 +71,11 @@ const routes = [
     path: '/expenses',
     name: 'expenses',
     component:Expenses
+  },
+  {
+    path: '/payment',
+    name: 'payment',
+    component:PayMent
   },
   
   
