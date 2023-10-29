@@ -20,7 +20,8 @@
             <div class="flex w-[100%]">
                 <div class="w-[20%] ml-[18px] mt-[-70px]">
                     <div class="bg-[white] rounded-[22px] w-[246px] border p-[14px] flex flex-col items-center">
-                        <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border" src="https://img.freepik.com/premium-photo/businessman-sitting-with-laptop_107420-67951.jpg"/>
+                        <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
+                            src="https://img.freepik.com/premium-photo/businessman-sitting-with-laptop_107420-67951.jpg" />
                         <div class="text-[18px] font-bold mt-[8px]">วรันธร สยนานนท์</div>
                         <div v-if="tab == 2">
                             <div class="w-[100%] mt-[8px]">
@@ -45,43 +46,43 @@
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
-                                    <div>ชั้น/ห้อง</div>
-                                    <div>2/12</div>
+                                    <div class="text-[12px]">ชั้น/ห้อง</div>
+                                    <div class="text-[12px]">2/12</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
-                                    <div>ห้องว่าง</div>
-                                    <div>2</div>
+                                    <div class="text-[12px]">ห้องว่าง</div>
+                                    <div class="text-[12px]">2</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
-                                    <div>ห้องที่มีผู้เช่า</div>
-                                    <div>1</div>
+                                    <div class="text-[12px]">ห้องที่มีผู้เช่า</div>
+                                    <div class="text-[12px]">1</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
-                                    <div>ห้องที่ยังไม่พร้อมปล่อยเช่า</div>
-                                    <div>2</div>
+                                    <div class="text-[12px]">ห้องจอง</div>
+                                    <div class="text-[12px]">6</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
-                                    <div>จำนวนผู้พักอาศัยทั้งหมด</div>
-                                    <div>12</div>
+                                    <div class="text-[12px]">ยังไม่พร้อมปล่อยเช่า</div>
+                                    <div class="text-[12px]">2</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
-                                    <div>ชั้น/ห้อง</div>
-                                    <div>2/12</div>
+                                    <div class="text-[12px]">จำนวนผู้พักอาศัยทั้งหมด</div>
+                                    <div class="text-[12px]">12</div>
                                 </div>
                             </div>
                         </div>
