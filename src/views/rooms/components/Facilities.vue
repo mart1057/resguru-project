@@ -168,7 +168,12 @@
                                 <div class="text-custom text-[#5C6B79]">ค่าปรับ (กรณีเสียหาย)</div>
                             </div>
                             <div class="w-[80%]">
-                                <div class="text-custom font-bold ">1,000 บาท</div>
+                                <div class="flex">
+                                    <input class="h-[28px] w-[100px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    type="input" /> 
+                                    <span class="text-custom flex items-center ml-[8px]">บาท</span>
+                                </div>
+                               
                             </div>
                         </div>
                         <div class="flex w-[100%] mt-[14px]">
