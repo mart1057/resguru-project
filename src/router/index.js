@@ -13,6 +13,7 @@ import MainStaff from '@/views/staff/MainStaff'
 import Expenses from '@/views/expenses/Expenses'
 import Payment from '@/views/payment/Payment'
 import PaymentDetail from '@/views/payment/components/PaymentDetail'
+import  Setting from '@/views/setting/Setting'
 
 Vue.use(VueRouter)
 
@@ -82,6 +83,11 @@ const routes = [
     path: '/payment-detail',
     name: 'payment-detail',
     component:PaymentDetail
+  },
+  {
+    path: '/setting',
+    name: 'setting',
+    component:Setting
   },
   
   
