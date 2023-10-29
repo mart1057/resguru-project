@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="mt-[24px]">
-            <div class="text-[24px] font-bold">รายละประวัติการแจ้ง</div>
+            <div class="text-[24px] font-bold">รายละเอียดประวัติการแจ้ง</div>
             <div class="grid grid-cols-2 w-[100%] gap-2 mt-[14px] ">
                 <div class="h-[auto] bg-[#ffffff] rounded-[22px] w-[100%] p-[8px]">
                     <div class="flex  h-[100%]">
