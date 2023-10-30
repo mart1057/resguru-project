@@ -121,12 +121,12 @@
         <!-- //////////////////////////// card /////////////////////// -->
         <div class="mt-[24px]">
             <div class="text-[24px] font-bold">อาคาร A ชั้น 1</div>
-            <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px] ">
-                <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer" @click="routeTo('/room-detail')">
+            <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px] " >
+                <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer" @click="routeTo('/room-detail')"  v-for="data in room"  >
                     <div class="flex">
                         <div class="w-[136px] h-[100%] rounded-[22px] bg-[#8396A6]"></div>
                         <div class="ml-[14px]">
-                            <div class="text-[18px] font-bold text-[#141629]">ห้อง 101</div>
+                            <div class="text-[18px] font-bold text-[#141629]">ห้อง {{ data.attributes.RoomNumber }}</div>
                             <div class="text-[14px] mt-[12px] font-bold text-[#003765]">ชัชพล บุญพันธุ์</div>
                         </div>
                     </div>
@@ -134,42 +134,7 @@
                         class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">
                         มีผู้เข้าพัก</div>
                 </div>
-                <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px]">
-                    <div class="flex">
-                        <div class="w-[136px] h-[100%] rounded-[22px] bg-[#8396A6]"></div>
-                        <div class="ml-[14px]">
-                            <div class="text-[18px] font-bold text-[#141629]">ห้อง 102</div>
-                            <div class="text-[14px] mt-[12px] font-bold text-[#003765]">ชัชพล บุญพันธุ์</div>
-                        </div>
-                    </div>
-                    <div
-                        class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">
-                        มีผู้เข้าพัก</div>
-                </div>
-                <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px]">
-                    <div class="flex">
-                        <div class="w-[136px] h-[100%] rounded-[22px] bg-[#8396A6]"></div>
-                        <div class="ml-[14px]">
-                            <div class="text-[18px] font-bold text-[#141629]">ห้อง 103</div>
-                            <div class="text-[14px] mt-[12px] font-bold text-[#003765]">ชัชพล บุญพันธุ์</div>
-                        </div>
-                    </div>
-                    <div
-                        class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">
-                        มีผู้เข้าพัก</div>
-                </div>
-                <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px]">
-                    <div class="flex">
-                        <div class="w-[136px] h-[100%] rounded-[22px] bg-[#8396A6]"></div>
-                        <div class="ml-[14px]">
-                            <div class="text-[18px] font-bold text-[#141629]">ห้อง 104</div>
-                            <div class="text-[14px] mt-[12px] font-bold text-[#003765]">ชัชพล บุญพันธุ์</div>
-                        </div>
-                    </div>
-                    <div
-                        class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">
-                        มีผู้เข้าพัก</div>
-                </div>
+       
             </div>
         </div>
         <b-modal centered v-model="create" size="xl" hide-backdrop hide-header-close hide-header hide-footer
@@ -338,9 +303,14 @@ export default {
     data() {
         return {
             create: false,
-            popup_filter: false
+            popup_filter: false,
+            room: [],
         }
 
+    },
+    mounted() {
+        console.log("State.Building",this.$store.state.building)
+        this.getRoom()
     },
     created() {
         const loading = this.$vs.loading({
@@ -356,6 +326,17 @@ export default {
                 path: path,
             })
         },
+        getRoom() {
+            const loading = this.$vs.loading()
+            fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]='+this.$store.state.building+'&populate=deep')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getRoom()",resp.data);
+                    this.room = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        }
     }
 
 

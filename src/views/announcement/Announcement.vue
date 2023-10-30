@@ -72,15 +72,18 @@
                     <vs-table v-model="selected">
                         <template #thead>
                             <vs-tr>
-                                <vs-th>
+                                <!-- <vs-th>
                                     <vs-checkbox :indeterminate="selected.length == users.length" v-model="allCheck"
                                         @change="selected = $vs.checkAll(selected, users)" />
-                                </vs-th>
+                                </vs-th> -->
                                 <vs-th>
                                     วันที่ประกาศ
                                 </vs-th>
                                 <vs-th>
                                     วันที่สิ้นสุด
+                                </vs-th>
+                                <vs-th>
+                                    หัวข้อ
                                 </vs-th>
                                 <vs-th>
                                     เรื่องที่ประกาศ
@@ -91,28 +94,31 @@
                             </vs-tr>
                         </template>
                         <template #tbody>
-                            <vs-tr :key="i" v-for="(tr, i) in users" :data="tr">
-                                <vs-td checkbox>
+                            <vs-tr :key="i" v-for="(tr, i) in announcement" :data="tr">
+                                <!-- <vs-td checkbox>
                                     <vs-checkbox :val="tr" v-model="selected" />
+                                </vs-td> -->
+                                <vs-td>
+                                <div class="text-custom">{{ tr.attributes.createdAt }}</div>
                                 </vs-td>
                                 <vs-td>
-                                    <div @click="create_ann = true"> {{ tr.website }}</div>
+                                    <div class="text-custom"> {{ tr.attributes.date_execute }}</div>
                                 </vs-td>
                                 <vs-td>
-                                    <div @click="create_ann = true"> {{ tr.website }}</div>
+                                    <div class="text-custom">{{ tr.attributes.topic }}</div>
                                 </vs-td>
                                 <vs-td>
-                                    <div @click="create_ann = true">{{ tr.username }}</div>
+                                    <div class="text-custom">{{ tr.attributes.description }}</div>
                                 </vs-td>
                                 <vs-td>
-                                    <div class="flex" @click="create_ann = true">
+                                    <div class="text-custom flex">
                                         <div>
                                             <vs-avatar circle>
                                                 <img src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-picture-icon-png-people-person-profile--4.png"
                                                     alt="">
                                             </vs-avatar>
                                         </div>
-                                        <div class="flex justify-center items-center ml-[8px]">{{ tr.name }}</div>
+                                        <div class="flex justify-center items-center ml-[8px]">{{ tr.attributes.users_created }}</div>
                                     </div>
                                 </vs-td>
                             </vs-tr>
@@ -144,15 +150,15 @@
                 <div class="pl-[20px] pr-[20px] mt-[24px]">
                     <div>
                         <div class="text-custom text-[14px] text-[#003765]">เรื่องที่ประกาศ</div>
-                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"  v-model="topic" />
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">รายละเอียดการแจ้ง</div>
-                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"  v-model="description" />
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">วันที่สิ้นสุด</div>
-                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"  v-model="date_execute" />
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">รูปภาพ</div>
@@ -173,7 +179,7 @@
                         </vs-button>
                     </div>
                     <div>
-                        <vs-button @click="create_ann = false" color="#003765">
+                        <vs-button @click="createAnnountment()" color="#003765">
                             <div class="text-custom">ประกาศ</div>
                         </vs-button>
                     </div>
@@ -215,20 +221,26 @@
                                         <div class="text-custom">เรื่องที่ประกาศ</div>
                                     </vs-th>
                                     <vs-th>
+                                        <div class="text-custom">รายละเอียด</div>
+                                    </vs-th>
+                                    <vs-th>
                                         <div class="text-custom">ผู้สร้างประกาศ</div>
                                     </vs-th>
                                 </vs-tr>
                             </template>
                             <template #tbody>
-                                <vs-tr :key="i" v-for="(tr, i) in users" :data="tr">
+                                <vs-tr :key="i" v-for="(tr, i) in announcement" :data="tr">
                                     <vs-td>
-                                        <div class="text-custom">{{ tr.website }}</div>
+                                        <div class="text-custom">{{ tr.attributes.createdAt }}</div>
                                     </vs-td>
                                     <vs-td>
-                                        <div class="text-custom"> {{ tr.website }}</div>
+                                        <div class="text-custom"> {{ tr.attributes.date_execute }}</div>
                                     </vs-td>
                                     <vs-td>
-                                        <div class="text-custom">{{ tr.username }}</div>
+                                        <div class="text-custom">{{ tr.attributes.topic }}</div>
+                                    </vs-td>
+                                    <vs-td>
+                                        <div class="text-custom">{{ tr.attributes.description }}</div>
                                     </vs-td>
                                     <vs-td>
                                         <div class="text-custom flex">
@@ -238,7 +250,7 @@
                                                         alt="">
                                                 </vs-avatar>
                                             </div>
-                                            <div class="flex justify-center items-center ml-[8px]">{{ tr.name }}</div>
+                                            <div class="flex justify-center items-center ml-[8px]">{{ tr.attributes.users_created }}</div>
                                         </div>
                                     </vs-td>
                                 </vs-tr>
@@ -251,13 +263,21 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
+import router from '@/router'
+
+
 export default {
     data() {
         return {
             tab: 1,
             popup_filter: false,
+            topic: "",
+            description: "",
+            date_execute: "",
             allCheck: false,
             selected: [],
+            announcement: [],
             create_ann: false,
             history_ann: false,
             users: [
@@ -342,6 +362,41 @@ export default {
         setTimeout(() => {
             loading.close()
         }, 1000)
+    },
+    mounted() {
+        this.getAnnouncement();
+    },
+    methods: {
+        getAnnouncement() {
+            const loading = this.$vs.loading()
+            fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getAnnouncement()",resp.data);
+                    this.announcement = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        createAnnountment(){
+
+            axios.post('http://203.170.190.170:1337/api' + '/announcements',{
+                data : {
+                    // date_execute: this.date_execute,
+                    topic: this.topic,
+                    description: this.description,
+                    users_created: this.$store.state.userInfo.user.id,
+                    building: this.$store.state.building
+                }
+            })
+                .then(
+                    router.push({
+                        path: '#',
+                    })
+                )
+    
+        }
     }
+
 }
 </script>
