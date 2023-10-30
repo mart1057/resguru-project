@@ -179,7 +179,7 @@
                         </vs-button>
                     </div>
                     <div>
-                        <vs-button @click="createAnnountment()" color="#003765">
+                        <vs-button @click="createAnnouncement()" color="#003765">
                             <div class="text-custom">ประกาศ</div>
                         </vs-button>
                     </div>
@@ -378,7 +378,7 @@ export default {
                     loading.close()
                 })
         },
-        createAnnountment(){
+        createAnnouncement(){
 
             axios.post('http://203.170.190.170:1337/api' + '/announcements',{
                 data : {
