@@ -144,15 +144,18 @@
                 <vs-table v-model="selected">
                     <template #thead>
                         <vs-tr>
+                            <!-- <vs-th>
+                                <vs-checkbox :indeterminate="selected.length == payments.length" v-model="allCheck"
+                                    @change="selected = $vs.checkAll(selected, payments)" />
+                            </vs-th> -->
                             <vs-th>
-                                <vs-checkbox :indeterminate="selected.length == users.length" v-model="allCheck"
-                                    @change="selected = $vs.checkAll(selected, users)" />
+                                ชื่อผู้เช่า
+                            </vs-th>
+                            <vs-th>
+                                วันที่สร้าง
                             </vs-th>
                             <vs-th>
                                 ห้อง
-                            </vs-th>
-                            <vs-th>
-                                ชื่อผู้เช่า
                             </vs-th>
                             <vs-th>
                                 ประเภทห้องเช่า
@@ -176,7 +179,10 @@
                                 ที่ต้องชำระ
                             </vs-th>
                             <vs-th>
-                                สถานะ
+                                หลักฐานการชำระเงิน
+                            </vs-th>
+                            <vs-th>
+                                สถานะการชำระเงิน
                             </vs-th>
                             <vs-th>
 
@@ -184,42 +190,48 @@
                         </vs-tr>
                     </template>
                     <template #tbody>
-                        <vs-tr :key="i" v-for="(tr, i) in users" :data="tr" :is-selected="!!selected.includes(tr)">
-                            <vs-td checkbox>
+                        <vs-tr :key="i" v-for="(tr, i) in payments" :data="tr" :is-selected="!!selected.includes(tr)">
+                            <!-- <vs-td checkbox>
                                 <vs-checkbox :val="tr" v-model="selected" />
+                            </vs-td> -->
+                            <vs-td>
+                                {{ tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName }} {{ tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.lastName }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.name }}
+                                {{ tr.attributes.createdAt }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.type }}
+                                {{ tr.attributes.user_sign_contract.data.attributes.room.data.attributes.RoomNumber }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.price }}
+                                {{ tr.attributes.user_sign_contract.data.attributes.room.data.attributes.room_type.data.attributes.roomTypeName }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.price2 }}
+                                {{ tr.attributes.roomPrice }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.price3 }}
+                                {{ tr.attributes.communalPrice }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.price4 }}
+                                {{ tr.attributes.otherPrice }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.price5 }}
+                                {{ tr.attributes.total }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.price6 }}
+                                
                             </vs-td>
                             <vs-td>
-                                300,000
+                                
+                            </vs-td>
+                            <vs-td>
+                                File: Uploadfile.jpg
                             </vs-td>
                             <vs-td>
                                 <div class="flex items-center justify-start">
                                     <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
-                                        :class="tr.status == 1 ? 'bg-[#CFFBDA] text-[#0B9A3C]' : tr.status == 'ยังไม่ชำระ' ? 'bg-[#FFE1E8] text-[#EA2F5C]' : ' bg-[#FFF2BC] text-[#D48C00] '">
-                                        {{ tr.status == 1 ? 'ชำระแล้ว' : tr.status == 'ยังไม่ชำระ' ? 'ยังไม่ชำระ' :
+                                        :class="tr.attributes.paymentStatus == 1 ? 'bg-[#CFFBDA] text-[#0B9A3C]' : tr.attributes.paymentStatus == 'ยังไม่ชำระ' ? 'bg-[#FFE1E8] text-[#EA2F5C]' : ' bg-[#FFF2BC] text-[#D48C00] '">
+                                        {{ tr.attributes.paymentStatus == 1 ? 'ชำระแล้ว' : tr.attributes.paymentStatus == 'ยังไม่ชำระ' ? 'ยังไม่ชำระ' :
                                             'ชำระบางส่วน' }} </div>
                                 </div>
                             </vs-td>
@@ -251,6 +263,7 @@ export default {
             popup_filter: false,
             allCheck: false,
             selected: [],
+            payments: [],
             users: [
                 {
                     "id": 1,
@@ -381,5 +394,23 @@ export default {
             loading.close()
         }, 1000)
     },
+    mounted() {
+        this.getTanantBill();
+    },
+    methods:{
+        getTanantBill() {
+            const loading = this.$vs.loading()
+            // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
+            fetch(`http://203.170.190.170:1337/api/tenant-bills?filters[building][id][$eq]=${this.$store.state.building}&populate=deep&sort[0]=id:desc`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getAnnouncement()",resp.data);
+                    this.payments = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        
+    }
 }
 </script>

@@ -73,8 +73,8 @@
                         <template #thead>
                             <vs-tr>
                                 <!-- <vs-th>
-                                    <vs-checkbox :indeterminate="selected.length == users.length" v-model="allCheck"
-                                        @change="selected = $vs.checkAll(selected, users)" />
+                                    <vs-checkbox :indeterminate="selected.length == announcement.length" v-model="allCheck"
+                                        @change="selected = $vs.checkAll(selected, announcement)" />
                                 </vs-th> -->
                                 <vs-th>
                                     วันที่ประกาศ
@@ -118,7 +118,7 @@
                                                     alt="">
                                             </vs-avatar>
                                         </div>
-                                        <div class="flex justify-center items-center ml-[8px]">{{ tr.attributes.users_created }}</div>
+                                        <div class="flex justify-center items-center ml-[8px]">{{ tr.attributes.users_created.data.attributes.firstName }}  {{ tr.attributes.users_created.data.attributes.lastName }}</div>
                                     </div>
                                 </vs-td>
                             </vs-tr>
@@ -158,7 +158,7 @@
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">วันที่สิ้นสุด</div>
-                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"  v-model="date_execute" />
+                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="date"  v-model="date_execute" />
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">รูปภาพ</div>
@@ -280,78 +280,6 @@ export default {
             announcement: [],
             create_ann: false,
             history_ann: false,
-            users: [
-                {
-                    "id": 1,
-                    "name": "Leanne Graham",
-                    "username": "Bret",
-                    "email": "Sincere@april.biz",
-                    "website": "29/05/23",
-                },
-                {
-                    "id": 2,
-                    "name": "Ervin Howell",
-                    "username": "Antonette",
-                    "email": "Shanna@melissa.tv",
-                    "website": "29/05/23",
-                },
-                {
-                    "id": 3,
-                    "name": "Clementine Bauch",
-                    "username": "Samantha",
-                    "email": "Nathan@yesenia.net",
-                    "website": "29/05/23",
-                },
-                {
-                    "id": 4,
-                    "name": "Patricia Lebsack",
-                    "username": "Karianne",
-                    "email": "Julianne.OConner@kory.org",
-                    "website": "29/05/23",
-                },
-                {
-                    "id": 5,
-                    "name": "Chelsey Dietrich",
-                    "username": "Kamren",
-                    "email": "Lucio_Hettinger@annie.ca",
-                    "website": "29/05/23",
-                },
-                {
-                    "id": 6,
-                    "name": "Mrs. Dennis Schulist",
-                    "username": "Leopoldo_Corkery",
-                    "email": "Karley_Dach@jasper.info",
-                    "website": "29/05/23",
-                },
-                {
-                    "id": 7,
-                    "name": "Kurtis Weissnat",
-                    "username": "Elwyn.Skiles",
-                    "email": "Telly.Hoeger@billy.biz",
-                    "website": "29/05/23",
-                },
-                {
-                    "id": 8,
-                    "name": "Nicholas Runolfsdottir V",
-                    "username": "Maxime_Nienow",
-                    "email": "Sherwood@rosamond.me",
-                    "website": "29/05/23",
-                },
-                {
-                    "id": 9,
-                    "name": "Glenna Reichert",
-                    "username": "Delphine",
-                    "email": "Chaim_McDermott@dana.io",
-                    "website": "29/05/23",
-                },
-                {
-                    "id": 10,
-                    "name": "Clementina DuBuque",
-                    "username": "Moriah.Stanton",
-                    "email": "Rey.Padberg@karina.biz",
-                    "website": "29/05/23",
-                }
-            ]
         }
     },
     created() {
@@ -369,7 +297,8 @@ export default {
     methods: {
         getAnnouncement() {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
+            // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
+            fetch(`http://203.170.190.170:1337/api/announcements?filters[building][id][$eq]=${this.$store.state.building}&populate=*&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getAnnouncement()",resp.data);
@@ -385,17 +314,41 @@ export default {
                     // date_execute: this.date_execute,
                     topic: this.topic,
                     description: this.description,
+                    date_execute: this.date_execute,
                     users_created: this.$store.state.userInfo.user.id,
                     building: this.$store.state.building
                 }
             })
                 .then(
-                    router.push({
-                        path: '#',
-                    })
+                    this.openNotificationCreateAnnouncement('top-right', '#3A89CB', 6000).then(
+                        this.$router.go(this.$router.currentRoute)
+                    )
                 )
     
-        }
+        },      
+        editAnnouncement(postID){
+            axios.put(`http://203.170.190.170:1337/api/announcements/${postID}`,{
+                data : {
+                    topic: this.topic,
+                    description: this.description,
+                    date_execute: this.date_execute,
+                    users_created: this.$store.state.userInfo.user.id
+                }
+            })
+                .then(
+                    this.openNotificationCreateAnnouncement('top-right', '#3A89CB', 6000).then(
+                        this.$router.go(this.$router.currentRoute)
+                    )
+                )
+        }, 
+        openNotificationCreateAnnouncement(position = null, color) {
+            const noti = this.$vs.notification({
+                sticky: true,
+                color,
+                position,
+                title: 'Create Announcement Success',
+            })
+        },
     }
 
 }

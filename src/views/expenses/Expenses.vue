@@ -393,16 +393,16 @@
                     <template #thead>
                         <vs-tr>
                             <vs-th>
-                                วันที่
+                                ID
                             </vs-th>
                             <vs-th>
-                                เลขที่ใบเสร็จ
+                                วันที่
                             </vs-th>
                             <vs-th>
                                 รายละเอียด
                             </vs-th>
                             <vs-th>
-                                ประเภท
+                                หลักฐานการชำระเงิน
                             </vs-th>
                             <vs-th>
                                 จำนวนเงิน
@@ -410,21 +410,21 @@
                         </vs-tr>
                     </template>
                     <template #tbody>
-                        <vs-tr :key="i" v-for="(tr, i) in users" :data="tr">
+                        <vs-tr :key="i" v-for="(tr, i) in expense" :data="tr">
                             <vs-td>
                                 {{ tr.id }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.name }}
+                                {{ tr.attributes.createdAt }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.username }}
+                                {{ tr.attributes.title }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.email }}
+                                View
                             </vs-td>
                             <vs-td>
-                                {{ tr.website }}
+                                {{ tr.attributes.amount }}
                             </vs-td>
                         </vs-tr>
                     </template>
@@ -532,6 +532,7 @@ export default {
             popup_filter: false,
             data: [10, 5, 6, 8],
             data2: [10, 5, 6, 8, 4],
+            expense: [],
             users: [
                 {
                     "id": "12/01/23",
@@ -611,12 +612,27 @@ export default {
             };
         },
     },
+    mounted() {
+        this.getExpense();
+    },
     methods: {
         routeTo(path) {
             this.$router.push({
                 path: path,
             })
         },
+        getExpense() {
+            const loading = this.$vs.loading()
+            // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
+            fetch(`http://203.170.190.170:1337/api/building-expenses?populate=deep&sort[0]=id:desc`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getEmployer()",resp.data);
+                    this.expense = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        }
     }
 
 

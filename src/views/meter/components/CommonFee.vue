@@ -20,23 +20,24 @@
                     </vs-tr>
                 </template>
                 <template #tbody>
-                    <vs-tr :key="i" v-for="(tr, i) in users" :data="tr">
+                    <vs-tr :key="i" v-for="(tr, i) in commonRoom" :data="tr">
                         <vs-td>
-                            {{ tr.id }}
+                            {{ tr.attributes.RoomNumber  }}
                         </vs-td>
                         <vs-td>
                             <div class="flex justify-start items-center">
                                 <div class="pl-[12px] pr-[12px] pb-[4px] pt-[4px] rounded-[12px] text-center"
                                     :class="tr.status == 'มีผู้เช่า' ? 'text-[#1DC56A] bg-[#D8FAD5]' : 'text-[#8396A6] bg-[#DEEAF5]'">
-                                    {{ tr.status }}</div>
+                                    <!-- {{ tr.status }} --> ยังไม่ระบุ
+                                </div>
                             </div>
 
                         </vs-td>
                         <vs-td>
-                            {{ tr.name }}
+                            <!-- {{ tr.name }} -->
                         </vs-td>
                         <vs-td>
-                            {{ tr.unit }}
+                            <!-- {{ tr.unit }} -->
                         </vs-td>
                     </vs-tr>
                 </template>
@@ -129,7 +130,8 @@ export default {
                     "website": "hildegard.org",
                     "unit": "4,000"
                 }
-            ]
+            ],
+            commonRoom: [],
         }
     },
     created() {
@@ -137,6 +139,23 @@ export default {
         setTimeout(() => {
             loading.close()
         }, 1000)
+    },
+    mounted() {
+        this.getCommonFeeRoom();
+    },
+    methods: {
+        getCommonFeeRoom() {
+            const loading = this.$vs.loading()
+            fetch(`http://203.170.190.170:1337/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getCommonFeeRoom()",resp.data);
+                    this.commonRoom = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        }
+        
     },
 }
 </script>

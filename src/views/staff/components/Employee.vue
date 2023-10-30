@@ -2,7 +2,9 @@
     <div>
         <div class="text-[24px] font-bold mt-[24px]">พนักงาน</div>
         <div class="grid grid-cols-4 w-[100%] gap-4 mt-[14px]">
-            <div class="bg-white rounded-[12px] h-[150px] flex flex-col p-[12px] cursor-pointer ">
+
+            
+            <div class="bg-white rounded-[12px] h-[150px] flex flex-col p-[12px] cursor-pointer " v-for="data in employee">
                 <div class="flex justify-between">
                     <div class="flex">
                         <div class="flex">
@@ -13,9 +15,9 @@
                                     <div class="">
                                         <div
                                             class="h-[24px] rounded-[12px] font-bold text-[#003765] pl-[12px] pr-[12px] flex items-center bg-[#F0F8FF]">
-                                            ผู้จัดการหอพัก
+                                            {{ data.attributes.position }}
                                         </div>
-                                        <div class="mt-[14px] text-[18px] font-bold">ชัชพล บุญพันธุ์</div>
+                                        <div class="mt-[14px] text-[18px] font-bold">{{ data.attributes.name }} {{ data.attributes.lastname }}</div>
                                     </div>
                                     <div class="ml-[-30px]">
                                         <svg width="35" height="35" viewBox="0 0 35 35" fill="none"
@@ -46,49 +48,7 @@
                     </div>
                 </div>
             </div>
-            <div class="bg-white rounded-[12px] h-[150px] flex flex-col p-[12px] cursor-pointer ">
-                <div class="flex justify-between">
-                    <div class="flex">
-                        <div class="flex">
-                            <img class="w-[125px] h-[125px]  rounded-[12px] "
-                                src="https://writestylesonline.com/wp-content/uploads/2018/11/Three-Statistics-That-Will-Make-You-Rethink-Your-Professional-Profile-Picture-1024x1024.jpg" />
-                            <div class="ml-[12px]">
-                                <div class="flex flex-col justify-between h-[100%]">
-                                    <div class="">
-                                        <div
-                                            class="h-[24px] rounded-[12px] font-bold text-[#D48C00] pl-[12px] pr-[12px] flex items-center bg-[#FFF2BC]">
-                                            พนักงานซ่อมบำรุง
-                                        </div>
-                                        <div class="mt-[14px] text-[18px] font-bold">ชัชพล บุญพันธุ์</div>
-                                    </div>
-                                    <div class="ml-[-30px]">
-                                        <svg width="35" height="35" viewBox="0 0 35 35" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <rect width="35" height="35" rx="12" fill="#F5D65E" />
-                                            <mask id="mask0_631_13417" style="mask-type:alpha" maskUnits="userSpaceOnUse"
-                                                x="4" y="4" width="27" height="27">
-                                                <rect x="4" y="4" width="27" height="27" fill="#D9D9D9" />
-                                            </mask>
-                                            <g mask="url(#mask0_631_13417)">
-                                                <path
-                                                    d="M24.3772 26.8786C24.0534 26.8786 23.7462 26.8191 23.4556 26.7001C23.165 26.5811 22.8971 26.399 22.6519 26.1538L16.5725 20.0572C16.1759 20.2288 15.7727 20.3611 15.3629 20.4542C14.9531 20.5472 14.5183 20.5937 14.0586 20.5937C12.2617 20.5937 10.7344 19.9648 9.47655 18.707C8.21875 17.4492 7.58984 15.9218 7.58984 14.125C7.58984 13.5437 7.66376 12.9881 7.81158 12.458C7.95942 11.928 8.16964 11.4236 8.44223 10.9447L12.4836 14.9644L14.898 12.55L10.9 8.53026C11.3788 8.25767 11.88 8.04386 12.4035 7.88882C12.927 7.73377 13.4787 7.65625 14.0586 7.65625C15.8554 7.65625 17.3828 8.28515 18.6406 9.54296C19.8984 10.8008 20.5273 12.3281 20.5273 14.125C20.5273 14.5995 20.4826 15.0416 20.3932 15.4512C20.3037 15.8608 20.1696 16.2567 19.9907 16.6389L26.1047 22.7183C26.3499 22.9635 26.532 23.2318 26.651 23.5231C26.77 23.8145 26.8295 24.1221 26.8295 24.4458C26.8295 24.7696 26.7671 25.0797 26.6423 25.3761C26.5176 25.6724 26.3396 25.9362 26.1085 26.1674C25.8608 26.4151 25.5913 26.5955 25.2999 26.7087C25.0085 26.822 24.7009 26.8786 24.3772 26.8786ZM23.8721 24.9856C24.0091 25.1226 24.1807 25.1882 24.387 25.1825C24.5932 25.1767 24.7649 25.1053 24.9019 24.9683C25.0389 24.8313 25.1074 24.6596 25.1074 24.4534C25.1074 24.2471 25.0389 24.0755 24.9019 23.9385L17.916 16.9699C18.2319 16.5805 18.4648 16.1374 18.6148 15.6405C18.7648 15.1436 18.8398 14.6384 18.8398 14.125C18.8398 12.8774 18.3942 11.7733 17.5028 10.8127C16.6115 9.85211 15.4835 9.38119 14.1191 9.39994L16.5682 11.849C16.7643 12.0452 16.866 12.2752 16.8732 12.5391C16.8804 12.8031 16.786 13.0331 16.5898 13.2293L13.1845 16.6346C12.9884 16.8307 12.7547 16.9288 12.4836 16.9288C12.2124 16.9288 11.9788 16.8307 11.7826 16.6346L9.33354 14.1855C9.33642 15.6293 9.82177 16.777 10.7896 17.6287C11.7573 18.4804 12.847 18.9062 14.0586 18.9062C14.5509 18.9062 15.0432 18.833 15.5355 18.6867C16.0278 18.5402 16.478 18.3113 16.8862 17.9998L23.8721 24.9856Z"
-                                                    fill="white" />
-                                            </g>
-                                        </svg>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="6" cy="2.5" r="1" transform="rotate(90 6 2.5)" fill="#8396A6" />
-                            <circle cx="6" cy="6" r="1" transform="rotate(90 6 6)" fill="#8396A6" />
-                            <circle cx="6" cy="9.5" r="1" transform="rotate(90 6 9.5)" fill="#8396A6" />
-                        </svg>
-                    </div>
-                </div>
-            </div>
+           
         </div>
     </div>
 </template>
@@ -96,7 +56,8 @@
 export default {
     data() {
         return {
-            create: false
+            create: false,
+            employee: [],
         }
     },
     created() {
@@ -105,6 +66,23 @@ export default {
             loading.close()
         }, 1000)
     },
+    mounted() {
+        this.getEmployer();
+    },
+    methods: {
+        getEmployer() {
+            const loading = this.$vs.loading()
+            // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
+            fetch(`http://203.170.190.170:1337/api/building-employees?populate=deep&sort[0]=id:desc`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getEmployer()",resp.data);
+                    this.employee = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        }
+    }
 }
 
 </script>
