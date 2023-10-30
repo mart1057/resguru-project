@@ -246,7 +246,7 @@ export default {
         },
         getBuilding() {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/buildings?populate=*')
+            fetch('http://203.170.190.170:1337/api' + '/buildings?filters[user_owner][id][$eq]='+this.$store.state.userInfo.user.id+'&populate=*')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log(resp.data);
