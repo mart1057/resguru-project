@@ -229,6 +229,28 @@ export default {
         //    getBuilding(){
         //     fetch('/buildings')
         //    }
+        createBuilding(){
+            axios.post('http://203.170.190.170:1337/api' + '/buildings',{
+                data : {
+                    buildingName: "",
+                    buildingAddress: "",
+                    user_owner: this.$store.state.userInfo.user.id,
+                    buildingProvince: "",
+                    buildingDistrict: "",
+                    buildingSubDistrict: "",
+                    buildingPostcode: "",
+                    buildingPhone: "",
+                    buildingEmail: "",
+                    buildingLine: "",
+                    buildingFacebook: "",
+                    buildingPaymentMonthlyDate: ""       
+                }
+            })
+                .then(response => console.log(response.json()))
+                .finally(() => {
+                    loading.close()
+                })
+        },
     },
 }
 </script>
