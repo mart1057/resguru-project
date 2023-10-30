@@ -82,7 +82,7 @@
                 <div class="grid grid-cols-2 gap-5 mt-[10px]">
                     <div class="w-[360px] border border-[#B9CCDC]  rounded-[16px] flex cursor-pointer"
                         v-for="data in building">
-                        <div class="w-[30%]  h-[100%] rounded-[16px] flex flex-col items-center justify-center"  @click="routeToMain()"
+                        <div class="w-[30%]  h-[100%] rounded-[16px] flex flex-col items-center justify-center"  @click="routeToMain(data.id)"
                             :style="{ background: data.attributes.colorCode }">
                             <img :src="'http://203.170.190.170:1337' + data.attributes.buildingLogo?.data?.attributes.url"
                                 class="w-[90px] h-[90px] rounded-[22px]" />
@@ -90,7 +90,7 @@
                                 :class="data.attributes.colorCode == '#ffffff' ? '' : 'text-[white]'">Professional</div>
                         </div>
                         <div class="w-[70%] p-[8px] flex flex-col">
-                            <div  @click="routeToMain()">
+                            <div  @click="routeToMain(data.id)">
                                 <div class="flex justify-between">
                                     <div class="text-[14px] font-bold">{{ data.attributes.buildingName }}</div>
                                     <div class="flex justify-center items-center cursor-pointer"><svg width="4" height="12"
@@ -226,7 +226,8 @@ export default {
                 path: '/create_building',
             })
         },
-        routeToMain() {
+        routeToMain(buidingId) {
+            this.$store.state.building = buidingId;
             router.push({
                 path: '/dashboard',
             })
