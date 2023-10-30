@@ -108,7 +108,7 @@
                                 <div>
                                     <div class="font-bold">ชื่ออพาร์ทเม้นท์</div>
                                     <div class="">
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" v-model="buildingName" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                 </div>
                             </div>
@@ -116,7 +116,7 @@
                                 <div>
                                     <div class="font-bold">ที่อยู่</div>
                                     <div class="">
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" v-model="buildingAddress" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                 </div>
                             </div>
@@ -166,13 +166,13 @@
                                 <div>
                                     <div class="font-bold">เบอร์โทรติดต่อ</div>
                                     <div class="">
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" v-model="buildingPhone" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                 </div>
                                 <div>
                                     <div class="font-bold">อีเมลล์ติดต่อ</div>
                                     <div class="">
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" v-model="buildingEmail" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                 </div>
                             </div>
@@ -180,13 +180,13 @@
                                 <div>
                                     <div class="font-bold">ไลน์ติดต่อ</div>
                                     <div class="">
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" v-model="buildingLine" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                 </div>
                                 <div>
                                     <div class="font-bold">เฟสบุ๊ค</div>
                                     <div class="">
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" v-model="buildingFacebook" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                 </div>
                             </div>
@@ -206,6 +206,8 @@
                     </div>
                 </div>
                 <div class="pl-[50px] pr-[50px] flex justify-end"><button
+                   
+                    @click="createBuilding()"
                         class="h-[36px] bg-[#003765] text-white pl-[24px]  pr-[24px] text-center rounded-[12px]">สร้าง</button>
                 </div>
             </div>
@@ -220,6 +222,17 @@ export default {
     data() {
         return {
             Logo01,
+            buildingName: "",
+            buildingAddress: "", 
+            buildingProvince: "",
+            buildingDistrict: "",
+            buildingSubDistrict: "",
+            buildingPostcode: "",
+            buildingPhone: "",
+            buildingEmail: "",
+            buildingLine: "",
+            buildingFacebook: "",
+            buildingPaymentMonthlyDate: ""   
         }
     },
     mounted() {
@@ -230,26 +243,25 @@ export default {
         //     fetch('/buildings')
         //    }
         createBuilding(){
+
+            // console.log("test v model", this.buildingName)
             axios.post('http://203.170.190.170:1337/api' + '/buildings',{
                 data : {
-                    buildingName: "",
-                    buildingAddress: "",
+                    buildingName: this.buildingName,
+                    buildingAddress: this.buildingAddress,
                     user_owner: this.$store.state.userInfo.user.id,
                     buildingProvince: "",
                     buildingDistrict: "",
                     buildingSubDistrict: "",
                     buildingPostcode: "",
-                    buildingPhone: "",
-                    buildingEmail: "",
-                    buildingLine: "",
-                    buildingFacebook: "",
-                    buildingPaymentMonthlyDate: ""       
+                    buildingPhone: this.buildingPhone,
+                    buildingEmail: this.buildingEmail,
+                    buildingLine: this.buildingLine,
+                    buildingFacebook: this.buildingFacebook   
                 }
             })
                 .then(response => console.log(response.json()))
-                .finally(() => {
-                    loading.close()
-                })
+               
         },
     },
 }
