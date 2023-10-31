@@ -127,12 +127,14 @@
                         <div class="w-[136px] h-[100%] rounded-[22px] bg-[#8396A6]"></div>
                         <div class="ml-[14px]">
                             <div class="text-[18px] font-bold text-[#141629]">ห้อง {{ data.attributes.RoomNumber }}</div>
-                            <div class="text-[14px] mt-[12px] font-bold text-[#003765]">ชัชพล บุญพันธุ์</div>
+                            <div class="text-[14px] mt-[12px] font-bold text-[#003765]">{{ data.attributes.user_sign_contract.data ? data.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "" }} {{ data.attributes.user_sign_contract.data ? data.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.lastName : "" }}</div>
                         </div>
                     </div>
-                    <div
-                        class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">
-                        มีผู้เข้าพัก</div>
+                   
+                    <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">
+                      {{ data.attributes.user_sign_contract.data ? "มีผู้เข้าพัก" : "ห้องว่าง" }}  
+                    </div>
+                     
                 </div>
        
             </div>
@@ -189,15 +191,15 @@
                                     </div>
                                     <div class="col-span-3 ml-[8px]">
                                         <div>ชื่อ</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="firstName" required />
                                     </div>
                                     <div class="col-span-3  ml-[8px]">
                                         <div>สกุล</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="lastName" required/>
                                     </div>
                                     <div class="ml-[8px]">
                                         <div>ชื่อเล่น</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="nickName" required/>
                                     </div>
                                 </div>
                             </dvi>
@@ -206,13 +208,21 @@
                             <div class="w-[30%] text-custom flex items-start"></div>
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
                                 <div class="col-span-4">
+                                    <div>Email <span class="text-[#5C6B79]">สำหรับล็อกอินเข้าใช้แอปพลิเคชัน</span></div>
+                                    <input type="email" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="email" required/>
+                                </div>
+                                <div class="col-span-4">
+                                    <div>รหัสบัตรประชาชน <span class="text-[#5C6B79]"></span></div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="idCard" required/>
+                                </div>
+                                <div class="col-span-4">
                                     <div>เบอร์โทรศัพท์ <span class="text-[#5C6B79]">(ไม่ต้องใส่ขีด ตัวอย่าง.
                                             0815578945)</span></div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="phoneNumber" required/>
                                 </div>
                                 <div class="col-span-4  ml-[8px]">
                                     <div>เลือกห้อง</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="roomNumber" required/>
                                 </div>
                             </div>
                         </div>
@@ -221,37 +231,9 @@
                             <div class="grid grid-cols-6  text-custom w-[70%] ">
                                 <div class="col-span-2">
                                     <div>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
-                                    <vs-select placeholder="ชื่อ" class="mt-[6px]">
-                                        <vs-option label="อาคาร A" value="1">
-                                            อาคาร A
-                                        </vs-option>
-                                        <vs-option label="อาคาร B" value="2">
-                                            อาคาร B
-                                        </vs-option>
-                                    </vs-select>
+                                    <input type="date"  class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="birthDate" required>
                                 </div>
-                                <div class="col-span-2  ml-[8px]">
-                                    <div class="text-[white]">.</div>
-                                    <vs-select placeholder="ชื่อ" class="mt-[6px]">
-                                        <vs-option label="อาคาร A" value="1">
-                                            อาคาร A
-                                        </vs-option>
-                                        <vs-option label="อาคาร B" value="2">
-                                            อาคาร B
-                                        </vs-option>
-                                    </vs-select>
-                                </div>
-                                <div class="col-span-2 ml-[8px]">
-                                    <div class="text-[white]">.</div>
-                                    <vs-select placeholder="ชื่อ" class="mt-[6px]">
-                                        <vs-option label="อาคาร A" value="1">
-                                            อาคาร A
-                                        </vs-option>
-                                        <vs-option label="อาคาร B" value="2">
-                                            อาคาร B
-                                        </vs-option>
-                                    </vs-select>
-                                </div>
+                                
                             </div>
                         </div>
                         <div class="w-[100%] flex mt-[14px]">
@@ -259,11 +241,11 @@
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
                                 <div class="col-span-4">
                                     <div>วันที่เข้าพัก</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    <input type="date"  class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="checkInDate" required/>
                                 </div>
                                 <div class="col-span-4  ml-[8px]">
                                     <div>เลือกห้อง</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="bookRoom" required/>
                                 </div>
                             </div>
                         </div>
@@ -272,7 +254,7 @@
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
                                 <div class="col-span-4">
                                     <div>ค่ามัดจำ (บาท)</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="earnest" required/>
                                 </div>
                                 <!-- <div class="col-span-4  ml-[8px]">
                                     <div>เลือกห้อง</div>
@@ -289,7 +271,7 @@
                         </vs-button>
                     </div>
                     <div>
-                        <vs-button @click="create = false" color="#003765">
+                        <vs-button @click="bookRoomContract()" color="#003765">
                             <div class="text-custom">บันทึก</div>
                         </vs-button>
                     </div>
@@ -299,12 +281,25 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
+
 export default {
     data() {
         return {
             create: false,
             popup_filter: false,
             room: [],
+            firstName: "",
+            lastName: "",
+            nickName: "",
+            email: "",
+            idCard: "",
+            phoneNumber: "",
+            roomNumber: "",
+            birthDate: "",
+            checkInDate: "",
+            bookRoom: "",
+            earnest: 0
         }
 
     },
@@ -336,7 +331,46 @@ export default {
                 }).finally(() => {
                     loading.close()
                 })
-        }
+        },
+        bookRoomContract(){
+
+            axios.post('http://203.170.190.170:1337/api/auth/local/register',{
+                    firstName: this.firstName,
+                    lastName: this.lastName,
+                    nickName: this.nickName,
+                    email: this.email,
+                    idCard: this.idCard,
+                    phone: this.phoneNumber,
+                    dateOfBirth: this.birthDate,
+                    username: this.email,
+                    password: this.idCard,
+                    role: 2,
+            }).then( (res) =>  {
+                        console.log("Result from create user",res)
+                        axios.post('http://203.170.190.170:1337/api/user-sign-contracts',{
+                                data : {
+                                    room: this.roomNumber,
+                                    checkInDate: this.checkInDate,
+                                    bookRoom: this.bookRoom,
+                                    earnest: this.earnest,
+                                    users_permissions_user: res.data.user.id
+                                }
+                        }).then(this.openNotificationBookRoom('top-right', '#3A89CB', 6000))
+                        .catch( function(err) {
+                                console.log(err)
+                            } )
+                        }).catch( function(err) {
+                        console.log(err)
+                    } )
+                
+        },openNotificationBookRoom(position = null, color) {
+            const noti = this.$vs.notification({
+                sticky: true,
+                color,
+                position,
+                title: 'Book Room Success',
+            })
+        },
     }
 
 

@@ -44,9 +44,12 @@
                                     <div>
                                         <div class="mt-[5px]">
                                             <!-- {{ data.attributes.building_employee }} -->
-                                            <vs-select color="#003765">
-                                                <vs-option>
-                                                    555
+                                            <vs-select placeholder="Select" v-model="value" color="#003765">
+                                                <vs-option label="Mr.A" value="1">
+                                                Mr.A
+                                                </vs-option>
+                                                <vs-option label="Mr.B" value="2">
+                                                Mr.B
                                                 </vs-option>
                                             </vs-select>
                                         </div>
@@ -56,15 +59,18 @@
                                     <div class="text-[12px] text-[#8396A6] mt-[8px]">วันเวลา</div>
                                     <div class="w-[100%]">
                                         <div class="mt-[5px] w-[100%]  con-selects">
-                                            <vs-input type="date" v-model="value7" />
+                                           
+                                            <vs-input type="date" v-model="date_time" />
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div
-                                class="bg-[#003765] w-[100%] h-[36px] rounded-[12px] mt-[14px]  text-[white] flex items-center justify-center">
-                                จบงาน
-                            </div>
+                            
+                                <vs-button @click="updateService(data.id)" color="#003765" class="w-[100%] h-[36px] rounded-[12px] mt-[30px]  text-[white] flex items-center justify-center">
+                                    จบงาน
+                                </vs-button>
+                                
+                        
                         </div>
                     </div>
                 </div>
@@ -233,6 +239,8 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
+
 export default {
     data() {
         return {
@@ -253,7 +261,7 @@ export default {
         getService() {
             const loading = this.$vs.loading()
             // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`http://203.170.190.170:1337/api/services?populate=deep&sort[0]=id:desc`)
+            fetch(`http://203.170.190.170:1337/api/services?populate=deep&sort[0]=id:desc&filters[serviceStatus][$ne]=completed`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getService()",resp.data);
@@ -262,12 +270,25 @@ export default {
                     loading.close()
                 })
         },
-        openNotificationCreateAnnouncement(position = null, color) {
+        updateService(serviceId) {
+
+            axios.put(`http://203.170.190.170:1337/api/services/${serviceId}`,{
+                data : {
+                    serviceStatus: "Completed"
+                }
+            }) .then(
+                    this.openNotificationUpdateService('top-right', '#3A89CB', 6000).then(
+                        this.$router.go(this.$router.currentRoute)
+                    )
+            )
+                
+        },
+        openNotificationUpdateService(position = null, color) {
             const noti = this.$vs.notification({
                 sticky: true,
                 color,
                 position,
-                title: 'Create Service Success',
+                title: 'Update Service Success',
             })
         },
     }
