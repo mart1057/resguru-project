@@ -31,7 +31,8 @@
                             </svg>
                         </div>
                     </div>
-                    <div class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px] mt-[14px] ">
+                    <div
+                        class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px] mt-[14px] ">
                         <div>เลขที่บัญชี</div>
                         <div class="font-bold">344-556-5678</div>
                     </div>
@@ -369,7 +370,7 @@
                     </div>
                     <div class="flex justify-center mt-[14px] ">
                         <div class="flex bg-[#003765]  rounded-[12px] pl-[12px] pr-[12px] pt-[4px] pb-[4px] ">
-                            <div  class="flex items-center justify-center">
+                            <div class="flex items-center justify-center">
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_967_25049" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
@@ -398,13 +399,10 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-        </div>
-        <!-- <div class="border h-[97px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
-                @click="create_type = true">
+            <div class="rounded-[16px]  p-[14px] h-[145px] border cursor-pointer flex flex-col items-center justify-center" @click="create = true">
                 <div>
-                    <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="68" height="69" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
                         <mask id="mask0_1373_22044" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="6" y="7"
                             width="56" height="55">
@@ -417,6 +415,89 @@
                         </g>
                     </svg>
                 </div>
-                <div class="text-[#5C6B79] font-bold mt-[4px]">สร้างประเภทห้องพักและห้องเช่า</div>
-            </div> -->
-</div></template>
+                <div class="text-[#5C6B79] mt-[8px]">เพิ่มบัญชีธนาคาร</div>
+            </div>
+        </div>
+        <b-modal centered v-model="create" size="l" hide-backdrop hide-header-close hide-header hide-footer
+            class="p-[-20px] text-custom">
+            <div>
+                <div class="flex justify-between">
+                    <div class="text-custom flex justify-center items-center text-[16px] font-bold">
+                        เพิ่มบัญชีธนาคาร</div>
+                    <div @click="create = false" class="cursor-pointer">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
+                                width="24" height="24">
+                                <rect width="24" height="24" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_417_4814)">
+                                <path
+                                    d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                                    fill="#5C6B79" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
+                <div class="mt-[14px]">
+                    <div class="text-custom">ชื่อบริการ</div>
+                    <div>
+                        <select placeholder="Select" v-model="value"
+                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]">
+                            <option label="เลือก" value="0" disabled>
+                                เลือก
+                            </option>
+                            <option label="กสิกร" value="1">
+                                กสิกร
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-[14px]">
+                    <div class="text-custom">เลขบัญชี</div>
+                    <div>
+                        <input
+                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" />
+                    </div>
+                </div>
+                <div class="mt-[14px]">
+                    <div class="text-custom">QR Code</div>
+                    <div class="mt-[4px] flex">
+                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
+                            type="file" />
+                        <label for="upload">
+                            <div
+                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
+                                อัพโหลดรูปภาพ</div>
+                        </label>
+                        <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            ยังไม่ได้เลือกไฟล์</div>
+                    </div>
+                </div>
+                <div class="flex justify-end mt-[30px]">
+                    <div>
+                        <vs-button dark shadow @click="create = false">
+                            <div class="text-custom">ยกเลิก</div>
+                        </vs-button>
+                    </div>
+                    <div>
+                        <vs-button @click="create = false" color="#003765">
+                            <div class="text-custom">บันทึก</div>
+                        </vs-button>
+                    </div>
+                </div>
+            </div>
+        </b-modal>
+    </div>
+</template>
+<script>
+export default {
+    data() {
+        return {
+            create: false
+        }
+    }
+}
+
+
+</script>
