@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="flex justify-start items-center rounded-[12px] mt-[14px]">
+    <div class="bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]">
+        <div class="flex justify-start items-center rounded-[12px]">
             <div class="bg-[#F3F7FA] rounded-[12px]">
                 <div class="flex justify-start items-center">
                     <div @click="tab = 1" class="cursor-pointer "
