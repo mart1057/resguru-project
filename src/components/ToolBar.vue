@@ -317,7 +317,7 @@
 
                 <template #footer>
                     <vs-row justify="space-between">
-                        <div class="flex cursor-pointer">
+                        <div class="flex cursor-pointer"  @click="routerTo('/setting')">
                             <div>
                                 <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -332,7 +332,7 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class="text-[white] flex items-center ml-[8px]">ตั้งค่า</div>
+                            <div class="text-[white] flex items-center ml-[8px]" >ตั้งค่า</div>
                         </div>
                         <div class="flex cursor-pointer">
                             <div>
