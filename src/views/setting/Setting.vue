@@ -35,7 +35,7 @@ export default {
     components: { Profire, Room, Meter, Payment, Contract },
     data() {
         return {
-            tab: 5
+            tab: 1
 
         }
     }

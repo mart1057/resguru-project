@@ -16,6 +16,9 @@ export default new Vuex.Store({
   getters: {
   },
   mutations: {
+    setMain(state,data){
+      state.main = data
+    },
     setUser(state, data) {
       state.userInfo = data
     },

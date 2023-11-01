@@ -227,7 +227,7 @@ export default {
             })
         },
         routeToMain(buidingId) {
-            // this.$store.state.building = buidingId;
+            this.$store.commit('setMain', true);
             this.$store.commit('setBuilding', buidingId);
             router.push({
                 path: '/dashboard',
