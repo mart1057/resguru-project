@@ -21,17 +21,19 @@
         <Profire v-if="tab == 1" />
         <Room v-else-if="tab == 2" />
         <Meter v-else-if="tab == 3" />
+        <Payment v-else-if="tab == 4" />
     </div>
 </template>
 <script>
 import Profire from '@/views/setting/components/Profire'
 import Room from './components/Room.vue';
 import Meter from './components/Meter.vue'
+import Payment from './components/Payment.vue'
 export default {
-    components: { Profire, Room, Meter, },
+    components: { Profire, Room, Meter, Payment, },
     data() {
         return {
-            tab: 1
+            tab: 4
 
         }
     }
