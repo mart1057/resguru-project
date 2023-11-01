@@ -137,8 +137,8 @@
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer" v-for="data in contract" >
                     <div class="flex flex-col justify-between">
                         <div class="ml-[14px]">
-                            <div class="text-[24px] font-bold text-[#141629] ">ห้อง {{data.attributes.room.data.attributes.RoomNumber}}</div>
-                            <div class="text-[18px] mt-[12px] font-bold text-[#003765]">ชัชพล บุญพันธุ์</div>
+                            <div class="text-[24px] font-bold text-[#141629] ">ห้อง {{data.attributes.RoomNumber}}</div>
+                            <div class="text-[18px] mt-[12px] font-bold text-[#003765]">{{ data.attributes.user_sign_contract.data ? data.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "" }} {{ data.attributes.user_sign_contract.data ? data.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.lastName : "" }}</div>
                         </div>
                         <div class="ml-[14px]">
                             <div class="h-[32px] pr-[8px] pl-[8px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px]"
@@ -180,7 +180,7 @@
                             </div>
                             <div
                                 class="h-[36px] ml-[8px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">
-                                มีผู้เข้าพัก
+                                {{ data.attributes.user_sign_contract.data ? "มีผู้เข้าพัก" : "ห้องว่าง" }}  
                             </div>
                         </div>
                         <div class="flex justify-center">
@@ -391,8 +391,8 @@ export default {
         },
         getRentalContract() {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/user-sign-contracts?populate=deep')
-                .then(response => response.json())
+            fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]='+this.$store.state.building+'&populate=deep')
+               .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRentalContract()",resp.data);
                     this.contract = resp.data

@@ -28,14 +28,14 @@
                             <div class="flex justify-start items-center">
                                 <div class="pl-[12px] pr-[12px] pb-[4px] pt-[4px] rounded-[12px] text-center"
                                     :class="tr.status == 'มีผู้เช่า' ? 'text-[#1DC56A] bg-[#D8FAD5]' : 'text-[#8396A6] bg-[#DEEAF5]'">
-                                    <!-- {{ tr.status }} --> ยังไม่ระบุ
+                                    {{ tr.attributes.user_sign_contract.data ? "มีผู้เข้าพัก" : "ห้องว่าง" }}  
                                 </div>
                             </div>
 
                         </vs-td>
                         <vs-td>
-                            {{ tr.name }}
-                        </vs-td>
+                            {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "" }} 
+                       </vs-td>
                         <vs-td>
                             <div class="flex">
                                 <div v-for="data in tr.other">
@@ -219,7 +219,7 @@ export default {
     methods: {
         getOtherFee() {
             const loading = this.$vs.loading()
-            fetch(`http://203.170.190.170:1337/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep`)
+            fetch(`http://203.170.190.170:1337/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep,3`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()",resp.data);

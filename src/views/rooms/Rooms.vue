@@ -323,7 +323,7 @@ export default {
         },
         getRoom() {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]='+this.$store.state.building+'&populate=deep')
+            fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]='+this.$store.state.building+'&populate=deep,3')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoom()",resp.data);

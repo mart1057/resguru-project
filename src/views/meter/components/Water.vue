@@ -23,6 +23,9 @@
                         <vs-th>
                             หน่วยที่ใช้
                         </vs-th>
+                        <vs-th>
+                            Action
+                        </vs-th>
                     </vs-tr>
                 </template>
                 <template #tbody>
@@ -34,17 +37,17 @@
                             <div class="flex justify-start items-center">
                                 <div class="pl-[12px] pr-[12px] pb-[4px] pt-[4px] rounded-[12px] text-center"
                                     :class="tr.status == 'มีผู้เช่า' ? 'text-[#1DC56A] bg-[#D8FAD5]' : 'text-[#8396A6] bg-[#DEEAF5]'">
-                                    <!-- {{ tr.status }} --> ยังไม่ระบุ
+                                    {{ tr.attributes.user_sign_contract.data ? "มีผู้เข้าพัก" : "ห้องว่าง" }}  
                                 </div>
                             </div>
 
                         </vs-td>
                         <vs-td>
-                            {{ tr.name }}
+                            {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "" }} 
                         </vs-td>
                         <vs-td>
                             <div>
-                                <vs-input v-model="tr.unit" disabled>
+                                <vs-input disabled>
                                     <template #icon>
                                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -63,7 +66,7 @@
                             </div>
                         </vs-td>
                         <vs-td>
-                            <vs-input v-model="tr.unit">
+                            <vs-input v-model="tr.unit" >
                                 <template #icon>
                                     <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -81,7 +84,10 @@
                             </vs-input>
                         </vs-td>
                         <vs-td>
-                            {{ tr.unit }}
+                            {{ tr.attributes.water_fees.data ? tr.attributes.water_fees.data.id : "ยังไม่ได้ระบุ" }}
+                        </vs-td>
+                        <vs-td>
+                            <vs-button>บันทึก</vs-button>
                         </vs-td>
                     </vs-tr>
                 </template>
@@ -90,91 +96,10 @@
     </div>
 </template>
 <script>
+
 export default {
     data() {
         return {
-            users: [
-                {
-                    "id": 1,
-                    "name": "Leanne Graham",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "33"
-                },
-                {
-                    "id": 2,
-                    "name": "Ervin Howell",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "33"
-                },
-                {
-                    "id": 3,
-                    "name": "Clementine Bauch",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "33"
-                },
-                {
-                    "id": 4,
-                    "name": "Patricia Lebsack",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "33"
-                },
-                {
-                    "id": 5,
-                    "name": "Chelsey Dietrich",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "33"
-                },
-                {
-                    "id": 6,
-                    "name": "Mrs. Dennis Schulist",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "33"
-                },
-                {
-                    "id": 7,
-                    "name": "Kurtis Weissnat",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "33"
-                },
-                {
-                    "id": 8,
-                    "name": "",
-                    "status": "ห้องว่าง",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": ""
-                },
-                {
-                    "id": 9,
-                    "name": "Glenna Reichert",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "33"
-                },
-                {
-                    "id": 10,
-                    "name": "Clementina DuBuque",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "33"
-                }
-            ],
             WaterFee:[],
         }
     },
@@ -190,7 +115,7 @@ export default {
     methods: {
         getWaterFee() {
             const loading = this.$vs.loading()
-            fetch(`http://203.170.190.170:1337/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep`)
+            fetch(`http://203.170.190.170:1337/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep,3`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()",resp.data);
@@ -198,6 +123,7 @@ export default {
                 }).finally(() => {
                     loading.close()
                 })
+
         }
         
     },

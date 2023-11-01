@@ -23,6 +23,9 @@
                         <vs-th>
                             หน่วยที่ใช้
                         </vs-th>
+                        <vs-th>
+                            Action
+                        </vs-th>
                     </vs-tr>
                 </template>
                 <template #tbody>
@@ -34,17 +37,17 @@
                             <div class="flex justify-start items-center">
                                 <div class="pl-[12px] pr-[12px] pb-[4px] pt-[4px] rounded-[12px] text-center"
                                     :class="tr.status == 'มีผู้เช่า' ? 'text-[#1DC56A] bg-[#D8FAD5]' : 'text-[#8396A6] bg-[#DEEAF5]'">
-                                    <!-- {{ tr.status }} --> ยังไม่ระบุ
+                                    {{ tr.attributes.user_sign_contract.data ? "มีผู้เข้าพัก" : "ห้องว่าง" }}  
                                 </div>
                             </div>
 
                         </vs-td>
                         <vs-td>
-                            <!-- {{ tr.name }} -->
-                        </vs-td>
+                            {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "" }} 
+                       </vs-td>
                         <vs-td>
                             <div>
-                                <vs-input v-model="tr.unit" disabled>
+                                <vs-input disabled>
                                     <template #icon>
                                         <svg width="9" height="17" viewBox="0 0 9 17" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -69,7 +72,10 @@
                             </vs-input>
                         </vs-td>
                         <vs-td>
-                            <!-- {{ tr.electicUnit }} -->
+                            {{ tr.attributes.electric_fees ? tr.attributes.electric_fees.data.attributes.meterUnit : "ยังไม่ได้ระบุ" }}
+                      </vs-td>
+                      <vs-td>
+                            <vs-button>บันทึก</vs-button>
                         </vs-td>
                     </vs-tr>
                 </template>

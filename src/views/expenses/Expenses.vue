@@ -624,7 +624,7 @@ export default {
         getExpense() {
             const loading = this.$vs.loading()
             // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`http://203.170.190.170:1337/api/building-expenses?populate=deep&sort[0]=id:desc`)
+            fetch(`http://203.170.190.170:1337/api/building-expenses?populate=deep,3&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getEmployer()",resp.data);
