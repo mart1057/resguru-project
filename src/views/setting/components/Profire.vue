@@ -21,7 +21,7 @@
                 <div class="w-[20%] ml-[18px] mt-[-70px]">
                     <div class="bg-[white] rounded-[22px] w-[246px] border p-[14px] flex flex-col items-center">
                         <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
-                            src="https://img.freepik.com/premium-photo/businessman-sitting-with-laptop_107420-67951.jpg" />
+                            src="https://media.wired.com/photos/63b89b5b995aa119ba7ba7be/1:1/w_1800,h_1800,c_limit/Profile-Photos-Gear-1411545652.jpg" />
                         <div class="text-[18px] font-bold mt-[8px]">วรันธร สยนานนท์</div>
                         <div v-if="tab == 2">
                             <div class="w-[100%] mt-[8px]">

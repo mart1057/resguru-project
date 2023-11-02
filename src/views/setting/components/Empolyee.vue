@@ -107,7 +107,7 @@
                     <div class="flex justify-between">
                         <div class="flex">
                             <div class="flex">
-                                <img class="w-[125px] h-[125px] rounded-[12px] bg-[red]"
+                                <img class="w-[125px] h-[125px] rounded-[12px]"
                                     src="https://media.wired.com/photos/63b89b5b995aa119ba7ba7be/1:1/w_1800,h_1800,c_limit/Profile-Photos-Gear-1411545652.jpg" />
                                 <div class="ml-[12px]">
                                     <div class="flex flex-col justify-between h-[100%]">
@@ -118,7 +118,7 @@
                                             </div>
                                             <div class="mt-[14px] text-[18px] font-bold">ชัชพล บุญพันธุ์</div>
                                         </div>
-                                        <div class="ml-[-130px] mb-[-40px]">
+                                       <div class="ml-[-130px] mb-[-40px]">
                                             <svg width="35" height="35" viewBox="0 0 35 35" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect width="35" height="35" rx="12" fill="#003765" />
