@@ -269,7 +269,7 @@
                         </div>
                     </div>
                 </div>
-                <div
+                <div @click="create_room = true"
                     class="rounded-[16px]  p-[14px] h-[202px] border cursor-pointer flex flex-col items-center justify-center">
                     <div>
                         <svg width="68" height="69" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -315,7 +315,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="border h-[97px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"  @click="create_type = true">
+                <div class="border h-[97px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
+                    @click="create_type = true">
                     <div>
                         <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
@@ -650,6 +651,118 @@
             </div>
         </b-modal>
 
+        <b-modal centered v-model="create_room" size="l" hide-backdrop hide-header-close hide-header hide-footer
+            class="p-[-20px] text-custom">
+            <div>
+                <div class="flex justify-between">
+                    <div class="text-custom flex justify-center items-center text-[16px] font-bold">
+                        เพิ่มห้อง</div>
+                    <div @click="create_room = false" class="cursor-pointer">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
+                                width="24" height="24">
+                                <rect width="24" height="24" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_417_4814)">
+                                <path
+                                    d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                                    fill="#5C6B79" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
+                <div class="mt-[14px]">
+                    <div class="grid grid-cols-2 gap-2 w-[100%]">
+                        <div>
+                            <div class="text-custom">อาคาร</div>
+                            <div>
+                                <input
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" />
+
+                            </div>
+                        </div>
+                        <div>
+                            <div class="text-custom">ชั้น</div>
+                            <div>
+                                <input
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-custom mt-[14px]">ประเภทห้องพัก</div>
+                    <div>
+                        <select placeholder="Select" v-model="value"
+                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]">
+                            <option label="เลือก" value="0" disabled>
+                                เลือก
+                            </option>
+                            <option label="ห้องพร้อมเฟอร์นิเจอร์" value="1">
+                                ห้องพร้อมเฟอร์นิเจอร์
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="mt-[14px]">
+                    <div class="text-custom">ค่าเช่าห้อง/เดือน</div>
+                    <div>
+                        <input
+                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" />
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-2 w-[100%] mt-[14px]">
+                    <div>
+                        <div class="text-custom">มิเตอร์ค่าน้ำ</div>
+                        <div class="mt-[8px]">
+                            <vs-input>
+                                <template #icon>
+                                    <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <mask id="mask0_3354_881" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
+                                            y="0" width="24" height="25">
+                                            <rect y="0.5" width="24" height="24" fill="#D9D9D9" />
+                                        </mask>
+                                        <g mask="url(#mask0_3354_881)">
+                                            <path
+                                                d="M12 21.9998C10.0156 21.9998 8.26953 21.3072 6.76172 19.9221C5.25391 18.5369 4.5 16.6627 4.5 14.2994C4.5 12.8125 5.06635 11.1953 6.19905 9.44791C7.33173 7.70048 9.04392 5.79805 11.3356 3.74063C11.4298 3.66088 11.5339 3.59922 11.648 3.55563C11.7621 3.51203 11.8795 3.49023 12 3.49023C12.1205 3.49023 12.2378 3.51203 12.3519 3.55563C12.466 3.59922 12.5701 3.66088 12.6643 3.74063C14.956 5.79805 16.6682 7.70048 17.8009 9.44791C18.9336 11.1953 19.5 12.8125 19.5 14.2994C19.5 16.6627 18.746 18.5369 17.2382 19.9221C15.7304 21.3072 13.9843 21.9998 12 21.9998ZM12 20.4998C13.6769 20.4998 15.0961 19.9232 16.2577 18.77C17.4192 17.6168 18 16.1267 18 14.2998C18 13.1165 17.5083 11.7623 16.525 10.2373C15.5416 8.71231 14.0333 7.01648 12 5.14981C9.96664 7.01648 8.45831 8.71231 7.47497 10.2373C6.49164 11.7623 5.99997 13.1165 5.99997 14.2998C5.99997 16.1267 6.58074 17.6168 7.74227 18.77C8.90382 19.9232 10.3231 20.4998 12 20.4998ZM12.2461 19.346C12.4205 19.3293 12.5641 19.2641 12.6769 19.1503C12.7897 19.0365 12.8461 18.8993 12.8461 18.7386C12.8461 18.5512 12.7846 18.4027 12.6617 18.2931C12.5387 18.1835 12.3816 18.137 12.1903 18.1537C11.507 18.2037 10.7628 18.0033 9.95765 17.5527C9.15253 17.1021 8.64997 16.3184 8.44997 15.2017C8.41664 15.0312 8.34517 14.8972 8.23555 14.7998C8.12593 14.7024 7.99548 14.6537 7.8442 14.6537C7.66215 14.6537 7.51055 14.7219 7.3894 14.8585C7.26825 14.995 7.22948 15.1703 7.27308 15.3844C7.54358 16.837 8.19742 17.8754 9.2346 18.4998C10.2718 19.1242 11.2756 19.4062 12.2461 19.346Z"
+                                                fill="#003765" />
+                                        </g>
+                                    </svg>
+                                </template>
+                            </vs-input>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="text-custom">มิเตอร์ค่าไฟ</div>
+                        <div class="mt-[8px]">
+                            <vs-input>
+                                <template #icon>
+                                    <svg width="9" height="17" viewBox="0 0 9 17" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <path
+                                            d="M3.66427 13.6L6.59083 8.63457C6.61809 8.58327 6.62082 8.53038 6.59901 8.4759C6.57719 8.4214 6.53902 8.39415 6.48449 8.39415H4.10106L5.58966 2.3173C5.61148 2.24038 5.60058 2.16827 5.55695 2.10095C5.51331 2.03363 5.45878 1.99997 5.39335 1.99997H1.53769C1.46134 1.99997 1.39863 2.02882 1.34957 2.08652C1.30048 2.14423 1.27594 2.21795 1.27594 2.3077V9.69225C1.27594 9.782 1.30048 9.85573 1.34957 9.91343C1.39863 9.97113 1.46134 9.99998 1.53769 9.99998H3.66427V13.6ZM7.90928 9.0134L3.44345 16.6306C3.36384 16.7678 3.26487 16.8582 3.14655 16.9018C3.02823 16.9454 2.91072 16.9454 2.79402 16.9018C2.67734 16.8582 2.58055 16.7787 2.50366 16.6633C2.42677 16.5479 2.38833 16.4082 2.38833 16.2441V11.5H1.53769C1.11347 11.5 0.751132 11.3233 0.45067 10.9701C0.150223 10.6169 0 10.191 0 9.69225V2.3077C0 1.80898 0.150223 1.38302 0.45067 1.02982C0.751132 0.676608 1.11347 0.5 1.53769 0.5H5.65507C6.07603 0.5 6.41792 0.6875 6.68074 1.0625C6.94357 1.4375 7.021 1.85257 6.91303 2.3077L5.79086 6.8942H6.95233C7.41363 6.8942 7.7547 7.13362 7.97554 7.61245C8.19637 8.0913 8.17428 8.55828 7.90928 9.0134Z"
+                                            fill="#003765" />
+                                    </svg>
+                                </template>
+                            </vs-input>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-end mt-[30px]">
+                    <div>
+                        <vs-button dark shadow @click="create_room = false">
+                            <div class="text-custom">ยกเลิก</div>
+                        </vs-button>
+                    </div>
+                    <div>
+                        <vs-button @click="create_room = false" color="#003765">
+                            <div class="text-custom">บันทึก</div>
+                        </vs-button>
+                    </div>
+                </div>
+            </div>
+        </b-modal>
+
     </div>
 </template>
 <script>
@@ -661,6 +774,7 @@ export default {
             create: false,
             type: false,
             create_type: false,
+            create_room: false
 
         }
     }

@@ -26,7 +26,7 @@
     </div>
 </template>
 <script>
-import Profire from '@/views/setting/components/Profire'
+import Profire from '@/views/setting/components/Profire.vue'
 import Room from './components/Room.vue';
 import Meter from './components/Meter.vue'
 import Payment from './components/Payment.vue'
