@@ -40,12 +40,12 @@
                             {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "" }} 
                         </vs-td>
                         <vs-td>
-                            <vs-input v-model="tr.unit">
+                            <vs-input v-model="communalUnit">
                               
                             </vs-input>
                         </vs-td>
                         <vs-td>
-                            <vs-button>บันทึก</vs-button>
+                            <vs-button  @click="updateCommunalfee(tr.attributes.communal_fees.data[0].id)" >บันทึก</vs-button>
                         </vs-td>
                     </vs-tr>
                 </template>
@@ -54,6 +54,8 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
+
 export default {
     data() {
         return {
@@ -81,65 +83,10 @@ export default {
                     "email": "Sincere@april.biz",
                     "website": "hildegard.org",
                     "unit": "4,000"
-                },
-                {
-                    "id": 4,
-                    "name": "Patricia Lebsack",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "4,000"
-                },
-                {
-                    "id": 5,
-                    "name": "Chelsey Dietrich",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "4,000"
-                },
-                {
-                    "id": 6,
-                    "name": "Mrs. Dennis Schulist",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "4,000"
-                },
-                {
-                    "id": 7,
-                    "name": "Kurtis Weissnat",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "4,000"
-                },
-                {
-                    "id": 8,
-                    "name": "",
-                    "status": "ห้องว่าง",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": ""
-                },
-                {
-                    "id": 9,
-                    "name": "Glenna Reichert",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "4,000"
-                },
-                {
-                    "id": 10,
-                    "name": "Clementina DuBuque",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "4,000"
                 }
             ],
             commonRoom: [],
+            communalUnit:0,
         }
     },
     created() {
@@ -162,7 +109,24 @@ export default {
                 }).finally(() => {
                     loading.close()
                 })
-        }
+        },
+        updateCommunalfee(comFeeId){
+            axios.put(`http://203.170.190.170:1337/api/communal-fees/${comFeeId}`,{
+                data : {
+                    communalUnit: this.communalUnit
+                }
+            }).then( 
+                    this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
+                )
+        }, 
+        openNotificationUpdateWater(position = null, color) {
+            const noti = this.$vs.notification({
+                sticky: true,
+                color,
+                position,
+                title: 'Update Water Meter Success',
+            })
+        },
         
     },
 }

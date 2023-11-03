@@ -60,7 +60,7 @@
                             </div>
                         </vs-td>
                         <vs-td>
-                            <vs-input v-model="tr.unit">
+                            <vs-input v-model="electicUnit">
                                 <template #icon>
                                     <svg width="9" height="17" viewBox="0 0 9 17" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -71,11 +71,14 @@
                                 </template>
                             </vs-input>
                         </vs-td>
+                
                         <vs-td>
-                            {{ tr.attributes.electric_fees ? tr.attributes.electric_fees.data.attributes.meterUnit : "ยังไม่ได้ระบุ" }}
-                      </vs-td>
-                      <vs-td>
-                            <vs-button>บันทึก</vs-button>
+                            {{ tr.attributes.electric_fees.data[0] ? tr.attributes.electric_fees.data[0].attributes.electicUnit : "ยังไม่ได้ระบุ" }} 
+                        </vs-td>
+                        <vs-td>
+                            <div>
+                                <vs-button @click="updateElectfee(tr.attributes.electric_fees.data[0].id)" >บันทึก</vs-button>
+                            </div>
                         </vs-td>
                     </vs-tr>
                 </template>
@@ -84,6 +87,8 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
+
 export default {
     data() {
         return {
@@ -103,73 +108,10 @@ export default {
                     "email": "Sincere@april.biz",
                     "website": "hildegard.org",
                     "unit": "33"
-                },
-                {
-                    "id": 3,
-                    "name": "Clementine Bauch",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "33"
-                },
-                {
-                    "id": 4,
-                    "name": "Patricia Lebsack",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "33"
-                },
-                {
-                    "id": 5,
-                    "name": "Chelsey Dietrich",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "33"
-                },
-                {
-                    "id": 6,
-                    "name": "Mrs. Dennis Schulist",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "33"
-                },
-                {
-                    "id": 7,
-                    "name": "Kurtis Weissnat",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "33"
-                },
-                {
-                    "id": 8,
-                    "name": "",
-                    "status": "ห้องว่าง",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": ""
-                },
-                {
-                    "id": 9,
-                    "name": "Glenna Reichert",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "33"
-                },
-                {
-                    "id": 10,
-                    "name": "Clementina DuBuque",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "33"
                 }
             ],
             ElectricityFee:[],
+            electicUnit:0,
         }
     },
     created() {
@@ -184,7 +126,7 @@ export default {
     methods: {
         getElectricityFee() {
             const loading = this.$vs.loading()
-            fetch(`http://203.170.190.170:1337/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep`)
+            fetch(`http://203.170.190.170:1337/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep,3`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()",resp.data);
@@ -192,7 +134,24 @@ export default {
                 }).finally(() => {
                     loading.close()
                 })
-        }
+        },
+        updateElectfee(electFeeId){
+            axios.put(`http://203.170.190.170:1337/api/electric-fees/${electFeeId}`,{
+                data : {
+                    electicUnit: this.electicUnit
+                }
+            }).then( 
+                    this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
+                )
+        }, 
+        openNotificationUpdateWater(position = null, color) {
+            const noti = this.$vs.notification({
+                sticky: true,
+                color,
+                position,
+                title: 'Update Water Meter Success',
+            })
+        },
         
     },
 }

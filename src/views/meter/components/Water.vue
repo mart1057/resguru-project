@@ -43,7 +43,7 @@
 
                         </vs-td>
                         <vs-td>
-                            {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "" }} 
+                            {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "Null" }} 
                         </vs-td>
                         <vs-td>
                             <div>
@@ -66,7 +66,7 @@
                             </div>
                         </vs-td>
                         <vs-td>
-                            <vs-input v-model="tr.unit" >
+                            <vs-input v-model="waterUnit" >
                                 <template #icon>
                                     <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -84,10 +84,12 @@
                             </vs-input>
                         </vs-td>
                         <vs-td>
-                            {{ tr.attributes.water_fees.data ? tr.attributes.water_fees.data.id : "ยังไม่ได้ระบุ" }}
+                            {{ tr.attributes.water_fees.data[0] ? tr.attributes.water_fees.data[0].attributes.meterUnit : "ยังไม่ได้ระบุ" }} 
                         </vs-td>
                         <vs-td>
-                            <vs-button>บันทึก</vs-button>
+                            <div>
+                                <vs-button @click="updateWaterfee(tr.attributes.water_fees.data[0].id)" >บันทึก</vs-button>
+                            </div>
                         </vs-td>
                     </vs-tr>
                 </template>
@@ -96,11 +98,13 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
 
 export default {
     data() {
         return {
             WaterFee:[],
+            waterUnit: 0,
         }
     },
     created() {
@@ -123,8 +127,24 @@ export default {
                 }).finally(() => {
                     loading.close()
                 })
-
-        }
+        },
+        updateWaterfee(waterFeeId){
+            axios.put(`http://203.170.190.170:1337/api/water-fees/${waterFeeId}`,{
+                data : {
+                    meterUnit: this.waterUnit
+                }
+            }).then( 
+                    this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
+                )
+        }, 
+        openNotificationUpdateWater(position = null, color) {
+            const noti = this.$vs.notification({
+                sticky: true,
+                color,
+                position,
+                title: 'Update Water Meter Success',
+            })
+        },
         
     },
 }
