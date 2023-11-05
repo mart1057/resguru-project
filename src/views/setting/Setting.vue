@@ -18,7 +18,7 @@
             <div class="w-[100%] h-[1px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
 
         </div>
-        <Profire v-if="tab == 1" />
+        <Profile v-if="tab == 1" />
         <Room v-else-if="tab == 2" />
         <Meter v-else-if="tab == 3" />
         <Payment v-else-if="tab == 4" />
@@ -27,17 +27,18 @@
     </div>
 </template>
 <script>
-import Profire from '@/views/setting/components/Profire.vue'
+import Profile from '@/views/setting/components/Profile.vue'
 import Room from './components/Room.vue';
 import Meter from './components/Meter.vue'
 import Payment from './components/Payment.vue'
 import Contract from './components/Contract.vue';
 import Empolyee from './components/Empolyee.vue';
 export default {
-    components: { Profire, Room, Meter, Payment, Contract, Empolyee  },
+    components: { Profile, Room, Meter, Payment, Contract, Empolyee  },
     data() {
         return {
-            tab: 1
+            tab: 1,
+           
 
         }
     },
@@ -48,7 +49,7 @@ export default {
         setTimeout(() => {
             loading.close()
         }, 1000)
-    },
+    }
 }
 
 </script>

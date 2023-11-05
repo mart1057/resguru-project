@@ -103,15 +103,15 @@
                     <div class="grid grid-cols-4 w-[100%] gap-2 ">
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">ชื่อ</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.firstName" />
                         </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">นามสกุล</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.lastName"/>
                         </div>
                         <div class="mt-[8px] col-span-4">
                             <div class="text-custom text-[14px] text-[#003765]">ที่อยู่</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.billingAddress" />
                         </div>
                         <div class="">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">เขต</div>
@@ -159,11 +159,11 @@
                         </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.phone"/>
                         </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">Email</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.email" />
                         </div>
                     </div>
                     <div class="mt-[44px] mb-[50px]">
@@ -255,7 +255,7 @@
                         </div>
                     </div>
                     <div class="mt-[44px] mb-[50px]">
-                        <vs-button dark shadow>
+                        <vs-button @click="updateUserDetail(this.$store.state.userInfo.user.id)" >
                             <div class="font-bold">บันทึก</div>
                         </vs-button>
                     </div>
@@ -268,10 +268,51 @@
 export default {
     data() {
         return {
-            tab: 1
-
+            tab: 1,
+            userData: [] ,
         }
-    }
+    },
+    created() {
+        const loading = this.$vs.loading({})
+        setTimeout(() => {
+            loading.close()
+        }, 1000)
+    },
+    mounted() {
+        this.getUserDetail();
+    },
+    methods: {
+        getUserDetail() {
+            const loading = this.$vs.loading()
+            console.log("ID :",this.$store.state.userInfo.user.id)
+            fetch(`http://203.170.190.170:1337/api/users/${this.$store.state.userInfo.user.id}`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getUser()",resp);
+                    this.userData = resp
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        updateUserDetail(userID){
+            axios.put(`http://203.170.190.170:1337/api/users/${userID}`,{
+                data : {
+                    email: this.email
+                }
+            }).then( 
+                    this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
+                )
+        }, 
+        openNotificationUpdateWater(position = null, color) {
+            const noti = this.$vs.notification({
+                sticky: true,
+                color,
+                position,
+                title: 'Update Water Meter Success',
+            })
+        },
+        
+    },
 }
 
 </script>

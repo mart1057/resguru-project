@@ -51,17 +51,18 @@
                         </div>
                         <div
                             class=" ml-[10px] h-[15px] bg-[#E7E2F7] pl-[12px] pr-[12px] pt-[12px] pb-[12px] rounded-[13px] text-[#9A77FF] text-center flex items-center">
-                            Professional
+                            Professional 
                         </div>
                         <div class="flex ml-[10px] items-center">
+                            
                             <vs-tooltip bottom shadow interactivity >
                                 <div  class="cursor-pointer">
                                     <vs-avatar size="40" primary>
-                                        <template #text>
-                                            Lily
-                                        </template>
+                                       NK
                                     </vs-avatar>
+                                    
                                 </div>
+                                
                                 <template #tooltip>
                                     <div class="content-tooltip p-[8px]">
                                         <div class="flex">
@@ -180,11 +181,11 @@
                                 </template>
                             </vs-tooltip>
                             <div class="ml-[8px]">
-                                <vs-avatar>
-                                    <template #text>
-                                        Lily
-                                    </template>
-                                </vs-avatar>
+                                <!-- <vs-avatar> -->
+                                    {{ this.$store.state.userInfo.user.firstName }} {{  }}
+                                        {{ this.$store.state.userInfo.user.lastName }}
+                                    
+                                <!-- </vs-avatar> -->
                             </div>
                         </div>
                     </div>
