@@ -47,7 +47,8 @@
                        </vs-td>
                         <vs-td>
                             <div>
-                                <vs-input disabled>
+                                <div v-if=tr.attributes.electric_fees.data[1]>
+                                <vs-input disabled v-model=tr.attributes.electric_fees.data[1].attributes.electicUnit>
                                     <template #icon>
                                         <svg width="9" height="17" viewBox="0 0 9 17" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -57,6 +58,7 @@
                                         </svg>
                                     </template>
                                 </vs-input>
+                                </div>
                             </div>
                         </vs-td>
                         <vs-td>
@@ -142,6 +144,9 @@ export default {
                 }
             }).then( 
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
+                )
+                .then(
+                    this.$forceUpdate()
                 )
         }, 
         openNotificationUpdateWater(position = null, color) {

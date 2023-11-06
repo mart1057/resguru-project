@@ -47,7 +47,8 @@
                         </vs-td>
                         <vs-td>
                             <div>
-                                <vs-input disabled>
+                                <div v-if=tr.attributes.water_fees.data[1]>
+                                    <vs-input disabled v-model=tr.attributes.water_fees.data[1].attributes.meterUnit>
                                     <template #icon>
                                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -62,7 +63,8 @@
                                             </g>
                                         </svg>
                                     </template>
-                                </vs-input>
+                                    </vs-input>
+                                </div>
                             </div>
                         </vs-td>
                         <vs-td>
@@ -135,6 +137,9 @@ export default {
                 }
             }).then( 
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
+                )
+                .then(
+                    this.$forceUpdate()
                 )
         }, 
         openNotificationUpdateWater(position = null, color) {

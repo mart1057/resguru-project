@@ -302,6 +302,9 @@ export default {
             }).then( 
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
                 )
+                .then(
+                    this.$forceUpdate()
+                )
         }, 
         openNotificationUpdateWater(position = null, color) {
             const noti = this.$vs.notification({

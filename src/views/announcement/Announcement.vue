@@ -324,6 +324,9 @@ export default {
                         this.$router.go(this.$router.currentRoute)
                     )
                 )
+                .then(
+                    this.$forceUpdate()
+                )
     
         },      
         editAnnouncement(postID){
@@ -339,6 +342,9 @@ export default {
                     this.openNotificationCreateAnnouncement('top-right', '#3A89CB', 6000).then(
                         this.$router.go(this.$router.currentRoute)
                     )
+                )
+                .then(
+                    this.$forceUpdate()
                 )
         }, 
         openNotificationCreateAnnouncement(position = null, color) {
