@@ -825,7 +825,7 @@ export default {
                     this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
                 )
                 .then(
-                    this.$forceUpdate()
+                    setTimeout(() => location.reload(), 1500)
                 )
         }, 
         openNotificationUpdateRoom(position = null, color) {
@@ -848,7 +848,7 @@ export default {
                     this.openNotificationAddRoom('top-right', '#3A89CB', 6000)
                 )
                 .then(
-                    this.$forceUpdate()
+                    setTimeout(() => location.reload(), 1500)
                 )
         }, 
 
@@ -863,7 +863,7 @@ export default {
                     this.openNotificationAddRoom('top-right', '#3A89CB', 6000)
                 )
                 .then(
-                    this.$forceUpdate()
+                    setTimeout(() => location.reload(), 1500)
                 )
         },
         openNotificationAddRoom(position = null, color) {

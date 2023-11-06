@@ -72,10 +72,10 @@
                     <vs-table v-model="selected">
                         <template #thead>
                             <vs-tr>
-                                <!-- <vs-th>
+                                <vs-th>
                                     <vs-checkbox :indeterminate="selected.length == announcement.length" v-model="allCheck"
                                         @change="selected = $vs.checkAll(selected, announcement)" />
-                                </vs-th> -->
+                                </vs-th>
                                 <vs-th>
                                     วันที่ประกาศ
                                 </vs-th>
@@ -95,9 +95,9 @@
                         </template>
                         <template #tbody>
                             <vs-tr :key="i" v-for="(tr, i) in announcement" :data="tr">
-                                <!-- <vs-td checkbox>
+                                <vs-td checkbox>
                                     <vs-checkbox :val="tr" v-model="selected" />
-                                </vs-td> -->
+                                </vs-td>
                                 <vs-td>
                                 <div class="text-custom">{{ tr.attributes.createdAt }}</div>
                                 </vs-td>
@@ -325,7 +325,7 @@ export default {
                     )
                 )
                 .then(
-                    this.$forceUpdate()
+                    setTimeout(() => location.reload(), 1500)
                 )
     
         },      

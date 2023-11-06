@@ -544,7 +544,7 @@ export default {
                     this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
                 )
                 .then(
-                    create_service = false
+                    setTimeout(() => location.reload(), 1500)
                 )
         }, 
         updateUserBuildingPayment(buildingID){
@@ -556,7 +556,7 @@ export default {
                     this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
                 )
                 .then(
-                    this.$forceUpdate()
+                    setTimeout(() => location.reload(), 1500)
                 )
         }, 
         openNotificationUpdateRoom(position = null, color) {

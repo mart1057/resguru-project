@@ -369,7 +369,9 @@ export default {
                 color,
                 position,
                 title: 'Book Room Success',
-            })
+            }).then(
+                setTimeout(() => location.reload(), 1500)
+            )
         },
     }
 

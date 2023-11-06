@@ -146,7 +146,7 @@ export default {
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
                 )
                 .then(
-                    this.$forceUpdate()
+                    setTimeout(() => location.reload(), 1500)
                 )
         }, 
         openNotificationUpdateWater(position = null, color) {
@@ -154,7 +154,7 @@ export default {
                 sticky: true,
                 color,
                 position,
-                title: 'Update Water Meter Success',
+                title: 'Update Meter Success, <br> Please wait while the system is loading',
             })
         },
         

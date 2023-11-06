@@ -281,7 +281,7 @@ export default {
                         this.$router.go(this.$router.currentRoute)
                     )
                     .then(
-                        this.$forceUpdate()
+                        setTimeout(() => location.reload(), 1500)
                     )
             )
                 

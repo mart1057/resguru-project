@@ -139,7 +139,7 @@ export default {
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
                 )
                 .then(
-                    this.$forceUpdate()
+                    setTimeout(() => location.reload(), 1500)
                 )
         }, 
         openNotificationUpdateWater(position = null, color) {
