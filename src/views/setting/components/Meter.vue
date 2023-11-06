@@ -46,7 +46,7 @@
                         <div
                             class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] text-[#2875E9]">
                             <div>ราคา</div>
-                            <div class="font-bold">35</div>
+                            <div class="font-bold">{{ building[0].attributes.waterUnitPrice }}</div>
                         </div>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                         <div
                             class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] text-[#EEA10B]">
                             <div>ราคา</div>
-                            <div class="font-bold">35</div>
+                            <div class="font-bold">{{ building[0].attributes.electricUnitPrice }}</div>
                         </div>
                     </div>
                 </div>
@@ -104,7 +104,7 @@
                         </div>
                         <div class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] ">
                             <div>ราคา</div>
-                            <div class="font-bold">500</div>
+                            <div class="font-bold">{{ building[0].attributes.communalUnitPrice }}</div>
                         </div>
                     </div>
                 </div>
@@ -116,10 +116,10 @@
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 3">
             <div class="text-[16px] font-bold mt-[24px]">ค่าบริการ</div>
             <div class="grid grid-cols-6 gap-4 mt-[14px] w-[100%]">
-                <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]">
-                    <div class="flex flex-col justify-between h-[100%]">
+                <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]" v-for="data in otherOfBuilding">
+                    <div class="flex flex-col justify-between h-[100%]" >
                         <div class="flex justify-between">
-                            <div class="text-[16px]">ที่จอดรถจักรยานยนต์</div>
+                            <div class="text-[16px]"> {{ data.attributes.title }}</div>
                             <div>
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -135,12 +135,12 @@
                         <div
                             class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]  mt-[14px]">
                             <div>ราคา</div>
-                            <div class="font-bold">3500</div>
+                            <div class="font-bold">{{ data.attributes.price }}</div>
                         </div>
                         <div
                             class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]  mt-[4px]">
                             <div>ส่วนลด</div>
-                            <div class="font-bold">500</div>
+                            <div class="font-bold">{{ data.attributes.discountAmount }}</div>
                         </div>
                     </div>
                 </div>
@@ -505,21 +505,21 @@
                     <div class="text-custom">ชื่อบริการ</div>
                     <div>
                         <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" />
+                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="title" />
                     </div>
                 </div>
                 <div class="mt-[14px]">
                     <div class="text-custom">ราคา/เดือน</div>
                     <div>
                         <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" />
+                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="price" />
                     </div>
                 </div>
                 <div class="mt-[14px]">
                     <div class="text-custom">ส่วนลด</div>
                     <div>
                         <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" />
+                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="discountAmount"/>
                     </div>
                 </div>
                 <div class="flex justify-end mt-[30px]">
@@ -529,7 +529,7 @@
                         </vs-button>
                     </div>
                     <div>
-                        <vs-button @click="create_service = false" color="#003765">
+                        <vs-button @click="createOtherOfBuilding()" color="#003765">
                             <div class="text-custom">บันทึก</div>
                         </vs-button>
                     </div>
@@ -539,6 +539,8 @@
     </div>
 </template>
 <script>
+
+import axios from 'axios'
 export default {
     data() {
         return {
@@ -547,10 +549,107 @@ export default {
             create: false,
             type: false,
             create_type: false,
-            create_service: false
-
+            create_service: false,
+            building: [],
+            otherOfBuilding: [],
+            title: "",
+            price: 0,
+            discountAmount: 0
         }
-    }
+    },
+    created() {
+        const loading = this.$vs.loading({})
+        setTimeout(() => {
+            loading.close()
+        }, 1000)
+    },
+    mounted() {
+        this.getUserBuilding();
+        this.getOtherBuilding();
+    },
+    methods: {
+        getUserBuilding() {
+            const loading = this.$vs.loading()
+            fetch('http://203.170.190.170:1337/api' + '/buildings?filters[id][$eq]='+this.$store.state.building)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getRoom()",resp.data);
+                    this.building = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        getOtherBuilding() {
+            const loading = this.$vs.loading()
+            fetch('http://203.170.190.170:1337/api' + '/other-of-buildings?filters[building][id][$eq]='+this.$store.state.building)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getOther()",resp.data);
+                    this.otherOfBuilding = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        createOtherOfBuilding(){
+            axios.post(`http://203.170.190.170:1337/api/other-of-buildings/`,{
+                data : {
+                    title: this.title,
+                    price: this.price,
+                    discountAmount: this.discountAmount,
+                    building: this.$store.state.building
+                }
+            }).then( 
+                    this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
+                )
+                .then(
+                    create_service = false
+                )
+        }, 
+        updateUserBuildingWater(buildingID){
+            axios.put(`http://203.170.190.170:1337/api/buildings/${buildingID}`,{
+                data : {
+                    waterUnitPrice: this.waterUnitPrice
+                }
+            }).then( 
+                    this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
+                )
+                .then(
+                    this.$forceUpdate()
+                )
+        }, 
+        updateUserBuildingElectric(buildingID){
+            axios.put(`http://203.170.190.170:1337/api/buildings/${buildingID}`,{
+                data : {
+                    electricUnitPrice: this.electricUnitPrice
+                }
+            }).then( 
+                    this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
+                )
+                .then(
+                    this.$forceUpdate()
+                )
+        }, 
+        updateUserBuildingCommunual(buildingID){
+            axios.put(`http://203.170.190.170:1337/api/buildings/${buildingID}`,{
+                data : {
+                    communalUnitPrice: this.communalUnitPrice
+                }
+            }).then( 
+                    this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
+                )
+                .then(
+                    this.$forceUpdate()
+                )
+        }, 
+        openNotificationUpdateRoom(position = null, color) {
+            const noti = this.$vs.notification({
+                sticky: true,
+                color,
+                position,
+                title: 'Update Room Success',
+            })
+        },
+    },
 }
 
 </script>

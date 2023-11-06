@@ -10,7 +10,7 @@
                                 ผังห้อง</div>
                             <div @click="tab = 2" class="cursor-pointer ml-[8px]"
                                 :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
-                                รายการประเภทห้องพัก
+                                รายการประเภทห้องพัก 
                             </div>
                         </div>
                     </div>
@@ -124,8 +124,11 @@
                                 </vs-option>
                             </vs-select>
                         </div>
-                        <div class="mr-[14px] font-bold cursor-pointer">อาคาร A ชั้น 1</div>
-                        <div class="text-[#8396A6] cursor-pointer">อาคาร A ชั้น 2</div>
+                        <div v-for="data in roomFloor">
+                        <div class="text-[#8396A6] cursor-pointer"> อาคาร {{ data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }} </div>
+                        
+                        </div>
+                        <!-- <div class="text-[#8396A6] cursor-pointer">อาคาร A ชั้น 2</div> -->
                     </div>
                 </div>
             </div>
@@ -133,9 +136,9 @@
         <div class="mt-[24px] bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px] rounded-[12px]" v-if="tab == 1">
             <div class="text-[24px] font-bold mt-[14px]">อาคาร A ชั้น 1</div>
             <div class="grid grid-cols-4 w-[100%] gap-4 mt-[14px] ">
-                <div class="rounded-[16px]  p-[14px] h-[202px] border cursor-pointer">
+                <div class="rounded-[16px]  p-[14px] h-[202px] border cursor-pointer" v-for="data in room">
                     <div class="flex justify-between">
-                        <div class="text-[18px] font-bold text-[#003765]">ห้อง 101</div>
+                        <div class="text-[18px] font-bold text-[#003765]">ห้อง {{ data.attributes.RoomNumber }}</div>
                         <div class="flex">
                             <vs-checkbox v-model="option" color="#003765"> </vs-checkbox>
                         </div>
@@ -144,21 +147,33 @@
                         <div class="flex justify-between  h-[100%]">
                             <div class="text-[12px] text-[#5C6B79] flex items-center">ประเภทห้อง</div>
                             <div class="mt-[]">
-                                <select placeholder="Select" v-model="value"
+                                <select placeholder="Select"
                                     class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]"
                                     :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''">
-                                    <option label="เลือก" value="0" disabled>
+                                    
+                                    <option  v-for="data in roomType">
+                                        {{data.attributes.roomTypeName}}
+                                    </option>
+                                    
+                                    <!-- <option label="เลือก" value="0" disabled>
                                         เลือก
                                     </option>
                                     <option label="ห้องพร้อมเฟอร์นิเจอร์" value="1">
                                         ห้องพร้อมเฟอร์นิเจอร์
                                     </option>
+                                    <option label="ห้อง Building Room" value="1">
+                                        ห้อง Building Room
+                                    </option>
+                                    <option label="ห้อง Delux Room" value="1">
+                                        ห้อง Delux Room
+                                    </option> -->
                                 </select>
                             </div>
                         </div>
                         <div class="grid grid-cols-2 w-[100%] gap-4 mt-[14px] ">
                             <div class="w-[100%]">
-                                <vs-input v-model="value1">
+                                <div v-if="data.attributes.water_fees.data[0]">
+                                <vs-input v-model="data.attributes.water_fees.data[0].attributes.meterUnit" disabled>
                                     <template #icon>
                                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -174,59 +189,9 @@
                                         </svg>
                                     </template>
                                 </vs-input>
-                            </div>
-                            <div class="w-[100%]">
-                                <vs-input v-model="value1" id="ii">
-                                    <template #icon>
-                                        <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <mask id="mask0_3458_17710" style="mask-type:alpha" maskUnits="userSpaceOnUse"
-                                                x="0" y="0" width="24" height="25">
-                                                <rect y="0.457031" width="24" height="24" fill="#D9D9D9" />
-                                            </mask>
-                                            <g mask="url(#mask0_3458_17710)">
-                                                <path
-                                                    d="M11.6643 17.557L14.5908 12.5916C14.6181 12.5403 14.6208 12.4874 14.599 12.4329C14.5772 12.3784 14.539 12.3512 14.4845 12.3512H12.1011L13.5897 6.27433C13.6115 6.19741 13.6006 6.1253 13.557 6.05798C13.5133 5.99066 13.4588 5.95701 13.3934 5.95701H9.53769C9.46134 5.95701 9.39863 5.98586 9.34957 6.04356C9.30048 6.10126 9.27594 6.17498 9.27594 6.26473V13.6493C9.27594 13.739 9.30048 13.8128 9.34957 13.8705C9.39863 13.9282 9.46134 13.957 9.53769 13.957H11.6643V17.557ZM15.9093 12.9704L11.4434 20.5877C11.3638 20.7248 11.2649 20.8152 11.1465 20.8588C11.0282 20.9024 10.9107 20.9024 10.794 20.8588C10.6773 20.8152 10.5806 20.7357 10.5037 20.6204C10.4268 20.505 10.3883 20.3652 10.3883 20.2011V15.457H9.53769C9.11347 15.457 8.75113 15.2804 8.45067 14.9272C8.15022 14.574 8 14.148 8 13.6493V6.26473C8 5.76601 8.15022 5.34006 8.45067 4.98686C8.75113 4.63364 9.11347 4.45703 9.53769 4.45703H13.6551C14.076 4.45703 14.4179 4.64453 14.6807 5.01953C14.9436 5.39453 15.021 5.8096 14.913 6.26473L13.7909 10.8512H14.9523C15.4136 10.8512 15.7547 11.0906 15.9755 11.5695C16.1964 12.0483 16.1743 12.5153 15.9093 12.9704Z"
-                                                    fill="#003765" />
-                                            </g>
-                                        </svg>
-                                    </template>
-                                </vs-input>
-                            </div>
-                        </div>
-                        <div
-                            class="flex pl-[8px] pr-[8px] pt-[4px] pb-[4px] rounded-[12px] border justify-between mt-[8px] text-[#0B9A3C]">
-                            <div>ราคา</div>
-                            <div>3500</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="rounded-[16px]  p-[14px] h-[202px] border cursor-pointer">
-                    <div class="flex justify-between">
-                        <div class="text-[18px] font-bold text-[#003765]">ห้อง 101</div>
-                        <div class="flex">
-                            <vs-checkbox v-model="option" color="#003765"> </vs-checkbox>
-                        </div>
-                    </div>
-                    <div class="mt-[24px]">
-                        <div class="flex justify-between  h-[100%]">
-                            <div class="text-[12px] text-[#5C6B79] flex items-center">ประเภทห้อง</div>
-                            <div class="mt-[]">
-                                <select placeholder="Select" v-model="value"
-                                    class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]"
-                                    :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''">
-                                    <option label="เลือก" value="0" disabled>
-                                        เลือก
-                                    </option>
-                                    <option label="ห้องพร้อมเฟอร์นิเจอร์" value="1">
-                                        ห้องพร้อมเฟอร์นิเจอร์
-                                    </option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-2 w-[100%] gap-4 mt-[14px] ">
-                            <div class="w-[100%]">
-                                <vs-input v-model="value1">
+                                </div>
+                                <div v-else>
+                                    <vs-input disabled>
                                     <template #icon>
                                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -242,9 +207,11 @@
                                         </svg>
                                     </template>
                                 </vs-input>
+                                </div>
                             </div>
                             <div class="w-[100%]">
-                                <vs-input v-model="value1" id="ii">
+                                <div v-if=data.attributes.electric_fees.data[0]>
+                                <vs-input v-model=data.attributes.electric_fees.data[0].attributes.electicUnit disabled >
                                     <template #icon>
                                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -260,6 +227,25 @@
                                         </svg>
                                     </template>
                                 </vs-input>
+                                </div>
+                                <div v-else>
+                                    <vs-input  disabled >
+                                    <template #icon>
+                                        <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <mask id="mask0_3458_17710" style="mask-type:alpha" maskUnits="userSpaceOnUse"
+                                                x="0" y="0" width="24" height="25">
+                                                <rect y="0.457031" width="24" height="24" fill="#D9D9D9" />
+                                            </mask>
+                                            <g mask="url(#mask0_3458_17710)">
+                                                <path
+                                                    d="M11.6643 17.557L14.5908 12.5916C14.6181 12.5403 14.6208 12.4874 14.599 12.4329C14.5772 12.3784 14.539 12.3512 14.4845 12.3512H12.1011L13.5897 6.27433C13.6115 6.19741 13.6006 6.1253 13.557 6.05798C13.5133 5.99066 13.4588 5.95701 13.3934 5.95701H9.53769C9.46134 5.95701 9.39863 5.98586 9.34957 6.04356C9.30048 6.10126 9.27594 6.17498 9.27594 6.26473V13.6493C9.27594 13.739 9.30048 13.8128 9.34957 13.8705C9.39863 13.9282 9.46134 13.957 9.53769 13.957H11.6643V17.557ZM15.9093 12.9704L11.4434 20.5877C11.3638 20.7248 11.2649 20.8152 11.1465 20.8588C11.0282 20.9024 10.9107 20.9024 10.794 20.8588C10.6773 20.8152 10.5806 20.7357 10.5037 20.6204C10.4268 20.505 10.3883 20.3652 10.3883 20.2011V15.457H9.53769C9.11347 15.457 8.75113 15.2804 8.45067 14.9272C8.15022 14.574 8 14.148 8 13.6493V6.26473C8 5.76601 8.15022 5.34006 8.45067 4.98686C8.75113 4.63364 9.11347 4.45703 9.53769 4.45703H13.6551C14.076 4.45703 14.4179 4.64453 14.6807 5.01953C14.9436 5.39453 15.021 5.8096 14.913 6.26473L13.7909 10.8512H14.9523C15.4136 10.8512 15.7547 11.0906 15.9755 11.5695C16.1964 12.0483 16.1743 12.5153 15.9093 12.9704Z"
+                                                    fill="#003765" />
+                                            </g>
+                                        </svg>
+                                    </template>
+                                    </vs-input>
+                                </div>
                             </div>
                         </div>
                         <div
@@ -292,10 +278,10 @@
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 2">
             <div class="text-[16px] font-bold mt-[24px]">รายการประเภทห้องพัก</div>
             <div class="grid grid-cols-5 gap-4 mt-[14px] w-[100%]">
-                <div class="border h-[97px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]">
+                <div class="border h-[97px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]" v-for="data in roomType">
                     <div class="flex flex-col justify-between h-[100%]">
                         <div class="flex justify-between">
-                            <div class="text-[16px]">ห้องพร้อมเฟอร์นิเจอร์</div>
+                            <div class="text-[16px]">{{ data.attributes.roomTypeName }}</div>
                             <div>
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -311,7 +297,7 @@
                         <div
                             class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px] text-[#0B9A3C]">
                             <div>ราคา</div>
-                            <div>3500</div>
+                            <div>{{ data.attributes.roomPrice }}</div>
                         </div>
                     </div>
                 </div>
@@ -570,11 +556,8 @@
                     <div>
                         <select placeholder="Select" v-model="value"
                             class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]">
-                            <option label="เลือก" value="0" disabled>
-                                เลือก
-                            </option>
-                            <option label="ห้องพร้อมเฟอร์นิเจอร์" value="1">
-                                ห้องพร้อมเฟอร์นิเจอร์
+                            <option  v-for="data in roomType">
+                                        {{data.attributes.roomTypeName}}
                             </option>
                         </select>
                     </div>
@@ -626,14 +609,14 @@
                     <div class="text-custom">ประเภทห้องพัก</div>
                     <div>
                         <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" />
+                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="roomTypeName" />
                     </div>
                 </div>
                 <div class="mt-[14px]">
                     <div class="text-custom">ค่าเช่าห้อง/เดือน</div>
                     <div>
                         <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" />
+                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="roomTypePrice" />
                     </div>
                 </div>
                 <div class="flex justify-end mt-[30px]">
@@ -643,7 +626,7 @@
                         </vs-button>
                     </div>
                     <div>
-                        <vs-button @click="create_type = false" color="#003765">
+                        <vs-button @click="addNewRoomType()" color="#003765">
                             <div class="text-custom">บันทึก</div>
                         </vs-button>
                     </div>
@@ -685,20 +668,21 @@
                         <div>
                             <div class="text-custom">ชั้น</div>
                             <div>
-                                <input
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" />
+                                        <select placeholder="Select" v-model="roomFloor"
+                                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]">
+                                            <option  v-for="data in roomFloor">
+                                                        {{data.attributes.floorName}}
+                                            </option>
+                                        </select>
                             </div>
                         </div>
                     </div>
                     <div class="text-custom mt-[14px]">ประเภทห้องพัก</div>
                     <div>
-                        <select placeholder="Select" v-model="value"
+                        <select placeholder="Select" v-model="roomType"
                             class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]">
-                            <option label="เลือก" value="0" disabled>
-                                เลือก
-                            </option>
-                            <option label="ห้องพร้อมเฟอร์นิเจอร์" value="1">
-                                ห้องพร้อมเฟอร์นิเจอร์
+                            <option  v-for="data in roomType">
+                                        {{data.attributes.roomTypeName}}
                             </option>
                         </select>
                     </div>
@@ -755,7 +739,7 @@
                         </vs-button>
                     </div>
                     <div>
-                        <vs-button @click="create_room = false" color="#003765">
+                        <vs-button @click="addNewRoom()" color="#003765">
                             <div class="text-custom">บันทึก</div>
                         </vs-button>
                     </div>
@@ -766,6 +750,10 @@
     </div>
 </template>
 <script>
+
+import axios from 'axios'
+
+
 export default {
     data() {
         return {
@@ -774,10 +762,120 @@ export default {
             create: false,
             type: false,
             create_type: false,
-            create_room: false
+            create_room: false,
+            room: [],
+            roomType: [],
+            floorRoom: [],
+            roomTypeName: "",
+            roomTypePrice: 0,
 
         }
-    }
+    },
+    created() {
+        const loading = this.$vs.loading({})
+        setTimeout(() => {
+            loading.close()
+        }, 1000)
+    },
+    mounted() {
+        this.getUserRoom();
+        this.getTypeRoom();
+        this.getFloorRoom();
+    },
+    methods: {
+        getUserRoom() {
+            const loading = this.$vs.loading()
+            fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]='+this.$store.state.building+'&populate=deep,3')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getRoom()",resp.data);
+                    this.room = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        getTypeRoom() {
+            const loading = this.$vs.loading()
+            fetch('http://203.170.190.170:1337/api' + '/room-types?filters[room_building][id][$eq]='+this.$store.state.building+'&populate=deep,1')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getRoomType()",resp.data);
+                    this.roomType = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        getFloorRoom() {
+            const loading = this.$vs.loading()
+            fetch('http://203.170.190.170:1337/api' + '/building-floors?filters[building][id][$eq]='+this.$store.state.building+'&populate=deep,2')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getRoomFloor()",resp.data);
+                    this.roomFloor = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        updateUserRoom(roomID){
+            axios.put(`http://203.170.190.170:1337/api/rooms/${roomID}`,{
+                data : {
+                    rate: this.rate
+                }
+            }).then( 
+                    this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
+                )
+                .then(
+                    this.$forceUpdate()
+                )
+        }, 
+        openNotificationUpdateRoom(position = null, color) {
+            const noti = this.$vs.notification({
+                sticky: true,
+                color,
+                position,
+                title: 'Update Room Success',
+            })
+        },
+        addNewRoom(){
+            axios.post(`http://203.170.190.170:1337/api/rooms/`,{
+                data : {
+                    RoomNumber: "RandomRoom 301",
+                    room_building: this.$store.state.building,
+                    room_type: this.roomType,
+                    building_floor: this.roomFloor,
+                }
+            }).then( 
+                    this.openNotificationAddRoom('top-right', '#3A89CB', 6000)
+                )
+                .then(
+                    this.$forceUpdate()
+                )
+        }, 
+
+        addNewRoomType() {
+            axios.post(`http://203.170.190.170:1337/api/room-types/`,{
+                data : {
+                    roomTypeName: this.roomTypeName,
+                    roomPrice: this.roomTypePrice,
+                    roomType_building: this.$store.state.building
+                }
+            }).then( 
+                    this.openNotificationAddRoom('top-right', '#3A89CB', 6000)
+                )
+                .then(
+                    this.$forceUpdate()
+                )
+        },
+        openNotificationAddRoom(position = null, color) {
+            const noti = this.$vs.notification({
+                sticky: true,
+                color,
+                position,
+                title: 'Add Room Success',
+            })
+        },
+        
+    },
 }
 
 </script>

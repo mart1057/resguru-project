@@ -20,7 +20,7 @@
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 1">
             <div class="grid grid-cols-4 w-[100%] gap-4 mt-[14px]">
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer "
-                    @click="profile_em = true">
+                    @click="profile_em = true" v-for="data in UserBuilding">
                     <div class="flex justify-between">
                         <div class="flex">
                             <div class="flex">
@@ -31,9 +31,9 @@
                                         <div class="">
                                             <div
                                                 class="h-[24px] rounded-[12px] font-bold text-[#003765] pl-[12px] pr-[12px] flex items-center bg-[#F0F8FF]">
-                                                เจ้าของหอพัก
+                                                เจ้าของหอพัก {{ data.role.name }}
                                             </div>
-                                            <div class="mt-[14px] text-[18px] font-bold">ชัชพล บุญพันธุ์</div>
+                                            <div class="mt-[14px] text-[18px] font-bold">{{ data.firstName }} {{ data.lastName }}</div>
                                         </div>
                                         <div class="ml-[-130px] mb-[-40px]">
                                             <svg width="35" height="35" viewBox="0 0 35 35" fill="none"
@@ -103,7 +103,7 @@
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 2">
             <div class="grid grid-cols-4 w-[100%] gap-4 mt-[14px]">
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer "
-                    @click="profile_em = true">
+                    @click="profile_em = true" v-for="data in employee">
                     <div class="flex justify-between">
                         <div class="flex">
                             <div class="flex">
@@ -114,9 +114,9 @@
                                         <div class="">
                                             <div
                                                 class="h-[24px] rounded-[12px] font-bold text-[#D48C00] pl-[12px] pr-[12px] flex items-center bg-[#FFF2BC]">
-                                                พนักงานซ่อมบำรุง
+                                               {{ data.attributes.position }}
                                             </div>
-                                            <div class="mt-[14px] text-[18px] font-bold">ชัชพล บุญพันธุ์</div>
+                                            <div class="mt-[14px] text-[18px] font-bold">{{ data.attributes.name }} {{ data.attributes.lastname }}</div>
                                         </div>
                                        <div class="ml-[-130px] mb-[-40px]">
                                             <svg width="35" height="35" viewBox="0 0 35 35" fill="none"
@@ -322,7 +322,45 @@ export default {
     data() {
         return {
             tab: 1,
-            profile_em: false
+            profile_em: false,
+            employee: [],
+            UserBuilding: [],
+        }
+    },
+    created() {
+        const loading = this.$vs.loading({})
+        setTimeout(() => {
+            loading.close()
+        }, 1000)
+    },
+    mounted() {
+        this.getEmployer();
+        this.getUser();
+    },
+    methods: {
+        getEmployer() {
+            const loading = this.$vs.loading()
+            // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
+            fetch(`http://203.170.190.170:1337/api/building-employees?populate=*&filters[building][id][$eq]=${this.$store.state.building}`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getEmployer()",resp.data);
+                    this.employee = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        getUser() {
+            const loading = this.$vs.loading()
+            // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
+            fetch(`http://203.170.190.170:1337/api/users?populate=*&filters[building][id][$eq]=${this.$store.state.building}`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getUser()",resp);
+                    this.UserBuilding = resp
+                }).finally(() => {
+                    loading.close()
+                })
         }
     }
 }
