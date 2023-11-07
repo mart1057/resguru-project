@@ -1,8 +1,7 @@
 <template>
     <div class="pl-[20px] pr-[20px] pt-[20px]">
         <div class="h-[100%] rounded-[12px]">
-            <div
-                class="h-[auto] bg-[white] rounded-[12px] pt-[28px] pl-[28px] pr-[28px] flex flex-col justify-end ">
+            <div class="h-[auto] bg-[white] rounded-[12px] pt-[28px] pl-[28px] pr-[28px] flex flex-col justify-end ">
                 <div>
                     <div class="flex justify-between">
                         <div class="flex">
@@ -37,7 +36,7 @@
                                         สร้างประกาศ
                                     </div>
                                 </div>
-                                <div v-if="selected.length > 0"
+                                <div v-if="selected.length > 0" @click="delete_popup = true"
                                     class="h-[36px] pl-[12px] pr-[12px] bg-[#D44769] flex cursor-pointer  justify-center rounded-[12px] mt-[12px] ml-[14px]">
                                     <div class="flex justify-center items-center">
                                         <svg width="14" height="13" viewBox="0 0 14 13" fill="none"
@@ -73,11 +72,14 @@
                         <template #thead>
                             <vs-tr>
                                 <vs-th>
-                                    <vs-checkbox :indeterminate="selected.length == announcement.length" v-model="allCheck"
-                                        @change="selected = $vs.checkAll(selected, announcement)" />
-                                </vs-th>
-                                <vs-th>
-                                    วันที่ประกาศ
+                                    <div class="flex">
+                                        <div>
+                                            <vs-checkbox :indeterminate="selected.length == announcement.length"
+                                                v-model="allCheck"
+                                                @change="selected = $vs.checkAll(selected, announcement)" />
+                                        </div>
+                                        <div class="ml-[24px]">วันที่ประกาศ</div>
+                                    </div>
                                 </vs-th>
                                 <vs-th>
                                     วันที่สิ้นสุด
@@ -96,10 +98,12 @@
                         <template #tbody>
                             <vs-tr :key="i" v-for="(tr, i) in announcement" :data="tr">
                                 <vs-td checkbox>
-                                    <vs-checkbox :val="tr" v-model="selected" />
-                                </vs-td>
-                                <vs-td>
-                                <div class="text-custom">{{ tr.attributes.createdAt }}</div>
+                                    <div class="flex">
+                                        <div>
+                                            <vs-checkbox :val="tr" v-model="selected" />
+                                        </div>
+                                        <div class="text-custom ml-[24px]">{{ tr.attributes.createdAt }}</div>
+                                    </div>
                                 </vs-td>
                                 <vs-td>
                                     <div class="text-custom"> {{ tr.attributes.date_execute }}</div>
@@ -118,7 +122,9 @@
                                                     alt="">
                                             </vs-avatar>
                                         </div>
-                                        <div class="flex justify-center items-center ml-[8px]">{{ tr.attributes.users_created.data.attributes.firstName }}  {{ tr.attributes.users_created.data.attributes.lastName }}</div>
+                                        <div class="flex justify-center items-center ml-[8px]">{{
+                                            tr.attributes.users_created.data.attributes.firstName }} {{
+        tr.attributes.users_created.data.attributes.lastName }}</div>
                                     </div>
                                 </vs-td>
                             </vs-tr>
@@ -150,15 +156,18 @@
                 <div class="pl-[20px] pr-[20px] mt-[24px]">
                     <div>
                         <div class="text-custom text-[14px] text-[#003765]">เรื่องที่ประกาศ</div>
-                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"  v-model="topic" />
+                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                            v-model="topic" />
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">รายละเอียดการแจ้ง</div>
-                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"  v-model="description" />
+                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                            v-model="description" />
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">วันที่สิ้นสุด</div>
-                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="date"  v-model="date_execute" />
+                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="date"
+                            v-model="date_execute" />
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">รูปภาพ</div>
@@ -250,7 +259,8 @@
                                                         alt="">
                                                 </vs-avatar>
                                             </div>
-                                            <div class="flex justify-center items-center ml-[8px]">{{ tr.attributes.users_created }}</div>
+                                            <div class="flex justify-center items-center ml-[8px]">{{
+                                                tr.attributes.users_created }}</div>
                                         </div>
                                     </vs-td>
                                 </vs-tr>
@@ -260,6 +270,27 @@
                 </div>
             </div>
         </b-modal>
+        <vs-dialog width="550px" not-center v-model="delete_popup">
+            <div class="flex justify-center items-center text-[24px] h-[100%] mt-[5%]">
+                <p class="fle justify-center items-center">
+                    You want delete sure ?
+                </p>
+            </div>
+            <template #footer>
+                <div class="con-footer flex justify-between">
+                    <vs-button @click="delete_popup = false" dark transparent>
+                        <div class="flex items-center">ยกเลิก</div>
+                    </vs-button>
+                    <div
+                        class="h-[36px] pl-[12px] pr-[12px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px]">
+                        <div class="text-white font-bold flex justify-center items-center" @click="deleteAnnouncement()">
+                            ยืนยัน
+                        </div>
+                    </div>
+
+                </div>
+            </template>
+        </vs-dialog>
     </div>
 </template>
 <script>
@@ -280,11 +311,13 @@ export default {
             announcement: [],
             create_ann: false,
             history_ann: false,
+            delete_popup: false
         }
     },
     created() {
         this.$store.state.main = true
         const loading = this.$vs.loading({
+            color: '#003765',
             opacity: 1,
         })
         setTimeout(() => {
@@ -301,16 +334,15 @@ export default {
             fetch(`http://203.170.190.170:1337/api/announcements?filters[building][id][$eq]=${this.$store.state.building}&populate=*&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getAnnouncement()",resp.data);
+                    console.log("Return from getAnnouncement()", resp.data);
                     this.announcement = resp.data
                 }).finally(() => {
                     loading.close()
                 })
         },
-        createAnnouncement(){
-
-            axios.post('http://203.170.190.170:1337/api' + '/announcements',{
-                data : {
+        createAnnouncement() {
+            axios.post('http://203.170.190.170:1337/api' + '/announcements', {
+                data: {
                     // date_execute: this.date_execute,
                     topic: this.topic,
                     description: this.description,
@@ -327,11 +359,10 @@ export default {
                 .then(
                     setTimeout(() => location.reload(), 1500)
                 )
-    
-        },      
-        editAnnouncement(postID){
-            axios.put(`http://203.170.190.170:1337/api/announcements/${postID}`,{
-                data : {
+        },
+        editAnnouncement(postID) {
+            axios.put(`http://203.170.190.170:1337/api/announcements/${postID}`, {
+                data: {
                     topic: this.topic,
                     description: this.description,
                     date_execute: this.date_execute,
@@ -346,7 +377,21 @@ export default {
                 .then(
                     this.$forceUpdate()
                 )
-        }, 
+        },
+        deleteAnnouncement() {
+            const loading = this.$vs.loading({
+                color: '#003765'
+            })
+            this.selected.forEach(element => {
+                console.log(element.id);
+                axios.delete('http://203.170.190.170:1337/api' + '/announcements/' + element.id)
+            });
+            setTimeout(() => {
+                this.getAnnouncement()
+                this.delete_popup = false
+                loading.close()
+            }, 1000)
+        },
         openNotificationCreateAnnouncement(position = null, color) {
             const noti = this.$vs.notification({
                 sticky: true,
