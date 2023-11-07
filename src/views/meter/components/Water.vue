@@ -42,12 +42,14 @@
                             </div>
 
                         </vs-td>
+                        
                         <vs-td>
                             {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "Null" }} 
                         </vs-td>
                         <vs-td>
                             <div>
                                 <div v-if=tr.attributes.water_fees.data[1]>
+                      
                                     <vs-input disabled v-model=tr.attributes.water_fees.data[1].attributes.meterUnit>
                                     <template #icon>
                                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
@@ -67,8 +69,11 @@
                                 </div>
                             </div>
                         </vs-td>
+                        
                         <vs-td>
+                        
                             <vs-input v-model=tr.attributes.water_fees.data[0].attributes.meterUnit >
+                            
                                 <template #icon>
                                     <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -121,7 +126,7 @@ export default {
     methods: {
         getWaterFee() {
             const loading = this.$vs.loading()
-            fetch(`http://203.170.190.170:1337/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep,3`)
+            fetch(`http://203.170.190.170:1337/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep,3&sort[0]=createdAt:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()",resp.data);
@@ -139,7 +144,7 @@ export default {
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
                 )
                 .then(
-                    setTimeout(() => location.reload(), 1500)
+                    this.getWaterFee()
                 )
         }, 
         openNotificationUpdateWater(position = null, color) {

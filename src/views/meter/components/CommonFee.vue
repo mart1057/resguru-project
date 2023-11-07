@@ -40,12 +40,12 @@
                             {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "" }} 
                         </vs-td>
                         <vs-td>
-                            <vs-input v-model="communalUnit">
+                            <vs-input v-model=tr.attributes.communal_fees.data[0].attributes.communalUnit>
                               
                             </vs-input>
                         </vs-td>
                         <vs-td>
-                            <vs-button  @click="updateCommunalfee(tr.attributes.communal_fees.data[0].id)" >บันทึก</vs-button>
+                            <vs-button  @click="updateCommunalfee(tr.attributes.communal_fees.data[0].id,tr.attributes.communal_fees.data[0].attributes.communalUnit)" >บันทึก</vs-button>
                         </vs-td>
                     </vs-tr>
                 </template>
@@ -110,10 +110,10 @@ export default {
                     loading.close()
                 })
         },
-        updateCommunalfee(comFeeId){
+        updateCommunalfee(comFeeId,comPrice){
             axios.put(`http://203.170.190.170:1337/api/communal-fees/${comFeeId}`,{
                 data : {
-                    communalUnit: this.communalUnit
+                    communalUnit: comPrice
                 }
             }).then( 
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
@@ -127,7 +127,7 @@ export default {
                 sticky: true,
                 color,
                 position,
-                title: 'Update Water Meter Success',
+                title: 'Update Communual Success',
             })
         },
         
