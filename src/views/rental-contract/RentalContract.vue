@@ -718,19 +718,15 @@ export default {
         submitSign() {
             axios.post('http://203.170.190.170:1337/api' + '/user-sign-contracts', {
                 data: {
-                    // date_execute: this.date_execute,
                     room: this.room_detail_create.id_room,
                     contractStatus: "rent",
                     users_permissions_user: this.room_detail_create.id,
-                    // checkInDate: this.room_detail.date_sign,
                 }
             }).then((resp) => {
                 axios.put('http://203.170.190.170:1337/api' + '/rooms/' + this.room_detail_create.id_room, {
                     data: {
-                        // date_execute: this.date_execute,
                         user_sign_contract: resp.data.id,
                         room_type: this.room_detail_create.type_room,
-                        // checkInDate: this.room_detail.date_sign,
                     }
                 })
             }).finally(() => {
