@@ -195,35 +195,51 @@
                                 <vs-checkbox :val="tr" v-model="selected" />
                             </vs-td> -->
                             <vs-td>
-                                {{ tr.attributes.user_sign_contract.data ?
-                                    tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName
-                                    : "" }} {{ tr.attributes.user_sign_contract.data ?
+                                <div @click="routeTo()">
+                                    {{ tr.attributes.user_sign_contract.data ?
+                                        tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName
+                                        : "" }} {{ tr.attributes.user_sign_contract.data ?
         tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.lastName
         : "" }}
+                                </div>
                             </vs-td>
                             <vs-td>
+                                <div @click="routeTo()">
                                 {{ tr.attributes.createdAt }}
+                                </div>
                             </vs-td>
                             <vs-td>
+                                <div @click="routeTo()">
                                 {{ tr.attributes.user_sign_contract.data ?
                                     tr.attributes.user_sign_contract.data.attributes.room.data.attributes.RoomNumber : "" }}
+                                    </div>
                             </vs-td>
                             <vs-td>
+                                <div @click="routeTo()">
                                 {{ tr.attributes.user_sign_contract.data ?
                                     tr.attributes.user_sign_contract.data.attributes.room.data.attributes.room_type.data.attributes.roomTypeName
                                     : "" }}
+                                    </div>
                             </vs-td>
                             <vs-td>
+                                <div @click="routeTo()">
                                 {{ tr.attributes.roomPrice }}
+                                </div>
                             </vs-td>
                             <vs-td>
+                                <div @click="routeTo()">
                                 {{ tr.attributes.communalPrice }}
+                                </div>
                             </vs-td>
                             <vs-td>
+                                <div @click="routeTo()">
                                 {{ tr.attributes.otherPrice }}
+                                </div>
                             </vs-td>
                             <vs-td>
+                                <div @click="routeTo()">
                                 {{ tr.attributes.total }}
+                                </div>
                             </vs-td>
                             <vs-td>
 
@@ -406,6 +422,11 @@ export default {
         this.getTanantBill();
     },
     methods: {
+        routeTo() {
+            this.$router.push({
+                path: '/payment-detail',
+            })
+        },
         getTanantBill() {
             const loading = this.$vs.loading()
             // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
