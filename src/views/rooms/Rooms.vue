@@ -113,8 +113,10 @@
                         </vs-option>
                     </vs-select>
                 </div>
-                <div class="mr-[14px] font-bold cursor-pointer">อาคาร A ชั้น 1</div>
-                <div class="text-[#8396A6] cursor-pointer">อาคาร A ชั้น 2</div>
+                <div v-for="data in floorRoom">
+                    <div class="mr-[14px] font-bold cursor-pointer">อาคาร A ชั้น {{ data.attributes.floorName }}</div>
+                </div>
+                
             </div>
         </div>
 
@@ -124,10 +126,21 @@
             <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px] " >
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer" @click="routeTo('/room-detail')"  v-for="data in room"  >
                     <div class="flex">
-                        <div class="w-[136px] h-[100%] rounded-[22px] bg-[#8396A6]"></div>
+                        <div v-if=data.attributes.user_sign_contract.data>
+                            <div class="w-[136px] h-[100%] rounded-[22px] bg-[#003765] items-center justify-center flex">
+                                    <img class="flex items-center justify-center" src='../../assets/img/Logo-01.png'/>
+                                    <!-- Image API Path is here "api.resguru.app/image" + data.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.image.data.attributes.url -->
+                            </div>
+                        </div>
+                        <div v-else>
+                            <div class="w-[136px] h-[100%] rounded-[22px] bg-[#003765] items-center justify-center flex">
+                                    <img class="flex items-center justify-center" src='../../assets/img/Logo-01.png'/>
+                            </div>
+                        </div>
                         <div class="ml-[14px]">
-                            <div class="text-[18px] font-bold text-[#141629]">ห้อง {{ data.attributes.RoomNumber }}</div>
-                            <div class="text-[14px] mt-[12px] font-bold text-[#003765]">{{ data.attributes.user_sign_contract.data ? data.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "" }} {{ data.attributes.user_sign_contract.data ? data.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.lastName : "" }}</div>
+                            <div class="text-[24px] font-bold text-[#141629]">ห้อง {{ data.attributes.RoomNumber }}</div>
+                            <div class="text-[18px] mt-[12px] font-bold text-[#003765]">{{ data.attributes.user_sign_contract.data ? data.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "" }} {{ data.attributes.user_sign_contract.data ? data.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.lastName : "" }}</div>
+                            
                         </div>
                     </div>
                    <div v-if=data.attributes.user_sign_contract.data>
@@ -139,11 +152,11 @@
                     <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#facecd] text-[#000000]">
                         ห้องว่าง
                     </div>
-                    
                   </div>
                      
+                  
                 </div>
-       
+               
             </div>
         </div>
         <b-modal centered v-model="create" size="xl" hide-backdrop hide-header-close hide-header hide-footer
@@ -296,6 +309,8 @@ export default {
             create: false,
             popup_filter: false,
             room: [],
+            roomType: [],
+            floorRoom: [],
             firstName: "",
             lastName: "",
             nickName: "",
@@ -312,7 +327,9 @@ export default {
     },
     mounted() {
         console.log("State.Building",this.$store.state.building)
-        this.getRoom()
+        this.getRoom();
+        this.getTypeRoom();
+        this.getFloorRoom();
     },
     created() {
         const loading = this.$vs.loading({
@@ -335,6 +352,28 @@ export default {
                 .then((resp) => {
                     console.log("Return from getRoom()",resp.data);
                     this.room = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        getTypeRoom() {
+            const loading = this.$vs.loading()
+            fetch('http://203.170.190.170:1337/api' + '/room-types?filters[room_building][id][$eq]='+this.$store.state.building+'&populate=deep,1')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getRoomType()",resp.data);
+                    this.roomType = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        getFloorRoom() {
+            const loading = this.$vs.loading()
+            fetch('http://203.170.190.170:1337/api' + '/building-floors?filters[building][id][$eq]='+this.$store.state.building+'&populate=deep,2')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getRoomFloor()",resp.data);
+                    this.floorRoom = resp.data
                 }).finally(() => {
                     loading.close()
                 })
