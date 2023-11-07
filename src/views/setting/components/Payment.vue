@@ -1,7 +1,7 @@
 <template>
     <div class="bg-[white] pt-[14px] pl-[24px] pr-[24px] ">
         <div class="grid grid-cols-5 gap-4 mt-[14px] w-[100%]">
-            <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] mb-[24px]">
+            <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] mb-[24px]" v-for="data in buildingPayment">
                 <div class="flex flex-col justify-between h-[100%]">
                     <div class="flex justify-between">
                         <div class="flex">
@@ -18,8 +18,10 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class="text-[16px] ml-[4px]">กรุงไทย</div>
+                            <div class="text-[16px] ml-[4px]">{{ data.attributes.bankName }} </div>
+                            
                         </div>
+                        
                         <div>
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <ellipse cx="10.0013" cy="4.16667" rx="1.66667" ry="1.66667"
@@ -30,11 +32,18 @@
                                     transform="rotate(90 10.0013 15.8327)" fill="#5C6B79" />
                             </svg>
                         </div>
+                        
+                    </div>
+                    (Bank Number: {{ data.attributes.bankNumber }})
+                    <div
+                        class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px] mt-[14px] ">
+                        <div>ชื่อบัญชี</div>
+                        <div class="font-bold">{{ data.attributes.accountName }}</div>
                     </div>
                     <div
                         class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px] mt-[14px] ">
                         <div>เลขที่บัญชี</div>
-                        <div class="font-bold">344-556-5678</div>
+                        <div class="font-bold">{{ data.attributes.accountNumber }}</div>
                     </div>
                     <div class="flex items-center justify-center w-[100%] mt-[14px]">
                         <svg width="124" height="124" viewBox="0 0 124 124" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -442,12 +451,12 @@
                 <div class="mt-[14px]">
                     <div class="text-custom">ชื่อบริการ</div>
                     <div>
-                        <select placeholder="Select" v-model="value"
+                        <select placeholder="Select" v-model="bankName"
                             class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]">
                             <option label="เลือก" value="0" disabled>
                                 เลือก
                             </option>
-                            <option label="กสิกร" value="1">
+                            <option label="กสิกร" value="กสิกร">
                                 กสิกร
                             </option>
                         </select>
@@ -457,7 +466,7 @@
                     <div class="text-custom">เลขบัญชี</div>
                     <div>
                         <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" />
+                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="accountNumber" />
                     </div>
                 </div>
                 <div class="mt-[14px]">
@@ -481,7 +490,7 @@
                         </vs-button>
                     </div>
                     <div>
-                        <vs-button @click="create = false" color="#003765">
+                        <vs-button @click="createPaymentOfBuilding()" color="#003765">
                             <div class="text-custom">บันทึก</div>
                         </vs-button>
                     </div>
@@ -491,12 +500,74 @@
     </div>
 </template>
 <script>
+
+import axios from 'axios'
 export default {
     data() {
         return {
-            create: false
+            create: false,
+            buildingPayment: [],
+            bankName: "",
+            accountNumber: 0,
         }
-    }
+    },
+    created() {
+        const loading = this.$vs.loading({})
+        setTimeout(() => {
+            loading.close()
+        }, 1000)
+    },
+    mounted() {
+        this.getPaymentBuilding();
+
+    },
+    methods: {
+        getPaymentBuilding() {
+            const loading = this.$vs.loading()
+            fetch('http://203.170.190.170:1337/api' + '/building-pay-methods?filters[building][id][$eq]='+this.$store.state.building)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getOther()",resp.data);
+                    this.buildingPayment = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        createPaymentOfBuilding(){
+            axios.post(`http://203.170.190.170:1337/api/building-pay-methods/`,{
+                data : {
+                    bankName: this.bankName,
+                    accountNumber: this.accountNumber,
+                    building: this.$store.state.building
+                }
+            }).then( 
+                    this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
+                )
+                .then(
+                    setTimeout(() => location.reload(), 1500)
+                )
+        }, 
+        updateUserBuildingPayment(buildingID){
+            axios.put(`http://203.170.190.170:1337/api/building-pay-methods/${buildingID}`,{
+                data : {
+                    waterUnitPrice: this.waterUnitPrice
+                }
+            }).then( 
+                    this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
+                )
+                .then(
+                    setTimeout(() => location.reload(), 1500)
+                )
+        }, 
+        openNotificationUpdateRoom(position = null, color) {
+            const noti = this.$vs.notification({
+                sticky: true,
+                color,
+                position,
+                title: 'Update Room Success',
+            })
+        },
+    },
 }
 
 

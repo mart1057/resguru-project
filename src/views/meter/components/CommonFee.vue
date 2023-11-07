@@ -118,6 +118,9 @@ export default {
             }).then( 
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
                 )
+                .then(
+                    $router.replace()
+                )
         }, 
         openNotificationUpdateWater(position = null, color) {
             const noti = this.$vs.notification({

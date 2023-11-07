@@ -280,6 +280,9 @@ export default {
                     this.openNotificationUpdateService('top-right', '#3A89CB', 6000).then(
                         this.$router.go(this.$router.currentRoute)
                     )
+                    .then(
+                        setTimeout(() => location.reload(), 1500)
+                    )
             )
                 
         },

@@ -130,10 +130,17 @@
                             <div class="text-[14px] mt-[12px] font-bold text-[#003765]">{{ data.attributes.user_sign_contract.data ? data.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "" }} {{ data.attributes.user_sign_contract.data ? data.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.lastName : "" }}</div>
                         </div>
                     </div>
-                   
+                   <div v-if=data.attributes.user_sign_contract.data>
                     <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#CFFBDA] text-[#0B9A3C]">
-                      {{ data.attributes.user_sign_contract.data ? "มีผู้เข้าพัก" : "ห้องว่าง" }}  
+                      มีผู้เข้าพัก
                     </div>
+                  </div>
+                  <div v-else>
+                    <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#facecd] text-[#000000]">
+                        ห้องว่าง
+                    </div>
+                    
+                  </div>
                      
                 </div>
        
@@ -369,7 +376,9 @@ export default {
                 color,
                 position,
                 title: 'Book Room Success',
-            })
+            }).then(
+                setTimeout(() => location.reload(), 1500)
+            )
         },
     }
 
