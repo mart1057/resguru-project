@@ -166,7 +166,7 @@
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">วันที่สิ้นสุด</div>
-                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="date"
+                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[12px] pr-[12px] flex justify-start" type="date"
                             v-model="date_execute" />
                     </div>
                     <div class="mt-[14px]">
