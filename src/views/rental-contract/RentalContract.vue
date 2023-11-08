@@ -141,9 +141,9 @@
                             <div class="text-[24px] font-bold text-[#141629] ">ห้อง {{ data.attributes.RoomNumber }}</div>
                             <div class="text-[18px] mt-[12px] font-bold text-[#003765]">{{
                                 data.attributes.user_sign_contract.data ?
-                                data.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName
+                                data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.firstName
                                 : "" }} {{ data.attributes.user_sign_contract.data ?
-        data.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.lastName
+        data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.lastName
         : "" }}</div>
                         </div>
                         <div class="ml-[14px]">
@@ -335,7 +335,7 @@
                                 </div>
                                 <div class="col-span-4  ml-[8px]  mt-[14px]">
                                     <div class="text-[#003765]">ระยะเวลาสัญญา</div>
-                                    <div class="mt-[12px]">ไม่ระบุ</div>
+                                    <div class="mt-[12px]">{{ room_detail.contract_duration }} เดือน</div>
                                 </div>
                             </div>
                         </div>
@@ -348,7 +348,7 @@
                                 </div>
                                 <div class="col-span-4  ml-[8px]  mt-[14px]">
                                     <div class="text-[#003765]">ค่าประกันห้อง</div>
-                                    <div class="mt-[12px]">500</div>
+                                    <div class="mt-[12px]">{{ room_detail.roomInsurance_deposit }}</div>
                                 </div>
                             </div>
                         </div>
@@ -366,7 +366,7 @@
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
                                 <div class="col-span-4 mt-[14px]">
                                     <div class="text-[#003765]">วางเงินมัดจำ</div>
-                                    <div class="mt-[12px]">1,000</div>
+                                    <div class="mt-[12px]">{{room_detail.room_deposit }}</div>
                                 </div>
                             </div>
                         </div>
@@ -518,7 +518,7 @@
                                 </div>
                                 <div class="col-span-4  ml-[8px] mt-[16px]">
                                     <div>ระยะเวลาสัญญา (เดือน)</div>
-                                    <select placeholder="Select"
+                                    <select placeholder="Select" v-model="room_detail_create.contract_duration"
                                         class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]">
                                         <option>
                                             3
@@ -529,7 +529,6 @@
                                         <option>
                                             12
                                         </option>
-
                                     </select>
                                 </div>
                             </div>
@@ -540,12 +539,12 @@
                                 <div class="col-span-4">
                                     <div>ค่าประกันห้อง</div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="earnest" required />
+                                        v-model="room_detail_create.roomInsuranceDeposit" required />
                                 </div>
                                 <div class="col-span-4 ml-[8px]">
                                     <div>วางเงินมัดจำ (บาท)</div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="earnest" required />
+                                        v-model="room_detail_create.room_deposit" required />
                                 </div>
                                 <!-- <div class="col-span-4  ml-[8px]">
                                     <div>เลือกห้อง</div>
@@ -593,8 +592,9 @@ export default {
                 address: '',
                 date_sign: '',
                 exp_date: '',
-                deposit: '',
-                deposit_room: '',
+                roomInsurance_deposit: '',
+                contract_duration: '',
+                room_deposit:'',
                 type_room: ''
             },
             room_detail_create: {
@@ -610,8 +610,9 @@ export default {
                 address: '',
                 date_sign: '',
                 exp_date: '',
-                deposit: '',
-                deposit_room: '',
+                roomInsurance_deposit: '',
+                contract_duration: '',
+                room_deposit:'',
                 type_room: ''
             },
             room_type: []
@@ -639,7 +640,7 @@ export default {
         },
         getRentalContract() {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
+            fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRentalContract()", resp.data);
@@ -649,6 +650,7 @@ export default {
                 })
         },
         getDetailRentalContract(id) {
+            const loading = this.$vs.loading()
             fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep&filters[id][$eq]=' + id)
                 .then(response => response.json())
                 .then((resp) => {
@@ -663,8 +665,12 @@ export default {
                     this.room_detail.birth = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.dateOfBirth
                     this.room_detail.date_sign = resp.data[0]?.attributes.user_sign_contract.data?.attributes.checkInDate
                     this.room_detail.type_room = resp.data[0]?.attributes.user_sign_contract.data?.attributes.room.data?.attributes.room_type.data?.attributes.roomTypeName
+                    this.room_detail.contract_duration = resp.data[0]?.attributes.user_sign_contract.data?.attributes.contractDuration
+                    this.room_detail.roomInsurance_deposit = resp.data[0]?.attributes.user_sign_contract.data?.attributes.roomInsuranceDeposit
+                    this.room_detail.room_deposit = resp.data[0]?.attributes.user_sign_contract.data?.attributes.roomDeposit
 
                 }).finally(() => {
+                    loading.close()
                     this.detail = true
                 })
         },
@@ -703,7 +709,7 @@ export default {
         },
         create_sign(id_room) {
             this.create = true
-            this.id_user=''
+            this.id_user = ''
             this.room_detail_create.id = ''
             this.room_detail_create.name = ''
             this.room_detail_create.last_name = ''
@@ -716,20 +722,25 @@ export default {
             this.room_detail_create.id_room = id_room
         },
         submitSign() {
+            const loading = this.$vs.loading()
             axios.post('http://203.170.190.170:1337/api' + '/user-sign-contracts', {
                 data: {
                     room: this.room_detail_create.id_room,
                     contractStatus: "rent",
                     users_permissions_user: this.room_detail_create.id,
+                    roomDeposit :parseInt(this.room_detail_create.room_deposit),
+                    roomInsuranceDeposit:parseInt(this.room_detail_create.roomInsuranceDeposit),
+                    contractDuration:parseInt(this.room_detail_create.contract_duration)
                 }
             }).then((resp) => {
                 axios.put('http://203.170.190.170:1337/api' + '/rooms/' + this.room_detail_create.id_room, {
                     data: {
-                        user_sign_contract: resp.data.id,
+                        // user_sign_contract: resp.data.id,
                         room_type: this.room_detail_create.type_room,
                     }
                 })
             }).finally(() => {
+                loading.close()
                 this.create = false
                 this.getRentalContract()
             })
