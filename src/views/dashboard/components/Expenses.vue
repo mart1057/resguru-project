@@ -15,7 +15,7 @@
                         </g>
                     </svg>
                 </div>
-                <div class="text-[18px] font-bold flex items-center ml-[4px]">รายรับ-รายจ่าย</div>
+                <div class="text-[18px] font-bold flex items-center ml-[4px]">รายรับ-รายจ่าย </div>
             </div>
             <div class="flex justify-center items-center">
                 <div class="flex justify-center items-center">

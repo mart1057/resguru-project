@@ -178,6 +178,7 @@
                             </svg>
                         </div>
                         <div class="ml-[14px]">
+
                             <div class="text-[18px] font-bold text-[#141629]">ห้อง {{ data.attributes.RoomNumber }}</div>
                             <div class="text-[14px] mt-[12px] font-bold text-[#003765]">{{
                                 data.attributes.user_sign_contract.data ?
@@ -185,6 +186,7 @@
                                 : "" }} {{ data.attributes.user_sign_contract.data ?
         data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.lastName
         : "" }}</div>
+
                         </div>
                     </div>
                     <div :class="data.attributes.user_sign_contract.data ? 'text-[#0B9A3C] bg-[#CFFBDA]' : 'text-[#003765] bg-[#F0F8FF]'"

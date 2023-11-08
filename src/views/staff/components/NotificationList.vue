@@ -44,14 +44,20 @@
                                     <div>
                                         <div class="mt-[5px]">
                                             <!-- {{ data.attributes.building_employee }} -->
-                                            <vs-select placeholder="Select" v-model="value" color="#003765">
-                                                <vs-option label="Mr.A" value="1">
-                                                Mr.A
+                                            <!-- <vs-select placeholder="Select" color="#003765">
+                                                <vs-option v-for="data in employee" value="1">
+                                                    {{ data.attributes.name }}
                                                 </vs-option>
-                                                <vs-option label="Mr.B" value="2">
-                                                Mr.B
-                                                </vs-option>
-                                            </vs-select>
+                                                
+                                            </vs-select> -->
+                                            <select placeholder="Select"
+                                                class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]"
+                                                :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''">
+                                                <option  v-for="selectEmployee in employee">
+                                                    {{selectEmployee.attributes.name}}
+                                                </option>
+                                                
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
@@ -245,7 +251,9 @@ export default {
     data() {
         return {
             create: false,
-            service: []
+            selectedEmployee: 0,
+            service: [],
+            employee: []
         }
     },
     created() {
@@ -256,6 +264,7 @@ export default {
     },
     mounted() {
         this.getService();
+        this.getEmployeeOption();
     },
     methods: {
         getService() {
@@ -266,6 +275,18 @@ export default {
                 .then((resp) => {
                     console.log("Return from getService()",resp.data);
                     this.service = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        getEmployeeOption() {
+            const loading = this.$vs.loading()
+            // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
+            fetch(`http://203.170.190.170:1337/api/building-employees?populate=*&sort[0]=id:desc&filters[building][id][$eq]=${this.$store.state.building}`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getEmployee()",resp.data);
+                    this.employee = resp.data
                 }).finally(() => {
                     loading.close()
                 })

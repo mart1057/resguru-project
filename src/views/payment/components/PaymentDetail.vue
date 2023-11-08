@@ -34,7 +34,7 @@
                             </div>
                             <div class="ml-[4px]">ชั้น 1 ห้อง 101</div>
                         </div>
-                        <div class="text-[16px] mt-[4px]">ภูริพัฒน์ วีระกิตติ</div>
+                        <div class="text-[16px] mt-[4px]">{{ userProfile.firstName }} {{ userProfile.lastName }}</div>
                         <div class="text-[12px] text-[#B9CCDC] mt-[4px]">เข้าพักเมื่อวันที่: 18 ม.ค. 2023</div>
                         <div class="text-[12px] text-[#B9CCDC]">ประเภทห้อง: ห้องพร้อมเฟอร์นิเจอร์</div>
                     </div>
@@ -133,7 +133,7 @@
                                         </g>
                                     </svg>
                                 </div>
-                                <div class="ml-[4px] flex items-center">ประวิตการจ่าย</div>
+                                <div class="ml-[4px] flex items-center">ประวัติการจ่าย</div>
                             </div>
                         </div>
                     </div>
@@ -156,7 +156,7 @@
                 </div>
                 <div class=" font-bold ml-[8px] flex justify-center items-center">ดาวน์โหลดใบแจ้งหนี้</div>
             </div>
-            <div class="mt-[14px]" v-if="tab == 1">
+            <div class="mt-[20px]" v-if="tab == 1">
                 <vs-table v-model="selected">
                     <template #thead>
                         <vs-tr>
@@ -165,10 +165,16 @@
                                     @change="selected = $vs.checkAll(selected, users)" />
                             </vs-th>
                             <vs-th>
-                                หมายเลขใบแจ้งหนี้
+                                หมายเลขใบแจ้งหนี้ 
                             </vs-th>
                             <vs-th>
                                 ค่าห้องเช่า
+                            </vs-th>
+                            <vs-th>
+                                ค่าน้ำ
+                            </vs-th>
+                            <vs-th>
+                                ค่าไฟฟ้า
                             </vs-th>
                             <vs-th>
                                 ค่าส่วนกลาง
@@ -180,6 +186,9 @@
                                 ยอดรวม
                             </vs-th>
                             <vs-th>
+                                วันที่สร้างเอกสาร
+                            </vs-th>
+                            <vs-th>
                                 สถานะ
                             </vs-th>
                             <vs-th>
@@ -188,31 +197,39 @@
                         </vs-tr>
                     </template>
                     <template #tbody>
-                        <vs-tr :key="i" v-for="(tr, i) in users" :data="tr" :is-selected="!!selected.includes(tr)">
+                        <vs-tr :key="i" v-for="(tr, i) in userInvoice" :data="tr" :is-selected="!!selected.includes(tr)">
                             <vs-td checkbox>
                                 <vs-checkbox :val="tr" v-model="selected" />
                             </vs-td>
                             <vs-td>
-                                {{ tr.name }}
+                                {{ tr.attributes.invoiceNumber }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.type }}
+                                {{ tr.attributes.roomPrice }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.price }}
+                                {{ tr.attributes.waterPrice }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.price2 }}
+                                {{ tr.attributes.electricPrice }}
                             </vs-td>
                             <vs-td>
-                                300,000
+                                {{ tr.attributes.communalPrice }}
+                            </vs-td>
+                            <vs-td>
+                                {{ tr.attributes.otherPrice }}
+                            </vs-td>
+                            <vs-td>
+                                {{ tr.attributes.total }}
+                            </vs-td>
+                            <vs-td>
+                                {{ tr.attributes.createdAt }}
                             </vs-td>
                             <vs-td>
                                 <div class="flex items-center justify-start">
                                     <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
                                         :class="tr.status == 1 ? 'bg-[#CFFBDA] text-[#0B9A3C]' : tr.status == 'ยังไม่ชำระ' ? 'bg-[#FFE1E8] text-[#EA2F5C]' : ' bg-[#FFF2BC] text-[#D48C00] '">
-                                        {{ tr.status == 1 ? 'ชำระแล้ว' : tr.status == 'ยังไม่ชำระ' ? 'ยังไม่ชำระ' :
-                                            'ชำระบางส่วน' }} </div>
+                                        {{ tr.attributes.paymentStatus }}He</div>
                                 </div>
                             </vs-td>
                             <vs-td>
@@ -242,10 +259,16 @@
                                     @change="selected = $vs.checkAll(selected, users)" />
                             </vs-th>
                             <vs-th>
-                                หมายเลขใบแจ้งหนี้
+                                หมายเลขใบเสร็จรับเงิน
                             </vs-th>
                             <vs-th>
                                 ค่าห้องเช่า
+                            </vs-th>
+                            <vs-th>
+                                ค่าน้ำ
+                            </vs-th>
+                            <vs-th>
+                                ค่าไฟฟ้า
                             </vs-th>
                             <vs-th>
                                 ค่าส่วนกลาง
@@ -254,10 +277,10 @@
                                 ค่าบริการอื่น ๆ
                             </vs-th>
                             <vs-th>
-                                ยอดรวม
+                                ชำระแล้ว
                             </vs-th>
                             <vs-th>
-                                ชำระแล้ว
+                                ยอดรวม
                             </vs-th>
                             <vs-th>
                                 วันที่ออกใบเสร็จ
@@ -268,30 +291,36 @@
                         </vs-tr>
                     </template>
                     <template #tbody>
-                        <vs-tr :key="i" v-for="(tr, i) in users" :data="tr" :is-selected="!!selected.includes(tr)">
+                        <vs-tr :key="i" v-for="(tr, i) in userReceipt" :data="tr" :is-selected="!!selected.includes(tr)">
                             <vs-td checkbox>
                                 <vs-checkbox :val="tr" v-model="selected" />
                             </vs-td>
                             <vs-td>
-                                {{ tr.name }}
+                                {{ tr.attributes.receiptNumber }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.type }}
+                                {{ tr.attributes.roomPrice }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.price }}
+                                {{ tr.attributes.waterPrice }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.price2 }}
+                                {{ tr.attributes.electricPrice }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.price2 }}
+                                {{ tr.attributes.communalPrice }}
                             </vs-td>
                             <vs-td>
-                                300,000
+                                {{ tr.attributes.paidAmount }}
                             </vs-td>
                             <vs-td>
-                                12/12/2023
+                                {{ tr.attributes.otherPrice }}
+                            </vs-td>
+                            <vs-td>
+                                {{ tr.attributes.total }}
+                            </vs-td>
+                            <vs-td>
+                                {{ tr.attributes.createdAt }} 
                             </vs-td>
                             <vs-td>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -412,31 +441,43 @@ export default {
     },
     mounted() {
        console.log("URL Param: ",this.$route.query.profileId)
+       this.getUserProfile();
+       this.getInvoice();
+       this.getReceipt();
     },
     methods: {
         getUserProfile() {
             const loading = this.$vs.loading()
-            fetch(`http://203.170.190.170:1337/api/users/${this.$route.query.profileId}?populate=deep,3`)
+            fetch(`http://203.170.190.170:1337/api/users/${this.$route.query.profileId}`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getCommonFeeRoom()",resp.data);
-                    this.userProfile = resp.data
+                    console.log("Return from getUser()",resp);
+                    this.userProfile = resp
                 }).finally(() => {
                     loading.close()
                 })
         },
         getInvoice(){
             const loading = this.$vs.loading()
-            fetch(`http://203.170.190.170:1337/api/tenant-bills?filters[user_sign_contract][id][$eq]=${this.$route.query.profileId}`)
+            fetch(`http://203.170.190.170:1337/api/tenant-bills?filters[user_sign_contract][id][$eq]=${this.$route.query.profileId}&populate=*&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getCommonFeeRoom()",resp.data);
-                    this.userProfile = resp.data
+                    console.log("Return from getInvoice()",resp.data);
+                    this.userInvoice = resp.data
                 }).finally(() => {
                     loading.close()
                 })
         },
         getReceipt(){
+            const loading = this.$vs.loading()
+            fetch(`http://203.170.190.170:1337/api/tenant-receipts?filters[user_sign_contract][id][$eq]=${this.$route.query.profileId}&populate=*`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getCommonFeeRoom()",resp.data);
+                    this.userReceipt = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
 
         },
         getEvidenceHistory(){
