@@ -42,14 +42,12 @@
                             </div>
 
                         </vs-td>
-                        
                         <vs-td>
                             <!-- {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "Null" }}  -->
                         </vs-td>
                         <vs-td>
                             <div>
                                 <div v-if=tr.attributes.water_fees.data[1]>
-                      
                                     <vs-input disabled v-model=tr.attributes.water_fees.data[1].attributes.meterUnit>
                                     <template #icon>
                                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
@@ -69,11 +67,8 @@
                                 </div>
                             </div>
                         </vs-td>
-                        
                         <vs-td>
-                        
-                            <vs-input v-model=tr.attributes.water_fees.data[0].attributes.meterUnit >
-                            
+                            <vs-input v-model="waterUnit" >
                                 <template #icon>
                                     <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -95,7 +90,7 @@
                         </vs-td>
                         <vs-td>
                             <div>
-                                <vs-button @click="updateWaterfee(tr.attributes.water_fees.data[0].id,tr.attributes.water_fees.data[0].attributes.meterUnit)" >บันทึก</vs-button>
+                                <vs-button @click="updateWaterfee(tr.attributes.water_fees.data[0].id)" >บันทึก</vs-button>
                             </div>
                         </vs-td>
                     </vs-tr>
@@ -126,7 +121,7 @@ export default {
     methods: {
         getWaterFee() {
             const loading = this.$vs.loading()
-            fetch(`http://203.170.190.170:1337/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep,3&sort[0]=createdAt:desc`)
+            fetch(`http://203.170.190.170:1337/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep,3`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()",resp.data);
@@ -135,16 +130,16 @@ export default {
                     loading.close()
                 })
         },
-        updateWaterfee(waterFeeId,waterUnit){
+        updateWaterfee(waterFeeId){
             axios.put(`http://203.170.190.170:1337/api/water-fees/${waterFeeId}`,{
                 data : {
-                    meterUnit: waterUnit
+                    meterUnit: this.waterUnit
                 }
             }).then( 
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
                 )
                 .then(
-                    this.getWaterFee()
+                    setTimeout(() => location.reload(), 1500)
                 )
         }, 
         openNotificationUpdateWater(position = null, color) {
