@@ -398,7 +398,10 @@ export default {
                     "username": "4,500",
                 },
 
-            ]
+            ],
+            userProfile: [],
+            userInvoice: [],
+            userReceipt: [],
         }
     },
     created() {
@@ -407,5 +410,38 @@ export default {
             loading.close()
         }, 1000)
     },
+    mounted() {
+       console.log("URL Param: ",this.$route.query.profileId)
+    },
+    methods: {
+        getUserProfile() {
+            const loading = this.$vs.loading()
+            fetch(`http://203.170.190.170:1337/api/users/${this.$route.query.profileId}?populate=deep,3`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getCommonFeeRoom()",resp.data);
+                    this.userProfile = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        getInvoice(){
+            const loading = this.$vs.loading()
+            fetch(`http://203.170.190.170:1337/api/tenant-bills?filters[user_sign_contract][id][$eq]=${this.$route.query.profileId}`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getCommonFeeRoom()",resp.data);
+                    this.userProfile = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        getReceipt(){
+
+        },
+        getEvidenceHistory(){
+            
+        }
+    }
 }
 </script>

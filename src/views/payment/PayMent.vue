@@ -195,7 +195,7 @@
                                 <vs-checkbox :val="tr" v-model="selected" />
                             </vs-td> -->
                             <vs-td>
-                                <div @click="routeTo()">
+                                <div @click="routeTo(tr.id)">
                                     {{ tr.attributes.user_sign_contract.data ?
                                         tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName
                                         : "" }} {{ tr.attributes.user_sign_contract.data ?
@@ -204,40 +204,40 @@
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <div @click="routeTo()">
+                                <div @click="routeTo(tr.id)">
                                 {{ tr.attributes.createdAt }}
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <div @click="routeTo()">
+                                <div @click="routeTo(tr.id)">
                                 {{ tr.attributes.user_sign_contract.data ?
                                     tr.attributes.user_sign_contract.data.attributes.room.data.attributes.RoomNumber : "" }}
                                     </div>
                             </vs-td>
                             <vs-td>
-                                <div @click="routeTo()">
+                                <div @click="routeTo(tr.id)">
                                 {{ tr.attributes.user_sign_contract.data ?
                                     tr.attributes.user_sign_contract.data.attributes.room.data.attributes.room_type.data.attributes.roomTypeName
                                     : "" }}
                                     </div>
                             </vs-td>
                             <vs-td>
-                                <div @click="routeTo()">
+                                <div @click="routeTo(tr.id)">
                                 {{ tr.attributes.roomPrice }}
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <div @click="routeTo()">
+                                <div @click="routeTo(tr.id)">
                                 {{ tr.attributes.communalPrice }}
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <div @click="routeTo()">
+                                <div @click="routeTo(tr.id)">
                                 {{ tr.attributes.otherPrice }}
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <div @click="routeTo()">
+                                <div @click="routeTo(tr.id)">
                                 {{ tr.attributes.total }}
                                 </div>
                             </vs-td>
@@ -258,6 +258,11 @@
                                             'ยังไม่ชำระ' ? 'ยังไม่ชำระ' :
                                             'ชำระบางส่วน' }} </div>
                                 </div>
+                                <!-- <div v-if="tr.attributes.paymentStatus == ชำระบางส่วน">
+                                        <vs-button >
+                                            ใบเสร็จรับเงิน
+                                        </vs-button>
+                                </div> -->
                             </vs-td>
                             <vs-td>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -422,9 +427,9 @@ export default {
         this.getTanantBill();
     },
     methods: {
-        routeTo() {
+        routeTo(profileID) {
             this.$router.push({
-                path: '/payment-detail',
+                path: `/payment-detail?profileId=${profileID}`,
             })
         },
         getTanantBill() {
