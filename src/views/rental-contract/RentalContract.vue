@@ -606,7 +606,7 @@ export default {
     data() {
         return {
             detail: false,
-            create: true,
+            create: false,
             popup_filter: false,
             contract: [],
             users: [],
