@@ -53,7 +53,7 @@
                     </div>
                     <div class="flex justify-start items-center   mt-[5px] ml-[14px]">
                         <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาตามหมายเลขห้อง"
-                            type="input" />
+                            v-model="search" @input="filterData" type="input" />
                     </div>
                     <vs-tooltip bottom shadow not-hover v-model="popup_filter">
                         <div @click="popup_filter = true"
@@ -122,8 +122,12 @@
                         </vs-option>
                     </vs-select>
                 </div>
-                <div class="mr-[14px] font-bold cursor-pointer">อาคาร A ชั้น 1</div>
-                <div class="text-[#8396A6] cursor-pointer">อาคาร A ชั้น 2</div>
+                <div v-for="data in roomFloor">
+                    <div class="text-[#8396A6] cursor-pointer mr-[8px]"> อาคาร {{
+                        data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }}
+                    </div>
+
+                </div>
             </div>
         </div>
 
@@ -366,7 +370,7 @@
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
                                 <div class="col-span-4 mt-[14px]">
                                     <div class="text-[#003765]">วางเงินมัดจำ</div>
-                                    <div class="mt-[12px]">{{room_detail.room_deposit }}</div>
+                                    <div class="mt-[12px]">{{ room_detail.room_deposit }}</div>
                                 </div>
                             </div>
                         </div>
@@ -581,6 +585,7 @@ export default {
             contract: [],
             users: [],
             id_user: '',
+            search: '',
             room_detail: {
                 sex: null,
                 name: '',
@@ -594,7 +599,7 @@ export default {
                 exp_date: '',
                 roomInsurance_deposit: '',
                 contract_duration: '',
-                room_deposit:'',
+                room_deposit: '',
                 type_room: ''
             },
             room_detail_create: {
@@ -612,10 +617,11 @@ export default {
                 exp_date: '',
                 roomInsurance_deposit: '',
                 contract_duration: '',
-                room_deposit:'',
+                room_deposit: '',
                 type_room: ''
             },
-            room_type: []
+            room_type: [],
+            floorRoom: [],
         }
 
     },
@@ -623,6 +629,7 @@ export default {
         console.log("State.Building", this.$store.state.building);
         this.getRentalContract();
         this.getUser()
+        this.getFloorRoom();
     },
     created() {
         // const loading = this.$vs.loading({
@@ -645,6 +652,17 @@ export default {
                 .then((resp) => {
                     console.log("Return from getRentalContract()", resp.data);
                     this.contract = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        getFloorRoom() {
+            const loading = this.$vs.loading()
+            fetch('http://203.170.190.170:1337/api' + '/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=deep,2')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getRoomFloor()", resp.data);
+                    this.roomFloor = resp.data
                 }).finally(() => {
                     loading.close()
                 })
@@ -728,9 +746,9 @@ export default {
                     room: this.room_detail_create.id_room,
                     contractStatus: "rent",
                     users_permissions_user: this.room_detail_create.id,
-                    roomDeposit :parseInt(this.room_detail_create.room_deposit),
-                    roomInsuranceDeposit:parseInt(this.room_detail_create.roomInsuranceDeposit),
-                    contractDuration:parseInt(this.room_detail_create.contract_duration)
+                    roomDeposit: parseInt(this.room_detail_create.room_deposit),
+                    roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
+                    contractDuration: parseInt(this.room_detail_create.contract_duration)
                 }
             }).then((resp) => {
                 axios.put('http://203.170.190.170:1337/api' + '/rooms/' + this.room_detail_create.id_room, {
@@ -745,11 +763,16 @@ export default {
                 this.getRentalContract()
             })
 
+        },
+        filterData() {
+            this.contract = this.contract.filter(item =>
+                item.attributes.RoomNumber.toLowerCase().includes(this.search.toLowerCase())
+            );
+            if (this.search == '') {
+                this.getRentalContract()
+            }
         }
-
     }
-
-
 }
 </script>
 <style>
