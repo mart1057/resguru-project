@@ -122,16 +122,16 @@
                     <div class="flex items-center mb-[8px] mt-[14px]">
                         <div class="mr-[14px]">
                             <vs-select placeholder="เลือกอาคาร">
-                                <vs-option label="อาคาร A" value="1">
+                                <vs-option label="อาคาร A">
                                     อาคาร A
                                 </vs-option>
-                                <vs-option label="อาคาร B" value="2">
+                                <vs-option label="อาคาร B" >
                                     อาคาร B
                                 </vs-option>
                             </vs-select>
                         </div>
                         <div v-for="data in roomFloor">
-                        <div class="text-[#8396A6] cursor-pointer"> อาคาร {{ data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }} </div>
+                        <div class="text-[#8396A6] cursor-pointer mr-[8px]"> อาคาร {{ data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }} </div>
                         
                         </div>
                         <!-- <div class="text-[#8396A6] cursor-pointer">อาคาร A ชั้น 2</div> -->
