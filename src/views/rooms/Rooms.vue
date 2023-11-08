@@ -113,9 +113,13 @@
                         </vs-option>
                     </vs-select>
                 </div>
-                <div v-for="(data,i) in roomFloor">
-                    <div class=" cursor-pointer mr-[8px]" :class="tab_floor == i?'font-bold text-[16px]':'text-[#8396A6]'" @click="tab_floor = i"> อาคาร {{
-                        data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }}
+                <div v-for="(data, i) in roomFloor">
+                    <div class=" cursor-pointer mr-[8px]"
+                        :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
+                        @click="tab_floor = i, filter.floor = data.id, getRoom(), name_floor = data.attributes.floorName">
+                        อาคาร
+                        {{
+                            data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }}
                     </div>
                 </div>
             </div>
@@ -123,7 +127,7 @@
 
         <!-- //////////////////////////// card /////////////////////// -->
         <div class="mt-[24px]">
-            <div class="text-[24px] font-bold">อาคาร A ชั้น 1</div>
+            <div class="text-[24px] font-bold">ชั้น {{ name_floor }}</div>
             <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px] ">
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer"
                     @click="routeTo('/room-detail')" v-for="data in room">
@@ -358,8 +362,8 @@ export default {
             nickName: "",
             email: "",
             idCard: "",
-            tab_floor:'0',
-            search: '',
+            tab_floor: '0',
+            name_floor:'',
             phoneNumber: "",
             roomNumber: "",
             birthDate: "",
@@ -367,12 +371,16 @@ export default {
             bookRoom: "",
             earnest: 0,
             floorRoom: [],
+            filter:{
+                search: '', 
+                floor:''  
+            },
         }
 
     },
     mounted() {
         console.log("State.Building", this.$store.state.building)
-        this.getRoom()
+        // 
         this.getFloorRoom();
     },
     created() {
@@ -391,7 +399,7 @@ export default {
         },
         getRoom() {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3')
+            fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3&filters[building_floor][id][$eq]='+this.filter.floor)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoom()", resp.data);
@@ -401,14 +409,17 @@ export default {
                 })
         },
         getFloorRoom() {
-            const loading = this.$vs.loading()
+            // const loading = this.$vs.loading()
             fetch('http://203.170.190.170:1337/api' + '/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=deep,2')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoomFloor()", resp.data);
                     this.roomFloor = resp.data
+                    this.filter.floor = resp.data[0].id
+                    this.name_floor = resp.data[0].attributes.floorName
                 }).finally(() => {
-                    loading.close()
+                    this.getRoom()
+                    // loading.close()
                 })
         },
         bookRoomContract() {
@@ -454,9 +465,9 @@ export default {
         },
         filterData() {
             this.room = this.room.filter(item =>
-                item.attributes.RoomNumber.toLowerCase().includes(this.search.toLowerCase())
+                item.attributes.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase())
             );
-            if (this.search == '') {
+            if (this.filter.search == '') {
                 this.getRoom()
             }
         }
