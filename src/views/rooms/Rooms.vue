@@ -130,7 +130,7 @@
             <div class="text-[24px] font-bold">ชั้น {{ name_floor }}</div>
             <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px] ">
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer"
-                    @click="routeTo('/room-detail',data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.id)" v-for="data in room">
+                    @click="routeTo('/room-detail',data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.id,data.id,data.attributes.RoomNumber,data.attributes.user_sign_contract.data?.attributes.contractStatus)" v-for="data in room">
                     <div class="flex">
                         <div
                             v-if="data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.filePath">
@@ -394,10 +394,10 @@ export default {
         }, 1000)
     },
     methods: {
-        routeTo(path,id) {
+        routeTo(path,id,id_room,number_room,status) {
             this.$router.push({
                 path: path,
-                query: {id_user:id},
+                query: {id_user:id, id_room:id_room, number_room:number_room, status:status},
             })
         },
         getRoom() {

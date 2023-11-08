@@ -3,9 +3,9 @@
         <div class="grid grid-cols-7 w-[100%] gap-4 mt-[14px]">
             <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[14px] cursor-pointer " v-for="user in users"
                 @click="create = true">
-                <div
-                    class="h-[24px] w-[auto] mt-[-22px] text-[12px] flex items-center justify-center p-[8px] rounded-[8px]  bg-[#D7F1E3] text-[#39B974]">
-                    ทำสัญญาแล้ว
+                <div :class="status == 'rent'?'bg-[#D7F1E3] text-[#39B974]':'bg-[#F0F8FF] text-[#003765]'"
+                    class="h-[24px] w-[auto] mt-[-22px] text-[12px] flex items-center justify-center p-[8px] rounded-[8px]">
+                    {{status == "rent"? 'ทำสัญญาแล้ว':'ยังไม่ทำสัญญา'}} 
                 </div>
                 <img class="w-[78px] h-[78px] rounded-[22px]" :src="user.filePath"/>
                 <div>{{ user.firstName }} {{ user.lastName }}</div>
@@ -313,7 +313,9 @@
 <script>
 export default {
     props: {
-        id_user: { type: String }
+        id_user: { type: String },
+        id_room: { type: String },
+        status: { type: String }
     },
     data() {
         return {
