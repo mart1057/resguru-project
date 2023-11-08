@@ -1,13 +1,13 @@
 <template>
     <div>
         <div class="grid grid-cols-7 w-[100%] gap-4 mt-[14px]">
-            <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[14px] cursor-pointer " v-for="user in users"
-                @click="create = true">
-                <div :class="status == 'rent'?'bg-[#D7F1E3] text-[#39B974]':'bg-[#F0F8FF] text-[#003765]'"
+            <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[14px] cursor-pointer "
+                v-for="user in users" @click="create = true">
+                <div :class="status == 'rent' ? 'bg-[#D7F1E3] text-[#39B974]' : 'bg-[#F0F8FF] text-[#003765]'"
                     class="h-[24px] w-[auto] mt-[-22px] text-[12px] flex items-center justify-center p-[8px] rounded-[8px]">
-                    {{status == "rent"? 'ทำสัญญาแล้ว':'ยังไม่ทำสัญญา'}} 
+                    {{ status == "rent" ? 'ทำสัญญาแล้ว' : 'ยังไม่ทำสัญญา' }}
                 </div>
-                <img class="w-[78px] h-[78px] rounded-[22px]" :src="user.filePath"/>
+                <img class="w-[78px] h-[78px] rounded-[22px]" :src="user.filePath" />
                 <div>{{ user.firstName }} {{ user.lastName }}</div>
                 <div class="flex">
                     <div><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -28,13 +28,13 @@
                     <div
                         class="bg-[#003765] text-[white] pl-[8px] pr-[8px] pt-[1px] pb-[1px] flex justify-center items-center text-[12px] rounded-[8px]">
                         ย้ายห้อง</div>
-                    <div
+                    <div @click="deleteContract()"
                         class="bg-[#D44769] text-[white] pl-[8px] pr-[8px] pt-[1px] pb-[1px] flex justify-center items-center text-[12px] rounded-[8px]">
                         ลบผู้เช่า</div>
                 </div>
             </div>
-            <div class="h-[212px] border rounded-[12px] flex flex-col justify-center items-center p-[14px] cursor-pointer" v-if="users.length == 0 "
-                @click="create = true">
+            <div class="h-[212px] border rounded-[12px] flex flex-col justify-center items-center p-[14px] cursor-pointer"
+                v-if="users.length == 0" @click="create = true">
                 <div class="flex flex-col">
                     <div>
                         <svg width="76" height="76" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -311,16 +311,18 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
     props: {
         id_user: { type: String },
         id_room: { type: String },
+        id_contract: { type: String },
         status: { type: String }
     },
     data() {
         return {
             create: false,
-            users:[]
+            users: []
         }
     },
     created() {
@@ -329,13 +331,13 @@ export default {
             loading.close()
         }, 1000)
     },
-    mounted(){
+    mounted() {
         this.getUsers()
     },
     methods: {
         getUsers() {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/users?filters[id][$eq]='+this.id_user)
+            fetch('http://203.170.190.170:1337/api' + '/users?filters[id][$eq]=' + this.id_user)
                 .then(response => response.json())
                 .then((resp) => {
                     this.users = resp
@@ -343,6 +345,15 @@ export default {
                     loading.close()
                 })
         },
+        deleteContract() {
+            axios.delete('http://203.170.190.170:1337/api' + '/user-sign-contracts/' + this.id_contract)
+                .finally(() => {
+                    this.$router.push({
+                        path:'/rooms',
+                    })
+                })
+
+        }
     }
 }
 
