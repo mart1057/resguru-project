@@ -818,7 +818,8 @@ export default {
                     "contactAddress": this.room_detail_create.address,
                     "sex": this.room_detail_create.sex,
                     // "dateOfBirth": this.room_detail_create.birth,
-                    "password": "mockpass"
+                    "password": "mockpass",
+                    "building": this.$store.state.building
                 }).then((resp) => {
                     axios.post('http://203.170.190.170:1337/api' + '/user-sign-contracts', {
                         data: {

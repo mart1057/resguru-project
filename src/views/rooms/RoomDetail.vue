@@ -45,7 +45,7 @@
             </div>
         </div>
         <div v-if="tab == 1">
-            <CardMember />
+            <CardMember :id_user="$route.query.id_user"/>
         </div>
         <div v-else-if="tab == 2">
             <Contract />
