@@ -53,7 +53,7 @@
                     </div>
                     <div class="flex justify-start items-center   mt-[5px] ml-[14px]">
                         <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาตามหมายเลขห้อง"
-                            v-model="search" @input="filterData" type="input" />
+                            v-model="filter.search" @input="filterData" type="input" />
                     </div>
                     <vs-tooltip bottom shadow not-hover v-model="popup_filter">
                         <div @click="popup_filter = true"
@@ -124,7 +124,7 @@
                 </div>
                 <div v-for="(data, i) in roomFloor">
                     <div class=" cursor-pointer mr-[8px]"
-                        :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'" @click="tab_floor = i"> อาคาร
+                        :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'" @click="tab_floor = i,filter.floor = data.id,getRentalContract(),name_floor=data.attributes.floorName"> อาคาร
                         {{
                             data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }}
                     </div>
@@ -134,7 +134,7 @@
 
         <!-- //////////////////////////// card /////////////////////// -->
         <div class="mt-[24px]">
-            <div class="text-[24px] font-bold">อาคาร A ชั้น 1</div>
+            <div class="text-[24px] font-bold">ชั้น {{ name_floor }}</div>
             <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px] ">
 
                 <!-- //////////////////////////// Loop Room Contract /////////////////////// -->
@@ -611,8 +611,12 @@ export default {
             contract: [],
             users: [],
             id_user: '',
-            search: '',
             tab_floor: '0',
+            name_floor:'',
+            filter:{
+                search: '', 
+                floor:''  
+            },
             room_detail: {
                 sex: null,
                 name: '',
@@ -655,10 +659,10 @@ export default {
 
     },
     mounted() {
-        console.log("State.Building", this.$store.state.building);
-        this.getRentalContract();
-        this.getUser()
+        console.log("State.Building", this.$store.state.building);   
         this.getFloorRoom();
+        this.getUser()
+     
     },
     created() {
         // const loading = this.$vs.loading({
@@ -675,8 +679,9 @@ export default {
             })
         },
         getRentalContract() {
+            this.contract = []
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3')
+            fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3&filters[building_floor][id][$eq]='+this.filter.floor)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRentalContract()", resp.data);
@@ -686,14 +691,17 @@ export default {
                 })
         },
         getFloorRoom() {
-            const loading = this.$vs.loading()
+            // const loading = this.$vs.loading()
             fetch('http://203.170.190.170:1337/api' + '/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=deep,2')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoomFloor()", resp.data);
                     this.roomFloor = resp.data
+                    this.filter.floor = resp.data[0].id
+                    this.name_floor = resp.data[0].attributes.floorName
                 }).finally(() => {
-                    loading.close()
+                    this.getRentalContract();
+                    // loading.close()
                 })
         },
         getDetailRentalContract(id) {
@@ -838,9 +846,9 @@ export default {
         },
         filterData() {
             this.contract = this.contract.filter(item =>
-                item.attributes.RoomNumber.toLowerCase().includes(this.search.toLowerCase())
+                item.attributes.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase())
             );
-            if (this.search == '') {
+            if (this.filter.search == '') {
                 this.getRentalContract()
             }
         }
