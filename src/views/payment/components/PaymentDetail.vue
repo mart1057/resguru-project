@@ -186,6 +186,9 @@
                                 ยอดรวม
                             </vs-th>
                             <vs-th>
+                                วันที่สร้างเอกสาร
+                            </vs-th>
+                            <vs-th>
                                 สถานะ
                             </vs-th>
                             <vs-th>
@@ -220,10 +223,13 @@
                                 {{ tr.attributes.total }}
                             </vs-td>
                             <vs-td>
+                                {{ tr.attributes.createdAt }}
+                            </vs-td>
+                            <vs-td>
                                 <div class="flex items-center justify-start">
                                     <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
                                         :class="tr.status == 1 ? 'bg-[#CFFBDA] text-[#0B9A3C]' : tr.status == 'ยังไม่ชำระ' ? 'bg-[#FFE1E8] text-[#EA2F5C]' : ' bg-[#FFF2BC] text-[#D48C00] '">
-                                        {{ tr.attributes.paymentStatus }} </div>
+                                        {{ tr.attributes.paymentStatus }}He</div>
                                 </div>
                             </vs-td>
                             <vs-td>
@@ -453,7 +459,7 @@ export default {
         },
         getInvoice(){
             const loading = this.$vs.loading()
-            fetch(`http://203.170.190.170:1337/api/tenant-bills?filters[user_sign_contract][id][$eq]=${this.$route.query.profileId}&populate=*`)
+            fetch(`http://203.170.190.170:1337/api/tenant-bills?filters[user_sign_contract][id][$eq]=${this.$route.query.profileId}&populate=*&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getInvoice()",resp.data);
