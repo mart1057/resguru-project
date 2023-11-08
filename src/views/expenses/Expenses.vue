@@ -320,8 +320,20 @@
                     <div class="text-[18px] font-bold flex items-center ml-[8px]">รายรับ-รายจ่าย</div>
                 </div>
                 <div class="flex">
+                    
+                            
+                    <div class="h-[36px] w-[150px] flex cursor-pointer  justify-left rounded-[12px] mt-[12px]">
+                        <div @click="tab = 1" class="cursor-pointer "
+                                    :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
+                                    รายรับ</div>
+                        <div @click="tab = 2" class="cursor-pointer ml-[8px]"
+                                :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
+                                รายจ่าย 
+                        </div>
+                    </div>
                     <div class="h-[36px] w-[132px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]"
                         @click="create = true">
+                        
                         <div class="flex justify-center items-center">
                             <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -329,9 +341,12 @@
                                     fill="white" />
                             </svg>
                         </div>
+                        
                         <div @click="create = true"
                             class="text-white font-bold ml-[8px]   flex justify-center items-center">เพิ่มรายจ่าย</div>
+                            
                     </div>
+                    
                     <vs-tooltip bottom shadow not-hover v-model="popup_filter">
                         <div @click="popup_filter = true"
                             class="h-[36px] w-[132px]  flex  justify-center rounded-[12px] mt-[12px] ml-[14px] cursor-pointer">
@@ -388,12 +403,55 @@
                     </vs-tooltip>
                 </div>
             </div>
-            <div class="mt-[14px]">
+            <div class="mt-[14px]" v-if="tab == 2">
                 <vs-table>
                     <template #thead>
                         <vs-tr>
                             <vs-th>
                                 ID
+                            </vs-th>
+                            <vs-th>
+                                วันที่
+                            </vs-th>
+                            <vs-th>
+                                รายละเอียด
+                            </vs-th>
+                            <vs-th>
+                                หลักฐานการชำระเงิน
+                            </vs-th>
+                            <vs-th>
+                                จำนวนเงิน
+                            </vs-th>
+                        </vs-tr>
+                    </template>
+                    <template #tbody>
+                        <vs-tr :key="i" v-for="(tr, i) in expense" :data="tr">
+                            <vs-td>
+                                {{ tr.id }}
+                            </vs-td>
+                            <vs-td>
+                                {{ tr.attributes.createdAt }}
+                            </vs-td>
+                            <vs-td>
+                                {{ tr.attributes.title }}
+                            </vs-td>
+                            <vs-td>
+                                View
+                            </vs-td>
+                            <vs-td>
+                                {{ tr.attributes.amount }}
+                            </vs-td>
+                        </vs-tr>
+                    </template>
+                </vs-table>
+            </div>
+
+            <div class="mt-[14px]" v-if="tab == 1">
+                <vs-table>
+                    <template #thead>
+                        <vs-tr>
+                            <vs-th>
+                                ID ใบเสร็จรับเงิน
                             </vs-th>
                             <vs-th>
                                 วันที่
@@ -528,6 +586,7 @@ export default {
     },
     data() {
         return {
+            tab:1,
             create: false,
             popup_filter: false,
             data: [10, 5, 6, 8],

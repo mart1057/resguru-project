@@ -43,7 +43,7 @@
 
                         </vs-td>
                         <vs-td>
-                            {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "Null" }} 
+                            <!-- {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "Null" }}  -->
                         </vs-td>
                         <vs-td>
                             <div>

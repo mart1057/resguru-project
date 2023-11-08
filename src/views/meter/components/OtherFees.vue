@@ -34,7 +34,7 @@
 
                         </vs-td>
                         <vs-td>
-                            {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "" }} 
+                            <!-- {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "" }}  -->
                        </vs-td>
                         <vs-td>
                             <div class="flex">

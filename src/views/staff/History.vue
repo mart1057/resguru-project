@@ -52,14 +52,31 @@
                             </div>
                             <div class="grid grid-cols-2 w-[100%] gap-2">
                                 <div>
-                                    <div class="text-[12px] text-[#8396A6] mt-[8px]">กำหนดพนักงานดูแล</div>
+                                    <div class="text-[12px] text-[#8396A6] mt-[8px]">พนักงานผู้รับผิดชอบ</div>
                                     <div>
-                                        <div class="mt-[5px]">
-                                            <div>ชัชพล บุญพันธุ์</div>
+                                        <div v-if="data.attributes.responEmployee.data">
+                                            <div class="mt-[5px]">
+                                                <div>{{ data.attributes.responEmployee.data.attributes.name }} {{ data.attributes.responEmployee.data.attributes.lastname }}</div>
+                                            </div>
                                         </div>
+                                        <div v-else>
+                                            <div class="mt-[5px]">
+                                                <div>ไม่ระบุ</div>
+                                            </div>
+                                        </div>
+                                        
                                     </div>
                                 </div>
                                 <div>
+                                    <div class="text-[12px] text-[#8396A6] mt-[8px]">อัพเดทล่าสุด</div>
+                                    <div class="w-[100%] flex mt-[5px]">
+                                        
+                                        <div class=" w-[100%] ml-[4px] flex items-center con-selects">
+                                            {{  data.attributes.updatedAt }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div>
                                     <div class="text-[12px] text-[#8396A6] mt-[8px]">รูปภาพ</div>
                                     <div class="w-[100%] flex mt-[5px]">
                                         <div class="flex items-center">
@@ -80,7 +97,7 @@
                                             IMG_30/06/2023 
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>

@@ -145,6 +145,7 @@
                                 : "" }} {{ data.attributes.user_sign_contract.data ?
         data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.lastName
         : "" }}</div>
+
                         </div>
                         <div class="ml-[14px]">
                             <div class="flex">
