@@ -20,22 +20,22 @@
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 1">
             <div class="grid grid-cols-4 w-[100%] gap-4 mt-[14px]">
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer "
-                    @click="profile_em = true" v-for="data in UserBuilding">
+                     v-for="data in UserBuilding">
                     <div class="flex justify-between">
                         <div class="flex">
                             <div class="flex">
                                 <img class="w-[125px] h-[125px] rounded-[12px] bg-[red]"
                                     src="https://media.wired.com/photos/63b89b5b995aa119ba7ba7be/1:1/w_1800,h_1800,c_limit/Profile-Photos-Gear-1411545652.jpg" />
                                 <div class="ml-[12px]">
-                                    <div class="flex flex-col justify-between h-[100%]">
-                                        <div class="">
+                                    <div  class="flex flex-col justify-between h-[100%]">
+                                        <div @click="profile_em = true" class="">
                                             <div
                                                 class="h-[24px] rounded-[12px] font-bold text-[#003765] pl-[12px] pr-[12px] flex items-center bg-[#F0F8FF]">
                                                 เจ้าของหอพัก {{ data.role.name }}
                                             </div>
                                             <div class="mt-[14px] text-[18px] font-bold">{{ data.firstName }} {{ data.lastName }}</div>
                                         </div>
-                                        <div class="ml-[-130px] mb-[-40px]">
+                                        <div @click="profile_em = true" class="ml-[-130px] mb-[-40px]">
                                             <svg width="35" height="35" viewBox="0 0 35 35" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect width="35" height="35" rx="12" fill="#003765" />
@@ -51,6 +51,7 @@
                                             </svg>
                                         </div>
                                         <div class="">
+                                            
                                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <mask id="mask0_967_25233" style="mask-type:alpha"
@@ -63,6 +64,7 @@
                                                         fill="#5C6B79" />
                                                 </g>
                                             </svg>
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -103,7 +105,7 @@
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 2">
             <div class="grid grid-cols-4 w-[100%] gap-4 mt-[14px]">
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer "
-                    @click="profile_em = true" v-for="data in employee">
+                     v-for="data in employee">
                     <div class="flex justify-between">
                         <div class="flex">
                             <div class="flex">
@@ -111,14 +113,14 @@
                                     src="https://media.wired.com/photos/63b89b5b995aa119ba7ba7be/1:1/w_1800,h_1800,c_limit/Profile-Photos-Gear-1411545652.jpg" />
                                 <div class="ml-[12px]">
                                     <div class="flex flex-col justify-between h-[100%]">
-                                        <div class="">
+                                        <div @click="profile_em = true" class="">
                                             <div
                                                 class="h-[24px] rounded-[12px] font-bold text-[#D48C00] pl-[12px] pr-[12px] flex items-center bg-[#FFF2BC]">
                                                {{ data.attributes.position }}
                                             </div>
                                             <div class="mt-[14px] text-[18px] font-bold">{{ data.attributes.name }} {{ data.attributes.lastname }}</div>
                                         </div>
-                                       <div class="ml-[-130px] mb-[-40px]">
+                                       <div @click="profile_em = true" class="ml-[-130px] mb-[-40px]">
                                             <svg width="35" height="35" viewBox="0 0 35 35" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect width="35" height="35" rx="12" fill="#003765" />
@@ -133,7 +135,7 @@
                                                 </g>
                                             </svg>
                                         </div>
-                                        <div class="">
+                                        <div @click="deleteEmployee(data.id)" class="">
                                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <mask id="mask0_967_25233" style="mask-type:alpha"
@@ -164,6 +166,7 @@
                     @click="profile_em = true">
                     <div class="flex flex-col items-center justify-center">
                         <div>
+                            
                             <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
                                 <mask id="mask0_1373_22044" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="6" y="7"
@@ -318,6 +321,7 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
     data() {
         return {
@@ -361,6 +365,20 @@ export default {
                 }).finally(() => {
                     loading.close()
                 })
+        },
+        deleteEmployee(employeeID){
+                if(confirm("Do you really want to delete this employee?")){
+                    axios.delete(`http://203.170.190.170:1337/api/building-employees/${employeeID}`)
+                    .then(resp => {
+                       console.log(resp);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                    .then(
+                        this.getEmployer()
+                    )
+                }
         }
     }
 }

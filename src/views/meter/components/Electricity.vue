@@ -62,7 +62,7 @@
                             </div>
                         </vs-td>
                         <vs-td>
-                            <vs-input v-model="electicUnit">
+                            <vs-input v-model=tr.attributes.electric_fees.data[0].attributes.electicUnit>
                                 <template #icon>
                                     <svg width="9" height="17" viewBox="0 0 9 17" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -79,7 +79,7 @@
                         </vs-td>
                         <vs-td>
                             <div>
-                                <vs-button @click="updateElectfee(tr.attributes.electric_fees.data[0].id)" >บันทึก</vs-button>
+                                <vs-button @click="updateElectfee(tr.attributes.electric_fees.data[0].id,tr.attributes.electric_fees.data[0].attributes.electicUnit)" >บันทึก</vs-button>
                             </div>
                         </vs-td>
                     </vs-tr>
@@ -137,10 +137,10 @@ export default {
                     loading.close()
                 })
         },
-        updateElectfee(electFeeId){
+        updateElectfee(electFeeId,electicUnit){
             axios.put(`http://203.170.190.170:1337/api/electric-fees/${electFeeId}`,{
                 data : {
-                    electicUnit: this.electicUnit
+                    electicUnit: electicUnit
                 }
             }).then( 
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)

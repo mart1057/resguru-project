@@ -436,7 +436,7 @@
                                 {{ tr.attributes.title }}
                             </vs-td>
                             <vs-td>
-                                View
+                                Image.png
                             </vs-td>
                             <vs-td>
                                 {{ tr.attributes.amount }}
@@ -450,39 +450,39 @@
                 <vs-table>
                     <template #thead>
                         <vs-tr>
-                            <vs-th>
-                                ID ใบเสร็จรับเงิน
+                            <vs-th>                                
+                                หมายเลขใบเสร็จรับเงิน
                             </vs-th>
                             <vs-th>
-                                วันที่
+                                วันที่ออกใบเสร็จ
                             </vs-th>
                             <vs-th>
-                                รายละเอียด
+                                ห้อง
                             </vs-th>
                             <vs-th>
                                 หลักฐานการชำระเงิน
                             </vs-th>
                             <vs-th>
-                                จำนวนเงิน
+                                ยอดรวมรายรับ
                             </vs-th>
                         </vs-tr>
                     </template>
                     <template #tbody>
-                        <vs-tr :key="i" v-for="(tr, i) in expense" :data="tr">
+                        <vs-tr :key="i" v-for="(tr, i) in income" :data="tr">
                             <vs-td>
-                                {{ tr.id }}
+                                {{ tr.attributes.receiptNumber }}
                             </vs-td>
                             <vs-td>
                                 {{ tr.attributes.createdAt }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.title }}
+                                Room Number
                             </vs-td>
                             <vs-td>
-                                View
+                                Image.png
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.amount }}
+                                {{ tr.attributes.total }}
                             </vs-td>
                         </vs-tr>
                     </template>
@@ -592,6 +592,7 @@ export default {
             data: [10, 5, 6, 8],
             data2: [10, 5, 6, 8, 4],
             expense: [],
+            income:[],
             users: [
                 {
                     "id": "12/01/23",
@@ -673,6 +674,7 @@ export default {
     },
     mounted() {
         this.getExpense();
+        this.getIncome();
     },
     methods: {
         routeTo(path) {
@@ -683,11 +685,22 @@ export default {
         getExpense() {
             const loading = this.$vs.loading()
             // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`http://203.170.190.170:1337/api/building-expenses?populate=deep,3&sort[0]=id:desc`)
+            fetch(`http://203.170.190.170:1337/api/building-expenses?populate=*,3&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getEmployer()",resp.data);
+                    console.log("Return from getExpense()",resp.data);
                     this.expense = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        getIncome() {
+            const loading = this.$vs.loading() 
+            fetch(`http://203.170.190.170:1337/api/tenant-receipts?populate=*,3&sort[0]=id:desc`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getReceipt()",resp.data);
+                    this.income = resp.data
                 }).finally(() => {
                     loading.close()
                 })

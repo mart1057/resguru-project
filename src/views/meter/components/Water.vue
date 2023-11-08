@@ -68,7 +68,7 @@
                             </div>
                         </vs-td>
                         <vs-td>
-                            <vs-input v-model="waterUnit" >
+                            <vs-input v-model=tr.attributes.water_fees.data[0].attributes.meterUnit >
                                 <template #icon>
                                     <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -90,7 +90,7 @@
                         </vs-td>
                         <vs-td>
                             <div>
-                                <vs-button @click="updateWaterfee(tr.attributes.water_fees.data[0].id)" >บันทึก</vs-button>
+                                <vs-button @click="updateWaterfee(tr.attributes.water_fees.data[0].id,tr.attributes.water_fees.data[0].attributes.meterUnit)" >บันทึก</vs-button>
                             </div>
                         </vs-td>
                     </vs-tr>
@@ -130,16 +130,16 @@ export default {
                     loading.close()
                 })
         },
-        updateWaterfee(waterFeeId){
+        updateWaterfee(waterFeeId,waterUnit){
             axios.put(`http://203.170.190.170:1337/api/water-fees/${waterFeeId}`,{
                 data : {
-                    meterUnit: this.waterUnit
+                    meterUnit: waterUnit
                 }
             }).then( 
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
                 )
                 .then(
-                    setTimeout(() => location.reload(), 1500)
+                    this.getWaterFee()
                 )
         }, 
         openNotificationUpdateWater(position = null, color) {
