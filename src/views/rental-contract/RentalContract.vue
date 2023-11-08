@@ -122,9 +122,11 @@
                         </vs-option>
                     </vs-select>
                 </div>
-                <div v-for="(data,i) in roomFloor">
-                    <div class=" cursor-pointer mr-[8px]" :class="tab_floor == i?'font-bold text-[16px]':'text-[#8396A6]'" @click="tab_floor = i"> อาคาร {{
-                        data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }}
+                <div v-for="(data, i) in roomFloor">
+                    <div class=" cursor-pointer mr-[8px]"
+                        :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'" @click="tab_floor = i"> อาคาร
+                        {{
+                            data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }}
                     </div>
                 </div>
             </div>
@@ -416,6 +418,17 @@
                             <div class="w-[30%] text-custom flex items-start">ข้อมูลหลัก</div>
                             <dvi class=" w-[70%] ">
                                 <div class="grid grid-cols-2  text-custom  ">
+                                    <div class="flex">
+                                        <vs-radio v-model="room_detail_create.check_user" color="#003765" :val="true">
+                                            ผู้เช่าในระบบ
+                                        </vs-radio>
+                                        <vs-radio v-model="room_detail_create.check_user" color="#003765" :val="false">
+                                            ผู้เช่าใหม่
+                                        </vs-radio>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2  text-custom mt-[14px]  "
+                                    v-if="room_detail_create.check_user == true">
                                     <div>
                                         <div class="">เลือกข้อมูลผู้เช่า</div>
                                         <select placeholder="Select" v-model="id_user" @change="getUserDetail()"
@@ -429,7 +442,7 @@
                                 <div class="grid grid-cols-8  text-custom mt-[14px]  ">
                                     <div>
                                         <div>คำนำหน้า</div>
-                                        <select disabled placeholder="ชื่อ" id="mr"
+                                        <select :disabled="room_detail_create.check_user == true" placeholder="ชื่อ" id="mr"
                                             class="mt-[6px] pl-[4px] pr-[4px] h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             v-model="room_detail_create.sex">
                                             <option label="นาย" :value="true">
@@ -442,17 +455,20 @@
                                     </div>
                                     <div class="col-span-3 ml-[8px]">
                                         <div>ชื่อ</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" disabled
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            :disabled="room_detail_create.check_user == true"
                                             v-model="room_detail_create.name" required />
                                     </div>
                                     <div class="col-span-3  ml-[8px]">
                                         <div>สกุล</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" disabled
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            :disabled="room_detail_create.check_user == true"
                                             v-model="room_detail_create.last_name" required />
                                     </div>
                                     <div class="ml-[8px]">
                                         <div>ชื่อเล่น</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" disabled
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            :disabled="room_detail_create.check_user == true"
                                             v-model="room_detail_create.nick_name" />
                                     </div>
                                 </div>
@@ -464,23 +480,33 @@
                                 <div class="col-span-4">
                                     <div>เบอร์โทรศัพท์</div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail_create.phone" required disabled />
+                                        v-model="room_detail_create.phone" required
+                                        :disabled="room_detail_create.check_user == true" />
                                 </div>
                                 <div class="col-span-4  ml-[8px]">
                                     <div>หมายเลขบัตรประชาชน <span class="text-[#5C6B79]"></span></div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail_create.id_card" required disabled />
+                                        v-model="room_detail_create.id_card" required
+                                        :disabled="room_detail_create.check_user == true" />
                                 </div>
                             </div>
                         </div>
                         <div class="w-[100%] flex mt-[14px]">
                             <div class="w-[30%] text-custom flex items-start"></div>
                             <div class="grid grid-cols-6  text-custom w-[70%] ">
-                                <div class="col-span-2">
+                                <div class="col-span-3">
+                                    <div>Email <span class="text-[#5C6B79]">สำหรับล็อกอินเข้าใช้แอปพลิเคชัน</span></div>
+                                    <input type="email"
+                                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
+                                        v-model="room_detail_create.email" required
+                                        :disabled="room_detail_create.check_user == true" />
+                                </div>
+                                <div class="col-span-3 ml-[8px]">
                                     <div>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
                                     <input type="date"
                                         class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
-                                        v-model="room_detail_create.birth" required disabled>
+                                        v-model="room_detail_create.birth" required
+                                        :disabled="room_detail_create.check_user == true">
                                 </div>
                             </div>
                         </div>
@@ -491,7 +517,8 @@
                                     <div>ที่อยู่</div>
                                     <input type="input"
                                         class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
-                                        v-model="room_detail_create.address" required disabled>
+                                        v-model="room_detail_create.address" required
+                                        :disabled="room_detail_create.check_user == true">
                                 </div>
                             </div>
                         </div>
@@ -579,13 +606,13 @@ export default {
     data() {
         return {
             detail: false,
-            create: false,
+            create: true,
             popup_filter: false,
             contract: [],
             users: [],
             id_user: '',
             search: '',
-            tab_floor:'0',
+            tab_floor: '0',
             room_detail: {
                 sex: null,
                 name: '',
@@ -603,12 +630,14 @@ export default {
                 type_room: ''
             },
             room_detail_create: {
+                check_user: true,
                 id: '',
                 id_room: '',
                 sex: null,
                 name: '',
                 last_name: '',
                 nick_name: '',
+                email: '',
                 phone: '',
                 id_card: '',
                 birth: '',
@@ -717,6 +746,7 @@ export default {
                     this.room_detail_create.last_name = resp.lastName
                     this.room_detail_create.nick_name = resp.nickName
                     this.room_detail_create.phone = resp.phone
+                    this.room_detail_create.email = resp.email
                     this.room_detail_create.id_card = resp.idCard
                     this.room_detail_create.address = resp.contactAddress
                     this.room_detail_create.sex = resp.sex
@@ -737,32 +767,74 @@ export default {
             this.room_detail_create.address = ''
             this.room_detail_create.sex = ''
             this.room_detail_create.birth = ''
+            this.room_detail_create.email = ''
             this.room_detail_create.id_room = id_room
         },
         submitSign() {
-            const loading = this.$vs.loading()
-            axios.post('http://203.170.190.170:1337/api' + '/user-sign-contracts', {
-                data: {
-                    room: this.room_detail_create.id_room,
-                    contractStatus: "rent",
-                    users_permissions_user: this.room_detail_create.id,
-                    roomDeposit: parseInt(this.room_detail_create.room_deposit),
-                    roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
-                    contractDuration: parseInt(this.room_detail_create.contract_duration)
-                }
-            }).then((resp) => {
-                axios.put('http://203.170.190.170:1337/api' + '/rooms/' + this.room_detail_create.id_room, {
+            if (this.room_detail_create.check_user == true) {
+                const loading = this.$vs.loading()
+                axios.post('http://203.170.190.170:1337/api' + '/user-sign-contracts', {
                     data: {
-                        // user_sign_contract: resp.data.id,
-                        room_type: this.room_detail_create.type_room,
+                        room: this.room_detail_create.id_room,
+                        contractStatus: "rent",
+                        users_permissions_user: this.room_detail_create.id,
+                        roomDeposit: parseInt(this.room_detail_create.room_deposit),
+                        roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
+                        contractDuration: parseInt(this.room_detail_create.contract_duration)
                     }
+                }).then((resp) => {
+                    axios.put('http://203.170.190.170:1337/api' + '/rooms/' + this.room_detail_create.id_room, {
+                        data: {
+                            // user_sign_contract: resp.data.id,
+                            room_type: this.room_detail_create.type_room,
+                        }
+                    })
+                }).finally(() => {
+                    loading.close()
+                    this.create = false
+                    this.getRentalContract()
                 })
-            }).finally(() => {
-                loading.close()
-                this.create = false
-                this.getRentalContract()
-            })
-
+            }
+            else {
+                const loading = this.$vs.loading()
+                axios.post('http://203.170.190.170:1337/api' + '/users', {
+                    "username": this.room_detail_create.email,
+                    "email": this.room_detail_create.email,
+                    "firstName": this.room_detail_create.name,
+                    "lastName": this.room_detail_create.last_name,
+                    "nickName": this.room_detail_create.nick_name,
+                    "role": 4,
+                    "phone": this.room_detail_create.phone,
+                    "email": this.room_detail_create.email,
+                    "idCard": this.room_detail_create.id_card,
+                    "contactAddress": this.room_detail_create.address,
+                    "sex": this.room_detail_create.sex,
+                    // "dateOfBirth": this.room_detail_create.birth,
+                    "password": "mockpass"
+                }).then((resp) => {
+                    axios.post('http://203.170.190.170:1337/api' + '/user-sign-contracts', {
+                        data: {
+                            room: this.room_detail_create.id_room,
+                            contractStatus: "rent",
+                            users_permissions_user: resp.data.id,
+                            roomDeposit: parseInt(this.room_detail_create.room_deposit),
+                            roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
+                            contractDuration: parseInt(this.room_detail_create.contract_duration)
+                        }
+                    }).then((resp) => {
+                        axios.put('http://203.170.190.170:1337/api' + '/rooms/' + this.room_detail_create.id_room, {
+                            data: {
+                                // user_sign_contract: resp.data.id,
+                                room_type: this.room_detail_create.type_room,
+                            }
+                        })
+                    }).finally(() => {
+                        loading.close()
+                        this.create = false
+                        this.getRentalContract()
+                    })
+                })
+            }
         },
         filterData() {
             this.contract = this.contract.filter(item =>
