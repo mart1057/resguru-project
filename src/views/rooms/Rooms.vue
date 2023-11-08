@@ -44,7 +44,7 @@
                     </div>
                     <div class="flex justify-start items-center   mt-[5px] ml-[14px]">
                         <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาตามหมายเลขห้อง"
-                            type="input" />
+                            v-model="search" @input="filterData" type="input" />
                     </div>
                     <vs-tooltip bottom shadow not-hover v-model="popup_filter">
                         <div @click="popup_filter = true"
@@ -113,8 +113,11 @@
                         </vs-option>
                     </vs-select>
                 </div>
-                <div class="mr-[14px] font-bold cursor-pointer">อาคาร A ชั้น 1</div>
-                <div class="text-[#8396A6] cursor-pointer">อาคาร A ชั้น 2</div>
+                <div v-for="(data,i) in roomFloor">
+                    <div class=" cursor-pointer mr-[8px]" :class="tab_floor == i?'font-bold text-[16px]':'text-[#8396A6]'" @click="tab_floor = i"> อาคาร {{
+                        data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }}
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -125,8 +128,10 @@
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer"
                     @click="routeTo('/room-detail')" v-for="data in room">
                     <div class="flex">
-                        <div v-if="data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.filePath">
-                           <img class="w-[136px] h-[100%] rounded-[22px]" :src="data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.filePath"/>
+                        <div
+                            v-if="data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.filePath">
+                            <img class="w-[136px] h-[100%] rounded-[22px]"
+                                :src="data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.filePath" />
                         </div>
                         <div class="w-[136px] h-[100%] rounded-[22px]" v-else>
                             <svg width="137" height="136" viewBox="0 0 137 136" fill="none"
@@ -353,18 +358,22 @@ export default {
             nickName: "",
             email: "",
             idCard: "",
+            tab_floor:'0',
+            search: '',
             phoneNumber: "",
             roomNumber: "",
             birthDate: "",
             checkInDate: "",
             bookRoom: "",
-            earnest: 0
+            earnest: 0,
+            floorRoom: [],
         }
 
     },
     mounted() {
         console.log("State.Building", this.$store.state.building)
         this.getRoom()
+        this.getFloorRoom();
     },
     created() {
         const loading = this.$vs.loading({
@@ -387,6 +396,17 @@ export default {
                 .then((resp) => {
                     console.log("Return from getRoom()", resp.data);
                     this.room = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        getFloorRoom() {
+            const loading = this.$vs.loading()
+            fetch('http://203.170.190.170:1337/api' + '/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=deep,2')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getRoomFloor()", resp.data);
+                    this.roomFloor = resp.data
                 }).finally(() => {
                     loading.close()
                 })
@@ -432,12 +452,21 @@ export default {
                 setTimeout(() => location.reload(), 1500)
             )
         },
+        filterData() {
+            this.room = this.room.filter(item =>
+                item.attributes.RoomNumber.toLowerCase().includes(this.search.toLowerCase())
+            );
+            if (this.search == '') {
+                this.getRoom()
+            }
+        }
     }
 
 
 }
 </script>
-<style>.text-custom {
+<style>
+.text-custom {
     font-family: 'Prompt';
 }
 

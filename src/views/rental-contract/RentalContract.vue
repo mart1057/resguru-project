@@ -122,11 +122,10 @@
                         </vs-option>
                     </vs-select>
                 </div>
-                <div v-for="data in roomFloor">
-                    <div class="text-[#8396A6] cursor-pointer mr-[8px]"> อาคาร {{
+                <div v-for="(data,i) in roomFloor">
+                    <div class=" cursor-pointer mr-[8px]" :class="tab_floor == i?'font-bold text-[16px]':'text-[#8396A6]'" @click="tab_floor = i"> อาคาร {{
                         data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }}
                     </div>
-
                 </div>
             </div>
         </div>
@@ -586,6 +585,7 @@ export default {
             users: [],
             id_user: '',
             search: '',
+            tab_floor:'0',
             room_detail: {
                 sex: null,
                 name: '',
