@@ -2,7 +2,7 @@
     <div>
         <div class="grid grid-cols-7 w-[100%] gap-4 mt-[14px]">
             <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[14px] cursor-pointer "
-                v-for="user in users" @click="create = true">
+                v-for="user in users" @click="getDetailRentalContract()">
                 <div :class="status == 'rent' ? 'bg-[#D7F1E3] text-[#39B974]' : 'bg-[#F0F8FF] text-[#003765]'"
                     class="h-[24px] w-[auto] mt-[-22px] text-[12px] flex items-center justify-center p-[8px] rounded-[8px]">
                     {{ status == "rent" ? 'ทำสัญญาแล้ว' : 'ยังไม่ทำสัญญา' }}
@@ -83,7 +83,7 @@
                                 <div class="grid grid-cols-4 gap-2  text-custom  ">
                                     <div class="col-span-2">
                                         <div>อีเมลล์</div>
-                                        <input type="input" placeholder="ทะเบียนรถ"
+                                        <input type="input" placeholder="ทะเบียนรถ" v-model="room_detail.email"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                     <div class="col-span-1">
@@ -100,26 +100,28 @@
                                 <div class="grid grid-cols-8  text-custom mt-[14px]  ">
                                     <div>
                                         <div>คำนำหน้า</div>
-                                        <vs-select placeholder="ชื่อ" id="mr" class="mt-[6px]">
-                                            <vs-option label="อาคาร A" value="1">
-                                                อาคาร A
-                                            </vs-option>
-                                            <vs-option label="อาคาร B" value="2">
-                                                อาคาร B
-                                            </vs-option>
-                                        </vs-select>
+                                        <select placeholder="ชื่อ" id="mr"
+                                            class="mt-[6px] pl-[4px] pr-[4px] h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            v-model="room_detail.sex">
+                                            <option label="นาย" :value="true">
+                                                นาย
+                                            </option>
+                                            <option label="นางสาว" :value="false">
+                                                นางสาว
+                                            </option>
+                                        </select>
                                     </div>
                                     <div class="col-span-3 ml-[8px]">
                                         <div>ชื่อ</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="room_detail.name"/>
                                     </div>
                                     <div class="col-span-3  ml-[8px]">
                                         <div>สกุล</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="room_detail.last_name"/>
                                     </div>
                                     <div class="ml-[8px]">
                                         <div>ชื่อเล่น</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="room_detail.nick_name" />
                                     </div>
                                 </div>
                             </dvi>
@@ -130,11 +132,11 @@
                                 <div class="col-span-4">
                                     <div>เบอร์โทรศัพท์ <span class="text-[#5C6B79]">(ไม่ต้องใส่ขีด ตัวอย่าง.
                                             0815578945)</span></div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="room_detail.phone"/>
                                 </div>
                                 <div class="col-span-4  ml-[8px]">
                                     <div>หมายเลขบัตรประชาชน</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="room_detail.id_card"/>
                                 </div>
                             </div>
                         </div>
@@ -143,36 +145,7 @@
                             <div class="grid grid-cols-6  text-custom w-[70%] ">
                                 <div class="col-span-2">
                                     <div>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
-                                    <vs-select placeholder="ชื่อ" class="mt-[6px]">
-                                        <vs-option label="อาคาร A" value="1">
-                                            อาคาร A
-                                        </vs-option>
-                                        <vs-option label="อาคาร B" value="2">
-                                            อาคาร B
-                                        </vs-option>
-                                    </vs-select>
-                                </div>
-                                <div class="col-span-2  ml-[8px]">
-                                    <div class="text-[white]">.</div>
-                                    <vs-select placeholder="ชื่อ" class="mt-[6px]">
-                                        <vs-option label="อาคาร A" value="1">
-                                            อาคาร A
-                                        </vs-option>
-                                        <vs-option label="อาคาร B" value="2">
-                                            อาคาร B
-                                        </vs-option>
-                                    </vs-select>
-                                </div>
-                                <div class="col-span-2 ml-[8px]">
-                                    <div class="text-[white]">.</div>
-                                    <vs-select placeholder="ชื่อ" class="mt-[6px]">
-                                        <vs-option label="อาคาร A" value="1">
-                                            อาคาร A
-                                        </vs-option>
-                                        <vs-option label="อาคาร B" value="2">
-                                            อาคาร B
-                                        </vs-option>
-                                    </vs-select>
+                                    <input type="date" class="h-[36px] mt-[6px] pl-[8px] pr-[8px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="room_detail.birth"/>
                                 </div>
                             </div>
                         </div>
@@ -181,7 +154,7 @@
                             <div class="grid grid-cols-6  text-custom w-[70%] ">
                                 <div class="col-span-6">
                                     <div>ที่อยู่</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="room_detail.address"/>
                                 </div>
                             </div>
                         </div>
@@ -205,48 +178,44 @@
                             <div class="w-[70%]">
                                 <div class="grid grid-cols-8  text-custom w-[100%] ">
                                     <div class="col-span-4">
-                                        <div>อีเมลล์</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
-                                    </div>
-                                    <div class="col-span-4  ml-[8px]">
                                         <div>Line ID</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="room_detail.lineID"/>
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8  text-custom w-[100%] mt-[6px] ">
                                     <div class="col-span-8 ">
                                         <div>สถาบันการศึกษา / สถานที่ทำงานปัจจุบัน</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="room_detail.workplace"/>
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8 gap-2  text-custom w-[100%] mt-[6px] ">
                                     <div class="col-span-4 ">
                                         <div>คณะ / แผนก</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="room_detail.faculty" />
                                     </div>
                                     <div class="col-span-4 ">
                                         <div>ชั้นปี / ตำแหน่ง</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="room_detail.rank"/>
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8  text-custom w-[100%] ">
                                     <div class="col-span-4 mt-[6px]">
                                         <div>รหัสนักศึกษา / รหัสพนักงาน</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="room_detail.idEmployee"/>
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8 gap-2  text-custom w-[100%] mt-[6px] ">
                                     <div class="col-span-4 ">
                                         <div>บุคลที่สามารถติดต่อได้กรณีฉุกเฉิน</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="room_detail.emergencyPerson"/>
                                     </div>
                                     <div class="col-span-2">
                                         <div>ความสัมพันธ์</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="room_detail.relation"/>
                                     </div>
                                     <div class="col-span-2">
                                         <div>เบอร์โทรศัพท์ผู้ติดต่อฉุกเฉิน</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="room_detail.emergencyPhone"/>
                                     </div>
                                 </div>
                             </div>
@@ -322,7 +291,33 @@ export default {
     data() {
         return {
             create: false,
-            users: []
+            users: [],
+            is_edit:false,
+            room_detail: {
+                sex: null,
+                email: '',
+                name: '',
+                last_name: '',
+                nick_name: '',
+                phone: '',
+                id_card: '',
+                birth: '',
+                address: '',
+                date_sign: '',
+                exp_date: '',
+                roomInsurance_deposit: '',
+                contract_duration: '',
+                room_deposit: '',
+                type_room: '',
+                workplace: '',
+                faculty: '',
+                rank: '',
+                idEmployee: '',
+                emergencyPerson: '',
+                relation: '',
+                emergencyPhone: '',
+                lineID:''
+            },
         }
     },
     created() {
@@ -349,11 +344,50 @@ export default {
             axios.delete('http://203.170.190.170:1337/api' + '/user-sign-contracts/' + this.id_contract)
                 .finally(() => {
                     this.$router.push({
-                        path:'/rooms',
+                        path: '/rooms',
                     })
                 })
+        },
+        getDetailRentalContract(id) {
+            const loading = this.$vs.loading()
+            fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep&filters[id][$eq]=' + this.id_room)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log('ddd', resp.data[0]?.attributes.user_sign_contract.data);
+                    this.room_detail.name = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.firstName
+                    this.room_detail.email = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.email
+                    this.room_detail.last_name = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.lastName
+                    this.room_detail.nick_name = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.nickName
+                    this.room_detail.phone = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.phone
+                    this.room_detail.id_card = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.idCard
+                    this.room_detail.address = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.contactAddress
+                    this.room_detail.sex = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.sex
+                    this.room_detail.birth = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.dateOfBirth
+                    this.room_detail.date_sign = resp.data[0]?.attributes.user_sign_contract.data?.attributes.checkInDate
+                    this.room_detail.type_room = resp.data[0]?.attributes.user_sign_contract.data?.attributes.room.data?.attributes.room_type.data?.attributes.roomTypeName
+                    this.room_detail.contract_duration = resp.data[0]?.attributes.user_sign_contract.data?.attributes.contractDuration
+                    this.room_detail.roomInsurance_deposit = resp.data[0]?.attributes.user_sign_contract.data?.attributes.roomInsuranceDeposit
+                    this.room_detail.room_deposit = resp.data[0]?.attributes.user_sign_contract.data?.attributes.roomDeposit
+                    this.room_detail.workplace = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.workplace,
+                    this.room_detail.faculty = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.faculty ,
+                    this.room_detail.rank = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.rank,
+                    this.room_detail.idEmployee = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.idEmployee,
+                    this.room_detail.emergencyPerson = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.emergencyPerson,
+                    this.room_detail.relation = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.relation,
+                    this.room_detail.emergencyPhone = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.emergencyPhone,
+                    this.room_detail.lineID = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.lineID
+                }).finally(() => {
+                    loading.close()
+                    this.create = true
+                })
+        },
+        // addUser(){
+        //   axios.post('http://203.170.190.170:1337/api' + '/users',{
+        //     data:{
 
-        }
+        //     }
+        //   })
+        // }
     }
 }
 
