@@ -287,7 +287,7 @@
                                             <div>คันที่ {{ i + 1 }}</div>
                                             <select placeholder="ชื่อ"
                                                 class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]"
-                                                v-model="data.attributes.Type">
+                                                v-model="data.Type">
                                                 <option label="รถยนต์" value="Car">
                                                     รถยนต์
                                                 </option>
@@ -300,13 +300,13 @@
                                             <div class="text-[white]">.</div>
                                             <input type="input" placeholder="ทะเบียนรถ"
                                                 class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                                v-model="data.attributes.licensePlate" />
+                                                v-model="data.licensePlate" />
                                         </div>
                                         <div class="col-span-3  ml-[8px]">
                                             <div class="text-[white]">.</div>
                                             <input type="input" placeholder="รายละเอียดรถ"
                                                 class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                                v-model="data.attributes.remark" />
+                                                v-model="data.remark" />
                                         </div>
                                     </div>
                                     <div class="grid grid-cols-8  text-custom w-[100%] mb-[18px]  ">
@@ -466,10 +466,11 @@ export default {
                         this.room_detail.emergencyPhone = resp.emergencyPhone,
                         this.room_detail.lineID = resp.lineID
                 }).finally(() => {
-                    fetch('http://203.170.190.170:1337/api' + '/tenant-vehicles?&populate=*&filters[users_permissions_user][id][$eq]=' + this.room_detail.id)
+                    fetch('http://203.170.190.170:1337/api' + '/users/' + this.id_user + '?&populate=*')
                         .then(response => response.json())
                         .then((resp) => {
-                            this.room_detail.vehicles = resp.data;
+                            console.log('fffff', resp);
+                            this.room_detail.vehicles = resp.tenant_vehicles;
                         })
                 })
         },
@@ -494,17 +495,18 @@ export default {
                     this.room_detail.roomInsurance_deposit = resp.data[0]?.attributes.user_sign_contract.data?.attributes.roomInsuranceDeposit
                     this.room_detail.room_deposit = resp.data[0]?.attributes.user_sign_contract.data?.attributes.roomDeposit
                     this.room_detail.workplace = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.workplace,
-                    this.room_detail.faculty = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.faculty,
-                    this.room_detail.rank = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.rank,
-                    this.room_detail.idEmployee = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.idEmployee,
-                    this.room_detail.emergencyPerson = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.emergencyPerson,
-                    this.room_detail.relation = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.relation,
-                    this.room_detail.emergencyPhone = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.emergencyPhone,
-                    this.room_detail.lineID = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.lineID
-                    fetch('http://203.170.190.170:1337/api' + '/tenant-vehicles?&populate=*&filters[users_permissions_user][id][$eq]=' + resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data.id)
+                        this.room_detail.faculty = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.faculty,
+                        this.room_detail.rank = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.rank,
+                        this.room_detail.idEmployee = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.idEmployee,
+                        this.room_detail.emergencyPerson = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.emergencyPerson,
+                        this.room_detail.relation = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.relation,
+                        this.room_detail.emergencyPhone = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.emergencyPhone,
+                        this.room_detail.lineID = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.lineID
+                    fetch('http://203.170.190.170:1337/api' + '/users/' + resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.id + '?&populate=*')
                         .then(response => response.json())
                         .then((resp) => {
-                            this.room_detail.vehicles = resp.data;
+                            console.log('fffff', resp);
+                            this.room_detail.vehicles = resp.tenant_vehicles;
                         })
                 }).finally(() => {
                     loading.close()
@@ -587,12 +589,9 @@ export default {
         },
         addVehicles() {
             this.room_detail.vehicles.push({
-                attributes: {
-                    remark: '',
-                    licensePlat: '',
-                    Type: ''
-
-                }
+                remark: '',
+                licensePlat: '',
+                Type: ''
             })
         }
     }
