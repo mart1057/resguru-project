@@ -532,6 +532,8 @@ export default {
                             // contractDuration: parseInt(this.room_detail_create.contract_duration)
                         }
                     }).finally(() => {
+                        this.id_user = this.room_detail.id
+                        this.getUser()
                         this.create = false
                         loading.close()
                     })
@@ -563,6 +565,7 @@ export default {
                         "emergencyPhone": this.room_detail.emergencyPhone,
                         "lineID": this.room_detail.lineID
                     }).then((resp) => {
+                        this.id_user = resp.data.id
                         axios.post('http://203.170.190.170:1337/api' + '/user-sign-contracts', {
                             data: {
                                 room: this.id_room,
@@ -573,6 +576,7 @@ export default {
                                 // contractDuration: parseInt(this.room_detail_create.contract_duration)
                             }
                         }).finally(() => {
+                            this.getUser()
                             this.create = false
                             loading.close()
                         })
