@@ -113,7 +113,7 @@
                             <div class="text-custom text-[14px] text-[#003765]">ที่อยู่</div>
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.billingAddress" />
                         </div>
-                        <div class="">
+                        <!-- <div class="">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">เขต</div>
                             <vs-select state="primary">
                                 <vs-option label="อาคาร A" value="1">
@@ -124,6 +124,7 @@
                                 </vs-option>
                             </vs-select>
                         </div>
+
                         <div class="">
                             <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">แขวง</div>
                             <vs-select state="primary">
@@ -147,7 +148,7 @@
                             </vs-select>
                         </div>
                         <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">รหัสไปรษณีย์</div>
+                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">รหัสไปรษณีย์</div>
                             <vs-select state="primary">
                                 <vs-option label="อาคาร A" value="1">
                                     อาคาร A
@@ -156,7 +157,11 @@
                                     อาคาร B
                                 </vs-option>
                             </vs-select>
-                        </div>
+                        </div> -->
+                        <ThailandAutoComplete v-model="district" type="district" @select="select" label="ตำบล" size="small" placeholder="ตำบล..."/>
+                        <ThailandAutoComplete v-model="amphoe" type="amphoe" @select="select" label="อำเภอ" size="small" placeholder="อำเภอ..."/>
+                        <ThailandAutoComplete v-model="province" type="province" @select="select" label="จังหวัด" size="small" placeholder="จังหวัด..."/>
+                        <ThailandAutoComplete v-model="zipcode" type="zipcode" @select="select" label="รหัสไปรษณีย์" size="small" placeholder="รหัสไปรษณีย์..."/>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.phone"/>
@@ -167,7 +172,7 @@
                         </div>
                     </div>
                     <div class="mt-[44px] mb-[50px]">
-                        <vs-button dark shadow>
+                        <vs-button @click="updateUserDetail(this.$store.state.userInfo.user.id)" >
                             <div class="font-bold">บันทึก</div>
                         </vs-button>
                     </div>
@@ -182,7 +187,7 @@
                             <div class="text-custom text-[14px] text-[#003765]">ที่อยู่</div>
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
                         </div>
-                        <div class="">
+                        <!-- <div class="">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">เขต</div>
                             <vs-select state="primary">
                                 <vs-option label="อาคาร A" value="1">
@@ -192,8 +197,8 @@
                                     อาคาร B
                                 </vs-option>
                             </vs-select>
-                        </div>
-                        <div class="">
+                        </div> -->
+                        <!-- <div class="">
                             <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">แขวง</div>
                             <vs-select state="primary">
                                 <vs-option label="อาคาร A" value="1">
@@ -225,7 +230,13 @@
                                     อาคาร B
                                 </vs-option>
                             </vs-select>
-                        </div>
+                        </div> -->
+
+                        <ThailandAutoComplete v-model="districtBuild" type="district" @select="selectBuild" label="ตำบล" size="small" placeholder="ตำบล..."/>
+                        <ThailandAutoComplete v-model="amphoeBuild" type="amphoe" @select="selectBuild" label="อำเภอ" size="small" placeholder="อำเภอ..."/>
+                        <ThailandAutoComplete v-model="provinceBuild" type="province" @select="selectBuild" label="จังหวัด" size="small" placeholder="จังหวัด..."/>
+                        <ThailandAutoComplete v-model="zipcodeBuild" type="zipcode" @select="selectBuild" label="รหัสไปรษณีย์" size="small" placeholder="รหัสไปรษณีย์..."/>
+                      
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
@@ -265,12 +276,25 @@
     </div>
 </template>
 <script>
+import ThailandAutoComplete from 'vue-thailand-address-autocomplete'
+
 export default {
     data() {
         return {
             tab: 1,
             userData: [] ,
+            district: '',
+            amphoe: '',
+            province: '',
+            zipcode: '',
+            districtBuild: '',
+            amphoeBuild: '',
+            provinceBuild: '',
+            zipcodeBuild: ''
         }
+    },
+    components: {
+        ThailandAutoComplete
     },
     created() {
         const loading = this.$vs.loading({})
@@ -314,6 +338,18 @@ export default {
                 title: 'Update Water Meter Success',
             })
         },
+        select (address) {
+          this.district = address.district
+          this.amphoe = address.amphoe
+          this.province = address.province
+          this.zipcode = address.zipcode
+        },
+        selectBuild (address) {
+          this.districtBuild = address.district
+          this.amphoeBuild = address.amphoe
+          this.provinceBuild = address.province
+          this.zipcodeBuild = address.zipcode
+        }
         
     },
 }
