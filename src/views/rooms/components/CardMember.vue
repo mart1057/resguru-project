@@ -22,7 +22,7 @@
                             </g>
                         </svg>
                     </div>
-                    <div class="flex justify-center items-center ml-[4px] text-[12px]">{{ data.phone }}</div>
+                    <div class="flex justify-center items-center ml-[4px] text-[12px]">{{ data.phone }} {{ data.dateOfBirth }}</div>
                 </div>
                 <div class="flex justify-around w-[100%]">
                     <div
@@ -539,7 +539,7 @@ export default {
                             "idCard": this.room_detail.id_card,
                             "contactAddress": this.room_detail.address,
                             "sex": this.room_detail.sex,
-                            // "dateOfBirth": this.room_detail.birth,
+                            "dateOfBirth": this.room_detail.birth,
                             "workplace": this.room_detail.workplace,
                             "faculty": this.room_detail.faculty,
                             "rank": this.room_detail.rank,
