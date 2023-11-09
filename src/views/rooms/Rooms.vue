@@ -132,6 +132,7 @@
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer"
                     @click="routeTo('/room-detail',data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.id,data.id,data.attributes.RoomNumber,data.attributes.user_sign_contract.data?.attributes.contractStatus,data.attributes.user_sign_contract.data?.id)" v-for="data in room">
                     <div class="flex">
+
                         <div
                             v-if="data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.filePath">
                             <img class="w-[136px] h-[100%] rounded-[22px]"
@@ -180,12 +181,13 @@
                         <div class="ml-[14px]">
 
                             <div class="text-[18px] font-bold text-[#141629]">ห้อง {{ data.attributes.RoomNumber }}</div>
-                            <div class="text-[14px] mt-[12px] font-bold text-[#003765]">{{
+                            <!-- <div class="text-[14px] mt-[12px] font-bold text-[#003765]">{{
                                 data.attributes.user_sign_contract.data ?
                                 data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.firstName
                                 : "" }} {{ data.attributes.user_sign_contract.data ?
-        data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.lastName
-        : "" }}</div>
+                                data.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.lastName
+                            : "" }}</div> -->
+
 
                         </div>
                     </div>

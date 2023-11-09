@@ -14,6 +14,7 @@ import Expenses from '@/views/expenses/Expenses'
 import Payment from '@/views/payment/Payment'
 import PaymentDetail from '@/views/payment/components/PaymentDetail'
 import  Setting from '@/views/setting/Setting'
+import Checkout from '@/views/checkout/Checkout'
 
 Vue.use(VueRouter)
 
@@ -89,7 +90,11 @@ const routes = [
     name: 'setting',
     component:Setting
   },
-  
+  {
+    path: '/checkout',
+    name: 'checkout',
+    component:Checkout
+  },
   
   
  
