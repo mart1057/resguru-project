@@ -11,12 +11,12 @@
                             fill="white" />
                     </svg>
                 </div>
-                <div class="text-[white] ml-[4px]" @click="create = true">เพิ่มทรัพสินย์</div>
+                <div class="text-[white] ml-[4px]" @click="create = true, is_edit = false">เพิ่มทรัพสินย์</div>
             </div>
         </button>
         <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px]">
-            <div class="h-[78px] bg-[#F3F8FD] rounded-[12px] pl-[4px] pr-[12px] cursor-pointer" @click="create = true"
-                v-for="item in items">
+            <div class="h-[78px] bg-[#F3F8FD] rounded-[12px] pl-[4px] pr-[12px] cursor-pointer"
+                @click="is_edit = true, getDetailFacilities(item.id)" v-for="item in items">
                 <div class="flex justify-between items-center">
                     <div class="flex justify-center items-center">
                         <div>
@@ -158,8 +158,9 @@
                             <div class="w-[20%]">
                                 <div class="text-custom text-[#5C6B79]">ชื่อทรัพย์สิน</div>
                             </div>
-                            <div class="w-[80%]">
-                                <div class="text-custom font-bold ">ทีวี</div>
+                            <div class="w-[80%] flex">
+                                <input class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    type="input" v-model="facilities.title" />
                             </div>
                         </div>
                         <div class="flex w-[100%] mt-[14px]">
@@ -169,7 +170,7 @@
                             <div class="w-[80%]">
                                 <div class="flex">
                                     <input class="h-[28px] w-[100px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                        type="input" />
+                                        type="input" v-model="facilities.price" />
                                     <span class="text-custom flex items-center ml-[8px]">บาท</span>
                                 </div>
 
@@ -180,10 +181,10 @@
                                 <div class="text-custom text-[#5C6B79]">สถานะทรัพย์สิน</div>
                             </div>
                             <div class="w-[80%] flex">
-                                <vs-radio v-model="picked" val="1">
+                                <vs-radio v-model="facilities.remain" :val="true">
                                     <div class="text-custom">มี</div>
                                 </vs-radio>
-                                <vs-radio v-model="picked" val="1" class="ml-[8px]">
+                                <vs-radio v-model="facilities.remain" :val="false" class="ml-[8px]">
                                     <div class="text-custom">ไม่มี</div>
                                 </vs-radio>
                             </div>
@@ -193,10 +194,10 @@
                                 <div class="text-custom text-[#5C6B79]">สภาพทรัพย์สิน</div>
                             </div>
                             <div class="w-[80%] flex">
-                                <vs-radio v-model="picked" val="1">
+                                <vs-radio v-model="facilities.status" :val="true">
                                     <div class="text-custom">ไม่เสียหาย</div>
                                 </vs-radio>
-                                <vs-radio v-model="picked" val="2" class="ml-[8px]">
+                                <vs-radio v-model="facilities.status" :val="false" class="ml-[8px]">
                                     <div class="text-custom">เสียหาย</div>
                                 </vs-radio>
                             </div>
@@ -207,7 +208,7 @@
                             </div>
                             <div class="w-[80%] flex">
                                 <input class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" />
+                                    type="input" v-model="facilities.note" />
                             </div>
                         </div>
                         <div class="flex w-[100%] mt-[14px]">
@@ -227,7 +228,7 @@
                     <div class="flex justify-between mt-[34px] mb-[14px]">
                         <div>
                             <div>
-                                <vs-button @click="create = false" color="#D44769">
+                                <vs-button @click="delectFacilities(facilities.id)" color="#D44769">
                                     <div class="text-custom">ลบรายการนี้</div>
                                 </vs-button>
                             </div>
@@ -239,7 +240,7 @@
                                 </vs-button>
                             </div>
                             <div>
-                                <vs-button @click="create = false" color="#003765">
+                                <vs-button @click="createOrEdit()" color="#003765">
                                     <div class="text-custom">บันทึก</div>
                                 </vs-button>
                             </div>
@@ -256,7 +257,18 @@ export default {
     data() {
         return {
             create: false,
-            items: []
+            items: [],
+            is_edit: false,
+            facilities: {
+                id:'',
+                title: '',
+                price: 0,
+                discount: true,
+                discountAmount: 0,
+                note: '',
+                remain: true,
+                status: true
+            }
         }
     },
     mounted() {
@@ -270,6 +282,7 @@ export default {
     },
     methods: {
         getFacilities() {
+            this.items = []
             const loading = this.$vs.loading()
             fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=*&filters[id][$eq]=' + this.$route.query.id_room)
                 .then(response => response.json())
@@ -280,6 +293,83 @@ export default {
                     loading.close()
                 })
         },
+        createOrEdit() {
+            const loading = this.$vs.loading()
+            if (this.is_edit == true) {
+                axios.put('http://203.170.190.170:1337/api' + '/other-of-buildings/' + this.facilities.id, {
+                    data: {
+                        "title": this.facilities.title,
+                        "price": this.facilities.price,
+                        "note": this.facilities.note,
+                        "discount": this.facilities.discount,
+                        "discountAmount": this.facilities.discountAmount,
+                        "status": this.facilities.status,
+                        "remain": this.facilities.remain
+                    }
+                }).finally(() => {
+                    this.getFacilities()
+                    this.create = false,
+                        loading.close()
+
+                })
+
+            }
+            else {
+                axios.post('http://203.170.190.170:1337/api' + '/other-of-buildings', {
+                    data: {
+                        "title": this.facilities.title,
+                        "price": this.facilities.price,
+                        "note": this.facilities.note,
+                        "discount": this.facilities.discount,
+                        "discountAmount": this.facilities.discountAmount,
+                        "status": this.facilities.status,
+                        "remain": this.facilities.remain,
+                        "building": this.$store.state.building
+                    }
+                }).then((resp) => {
+                    axios.put('http://203.170.190.170:1337/api' + '/rooms/' + this.$route.query.id_room, {
+                        data: {
+                            "other_of_buildings": resp.data.data.id,
+                        }
+                    })
+                })
+                    .finally(() => {
+                        this.getFacilities()
+                        this.create = false,
+                            loading.close()
+
+                    })
+            }
+
+        },
+        getDetailFacilities(id) {
+            const loading = this.$vs.loading()
+            fetch('http://203.170.190.170:1337/api' + '/other-of-buildings/' + id)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log(resp);
+                    this.facilities.id = resp.data.id,
+                        this.facilities.title = resp.data.attributes.title,
+                        this.facilities.price = resp.data.attributes.price,
+                        this.facilities.note = resp.data.attributes.note,
+                        this.facilities.status = resp.data.attributes.status,
+                        this.facilities.remain = resp.data.attributes.remain,
+                        this.facilities.discount = resp.data.attributes.discount,
+                        this.facilities.discountAmount = resp.data.attributes.discountAmount
+                }).finally(() => {
+                    this.create = true,
+                        loading.close()
+                })
+        },
+        delectFacilities(id) {
+            const loading = this.$vs.loading()
+            axios.delete('http://203.170.190.170:1337/api' + '/other-of-buildings/' + id)
+                .finally(() => {
+                    this.create = false,
+                        this.getFacilities()
+                    loading.close()
+                })
+        }
 
     }
 }
