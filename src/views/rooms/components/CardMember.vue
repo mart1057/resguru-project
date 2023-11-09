@@ -399,7 +399,8 @@ export default {
                 relation: '',
                 emergencyPhone: '',
                 lineID: '',
-                vehicles: []
+                vehicles: [],
+                check_vehicles:[],
             },
         }
     },
@@ -471,6 +472,7 @@ export default {
                         .then((resp) => {
                             console.log('fffff', resp);
                             this.room_detail.vehicles = resp.tenant_vehicles;
+                            this.room_detail.check_vehicles = resp.tenant_vehicles
                         })
                 })
         },
@@ -495,18 +497,19 @@ export default {
                     this.room_detail.roomInsurance_deposit = resp.data[0]?.attributes.user_sign_contract.data?.attributes.roomInsuranceDeposit
                     this.room_detail.room_deposit = resp.data[0]?.attributes.user_sign_contract.data?.attributes.roomDeposit
                     this.room_detail.workplace = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.workplace,
-                        this.room_detail.faculty = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.faculty,
-                        this.room_detail.rank = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.rank,
-                        this.room_detail.idEmployee = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.idEmployee,
-                        this.room_detail.emergencyPerson = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.emergencyPerson,
-                        this.room_detail.relation = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.relation,
-                        this.room_detail.emergencyPhone = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.emergencyPhone,
-                        this.room_detail.lineID = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.lineID
+                    this.room_detail.faculty = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.faculty,
+                    this.room_detail.rank = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.rank,
+                    this.room_detail.idEmployee = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.idEmployee,
+                    this.room_detail.emergencyPerson = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.emergencyPerson,
+                    this.room_detail.relation = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.relation,
+                    this.room_detail.emergencyPhone = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.emergencyPhone,
+                    this.room_detail.lineID = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.lineID
                     fetch('http://203.170.190.170:1337/api' + '/users/' + resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.id + '?&populate=*')
                         .then(response => response.json())
                         .then((resp) => {
                             console.log('fffff', resp);
                             this.room_detail.vehicles = resp.tenant_vehicles;
+                            this.room_detail.check_vehicles = resp.tenant_vehicles
                         })
                 }).finally(() => {
                     loading.close()
