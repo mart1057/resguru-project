@@ -58,7 +58,8 @@
             class="p-[-20px] text-custom">
             <div>
                 <div class="flex justify-between pl-[20px] pr-[20px]">
-                    <div class="text-custom flex justify-center items-center text-[18px] font-bold">ชัชพล บุญพันธุ์</div>
+                    <div class="text-custom flex justify-center items-center text-[18px] font-bold">{{
+                        is_edit == true ? room_detail.name + ' ' + room_detail.last_name : 'เพิ่มผู้เช่า' }}</div>
                     <div @click="create = false" class="cursor-pointer">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -107,19 +108,19 @@
                                         <div>อีเมลล์</div>
                                         <input type="input" placeholder="ทะเบียนรถ" v-model="room_detail.email"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            :disabled="is_edit == true" />
+                                            :disabled="is_edit == true || room_detail.check_user == true" />
                                     </div>
                                     <div class="col-span-1">
                                         <div>เลขมิเตอร์ค่าน้ำเริ่มต้น</div>
                                         <input type="input" placeholder="ค่าน้ำ"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            :disabled="is_edit == true" />
+                                            :disabled="is_edit == true || room_detail.check_user == true" />
                                     </div>
                                     <div class="col-span-1">
                                         <div>เลขมิเตอร์ค่าน้ำไฟเริ่มต้น</div>
                                         <input type="input" placeholder="ค่าไฟ"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            :disabled="is_edit == true" />
+                                            :disabled="is_edit == true || room_detail.check_user == true" />
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8  text-custom mt-[14px]  ">
@@ -127,7 +128,8 @@
                                         <div>คำนำหน้า</div>
                                         <select placeholder="ชื่อ" id="mr"
                                             class="mt-[6px] pl-[4px] pr-[4px] h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.sex" :disabled="is_edit == true">
+                                            v-model="room_detail.sex"
+                                            :disabled="is_edit == true || room_detail.check_user == true">
                                             <option label="นาย" :value="true">
                                                 นาย
                                             </option>
@@ -139,17 +141,20 @@
                                     <div class="col-span-3 ml-[8px]">
                                         <div>ชื่อ</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.name" :disabled="is_edit == true" />
+                                            v-model="room_detail.name"
+                                            :disabled="is_edit == true || room_detail.check_user == true" />
                                     </div>
                                     <div class="col-span-3  ml-[8px]">
                                         <div>สกุล</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.last_name" :disabled="is_edit == true" />
+                                            v-model="room_detail.last_name"
+                                            :disabled="is_edit == true || room_detail.check_user == true" />
                                     </div>
                                     <div class="ml-[8px]">
                                         <div>ชื่อเล่น</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.nick_name" :disabled="is_edit == true" />
+                                            v-model="room_detail.nick_name"
+                                            :disabled="is_edit == true || room_detail.check_user == true" />
                                     </div>
                                 </div>
                             </dvi>
@@ -161,12 +166,14 @@
                                     <div>เบอร์โทรศัพท์ <span class="text-[#5C6B79]">(ไม่ต้องใส่ขีด ตัวอย่าง.
                                             0815578945)</span></div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail.phone" :disabled="is_edit == true" />
+                                        v-model="room_detail.phone"
+                                        :disabled="is_edit == true || room_detail.check_user == true" />
                                 </div>
                                 <div class="col-span-4  ml-[8px]">
                                     <div>หมายเลขบัตรประชาชน</div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail.id_card" :disabled="is_edit == true" />
+                                        v-model="room_detail.id_card"
+                                        :disabled="is_edit == true || room_detail.check_user == true" />
                                 </div>
                             </div>
                         </div>
@@ -177,7 +184,8 @@
                                     <div>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
                                     <input type="date"
                                         class="h-[36px] mt-[6px] pl-[8px] pr-[8px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail.birth" :disabled="is_edit == true" />
+                                        v-model="room_detail.birth"
+                                        :disabled="is_edit == true || room_detail.check_user == true" />
                                 </div>
                             </div>
                         </div>
@@ -187,7 +195,8 @@
                                 <div class="col-span-6">
                                     <div>ที่อยู่</div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail.address" :disabled="is_edit == true" />
+                                        v-model="room_detail.address"
+                                        :disabled="is_edit == true || room_detail.check_user == true" />
                                 </div>
                             </div>
                         </div>
@@ -213,90 +222,119 @@
                                     <div class="col-span-4">
                                         <div>Line ID</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.lineID" :disabled="is_edit == true" />
+                                            v-model="room_detail.lineID"
+                                            :disabled="is_edit == true || room_detail.check_user == true" />
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8  text-custom w-[100%] mt-[6px] ">
                                     <div class="col-span-8 ">
                                         <div>สถาบันการศึกษา / สถานที่ทำงานปัจจุบัน</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.workplace" :disabled="is_edit == true" />
+                                            v-model="room_detail.workplace"
+                                            :disabled="is_edit == true || room_detail.check_user == true" />
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8 gap-2  text-custom w-[100%] mt-[6px] ">
                                     <div class="col-span-4 ">
                                         <div>คณะ / แผนก</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.faculty" :disabled="is_edit == true" />
+                                            v-model="room_detail.faculty"
+                                            :disabled="is_edit == true || room_detail.check_user == true" />
                                     </div>
                                     <div class="col-span-4 ">
                                         <div>ชั้นปี / ตำแหน่ง</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.rank" :disabled="is_edit == true" />
+                                            v-model="room_detail.rank"
+                                            :disabled="is_edit == true || room_detail.check_user == true" />
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8  text-custom w-[100%] ">
                                     <div class="col-span-4 mt-[6px]">
                                         <div>รหัสนักศึกษา / รหัสพนักงาน</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.idEmployee" :disabled="is_edit == true" />
+                                            v-model="room_detail.idEmployee"
+                                            :disabled="is_edit == true || room_detail.check_user == true" />
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8 gap-2  text-custom w-[100%] mt-[6px] ">
                                     <div class="col-span-4 ">
                                         <div>บุคลที่สามารถติดต่อได้กรณีฉุกเฉิน</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.emergencyPerson" :disabled="is_edit == true" />
+                                            v-model="room_detail.emergencyPerson"
+                                            :disabled="is_edit == true || room_detail.check_user == true" />
                                     </div>
                                     <div class="col-span-2">
                                         <div>ความสัมพันธ์</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.relation" :disabled="is_edit == true" />
+                                            v-model="room_detail.relation"
+                                            :disabled="is_edit == true || room_detail.check_user == true" />
                                     </div>
                                     <div class="col-span-2">
                                         <div>เบอร์โทรศัพท์ผู้ติดต่อฉุกเฉิน</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.emergencyPhone" :disabled="is_edit == true" />
+                                            v-model="room_detail.emergencyPhone"
+                                            :disabled="is_edit == true || room_detail.check_user == true" />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="w-[100%] flex mt-[14px]">
                             <div class="w-[30%] text-custom flex  items-start">ข้อมูลยานพหนะ</div>
-                            <div class="w-[70%]">
-                                <div class="grid grid-cols-8  text-custom w-[100%] " v-for="data in  room_detail.vehicles">
-                                    <div class="col-span-2">
-                                        <div>คันที่ 1</div>
-                                        <select placeholder="ชื่อ" class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]" v-model="data.attributes.Type">
-                                            <option label="รถยนต์" value="Car">
-                                                รถยนต์
-                                            </option>
-                                            <option label="มอเตอร์ไซต์" value="Motocycle">
-                                                มอเตอร์ไซต์
-                                            </option>
-                                        </select>
+                            <div class="w-[70%]" v-if="room_detail.vehicles.length > 0">
+                                <div v-for="(data, i) in  room_detail.vehicles">
+                                    <div class="grid grid-cols-8  text-custom w-[100%]">
+                                        <div class="col-span-2">
+                                            <div>คันที่ {{ i + 1 }}</div>
+                                            <select placeholder="ชื่อ"
+                                                class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]"
+                                                v-model="data.attributes.Type">
+                                                <option label="รถยนต์" value="Car">
+                                                    รถยนต์
+                                                </option>
+                                                <option label="มอเตอร์ไซต์" value="Motocycle">
+                                                    มอเตอร์ไซต์
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-span-3  ml-[8px]">
+                                            <div class="text-[white]">.</div>
+                                            <input type="input" placeholder="ทะเบียนรถ"
+                                                class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                                v-model="data.attributes.licensePlate" />
+                                        </div>
+                                        <div class="col-span-3  ml-[8px]">
+                                            <div class="text-[white]">.</div>
+                                            <input type="input" placeholder="รายละเอียดรถ"
+                                                class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                                v-model="data.attributes.remark" />
+                                        </div>
                                     </div>
-                                    <div class="col-span-3  ml-[8px]">
-                                        <div class="text-[white]">.</div>
-                                        <input type="input" placeholder="ทะเบียนรถ"
-                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="data.attributes.licensePlate"/>
-                                    </div>
-                                    <div class="col-span-3  ml-[8px]">
-                                        <div class="text-[white]">.</div>
-                                        <input type="input" placeholder="รายละเอียดรถ"
-                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"  v-model="data.attributes.remark"/>
+                                    <div class="grid grid-cols-8  text-custom w-[100%] mb-[18px]  ">
+                                        <div class="col-span-3 mt-[6px]">
+                                            <div>แนบรูปภาพยานพหนะคันที่ 1</div>
+                                            <div class="flex mt-[4px]">
+                                                <div
+                                                    class="flex justify-center items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
+                                                    อัพโหลดรูปภาพ</div>
+                                                <div
+                                                    class="text-[#5C6B79] flex justify-center items-center ml-[8px] text-[12px]">
+                                                    ยังไม่ได้เลือกไฟล์</div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
+                            </div>
+                        </div>
+                        <div class="w-[100%] flex" v-if="room_detail.vehicles.length != 2">
+                            <div class="w-[30%] text-custom flex  items-start text-[white]">.</div>
+                            <div class="w-[70%]">
                                 <div class="grid grid-cols-8  text-custom w-[100%] ">
-                                    <div class="col-span-3 mt-[6px]" >
-                                        <div>แนบรูปภาพยานพหนะคันที่ 1</div>
-                                        <div class="flex mt-[4px]">
-                                            <div
-                                                class="flex justify-center items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
-                                                อัพโหลดรูปภาพ</div>
-                                            <div
-                                                class="text-[#5C6B79] flex justify-center items-center ml-[8px] text-[12px]">
-                                                ยังไม่ได้เลือกไฟล์</div>
+                                    <div class="col-span-3 ">
+                                        <div class="flex">
+                                            <div @click="addVehicles()"
+                                                class="flex cursor-pointer justify-center items-center bg-[#003765] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
+                                                เพิ่มยานพาหนะ</div>
                                         </div>
                                     </div>
                                 </div>
@@ -311,7 +349,7 @@
                         </vs-button>
                     </div>
                     <div>
-                        <vs-button @click="create = false" color="#003765">
+                        <vs-button color="#003765" @click="createOrEdit()">
                             <div class="text-custom">บันทึก</div>
                         </vs-button>
                     </div>
@@ -336,6 +374,7 @@ export default {
             users: [],
             is_edit: true,
             room_detail: {
+                id: '',
                 sex: null,
                 check_user: true,
                 email: '',
@@ -385,11 +424,13 @@ export default {
                 })
         },
         getUsers() {
+            // const loading = this.$vs.loading()
             fetch('http://203.170.190.170:1337/api' + '/users?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
                 .then(response => response.json())
                 .then((resp) => {
                     // console.log(resp);
                     this.users = resp
+                    // loading.close()
                 })
         },
         deleteContract() {
@@ -398,6 +439,38 @@ export default {
                     this.$router.push({
                         path: '/rooms',
                     })
+                })
+        },
+        getUserDetail(id_room) {
+            fetch('http://203.170.190.170:1337/api' + '/users/' + this.id_user + '?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log('detail', resp);
+                    this.room_detail.id = resp.id
+                    this.room_detail.name = resp.firstName
+                    this.room_detail.last_name = resp.lastName
+                    this.room_detail.nick_name = resp.nickName
+                    this.room_detail.phone = resp.phone
+                    this.room_detail.email = resp.email
+                    this.room_detail.id_card = resp.idCard
+                    this.room_detail.address = resp.contactAddress
+                    this.room_detail.sex = resp.sex
+                    this.room_detail.birth = resp.dateOfBirth
+                    this.room_detail.date_sign = resp.checkInDate
+                    this.room_detail.workplace = resp.workplace,
+                        this.room_detail.faculty = resp.faculty,
+                        this.room_detail.rank = resp.rank,
+                        this.room_detail.idEmployee = resp.idEmployee,
+                        this.room_detail.emergencyPerson = resp.emergencyPerson,
+                        this.room_detail.relation = resp.relation,
+                        this.room_detail.emergencyPhone = resp.emergencyPhone,
+                        this.room_detail.lineID = resp.lineID
+                }).finally(() => {
+                    fetch('http://203.170.190.170:1337/api' + '/tenant-vehicles?&populate=*&filters[users_permissions_user][id][$eq]=' + this.room_detail.id)
+                        .then(response => response.json())
+                        .then((resp) => {
+                            this.room_detail.vehicles = resp.data;
+                        })
                 })
         },
         getDetailRentalContract(id) {
@@ -438,9 +511,82 @@ export default {
                     this.create = true
                 })
         },
-        addUser() {
-            axios.post('http://203.170.190.170:1337/api' + '/users', {
-                data: {
+        createOrEdit() {
+            if (this.is_edit == true) {
+                axios.post('http://203.170.190.170:1337/api' + '/users', {
+                    data: {
+
+                    }
+                })
+            }
+            else {
+                if (this.room_detail.check_user == true) {
+                    const loading = this.$vs.loading()
+                    axios.post('http://203.170.190.170:1337/api' + '/user-sign-contracts', {
+                        data: {
+                            room: this.id_room,
+                            contractStatus: "reserved",
+                            users_permissions_user: this.room_detail.id,
+                            // roomDeposit: parseInt(this.room_detail_create.room_deposit),
+                            // roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
+                            // contractDuration: parseInt(this.room_detail_create.contract_duration)
+                        }
+                    }).finally(() => {
+                        this.create = false
+                        loading.close()
+                    })
+
+                }
+                else {
+                    const loading = this.$vs.loading()
+                    axios.post('http://203.170.190.170:1337/api' + '/users', {
+                        "username": this.room_detail.email,
+                        "email": this.room_detail.email,
+                        "firstName": this.room_detail.name,
+                        "lastName": this.room_detail.last_name,
+                        "nickName": this.room_detail.nick_name,
+                        "role": 4,
+                        "phone": this.room_detail.phone,
+                        "email": this.room_detail.email,
+                        "idCard": this.room_detail.id_card,
+                        "contactAddress": this.room_detail.address,
+                        "sex": this.room_detail.sex,
+                        // "dateOfBirth": this.room_detail.birth,
+                        "password": "mockpass",
+                        "building": this.$store.state.building,
+                        "workplace": this.room_detail.workplace,
+                        "faculty": this.room_detail.faculty,
+                        "rank": this.room_detail.rank,
+                        " idEmployee": this.room_detail.idEmployee,
+                        "emergencyPerson": this.room_detail.emergencyPerson,
+                        "relation": this.room_detail.relation,
+                        "emergencyPhone": this.room_detail.emergencyPhone,
+                        "lineID": this.room_detail.lineID
+                    }).then((resp) => {
+                        axios.post('http://203.170.190.170:1337/api' + '/user-sign-contracts', {
+                            data: {
+                                room: this.id_room,
+                                contractStatus: "reserved",
+                                users_permissions_user: resp.data.id,
+                                // roomDeposit: parseInt(this.room_detail_create.room_deposit),
+                                // roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
+                                // contractDuration: parseInt(this.room_detail_create.contract_duration)
+                            }
+                        }).finally(() => {
+                            this.create = false
+                            loading.close()
+                        })
+                    })
+                }
+            }
+
+        },
+        addVehicles() {
+            this.room_detail.vehicles.push({
+                attributes: {
+                    remark: '',
+                    licensePlat: '',
+                    Type: ''
 
                 }
             })
