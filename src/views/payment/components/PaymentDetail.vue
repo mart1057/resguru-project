@@ -32,10 +32,10 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class="ml-[4px]">ชั้น 1 ห้อง 101</div>
+                            <div class="ml-[4px]">{{ userProfile.attributes.RoomNumber }}</div>
                         </div>
-                        <div class="text-[16px] mt-[4px]">{{ userProfile.firstName }} {{ userProfile.lastName }}</div>
-                        <div class="text-[12px] text-[#B9CCDC] mt-[4px]">เข้าพักเมื่อวันที่: 18 ม.ค. 2023</div>
+                        <div class="text-[16px] mt-[4px]">{{ userProfile.attributes.users_permissions_user.data.attributes.firstName }} {{ userProfile.attributes.users_permissions_user.data.attributes.lastName }}</div>
+                        <div class="text-[12px] text-[#B9CCDC] mt-[4px]">เข้าพักเมื่อวันที่: {{ userProfile.attributes.checkInDate }}</div>
                         <div class="text-[12px] text-[#B9CCDC]">ประเภทห้อง: ห้องพร้อมเฟอร์นิเจอร์</div>
                     </div>
                 </div>
@@ -116,7 +116,7 @@
                                 <div class="ml-[4px] flex items-center">ใบเสร็จ</div>
                             </div>
                         </div>
-                        <div @click="tab = 3" class="cursor-pointer "
+                        <!-- <div @click="tab = 3" class="cursor-pointer "
                             :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                             <div class="flex">
                                 <div>
@@ -135,7 +135,7 @@
                                 </div>
                                 <div class="ml-[4px] flex items-center">ประวัติการจ่าย</div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -205,21 +205,22 @@
                                 {{ tr.attributes.invoiceNumber }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.roomPrice }}
+                               <vs-input  v-model="tr.attributes.roomPrice"/> 
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.waterPrice }}
+                                <vs-input  v-model="tr.attributes.waterPrice"/>  
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.electricPrice }}
+                                <vs-input  v-model="tr.attributes.electricPrice"/>  
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.communalPrice }}
+                                <vs-input  v-model="tr.attributes.communalPrice"/>  
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.otherPrice }}
+                                <vs-input  v-model="tr.attributes.otherPrice"/>  
                             </vs-td>
                             <vs-td>
+                                <!-- <vs-input  v-model="tr.attributes.total"/>   -->
                                 {{ tr.attributes.total }}
                             </vs-td>
                             <vs-td>
@@ -229,7 +230,8 @@
                                 <div class="flex items-center justify-start">
                                     <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
                                         :class="tr.status == 1 ? 'bg-[#CFFBDA] text-[#0B9A3C]' : tr.status == 'ยังไม่ชำระ' ? 'bg-[#FFE1E8] text-[#EA2F5C]' : ' bg-[#FFF2BC] text-[#D48C00] '">
-                                        {{ tr.attributes.paymentStatus }}</div>
+                                        {{ tr.attributes.paymentStatus }}
+                                    </div>
                                 </div>
                             </vs-td>
                             <vs-td>
@@ -448,11 +450,11 @@ export default {
     methods: {
         getUserProfile() {
             const loading = this.$vs.loading()
-            fetch(`http://203.170.190.170:1337/api/users/${this.$route.query.profileId}`)
+            fetch(`http://203.170.190.170:1337/api/user-sign-contracts/${this.$route.query.profileId}?populate=*`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getUser()",resp);
-                    this.userProfile = resp
+                    console.log("Return from getUser()",resp.data);
+                    this.userProfile = resp.data
                 }).finally(() => {
                     loading.close()
                 })
@@ -473,7 +475,7 @@ export default {
             fetch(`http://203.170.190.170:1337/api/tenant-receipts?filters[user_sign_contract][id][$eq]=${this.$route.query.profileId}&populate=*`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getCommonFeeRoom()",resp.data);
+                    console.log("Return from getReceipt()",resp.data);
                     this.userReceipt = resp.data
                 }).finally(() => {
                     loading.close()
