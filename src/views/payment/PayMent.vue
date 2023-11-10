@@ -144,22 +144,19 @@
                 <vs-table v-model="selected">
                     <template #thead>
                         <vs-tr>
-                            <!-- <vs-th>
+                            <vs-th>
                                 <vs-checkbox :indeterminate="selected.length == payments.length" v-model="allCheck"
                                     @change="selected = $vs.checkAll(selected, payments)" />
-                            </vs-th> -->
-                            <vs-th>
-                                ชื่อผู้เช่า
-                            </vs-th>
-                            <vs-th>
-                                วันที่สร้าง
                             </vs-th>
                             <vs-th>
                                 ห้อง
                             </vs-th>
-                            <!-- <vs-th>
-                                ประเภทห้องเช่า
-                            </vs-th> -->
+                            <vs-th>
+                                ชื่อผู้เช่า
+                            </vs-th>
+                            <vs-th>
+                                ประเภทห้อง
+                            </vs-th>
                             <vs-th>
                                 ค่าห้องเช่า
                             </vs-th>
@@ -179,10 +176,11 @@
                                 ที่ต้องชำระ
                             </vs-th>
                             <vs-th>
-                                หลักฐานการชำระเงิน
+                                สถานะ
                             </vs-th>
+
                             <vs-th>
-                                สถานะการชำระเงิน
+                                Event on Action
                             </vs-th>
                             <vs-th>
 
@@ -191,27 +189,22 @@
                     </template>
                     <template #tbody>
                         <vs-tr :key="i" v-for="(tr, i) in payments" :data="tr" :is-selected="!!selected.includes(tr)">
-                            <!-- <vs-td checkbox>
+                            <vs-td checkbox>
                                 <vs-checkbox :val="tr" v-model="selected" />
-                            </vs-td> -->
+                            </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.attributes.user_sign_contract.data.id)">
-                                    {{ tr.attributes.user_sign_contract.data ?
-                                        tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName
-                                        : "" }} {{ tr.attributes.user_sign_contract.data ?
-        tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.lastName
-        : "" }}
+                                    {{ tr.attributes.RoomNumber }}
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.attributes.user_sign_contract.data.id)">
-                                {{ tr.attributes.createdAt }}
+                                     {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.id : "ยังไม่มีผู้เช่า" }}
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.attributes.user_sign_contract.data.id)">
-                                {{ tr.attributes.user_sign_contract.data ?
-                                    tr.attributes.user_sign_contract.data.attributes.room.data.attributes.RoomNumber : "" }}
+                                    {{  tr.attributes.room_type.data.attributes.roomTypeName }}
                                     </div>
                             </vs-td>
                             <!-- <vs-td>
@@ -223,46 +216,63 @@
                             </vs-td> -->
                             <vs-td>
                                 <div @click="routeTo(tr.attributes.user_sign_contract.data.id)">
-                                {{ tr.attributes.roomPrice }}
+                                    <div v-if="tr.attributes.tenant_bills.data[0]">
+                                        {{tr.attributes.tenant_bills.data[0].attributes.roomPrice}}
+                                    </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.attributes.user_sign_contract.data.id)">
-                                {{ tr.attributes.communalPrice }}
+                               
+                                    <div v-if="tr.attributes.tenant_bills.data[0]">
+                                        {{tr.attributes.tenant_bills.data[0].attributes.communalPrice}}
+                                    </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.attributes.user_sign_contract.data.id)">
-                                {{ tr.attributes.otherPrice }}
+                                    <div v-if="tr.attributes.tenant_bills.data[0]">
+                                        {{tr.attributes.tenant_bills.data[0].attributes.otherPrice}}
+                                    </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.attributes.user_sign_contract.data.id)">
-                                {{ tr.attributes.total }}
+                                    <div v-if="tr.attributes.tenant_bills.data[0]">
+                                        {{tr.attributes.tenant_bills.data[0].attributes.total}}
+                                    </div>
                                 </div>
                             </vs-td>
                             <vs-td>
 
                             </vs-td>
                             <vs-td>
-
-                            </vs-td>
-                            <vs-td>
-                                File: Uploadfile.jpg
+                                
                             </vs-td>
                             <vs-td>
                                 <div class="flex items-center justify-start">
-                                    <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
-                                        :class="tr.attributes.paymentStatus == 1 ? 'bg-[#CFFBDA] text-[#0B9A3C]' : tr.attributes.paymentStatus == 'ยังไม่ชำระ' ? 'bg-[#FFE1E8] text-[#EA2F5C]' : ' bg-[#FFF2BC] text-[#D48C00] '">
-                                        {{ tr.attributes.paymentStatus == 1 ? 'ชำระแล้ว' : tr.attributes.paymentStatus ==
-                                            'ยังไม่ชำระ' ? 'ยังไม่ชำระ' :
-                                            'ชำระบางส่วน' }} </div>
+                                    <!-- <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
+                                        :class="tr.attributes.paymentStatus == 1 ? 'bg-[#CFFBDA] text-[#0B9A3C]' : tr.attributes.paymentStatus == 'ยังไม่ชำระ' ? 'bg-[#FFE1E8] text-[#EA2F5C]' : ' bg-[#FFF2BC] text-[#D48C00] '"> -->
+                                        <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]">
+                                            <div v-if="tr.attributes.tenant_bills.data[0]" >
+                                                {{tr.attributes.tenant_bills.data[0].attributes.paymentStatus}}
+                                            </div>
+                                        </div>
                                 </div>
                                 <!-- <div v-if="tr.attributes.paymentStatus == ชำระบางส่วน">
                                         <vs-button >
                                             ใบเสร็จรับเงิน
                                         </vs-button>
                                 </div> -->
+                            </vs-td>
+                            <vs-td>
+                                <div v-if="tr.attributes.tenant_bills.data[0]" >
+                                    <vs-button  success class="small">ส่งใบแจ้งหนี้</vs-button>
+                                </div>
+                                <div v-else >
+                                    <vs-button  color="rgb(59,222,200)" class="small">เรียกข้อมูลชำระ</vs-button>
+                                </div>
+                               
                             </vs-td>
                             <vs-td>
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -424,7 +434,7 @@ export default {
         }, 1000)
     },
     mounted() {
-        this.getTanantBill();
+        this.getRoomBill();
     },
     methods: {
         routeTo(profileID) {
@@ -432,13 +442,13 @@ export default {
                 path: `/payment-detail?profileId=${profileID}`,
             })
         },
-        getTanantBill() {
+        getRoomBill() {
             const loading = this.$vs.loading()
             // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`http://203.170.190.170:1337/api/tenant-bills?filters[building][id][$eq]=${this.$store.state.building}&populate=deep,3&sort[0]=id:desc`)
+            fetch(`http://203.170.190.170:1337/api/rooms?filters[building][id][$eq]=${this.$store.state.building}&populate=deep,3&sort[0]=id:asc`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getAnnouncement()", resp.data);
+                    console.log("Return from getRoomBill()", resp.data);
                     this.payments = resp.data
                 }).finally(() => {
                     loading.close()

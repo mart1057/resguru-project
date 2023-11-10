@@ -379,7 +379,7 @@ export default {
     data() {
         return {
             popup_filter: false,
-            tab: 2,
+            tab: 1,
             allCheck: false,
             selected: [],
             users: [
