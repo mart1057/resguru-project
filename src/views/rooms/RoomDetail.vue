@@ -25,7 +25,7 @@
                     <div @click="tab = 1" class="cursor-pointer "
                         :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         ผู้เช่า</div>
-                    <div @click="tab = 2" class="cursor-pointer ml-[8px]"
+                    <div @click="tab = 2" class="cursor-pointer ml-[8px]" v-if=" $route.query.id_user"
                         :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         สัญญาเช่า
                     </div>
@@ -33,7 +33,7 @@
                         :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         สิ่งอำนวยความสะดวก
                     </div>
-                    <div @click="tab = 4" class="cursor-pointer  ml-[8px]"
+                    <div @click="tab = 4" class="cursor-pointer  ml-[8px]" v-if=" $route.query.id_user"
                         :class="tab == 4 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : ' text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         ย้ายออก
                     </div>
