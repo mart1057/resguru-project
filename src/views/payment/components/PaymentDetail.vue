@@ -229,7 +229,7 @@
                                 <div class="flex items-center justify-start">
                                     <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
                                         :class="tr.status == 1 ? 'bg-[#CFFBDA] text-[#0B9A3C]' : tr.status == 'ยังไม่ชำระ' ? 'bg-[#FFE1E8] text-[#EA2F5C]' : ' bg-[#FFF2BC] text-[#D48C00] '">
-                                        {{ tr.attributes.paymentStatus }}He</div>
+                                        {{ tr.attributes.paymentStatus }}</div>
                                 </div>
                             </vs-td>
                             <vs-td>

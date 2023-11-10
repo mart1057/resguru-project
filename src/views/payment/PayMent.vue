@@ -267,7 +267,7 @@
                             </vs-td>
                             <vs-td>
                                 <div v-if="tr.attributes.tenant_bills.data[0]" >
-                                    <vs-button  success class="small">ส่งใบแจ้งหนี้</vs-button>
+                                    <vs-button  success class="small">See More</vs-button>
                                 </div>
                                 <div v-else >
                                     <vs-button  color="rgb(59,222,200)" class="small">เรียกข้อมูลชำระ</vs-button>
