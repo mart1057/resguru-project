@@ -113,7 +113,7 @@
                             <div class="text-custom text-[14px] text-[#003765]">ที่อยู่</div>
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.billingAddress" />
                         </div>
-                        <div class="">
+                        <!-- <div class="">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">เขต</div>
                             <vs-select state="primary">
                                 <vs-option label="อาคาร A" value="1">
@@ -124,6 +124,7 @@
                                 </vs-option>
                             </vs-select>
                         </div>
+
                         <div class="">
                             <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">แขวง</div>
                             <vs-select state="primary">
@@ -147,7 +148,7 @@
                             </vs-select>
                         </div>
                         <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">รหัสไปรษณีย์</div>
+                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">รหัสไปรษณีย์</div>
                             <vs-select state="primary">
                                 <vs-option label="อาคาร A" value="1">
                                     อาคาร A
@@ -156,18 +157,22 @@
                                     อาคาร B
                                 </vs-option>
                             </vs-select>
-                        </div>
+                        </div> -->
+                        <ThailandAutoComplete v-model="district" type="district" @select="select" label="ตำบล" size="small" placeholder="ตำบล..."/>
+                        <ThailandAutoComplete v-model="amphoe" type="amphoe" @select="select" label="อำเภอ" size="small" placeholder="อำเภอ..."/>
+                        <ThailandAutoComplete v-model="province" type="province" @select="select" label="จังหวัด" size="small" placeholder="จังหวัด..."/>
+                        <ThailandAutoComplete v-model="zipcode" type="zipcode" @select="select" label="รหัสไปรษณีย์" size="small" placeholder="รหัสไปรษณีย์..."/>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.phone"/>
                         </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">Email</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.email" />
+                            <input disabled class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.email" />
                         </div>
                     </div>
                     <div class="mt-[44px] mb-[50px]">
-                        <vs-button dark shadow>
+                        <vs-button @click="updateUserDetail()" >
                             <div class="font-bold">บันทึก</div>
                         </vs-button>
                     </div>
@@ -176,13 +181,13 @@
                     <div class="grid grid-cols-4 w-[100%] gap-2 ">
                         <div class="mt-[8px] col-span-4">
                             <div class="text-custom text-[14px] text-[#003765]">ชื่ออพาร์ทเม้นท์</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="buildingData.attributes.buildingName" />
                         </div>
                         <div class="mt-[8px] col-span-4">
                             <div class="text-custom text-[14px] text-[#003765]">ที่อยู่</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="buildingData.attributes.buildingAddress" />
                         </div>
-                        <div class="">
+                        <!-- <div class="">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">เขต</div>
                             <vs-select state="primary">
                                 <vs-option label="อาคาร A" value="1">
@@ -192,8 +197,8 @@
                                     อาคาร B
                                 </vs-option>
                             </vs-select>
-                        </div>
-                        <div class="">
+                        </div> -->
+                        <!-- <div class="">
                             <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">แขวง</div>
                             <vs-select state="primary">
                                 <vs-option label="อาคาร A" value="1">
@@ -225,26 +230,32 @@
                                     อาคาร B
                                 </vs-option>
                             </vs-select>
-                        </div>
+                        </div> -->
+
+                        <ThailandAutoComplete v-model="buildingData.attributes.buildingDistrict" type="district" @select="selectBuild" label="ตำบล" size="small" placeholder="ตำบล..."/>
+                        <ThailandAutoComplete v-model="buildingData.attributes.buildingSubDistrict" type="amphoe" @select="selectBuild" label="อำเภอ" size="small" placeholder="อำเภอ..."/>
+                        <ThailandAutoComplete v-model="buildingData.attributes.buildingProvince" type="province" @select="selectBuild" label="จังหวัด" size="small" placeholder="จังหวัด..."/>
+                        <ThailandAutoComplete v-model="buildingData.attributes.buildingPostcode" type="zipcode" @select="selectBuild" label="รหัสไปรษณีย์" size="small" placeholder="รหัสไปรษณีย์..."/>
+                      
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="buildingData.attributes.buildingPhone"/>
                         </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">Email</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="buildingData.attributes.buildingEmail" />
                         </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">ไลน์ติดต่อ</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="buildingData.attributes.buildingLine"/>
                         </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">เฟสบุ๊ค</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="buildingData.attributes.buildingFacebook"/>
                         </div>
                         <div class="">
                             <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">วันตัดรอบบิล</div>
-                            <vs-select state="primary">
+                            <vs-select state="primary" v-model="buildingData.attributes.buildingPaymentMonthlyDate">
                                 <vs-option label="อาคาร A" value="1">
                                     อาคาร A
                                 </vs-option>
@@ -255,7 +266,7 @@
                         </div>
                     </div>
                     <div class="mt-[44px] mb-[50px]">
-                        <vs-button @click="updateUserDetail(this.$store.state.userInfo.user.id)" >
+                        <vs-button  @click="updateBuildingData()">
                             <div class="font-bold">บันทึก</div>
                         </vs-button>
                     </div>
@@ -265,12 +276,23 @@
     </div>
 </template>
 <script>
+import ThailandAutoComplete from 'vue-thailand-address-autocomplete'
+import axios from 'axios'
+
 export default {
     data() {
         return {
             tab: 1,
             userData: [] ,
+            buildingData: [],
+            district: '',
+            amphoe: '',
+            province: '',
+            zipcode: '',
         }
+    },
+    components: {
+        ThailandAutoComplete
     },
     created() {
         const loading = this.$vs.loading({})
@@ -280,6 +302,8 @@ export default {
     },
     mounted() {
         this.getUserDetail();
+        this.getBuildingData();
+        console.log("this Building ID",this.$store.state.buidingId)
     },
     methods: {
         getUserDetail() {
@@ -294,26 +318,90 @@ export default {
                     loading.close()
                 })
         },
-        updateUserDetail(userID){
-            axios.put(`http://203.170.190.170:1337/api/users/${userID}`,{
+        updateUserDetail(){
+            axios.put(`http://203.170.190.170:1337/api/users/${this.$store.state.userInfo.user.id}`,{
                 data : {
-                    email: this.email
+                    firstName: this.userData.firstName,
+                    lastName: this.userData.lastName,
+                    contactAddress: this.userData.contactAddress,
+                    phone: this.userData.phone,
+                    currentAddress: this.buildingData.attributes.currentAddress,
+                    province: this.province,
+                    district: this.district,
+                    subDistrict: this.subDistrict,
+                    postcode: this.zipcode
                 }
-            }).then( 
-                    this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
+            })
+            .then( 
+                    this.openNotificationUser('top-right', '#3A89CB', 6000)
                 )
                 .then(
                     setTimeout(() => location.reload(), 1500)
                 )
         }, 
-        openNotificationUpdateWater(position = null, color) {
+        getBuildingData() {
+            const loading = this.$vs.loading()
+            console.log("ID :",this.$store.state.userInfo.user.id)
+            fetch(`http://203.170.190.170:1337/api/buildings/${this.$store.state.building}`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getBuilding()",resp);
+                    this.buildingData = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        updateBuildingData(){
+            axios.put(`http://203.170.190.170:1337/api/buildings/${this.$store.state.building}`,{
+                data : {
+                    buildingName: this.buildingData.attributes.buildingName,
+                    buildingAddress: this.buildingData.attributes.buildingAddress,
+                    buildingProvince: this.buildingData.attributes.buildingProvince,
+                    buildingDistrict: this.buildingData.attributes.buildingDistrict,
+                    buildingSubDistrict: this.buildingData.attributes.buildingSubDistrict,
+                    buildingPostcode: this.buildingData.attributes.buildingPostcode,
+                    buildingPhone: this.buildingData.attributes.buildingPhone,
+                    buildingEmail: this.buildingData.attributes.buildingEmail,
+                    buildingLine: this.buildingData.attributes.buildingLine,
+                    buildingFacebook: this.buildingData.attributes.buildingFacebook,
+                    buildingPaymentMonthlyDate: this.buildingData.attributes.buildingPaymentMonthlyDate
+                }
+            })
+            .then( 
+                    this.openNotificationBuilding('top-right', '#3A89CB', 6000)
+                )
+                .then(
+                    setTimeout(() => location.reload(), 1500)
+                )
+        }, 
+        openNotificationUser(position = null, color) {
             const noti = this.$vs.notification({
                 sticky: true,
                 color,
                 position,
-                title: 'Update Water Meter Success',
+                title: 'Update Profile Success',
             })
         },
+        openNotificationBuilding(position = null, color) {
+            const noti = this.$vs.notification({
+                sticky: true,
+                color,
+                position,
+                title: 'Update Building Information Success',
+            })
+        },
+        select (address) {
+          this.district = address.district
+          this.amphoe = address.amphoe
+          this.province = address.province
+          this.zipcode = address.zipcode
+        },
+        selectBuild (address) {
+          this.buildingData.attributes.buildingDistrict = address.district
+          this.buildingData.attributes.buildingSubDistrict = address.amphoe
+          this.buildingData.attributes.buildingProvince = address.province
+          this.buildingData.attributes.buildingPostcode = address.zipcode
+        }
         
     },
 }
