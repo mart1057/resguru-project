@@ -339,6 +339,52 @@
                 </div>
             </div>
         </b-modal>
+        <b-modal centered v-model="move_room" size="xl" hide-backdrop hide-header-close hide-header hide-footer
+            class="p-[-20px] text-custom">
+            <div>
+                <div class="flex justify-between pl-[20px] pr-[20px]">
+                    <div class="text-custom flex justify-center items-center text-[18px]">
+                        <div>ย้ายผู้เช่า </div> 
+                        <div class="font-bold ml-[4px]">{{ name_user }} </div>
+                        <div class="ml-[4px]">ห้อง</div>
+                        <div class="font-bold ml-[4px]">{{ $route.query.number_room }} </div>
+                    </div>
+                    <div @click="create = false" class="cursor-pointer">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
+                                width="24" height="24">
+                                <rect width="24" height="24" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_417_4814)">
+                                <path
+                                    d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                                    fill="#5C6B79" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <!-- <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
+                <div class="pl-[20px] pr-[20px] mt-[24px]">
+                    <div class="text-[#5C6B79] text-custom">
+                        เลือกห้องที่ต้องการย้าย
+                    </div>
+                    <div v-for="data in roomFloor" class="text-custom">
+                        <div v-for="floor in data" class="mt-[14px] mb-[14px]">
+                            <div class="text-[#141629] font-bold">ชั้น {{ floor.floorName }}</div>
+                            <div class="grid grid-cols-8 w-[100%] gap-2 mt-[14px]">
+                                <div v-for="room in floor.attributes">
+                                    <div class="h-[32px] bg-[#DEEAF5] rounded-[12px] flex items-center justify-between pl-[8px] pr-[8px]"
+                                        :class="room.status ? 'bg-[#E8F0F8] text-[#B9CCDC]' : 'bg-[#DEEAF5] text-[#003765] cursor-pointer'">
+                                        <div>{{ room.RoomNumber }}</div>
+                                        <div>{{ room.status ? 'เต็ม' : 'ว่าง' }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </b-modal>
     </div>
 </template>
 <script>
@@ -353,8 +399,10 @@ export default {
     data() {
         return {
             create: false,
+            move_room: true,
             user: [],
             users: [],
+            name_user: '',
             is_edit: true,
             room_detail: {
                 id: '',
@@ -384,6 +432,7 @@ export default {
                 lineID: '',
                 vehicles: [],
             },
+            roomFloor: []
         }
     },
     created() {
@@ -394,14 +443,48 @@ export default {
     },
     mounted() {
         this.getUser()
+        this.getFloorRoom()
     },
     methods: {
+        getFloorRoom() {
+            // const loading = this.$vs.loading()
+            fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getRoomFloor()", resp.data);
+                    const transformedData = resp.data.reduce((result, item) => {
+                        console.log('ssdfgdf', item);
+                        console.log('dfgdfg', item.attributes.building_floor.data.attributes.floorName);
+                        const floorName = item.attributes.building_floor.data.attributes.floorName;
+                        const roomId = item.id;
+                        // Find existing floor entry
+                        const floorEntry = result.find(entry => entry.floorName === floorName);
+
+                        if (floorEntry) {
+                            // Add room attributes to existing floor entry
+                            floorEntry.attributes.push({ "RoomNumber": item.attributes.RoomNumber, "id": roomId, "status": item.attributes.user_sign_contract?.data ? true : false });
+                        } else {
+                            // Create a new floor entry with room attributes
+                            result.push({
+                                "floorName": floorName,
+                                "attributes": [{ "RoomNumber": item.attributes.RoomNumber, "id": roomId, "status": item.attributes.user_sign_contract?.data ? true : false }]
+                            });
+                        }
+
+                        return result;
+                    }, []);
+                    this.roomFloor = { "data": transformedData };
+                }).finally(() => {
+                    // loading.close()
+                })
+        },
         getUser() {
             const loading = this.$vs.loading()
             fetch('http://203.170.190.170:1337/api' + '/users?filters[id][$eq]=' + this.id_user)
                 .then(response => response.json())
                 .then((resp) => {
                     this.user = resp
+                    this.name_user = resp[0].firstName + ' ' + resp[0].lastName
                 }).finally(() => {
                     loading.close()
                 })
