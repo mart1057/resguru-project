@@ -22,7 +22,7 @@
                             </g>
                         </svg>
                     </div>
-                    <div class="flex justify-center items-center ml-[4px] text-[12px]">{{ data.phone }} {{ data.dateOfBirth }}</div>
+                    <div class="flex justify-center items-center ml-[4px] text-[12px]">{{ data.phone }}</div>
                 </div>
                 <div class="flex justify-around w-[100%]">
                     <div
