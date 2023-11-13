@@ -446,9 +446,9 @@
                                 </div>
                                 <div class="text-custom flex justify-center items-center text-center mt-[8px]">
                                     การย้ายห้องแบบย้ายสัญญาเช่า ระบบจะทำการ
-                                    ย้ายผู้เช่าทั้งหมดของห้อง 101 พร้อมกับสัญญา
-                                    เช่าห้อง 101 ไปยังห้อง 105 พร้อมทั้งทำการเปลี่ยน
-                                    สถานะห้อง 101 เป็นห้องว่าง
+                                    ย้ายผู้เช่าทั้งหมดของห้อง {{ $route.query.number_room }} พร้อมกับสัญญา
+                                    เช่าห้อง {{ $route.query.number_room }} ไปยังห้อง 105 พร้อมทั้งทำการเปลี่ยน
+                                    สถานะห้อง {{ $route.query.number_room }} เป็นห้องว่าง
                                 </div>
                             </div>
                         </div>
@@ -472,7 +472,7 @@
                                 </div>
                                 <div class="text-custom flex justify-center items-center text-center mt-[8px]">
                                     การย้ายห้องแบบไม่ย้ายสัญญาเช่า ระบบจะทำการย้ายผู้เช่า (คนที่เลือก) โดยจะไม่ย้าย
-                                    สัญญาเช่าของห้อง 101 ไปยังห้อง 105
+                                    สัญญาเช่าของห้อง {{ $route.query.number_room }} ไปยังห้อง 105
                                 </div>
                             </div>
                         </div>
