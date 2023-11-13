@@ -684,8 +684,8 @@ export default {
         },
         getExpense() {
             const loading = this.$vs.loading()
-            // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`http://203.170.190.170:1337/api/building-expenses?populate=*,3&sort[0]=id:desc`)
+            // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
+            fetch(`https://api.resguru.app/api/building-expenses?populate=*,3&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getExpense()",resp.data);
@@ -696,7 +696,7 @@ export default {
         },
         getIncome() {
             const loading = this.$vs.loading() 
-            fetch(`http://203.170.190.170:1337/api/tenant-receipts?populate=*,3&sort[0]=id:desc`)
+            fetch(`https://api.resguru.app/api/tenant-receipts?populate=*,3&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getReceipt()",resp.data);

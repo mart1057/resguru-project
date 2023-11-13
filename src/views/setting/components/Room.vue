@@ -835,7 +835,7 @@ export default {
     methods: {
         getUserRoom() {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]='+this.$store.state.building+'&populate=deep,3')
+            fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]='+this.$store.state.building+'&populate=deep,3')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoom()",resp.data);
@@ -846,7 +846,7 @@ export default {
         },
         getTypeRoom() {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/room-types?filters[room_building][id][$eq]='+this.$store.state.building+'&populate=deep,1')
+            fetch('https://api.resguru.app/api' + '/room-types?filters[room_building][id][$eq]='+this.$store.state.building+'&populate=deep,1')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoomType()",resp.data);
@@ -857,7 +857,7 @@ export default {
         },
         getFloorRoom() {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/building-floors?filters[building][id][$eq]='+this.$store.state.building+'&populate=deep,2')
+            fetch('https://api.resguru.app/api' + '/building-floors?filters[building][id][$eq]='+this.$store.state.building+'&populate=deep,2')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoomFloor()",resp.data);
@@ -867,7 +867,7 @@ export default {
                 })
         },
         updateUserRoom(roomID){
-            axios.put(`http://203.170.190.170:1337/api/rooms/${roomID}`,{
+            axios.put(`https://api.resguru.app/api/rooms/${roomID}`,{
                 data : {
                     rate: this.rate
                 }
@@ -887,7 +887,7 @@ export default {
             })
         },
         addNewRoom(){
-            axios.post(`http://203.170.190.170:1337/api/rooms/`,{
+            axios.post(`https://api.resguru.app/api/rooms/`,{
                 data : {
                     RoomNumber: "RandomRoom 301",
                     room_building: this.$store.state.building,
@@ -903,7 +903,7 @@ export default {
         }, 
 
         addNewRoomType() {
-            axios.post(`http://203.170.190.170:1337/api/room-types/`,{
+            axios.post(`https://api.resguru.app/api/room-types/`,{
                 data : {
                     roomTypeName: this.roomTypeName,
                     roomPrice: this.roomTypePrice,

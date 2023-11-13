@@ -128,7 +128,7 @@ export default {
     methods: {
         getElectricityFee() {
             const loading = this.$vs.loading()
-            fetch(`http://203.170.190.170:1337/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep,3`)
+            fetch(`https://api.resguru.app/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep,3`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()",resp.data);
@@ -138,7 +138,7 @@ export default {
                 })
         },
         updateElectfee(electFeeId,electicUnit){
-            axios.put(`http://203.170.190.170:1337/api/electric-fees/${electFeeId}`,{
+            axios.put(`https://api.resguru.app/api/electric-fees/${electFeeId}`,{
                 data : {
                     electicUnit: electicUnit
                 }

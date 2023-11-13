@@ -474,7 +474,7 @@ export default {
                         const loading = this.$vs.loading()
                         this.dataRegister.err = ''
                         console.log(this.dataRegister);
-                        axios.post('http://203.170.190.170:1337/api' + '/auth/local/register', {
+                        axios.post('https://api.resguru.app/api' + '/auth/local/register', {
                             "username": this.dataRegister.email,
                             "email": this.dataRegister.email,
                             "password": this.dataRegister.pass,
@@ -526,7 +526,7 @@ export default {
             if (emailPattern.test(this.email_forgot)) {
                 this.errorsForgotPass = ''
                 const loading = this.$vs.loading()
-                fetch('http://203.170.190.170:1337/api' + '/users')
+                fetch('https://api.resguru.app/api' + '/users')
                     .then(response => response.json())
                     .then((resp) => {
                         resp.forEach(element => {
@@ -536,7 +536,7 @@ export default {
                         });
                         if (checkEmail) {
                             console.log('sfd')
-                            axios.post('http://203.170.190.170:1337/api' + '/auth/forgot-password', {
+                            axios.post('https://api.resguru.app/api' + '/auth/forgot-password', {
                                 "email": this.email_forgot
                             })
                                 .then((resp) => {
@@ -566,7 +566,7 @@ export default {
             if (this.reset_pass != '' & this.reset_pass_con != '' & this.code_reset != '') {
                 if (this.reset_pass == this.reset_pass_con) {
                     const loading = this.$vs.loading()
-                    axios.post('http://203.170.190.170:1337/api' + '/auth/reset-password', {
+                    axios.post('https://api.resguru.app/api' + '/auth/reset-password', {
                         "password": this.reset_pass,
                         "passwordConfirmation": this.reset_pass_con,
                         "code": this.code_reset

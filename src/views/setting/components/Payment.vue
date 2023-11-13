@@ -524,7 +524,7 @@ export default {
     methods: {
         getPaymentBuilding() {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/building-pay-methods?filters[building][id][$eq]='+this.$store.state.building)
+            fetch('https://api.resguru.app/api' + '/building-pay-methods?filters[building][id][$eq]='+this.$store.state.building)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getOther()",resp.data);
@@ -534,7 +534,7 @@ export default {
                 })
         },
         createPaymentOfBuilding(){
-            axios.post(`http://203.170.190.170:1337/api/building-pay-methods/`,{
+            axios.post(`https://api.resguru.app/api/building-pay-methods/`,{
                 data : {
                     bankName: this.bankName,
                     accountNumber: this.accountNumber,
@@ -548,7 +548,7 @@ export default {
                 )
         }, 
         updateUserBuildingPayment(buildingID){
-            axios.put(`http://203.170.190.170:1337/api/building-pay-methods/${buildingID}`,{
+            axios.put(`https://api.resguru.app/api/building-pay-methods/${buildingID}`,{
                 data : {
                     waterUnitPrice: this.waterUnitPrice
                 }

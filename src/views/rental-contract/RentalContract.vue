@@ -693,7 +693,7 @@ export default {
         },
         getFloorRoom() {
             // const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=deep,2')
+            fetch('https://api.resguru.app/api' + '/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=deep,2')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoomFloor()", resp.data);
@@ -707,7 +707,7 @@ export default {
         },
         getDetailRentalContract(id) {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep&filters[id][$eq]=' + id)
+            fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep&filters[id][$eq]=' + id)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log('ddd', resp.data[0]?.attributes.user_sign_contract.data);
@@ -731,7 +731,7 @@ export default {
                 })
         },
         getUser() {
-            fetch('http://203.170.190.170:1337/api' + '/users?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
+            fetch('https://api.resguru.app/api' + '/users?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
                 .then(response => response.json())
                 .then((resp) => {
                     // console.log(resp);
@@ -739,14 +739,14 @@ export default {
                 })
         },
         getRoomType() {
-            fetch('http://203.170.190.170:1337/api' + '/room-types?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
+            fetch('https://api.resguru.app/api' + '/room-types?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
                 .then(response => response.json())
                 .then((resp) => {
                     this.room_type = resp.data;
                 })
         },
         getUserDetail(id_room) {
-            fetch('http://203.170.190.170:1337/api' + '/users/' + this.id_user + '?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
+            fetch('https://api.resguru.app/api' + '/users/' + this.id_user + '?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log('detail', resp);
@@ -782,7 +782,7 @@ export default {
         submitSign() {
             if (this.room_detail_create.check_user == true) {
                 const loading = this.$vs.loading()
-                axios.post('http://203.170.190.170:1337/api' + '/user-sign-contracts', {
+                axios.post('https://api.resguru.app/api' + '/user-sign-contracts', {
                     data: {
                         room: this.room_detail_create.id_room,
                         contractStatus: "rent",
@@ -792,7 +792,7 @@ export default {
                         contractDuration: parseInt(this.room_detail_create.contract_duration)
                     }
                 }).then((resp) => {
-                    axios.put('http://203.170.190.170:1337/api' + '/rooms/' + this.room_detail_create.id_room, {
+                    axios.put('https://api.resguru.app/api' + '/rooms/' + this.room_detail_create.id_room, {
                         data: {
                             // user_sign_contract: resp.data.id,
                             room_type: this.room_detail_create.type_room,
@@ -806,7 +806,7 @@ export default {
             }
             else {
                 const loading = this.$vs.loading()
-                axios.post('http://203.170.190.170:1337/api' + '/users', {
+                axios.post('https://api.resguru.app/api' + '/users', {
                     "username": this.room_detail_create.email,
                     "email": this.room_detail_create.email,
                     "firstName": this.room_detail_create.name,
@@ -822,7 +822,7 @@ export default {
                     "password": "mockpass",
                     "building": this.$store.state.building
                 }).then((resp) => {
-                    axios.post('http://203.170.190.170:1337/api' + '/user-sign-contracts', {
+                    axios.post('https://api.resguru.app/api' + '/user-sign-contracts', {
                         data: {
                             room: this.room_detail_create.id_room,
                             contractStatus: "rent",
@@ -832,7 +832,7 @@ export default {
                             contractDuration: parseInt(this.room_detail_create.contract_duration)
                         }
                     }).then((resp) => {
-                        axios.put('http://203.170.190.170:1337/api' + '/rooms/' + this.room_detail_create.id_room, {
+                        axios.put('https://api.resguru.app/api' + '/rooms/' + this.room_detail_create.id_room, {
                             data: {
                                 // user_sign_contract: resp.data.id,
                                 room_type: this.room_detail_create.type_room,

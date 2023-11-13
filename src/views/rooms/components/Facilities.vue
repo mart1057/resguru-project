@@ -284,7 +284,7 @@ export default {
         getFacilities() {
             this.items = []
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=*&filters[id][$eq]=' + this.$route.query.id_room)
+            fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=*&filters[id][$eq]=' + this.$route.query.id_room)
                 .then(response => response.json())
                 .then((resp) => {
                     this.items = resp.data[0]?.attributes.other_of_buildings.data;
@@ -296,7 +296,7 @@ export default {
         createOrEdit() {
             const loading = this.$vs.loading()
             if (this.is_edit == true) {
-                axios.put('http://203.170.190.170:1337/api' + '/other-of-buildings/' + this.facilities.id, {
+                axios.put('https://api.resguru.app/api' + '/other-of-buildings/' + this.facilities.id, {
                     data: {
                         "title": this.facilities.title,
                         "price": this.facilities.price,
@@ -315,7 +315,7 @@ export default {
 
             }
             else {
-                axios.post('http://203.170.190.170:1337/api' + '/other-of-buildings', {
+                axios.post('https://api.resguru.app/api' + '/other-of-buildings', {
                     data: {
                         "title": this.facilities.title,
                         "price": this.facilities.price,
@@ -327,7 +327,7 @@ export default {
                         "building": this.$store.state.building
                     }
                 }).then((resp) => {
-                    axios.put('http://203.170.190.170:1337/api' + '/rooms/' + this.$route.query.id_room, {
+                    axios.put('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room, {
                         data: {
                             "other_of_buildings": resp.data.data.id,
                         }
@@ -344,7 +344,7 @@ export default {
         },
         getDetailFacilities(id) {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/other-of-buildings/' + id)
+            fetch('https://api.resguru.app/api' + '/other-of-buildings/' + id)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log(resp);
@@ -363,7 +363,7 @@ export default {
         },
         delectFacilities(id) {
             const loading = this.$vs.loading()
-            axios.delete('http://203.170.190.170:1337/api' + '/other-of-buildings/' + id)
+            axios.delete('https://api.resguru.app/api' + '/other-of-buildings/' + id)
                 .finally(() => {
                     this.create = false,
                         this.getFacilities()

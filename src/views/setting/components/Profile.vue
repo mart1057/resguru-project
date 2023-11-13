@@ -309,7 +309,7 @@ export default {
         getUserDetail() {
             const loading = this.$vs.loading()
             console.log("ID :",this.$store.state.userInfo.user.id)
-            fetch(`http://203.170.190.170:1337/api/users/${this.$store.state.userInfo.user.id}`)
+            fetch(`https://api.resguru.app/api/users/${this.$store.state.userInfo.user.id}`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getUser()",resp);
@@ -319,7 +319,7 @@ export default {
                 })
         },
         updateUserDetail(){
-            axios.put(`http://203.170.190.170:1337/api/users/${this.$store.state.userInfo.user.id}`,{
+            axios.put(`https://api.resguru.app/api/users/${this.$store.state.userInfo.user.id}`,{
                 data : {
                     firstName: this.userData.firstName,
                     lastName: this.userData.lastName,
@@ -342,7 +342,7 @@ export default {
         getBuildingData() {
             const loading = this.$vs.loading()
             console.log("ID :",this.$store.state.userInfo.user.id)
-            fetch(`http://203.170.190.170:1337/api/buildings/${this.$store.state.building}`)
+            fetch(`https://api.resguru.app/api/buildings/${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getBuilding()",resp);
@@ -352,7 +352,7 @@ export default {
                 })
         },
         updateBuildingData(){
-            axios.put(`http://203.170.190.170:1337/api/buildings/${this.$store.state.building}`,{
+            axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`,{
                 data : {
                     buildingName: this.buildingData.attributes.buildingName,
                     buildingAddress: this.buildingData.attributes.buildingAddress,

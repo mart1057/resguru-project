@@ -269,8 +269,8 @@ export default {
     methods: {
         getService() {
             const loading = this.$vs.loading()
-            // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`http://203.170.190.170:1337/api/services?populate=deep,3&sort[0]=id:desc&filters[serviceStatus][$ne]=completed`)
+            // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
+            fetch(`https://api.resguru.app/api/services?populate=deep,3&sort[0]=id:desc&filters[serviceStatus][$ne]=completed`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getService()",resp.data);
@@ -281,8 +281,8 @@ export default {
         },
         getEmployeeOption() {
             const loading = this.$vs.loading()
-            // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`http://203.170.190.170:1337/api/building-employees?populate=*&sort[0]=id:desc&filters[building][id][$eq]=${this.$store.state.building}`)
+            // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
+            fetch(`https://api.resguru.app/api/building-employees?populate=*&sort[0]=id:desc&filters[building][id][$eq]=${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getEmployee()",resp.data);
@@ -293,7 +293,7 @@ export default {
         },
         updateService(serviceId) {
 
-            axios.put(`http://203.170.190.170:1337/api/services/${serviceId}`,{
+            axios.put(`https://api.resguru.app/api/services/${serviceId}`,{
                 data : {
                     serviceStatus: "Completed"
                 }

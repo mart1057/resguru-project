@@ -84,7 +84,7 @@
                         v-for="data in building">
                         <div class="w-[30%]  h-[100%] rounded-[16px] flex flex-col items-center justify-center"  @click="routeToMain(data.id)"
                             :style="{ background: data.attributes.colorCode }">
-                            <img :src="'http://203.170.190.170:1337' + data.attributes.buildingLogo?.data?.attributes.url"
+                            <img :src="'https://api.resguru.app' + data.attributes.buildingLogo?.data?.attributes.url"
                                 class="w-[90px] h-[90px] rounded-[22px]" />
                             <div class="text-[12px] mt-[4px]"
                                 :class="data.attributes.colorCode == '#ffffff' ? '' : 'text-[white]'">Professional</div>
@@ -248,7 +248,7 @@ export default {
         },
         getBuilding() {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/buildings?filters[user_owner][id][$eq]='+this.$store.state.userInfo.user.id+'&populate=*')
+            fetch('https://api.resguru.app/api' + '/buildings?filters[user_owner][id][$eq]='+this.$store.state.userInfo.user.id+'&populate=*')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log(resp.data);

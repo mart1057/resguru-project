@@ -404,7 +404,7 @@ export default {
         },
         getRoom() {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3&filters[building_floor][id][$eq]='+this.filter.floor)
+            fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3&filters[building_floor][id][$eq]='+this.filter.floor)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoom()", resp.data);
@@ -415,7 +415,7 @@ export default {
         },
         getFloorRoom() {
             // const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=deep,2')
+            fetch('https://api.resguru.app/api' + '/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=deep,2')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoomFloor()", resp.data);
@@ -429,7 +429,7 @@ export default {
         },
         bookRoomContract() {
 
-            axios.post('http://203.170.190.170:1337/api/auth/local/register', {
+            axios.post('https://api.resguru.app/api/auth/local/register', {
                 firstName: this.firstName,
                 lastName: this.lastName,
                 nickName: this.nickName,
@@ -442,7 +442,7 @@ export default {
                 role: 2,
             }).then((res) => {
                 console.log("Result from create user", res)
-                axios.post('http://203.170.190.170:1337/api/user-sign-contracts', {
+                axios.post('https://api.resguru.app/api/user-sign-contracts', {
                     data: {
                         room: this.roomNumber,
                         checkInDate: this.checkInDate,

@@ -398,7 +398,7 @@ export default {
     methods: {
         getUser() {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/users?filters[id][$eq]=' + this.id_user)
+            fetch('https://api.resguru.app/api' + '/users?filters[id][$eq]=' + this.id_user)
                 .then(response => response.json())
                 .then((resp) => {
                     this.user = resp
@@ -408,7 +408,7 @@ export default {
         },
         getUsers() {
             // const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/users?filters[room_building][id][$eq]=' + this.$store.state.building)
+            fetch('https://api.resguru.app/api' + '/users?filters[room_building][id][$eq]=' + this.$store.state.building)
                 .then(response => response.json())
                 .then((resp) => {
                     // console.log(resp);
@@ -417,7 +417,7 @@ export default {
                 })
         },
         deleteContract() {
-            axios.delete('http://203.170.190.170:1337/api' + '/user-sign-contracts/' + this.id_contract)
+            axios.delete('https://api.resguru.app/api' + '/user-sign-contracts/' + this.id_contract)
                 .finally(() => {
                     this.$router.push({
                         path: '/rooms',
@@ -425,7 +425,7 @@ export default {
                 })
         },
         getUserDetail(id_room) {
-            fetch('http://203.170.190.170:1337/api' + '/users/' + this.id_user + '?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
+            fetch('https://api.resguru.app/api' + '/users/' + this.id_user + '?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log('detail', resp);
@@ -449,7 +449,7 @@ export default {
                         this.room_detail.emergencyPhone = resp.emergencyPhone,
                         this.room_detail.lineID = resp.lineID
                 }).finally(() => {
-                    fetch('http://203.170.190.170:1337/api' + '/users/' + this.id_user + '?&populate=*')
+                    fetch('https://api.resguru.app/api' + '/users/' + this.id_user + '?&populate=*')
                         .then(response => response.json())
                         .then((resp) => {
                             console.log('fffff', resp);
@@ -459,7 +459,7 @@ export default {
         },
         getDetailRentalContract(id) {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep&filters[id][$eq]=' + this.id_room)
+            fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep&filters[id][$eq]=' + this.id_room)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log('ddd', resp.data[0]?.attributes.user_sign_contract.data);
@@ -485,7 +485,7 @@ export default {
                         this.room_detail.relation = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.relation,
                         this.room_detail.emergencyPhone = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.emergencyPhone,
                         this.room_detail.lineID = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.lineID
-                    fetch('http://203.170.190.170:1337/api' + '/users/' + resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.id + '?&populate=*')
+                    fetch('https://api.resguru.app/api' + '/users/' + resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.id + '?&populate=*')
                         .then(response => response.json())
                         .then((resp) => {
                             console.log('fffff', resp);
@@ -501,7 +501,7 @@ export default {
             if (this.is_edit == true) {
                 const loading = this.$vs.loading()
                 newVehicles.forEach((data) => {
-                    axios.post('http://203.170.190.170:1337/api' + '/tenant-vehicles', {
+                    axios.post('https://api.resguru.app/api' + '/tenant-vehicles', {
                         data: {
                             Type: data.Type,
                             remark: data.remark,
@@ -517,7 +517,7 @@ export default {
             else {
                 if (this.room_detail.check_user == true) {
                     const loading = this.$vs.loading()
-                    axios.post('http://203.170.190.170:1337/api' + '/user-sign-contracts', {
+                    axios.post('https://api.resguru.app/api' + '/user-sign-contracts', {
                         data: {
                             room: this.id_room,
                             contractStatus: "reserved",
@@ -527,7 +527,7 @@ export default {
                             // contractDuration: parseInt(this.room_detail_create.contract_duration)
                         }
                     }).then(() => {
-                        axios.put('http://203.170.190.170:1337/api' + '/users/' + this.room_detail.id, {
+                        axios.put('https://api.resguru.app/api' + '/users/' + this.room_detail.id, {
                             "username": this.room_detail.email,
                             "email": this.room_detail.email,
                             "firstName": this.room_detail.name,
@@ -552,7 +552,7 @@ export default {
 
                     }).then(() => {
                         newVehicles.forEach((data) => {
-                            axios.post('http://203.170.190.170:1337/api' + '/tenant-vehicles', {
+                            axios.post('https://api.resguru.app/api' + '/tenant-vehicles', {
                                 data: {
                                     Type: data.Type,
                                     remark: data.remark,
@@ -573,7 +573,7 @@ export default {
                 }
                 else {
                     const loading = this.$vs.loading()
-                    axios.post('http://203.170.190.170:1337/api' + '/users', {
+                    axios.post('https://api.resguru.app/api' + '/users', {
                         "username": this.room_detail.email,
                         "email": this.room_detail.email,
                         "firstName": this.room_detail.name,
@@ -598,7 +598,7 @@ export default {
                         "lineID": this.room_detail.lineID
                     }).then((resp) => {
                         this.id_user = resp.data.id
-                        axios.post('http://203.170.190.170:1337/api' + '/user-sign-contracts', {
+                        axios.post('https://api.resguru.app/api' + '/user-sign-contracts', {
                             data: {
                                 room: this.id_room,
                                 contractStatus: "reserved",
@@ -609,7 +609,7 @@ export default {
                             }
                         }).then(() => {
                             newVehicles.forEach((data) => {
-                                axios.post('http://203.170.190.170:1337/api' + '/tenant-vehicles', {
+                                axios.post('https://api.resguru.app/api' + '/tenant-vehicles', {
                                     data: {
                                         Type: data.Type,
                                         remark: data.remark,
