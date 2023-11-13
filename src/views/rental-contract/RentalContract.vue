@@ -662,7 +662,7 @@ export default {
     mounted() {
         console.log("State.Building", this.$store.state.building);   
         this.getFloorRoom();
-        this.getUser()
+       // this.getUser()
      
     },
     created() {
