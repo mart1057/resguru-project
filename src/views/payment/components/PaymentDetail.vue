@@ -248,7 +248,7 @@
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <vs-button @click="createReceipt(tr.id)">สร้างใบเสร็จ</vs-button>
+                                <vs-button @click="createReceipt(tr)">สร้างใบเสร็จ</vs-button>
                             </vs-td>
                             <vs-td>
                                 
@@ -394,6 +394,8 @@
     </div>
 </template>
 <script>
+
+import axios from 'axios'
 export default {
     data() {
         return {
@@ -509,8 +511,27 @@ export default {
                 })
 
         },
-        createReceipt(ID){
-            alert("Create Receipt ID:"+ID)
+        createReceipt(data){
+            axios.post('http://203.170.190.170:1337/api' + '/tenant-receipts', {
+                data: {
+                    // date_execute: this.date_execute,
+                    tenant_bill: data.id,
+                    user_sign_contract: data.attributes.user_sign_contract.data.id,
+                    paidAmount: data.attributes.total,
+                    receiptNumber: "RECEIPT_" + data.attributes.invoiceNumber,
+                    roomPrice: data.attributes.roomPrice,
+                    waterPrice: data.attributes.waterPrice,
+                    electricPrice: data.attributes.electricPrice,
+                    communalPrice: data.attributes.communalPrice,
+                    otherPrice: data.attributes.otherPrice,
+                    subTotal: data.attributes.subtotal,
+                    vat: data.attributes.vat,
+                    total: data.attributes.total
+                }
+            })
+                .then(
+                    alert("Created Suceess")
+                )
         },
         getEvidenceHistory(){
             
