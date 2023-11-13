@@ -479,12 +479,12 @@
                     </div>
                     <div class="flex justify-end mt-[42px] mb-[18px]">
                         <div>
-                            <vs-button dark shadow @click="move_room = false">
+                            <vs-button dark shadow @click="confirm = false">
                                 <div class="text-custom">ยกเลิก</div>
                             </vs-button>
                         </div>
                         <div class="ml-[18px]">
-                            <vs-button color="#003765" @click="move_room = false">
+                            <vs-button color="#003765" @click="confirm = false">
                                 <div class="text-custom">บันทึก</div>
                             </vs-button>
                         </div>
