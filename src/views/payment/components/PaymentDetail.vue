@@ -202,6 +202,9 @@
                                 สถานะ
                             </vs-th>
                             <vs-th>
+                                Event/Action
+                            </vs-th>
+                            <vs-th>
 
                             </vs-th>
                         </vs-tr>
@@ -245,6 +248,10 @@
                                 </div>
                             </vs-td>
                             <vs-td>
+                                <vs-button @click="createReceipt(tr.id)">สร้างใบเสร็จ</vs-button>
+                            </vs-td>
+                            <vs-td>
+                                
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_2691_23279" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
@@ -501,6 +508,9 @@ export default {
                     loading.close()
                 })
 
+        },
+        createReceipt(ID){
+            alert("Create Receipt ID:"+ID)
         },
         getEvidenceHistory(){
             
