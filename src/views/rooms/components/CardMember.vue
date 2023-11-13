@@ -2,14 +2,14 @@
     <div>
         <div class="grid grid-cols-7 w-[100%] gap-4 mt-[14px]">
             <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[14px] cursor-pointer "
-                v-for="data in user" @click="getDetailRentalContract()">
-                <div :class="status == 'rent' ? 'bg-[#D7F1E3] text-[#39B974]' : 'bg-[#F0F8FF] text-[#003765]'"
+                v-for="data in user">
+                <div :class="status == 'rent' ? 'bg-[#D7F1E3] text-[#39B974]' : 'bg-[#F0F8FF] text-[#003765]'" @click="getDetailRentalContract()"
                     class="h-[24px] w-[auto] mt-[-22px] text-[12px] flex items-center justify-center p-[8px] rounded-[8px]">
                     {{ status == "rent" ? 'ทำสัญญาแล้ว' : 'ยังไม่ทำสัญญา' }}
                 </div>
-                <img class="w-[78px] h-[78px] rounded-[22px]" :src="data.filePath" />
-                <div>{{ data.firstName }} {{ data.lastName }}</div>
-                <div class="flex">
+                <img class="w-[78px] h-[78px] rounded-[22px]" :src="data.filePath" @click="getDetailRentalContract()"/>
+                <div @click="getDetailRentalContract()">{{ data.firstName }} {{ data.lastName }}</div>
+                <div class="flex" @click="getDetailRentalContract()">
                     <div><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_417_4380" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
                                 width="16" height="16">
@@ -25,7 +25,7 @@
                     <div class="flex justify-center items-center ml-[4px] text-[12px]">{{ data.phone }}</div>
                 </div>
                 <div class="flex justify-around w-[100%]">
-                    <div
+                    <div @click="move_room = true"
                         class="bg-[#003765] text-[white] pl-[8px] pr-[8px] pt-[1px] pb-[1px] flex justify-center items-center text-[12px] rounded-[8px]">
                         ย้ายห้อง</div>
                     <div @click="deleteContract()"
