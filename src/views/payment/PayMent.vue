@@ -470,7 +470,7 @@ export default {
         getRoomBill() {
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}`)
+            fetch(`https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}&month=11&year=2023`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoomBill()", resp.data);

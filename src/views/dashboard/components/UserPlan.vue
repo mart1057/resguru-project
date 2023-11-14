@@ -1,4 +1,5 @@
 <template>
+   
     <div>
         <div>
             <div class="w-[100%] h-[56px] rounded-[22px] bg-card flex justify-between items-center pl-[10px] pr-[10px]">
@@ -56,7 +57,7 @@
             <div class="grid grid-cols-3 w-[100%] gap-2 mt-[10px]">
                 <div class="h-[110px] p-[18px] flex flex-col justify-between bg-[#003765] rounded-[22px] text-[white]">
                     <div class="flex justify-between">
-                        <div class="text-[24px] flex justify-center items-center">40</div>
+                        <!-- <div class="text-[24px] flex justify-center items-center">{{ this.dashboard.room.meta.availableRoom }}</div> -->
                         <div>
                             <svg width="34" height="30" viewBox="0 0 34 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -84,7 +85,7 @@
                 </div>
                 <div class="h-[110px] p-[18px] flex flex-col justify-between bg-[#F5D65E] rounded-[22px] text-[#003765]  ">
                     <div class="flex justify-between">
-                        <div class="text-[24px] flex justify-center items-center">40</div>
+                        <!-- <div class="text-[24px] flex justify-center items-center">{{ this.dashboard.room.meta.reservedRoom }}</div> -->
                         <div> <svg width="34" height="30" viewBox="0 0 34 30" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -113,7 +114,8 @@
                 </div>
                 <div class="h-[110px] p-[18px] flex flex-col justify-between bg-[#D44769] rounded-[22px] text-[white]">
                     <div class="flex justify-between">
-                        <div class="text-[24px] flex justify-center items-center">40</div>
+                        <!-- <div class="text-[24px] flex justify-center items-center">{{ this.dashboard.room.meta.latePayment }}</div> -->
+                       
                         <div>
                             <svg width="34" height="30" viewBox="0 0 34 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -146,7 +148,9 @@
 <script>
 
 export default {
-
+    props: {
+        dashboard: [String, Number],
+    },
 }
 </script>
 <style scoped>.bg-card {

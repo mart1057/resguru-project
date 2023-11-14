@@ -667,6 +667,7 @@ export default {
                 legend: {
                     show: false,
                 },
+                dashboard: [],
                 labels: ["จ่ายรายเดือน", "มัดจำห้องพัก", "ประกันความเสียหาย", "อื่น ๆ"],
                 plotOptions: {
                     pie: {
@@ -704,6 +705,14 @@ export default {
                 path: path,
             })
         },
+        getDashboard(){
+                fetch(`https://api.resguru.app/api/getexpensedashboard?buildingid=${this.$store.state.building}`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getExpense()",resp);
+                    this.dashboard = resp
+                })
+        },  
         getExpense() {
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
