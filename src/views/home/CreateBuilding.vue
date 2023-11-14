@@ -245,7 +245,7 @@ export default {
         createBuilding(){
 
             // console.log("test v model", this.buildingName)
-            axios.post('http://203.170.190.170:1337/api' + '/buildings',{
+            axios.post('https://api.resguru.app/api' + '/buildings',{
                 data : {
                     buildingName: this.buildingName,
                     buildingAddress: this.buildingAddress,

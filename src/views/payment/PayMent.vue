@@ -286,7 +286,7 @@
                                     <vs-button  warn class="small">ผู้เช่าย้ายออก</vs-button>
                                 </div>
                                 <div v-else-if="tr.user_sign_contract" >
-                                    <vs-button  color="rgb(59,222,200)" class="small">สร้างใบแจ้งหนี้</vs-button>
+                                    <vs-button  color="rgb(59,222,200)" class="small" @click="generateInvoice(tr.id)">สร้างใบแจ้งหนี้</vs-button>
                                 </div>
                                 <div v-else>
                                     <vs-button  dark class="small">ยังไม่มีผู้เช่า</vs-button>
@@ -314,6 +314,8 @@
     </div>
 </template>
 <script>
+
+import axios from 'axios'
 export default {
     data() {
         return {
@@ -462,8 +464,8 @@ export default {
         },
         getRoomBill() {
             const loading = this.$vs.loading()
-            // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`http://203.170.190.170:1337/api/getPayment?buildingid=${this.$store.state.building}`)
+            // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
+            fetch(`https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoomBill()", resp.data);
@@ -472,6 +474,19 @@ export default {
                     loading.close()
                 })
         },
+        generateInvoice(roomid){
+            const currentdate = new Date()
+            const month = currentdate.getMonth()
+            const year = currentdate.getFullYear()
+
+            axios.get(`https://api.resguru.app/api/generateInvoice?buildingid=${this.$store.state.building}&roomid=${roomid}&month=${month}&year=${year}`)
+                .then((response) => 
+                {
+                    console.log("return from generateInvoice()",response.data.meta.message)
+                    alert(response.data.meta.message)
+                }
+                )
+        }
 
     }
 }

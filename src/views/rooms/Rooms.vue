@@ -130,13 +130,14 @@
             <div class="text-[24px] font-bold">ชั้น {{ name_floor }}</div>
             <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px] ">
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer"
-                    @click="routeTo('/room-detail',data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.id,data.id,data.attributes.RoomNumber,data.attributes.user_sign_contract.data?.attributes.contractStatus,data.attributes.user_sign_contract.data?.id)" v-for="data in room">
+                    @click="routeTo('/room-detail',data.user_sign_contract.users_permissions_user.id,data.id,data.RoomNumber,data.user_sign_contract.contractStatus,data.user_sign_contract.id)"
+                     v-for="data in room">
                     <div class="flex">
 
                         <div
-                            v-if="data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.filePath">
+                            v-if="data.user_sign_contract && data.user_sign_contract.users_permissions_user && data.user_sign_contract.users_permissions_user.filePath">
                             <img class="w-[136px] h-[100%] rounded-[22px]"
-                                :src="data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.filePath" />
+                                :src="data.user_sign_contract.users_permissions_user.filePath" />
                         </div>
                         <div class="w-[136px] h-[100%] rounded-[22px]" v-else>
                             <svg width="137" height="136" viewBox="0 0 137 136" fill="none"
@@ -180,20 +181,21 @@
                         </div>
                         <div class="ml-[14px]">
 
-                            <div class="text-[18px] font-bold text-[#141629]">ห้อง {{ data.attributes.RoomNumber }}</div>
+                            <div class="text-[18px] font-bold text-[#141629]">ห้อง {{ data.RoomNumber }}</div>
+
                             <div class="text-[14px] mt-[12px] font-bold text-[#003765]">{{
-                                data.attributes.user_sign_contract.data ?
-                                data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.firstName
-                                : "" }} {{ data.attributes.user_sign_contract.data ?
-                                data.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.lastName
+                                data.user_sign_contract ?
+                                data.user_sign_contract.users_permissions_user.firstName
+                                : "" }} {{ data.user_sign_contract ?
+                                data.user_sign_contract.users_permissions_user.lastName
                             : "" }}</div>
 
 
                         </div>
                     </div>
-                    <div :class="data.attributes.user_sign_contract.data ? 'text-[#0B9A3C] bg-[#CFFBDA]' : 'text-[#003765] bg-[#F0F8FF]'"
+                    <div :class="data.user_sign_contract ? 'text-[#0B9A3C] bg-[#CFFBDA]' : 'text-[#003765] bg-[#F0F8FF]'"
                         class="h-[36px] ml-[8px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] ">
-                        {{ data.attributes.user_sign_contract.data ? "มีผู้เข้าพัก" : "ห้องว่าง" }}
+                        {{ data.user_sign_contract ? "มีผู้เข้าพัก" : "ห้องว่าง" }}
                     </div>
                 </div>
             </div>
@@ -404,7 +406,7 @@ export default {
         },
         getRoom() {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3&filters[building_floor][id][$eq]='+this.filter.floor)
+            fetch('https://api.resguru.app/api/getRoom?buildingid=' + this.$store.state.building + '&buildingFloor='+this.filter.floor)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoom()", resp.data);
@@ -415,7 +417,7 @@ export default {
         },
         getFloorRoom() {
             // const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=deep,2')
+            fetch('https://api.resguru.app/api' + '/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=deep,2')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoomFloor()", resp.data);
@@ -429,7 +431,7 @@ export default {
         },
         bookRoomContract() {
 
-            axios.post('http://203.170.190.170:1337/api/auth/local/register', {
+            axios.post('https://api.resguru.app/api/auth/local/register', {
                 firstName: this.firstName,
                 lastName: this.lastName,
                 nickName: this.nickName,
@@ -442,7 +444,7 @@ export default {
                 role: 2,
             }).then((res) => {
                 console.log("Result from create user", res)
-                axios.post('http://203.170.190.170:1337/api/user-sign-contracts', {
+                axios.post('https://api.resguru.app/api/user-sign-contracts', {
                     data: {
                         room: this.roomNumber,
                         checkInDate: this.checkInDate,

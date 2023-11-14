@@ -16,6 +16,7 @@
   
   <script>
   import { StripeCheckout } from '@vue-stripe/vue-stripe';
+  
   export default {
     components: {
       StripeCheckout,
@@ -24,6 +25,7 @@
       this.publishableKey = 'pk_live_51MP3OfJUFs9Ue9lHg7rZSSAcncQ9OPAev8M1cE5voGYjOUD7UsRJN6z0ihSlWafs0BDGwJi9BfbaCSgMok0TneKB003we5Sen9';
       return {
         loading: false,
+        customerEmail: 'nuttapol.kpn@gmail.com',
         lineItems: [
           {
             price: 'price_1NcBa3JUFs9Ue9lHk4Y9PNBl', // The id of the recurring price you created in your Stripe dashboard
@@ -35,9 +37,27 @@
       };
     },
     methods: {
-      submit () {
+      async submit () {
+        this.loading = true;
+      try {
+        const { error } = await this.$refs.checkoutRef.redirectToCheckout({
+          lineItems: this.lineItems,
+          customerEmail: this.customerEmail, // Pass the customer email here
+          successUrl: this.successURL,
+          cancelUrl: this.cancelURL,
+          mode: 'payment',
+        });
+
+        if (error) {
+          console.error('Error:', error);
+          this.loading = false;
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        this.loading = false;
+      }
         // You will be redirected to Stripe's secure checkout page
-        this.$refs.checkoutRef.redirectToCheckout();
+        // this.$refs.checkoutRef.redirectToCheckout();
       },
     },
   };

@@ -344,8 +344,8 @@ export default {
     methods: {
         getEmployer() {
             const loading = this.$vs.loading()
-            // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`http://203.170.190.170:1337/api/building-employees?populate=*&filters[building][id][$eq]=${this.$store.state.building}`)
+            // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
+            fetch(`https://api.resguru.app/api/building-employees?populate=*&filters[building][id][$eq]=${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getEmployer()",resp.data);
@@ -356,8 +356,8 @@ export default {
         },
         getUser() {
             const loading = this.$vs.loading()
-            // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`http://203.170.190.170:1337/api/users?populate=*&filters[building][id][$eq]=${this.$store.state.building}`)
+            // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
+            fetch(`https://api.resguru.app/api/users?populate=*&filters[building][id][$eq]=${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getUser()",resp);
@@ -368,7 +368,7 @@ export default {
         },
         deleteEmployee(employeeID){
                 if(confirm("Do you really want to delete this employee?")){
-                    axios.delete(`http://203.170.190.170:1337/api/building-employees/${employeeID}`)
+                    axios.delete(`https://api.resguru.app/api/building-employees/${employeeID}`)
                     .then(resp => {
                        console.log(resp);
                     })

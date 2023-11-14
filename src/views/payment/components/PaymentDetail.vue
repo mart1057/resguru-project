@@ -126,7 +126,7 @@
                                 <div class="ml-[4px] flex items-center">ใบเสร็จ</div>
                             </div>
                         </div>
-                        <!-- <div @click="tab = 3" class="cursor-pointer "
+                        <div @click="tab = 3" class="cursor-pointer "
                             :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                             <div class="flex">
                                 <div>
@@ -145,7 +145,7 @@
                                 </div>
                                 <div class="ml-[4px] flex items-center">ประวัติการจ่าย</div>
                             </div>
-                        </div> -->
+                        </div>
                     </div>
                 </div>
             </div>
@@ -202,6 +202,9 @@
                                 สถานะ
                             </vs-th>
                             <vs-th>
+                                Event/Action
+                            </vs-th>
+                            <vs-th>
 
                             </vs-th>
                         </vs-tr>
@@ -245,6 +248,10 @@
                                 </div>
                             </vs-td>
                             <vs-td>
+                                <vs-button @click="createReceipt(tr)">สร้างใบเสร็จ</vs-button>
+                            </vs-td>
+                            <vs-td>
+                                
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_2691_23279" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
@@ -363,20 +370,26 @@
                                 ธนาคาร
                             </vs-th>
                             <vs-th>
+                                Image
+                            </vs-th>
+                            <vs-th>
                                 จำนวนเงิน
                             </vs-th>
                         </vs-tr>
                     </template>
                     <template #tbody>
-                        <vs-tr :key="i" v-for="(tr, i) in users2" :data="tr">
+                        <vs-tr :key="i" v-for="(tr, i) in userEvidencePayment" :data="tr">
                             <vs-td>
-                                {{ tr.id }}
+                                {{ tr.attributes.createdAt }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.name }}
+                                {{ tr.attributes.bankName }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.username }}
+                                {{ tr.attributes.evidence.data.attributes.url }}
+                            </vs-td>
+                            <vs-td>
+                                {{ tr.attributes.amount }}
                             </vs-td>
                         </vs-tr>
                     </template>
@@ -387,6 +400,8 @@
     </div>
 </template>
 <script>
+
+import axios from 'axios'
 export default {
     data() {
         return {
@@ -444,6 +459,7 @@ export default {
             userInvoice: [],
             userReceipt: [],
             userProfileImage: [],
+            userEvidencePayment: [],
         }
     },
     created() {
@@ -457,16 +473,17 @@ export default {
        this.getUserProfile();
        this.getInvoice();
        this.getReceipt();
+       this.getEvidence();
     },
     methods: {
         getUserProfile() {
             const loading = this.$vs.loading()
-            fetch(`http://203.170.190.170:1337/api/user-sign-contracts/${this.$route.query.profileId}?populate=*`)
+            fetch(`https://api.resguru.app/api/user-sign-contracts/${this.$route.query.profileId}?populate=*`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getUser()",resp.data);
                     this.userProfile = resp.data
-                    fetch(`http://203.170.190.170:1337/api/users/${resp.data.attributes.users_permissions_user.data.id}?populate=imageProfile`)
+                    fetch(`https://api.resguru.app/api/users/${resp.data.attributes.users_permissions_user.data.id}?populate=imageProfile`)
                     .then(response => response.json())
                     .then((res) =>{
                         console.log("Return from getImage()",res);
@@ -481,7 +498,7 @@ export default {
         },
         getInvoice(){
             const loading = this.$vs.loading()
-            fetch(`http://203.170.190.170:1337/api/tenant-bills?filters[user_sign_contract][id][$eq]=${this.$route.query.profileId}&populate=*&sort[0]=id:desc`)
+            fetch(`https://api.resguru.app/api/tenant-bills?filters[user_sign_contract][id][$eq]=${this.$route.query.profileId}&populate=*&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getInvoice()",resp.data);
@@ -492,7 +509,7 @@ export default {
         },
         getReceipt(){
             const loading = this.$vs.loading()
-            fetch(`http://203.170.190.170:1337/api/tenant-receipts?filters[user_sign_contract][id][$eq]=${this.$route.query.profileId}&populate=*`)
+            fetch(`https://api.resguru.app/api/tenant-receipts?filters[user_sign_contract][id][$eq]=${this.$route.query.profileId}&populate=*`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getReceipt()",resp.data);
@@ -501,6 +518,41 @@ export default {
                     loading.close()
                 })
 
+        },
+        getEvidence(){
+            const loading = this.$vs.loading()
+            fetch(`https://api.resguru.app/api/tenant-evidence-payments?filters[user_sign_contract][id][$eq]=${this.$route.query.profileId}&populate=*`)
+            // fetch(`https://api.resguru.app/api/tenant-evidence-payments`)
+               .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getEvidence()",resp.data);
+                    this.userEvidencePayment = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+
+        },
+        createReceipt(data){
+            axios.post('https://api.resguru.app/api' + '/tenant-receipts', {
+                data: {
+                    // date_execute: this.date_execute,
+                    tenant_bill: data.id,
+                    user_sign_contract: data.attributes.user_sign_contract.data.id,
+                    paidAmount: data.attributes.total,
+                    receiptNumber: "RECEIPT_" + data.attributes.invoiceNumber,
+                    roomPrice: data.attributes.roomPrice,
+                    waterPrice: data.attributes.waterPrice,
+                    electricPrice: data.attributes.electricPrice,
+                    communalPrice: data.attributes.communalPrice,
+                    otherPrice: data.attributes.otherPrice,
+                    subTotal: data.attributes.subtotal,
+                    vat: data.attributes.vat,
+                    total: data.attributes.total
+                }
+            })
+                .then(
+                    alert("Created Suceess")
+                )
         },
         getEvidenceHistory(){
             

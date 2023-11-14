@@ -74,8 +74,8 @@ export default {
     methods: {
         getEmployer() {
             const loading = this.$vs.loading()
-            // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`http://203.170.190.170:1337/api/building-employees?populate=*&?filters[building][id][$eq]=${this.$store.state.building}`)
+            // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
+            fetch(`https://api.resguru.app/api/building-employees?populate=*&?filters[building][id][$eq]=${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getEmployer()",resp.data);

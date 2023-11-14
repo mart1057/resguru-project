@@ -570,7 +570,7 @@ export default {
     methods: {
         getUserBuilding() {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/buildings?filters[id][$eq]='+this.$store.state.building)
+            fetch('https://api.resguru.app/api' + '/buildings?filters[id][$eq]='+this.$store.state.building)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoom()",resp.data);
@@ -581,7 +581,7 @@ export default {
         },
         getOtherBuilding() {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/other-of-buildings?filters[building][id][$eq]='+this.$store.state.building)
+            fetch('https://api.resguru.app/api' + '/other-of-buildings?filters[building][id][$eq]='+this.$store.state.building)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getOther()",resp.data);
@@ -591,7 +591,7 @@ export default {
                 })
         },
         createOtherOfBuilding(){
-            axios.post(`http://203.170.190.170:1337/api/other-of-buildings/`,{
+            axios.post(`https://api.resguru.app/api/other-of-buildings/`,{
                 data : {
                     title: this.title,
                     price: this.price,
@@ -606,7 +606,7 @@ export default {
                 )
         }, 
         updateUserBuildingWater(buildingID){
-            axios.put(`http://203.170.190.170:1337/api/buildings/${buildingID}`,{
+            axios.put(`https://api.resguru.app/api/buildings/${buildingID}`,{
                 data : {
                     waterUnitPrice: this.waterUnitPrice
                 }
@@ -618,7 +618,7 @@ export default {
                 )
         }, 
         updateUserBuildingElectric(buildingID){
-            axios.put(`http://203.170.190.170:1337/api/buildings/${buildingID}`,{
+            axios.put(`https://api.resguru.app/api/buildings/${buildingID}`,{
                 data : {
                     electricUnitPrice: this.electricUnitPrice
                 }
@@ -630,7 +630,7 @@ export default {
                 )
         }, 
         updateUserBuildingCommunual(buildingID){
-            axios.put(`http://203.170.190.170:1337/api/buildings/${buildingID}`,{
+            axios.put(`https://api.resguru.app/api/buildings/${buildingID}`,{
                 data : {
                     communalUnitPrice: this.communalUnitPrice
                 }

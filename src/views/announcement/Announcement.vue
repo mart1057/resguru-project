@@ -330,8 +330,8 @@ export default {
     methods: {
         getAnnouncement() {
             const loading = this.$vs.loading()
-            // fetch('http://203.170.190.170:1337/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`http://203.170.190.170:1337/api/announcements?filters[building][id][$eq]=${this.$store.state.building}&populate=*&sort[0]=id:desc`)
+            // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
+            fetch(`https://api.resguru.app/api/announcements?filters[building][id][$eq]=${this.$store.state.building}&populate=*&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getAnnouncement()", resp.data);
@@ -341,7 +341,7 @@ export default {
                 })
         },
         createAnnouncement() {
-            axios.post('http://203.170.190.170:1337/api' + '/announcements', {
+            axios.post('https://api.resguru.app/api' + '/announcements', {
                 data: {
                     // date_execute: this.date_execute,
                     topic: this.topic,
@@ -361,7 +361,7 @@ export default {
                 )
         },
         editAnnouncement(postID) {
-            axios.put(`http://203.170.190.170:1337/api/announcements/${postID}`, {
+            axios.put(`https://api.resguru.app/api/announcements/${postID}`, {
                 data: {
                     topic: this.topic,
                     description: this.description,
@@ -384,7 +384,7 @@ export default {
             })
             this.selected.forEach(element => {
                 console.log(element.id);
-                axios.delete('http://203.170.190.170:1337/api' + '/announcements/' + element.id)
+                axios.delete('https://api.resguru.app/api' + '/announcements/' + element.id)
             });
             setTimeout(() => {
                 this.getAnnouncement()

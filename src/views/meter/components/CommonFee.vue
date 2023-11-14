@@ -37,12 +37,18 @@
 
                         </vs-td>
                         <vs-td>
-                            <!-- {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "" }}  -->
+                            {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "" }} 
+                             
+                            {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.lastName : "" }} 
                         </vs-td>
                         <vs-td>
-                            <vs-input v-model="communalUnit">
-                              
-                            </vs-input>
+                            <div v-if=tr.attributes.communal_fees.data>
+                                <vs-input v-model="tr.attributes.communal_fees.data[0].attributes.communalUnit">
+                                </vs-input>
+                            </div>
+                            <div v-else>
+                                
+                            </div>
                         </vs-td>
                         <vs-td>
                             <vs-button  @click="updateCommunalfee(tr.attributes.communal_fees.data[0].id)" >บันทึก</vs-button>
@@ -101,7 +107,7 @@ export default {
     methods: {
         getCommonFeeRoom() {
             const loading = this.$vs.loading()
-            fetch(`http://203.170.190.170:1337/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep,3`)
+            fetch(`https://api.resguru.app/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep,3`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()",resp.data);
@@ -111,7 +117,7 @@ export default {
                 })
         },
         updateCommunalfee(comFeeId){
-            axios.put(`http://203.170.190.170:1337/api/communal-fees/${comFeeId}`,{
+            axios.put(`https://api.resguru.app/api/communal-fees/${comFeeId}`,{
                 data : {
                     communalUnit: this.communalUnit
                 }

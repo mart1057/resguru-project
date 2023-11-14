@@ -143,24 +143,24 @@
                     v-for="data in contract">
                     <div class="flex flex-col justify-between">
                         <div class="ml-[14px]">
-                            <div class="text-[24px] font-bold text-[#141629] ">ห้อง {{ data.attributes.RoomNumber }}</div>
+                            <div class="text-[24px] font-bold text-[#141629] ">ห้อง {{ data.RoomNumber }}</div>
                             <div class="text-[18px] mt-[12px] font-bold text-[#003765]">{{
-                                data.attributes.user_sign_contract.data ?
-                                data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.firstName
-                                : "" }} {{ data.attributes.user_sign_contract.data ?
-        data.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.lastName
+                                data.user_sign_contract ?
+                                data.user_sign_contract.users_permissions_user.firstName
+                                : "" }} {{ data.user_sign_contract ?
+        data.user_sign_contract.users_permissions_user.lastName
         : "" }}</div>
 
                         </div>
                         <div class="ml-[14px]">
                             <div class="flex">
                                 <div class="h-[32px] pr-[8px] pl-[8px]   cursor-pointer   rounded-[12px]"
-                                    :class="data.attributes.user_sign_contract.data ? 'bg-[#003765]' : 'bg-[#165D98]'"
-                                    @click="data.attributes.user_sign_contract.data ? getDetailRentalContract(data.id) : create_sign(data.id)">
+                                    :class="data.user_sign_contract ? 'bg-[#003765]' : 'bg-[#165D98]'"
+                                    @click="data.user_sign_contract ? getDetailRentalContract(data.user_sign_contract.id) : create_sign(data.id)">
                                     <div class="flex items-center h-[100%]">
                                         <div class="flex justify-center items-center">
                                             <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
-                                                v-if="data.attributes.user_sign_contract.data"
+                                                v-if="data.user_sign_contract"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path
                                                     d="M1.58201 2.16697V7.83092V7.808V16.8336V2.16697ZM4.33201 11.1044H6.89693C7.01092 10.8412 7.14372 10.5965 7.29532 10.3703C7.44692 10.144 7.61732 9.93044 7.80652 9.72949H4.33201C4.13722 9.72949 3.97394 9.7954 3.84219 9.92722C3.71042 10.0591 3.64453 10.2224 3.64453 10.4173C3.64453 10.6122 3.71042 10.7754 3.84219 10.907C3.97394 11.0386 4.13722 11.1044 4.33201 11.1044ZM4.33201 14.7711H6.42272C6.36836 14.542 6.33303 14.3128 6.31673 14.0836C6.30043 13.8545 6.30168 13.6253 6.32049 13.3962H4.33201C4.13722 13.3962 3.97394 13.4621 3.84219 13.5939C3.71042 13.7257 3.64453 13.8891 3.64453 14.0839C3.64453 14.2788 3.71042 14.4421 3.84219 14.5737C3.97394 14.7053 4.13722 14.7711 4.33201 14.7711ZM1.86251 18.2086C1.40052 18.2086 1.00911 18.0482 0.688281 17.7274C0.367448 17.4065 0.207031 17.0146 0.207031 16.5516V2.44905C0.207031 1.98601 0.367448 1.59408 0.688281 1.27324C1.00911 0.952409 1.40105 0.791992 1.86409 0.791992H8.4588C8.68234 0.791992 8.89541 0.834893 9.09801 0.920693C9.30059 1.00648 9.47711 1.12458 9.62755 1.27501L13.474 5.12143C13.6244 5.27187 13.7425 5.44838 13.8283 5.65097C13.9141 5.85357 13.957 6.06664 13.957 6.29018V8.13413C13.7372 8.04717 13.5128 7.98106 13.2836 7.93581C13.0544 7.89057 12.8206 7.85561 12.582 7.83092V6.29195H9.28187C9.04812 6.29195 8.85221 6.21288 8.69415 6.05476C8.53607 5.89663 8.45703 5.7007 8.45703 5.46695V2.16697H1.86409C1.79357 2.16697 1.72892 2.19635 1.67015 2.25511C1.61139 2.31388 1.58201 2.37853 1.58201 2.44905V16.5516C1.58201 16.6221 1.61139 16.6867 1.67015 16.7455C1.72892 16.8043 1.79357 16.8336 1.86409 16.8336H7.2724C7.45136 17.1048 7.6527 17.3563 7.87641 17.5879C8.10011 17.8196 8.34241 18.0265 8.60331 18.2086H1.86251ZM12.1254 16.058C12.8071 16.058 13.3826 15.8227 13.8521 15.352C14.3216 14.8814 14.5564 14.3052 14.5564 13.6236C14.5564 12.9419 14.321 12.3663 13.8504 11.8969C13.3797 11.4274 12.8036 11.1926 12.1219 11.1926C11.4403 11.1926 10.8647 11.4279 10.3952 11.8986C9.92573 12.3692 9.69098 12.9454 9.69098 13.627C9.69098 14.3087 9.9263 14.8843 10.3969 15.3537C10.8676 15.8232 11.4438 16.058 12.1254 16.058ZM17.2823 18.7833C17.1558 18.9102 16.9948 18.9737 16.7993 18.9737C16.6038 18.9737 16.4426 18.9102 16.3157 18.7833L14.2884 16.7472C13.9793 16.9729 13.6406 17.1436 13.2721 17.2593C12.9037 17.3751 12.5209 17.433 12.1237 17.433C11.066 17.433 10.167 17.0628 9.42657 16.3224C8.68619 15.582 8.316 14.683 8.316 13.6253C8.316 12.5676 8.68619 11.6686 9.42657 10.9282C10.167 10.1878 11.066 9.81763 12.1237 9.81763C13.1814 9.81763 14.0804 10.1878 14.8208 10.9282C15.5612 11.6686 15.9313 12.5676 15.9313 13.6253C15.9313 14.0225 15.8735 14.4053 15.7577 14.7738C15.6419 15.1422 15.4713 15.481 15.2456 15.79L17.2817 17.8173C17.4086 17.9437 17.4721 18.1046 17.4721 18.2999C17.4721 18.4953 17.4088 18.6564 17.2823 18.7833Z"
@@ -180,7 +180,7 @@
                                             </svg>
                                         </div>
                                         <div class="text-white font-bold ml-[4px]   flex justify-center items-center">
-                                            {{ data.attributes.user_sign_contract.data ? "ดูสัญญาเช่า" : "สร้างสัญญาเช่า" }}
+                                            {{ data.user_sign_contract ? "ดูสัญญาเช่า" : "สร้างสัญญาเช่า" }}
                                         </div>
                                     </div>
                                 </div>
@@ -190,7 +190,7 @@
                     <div class="flex flex-col justify-between">
                         <div class="flex">
                             <div class="flex justify-center items-center">
-                                <div v-if="data.attributes.user_sign_contract.data">
+                                <div v-if="data.user_sign_contract">
                                     <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <rect width="32" height="32" rx="12" fill="#FFE2E9" />
@@ -209,9 +209,9 @@
                                     </svg>
                                 </div>
                             </div>
-                            <div :class="data.attributes.user_sign_contract.data ? 'text-[#0B9A3C] bg-[#CFFBDA]' : 'text-[#003765] bg-[#F0F8FF]'"
+                            <div :class="data.user_sign_contract ? 'text-[#0B9A3C] bg-[#CFFBDA]' : 'text-[#003765] bg-[#F0F8FF]'"
                                 class="h-[36px] ml-[8px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] ">
-                                {{ data.attributes.user_sign_contract.data ? "มีผู้เข้าพัก" : "ห้องว่าง" }}
+                                {{ data.user_sign_contract ? "มีผู้เข้าพัก" : "ห้องว่าง" }}
                             </div>
                         </div>
                         <div class="flex justify-end">
@@ -225,7 +225,7 @@
                                     <g mask="url(#mask0_1318_22597)">
                                         <path
                                             d="M19.6652 12.6152V9.86521H12.3319V12.6152H10.9569V9.31507C10.9569 9.08131 11.0363 8.88539 11.1951 8.72733C11.3539 8.56927 11.5507 8.49023 11.7854 8.49023H20.208C20.4466 8.49023 20.645 8.5693 20.8031 8.72742C20.9611 8.88555 21.0402 9.08148 21.0402 9.31523V12.6152H19.6652ZM21.3222 16.2818C21.582 16.2818 21.7997 16.194 21.9754 16.0183C22.1511 15.8426 22.2389 15.6249 22.2389 15.3652C22.2389 15.1054 22.1511 14.8877 21.9754 14.712C21.7997 14.5363 21.582 14.4485 21.3222 14.4485C21.0625 14.4485 20.8448 14.5363 20.6691 14.712C20.4934 14.8877 20.4056 15.1054 20.4056 15.3652C20.4056 15.6249 20.4934 15.8426 20.6691 16.0183C20.8448 16.194 21.0625 16.2818 21.3222 16.2818ZM12.614 22.4165H19.3831C19.4654 22.4165 19.533 22.39 19.5859 22.3371C19.6388 22.2842 19.6652 22.2167 19.6652 22.1344V18.503H12.3319V22.1344C12.3319 22.2167 12.3583 22.2842 12.4112 22.3371C12.4641 22.39 12.5317 22.4165 12.614 22.4165ZM12.614 23.7914C12.1583 23.7914 11.7682 23.6292 11.4437 23.3047C11.1192 22.9802 10.9569 22.5901 10.9569 22.1344V20.1248H8.38319C8.14845 20.1248 7.95168 20.0454 7.79288 19.8866C7.63409 19.7278 7.55469 19.531 7.55469 19.2962V14.9068C7.55469 14.2575 7.77651 13.7133 8.22014 13.274C8.66378 12.8348 9.20583 12.6152 9.84631 12.6152H22.1508C22.8001 12.6152 23.3443 12.8348 23.7836 13.274C24.2228 13.7133 24.4424 14.2575 24.4424 14.9068V19.2962C24.4424 19.531 24.363 19.7278 24.2042 19.8866C24.0454 20.0454 23.8486 20.1248 23.6139 20.1248H21.0402V22.1344C21.0402 22.5901 20.8779 22.9802 20.5534 23.3047C20.2289 23.6292 19.8388 23.7914 19.3831 23.7914H12.614ZM23.0674 18.7498V14.9068C23.0674 14.6471 22.9796 14.4294 22.8039 14.2537C22.6282 14.078 22.4105 13.9902 22.1508 13.9902H9.84631C9.58659 13.9902 9.36888 14.078 9.19318 14.2537C9.01749 14.4294 8.92964 14.6471 8.92964 14.9068V18.7498H10.9569V17.128H21.0402V18.7498H23.0674Z"
-                                            :fill="data.attributes.user_sign_contract.data ? '#003765' : '#B9CCDC'" />
+                                            :fill="data.user_sign_contract ? '#003765' : '#B9CCDC'" />
                                     </g>
                                 </svg>
                             </div>
@@ -239,7 +239,7 @@
                                     <g mask="url(#mask0_1318_22595)">
                                         <path
                                             d="M13.9009 14.5724H14.9233C15.1531 14.5724 15.3457 14.4947 15.5011 14.3393C15.6565 14.1839 15.7342 13.9913 15.7342 13.7615V12.7391C15.7342 12.5093 15.6565 12.3167 15.5011 12.1613C15.3457 12.0059 15.1531 11.9282 14.9233 11.9282H13.4954C13.3873 11.9282 13.2927 11.9687 13.2116 12.0498C13.1305 12.1309 13.09 12.2255 13.09 12.3336V16.0003C13.09 16.1084 13.1305 16.203 13.2116 16.2841C13.2927 16.3652 13.3873 16.4057 13.4954 16.4057C13.6035 16.4057 13.6981 16.3652 13.7792 16.2841C13.8603 16.203 13.9009 16.1084 13.9009 16.0003V14.5724ZM13.9009 13.7615V12.7391H14.9233V13.7615H13.9009ZM18.4666 16.4057C18.6963 16.4057 18.8889 16.328 19.0443 16.1726C19.1998 16.0172 19.2775 15.8246 19.2775 15.5949V12.7391C19.2775 12.5093 19.1998 12.3167 19.0443 12.1613C18.8889 12.0059 18.6963 11.9282 18.4666 11.9282H17.0739C16.9658 11.9282 16.8712 11.9687 16.7901 12.0498C16.7091 12.1309 16.6685 12.2255 16.6685 12.3336V16.0003C16.6685 16.1084 16.7091 16.203 16.7901 16.2841C16.8712 16.3652 16.9658 16.4057 17.0739 16.4057H18.4666ZM17.4794 15.5949V12.7391H18.4666V15.5949H17.4794ZM21.1108 14.5724H21.7983C21.9064 14.5724 22.001 14.5319 22.0821 14.4508C22.1632 14.3697 22.2038 14.2751 22.2038 14.167C22.2038 14.0588 22.1632 13.9642 22.0821 13.8831C22.001 13.8021 21.9064 13.7615 21.7983 13.7615H21.1108V12.7391H21.7983C21.9064 12.7391 22.001 12.6985 22.0821 12.6175C22.1632 12.5364 22.2038 12.4418 22.2038 12.3336C22.2038 12.2255 22.1632 12.1309 22.0821 12.0498C22.001 11.9687 21.9064 11.9282 21.7983 11.9282H20.7054C20.5972 11.9282 20.5026 11.9687 20.4215 12.0498C20.3405 12.1309 20.2999 12.2255 20.2999 12.3336V16.0003C20.2999 16.1084 20.3405 16.203 20.4215 16.2841C20.5026 16.3652 20.5972 16.4057 20.7054 16.4057C20.8135 16.4057 20.9081 16.3652 20.9892 16.2841C21.0703 16.203 21.1108 16.1084 21.1108 16.0003V14.5724ZM12.3849 21.0419C11.9218 21.0419 11.5299 20.8815 11.2091 20.5607C10.8883 20.2399 10.7278 19.8479 10.7278 19.3849V8.94905C10.7278 8.48601 10.8883 8.09408 11.2091 7.77324C11.5299 7.45241 11.9218 7.29199 12.3849 7.29199H22.8207C23.2838 7.29199 23.6757 7.45241 23.9965 7.77324C24.3174 8.09408 24.4778 8.48601 24.4778 8.94905V19.3849C24.4778 19.8479 24.3174 20.2399 23.9965 20.5607C23.6757 20.8815 23.2838 21.0419 22.8207 21.0419H12.3849ZM12.3849 19.667H22.8207C22.8912 19.667 22.9559 19.6376 23.0147 19.5788C23.0734 19.5201 23.1028 19.4554 23.1028 19.3849V8.94905C23.1028 8.87853 23.0734 8.81388 23.0147 8.75511C22.9559 8.69635 22.8912 8.66697 22.8207 8.66697H12.3849C12.3144 8.66697 12.2497 8.69635 12.191 8.75511C12.1322 8.81388 12.1028 8.87853 12.1028 8.94905V19.3849C12.1028 19.4554 12.1322 19.5201 12.191 19.5788C12.2497 19.6376 12.3144 19.667 12.3849 19.667ZM9.17657 24.2502C8.71354 24.2502 8.32161 24.0898 8.00078 23.769C7.67995 23.4482 7.51953 23.0562 7.51953 22.5932V11.4699C7.51953 11.2751 7.58545 11.1118 7.71728 10.98C7.84911 10.8483 8.01246 10.7824 8.20733 10.7824C8.4022 10.7824 8.56545 10.8483 8.69708 10.98C8.8287 11.1118 8.89451 11.2751 8.89451 11.4699V22.5932C8.89451 22.6637 8.92389 22.7284 8.98265 22.7871C9.04142 22.8459 9.10606 22.8753 9.17657 22.8753H20.2999C20.4947 22.8753 20.658 22.9412 20.7897 23.073C20.9215 23.2048 20.9874 23.3682 20.9874 23.5631C20.9874 23.7579 20.9215 23.9212 20.7897 24.0528C20.658 24.1844 20.4947 24.2502 20.2999 24.2502H9.17657Z"
-                                            :fill="data.attributes.user_sign_contract.data ? '#003765' : '#B9CCDC'" />
+                                            :fill="data.user_sign_contract ? '#003765' : '#B9CCDC'" />
                                     </g>
                                 </svg>
 
@@ -662,7 +662,7 @@ export default {
     mounted() {
         console.log("State.Building", this.$store.state.building);   
         this.getFloorRoom();
-        this.getUser()
+       // this.getUser()
      
     },
     created() {
@@ -682,7 +682,8 @@ export default {
         getRentalContract() {
             this.contract = []
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3&filters[building_floor][id][$eq]='+this.filter.floor)
+            fetch('https://api.resguru.app/api/getRoomContract?buildingid=' + this.$store.state.building + '&buildingFloor='+this.filter.floor)
+          // fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3&filters[building_floor][id][$eq]='+this.filter.floor)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRentalContract()", resp.data);
@@ -693,7 +694,7 @@ export default {
         },
         getFloorRoom() {
             // const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=deep,2')
+            fetch('https://api.resguru.app/api' + '/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=deep,2')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoomFloor()", resp.data);
@@ -707,23 +708,24 @@ export default {
         },
         getDetailRentalContract(id) {
             const loading = this.$vs.loading()
-            fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep&filters[id][$eq]=' + id)
+            fetch('https://api.resguru.app/api' + '/user-sign-contracts/' + id +'?populate=deep,3')
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log('ddd', resp.data[0]?.attributes.user_sign_contract.data);
-                    this.room_detail.name = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.firstName
-                    this.room_detail.last_name = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.lastName
-                    this.room_detail.nick_name = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.nickName
-                    this.room_detail.phone = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.phone
-                    this.room_detail.id_card = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.idCard
-                    this.room_detail.address = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.contactAddress
-                    this.room_detail.sex = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.sex
-                    this.room_detail.birth = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.dateOfBirth
-                    this.room_detail.date_sign = resp.data[0]?.attributes.user_sign_contract.data?.attributes.checkInDate
-                    this.room_detail.type_room = resp.data[0]?.attributes.user_sign_contract.data?.attributes.room.data?.attributes.room_type.data?.attributes.roomTypeName
-                    this.room_detail.contract_duration = resp.data[0]?.attributes.user_sign_contract.data?.attributes.contractDuration
-                    this.room_detail.roomInsurance_deposit = resp.data[0]?.attributes.user_sign_contract.data?.attributes.roomInsuranceDeposit
-                    this.room_detail.room_deposit = resp.data[0]?.attributes.user_sign_contract.data?.attributes.roomDeposit
+                    console.log('ddd', resp.data[0]?.attributes.user_sign_contract);
+                    this.room_detail.name = resp.data.attributes.users_permissions_user.data?.attributes.firstName
+                    this.room_detail.last_name = resp.data.attributes.users_permissions_user.data?.attributes.lastName
+                    this.room_detail.nick_name = resp.data.attributes.users_permissions_user.data?.attributes.nickName
+                    this.room_detail.phone = resp.data.attributes.users_permissions_user.data?.attributes.phone
+                    this.room_detail.id_card = resp.data.attributes.users_permissions_user.data?.attributes.idCard
+                    this.room_detail.address =  resp.data.attributes.users_permissions_user.data?.attributes.contactAddress
+                    this.room_detail.sex =  resp.data.attributes.users_permissions_user.data?.attributes.sex
+                    this.room_detail.birth =  resp.data.attributes.users_permissions_user.data?.attributes.dateOfBirth
+                    this.room_detail.date_sign = resp.data.attributes.checkInDate
+                    this.room_detail.type_room = resp.data.attributes.room.data.attributes.room_type.data.attributes.roomTypeName
+                    
+                    this.room_detail.contract_duration = resp.data.attributes.contractDuration
+                    this.room_detail.roomInsurance_deposit = resp.data.attributes.roomInsuranceDeposit
+                    this.room_detail.room_deposit = resp.data.attributes.roomDeposit
 
                 }).finally(() => {
                     loading.close()
@@ -731,7 +733,7 @@ export default {
                 })
         },
         getUser() {
-            fetch('http://203.170.190.170:1337/api' + '/users?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
+            fetch('https://api.resguru.app/api' + '/users?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
                 .then(response => response.json())
                 .then((resp) => {
                     // console.log(resp);
@@ -739,14 +741,14 @@ export default {
                 })
         },
         getRoomType() {
-            fetch('http://203.170.190.170:1337/api' + '/room-types?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
+            fetch('https://api.resguru.app/api' + '/room-types?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3')
                 .then(response => response.json())
                 .then((resp) => {
                     this.room_type = resp.data;
                 })
         },
         getUserDetail(id_room) {
-            fetch('http://203.170.190.170:1337/api' + '/users/' + this.id_user + '?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
+            fetch('https://api.resguru.app/api' + '/users/' + this.id_user + '?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log('detail', resp);
@@ -782,7 +784,7 @@ export default {
         submitSign() {
             if (this.room_detail_create.check_user == true) {
                 const loading = this.$vs.loading()
-                axios.post('http://203.170.190.170:1337/api' + '/user-sign-contracts', {
+                axios.post('https://api.resguru.app/api' + '/user-sign-contracts', {
                     data: {
                         room: this.room_detail_create.id_room,
                         contractStatus: "rent",
@@ -792,7 +794,7 @@ export default {
                         contractDuration: parseInt(this.room_detail_create.contract_duration)
                     }
                 }).then((resp) => {
-                    axios.put('http://203.170.190.170:1337/api' + '/rooms/' + this.room_detail_create.id_room, {
+                    axios.put('https://api.resguru.app/api' + '/rooms/' + this.room_detail_create.id_room, {
                         data: {
                             // user_sign_contract: resp.data.id,
                             room_type: this.room_detail_create.type_room,
@@ -806,7 +808,7 @@ export default {
             }
             else {
                 const loading = this.$vs.loading()
-                axios.post('http://203.170.190.170:1337/api' + '/users', {
+                axios.post('https://api.resguru.app/api' + '/users', {
                     "username": this.room_detail_create.email,
                     "email": this.room_detail_create.email,
                     "firstName": this.room_detail_create.name,
@@ -822,7 +824,7 @@ export default {
                     "password": "mockpass",
                     "building": this.$store.state.building
                 }).then((resp) => {
-                    axios.post('http://203.170.190.170:1337/api' + '/user-sign-contracts', {
+                    axios.post('https://api.resguru.app/api' + '/user-sign-contracts', {
                         data: {
                             room: this.room_detail_create.id_room,
                             contractStatus: "rent",
@@ -832,7 +834,7 @@ export default {
                             contractDuration: parseInt(this.room_detail_create.contract_duration)
                         }
                     }).then((resp) => {
-                        axios.put('http://203.170.190.170:1337/api' + '/rooms/' + this.room_detail_create.id_room, {
+                        axios.put('https://api.resguru.app/api' + '/rooms/' + this.room_detail_create.id_room, {
                             data: {
                                 // user_sign_contract: resp.data.id,
                                 room_type: this.room_detail_create.type_room,
