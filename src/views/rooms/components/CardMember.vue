@@ -3,11 +3,12 @@
         <div class="grid grid-cols-7 w-[100%] gap-4 mt-[14px]">
             <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[14px] cursor-pointer "
                 v-for="data in user">
-                <div :class="status == 'rent' ? 'bg-[#D7F1E3] text-[#39B974]' : 'bg-[#F0F8FF] text-[#003765]'" @click="getDetailRentalContract()"
+                <div :class="status == 'rent' ? 'bg-[#D7F1E3] text-[#39B974]' : 'bg-[#F0F8FF] text-[#003765]'"
+                    @click="getDetailRentalContract()"
                     class="h-[24px] w-[auto] mt-[-22px] text-[12px] flex items-center justify-center p-[8px] rounded-[8px]">
                     {{ status == "rent" ? 'ทำสัญญาแล้ว' : 'ยังไม่ทำสัญญา' }}
                 </div>
-                <img class="w-[78px] h-[78px] rounded-[22px]" :src="data.filePath" @click="getDetailRentalContract()"/>
+                <img class="w-[78px] h-[78px] rounded-[22px]" :src="data.filePath" @click="getDetailRentalContract()" />
                 <div @click="getDetailRentalContract()">{{ data.firstName }} {{ data.lastName }}</div>
                 <div class="flex" @click="getDetailRentalContract()">
                     <div><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -374,9 +375,11 @@
                             <div class="grid grid-cols-8 w-[100%] gap-2 mt-[14px]">
                                 <div v-for="room in floor.attributes">
                                     <div class="h-[32px] bg-[#DEEAF5] rounded-[12px] flex items-center justify-between pl-[8px] pr-[8px]"
+                                        @click=" room.status ? '' : room_move.id_room = room.id , room_move.Number = room.RoomNumber,confirm = true"
                                         :class="room.status ? 'bg-[#E8F0F8] text-[#B9CCDC]' : 'bg-[#DEEAF5] text-[#003765] cursor-pointer'">
                                         <div>{{ room.RoomNumber }}</div>
-                                        <div>{{ room.status ? 'เต็ม' : 'ว่าง' }}</div>
+                                        <div>{{ room.status ? 'เต็ม' : 'ว่าง' }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -395,7 +398,7 @@
                         <div class="ml-[4px]">จากห้อง</div>
                         <div class="font-bold ml-[4px]">{{ $route.query.number_room }} </div>
                         <div class="ml-[4px]">ไปห้อง</div>
-                        <div class="font-bold ml-[4px]">{{ $route.query.number_room }} </div>
+                        <div class="font-bold ml-[4px]">{{ room_move.Number}} </div>
                     </div>
                     <div @click="confirm = false" class="cursor-pointer">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -447,7 +450,7 @@
                                 <div class="text-custom flex justify-center items-center text-center mt-[8px]">
                                     การย้ายห้องแบบย้ายสัญญาเช่า ระบบจะทำการ
                                     ย้ายผู้เช่าทั้งหมดของห้อง {{ $route.query.number_room }} พร้อมกับสัญญา
-                                    เช่าห้อง {{ $route.query.number_room }} ไปยังห้อง 105 พร้อมทั้งทำการเปลี่ยน
+                                    เช่าห้อง {{ $route.query.number_room }} ไปยังห้อง {{ room_move.Number }} พร้อมทั้งทำการเปลี่ยน
                                     สถานะห้อง {{ $route.query.number_room }} เป็นห้องว่าง
                                 </div>
                             </div>
@@ -472,7 +475,7 @@
                                 </div>
                                 <div class="text-custom flex justify-center items-center text-center mt-[8px]">
                                     การย้ายห้องแบบไม่ย้ายสัญญาเช่า ระบบจะทำการย้ายผู้เช่า (คนที่เลือก) โดยจะไม่ย้าย
-                                    สัญญาเช่าของห้อง {{ $route.query.number_room }} ไปยังห้อง 105
+                                    สัญญาเช่าของห้อง {{ $route.query.number_room }} ไปยังห้อง {{room_move.Number}}
                                 </div>
                             </div>
                         </div>
@@ -508,11 +511,16 @@ export default {
             tab: 0,
             create: false,
             move_room: false,
-            confirm: true,
+            confirm: false,
             user: [],
             users: [],
             name_user: '',
             is_edit: true,
+            room_move: {
+                id_room: '',
+                number:''
+
+            },
             room_detail: {
                 id: '',
                 sex: null,
