@@ -347,7 +347,7 @@
                             
                     </div>
                     
-                    <vs-tooltip bottom shadow not-hover v-model="popup_filter">
+                    <!-- <vs-tooltip bottom shadow not-hover v-model="popup_filter">
                         <div @click="popup_filter = true"
                             class="h-[36px] w-[132px]  flex  justify-center rounded-[12px] mt-[12px] ml-[14px] cursor-pointer">
                             <div class="flex justify-center items-center">
@@ -400,24 +400,28 @@
                                 </div>
                             </div>
                         </template>
-                    </vs-tooltip>
+                    </vs-tooltip> -->
                 </div>
             </div>
             <div class="mt-[14px]" v-if="tab == 2">
                 <vs-table>
                     <template #thead>
                         <vs-tr>
-                            <vs-th>
-                                ID
-                            </vs-th>
+                            
                             <vs-th>
                                 วันที่
                             </vs-th>
                             <vs-th>
-                                รายละเอียด
+                                หัวข้อ
+                            </vs-th>
+                            <vs-th>
+                                หมายเหตุ
                             </vs-th>
                             <vs-th>
                                 หลักฐานการชำระเงิน
+                            </vs-th>
+                            <vs-th>
+                                ใบสำคัญจ่าย
                             </vs-th>
                             <vs-th>
                                 จำนวนเงิน
@@ -426,14 +430,18 @@
                     </template>
                     <template #tbody>
                         <vs-tr :key="i" v-for="(tr, i) in expense" :data="tr">
+                            
                             <vs-td>
-                                {{ tr.id }}
-                            </vs-td>
-                            <vs-td>
-                                {{ tr.attributes.createdAt }}
+                                {{ tr.attributes.date }}
                             </vs-td>
                             <vs-td>
                                 {{ tr.attributes.title }}
+                            </vs-td>
+                            <vs-td>
+                                {{ tr.attributes.remark }}
+                            </vs-td>
+                            <vs-td>
+                                Image.png
                             </vs-td>
                             <vs-td>
                                 Image.png
@@ -513,32 +521,35 @@
                 <!-- <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
                 <div class="pl-[20px] pr-[20px] mt-[24px]">
                     <div>
-                        <div class="text-custom text-[14px] text-[#003765]">ประเภทรายจ่าย</div>
+                        <div class="text-custom text-[14px] text-[#003765]">ประเภทรายจ่าย ตรงนี้</div>
                         <div class="flex  items-center">
-                            <vs-select placeholder="Select" v-model="value">
-                                <vs-option label="Vuesax" value="1">
+                            <select placeholder="Select">
+                                <!-- <vs-option label="Vuesax" value="1">
                                     Vuesax
-                                </vs-option>
-                            </vs-select>
-                            <div class="ml-[8px]">
+                                </vs-option> -->
+                                <option v-for="data in expenseType" :label="data.attributes.expenseTypeName" :value="data.attributes.id">
+                                    {{ data.attributes.expenseTypeName }}
+                                </option>
+                            </select>
+                            <div class="ml-[8px]" >
                                 <input class="h-[36px] w-[100%] ml-[8px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" />
+                                    type="input" v-model="title" />
                             </div>
 
                         </div>
                     </div>
-                    <div class="mt-[8px]">
+                    <div class="mt-[8px]" >
                         <div class="text-custom text-[14px] text-[#003765]">หมายเหตุ</div>
-                        <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                        <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="remark"/>
                     </div>
-                    <div class="mt-[14px]">
+                    <div class="mt-[14px]" >
                         <div class="text-custom text-[14px] text-[#003765]">จำนวนเงิน (บาท)</div>
-                        <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                        <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="amount"/>
                     </div>
-                    <div class="mt-[14px]">
+                    <div class="mt-[14px]" >
                         <div class="text-custom text-[14px] text-[#003765]">วันที่</div>
-                        <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[14px] pr-[14px]  flex justify-start"
-                            type="date" />
+                        <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[14px] pr-[14px]  flex justify-start" 
+                            type="date" v-model="date"/>
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">หลักฐานการจ่ายเงิน</div>
@@ -564,12 +575,12 @@
                 </div>
                 <div class="flex justify-end mt-[30px]">
                     <div>
-                        <vs-button dark shadow @click="ccreate = false">
+                        <vs-button dark shadow @click="create = false">
                             <div class="text-custom">ยกเลิก</div>
                         </vs-button>
                     </div>
                     <div>
-                        <vs-button @click="create = false" color="#003765">
+                        <vs-button @click="createExpense()" color="#003765">
                             <div class="text-custom">เพิ่ม</div>
                         </vs-button>
                     </div>
@@ -580,6 +591,8 @@
 </template>
 <script>
 import VueApexCharts from "vue-apexcharts";
+import axios from 'axios'
+
 export default {
     components: {
         apexchart: VueApexCharts,
@@ -592,6 +605,7 @@ export default {
             data: [10, 5, 6, 8],
             data2: [10, 5, 6, 8, 4],
             expense: [],
+            expenseType: [],
             income:[],
             users: [
                 {
@@ -622,7 +636,14 @@ export default {
                     "email": "101",
                     "website": "1,000",
                 },
-            ]
+            ],
+            title: "",
+            expense: "",
+            amount: 0,
+            date: "",
+            remark: "",
+            evidence: "",
+            receipt: ""
         }
 
     },
@@ -675,6 +696,7 @@ export default {
     mounted() {
         this.getExpense();
         this.getIncome();
+        this.getExpenseType();
     },
     methods: {
         routeTo(path) {
@@ -685,7 +707,7 @@ export default {
         getExpense() {
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`https://api.resguru.app/api/building-expenses?populate=*,3&sort[0]=id:desc`)
+            fetch(`https://api.resguru.app/api/building-expenses?populate=*&filters[building][id][$eq]=${this.$store.state.building}&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getExpense()",resp.data);
@@ -694,9 +716,31 @@ export default {
                     loading.close()
                 })
         },
+        getExpenseType(){
+            fetch(`https://api.resguru.app/api/building-expense-types`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getExpense()",resp.data);
+                    this.expenseType = resp.data
+                })
+        },
+        createExpense() {
+            axios.post(`https://api.resguru.app/api/building-expenses`, {
+                    data: {
+                        title: this.title,
+                        // expenseType: this.expense,
+                        amount: this.amount,
+                        date: this.date,
+                        remark: this.remark,
+                        building: this.$store.state.building,
+                        // evidence: this.evidence,
+                        // receipt: this.receipt
+                    }
+                })
+        },
         getIncome() {
             const loading = this.$vs.loading() 
-            fetch(`https://api.resguru.app/api/tenant-receipts?populate=*,3&sort[0]=id:desc`)
+            fetch(`https://api.resguru.app/api/tenant-receipts?populate=*?populate=building&filters[building][id][$eq]=${this.$store.state.building}&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getReceipt()",resp.data);

@@ -86,11 +86,11 @@
                             </vs-input>
                         </vs-td>
                         <vs-td>
-                            {{ tr.attributes.water_fees.data[0] ? tr.attributes.water_fees.data[0].attributes.meterUnit : "ยังไม่ได้ระบุ" }} 
+                            {{ tr.attributes.water_fees.data[0] ? (tr.attributes.water_fees.data[0].attributes.meterUnit - tr.attributes.water_fees.data[1].attributes.meterUnit) : "ยังไม่ได้ระบุ" }} 
                         </vs-td>
                         <vs-td>
                             <div>
-                                <vs-button @click="updateWaterfee(tr.attributes.water_fees.data[0].id,tr.attributes.water_fees.data[0].attributes.meterUnit)" >บันทึก</vs-button>
+                                <vs-button @click="updateWaterfee(tr.attributes.water_fees.data[0].id,tr.attributes.water_fees.data[0].attributes.meterUnit,(tr.attributes.water_fees.data[0].attributes.meterUnit - tr.attributes.water_fees.data[1].attributes.meterUnit) )" >บันทึก</vs-button>
                             </div>
                         </vs-td>
                     </vs-tr>
@@ -130,10 +130,11 @@ export default {
                     loading.close()
                 })
         },
-        updateWaterfee(waterFeeId,waterUnit){
+        updateWaterfee(waterFeeId,waterUnit,usageMeter){
             axios.put(`https://api.resguru.app/api/water-fees/${waterFeeId}`,{
                 data : {
-                    meterUnit: waterUnit
+                    meterUnit: waterUnit,
+                    usageMeter: usageMeter
                 }
             }).then( 
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)

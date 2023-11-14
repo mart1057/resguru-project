@@ -51,7 +51,7 @@
                             </div>
                         </vs-td>
                         <vs-td>
-                            <vs-button  @click="updateCommunalfee(tr.attributes.communal_fees.data[0].id)" >บันทึก</vs-button>
+                            <vs-button  @click="updateCommunalfee(tr.attributes.communal_fees.data[0].id,tr.attributes.communal_fees.data[0].attributes.communalUnit)" >บันทึก</vs-button>
                         </vs-td>
                     </vs-tr>
                 </template>
@@ -116,10 +116,10 @@ export default {
                     loading.close()
                 })
         },
-        updateCommunalfee(comFeeId){
+        updateCommunalfee(comFeeId,communalUnit){
             axios.put(`https://api.resguru.app/api/communal-fees/${comFeeId}`,{
                 data : {
-                    communalUnit: this.communalUnit
+                    communalUnit: communalUnit
                 }
             }).then( 
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
@@ -133,7 +133,7 @@ export default {
                 sticky: true,
                 color,
                 position,
-                title: 'Update Water Meter Success',
+                title: 'Update Communual Success',
             })
         },
         

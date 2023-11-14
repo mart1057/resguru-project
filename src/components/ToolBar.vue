@@ -49,8 +49,8 @@
                                 <path d="M1 0.5V41.5" stroke="#B9CCDC" stroke-linecap="round" />
                             </svg>
                         </div>
-                        <div
-                            class=" ml-[10px] h-[15px] bg-[#E7E2F7] pl-[12px] pr-[12px] pt-[12px] pb-[12px] rounded-[13px] text-[#9A77FF] text-center flex items-center">
+                        <div @click="routerTo('/checkout')"
+                            class=" ml-[10px] h-[15px] bg-[#E7E2F7] pl-[12px] pr-[12px] pt-[12px] pb-[12px] rounded-[13px] text-[#9A77FF] text-center cursor-pointer flex items-center">
                             Professional 
                         </div>
                         <div class="flex ml-[10px] items-center">
@@ -58,7 +58,7 @@
                             <vs-tooltip bottom shadow interactivity >
                                 <div  class="cursor-pointer">
                                     <vs-avatar size="40" primary>
-                                       NK
+                                       RS
                                     </vs-avatar>
                                     
                                 </div>
@@ -69,7 +69,7 @@
                                             <div>
                                                 <vs-avatar size="40" primary>
                                                     <template #text>
-                                                        Lily
+                                                        BU
                                                     </template>
                                                 </vs-avatar>
                                             </div>
@@ -79,10 +79,10 @@
                                         <div
                                             class="w-[100%] h-[1px]  mt-[12px] mb-[12px] bg-gray-200 border-0 dark:bg-gray-700">
                                         </div>
-                                        <div
+                                        <div @click="routerTo('/checkout')"
                                             class="h-[29px] flex items-center justify-center rounded-[12px] bg-[#E7E2F7] pl-[8px] pr-[8px] pb-[7px] pt-[7px] text-custom text-[#9A77FF] font-bold">
                                             Professional</div>
-                                        <div class="flex mt-[12px] cursor-pointer" @click="">
+                                        <div class="flex mt-[12px] cursor-pointer" @click="routerTo('/setting')">
                                             <div>
                                                 <svg width="20" height="20" viewBox="0 0 18 18" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">

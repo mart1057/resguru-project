@@ -125,7 +125,7 @@
                                         fill="#003765" />
                                 </svg>
                             </div>
-                            <div class="cursor-pointer boder pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px]">
+                            <div class="cursor-pointer boder pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px]" @click="routeTo('/setting')">
                                 ตั้งค่าบุคลากร
                             </div>
                         </div>

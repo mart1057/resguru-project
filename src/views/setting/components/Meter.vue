@@ -46,7 +46,8 @@
                         <div
                             class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] text-[#2875E9]">
                             <div>ราคา</div>
-                            <div class="font-bold">{{ building[0].attributes.waterUnitPrice }}</div>
+                            <input type="number" @change="updateUserBuildingWater()"  class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]"  v-model="building[0].attributes.waterUnitPrice">
+                            <!-- <div class="font-bold">{{ building[0].attributes.waterUnitPrice }}</div> -->
                         </div>
                     </div>
                 </div>
@@ -72,7 +73,8 @@
                         <div
                             class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] text-[#EEA10B]">
                             <div>ราคา</div>
-                            <div class="font-bold">{{ building[0].attributes.electricUnitPrice }}</div>
+                            <input type="number" @change="updateUserBuildingElectric()" class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]"  v-model="building[0].attributes.electricUnitPrice">
+                            <!-- <div class="font-bold">{{ building[0].attributes.electricUnitPrice }}</div> -->
                         </div>
                     </div>
                 </div>
@@ -104,7 +106,8 @@
                         </div>
                         <div class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] ">
                             <div>ราคา</div>
-                            <div class="font-bold">{{ building[0].attributes.communalUnitPrice }}</div>
+                            <input type="number" @change="updateUserBuildingCommunual()" class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]"  v-model="building[0].attributes.communalUnitPrice">
+                            <!-- <div class="font-bold">{{ building[0].attributes.communalUnitPrice }}</div> -->
                         </div>
                     </div>
                 </div>
@@ -605,10 +608,10 @@ export default {
                     setTimeout(() => location.reload(), 1500)
                 )
         }, 
-        updateUserBuildingWater(buildingID){
-            axios.put(`https://api.resguru.app/api/buildings/${buildingID}`,{
+        updateUserBuildingWater(){
+            axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`,{
                 data : {
-                    waterUnitPrice: this.waterUnitPrice
+                    waterUnitPrice: this.building[0].attributes.waterUnitPrice
                 }
             }).then( 
                     this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
@@ -617,10 +620,10 @@ export default {
                     setTimeout(() => location.reload(), 1500)
                 )
         }, 
-        updateUserBuildingElectric(buildingID){
-            axios.put(`https://api.resguru.app/api/buildings/${buildingID}`,{
+        updateUserBuildingElectric(){
+            axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`,{
                 data : {
-                    electricUnitPrice: this.electricUnitPrice
+                    electricUnitPrice: this.building[0].attributes.electricUnitPrice
                 }
             }).then( 
                     this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
@@ -629,10 +632,10 @@ export default {
                     setTimeout(() => location.reload(), 1500)
                 )
         }, 
-        updateUserBuildingCommunual(buildingID){
-            axios.put(`https://api.resguru.app/api/buildings/${buildingID}`,{
+        updateUserBuildingCommunual(){
+            axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`,{
                 data : {
-                    communalUnitPrice: this.communalUnitPrice
+                    communalUnitPrice: this.building[0].attributes.communalUnitPrice
                 }
             }).then( 
                     this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
@@ -648,7 +651,7 @@ export default {
                 position,
                 title: 'Update Room Success',
             })
-        },
+        }
     },
 }
 
