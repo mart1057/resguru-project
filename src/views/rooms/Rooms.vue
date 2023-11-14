@@ -18,7 +18,7 @@
                         </div>
                         <div class="text-[24px] font-bold ml-[8px] flex justify-center items-center">ผังห้องพัก</div>
                     </div>
-                    <div class="flex border pl-[14px] pr-[14px]  rounded-[12px] cursor-pointer ">
+                    <div class="flex border pl-[14px] pr-[14px]  rounded-[12px] cursor-pointer " @click="routeTo('/setting')">
                         <div class="flex justify-center items-center"><svg width="18" height="19" viewBox="0 0 18 19"
                                 fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -103,16 +103,6 @@
                 </div>
             </div>
             <div class="flex items-center mb-[8px] mt-[14px]">
-                <div class="mr-[14px]">
-                    <vs-select placeholder="เลือกอาคาร">
-                        <vs-option label="อาคาร A" value="1">
-                            อาคาร A
-                        </vs-option>
-                        <vs-option label="อาคาร B" value="2">
-                            อาคาร B
-                        </vs-option>
-                    </vs-select>
-                </div>
                 <div v-for="(data, i) in roomFloor">
                     <div class=" cursor-pointer mr-[8px]"
                         :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"

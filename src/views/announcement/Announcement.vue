@@ -260,7 +260,8 @@
                                                 </vs-avatar>
                                             </div>
                                             <div class="flex justify-center items-center ml-[8px]">{{
-                                                tr.attributes.users_created }}</div>
+                                                tr.attributes.users_created.data.attributes.firstName }}   {{
+                                                tr.attributes.users_created.data.attributes.lastName }}</div>
                                         </div>
                                     </vs-td>
                                 </vs-tr>

@@ -164,7 +164,7 @@ export default {
     data() {
         return {
             popup_filter: false,
-            tab: 3
+            tab: 1
         }
     },
     created() {

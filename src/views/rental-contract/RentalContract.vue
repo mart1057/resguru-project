@@ -112,16 +112,6 @@
                 </div>
             </div>
             <div class="flex items-center mb-[8px] mt-[14px]">
-                <div class="mr-[14px]">
-                    <vs-select placeholder="เลือกอาคาร">
-                        <vs-option label="อาคาร A" value="1">
-                            อาคาร A
-                        </vs-option>
-                        <vs-option label="อาคาร B" value="2">
-                            อาคาร B
-                        </vs-option>
-                    </vs-select>
-                </div>
                 <div v-for="(data, i) in roomFloor">
                     <div class=" cursor-pointer mr-[8px]"
                         :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'" @click="tab_floor = i,filter.floor = data.id,getRentalContract(),name_floor=data.attributes.floorName"> อาคาร
