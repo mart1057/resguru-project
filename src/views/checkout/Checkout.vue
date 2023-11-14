@@ -16,6 +16,7 @@
   
   <script>
   import { StripeCheckout } from '@vue-stripe/vue-stripe';
+  
   export default {
     components: {
       StripeCheckout,
@@ -36,9 +37,27 @@
       };
     },
     methods: {
-      submit () {
+      async submit () {
+        this.loading = true;
+      try {
+        const { error } = await this.$refs.checkoutRef.redirectToCheckout({
+          lineItems: this.lineItems,
+          customerEmail: this.customerEmail, // Pass the customer email here
+          successUrl: this.successURL,
+          cancelUrl: this.cancelURL,
+          mode: 'payment',
+        });
+
+        if (error) {
+          console.error('Error:', error);
+          this.loading = false;
+        }
+      } catch (err) {
+        console.error('Error:', err);
+        this.loading = false;
+      }
         // You will be redirected to Stripe's secure checkout page
-        this.$refs.checkoutRef.redirectToCheckout();
+        // this.$refs.checkoutRef.redirectToCheckout();
       },
     },
   };
