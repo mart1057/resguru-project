@@ -31,24 +31,24 @@
                 <template #tbody>
                     <vs-tr :key="i" v-for="(tr, i) in ElectricityFee" :data="tr">
                         <vs-td>
-                            {{ tr.attributes.RoomNumber  }}
+                            {{ tr.RoomNumber  }}
                         </vs-td>
                         <vs-td>
                             <div class="flex justify-start items-center">
                                 <div class="pl-[12px] pr-[12px] pb-[4px] pt-[4px] rounded-[12px] text-center"
                                     :class="tr.status == 'มีผู้เช่า' ? 'text-[#1DC56A] bg-[#D8FAD5]' : 'text-[#8396A6] bg-[#DEEAF5]'">
-                                    {{ tr.attributes.user_sign_contract.data ? "มีผู้เข้าพัก" : "ห้องว่าง" }}  
+                                    {{ tr.user_sign_contract ? "มีผู้เข้าพัก" : "ห้องว่าง" }}  
                                 </div>
                             </div>
 
                         </vs-td>
                         <vs-td>
-                            <!-- {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "" }}  -->
+                            {{ tr.user_sign_contract && tr.user_sign_contract.users_permissions_user && tr.user_sign_contract.users_permissions_user.firstName ? tr.user_sign_contract.users_permissions_user.firstName : "" }} 
                        </vs-td>
                         <vs-td>
                             <div>
-                                <div v-if=tr.attributes.electric_fees.data[1]>
-                                <vs-input disabled v-model=tr.attributes.electric_fees.data[1].attributes.electicUnit>
+                                <div v-if=tr.electric_fees[1]>
+                                <vs-input disabled v-model=tr.electric_fees[1].electicUnit>
                                     <template #icon>
                                         <svg width="9" height="17" viewBox="0 0 9 17" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -62,7 +62,7 @@
                             </div>
                         </vs-td>
                         <vs-td>
-                            <vs-input v-model=tr.attributes.electric_fees.data[0].attributes.electicUnit>
+                            <vs-input v-model=tr.electric_fees[0].electicUnit>
                                 <template #icon>
                                     <svg width="9" height="17" viewBox="0 0 9 17" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -75,11 +75,11 @@
                         </vs-td>
                 
                         <vs-td>
-                            {{ tr.attributes.electric_fees.data[0] ? (tr.attributes.electric_fees.data[0].attributes.electicUnit - tr.attributes.electric_fees.data[1].attributes.electicUnit) : "ยังไม่ได้ระบุ" }} 
+                            {{ tr.electric_fees[0] ? (tr.electric_fees[0].electicUnit - tr.electric_fees[1].electicUnit) : "ยังไม่ได้ระบุ" }} 
                         </vs-td>
                         <vs-td>
                             <div>
-                                <vs-button @click="updateElectfee(tr.attributes.electric_fees.data[0].id,tr.attributes.electric_fees.data[0].attributes.electicUnit,(tr.attributes.electric_fees.data[0].attributes.electicUnit - tr.attributes.electric_fees.data[1].attributes.electicUnit))" >บันทึก</vs-button>
+                                <vs-button @click="updateElectfee(tr.electric_fees[0].id,tr.electric_fees[0].electicUnit,(tr.electric_fees[0].electicUnit - tr.electric_fees[1].electicUnit))" >บันทึก</vs-button>
                             </div>
                         </vs-td>
                     </vs-tr>
@@ -128,7 +128,8 @@ export default {
     methods: {
         getElectricityFee() {
             const loading = this.$vs.loading()
-            fetch(`https://api.resguru.app/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep,3`)
+            fetch(`https://api.resguru.app/api/getelectriclist?buildingid=${this.$store.state.building}&buildingFloor=2&month=10&year=2023`)
+            // fetch(`https://api.resguru.app/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep,3`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()",resp.data);
