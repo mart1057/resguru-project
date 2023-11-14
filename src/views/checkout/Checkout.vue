@@ -24,6 +24,7 @@
       this.publishableKey = 'pk_live_51MP3OfJUFs9Ue9lHg7rZSSAcncQ9OPAev8M1cE5voGYjOUD7UsRJN6z0ihSlWafs0BDGwJi9BfbaCSgMok0TneKB003we5Sen9';
       return {
         loading: false,
+        customerEmail: 'nuttapol.kpn@gmail.com',
         lineItems: [
           {
             price: 'price_1NcBa3JUFs9Ue9lHk4Y9PNBl', // The id of the recurring price you created in your Stripe dashboard
