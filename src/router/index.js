@@ -15,6 +15,7 @@ import Payment from '@/views/payment/Payment'
 import PaymentDetail from '@/views/payment/components/PaymentDetail'
 import  Setting from '@/views/setting/Setting'
 import Checkout from '@/views/checkout/Checkout'
+import Plan from '@/views/plans/Plan'
 
 Vue.use(VueRouter)
 
@@ -94,6 +95,11 @@ const routes = [
     path: '/checkout',
     name: 'checkout',
     component:Checkout
+  },
+  {
+    path: '/plan',
+    name: 'plan',
+    component:Plan
   },
   
   
