@@ -82,13 +82,25 @@
                 <div class="grid grid-cols-2 gap-5 mt-[10px]">
                     <div class="w-[360px] border border-[#B9CCDC]  rounded-[16px] flex cursor-pointer"
                         v-for="data in building">
+                        
                         <div class="w-[30%]  h-[100%] rounded-[16px] flex flex-col items-center justify-center"  @click="routeToMain(data.id)"
-                            :style="{ background: data.attributes.colorCode }">
+                            :style="{ background: data.attributes.colorCode }" v-if="data.attributes.buildingLogo?.data">
                             <img :src="'https://api.resguru.app' + data.attributes.buildingLogo?.data?.attributes.url"
                                 class="w-[90px] h-[90px] rounded-[22px]" />
                             <div class="text-[12px] mt-[4px]"
                                 :class="data.attributes.colorCode == '#ffffff' ? '' : 'text-[white]'">Professional</div>
                         </div>
+                       
+                     
+                        <div v-else class="w-[30%]  h-[100%] rounded-[16px] flex flex-col items-center justify-center"  @click="routeToMain(data.id)"
+                            :style="{ background: data.attributes.colorCode }">
+                            <img src="../../assets/img/Logo-01.png"
+                                class="w-[90px] h-[90px] rounded-[0px]" />
+                            <div class="text-[12px] mt-[4px]"
+                                :class="data.attributes.colorCode == '#ffffff' ? '' : 'text-[white]'">Professional</div>
+                        </div>
+                      
+
                         <div class="w-[70%] p-[8px] flex flex-col">
                             <div  @click="routeToMain(data.id)">
                                 <div class="flex justify-between">
@@ -126,9 +138,9 @@
                                                     :fill="data.attributes.colorCode == '#ffffff' ? '#003765' : '#ffffff'" />
                                             </svg>
                                         </div><span
-                                            :class="data.attributes.colorCode == '#ffffff' ? '' : 'text-[white]'">เปลี่ยนธีมสี</span>
+                                            :class="data.attributes.colorCode == '#ffffff' ? '' : 'text-[003765]'">เปลี่ยนธีมสี</span>
                                     </button>
-                                    <input type="color" v-model="data.attributes.colorCode" class="custom-picker" />
+                                    <input @change="updateBuildingColor(data.id,data.attributes.colorCode)" type="color" v-model="data.attributes.colorCode" class="custom-picker" />
                                 </div>
                             </div>
                         </div>
@@ -245,6 +257,15 @@ export default {
             // Format the components as "dd/mm/yyyy"
             var formattedDate = day + '/' + month + '/' + year;
             return formattedDate
+        },
+        updateBuildingColor(buildingid,color){
+             // console.log("test v model", this.buildingName)
+             axios.put(`https://api.resguru.app/api/buildings/${buildingid}`,{
+                data : {
+                    colorCode: color, 
+                }
+            })
+               
         },
         getBuilding() {
             const loading = this.$vs.loading()
