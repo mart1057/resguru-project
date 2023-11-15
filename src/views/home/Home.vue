@@ -64,7 +64,7 @@
             </div>
         </div>
         <div class="w-[55%] pt-[50px]">
-            <div class="text-center text-[24px] font-bold">เลือกห้องพักของคุณ</div>
+            <div class="text-center text-[24px] font-bold">เลือกตึกหอพักของคุณ</div>
             <div class="flex flex-col justify-between">
                 <div class=" text-[18px]  mt-[50px] grid grid-cols-2 gap-5">
 
@@ -106,7 +106,8 @@
                                 <div class="flex justify-between">
                                     <div class="text-[14px] font-bold">{{ data.attributes.buildingName }}</div>
                                     <div class="flex justify-center items-center cursor-pointer"><svg width="4" height="12"
-                                            viewBox="0 0 4 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            viewBox="0 0 4 16" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                            @click="routeToEditBuilding(data.id)">
                                             <ellipse cx="2.0013" cy="2.16667" rx="1.66667" ry="1.66667"
                                                 transform="rotate(90 2.0013 2.16667)" fill="#5C6B79" />
                                             <circle cx="2.0013" cy="7.99967" r="1.66667"
@@ -245,6 +246,13 @@ export default {
                 path: '/dashboard',
             })
             this.$store.state.main = true
+        },
+        routeToEditBuilding(buidingId) {
+            this.$store.commit('setMain', true);
+            this.$store.commit('setBuilding', buidingId);
+            router.push({
+                path: '/setting?tab=1&tabsetting=2',
+            })
         },
         covertDate(createDate) {
             var date = new Date(createDate);

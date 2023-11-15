@@ -3,11 +3,11 @@
         <div class="flex justify-start items-center rounded-[12px]">
             <div class="bg-[#F3F7FA] rounded-[12px]">
                 <div class="flex justify-start items-center">
-                    <div @click="tab = 1" class="cursor-pointer "
-                        :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
+                    <div @click="tabSetting = 1" class="cursor-pointer "
+                        :class="tabSetting == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         ข้อมูลโปรไฟล์</div>
-                    <div @click="tab = 2" class="cursor-pointer ml-[8px]"
-                        :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
+                    <div @click="tabSetting = 2" class="cursor-pointer ml-[8px]"
+                        :class="tabSetting == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         ข้อมูลที่พัก
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                         <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
                             src="https://media.wired.com/photos/63b89b5b995aa119ba7ba7be/1:1/w_1800,h_1800,c_limit/Profile-Photos-Gear-1411545652.jpg" />
                         <div class="text-[18px] font-bold mt-[8px]">{{ userData.firstName }} {{userData.lastName}}</div>
-                        <div v-if="tab == 2">
+                        <div v-if="tabSetting == 2">
                             <div class="w-[100%] mt-[8px]">
                                 <div class="pt-[4px] w-[100%] rounded-[12px] flex justify-center bg-[#003765]">
                                     <div>
@@ -87,7 +87,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="h-[107px] bg-[#9A77FF] rounded-[22px] mt-[14px] p-[14px]" @click="routerTo('/plan')" v-if="tab == 1">
+                    <div class="h-[107px] bg-[#9A77FF] rounded-[22px] mt-[14px] p-[14px]" @click="routerTo('/plan')" v-if="tabSetting == 1">
 
                         <div>
                             <svg width="21" height="24" viewBox="0 0 21 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -100,7 +100,7 @@
                         <div class="text-[18px] font-bold mt-[4px] text-white">Professional</div>
                     </div>
                 </div>
-                <div class="w-[100%] ml-[24px] mt-[8px]" v-if="tab == 1">
+                <div class="w-[100%] ml-[24px] mt-[8px]" v-if="tabSetting == 1">
                     <div class="grid grid-cols-4 w-[100%] gap-2 ">
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">ชื่อ</div>
@@ -175,7 +175,7 @@
                         </vs-button>
                     </div>
                 </div>
-                <div class="w-[100%] ml-[24px] mt-[8px]" v-if="tab == 2">
+                <div class="w-[100%] ml-[24px] mt-[8px]" v-if="tabSetting == 2">
                     <div class="grid grid-cols-4 w-[100%] gap-2 ">
                         <div class="mt-[8px] col-span-4">
                             <div class="text-custom text-[14px] text-[#003765]">ชื่ออพาร์ทเม้นท์</div>
@@ -273,7 +273,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            tab: 1,
+            tabSetting: 1,
             userData: [] ,
             buildingData: [],
             district: '',
@@ -294,7 +294,7 @@ export default {
     mounted() {
         this.getUserDetail();
         this.getBuildingData();
-        console.log("this Building ID",this.$store.state.buidingId)
+        this.queryTabSetting();
     },
     methods: {
         getUserDetail() {
@@ -396,6 +396,12 @@ export default {
                 this.sidebar = false
             }, 200);
 
+        },
+        queryTabSetting(){
+            this.tabSetting = 1
+            if(this.$route.query.tab !== undefined){
+                this.tabSetting = this.$route.query.tabsetting
+            }
         }
         
     },
