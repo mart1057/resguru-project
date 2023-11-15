@@ -138,7 +138,7 @@
                                                     :fill="data.attributes.colorCode == '#ffffff' ? '#003765' : '#ffffff'" />
                                             </svg>
                                         </div><span
-                                            :class="data.attributes.colorCode == '#ffffff' ? '' : 'text-[003765]'">เปลี่ยนธีมสี</span>
+                                            :class="data.attributes.colorCode == '#ffffff' ? 'text-[#003765]' : 'text-[#ffffff]'">เปลี่ยนธีมสี</span>
                                     </button>
                                     <input @change="updateBuildingColor(data.id,data.attributes.colorCode)" type="color" v-model="data.attributes.colorCode" class="custom-picker" />
                                 </div>
