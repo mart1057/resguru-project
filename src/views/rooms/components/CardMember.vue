@@ -2,14 +2,15 @@
     <div>
         <div class="grid grid-cols-7 w-[100%] gap-4 mt-[14px]">
             <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[14px] cursor-pointer "
-                v-for="data in user" @click="getDetailRentalContract()">
+                v-for="data in user">
                 <div :class="status == 'rent' ? 'bg-[#D7F1E3] text-[#39B974]' : 'bg-[#F0F8FF] text-[#003765]'"
+                    @click="getDetailRentalContract()"
                     class="h-[24px] w-[auto] mt-[-22px] text-[12px] flex items-center justify-center p-[8px] rounded-[8px]">
                     {{ status == "rent" ? 'ทำสัญญาแล้ว' : 'ยังไม่ทำสัญญา' }}
                 </div>
-                <img class="w-[78px] h-[78px] rounded-[22px]" :src="data.filePath" />
-                <div>{{ data.firstName }} {{ data.lastName }}</div>
-                <div class="flex">
+                <img class="w-[78px] h-[78px] rounded-[22px]" :src="data.filePath" @click="getDetailRentalContract()" />
+                <div @click="getDetailRentalContract()">{{ data.firstName }} {{ data.lastName }}</div>
+                <div class="flex" @click="getDetailRentalContract()">
                     <div><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_417_4380" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
                                 width="16" height="16">
@@ -22,10 +23,10 @@
                             </g>
                         </svg>
                     </div>
-                    <div class="flex justify-center items-center ml-[4px] text-[12px]">{{ data.phone }} {{ data.dateOfBirth }}</div>
+                    <div class="flex justify-center items-center ml-[4px] text-[12px]">{{ data.phone }}</div>
                 </div>
                 <div class="flex justify-around w-[100%]">
-                    <div
+                    <div @click="move_room = true"
                         class="bg-[#003765] text-[white] pl-[8px] pr-[8px] pt-[1px] pb-[1px] flex justify-center items-center text-[12px] rounded-[8px]">
                         ย้ายห้อง</div>
                     <div @click="deleteContract()"
@@ -339,6 +340,161 @@
                 </div>
             </div>
         </b-modal>
+        <b-modal centered v-model="move_room" size="xl" hide-backdrop hide-header-close hide-header hide-footer
+            class="p-[-20px] text-custom">
+            <div>
+                <div class="flex justify-between pl-[20px] pr-[20px]">
+                    <div class="text-custom flex justify-center items-center text-[18px]">
+                        <div>ย้ายผู้เช่า </div>
+                        <div class="font-bold ml-[4px]">{{ name_user }} </div>
+                        <div class="ml-[4px]">ห้อง</div>
+                        <div class="font-bold ml-[4px]">{{ $route.query.number_room }} </div>
+                    </div>
+                    <div @click="move_room = false" class="cursor-pointer">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
+                                width="24" height="24">
+                                <rect width="24" height="24" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_417_4814)">
+                                <path
+                                    d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                                    fill="#5C6B79" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <!-- <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
+                <div class="pl-[20px] pr-[20px] mt-[24px]">
+                    <div class="text-[#5C6B79] text-custom">
+                        เลือกห้องที่ต้องการย้าย
+                    </div>
+                    <div v-for="data in roomFloor" class="text-custom">
+                        <div v-for="floor in data" class="mt-[14px] mb-[14px]">
+                            <div class="text-[#141629] font-bold">ชั้น {{ floor.floorName }}</div>
+                            <div class="grid grid-cols-8 w-[100%] gap-2 mt-[14px]">
+                                <div v-for="room in floor.attributes">
+                                    <div class="h-[32px] bg-[#DEEAF5] rounded-[12px] flex items-center justify-between pl-[8px] pr-[8px]"
+                                        @click=" room.status ? '' : room_move.id_room = room.id , room_move.Number = room.RoomNumber,confirm = true"
+                                        :class="room.status ? 'bg-[#E8F0F8] text-[#B9CCDC]' : 'bg-[#DEEAF5] text-[#003765] cursor-pointer'">
+                                        <div>{{ room.RoomNumber }}</div>
+                                        <div>{{ room.status ? 'เต็ม' : 'ว่าง' }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </b-modal>
+        <b-modal centered v-model="confirm" size="xl" hide-backdrop hide-header-close hide-header hide-footer
+            class="p-[-20px] text-custom">
+            <div>
+                <div class="flex justify-between pl-[20px] pr-[20px]">
+                    <div class="text-custom flex justify-center items-center text-[18px]">
+                        <div>ยืนยันย้ายผู้เช่า </div>
+                        <div class="font-bold ml-[4px]">{{ name_user }} </div>
+                        <div class="ml-[4px]">จากห้อง</div>
+                        <div class="font-bold ml-[4px]">{{ $route.query.number_room }} </div>
+                        <div class="ml-[4px]">ไปห้อง</div>
+                        <div class="font-bold ml-[4px]">{{ room_move.Number}} </div>
+                    </div>
+                    <div @click="confirm = false" class="cursor-pointer">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
+                                width="24" height="24">
+                                <rect width="24" height="24" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_417_4814)">
+                                <path
+                                    d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                                    fill="#5C6B79" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <!-- <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
+                <div class="pl-[20px] pr-[20px] mt-[24px]">
+                    <div class="flex cursor-pointer text-custom">
+                        <div class="flex justify-center items-center mr-[8px]"><svg width="7" height="12" viewBox="0 0 7 12"
+                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path
+                                    d="M0.338101 5.99962C0.338101 5.88552 0.357334 5.77495 0.3958 5.6679C0.434267 5.56085 0.500293 5.46053 0.593876 5.36695L5.10348 0.857324C5.24834 0.712458 5.42142 0.642591 5.6227 0.647724C5.82398 0.652841 5.99706 0.727841 6.14193 0.872724C6.28679 1.01759 6.35923 1.19322 6.35923 1.39962C6.35923 1.60602 6.28679 1.78166 6.14193 1.92652L2.06883 5.99962L6.1573 10.0881C6.30217 10.233 6.37204 10.406 6.36693 10.6073C6.36179 10.8086 6.28679 10.9817 6.14193 11.1265C5.99706 11.2714 5.82142 11.3438 5.615 11.3438C5.4086 11.3438 5.23297 11.2714 5.0881 11.1265L0.593876 6.6323C0.500293 6.53872 0.434267 6.44 0.3958 6.33615C0.357334 6.23232 0.338101 6.12014 0.338101 5.99962Z"
+                                    fill="#8396A6" />
+                            </svg></div>
+                        <div class="flex justify-center items-center text-[#8396A6] cursor-pointer"
+                            @click="confirm = false, move_room = true">
+                            ย้อนกลับ</div>
+                    </div>
+                    <div class="text-[#8396A6] text-custom mt-[24px]">คุณต้องการทำสัญญาหรือไม่ ?</div>
+                    <div class="grid grid-cols-2 gap-1 content-center mt-[44px] mb-[24px]">
+                        <div class="flex justify-center items-center cursor-pointer" @click="tab = 1">
+                            <div class="w-[350px] h-[250px]   rounded-[12px] flex flex-col justify-between items-center p-[24px] "
+                                :class="tab == 1 ? 'bg-[#003765] text-white' : 'bg-[#F3F7FA] text-[#003765]'">
+                                <div class="text-custom text-[16px] font-bold">ย้ายสัญญาเช่า</div>
+                                <div class="mt-[8px]">
+                                    <svg width="65" height="65" viewBox="0 0 65 65" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <mask id="mask0_3528_18769" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
+                                            y="0" width="65" height="65">
+                                            <rect width="65" height="65" fill="#D9D9D9" />
+                                        </mask>
+                                        <g mask="url(#mask0_3528_18769)">
+                                            <path
+                                                d="M51.5898 51.7761L47.2617 56.0626C46.8866 56.4376 46.4222 56.6363 45.8684 56.6589C45.3146 56.6815 44.8276 56.4827 44.4075 56.0626C44.0152 55.6702 43.819 55.1945 43.819 54.6355C43.819 54.0765 44.0152 53.6008 44.4075 53.2085L48.694 48.8803L44.4075 44.5522C44.0325 44.1772 43.8337 43.7128 43.8112 43.1589C43.7886 42.6051 43.9874 42.1182 44.4075 41.6981C44.7999 41.3057 45.2756 41.1096 45.8346 41.1096C46.3936 41.1096 46.8693 41.3057 47.2617 41.6981L51.5898 45.9846L55.918 41.6981C56.2929 41.3231 56.7573 41.1243 57.3111 41.1017C57.8649 41.0791 58.3519 41.2779 58.7721 41.6981C59.1644 42.0904 59.3606 42.5661 59.3606 43.1251C59.3606 43.6841 59.1644 44.1598 58.7721 44.5522L54.4855 48.8803L58.7721 53.2085C59.147 53.5835 59.3458 54.0478 59.3684 54.6017C59.3909 55.1555 59.1922 55.6424 58.7721 56.0626C58.3797 56.4549 57.904 56.6511 57.345 56.6511C56.786 56.6511 56.3103 56.4549 55.918 56.0626L51.5898 51.7761ZM16.2512 58.2292C14.3589 58.2292 12.7574 57.5738 11.4466 56.2631C10.1358 54.9523 9.48047 53.3507 9.48047 51.4584V48.5418C9.48047 47.1911 9.95878 46.0374 10.9154 45.0808C11.872 44.1243 13.0256 43.646 14.3763 43.646H17.6055V11.6669C17.6055 10.3162 18.0838 9.16252 19.0404 8.20594C19.997 7.24931 21.1506 6.771 22.5013 6.771H50.6261C51.9768 6.771 53.1305 7.24931 54.0871 8.20594C55.0437 9.16252 55.522 10.3162 55.522 11.6669V33.4115C54.8727 33.1997 54.2095 33.0452 53.5325 32.9481C52.8554 32.8508 52.1644 32.8022 51.4596 32.8022V11.6669C51.4596 11.4238 51.3814 11.2241 51.2252 11.0678C51.0689 10.9116 50.8692 10.8334 50.6261 10.8334H22.5013C22.2582 10.8334 22.0586 10.9116 21.9023 11.0678C21.746 11.2241 21.6679 11.4238 21.6679 11.6669V43.646H36.3919C36.1627 44.2952 35.9822 44.9541 35.8502 45.6224C35.7183 46.2909 35.635 46.9862 35.6002 47.7083H14.3763C14.1332 47.7083 13.9336 47.7865 13.7773 47.9427C13.621 48.099 13.5429 48.2987 13.5429 48.5418V51.4584C13.5429 52.2258 13.8024 52.869 14.3215 53.3881C14.8406 53.9072 15.4839 54.1668 16.2512 54.1668H36.3919C36.6488 54.9445 36.9743 55.6676 37.3684 56.336C37.7625 57.0044 38.2078 57.6354 38.7043 58.2292H16.2512ZM36.3919 54.1668H13.5429H35.6002H35.5429H36.3919ZM26.9283 23.5417C26.3519 23.5417 25.8693 23.3472 25.4804 22.9584C25.0916 22.5695 24.8971 22.0869 24.8971 21.5105C24.8971 20.9341 25.0916 20.4515 25.4804 20.0626C25.8693 19.6737 26.3519 19.4793 26.9283 19.4793H46.1992C46.7756 19.4793 47.2582 19.6737 47.647 20.0626C48.0359 20.4515 48.2304 20.9341 48.2304 21.5105C48.2304 22.0869 48.0359 22.5695 47.647 22.9584C47.2582 23.3472 46.7756 23.5417 46.1992 23.5417H26.9283ZM26.9283 31.3542C26.3519 31.3542 25.8693 31.1598 25.4804 30.7709C25.0916 30.382 24.8971 29.8993 24.8971 29.323C24.8971 28.7466 25.0916 28.264 25.4804 27.8751C25.8693 27.4862 26.3519 27.2918 26.9283 27.2918H46.1992C46.7756 27.2918 47.2582 27.4862 47.647 27.8751C48.0359 28.264 48.2304 28.7466 48.2304 29.323C48.2304 29.8993 48.0359 30.382 47.647 30.7709C47.2582 31.1598 46.7756 31.3542 46.1992 31.3542H26.9283Z"
+                                                :fill="tab == 1 ? 'white' : '#003765'" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="text-custom flex justify-center items-center text-center mt-[8px]">
+                                    การย้ายห้องแบบย้ายสัญญาเช่า ระบบจะทำการ
+                                    ย้ายผู้เช่าทั้งหมดของห้อง {{ $route.query.number_room }} พร้อมกับสัญญา
+                                    เช่าห้อง {{ $route.query.number_room }} ไปยังห้อง {{ room_move.Number }} พร้อมทั้งทำการเปลี่ยน
+                                    สถานะห้อง {{ $route.query.number_room }} เป็นห้องว่าง
+                                </div>
+                            </div>
+                        </div>
+                        <div class="flex justify-center items-center cursor-pointer" @click="tab = 2">
+                            <div class="w-[350px] h-[250px]   rounded-[12px] flex flex-col justify-between items-center p-[24px] "
+                                :class="tab == 2 ? 'bg-[#003765] text-white' : 'bg-[#F3F7FA] text-[#003765]'">
+                                <div class="text-custom text-[16px] font-bold">ไม่ย้ายสัญญาเช่า</div>
+                                <div class="mt-[8px]">
+                                    <svg width="65" height="65" viewBox="0 0 65 65" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <mask id="mask0_3528_18769" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
+                                            y="0" width="65" height="65">
+                                            <rect width="65" height="65" fill="#D9D9D9" />
+                                        </mask>
+                                        <g mask="url(#mask0_3528_18769)">
+                                            <path
+                                                d="M51.5898 51.7761L47.2617 56.0626C46.8866 56.4376 46.4222 56.6363 45.8684 56.6589C45.3146 56.6815 44.8276 56.4827 44.4075 56.0626C44.0152 55.6702 43.819 55.1945 43.819 54.6355C43.819 54.0765 44.0152 53.6008 44.4075 53.2085L48.694 48.8803L44.4075 44.5522C44.0325 44.1772 43.8337 43.7128 43.8112 43.1589C43.7886 42.6051 43.9874 42.1182 44.4075 41.6981C44.7999 41.3057 45.2756 41.1096 45.8346 41.1096C46.3936 41.1096 46.8693 41.3057 47.2617 41.6981L51.5898 45.9846L55.918 41.6981C56.2929 41.3231 56.7573 41.1243 57.3111 41.1017C57.8649 41.0791 58.3519 41.2779 58.7721 41.6981C59.1644 42.0904 59.3606 42.5661 59.3606 43.1251C59.3606 43.6841 59.1644 44.1598 58.7721 44.5522L54.4855 48.8803L58.7721 53.2085C59.147 53.5835 59.3458 54.0478 59.3684 54.6017C59.3909 55.1555 59.1922 55.6424 58.7721 56.0626C58.3797 56.4549 57.904 56.6511 57.345 56.6511C56.786 56.6511 56.3103 56.4549 55.918 56.0626L51.5898 51.7761ZM16.2512 58.2292C14.3589 58.2292 12.7574 57.5738 11.4466 56.2631C10.1358 54.9523 9.48047 53.3507 9.48047 51.4584V48.5418C9.48047 47.1911 9.95878 46.0374 10.9154 45.0808C11.872 44.1243 13.0256 43.646 14.3763 43.646H17.6055V11.6669C17.6055 10.3162 18.0838 9.16252 19.0404 8.20594C19.997 7.24931 21.1506 6.771 22.5013 6.771H50.6261C51.9768 6.771 53.1305 7.24931 54.0871 8.20594C55.0437 9.16252 55.522 10.3162 55.522 11.6669V33.4115C54.8727 33.1997 54.2095 33.0452 53.5325 32.9481C52.8554 32.8508 52.1644 32.8022 51.4596 32.8022V11.6669C51.4596 11.4238 51.3814 11.2241 51.2252 11.0678C51.0689 10.9116 50.8692 10.8334 50.6261 10.8334H22.5013C22.2582 10.8334 22.0586 10.9116 21.9023 11.0678C21.746 11.2241 21.6679 11.4238 21.6679 11.6669V43.646H36.3919C36.1627 44.2952 35.9822 44.9541 35.8502 45.6224C35.7183 46.2909 35.635 46.9862 35.6002 47.7083H14.3763C14.1332 47.7083 13.9336 47.7865 13.7773 47.9427C13.621 48.099 13.5429 48.2987 13.5429 48.5418V51.4584C13.5429 52.2258 13.8024 52.869 14.3215 53.3881C14.8406 53.9072 15.4839 54.1668 16.2512 54.1668H36.3919C36.6488 54.9445 36.9743 55.6676 37.3684 56.336C37.7625 57.0044 38.2078 57.6354 38.7043 58.2292H16.2512ZM36.3919 54.1668H13.5429H35.6002H35.5429H36.3919ZM26.9283 23.5417C26.3519 23.5417 25.8693 23.3472 25.4804 22.9584C25.0916 22.5695 24.8971 22.0869 24.8971 21.5105C24.8971 20.9341 25.0916 20.4515 25.4804 20.0626C25.8693 19.6737 26.3519 19.4793 26.9283 19.4793H46.1992C46.7756 19.4793 47.2582 19.6737 47.647 20.0626C48.0359 20.4515 48.2304 20.9341 48.2304 21.5105C48.2304 22.0869 48.0359 22.5695 47.647 22.9584C47.2582 23.3472 46.7756 23.5417 46.1992 23.5417H26.9283ZM26.9283 31.3542C26.3519 31.3542 25.8693 31.1598 25.4804 30.7709C25.0916 30.382 24.8971 29.8993 24.8971 29.323C24.8971 28.7466 25.0916 28.264 25.4804 27.8751C25.8693 27.4862 26.3519 27.2918 26.9283 27.2918H46.1992C46.7756 27.2918 47.2582 27.4862 47.647 27.8751C48.0359 28.264 48.2304 28.7466 48.2304 29.323C48.2304 29.8993 48.0359 30.382 47.647 30.7709C47.2582 31.1598 46.7756 31.3542 46.1992 31.3542H26.9283Z"
+                                                :fill="tab == 2 ? 'white' : '#003765'" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="text-custom flex justify-center items-center text-center mt-[8px]">
+                                    การย้ายห้องแบบไม่ย้ายสัญญาเช่า ระบบจะทำการย้ายผู้เช่า (คนที่เลือก) โดยจะไม่ย้าย
+                                    สัญญาเช่าของห้อง {{ $route.query.number_room }} ไปยังห้อง {{room_move.Number}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end mt-[42px] mb-[18px]">
+                        <div>
+                            <vs-button dark shadow @click="confirm = false">
+                                <div class="text-custom">ยกเลิก</div>
+                            </vs-button>
+                        </div>
+                        <div class="ml-[18px]">
+                            <vs-button color="#003765" @click="confirm = false">
+                                <div class="text-custom">บันทึก</div>
+                            </vs-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </b-modal>
     </div>
 </template>
 <script>
@@ -352,10 +508,19 @@ export default {
     },
     data() {
         return {
+            tab: 0,
             create: false,
+            move_room: false,
+            confirm: false,
             user: [],
             users: [],
+            name_user: '',
             is_edit: true,
+            room_move: {
+                id_room: '',
+                number:''
+
+            },
             room_detail: {
                 id: '',
                 sex: null,
@@ -384,6 +549,7 @@ export default {
                 lineID: '',
                 vehicles: [],
             },
+            roomFloor: []
         }
     },
     created() {
@@ -394,14 +560,48 @@ export default {
     },
     mounted() {
         this.getUser()
+        this.getFloorRoom()
     },
     methods: {
+        getFloorRoom() {
+            // const loading = this.$vs.loading()
+            fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getRoomFloor()", resp.data);
+                    const transformedData = resp.data.reduce((result, item) => {
+                        console.log('ssdfgdf', item);
+                        console.log('dfgdfg', item.attributes.building_floor.data.attributes.floorName);
+                        const floorName = item.attributes.building_floor.data.attributes.floorName;
+                        const roomId = item.id;
+                        // Find existing floor entry
+                        const floorEntry = result.find(entry => entry.floorName === floorName);
+
+                        if (floorEntry) {
+                            // Add room attributes to existing floor entry
+                            floorEntry.attributes.push({ "RoomNumber": item.attributes.RoomNumber, "id": roomId, "status": item.attributes.user_sign_contract?.data ? true : false });
+                        } else {
+                            // Create a new floor entry with room attributes
+                            result.push({
+                                "floorName": floorName,
+                                "attributes": [{ "RoomNumber": item.attributes.RoomNumber, "id": roomId, "status": item.attributes.user_sign_contract?.data ? true : false }]
+                            });
+                        }
+
+                        return result;
+                    }, []);
+                    this.roomFloor = { "data": transformedData };
+                }).finally(() => {
+                    // loading.close()
+                })
+        },
         getUser() {
             const loading = this.$vs.loading()
             fetch('https://api.resguru.app/api' + '/users?filters[id][$eq]=' + this.id_user)
                 .then(response => response.json())
                 .then((resp) => {
                     this.user = resp
+                    this.name_user = resp[0].firstName + ' ' + resp[0].lastName
                 }).finally(() => {
                     loading.close()
                 })
