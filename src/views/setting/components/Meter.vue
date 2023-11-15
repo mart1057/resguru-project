@@ -138,12 +138,14 @@
                         <div
                             class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]  mt-[14px]">
                             <div>ราคา</div>
-                            <div class="font-bold">{{ data.attributes.price }}</div>
+                            <!-- <div class="font-bold">{{ data.attributes.price }}</div> -->
+                            <input type="number" @change="changeotherPrice(data.id,data.attributes.price)" v-model="data.attributes.price" class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]" >
                         </div>
                         <div
                             class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]  mt-[4px]">
                             <div>ส่วนลด</div>
-                            <div class="font-bold">{{ data.attributes.discountAmount }}</div>
+                            <!-- <div class="font-bold">{{ data.attributes.discountAmount }}</div> -->
+                            <input type="number" @change="changeotherDiscountPrice(data.id,data.attributes.discountAmount)" v-model="data.attributes.discountAmount" class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]" >
                         </div>
                     </div>
                 </div>
@@ -636,6 +638,24 @@ export default {
                 )
                
         }, 
+        changeotherPrice(id,price){
+            axios.put(`https://api.resguru.app/api/other-of-buildings/${id}`,{
+                data : {
+                    price: price
+                }
+            }).then( 
+                    this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
+            )
+        },
+        changeotherDiscountPrice(id,discountAmount){
+            axios.put(`https://api.resguru.app/api/other-of-buildings/${id}`,{
+                data : {
+                    discountAmount: discountAmount
+                }
+            }).then( 
+                    this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
+            )
+        },
         openNotificationUpdateRoom(position = null, color) {
             const noti = this.$vs.notification({
                 sticky: true,
