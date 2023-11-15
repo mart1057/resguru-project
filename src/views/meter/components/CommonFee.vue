@@ -125,9 +125,11 @@ export default {
             }).then( 
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
                 )
-                .then(
-                    $router.replace()
-                )
+            .then(
+                setTimeout(() => {
+                    this.getCommonFeeRoom()
+                }, 1000)
+            )
         }, 
         openNotificationUpdateWater(position = null, color) {
             const noti = this.$vs.notification({

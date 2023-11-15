@@ -138,12 +138,15 @@ export default {
                     meterUnit: waterUnit,
                     usageMeter: usageMeter
                 }
-            }).then( 
+            })
+            .then( 
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
-                )
-                .then(
+            )
+            .then(
+                setTimeout(() => {
                     this.getWaterFee()
-                )
+                }, 1000)
+            )
         }, 
         openNotificationUpdateWater(position = null, color) {
             const noti = this.$vs.notification({

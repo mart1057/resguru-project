@@ -147,6 +147,11 @@ export default {
             }).then( 
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
                 )
+            .then(
+                setTimeout(() => {
+                    this.getElectricityFee()
+                }, 1000)
+            )
                 
         }, 
         openNotificationUpdateWater(position = null, color) {
