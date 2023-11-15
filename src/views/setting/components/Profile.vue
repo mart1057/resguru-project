@@ -87,7 +87,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="h-[107px] bg-[#9A77FF] rounded-[22px] mt-[14px] p-[14px]" @click="routerTo('/checkout')" v-if="tab == 1">
+                    <div class="h-[107px] bg-[#9A77FF] rounded-[22px] mt-[14px] p-[14px]" @click="routerTo('/plan')" v-if="tab == 1">
 
                         <div>
                             <svg width="21" height="24" viewBox="0 0 21 24" fill="none" xmlns="http://www.w3.org/2000/svg">
