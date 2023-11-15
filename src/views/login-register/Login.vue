@@ -4,7 +4,7 @@
             <div class="flex flex-col justify-between w-[30%] h-[100vh!important] ">
                 <div>
                     <img :src="Logo01" />
-                    <div class="text-[white] flex mt-[16px] cursor-pointer">
+                    <!-- <div class="text-[white] flex mt-[16px] cursor-pointer">
                         <div class="flex justify-center items-center mr-[8px]"><svg width="7" height="12" viewBox="0 0 7 12"
                                 fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -12,7 +12,7 @@
                                     fill="white" />
                             </svg></div>
                         <div class="flex justify-center items-center">ย้อนกลับ</div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="ml-[-20px]">
                     <svg width="307" height="323" viewBox="0 0 307 323" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -75,7 +75,7 @@
             <div class="flex flex-col justify-between h-[100vh!important] w-[30%]">
                 <div>
                     <img :src="Logo01" />
-                    <div class="text-[white] flex mt-[16px] cursor-pointer">
+                    <!-- <div class="text-[white] flex mt-[16px] cursor-pointer">
                         <div class="flex justify-center items-center mr-[8px]"><svg width="7" height="12" viewBox="0 0 7 12"
                                 fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -83,7 +83,7 @@
                                     fill="white" />
                             </svg></div>
                         <div class="flex justify-center items-center">ย้อนกลับ</div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="ml-[-20px] ">
                     <svg width="307" height="323" viewBox="0 0 307 323" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -233,6 +233,9 @@
                     <div class="mt-[18px]">
                         <button @click="registerSubmit()"
                             class="bg-[#003765] w-[100%] h-[38px] rounded-[12px] text-center text-[white]">สร้างบัญชี</button>
+                        <button @click="tab = 1"
+                        class="bg-[#3A89CB] w-[100%] h-[38px] rounded-[12px] text-center text-[white] mt-[8px]">คุณมีบัญชีอยู่แล้ว
+                        ? เข้าสู่ระบบที่นี่</button>
                     </div>
                 </div>
             </div>
