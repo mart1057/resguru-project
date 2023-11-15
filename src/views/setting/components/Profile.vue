@@ -23,7 +23,7 @@
                         <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
                             src="https://media.wired.com/photos/63b89b5b995aa119ba7ba7be/1:1/w_1800,h_1800,c_limit/Profile-Photos-Gear-1411545652.jpg" />
                         <div class="text-[18px] font-bold mt-[8px]">{{ userData.firstName }} {{userData.lastName}}</div>
-                        <div v-if="tabSetting == 2">
+                        <div class="w-[100%]" v-if="tabSetting == 2">
                             <div class="w-[100%] mt-[8px]">
                                 <div class="pt-[4px] w-[100%] rounded-[12px] flex justify-center bg-[#003765]">
                                     <div>
@@ -47,42 +47,42 @@
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ชั้น/ห้อง</div>
-                                    <div class="text-[12px]">2/12</div>
+                                    <div class="text-[12px]">{{buildingStat.buildingStat.allFloor}}/{{buildingStat.buildingStat.allRoom}}</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ห้องว่าง</div>
-                                    <div class="text-[12px]">2</div>
+                                    <div class="text-[12px]">{{buildingStat.buildingStat.availableRoom}}</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ห้องที่มีผู้เช่า</div>
-                                    <div class="text-[12px]">1</div>
+                                    <div class="text-[12px]">{{buildingStat.buildingStat.rentRoom}}</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ห้องจอง</div>
-                                    <div class="text-[12px]">6</div>
+                                    <div class="text-[12px]">{{buildingStat.buildingStat.reservedRoom}}</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ยังไม่พร้อมปล่อยเช่า</div>
-                                    <div class="text-[12px]">2</div>
+                                    <div class="text-[12px]">{{buildingStat.buildingStat.maintenanceRoom}}</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">จำนวนผู้พักอาศัยทั้งหมด</div>
-                                    <div class="text-[12px]">12</div>
+                                    <div class="text-[12px]">{{buildingStat.buildingStat.allTenant}}</div>
                                 </div>
                             </div>
                         </div>
@@ -276,6 +276,7 @@ export default {
             tabSetting: 1,
             userData: [] ,
             buildingData: [],
+            buildingStat: [],
             district: '',
             amphoe: '',
             province: '',
@@ -295,6 +296,7 @@ export default {
         this.getUserDetail();
         this.getBuildingData();
         this.queryTabSetting();
+        this.getBuildingStat();
     },
     methods: {
         getUserDetail() {
@@ -329,12 +331,22 @@ export default {
         }, 
         getBuildingData() {
             const loading = this.$vs.loading()
-            console.log("ID :",this.$store.state.userInfo.user.id)
             fetch(`https://api.resguru.app/api/buildings/${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getBuilding()",resp);
                     this.buildingData = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        getBuildingStat() {
+            const loading = this.$vs.loading()
+            fetch(`https://api.resguru.app/api/getbuildingstat?buildingid=${this.$store.state.building}`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getBuildingStat()",resp);
+                    this.buildingStat = resp
                 }).finally(() => {
                     loading.close()
                 })
