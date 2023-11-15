@@ -120,7 +120,7 @@
                         </div>
                     </div>
                     <div class="flex items-center mb-[8px] mt-[14px]">
-                        <div class="mr-[14px]">
+                        <!-- <div class="mr-[14px]">
                             <vs-select placeholder="เลือกอาคาร">
                                 <vs-option label="อาคาร A">
                                     อาคาร A
@@ -129,7 +129,7 @@
                                     อาคาร B
                                 </vs-option>
                             </vs-select>
-                        </div>
+                        </div> -->
                         <div v-for="data in roomFloor">
                         <div class="text-[#8396A6] cursor-pointer mr-[8px]"> อาคาร {{ data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }} </div>
                         
@@ -284,8 +284,8 @@
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 2">
             <div class="text-[16px] font-bold mt-[24px]">รายการประเภทห้องพัก</div>
             <div class="grid grid-cols-5 gap-4 mt-[14px] w-[100%]">
-                <div class="border h-[97px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]" v-for="data in roomType">
-                    <div class="flex flex-col justify-between h-[100%]">
+                <div class="border h-[130px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]" v-for="data in roomType">
+                    <div class="flex flex-col justify-between h-[100%] ">
                         <div class="flex justify-between">
                             <div class="text-[16px]">{{ data.attributes.roomTypeName }}</div>
                             <div>
@@ -301,10 +301,14 @@
                             </div>
                         </div>
                         <div
-                            class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px] text-[#0B9A3C]">
-                            <div>ราคา</div>
-                            <div>{{ data.attributes.roomPrice }}</div>
+                            class="flex justify-between border rounded-[12px]  pl-[14px] pr-[14px] pt-[4px] pb-[4px] text-[#0B9A3C]">
+                            <div class="w-[50%] ">ราคา</div>
+                            <div>
+                                <input type="number" v-model="data.attributes.roomPrice" class=" flex justify-center h-[24px] w-[100%] bg-[#F3F8FD] rounded-[12px]">
+                            </div>
+                            
                         </div>
+                        <vs-button @click="updateRoomPrice(data.id,data.attributes.roomPrice)" color="#003765" >แก้ไขราคาห้อง</vs-button>
                     </div>
                 </div>
                 <div class="border h-[97px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
@@ -331,7 +335,7 @@
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 3">
             <div class="text-[16px] font-bold mt-[24px]">รายการจำนวนชั้นของตึก</div>
             <div class="grid grid-cols-5 gap-4 mt-[14px] w-[100%]">
-                <div class="border h-[120px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]" v-for="data in roomFloor">
+                <div class="border h-[130px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]" v-for="data in roomFloor">
                     <div class="flex flex-col justify-between h-[100%]">
                         <div class="flex justify-between">
                             <div class="text-[16px]">ชื่อชั้น : {{ data.attributes.floorName }}</div>
@@ -353,7 +357,7 @@
                             </div>
                         </div>
                         <input type="input" placeholder="แก้ไขชื่อชั้น" class=" flex justify-center h-[24px] w-[100%] bg-[#F3F8FD] rounded-[12px]"  v-model="data.attributes.floorName">
-                        <vs-button @click="updateFloor(data.id,data.attributes.floorName)">แก้ไขชื่อชั้น</vs-button>
+                        <vs-button @click="updateFloor(data.id,data.attributes.floorName)" color="#003765">แก้ไขชื่อชั้น</vs-button>
                     </div>
                     
                 </div>
@@ -962,6 +966,23 @@ export default {
                     this.openNotificationAddRoom('top-right', '#3A89CB', 6000)
                 )
                 
+        },
+        updateRoomPrice(id,roomPrice){
+            axios.put(`https://api.resguru.app/api/room-types/${id}`,{
+                data : {
+                    roomPrice: roomPrice,
+                }
+            }).then( 
+                    this.openNotificationEditPrice('top-right', '#3A89CB', 6000)
+                )
+        },
+        openNotificationEditPrice(position = null, color) {
+            const noti = this.$vs.notification({
+                sticky: true,
+                color,
+                position,
+                title: 'Edit Price Success',
+            })
         },
         create_floor() {
             axios.post(`https://api.resguru.app/api/building-floors/`,{
