@@ -3,11 +3,11 @@
         <div class="flex justify-start items-center rounded-[12px]">
             <div class="bg-[#F3F7FA] rounded-[12px]">
                 <div class="flex justify-start items-center">
-                    <div @click="tab = 1" class="cursor-pointer "
-                        :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
+                    <div @click="tabSetting = 1" class="cursor-pointer "
+                        :class="tabSetting == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         ข้อมูลโปรไฟล์</div>
-                    <div @click="tab = 2" class="cursor-pointer ml-[8px]"
-                        :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
+                    <div @click="tabSetting = 2" class="cursor-pointer ml-[8px]"
+                        :class="tabSetting == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         ข้อมูลที่พัก
                     </div>
                 </div>
@@ -22,8 +22,8 @@
                     <div class="bg-[white] rounded-[22px] w-[246px] border p-[14px] flex flex-col items-center">
                         <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
                             src="https://media.wired.com/photos/63b89b5b995aa119ba7ba7be/1:1/w_1800,h_1800,c_limit/Profile-Photos-Gear-1411545652.jpg" />
-                        <div class="text-[18px] font-bold mt-[8px]">วรันธร สยนานนท์</div>
-                        <div v-if="tab == 2">
+                        <div class="text-[18px] font-bold mt-[8px]">{{ userData.firstName }} {{userData.lastName}}</div>
+                        <div class="w-[100%]" v-if="tabSetting == 2">
                             <div class="w-[100%] mt-[8px]">
                                 <div class="pt-[4px] w-[100%] rounded-[12px] flex justify-center bg-[#003765]">
                                     <div>
@@ -47,47 +47,47 @@
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ชั้น/ห้อง</div>
-                                    <div class="text-[12px]">2/12</div>
+                                    <div class="text-[12px]">{{buildingStat.buildingStat.allFloor}}/{{buildingStat.buildingStat.allRoom}}</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ห้องว่าง</div>
-                                    <div class="text-[12px]">2</div>
+                                    <div class="text-[12px]">{{buildingStat.buildingStat.availableRoom}}</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ห้องที่มีผู้เช่า</div>
-                                    <div class="text-[12px]">1</div>
+                                    <div class="text-[12px]">{{buildingStat.buildingStat.rentRoom}}</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ห้องจอง</div>
-                                    <div class="text-[12px]">6</div>
+                                    <div class="text-[12px]">{{buildingStat.buildingStat.reservedRoom}}</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ยังไม่พร้อมปล่อยเช่า</div>
-                                    <div class="text-[12px]">2</div>
+                                    <div class="text-[12px]">{{buildingStat.buildingStat.maintenanceRoom}}</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">จำนวนผู้พักอาศัยทั้งหมด</div>
-                                    <div class="text-[12px]">12</div>
+                                    <div class="text-[12px]">{{buildingStat.buildingStat.allTenant}}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="h-[107px] bg-[#9A77FF] rounded-[22px] mt-[14px] p-[14px]" @click="routerTo('/checkout')" v-if="tab == 1">
+                    <div class="h-[107px] bg-[#9A77FF] rounded-[22px] mt-[14px] p-[14px]" @click="routerTo('/plan')" v-if="tabSetting == 1">
 
                         <div>
                             <svg width="21" height="24" viewBox="0 0 21 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -100,7 +100,7 @@
                         <div class="text-[18px] font-bold mt-[4px] text-white">Professional</div>
                     </div>
                 </div>
-                <div class="w-[100%] ml-[24px] mt-[8px]" v-if="tab == 1">
+                <div class="w-[100%] ml-[24px] mt-[8px]" v-if="tabSetting == 1">
                     <div class="grid grid-cols-4 w-[100%] gap-2 ">
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">ชื่อ</div>
@@ -112,7 +112,7 @@
                         </div>
                         <div class="mt-[8px] col-span-4">
                             <div class="text-custom text-[14px] text-[#003765]">ที่อยู่</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.billingAddress" />
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.contactAddress" />
                         </div>
                         <!-- <div class="">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">เขต</div>
@@ -159,10 +159,7 @@
                                 </vs-option>
                             </vs-select>
                         </div> -->
-                        <ThailandAutoComplete v-model="district" type="district" @select="select" label="ตำบล" size="small" placeholder="ตำบล..."/>
-                        <ThailandAutoComplete v-model="amphoe" type="amphoe" @select="select" label="อำเภอ" size="small" placeholder="อำเภอ..."/>
-                        <ThailandAutoComplete v-model="province" type="province" @select="select" label="จังหวัด" size="small" placeholder="จังหวัด..."/>
-                        <ThailandAutoComplete v-model="zipcode" type="zipcode" @select="select" label="รหัสไปรษณีย์" size="small" placeholder="รหัสไปรษณีย์..."/>
+                        
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.phone"/>
@@ -178,7 +175,7 @@
                         </vs-button>
                     </div>
                 </div>
-                <div class="w-[100%] ml-[24px] mt-[8px]" v-if="tab == 2">
+                <div class="w-[100%] ml-[24px] mt-[8px]" v-if="tabSetting == 2">
                     <div class="grid grid-cols-4 w-[100%] gap-2 ">
                         <div class="mt-[8px] col-span-4">
                             <div class="text-custom text-[14px] text-[#003765]">ชื่ออพาร์ทเม้นท์</div>
@@ -276,9 +273,10 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            tab: 1,
+            tabSetting: 1,
             userData: [] ,
             buildingData: [],
+            buildingStat: [],
             district: '',
             amphoe: '',
             province: '',
@@ -297,7 +295,8 @@ export default {
     mounted() {
         this.getUserDetail();
         this.getBuildingData();
-        console.log("this Building ID",this.$store.state.buidingId)
+        this.queryTabSetting();
+        this.getBuildingStat();
     },
     methods: {
         getUserDetail() {
@@ -314,33 +313,40 @@ export default {
         },
         updateUserDetail(){
             axios.put(`https://api.resguru.app/api/users/${this.$store.state.userInfo.user.id}`,{
-                data : {
+                
                     firstName: this.userData.firstName,
                     lastName: this.userData.lastName,
                     contactAddress: this.userData.contactAddress,
                     phone: this.userData.phone,
                     currentAddress: this.buildingData.attributes.currentAddress,
-                    province: this.province,
-                    district: this.district,
-                    subDistrict: this.subDistrict,
-                    postcode: this.zipcode
-                }
+                
+            })
+            .then( (resp) => {
+                console.log("Update User",resp)
             })
             .then( 
                     this.openNotificationUser('top-right', '#3A89CB', 6000)
                 )
-                .then(
-                    setTimeout(() => location.reload(), 1500)
-                )
+              
         }, 
         getBuildingData() {
             const loading = this.$vs.loading()
-            console.log("ID :",this.$store.state.userInfo.user.id)
             fetch(`https://api.resguru.app/api/buildings/${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getBuilding()",resp);
                     this.buildingData = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        getBuildingStat() {
+            const loading = this.$vs.loading()
+            fetch(`https://api.resguru.app/api/getbuildingstat?buildingid=${this.$store.state.building}`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getBuildingStat()",resp);
+                    this.buildingStat = resp
                 }).finally(() => {
                     loading.close()
                 })
@@ -358,15 +364,13 @@ export default {
                     buildingEmail: this.buildingData.attributes.buildingEmail,
                     buildingLine: this.buildingData.attributes.buildingLine,
                     buildingFacebook: this.buildingData.attributes.buildingFacebook,
-                    buildingPaymentMonthlyDate: this.buildingData.attributes.buildingPaymentMonthlyDate
+                    vat_rate: this.buildingData.attributes.vat_rate
                 }
             })
             .then( 
                     this.openNotificationBuilding('top-right', '#3A89CB', 6000)
                 )
-                .then(
-                    setTimeout(() => location.reload(), 1500)
-                )
+               
         }, 
         openNotificationUser(position = null, color) {
             const noti = this.$vs.notification({
@@ -404,6 +408,12 @@ export default {
                 this.sidebar = false
             }, 200);
 
+        },
+        queryTabSetting(){
+            this.tabSetting = 1
+            if(this.$route.query.tab !== undefined){
+                this.tabSetting = this.$route.query.tabsetting
+            }
         }
         
     },

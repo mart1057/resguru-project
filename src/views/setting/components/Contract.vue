@@ -18,7 +18,7 @@
                 industry's</div>
         </div>
         <div class="grid grid-cols-5 w-[100%] gap-4 mt-[14px]">
-            <div class="h-[125px] border rounded-[12px] flex flex-col p-[12px] cursor-pointer ">
+            <div class="h-[125px] border rounded-[12px] flex flex-col p-[12px] cursor-pointer " v-for="contract in contract">
                 <div class="flex flex-col justify-between h-[100%]">
                     <div class="flex justify-between w-[100%]">
                         <div class="flex">
@@ -36,10 +36,10 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class="text-[18px] ml-[4px]">สัญญาเช่า 2</div>
+                            <div class="text-[18px] ml-[4px]">{{ contract.attributes.title }}</div>
                         </div>
                         <div class="flex">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg @click="viewUploadFile(contract.attributes.templatePDF.data.attributes.url)" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <mask id="mask0_1744_19039" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
                                     width="20" height="20">
                                     <rect width="20" height="20" fill="#D9D9D9" />
@@ -64,7 +64,7 @@
                     </div>
                     <div class="flex justify-between">
                         <div class="text-[#5C6B79] flex justify-center items-center">ตั้งเป็นค่าเริ่มต้น</div>
-                        <div> <vs-switch success /></div>
+                        <div> <vs-switch success v-model="contract.attributes.default" @click="setDefault(contract.id,contract.attributes.default)"/></div>
                     </div>
                 </div>
             </div>
@@ -148,11 +148,92 @@
 </div>
 </template>
 <script>
-export default{
-    data(){
-        return{
-            create:false
+
+import axios from 'axios'
+
+
+export default {
+    data() {
+        return {
+           contract: [],
+           create:false
         }
-    }
+    },
+    created() {
+        const loading = this.$vs.loading({})
+        setTimeout(() => {
+            loading.close()
+        }, 1000)
+    },
+    mounted() {
+        this.getContract();
+    },
+    methods: {
+        getContract() {
+            const loading = this.$vs.loading()
+            fetch('https://api.resguru.app/api' + '/contract-templates?populate=*&filters[building][id][$eq]='+this.$store.state.building)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getcontract()",resp.data);
+                    this.contract = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        setDefault(contractID,status){
+            axios.put(`https://api.resguru.app/api/contract-templates/${contractID}`,{
+                data : {
+                    default: status
+                }
+            }).then( 
+                    this.openNotificationUpdatContract('top-right', '#3A89CB', 6000)
+                )
+               
+        }, 
+        updateContract(roomID){
+            axios.put(`https://api.resguru.app/api/rooms/${roomID}`,{
+                data : {
+                    rate: this.rate
+                }
+            }).then( 
+                    this.openNotificationUpdatContract('top-right', '#3A89CB', 6000)
+                )
+               
+        }, 
+        openNotificationUpdatContract(position = null, color) {
+            const noti = this.$vs.notification({
+                sticky: true,
+                color,
+                position,
+                title: 'Update Contract Success',
+            })
+        },
+        viewUploadFile(url){
+            window.open('https://api.resguru.app'+url, '_blank', 'noreferrer');
+        },
+        addContract(){
+            axios.post(`https://api.resguru.app/api/rooms/`,{
+                data : {
+                    RoomNumber: "RandomRoom 301",
+                    room_building: this.$store.state.building,
+                    room_type: this.roomType,
+                    building_floor: this.roomFloor,
+                }
+            }).then( 
+                    this.openNotificationAddContract('top-right', '#3A89CB', 6000)
+                )
+                
+        },
+        openNotificationAddContract(position = null, color) {
+            const noti = this.$vs.notification({
+                sticky: true,
+                color,
+                position,
+                title: 'Add Room Success',
+            })
+        },
+        
+    },
 }
+
 </script>

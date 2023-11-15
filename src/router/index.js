@@ -11,10 +11,9 @@ import Announcement from '@/views/announcement/Announcement'
 import RentalContract from '@/views/rental-contract/RentalContract.vue'
 import MainStaff from '@/views/staff/MainStaff'
 import Expenses from '@/views/expenses/Expenses'
-import Payment from '@/views/payment/Payment'
+import Payment from '@/views/payment/PayMent'
 import PaymentDetail from '@/views/payment/components/PaymentDetail'
 import  Setting from '@/views/setting/Setting'
-import Checkout from '@/views/checkout/Checkout'
 import Plan from '@/views/plans/Plan'
 
 Vue.use(VueRouter)
@@ -90,11 +89,6 @@ const routes = [
     path: '/setting',
     name: 'setting',
     component:Setting
-  },
-  {
-    path: '/checkout',
-    name: 'checkout',
-    component:Checkout
   },
   {
     path: '/plan',

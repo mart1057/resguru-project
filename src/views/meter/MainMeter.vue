@@ -329,12 +329,19 @@ export default {
         }, 1000)
     },
     methods: {
-        routeTo(path,id,id_room,number_room,status,id_contract) {
+        routeTo(path) {
             this.$router.push({
-                path: path,
-                query: {id_user:id, id_room:id_room, number_room:number_room, status:status,id_contract:id_contract},
+                path: path + '?tab=3'
             })
-        }
+        },
+        getfloor(){
+            fetch('https://api.resguru.app/api/building-floors?filters[building][id][$eq]=' + this.$store.state.building)
+            .then(response => response.json())
+            .then((resp) => {
+                console.log("Return from getfloor()",resp.data);
+                this.floor = resp.data
+            })
+        },
     }
 }
 </script>

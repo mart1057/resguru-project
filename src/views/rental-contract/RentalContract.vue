@@ -681,8 +681,7 @@ export default {
         getRentalContract() {
             this.contract = []
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api/getRoomContract?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor)
-                // fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3&filters[building_floor][id][$eq]='+this.filter.floor)
+            fetch('https://api.resguru.app/api/getRoomContract?buildingid=' + this.$store.state.building + '&buildingFloor='+this.filter.floor)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRentalContract()", resp.data);
@@ -698,8 +697,10 @@ export default {
                 .then((resp) => {
                     console.log("Return from getRoomFloor()", resp.data);
                     this.roomFloor = resp.data
-                    this.filter.floor = resp.data[0].id
-                    this.name_floor = resp.data[0].attributes.floorName
+                    if(resp.data[0]){
+                        this.filter.floor = resp.data[0].id
+                        this.name_floor = resp.data[0].attributes.floorName
+                    }
                 }).finally(() => {
                     this.getRentalContract();
                     // loading.close()
@@ -747,7 +748,7 @@ export default {
                 })
         },
         getUserDetail(id_room) {
-            fetch(`https://api.resguru.app/api+/users?filters[idCard][$eq]=${this.id_room}`)
+            fetch(`https://api.resguru.app/api/users?filters[idCard][$eq]=${id_room}`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log('detail from get user', resp);

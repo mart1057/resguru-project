@@ -357,9 +357,7 @@ export default {
                         this.$router.go(this.$router.currentRoute)
                     )
                 )
-                .then(
-                    setTimeout(() => location.reload(), 1500)
-                )
+                
         },
         editAnnouncement(postID) {
             axios.put(`https://api.resguru.app/api/announcements/${postID}`, {

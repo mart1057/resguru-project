@@ -107,6 +107,7 @@ export default {
         return {
             WaterFee:[],
             waterUnit: 0,
+            floor:[],
         }
     },
     created() {
@@ -122,7 +123,7 @@ export default {
         getWaterFee() {
             const loading = this.$vs.loading()
             fetch(`https://api.resguru.app/api/getwaterlist?buildingid=${this.$store.state.building}&buildingFloor=2&month=10&year=2023`)
-            // fetch(`https://api.resguru.app/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep,3`)
+           
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()",resp.data);
@@ -137,12 +138,15 @@ export default {
                     meterUnit: waterUnit,
                     usageMeter: usageMeter
                 }
-            }).then( 
+            })
+            .then( 
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
-                )
-                .then(
+            )
+            .then(
+                setTimeout(() => {
                     this.getWaterFee()
-                )
+                }, 1000)
+            )
         }, 
         openNotificationUpdateWater(position = null, color) {
             const noti = this.$vs.notification({

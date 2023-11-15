@@ -178,7 +178,7 @@ export default {
     methods: {
         routeTo(path) {
             this.$router.push({
-                path: path,
+                path: path + '?tab=6'
             })
         },
     }

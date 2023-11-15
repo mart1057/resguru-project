@@ -121,7 +121,7 @@
             <div class="text-[24px] font-bold">ชั้น {{ name_floor }}</div>
             <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px] ">
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer"
-                    @click="routeTo('/room-detail', data.user_sign_contract?.users_permissions_user?.id, data.id, data.RoomNumber, data.user_sign_contract?.contractStatus, data.user_sign_contract?.id)"
+                    @click="routeTo2('/room-detail', data.user_sign_contract?.users_permissions_user?.id, data.id, data.RoomNumber, data.user_sign_contract?.contractStatus, data.user_sign_contract?.id)"
                     v-for="data in room">
                     <div class="flex">
 
@@ -391,7 +391,12 @@ export default {
         }, 1000)
     },
     methods: {
-        routeTo(path, id, id_room, number_room, status, id_contract) {
+        routeTo(path) {
+            this.$router.push({
+                path: path + '?tab=2'
+            })
+        },
+        routeTo2(path, id, id_room, number_room, status, id_contract) {
             this.$router.push({
                 path: path,
                 query: { id_user: id, id_room: id_room, number_room: number_room, status: status, id_contract: id_contract },
@@ -415,8 +420,10 @@ export default {
                 .then((resp) => {
                     console.log("Return from getRoomFloor()", resp.data);
                     this.roomFloor = resp.data
+                    if(resp.data[0]){
                     this.filter.floor = resp.data[0].id
                     this.name_floor = resp.data[0].attributes.floorName
+                    }
                 }).finally(() => {
                     this.getRoom()
                     // loading.close()

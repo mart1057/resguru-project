@@ -449,7 +449,7 @@
                 </div>
                 <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
                 <div class="mt-[14px]">
-                    <div class="text-custom">ชื่อบริการ</div>
+                    <div class="text-custom">ชื่อธนาคาร</div>
                     <div>
                         <select placeholder="Select" v-model="bankName"
                             class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]">
@@ -460,6 +460,13 @@
                                 กสิกร
                             </option>
                         </select>
+                    </div>
+                </div>
+                <div class="mt-[14px]">
+                    <div class="text-custom">ชื่อบัญชีธนาคาร</div>
+                    <div>
+                        <input
+                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="accountBankName" />
                     </div>
                 </div>
                 <div class="mt-[14px]">
@@ -508,6 +515,7 @@ export default {
             create: false,
             buildingPayment: [],
             bankName: "",
+            accountBankName: "",
             accountNumber: 0,
         }
     },
@@ -537,15 +545,14 @@ export default {
             axios.post(`https://api.resguru.app/api/building-pay-methods/`,{
                 data : {
                     bankName: this.bankName,
+                    accountName: this.accountBankName,
                     accountNumber: this.accountNumber,
                     building: this.$store.state.building
                 }
             }).then( 
                     this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
                 )
-                .then(
-                    setTimeout(() => location.reload(), 1500)
-                )
+                
         }, 
         updateUserBuildingPayment(buildingID){
             axios.put(`https://api.resguru.app/api/building-pay-methods/${buildingID}`,{
@@ -555,9 +562,7 @@ export default {
             }).then( 
                     this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
                 )
-                .then(
-                    setTimeout(() => location.reload(), 1500)
-                )
+              
         }, 
         openNotificationUpdateRoom(position = null, color) {
             const noti = this.$vs.notification({
