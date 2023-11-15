@@ -6,7 +6,7 @@
                 <div :class="status == 'rent' ? 'bg-[#D7F1E3] text-[#39B974]' : 'bg-[#F0F8FF] text-[#003765]'"
                     @click="getDetailRentalContract()"
                     class="h-[24px] w-[auto] mt-[-22px] text-[12px] flex items-center justify-center p-[8px] rounded-[8px]">
-                    {{ status == "rent" ? 'ทำสัญญาแล้ว' : 'ยังไม่ทำสัญญา' }}
+                    {{ status == "rent" ? 'ทำสัญญาแล้ว' :  status == "reserved" ?'ยังไม่ทำสัญญา' :'ห้องว่าง'}}
                 </div>
                 <img class="w-[78px] h-[78px] rounded-[22px]" :src="data.filePath" @click="getDetailRentalContract()" />
                 <div @click="getDetailRentalContract()">{{ data.firstName }} {{ data.lastName }}</div>
@@ -375,7 +375,7 @@
                             <div class="grid grid-cols-8 w-[100%] gap-2 mt-[14px]">
                                 <div v-for="room in floor.attributes">
                                     <div class="h-[32px] bg-[#DEEAF5] rounded-[12px] flex items-center justify-between pl-[8px] pr-[8px]"
-                                        @click=" room.status ? '' : room_move.id_room = room.id, room_move.Number = room.RoomNumber, confirm = true"
+                                        @click=" room.status ? '' : room_move.id_room = room.id, room_move.Number = room.RoomNumber, confirm = true,tab=''"
                                         :class="room.status ? 'bg-[#E8F0F8] text-[#B9CCDC]' : 'bg-[#DEEAF5] text-[#003765] cursor-pointer'">
                                         <div>{{ room.RoomNumber }}</div>
                                         <div>{{ room.status ? 'เต็ม' : 'ว่าง' }}
@@ -602,7 +602,7 @@ export default {
                 .then(response => response.json())
                 .then((resp) => {
                     this.user = resp
-                    this.name_user = resp[0].firstName + ' ' + resp[0].lastName
+                    this.name_user = resp[0]?.firstName + ' ' + resp[0]?.lastName
                 }).finally(() => {
                     loading.close()
                 })
@@ -841,6 +841,23 @@ export default {
         moveRoom() {
             const loading = this.$vs.loading({})
             if (this.tab == 1) {
+                axios.delete('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract)
+                    .then(() => {
+                        axios.post('https://api.resguru.app/api' + '/user-sign-contracts', {
+                            data: {
+                                room: this.room_move.id_room,
+                                users_permissions_user: this.$route.query.id_user,
+                                contractStatus:'reserved'
+                            }
+                        })
+                    }).finally(() => {
+                        this.confirm = false
+                        loading.close()
+                        this.$router.push({
+                            path: '/rooms',
+                        })
+                    })
+
 
             }
             else {

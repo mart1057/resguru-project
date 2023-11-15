@@ -114,7 +114,9 @@
             <div class="flex items-center mb-[8px] mt-[14px]">
                 <div v-for="(data, i) in roomFloor">
                     <div class=" cursor-pointer mr-[8px]"
-                        :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'" @click="tab_floor = i,filter.floor = data.id,getRentalContract(),name_floor=data.attributes.floorName"> อาคาร
+                        :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
+                        @click="tab_floor = i, filter.floor = data.id, getRentalContract(), name_floor = data.attributes.floorName">
+                        อาคาร
                         {{
                             data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }}
                     </div>
@@ -145,13 +147,12 @@
                         <div class="ml-[14px]">
                             <div class="flex">
                                 <div class="h-[32px] pr-[8px] pl-[8px]   cursor-pointer   rounded-[12px]"
-                                    :class="data.user_sign_contract ? 'bg-[#003765]' : 'bg-[#165D98]'"
-                                    @click="data.user_sign_contract ? getDetailRentalContract(data.user_sign_contract.id) : create_sign(data.id)">
+                                    :class="data.user_sign_contract?.contractStatus == null ? 'bg-[#165D98]' : data.user_sign_contract?.contractStatus == 'rent'? 'bg-[#003765]' : 'bg-[#165D98]'"
+                                    @click="data.user_sign_contract?.contractStatus == null ? create_sign(data.id,data.RoomNumber) : data.user_sign_contract?.contractStatus == 'reserved' ? create_sign(data.id) : getDetailRentalContract(data.user_sign_contract.id)">
                                     <div class="flex items-center h-[100%]">
                                         <div class="flex justify-center items-center">
                                             <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
-                                                v-if="data.user_sign_contract"
-                                                xmlns="http://www.w3.org/2000/svg">
+                                                v-if="data.user_sign_contract" xmlns="http://www.w3.org/2000/svg">
                                                 <path
                                                     d="M1.58201 2.16697V7.83092V7.808V16.8336V2.16697ZM4.33201 11.1044H6.89693C7.01092 10.8412 7.14372 10.5965 7.29532 10.3703C7.44692 10.144 7.61732 9.93044 7.80652 9.72949H4.33201C4.13722 9.72949 3.97394 9.7954 3.84219 9.92722C3.71042 10.0591 3.64453 10.2224 3.64453 10.4173C3.64453 10.6122 3.71042 10.7754 3.84219 10.907C3.97394 11.0386 4.13722 11.1044 4.33201 11.1044ZM4.33201 14.7711H6.42272C6.36836 14.542 6.33303 14.3128 6.31673 14.0836C6.30043 13.8545 6.30168 13.6253 6.32049 13.3962H4.33201C4.13722 13.3962 3.97394 13.4621 3.84219 13.5939C3.71042 13.7257 3.64453 13.8891 3.64453 14.0839C3.64453 14.2788 3.71042 14.4421 3.84219 14.5737C3.97394 14.7053 4.13722 14.7711 4.33201 14.7711ZM1.86251 18.2086C1.40052 18.2086 1.00911 18.0482 0.688281 17.7274C0.367448 17.4065 0.207031 17.0146 0.207031 16.5516V2.44905C0.207031 1.98601 0.367448 1.59408 0.688281 1.27324C1.00911 0.952409 1.40105 0.791992 1.86409 0.791992H8.4588C8.68234 0.791992 8.89541 0.834893 9.09801 0.920693C9.30059 1.00648 9.47711 1.12458 9.62755 1.27501L13.474 5.12143C13.6244 5.27187 13.7425 5.44838 13.8283 5.65097C13.9141 5.85357 13.957 6.06664 13.957 6.29018V8.13413C13.7372 8.04717 13.5128 7.98106 13.2836 7.93581C13.0544 7.89057 12.8206 7.85561 12.582 7.83092V6.29195H9.28187C9.04812 6.29195 8.85221 6.21288 8.69415 6.05476C8.53607 5.89663 8.45703 5.7007 8.45703 5.46695V2.16697H1.86409C1.79357 2.16697 1.72892 2.19635 1.67015 2.25511C1.61139 2.31388 1.58201 2.37853 1.58201 2.44905V16.5516C1.58201 16.6221 1.61139 16.6867 1.67015 16.7455C1.72892 16.8043 1.79357 16.8336 1.86409 16.8336H7.2724C7.45136 17.1048 7.6527 17.3563 7.87641 17.5879C8.10011 17.8196 8.34241 18.0265 8.60331 18.2086H1.86251ZM12.1254 16.058C12.8071 16.058 13.3826 15.8227 13.8521 15.352C14.3216 14.8814 14.5564 14.3052 14.5564 13.6236C14.5564 12.9419 14.321 12.3663 13.8504 11.8969C13.3797 11.4274 12.8036 11.1926 12.1219 11.1926C11.4403 11.1926 10.8647 11.4279 10.3952 11.8986C9.92573 12.3692 9.69098 12.9454 9.69098 13.627C9.69098 14.3087 9.9263 14.8843 10.3969 15.3537C10.8676 15.8232 11.4438 16.058 12.1254 16.058ZM17.2823 18.7833C17.1558 18.9102 16.9948 18.9737 16.7993 18.9737C16.6038 18.9737 16.4426 18.9102 16.3157 18.7833L14.2884 16.7472C13.9793 16.9729 13.6406 17.1436 13.2721 17.2593C12.9037 17.3751 12.5209 17.433 12.1237 17.433C11.066 17.433 10.167 17.0628 9.42657 16.3224C8.68619 15.582 8.316 14.683 8.316 13.6253C8.316 12.5676 8.68619 11.6686 9.42657 10.9282C10.167 10.1878 11.066 9.81763 12.1237 9.81763C13.1814 9.81763 14.0804 10.1878 14.8208 10.9282C15.5612 11.6686 15.9313 12.5676 15.9313 13.6253C15.9313 14.0225 15.8735 14.4053 15.7577 14.7738C15.6419 15.1422 15.4713 15.481 15.2456 15.79L17.2817 17.8173C17.4086 17.9437 17.4721 18.1046 17.4721 18.2999C17.4721 18.4953 17.4088 18.6564 17.2823 18.7833Z"
                                                     fill="white" />
@@ -170,7 +171,9 @@
                                             </svg>
                                         </div>
                                         <div class="text-white font-bold ml-[4px]   flex justify-center items-center">
-                                            {{ data.user_sign_contract ? "ดูสัญญาเช่า" : "สร้างสัญญาเช่า" }}
+                                            {{ data.user_sign_contract?.contractStatus == null ? 'สร้างสัญญาเช่า' :
+                                                data.user_sign_contract.contractStatus == 'reserved' ? "สร้างสัญญาเช่า"
+                                                    : "ดูสัญญาเช่า" }}
                                         </div>
                                     </div>
                                 </div>
@@ -199,9 +202,12 @@
                                     </svg>
                                 </div>
                             </div>
-                            <div :class="data.user_sign_contract ? 'text-[#0B9A3C] bg-[#CFFBDA]' : 'text-[#003765] bg-[#F0F8FF]'"
+                            <div :class="data.user_sign_contract?.contractStatus == 'rent' ? 'text-[#0B9A3C] bg-[#CFFBDA]' : 'text-[#003765] bg-[#F0F8FF]'"
                                 class="h-[36px] ml-[8px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] ">
-                                {{ data.user_sign_contract ? "มีผู้เข้าพัก" : "ห้องว่าง" }}
+                                <!-- {{ data.user_sign_contract ? "มีผู้เข้าพัก" : "ห้องว่าง" }} -->
+                                {{ data.user_sign_contract?.contractStatus == null ? 'ห้องว่าง' :
+                                    data.user_sign_contract.contractStatus == 'reserved' ? "ห้องจอง"
+                                        : "มีผู้เข้าพัก" }}
                             </div>
                         </div>
                         <div class="flex justify-end">
@@ -247,7 +253,7 @@
             <div>
                 <div class="flex justify-between pl-[20px] pr-[20px]">
                     <div class="text-custom flex justify-center items-center text-[18px] font-bold">รายละเอียดสัญญาเช่า ห้อง
-                        101</div>
+                        {{ room_detail.number_room }}</div>
                     <div @click="detail = false" class="cursor-pointer">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -331,7 +337,7 @@
                                 </div>
                                 <div class="col-span-4  ml-[8px]  mt-[14px]">
                                     <div class="text-[#003765]">ระยะเวลาสัญญา</div>
-                                    <div class="mt-[12px]">{{ room_detail.contract_duration }} เดือน</div>
+                                    <div class="mt-[12px]" v-if="room_detail.contract_duration">{{ room_detail.contract_duration }} เดือน</div>
                                 </div>
                             </div>
                         </div>
@@ -387,7 +393,7 @@
             class="p-[-20px] text-custom">
             <div>
                 <div class="flex justify-between pl-[20px] pr-[20px]">
-                    <div class="text-custom flex justify-center items-center text-[18px] font-bold">เพิ่มสัญญาเช่า</div>
+                    <div class="text-custom flex justify-center items-center text-[18px] font-bold">เพิ่มสัญญาเช่าห้อง {{ create_room_number }}</div>
                     <div @click="create = false" class="cursor-pointer">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -424,10 +430,11 @@
                                         <div class="">ค้นหาผู้เช่าด้วยรหัสบัตรประชาชน</div>
                                         <div>
                                             <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail_create.id_card"  >
-                                            <vs-button primary @click="getUserDetail(room_detail_create.id_card)">ค้นหา</vs-button>
+                                                v-model="room_detail_create.id_card">
+                                            <vs-button primary
+                                                @click="getUserDetail(room_detail_create.id_card)">ค้นหา</vs-button>
                                         </div>
-                                        
+
                                     </div>
 
                                 </div>
@@ -597,6 +604,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
+            create_room_number:'',
             detail: false,
             create: false,
             popup_filter: false,
@@ -604,10 +612,10 @@ export default {
             users: [],
             id_user: '',
             tab_floor: '0',
-            name_floor:'',
-            filter:{
-                search: '', 
-                floor:''  
+            name_floor: '',
+            filter: {
+                search: '',
+                floor: ''
             },
             room_detail: {
                 sex: null,
@@ -651,10 +659,10 @@ export default {
 
     },
     mounted() {
-        console.log("State.Building", this.$store.state.building);   
+        console.log("State.Building", this.$store.state.building);
         this.getFloorRoom();
-       // this.getUser()
-     
+        // this.getUser()
+
     },
     created() {
         // const loading = this.$vs.loading({
@@ -673,8 +681,8 @@ export default {
         getRentalContract() {
             this.contract = []
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api/getRoomContract?buildingid=' + this.$store.state.building + '&buildingFloor='+this.filter.floor)
-          // fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3&filters[building_floor][id][$eq]='+this.filter.floor)
+            fetch('https://api.resguru.app/api/getRoomContract?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor)
+                // fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3&filters[building_floor][id][$eq]='+this.filter.floor)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRentalContract()", resp.data);
@@ -699,7 +707,7 @@ export default {
         },
         getDetailRentalContract(id) {
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/user-sign-contracts/' + id +'?populate=deep,3')
+            fetch('https://api.resguru.app/api' + '/user-sign-contracts/' + id + '?populate=deep,3')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log('ddd', resp.data[0]?.attributes.user_sign_contract);
@@ -708,12 +716,12 @@ export default {
                     this.room_detail.nick_name = resp.data.attributes.users_permissions_user.data?.attributes.nickName
                     this.room_detail.phone = resp.data.attributes.users_permissions_user.data?.attributes.phone
                     this.room_detail.id_card = resp.data.attributes.users_permissions_user.data?.attributes.idCard
-                    this.room_detail.address =  resp.data.attributes.users_permissions_user.data?.attributes.contactAddress
-                    this.room_detail.sex =  resp.data.attributes.users_permissions_user.data?.attributes.sex
-                    this.room_detail.birth =  resp.data.attributes.users_permissions_user.data?.attributes.dateOfBirth
+                    this.room_detail.address = resp.data.attributes.users_permissions_user.data?.attributes.contactAddress
+                    this.room_detail.sex = resp.data.attributes.users_permissions_user.data?.attributes.sex
+                    this.room_detail.birth = resp.data.attributes.users_permissions_user.data?.attributes.dateOfBirth
                     this.room_detail.date_sign = resp.data.attributes.checkInDate
                     this.room_detail.type_room = resp.data.attributes.room.data.attributes.room_type.data.attributes.roomTypeName
-                    
+                    this.room_detail.number_room = resp.data.attributes.room.data.attributes.RoomNumber
                     this.room_detail.contract_duration = resp.data.attributes.contractDuration
                     this.room_detail.roomInsurance_deposit = resp.data.attributes.roomInsuranceDeposit
                     this.room_detail.room_deposit = resp.data.attributes.roomDeposit
@@ -757,8 +765,9 @@ export default {
                     this.getRoomType()
                 })
         },
-        create_sign(id_room) {
+        create_sign(id_room,number) {
             this.create = true
+            this.create_room_number = number 
             this.id_user = ''
             this.room_detail_create.id = ''
             this.room_detail_create.name = ''
@@ -862,5 +871,4 @@ export default {
 /* .vs-select__input{
     height: 36px !important;
     width: 350px !important;
-} */
-</style>
+} */</style>
