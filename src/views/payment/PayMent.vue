@@ -42,6 +42,7 @@
                             </div>
                             <div class="text-white font-bold ml-[8px]   flex justify-center items-center">พฤษภาคม/2023
                             </div>
+                            
                         </div>
                         <div class="flex justify-start items-center   mt-[5px] ml-[14px]">
                             <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาตามหมายเลขห้อง"
@@ -124,8 +125,8 @@
 
             </div>
             <div class="flex items-center mb-[8px] mt-[14px]">
-                <div class="mr-[14px] font-bold cursor-pointer">อาคาร A ชั้น 1</div>
-                <div class="text-[#8396A6] cursor-pointer">อาคาร A ชั้น 2</div>
+                <div class="mr-[14px] font-bold cursor-pointer" v-for="floors in floor">อาคาร A ชั้น {{ floors.attributes.floorName }}</div>
+                <!-- <div class="text-[#8396A6] cursor-pointer">อาคาร A ชั้น 2</div> -->
             </div>
         </div>
         <div class="mt-[14px] bg-[white] rounded-[12px] p-[24px]">
@@ -328,128 +329,7 @@ export default {
             allCheck: false,
             selected: [],
             payments: [],
-            users: [
-                {
-                    "id": 1,
-                    "name": "Leanne Graham",
-                    "type": "ห้องพร้อมเฟอร์นิเจอร์",
-                    "price": "3,500",
-                    "price2": "3,500",
-                    "price3": "3,500",
-                    "price4": "3,500",
-                    "price5": "3,500",
-                    "price6": "3,500",
-                    "status": "ยังไม่ชำระ",
-                },
-                {
-                    "id": 2,
-                    "name": "Ervin Howell",
-                    "type": "ห้องพร้อมเฟอร์นิเจอร์",
-                    "price": "3,500",
-                    "price2": "3,500",
-                    "price3": "3,500",
-                    "price4": "3,500",
-                    "price5": "3,500",
-                    "price6": "3,500",
-                    "status": "ยังไม่ชำระ",
-                },
-                {
-                    "id": 3,
-                    "name": "Clementine Bauch",
-                    "type": "ห้องพร้อมเฟอร์นิเจอร์",
-                    "price": "3,500",
-                    "price2": "3,500",
-                    "price3": "3,500",
-                    "price4": "3,500",
-                    "price5": "3,500",
-                    "price6": "3,500",
-                    "status": "ยังไม่ชำระ",
-                },
-                {
-                    "id": 4,
-                    "name": "Clementine Bauch",
-                    "type": "ห้องพร้อมเฟอร์นิเจอร์",
-                    "price": "3,500",
-                    "price2": "3,500",
-                    "price3": "3,500",
-                    "price4": "3,500",
-                    "price5": "3,500",
-                    "price6": "3,500",
-                    "status": "ยังไม่ชำระ",
-                },
-                {
-                    "id": 5,
-                    "name": "Chelsey Dietrich",
-                    "type": "ห้องพร้อมเฟอร์นิเจอร์",
-                    "price": "3,500",
-                    "price2": "3,500",
-                    "price3": "3,500",
-                    "price4": "3,500",
-                    "price5": "3,500",
-                    "price6": "3,500",
-                    "status": "ยังไม่ชำระ",
-                },
-                {
-                    "id": 6,
-                    "name": "Mrs. Dennis Schulist",
-                    "type": "ห้องพร้อมเฟอร์นิเจอร์",
-                    "price": "3,500",
-                    "price2": "3,500",
-                    "price3": "3,500",
-                    "price4": "3,500",
-                    "price5": "3,500",
-                    "price6": "3,500",
-                    "status": "ยังไม่ชำระ",
-                },
-                {
-                    "id": 7,
-                    "name": "Kurtis Weissnat",
-                    "type": "ห้องพร้อมเฟอร์นิเจอร์",
-                    "price": "3,500",
-                    "price2": "3,500",
-                    "price3": "3,500",
-                    "price4": "3,500",
-                    "price5": "3,500",
-                    "price6": "3,500",
-                    "status": "ยังไม่ชำระ",
-                },
-                {
-                    "id": 8,
-                    "name": "Nicholas Runolfsdottir V",
-                    "type": "ห้องพร้อมเฟอร์นิเจอร์",
-                    "price": "3,500",
-                    "price2": "3,500",
-                    "price3": "3,500",
-                    "price4": "3,500",
-                    "price5": "3,500",
-                    "price6": "3,500",
-                    "status": "ยังไม่ชำระ",
-                },
-                {
-                    "id": 9,
-                    "name": "Glenna Reichert",
-                    "type": "ห้องพร้อมเฟอร์นิเจอร์",
-                    "price": "3,500",
-                    "price2": "3,500",
-                    "price3": "3,500",
-                    "price4": "3,500",
-                    "price5": "3,500",
-                    "price6": "3,500",
-                    "status": "ยังไม่ชำระ",
-                },
-                {
-                    "id": 10,
-                    "name": "Clementina DuBuque",
-                    "type": "ห้องพร้อมเฟอร์นิเจอร์",
-                    "price": "3,500",
-                    "price2": "3,500",
-                    "price3": "3,500",
-                    "price4": "3,500",
-                    "price5": "3,500",
-                    "price6": "3,500",
-                    "status": "ยังไม่ชำระ"
-                }
-            ]
+            floor: [],
         }
     },
     created() {
@@ -460,6 +340,7 @@ export default {
     },
     mounted() {
         this.getRoomBill();
+        this.getfloor();
     },
     methods: {
         routeTo(profileID) {
@@ -478,6 +359,14 @@ export default {
                 }).finally(() => {
                     loading.close()
                 })
+        },
+        getfloor(){
+            fetch('https://api.resguru.app/api/building-floors?filters[building][id][$eq]=' + this.$store.state.building)
+            .then(response => response.json())
+            .then((resp) => {
+                console.log("Return from getfloor()",resp.data);
+                this.floor = resp.data
+            })
         },
         generateInvoice(roomid){
             const currentdate = new Date()

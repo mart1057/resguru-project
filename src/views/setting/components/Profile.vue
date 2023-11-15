@@ -22,7 +22,7 @@
                     <div class="bg-[white] rounded-[22px] w-[246px] border p-[14px] flex flex-col items-center">
                         <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
                             src="https://media.wired.com/photos/63b89b5b995aa119ba7ba7be/1:1/w_1800,h_1800,c_limit/Profile-Photos-Gear-1411545652.jpg" />
-                        <div class="text-[18px] font-bold mt-[8px]">วรันธร สยนานนท์</div>
+                        <div class="text-[18px] font-bold mt-[8px]">{{ userData.firstName }} {{userData.lastName}}</div>
                         <div v-if="tab == 2">
                             <div class="w-[100%] mt-[8px]">
                                 <div class="pt-[4px] w-[100%] rounded-[12px] flex justify-center bg-[#003765]">
@@ -112,7 +112,7 @@
                         </div>
                         <div class="mt-[8px] col-span-4">
                             <div class="text-custom text-[14px] text-[#003765]">ที่อยู่</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.billingAddress" />
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.contactAddress" />
                         </div>
                         <!-- <div class="">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">เขต</div>
@@ -159,10 +159,7 @@
                                 </vs-option>
                             </vs-select>
                         </div> -->
-                        <ThailandAutoComplete v-model="district" type="district" @select="select" label="ตำบล" size="small" placeholder="ตำบล..."/>
-                        <ThailandAutoComplete v-model="amphoe" type="amphoe" @select="select" label="อำเภอ" size="small" placeholder="อำเภอ..."/>
-                        <ThailandAutoComplete v-model="province" type="province" @select="select" label="จังหวัด" size="small" placeholder="จังหวัด..."/>
-                        <ThailandAutoComplete v-model="zipcode" type="zipcode" @select="select" label="รหัสไปรษณีย์" size="small" placeholder="รหัสไปรษณีย์..."/>
+                        
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.phone"/>
@@ -314,24 +311,21 @@ export default {
         },
         updateUserDetail(){
             axios.put(`https://api.resguru.app/api/users/${this.$store.state.userInfo.user.id}`,{
-                data : {
+                
                     firstName: this.userData.firstName,
                     lastName: this.userData.lastName,
                     contactAddress: this.userData.contactAddress,
                     phone: this.userData.phone,
                     currentAddress: this.buildingData.attributes.currentAddress,
-                    province: this.province,
-                    district: this.district,
-                    subDistrict: this.subDistrict,
-                    postcode: this.zipcode
-                }
+                
+            })
+            .then( (resp) => {
+                console.log("Update User",resp)
             })
             .then( 
                     this.openNotificationUser('top-right', '#3A89CB', 6000)
                 )
-                .then(
-                    setTimeout(() => location.reload(), 1500)
-                )
+              
         }, 
         getBuildingData() {
             const loading = this.$vs.loading()
@@ -364,9 +358,7 @@ export default {
             .then( 
                     this.openNotificationBuilding('top-right', '#3A89CB', 6000)
                 )
-                .then(
-                    setTimeout(() => location.reload(), 1500)
-                )
+               
         }, 
         openNotificationUser(position = null, color) {
             const noti = this.$vs.notification({

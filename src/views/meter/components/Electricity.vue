@@ -129,7 +129,7 @@ export default {
         getElectricityFee() {
             const loading = this.$vs.loading()
             fetch(`https://api.resguru.app/api/getelectriclist?buildingid=${this.$store.state.building}&buildingFloor=2&month=10&year=2023`)
-            // fetch(`https://api.resguru.app/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep,3`)
+            
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()",resp.data);
@@ -147,9 +147,7 @@ export default {
             }).then( 
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
                 )
-                .then(
-                    setTimeout(() => location.reload(), 1500)
-                )
+                
         }, 
         openNotificationUpdateWater(position = null, color) {
             const noti = this.$vs.notification({

@@ -48,7 +48,19 @@ export default {
         })
         setTimeout(() => {
             loading.close()
-        }, 1000)
+        }, 50)
+    },
+    mounted(){
+        this.queryTab();
+    },
+    methods:{
+        queryTab(){
+            this.tab = 1
+            if(this.$route.query.tab !== undefined){
+                this.tab = this.$route.query.tab
+            }
+        }
+
     }
 }
 

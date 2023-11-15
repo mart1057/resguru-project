@@ -874,9 +874,7 @@ export default {
             }).then( 
                     this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
                 )
-                .then(
-                    setTimeout(() => location.reload(), 1500)
-                )
+               
         }, 
         openNotificationUpdateRoom(position = null, color) {
             const noti = this.$vs.notification({
@@ -897,9 +895,7 @@ export default {
             }).then( 
                     this.openNotificationAddRoom('top-right', '#3A89CB', 6000)
                 )
-                .then(
-                    setTimeout(() => location.reload(), 1500)
-                )
+                
         }, 
 
         addNewRoomType() {
@@ -912,9 +908,7 @@ export default {
             }).then( 
                     this.openNotificationAddRoom('top-right', '#3A89CB', 6000)
                 )
-                .then(
-                    setTimeout(() => location.reload(), 1500)
-                )
+                
         },
         create_floor() {
             if(confirm("Do you really want to Add Floor?")){

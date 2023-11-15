@@ -543,9 +543,7 @@ export default {
             }).then( 
                     this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
                 )
-                .then(
-                    setTimeout(() => location.reload(), 1500)
-                )
+                
         }, 
         updateUserBuildingPayment(buildingID){
             axios.put(`https://api.resguru.app/api/building-pay-methods/${buildingID}`,{
@@ -555,9 +553,7 @@ export default {
             }).then( 
                     this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
                 )
-                .then(
-                    setTimeout(() => location.reload(), 1500)
-                )
+              
         }, 
         openNotificationUpdateRoom(position = null, color) {
             const noti = this.$vs.notification({
