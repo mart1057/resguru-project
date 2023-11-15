@@ -720,10 +720,10 @@
                 <div class="mt-[14px]">
                     <div class="grid grid-cols-2 gap-2 w-[100%]">
                         <div>
-                            <div class="text-custom">อาคาร</div>
+                            <div class="text-custom">เลขห้อง</div>
                             <div>
                                 <input
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" />
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="roomName" />
 
                             </div>
                         </div>
@@ -732,7 +732,7 @@
                             <div>
                                         <select placeholder="Select" v-model="roomFloor"
                                             class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]">
-                                            <option  v-for="data in roomFloor">
+                                            <option  v-for="data in roomFloor" :value="data.id">
                                                         {{data.attributes.floorName}}
                                             </option>
                                         </select>
@@ -743,13 +743,13 @@
                     <div>
                         <select placeholder="Select" v-model="roomType"
                             class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]">
-                            <option  v-for="data in roomType">
+                            <option  v-for="data in roomType" :value="data.id">
                                         {{data.attributes.roomTypeName}}
                             </option>
                         </select>
                     </div>
                 </div>
-                <div class="mt-[14px]">
+                <!-- <div class="mt-[14px]">
                     <div class="text-custom">ค่าเช่าห้อง/เดือน</div>
                     <div>
                         <input
@@ -793,7 +793,7 @@
                             </vs-input>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <div class="flex justify-end mt-[30px]">
                     <div>
                         <vs-button dark shadow @click="create_room = false">
@@ -872,6 +872,7 @@ export default {
             room: [],
             roomType: [],
             floorRoom: [],
+            roomName: "",
             roomTypeName: "",
             roomTypePrice: 0,
             buildingfloorName: "",
@@ -942,9 +943,11 @@ export default {
             })
         },
         addNewRoom(){
+
+            
             axios.post(`https://api.resguru.app/api/rooms/`,{
                 data : {
-                    RoomNumber: "RandomRoom 301",
+                    RoomNumber: this.roomName,
                     room_building: this.$store.state.building,
                     room_type: this.roomType,
                     building_floor: this.roomFloor,
@@ -952,6 +955,9 @@ export default {
             }).then( 
                     this.openNotificationAddRoom('top-right', '#3A89CB', 6000)
                 )
+            .catch((err)=>{
+                console.log("Add Room",err);
+            })
                 
         }, 
 
