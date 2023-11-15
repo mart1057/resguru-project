@@ -419,6 +419,7 @@ export default {
     },
     created() {
         this.runYears()
+        this.$router.push('/')
     },
     methods: {
         runYears() {

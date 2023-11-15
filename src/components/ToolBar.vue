@@ -51,18 +51,18 @@
                         </div>
                         <div @click="routerTo('/checkout')"
                             class=" ml-[10px] h-[15px] bg-[#E7E2F7] pl-[12px] pr-[12px] pt-[12px] pb-[12px] rounded-[13px] text-[#9A77FF] text-center cursor-pointer flex items-center">
-                            Professional 
+                            Professional
                         </div>
                         <div class="flex ml-[10px] items-center">
-                            
-                            <vs-tooltip bottom shadow interactivity >
-                                <div  class="cursor-pointer">
+
+                            <vs-tooltip bottom shadow interactivity>
+                                <div class="cursor-pointer">
                                     <vs-avatar size="40" primary>
-                                       RS
+                                        RS
                                     </vs-avatar>
-                                    
+
                                 </div>
-                                
+
                                 <template #tooltip>
                                     <div class="content-tooltip p-[8px]">
                                         <div class="flex">
@@ -116,7 +116,8 @@
                                                 </svg>
 
                                             </div>
-                                            <div class="flex items-center text-[16px]  ml-[8px] text-custom text-[#003765] cursor-pointer" @click="routerTo('/')">
+                                            <div class="flex items-center text-[16px]  ml-[8px] text-custom text-[#003765] cursor-pointer"
+                                                @click="routerTo('/')">
                                                 เปลี่ยนตึกที่ดูแล</div>
                                         </div>
                                         <div
@@ -174,7 +175,8 @@
                                                     </g>
                                                 </svg>
                                             </div>
-                                            <div class="flex items-center text-[16px]  ml-[8px] text-custom text-[#003765]  cursor-pointer" @click=" routerTo('/login')" >
+                                            <div class="flex items-center text-[16px]  ml-[8px] text-custom text-[#003765]  cursor-pointer"
+                                                @click=" routerTo('/login')">
                                                 ออกจากระบบ</div>
                                         </div>
                                     </div>
@@ -182,9 +184,9 @@
                             </vs-tooltip>
                             <div class="ml-[8px]">
                                 <!-- <vs-avatar> -->
-                                    {{ this.$store.state.userInfo.user.firstName }} {{  }}
-                                        {{ this.$store.state.userInfo.user.lastName }}
-                                    
+                                {{ this.$store.state.userInfo.user.firstName }} {{ }}
+                                {{ this.$store.state.userInfo.user.lastName }}
+
                                 <!-- </vs-avatar> -->
                             </div>
                         </div>
@@ -255,7 +257,7 @@
                                 fill="#B9CCDC" />
                         </svg>
                     </template>
-                    <span class="text-[white]"   @click="routerTo('/payment')">การจ่ายเงิน</span>
+                    <span class="text-[white]" @click="routerTo('/payment')">การจ่ายเงิน</span>
                 </vs-sidebar-item>
                 <vs-sidebar-item id="drink" to="/rental-contract">
                     <template #icon>
@@ -313,12 +315,12 @@
                                 fill="#B9CCDC" />
                         </svg>
                     </template>
-                    <span class="text-[white]"  @click="routerTo('/expenses')">รายรับ-รายจ่าย</span>
+                    <span class="text-[white]" @click="routerTo('/expenses')">รายรับ-รายจ่าย</span>
                 </vs-sidebar-item>
 
                 <template #footer>
                     <vs-row justify="space-between">
-                        <div class="flex cursor-pointer"  @click="routerTo('/setting')">
+                        <div class="flex cursor-pointer" @click="routerTo('/setting')">
                             <div>
                                 <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -333,9 +335,9 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class="text-[white] flex items-center ml-[8px]" >ตั้งค่า</div>
+                            <div class="text-[white] flex items-center ml-[8px]">ตั้งค่า</div>
                         </div>
-                        <div class="flex cursor-pointer">
+                        <div class="flex cursor-pointer" @click="logoutTo()">
                             <div>
                                 <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -377,7 +379,17 @@ export default {
                 this.sidebar = false
             }, 200);
 
-        }
+        },
+        clearLocalDtorage() {
+            localStorage.clear()
+        },
+        reload() {
+            window.location.reload()
+        },
+        async logoutTo() {
+            await this.clearLocalDtorage()
+            await this.reload()
+        },
 
     }
 }
