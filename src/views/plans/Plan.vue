@@ -1,5 +1,14 @@
 <template>
     <div class="flex flex-col items-center justify-center m-[20px]">
+        <stripe-checkout
+        ref="checkoutRef"
+        mode="subscription"
+        :pk="publishableKey"
+        :line-items="lineItems"
+        :success-url="successURL"
+        :cancel-url="cancelURL"
+        @loading="v => loading = v"
+         />
         <div class="text-[20px]">เลือกแพ็กเกจที่เหมาะกับธุรกิจของคุณ</div>
         <div class="grid grid-cols-3 gap-2 mt-[24px] w-[100%]">
             <div class="flex flex-col justify-center">
@@ -54,7 +63,7 @@
                     <div class="text-[24px] font-bold mt-[18px]">
                         0<span class="text-[14px] text-[#8396A6] ml-[4px]">/year</span>
                     </div>
-                    <div
+                    <div @click="submit"
                         class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
                         ทดลองใช้งานฟรี 30 วัน
                     </div>
@@ -335,7 +344,7 @@
                     <div class="text-[24px] font-bold mt-[18px]">
                         0<span class="text-[14px] text-[#8396A6] ml-[4px]">/year</span>
                     </div>
-                    <div
+                    <div @click="submit"
                         class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
                         ไม่จำกัดห้อง
                     </div>
@@ -616,7 +625,7 @@
                     <div class="text-[24px] font-bold mt-[18px]">
                         0<span class="text-[14px] text-[#8396A6] ml-[4px]">/year</span>
                     </div>
-                    <div
+                    <div @click="submit"
                         class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
                         ไม่จำกัดห้อง
                     </div>
@@ -860,4 +869,43 @@
             </div>
         </div>
     </div>
-</div></template>
+</div>
+</template>
+
+<script>
+import { StripeCheckout } from '@vue-stripe/vue-stripe';
+
+
+export default {
+  components: {
+    StripeCheckout,
+
+  },
+  data () {
+    this.publishableKey = 'pk_live_51MP3OfJUFs9Ue9lHg7rZSSAcncQ9OPAev8M1cE5voGYjOUD7UsRJN6z0ihSlWafs0BDGwJi9BfbaCSgMok0TneKB003we5Sen9';
+    return {
+      loading: false,
+      products: [
+      { id: 1, title: 'Building A', price: 1000, bullets: ['Feature 1', 'Feature 2', 'Feature 3'] },
+      { id: 2, title: 'Building B', price: 2000, bullets: ['Feature 1', 'Feature 2', 'Feature 3'] },
+      { id: 3, title: 'Building C', price: 3000, bullets: ['Feature 1', 'Feature 2', 'Feature 3'] },
+      ],
+      customerEmail: 'nuttapol.kpn@gmail.com',
+      lineItems: [
+        {
+          price: 'price_1NcBa3JUFs9Ue9lHk4Y9PNBl', // The id of the recurring price you created in your Stripe dashboard
+          quantity: 1,
+        },
+      ],
+      successURL: 'https://tansamai.tech',
+      cancelURL: 'https://tansamai.tech/contact-us',
+    };
+  },
+  methods: {
+    submit () {
+      // You will be redirected to Stripe's secure checkout page
+       this.$refs.checkoutRef.redirectToCheckout();
+    },
+  },
+};
+</script>
