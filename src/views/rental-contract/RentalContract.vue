@@ -739,7 +739,7 @@ export default {
                 })
         },
         getUserDetail(id_room) {
-            fetch(`https://api.resguru.app/api+/users?filters[idCard][$eq]=${this.id_room}`)
+            fetch(`https://api.resguru.app/api/users?filters[idCard][$eq]=${id_room}`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log('detail from get user', resp);
