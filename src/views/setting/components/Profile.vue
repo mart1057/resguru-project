@@ -352,7 +352,7 @@ export default {
                     buildingEmail: this.buildingData.attributes.buildingEmail,
                     buildingLine: this.buildingData.attributes.buildingLine,
                     buildingFacebook: this.buildingData.attributes.buildingFacebook,
-                    buildingPaymentMonthlyDate: this.buildingData.attributes.buildingPaymentMonthlyDate
+                    vat_rate: this.buildingData.attributes.vat_rate
                 }
             })
             .then( 

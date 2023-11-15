@@ -260,8 +260,18 @@ export default {
                     buildingFacebook: this.buildingFacebook   
                 }
             })
-                .then(response => console.log(response.json()))
+            .then(
+                openNotificationCreateBuilding('top-right', '#3A89CB', 6000)
+            )
                
+        },
+        openNotificationCreateBuilding(position = null, color) {
+            const noti = this.$vs.notification({
+                sticky: true,
+                color,
+                position,
+                title: 'Created Building Success',
+            })
         },
         routeTo() {
             this.$router.push({

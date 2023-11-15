@@ -690,8 +690,10 @@ export default {
                 .then((resp) => {
                     console.log("Return from getRoomFloor()", resp.data);
                     this.roomFloor = resp.data
-                    this.filter.floor = resp.data[0].id
-                    this.name_floor = resp.data[0].attributes.floorName
+                    if(resp.data[0]){
+                        this.filter.floor = resp.data[0].id
+                        this.name_floor = resp.data[0].attributes.floorName
+                    }
                 }).finally(() => {
                     this.getRentalContract();
                     // loading.close()

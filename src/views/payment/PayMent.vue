@@ -125,8 +125,17 @@
 
             </div>
             <div class="flex items-center mb-[8px] mt-[14px]">
-                <div class="mr-[14px] font-bold cursor-pointer" v-for="floors in floor">อาคาร A ชั้น {{ floors.attributes.floorName }}</div>
+                <!-- <div class="mr-[14px] font-bold cursor-pointer" v-for="floors in floor">อาคาร A ชั้น {{ floors.attributes.floorName }}</div> -->
                 <!-- <div class="text-[#8396A6] cursor-pointer">อาคาร A ชั้น 2</div> -->
+                <div v-for="(data, i) in floor">
+                    <div class=" cursor-pointer mr-[8px]"
+                        :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
+                        @click="tab_floor = i, filter.floor = data.id, getRoomBill(), name_floor = data.attributes.floorName">
+                        อาคาร
+                        {{
+                            data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }}
+                    </div>
+                </div>
             </div>
         </div>
         <div class="mt-[14px] bg-[white] rounded-[12px] p-[24px]">
@@ -330,6 +339,12 @@ export default {
             selected: [],
             payments: [],
             floor: [],
+            tab_floor: '0',
+            filter:{
+                search: '', 
+                floor:''  
+            },
+            name_floor:'',
         }
     },
     created() {
@@ -339,7 +354,7 @@ export default {
         }, 1000)
     },
     mounted() {
-        this.getRoomBill();
+        
         this.getfloor();
     },
     methods: {
@@ -351,7 +366,7 @@ export default {
         getRoomBill() {
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}&month=11&year=2023`)
+            fetch(`https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}&floor=${this.filter.floor}&month=11&year=2023`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoomBill()", resp.data);
@@ -361,11 +376,19 @@ export default {
                 })
         },
         getfloor(){
-            fetch('https://api.resguru.app/api/building-floors?filters[building][id][$eq]=' + this.$store.state.building)
+            fetch('https://api.resguru.app/api/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=*')
             .then(response => response.json())
             .then((resp) => {
                 console.log("Return from getfloor()",resp.data);
                 this.floor = resp.data
+                if(resp.data[0]){
+                    this.filter.floor = resp.data[0].id
+                    this.name_floor = resp.data[0].attributes.floorName
+                }
+            })
+            .finally(() => {
+                      this.getRoomBill();
+                    // loading.close()
             })
         },
         generateInvoice(roomid){
