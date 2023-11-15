@@ -3,7 +3,7 @@
         <div class="bg-[#003765] w-[40%] rounded-r-[40px]">
             <div class="flex flex-col justify-between w-[100%] h-[100vh!important] ">
                 <div class="pl-[50px] pt-[30px]">
-                    <div class="text-[white] flex mt-[16px] cursor-pointer">
+                    <!-- <div class="text-[white] flex mt-[16px] cursor-pointer">
                         <div class="flex justify-center items-center mr-[8px]"><svg width="7" height="12" viewBox="0 0 7 12"
                                 fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -11,7 +11,7 @@
                                     fill="white" />
                             </svg></div>
                         <div class="flex justify-center items-center">ย้อนกลับ</div>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="flex flex-col justify-center items-center">
                     <div>
