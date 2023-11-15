@@ -375,7 +375,7 @@
                             <div class="grid grid-cols-8 w-[100%] gap-2 mt-[14px]">
                                 <div v-for="room in floor.attributes">
                                     <div class="h-[32px] bg-[#DEEAF5] rounded-[12px] flex items-center justify-between pl-[8px] pr-[8px]"
-                                        @click=" room.status ? '' : room_move.id_room = room.id , room_move.Number = room.RoomNumber,confirm = true"
+                                        @click=" room.status ? '' : room_move.id_room = room.id, room_move.Number = room.RoomNumber, confirm = true"
                                         :class="room.status ? 'bg-[#E8F0F8] text-[#B9CCDC]' : 'bg-[#DEEAF5] text-[#003765] cursor-pointer'">
                                         <div>{{ room.RoomNumber }}</div>
                                         <div>{{ room.status ? 'เต็ม' : 'ว่าง' }}
@@ -398,7 +398,7 @@
                         <div class="ml-[4px]">จากห้อง</div>
                         <div class="font-bold ml-[4px]">{{ $route.query.number_room }} </div>
                         <div class="ml-[4px]">ไปห้อง</div>
-                        <div class="font-bold ml-[4px]">{{ room_move.Number}} </div>
+                        <div class="font-bold ml-[4px]">{{ room_move.Number }} </div>
                     </div>
                     <div @click="confirm = false" class="cursor-pointer">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -450,7 +450,8 @@
                                 <div class="text-custom flex justify-center items-center text-center mt-[8px]">
                                     การย้ายห้องแบบย้ายสัญญาเช่า ระบบจะทำการ
                                     ย้ายผู้เช่าทั้งหมดของห้อง {{ $route.query.number_room }} พร้อมกับสัญญา
-                                    เช่าห้อง {{ $route.query.number_room }} ไปยังห้อง {{ room_move.Number }} พร้อมทั้งทำการเปลี่ยน
+                                    เช่าห้อง {{ $route.query.number_room }} ไปยังห้อง {{ room_move.Number }}
+                                    พร้อมทั้งทำการเปลี่ยน
                                     สถานะห้อง {{ $route.query.number_room }} เป็นห้องว่าง
                                 </div>
                             </div>
@@ -475,7 +476,7 @@
                                 </div>
                                 <div class="text-custom flex justify-center items-center text-center mt-[8px]">
                                     การย้ายห้องแบบไม่ย้ายสัญญาเช่า ระบบจะทำการย้ายผู้เช่า (คนที่เลือก) โดยจะไม่ย้าย
-                                    สัญญาเช่าของห้อง {{ $route.query.number_room }} ไปยังห้อง {{room_move.Number}}
+                                    สัญญาเช่าของห้อง {{ $route.query.number_room }} ไปยังห้อง {{ room_move.Number }}
                                 </div>
                             </div>
                         </div>
@@ -487,7 +488,7 @@
                             </vs-button>
                         </div>
                         <div class="ml-[18px]">
-                            <vs-button color="#003765" @click="confirm = false">
+                            <vs-button color="#003765" @click="moveRoom()" :disabled="tab == 0">
                                 <div class="text-custom">บันทึก</div>
                             </vs-button>
                         </div>
@@ -518,7 +519,7 @@ export default {
             is_edit: true,
             room_move: {
                 id_room: '',
-                number:''
+                number: ''
 
             },
             room_detail: {
@@ -564,7 +565,7 @@ export default {
     },
     methods: {
         getFloorRoom() {
-            // const loading = this.$vs.loading()
+            const loading = this.$vs.loading()
             fetch('http://203.170.190.170:1337/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3')
                 .then(response => response.json())
                 .then((resp) => {
@@ -592,7 +593,7 @@ export default {
                     }, []);
                     this.roomFloor = { "data": transformedData };
                 }).finally(() => {
-                    // loading.close()
+                    loading.close()
                 })
         },
         getUser() {
@@ -836,6 +837,28 @@ export default {
                 licensePlat: '',
                 Type: ''
             })
+        },
+        moveRoom() {
+            const loading = this.$vs.loading({})
+            if (this.tab == 1) {
+
+            }
+            else {
+                axios.put('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract, {
+                    data: {
+                        room: this.room_move.id_room
+                    }
+                }).then(() => {
+
+                }).finally(() => {
+                    this.confirm = false
+                    loading.close()
+                    this.$router.push({
+                        path: '/rooms',
+                    })
+                })
+
+            }
         }
     }
 }
