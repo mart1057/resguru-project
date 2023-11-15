@@ -1,7 +1,7 @@
 <template>
     <div class="flex mt-[10px] justify-between tt">
         <div class="w-[55%]">
-            <UserPlan />
+            <UserPlan :dashboard="this.dashboard" />
             <PayMent/>
             <Notification/>
         </div>
@@ -24,7 +24,7 @@ export default {
     components: { UserPlan,PayMent, Notification,Expenses,Meters,News    },
     data() {
         return {
-
+            dahboard: [],
         }
 
     },
@@ -36,6 +36,20 @@ export default {
         setTimeout(() => {
             loading.close()
         }, 1000)
+    },
+    mounted() {
+
+        this.getDashboard();
+    },
+    methods:{
+        getDashboard(){
+            fetch(`https://api.resguru.app/api/getdashboard?buildingid=${this.$store.state.building}&month=10&year=2023`)
+            .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getRoom()", resp);
+                    this.dahboard = resp
+            })
+        }
     }
 
 

@@ -124,7 +124,7 @@
                                 }}
                                 </div>
                         </div>
-                        <div class="flex border pl-[14px] pr-[14px]  rounded-[12px] cursor-pointer ">
+                        <div class="flex border pl-[14px] pr-[14px]  rounded-[12px] cursor-pointer " @click="routeTo('/setting')">
                             <div class="flex justify-center items-center">
                                 <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -287,16 +287,6 @@
 
                 </div>
                 <div class="flex items-center mb-[8px] mt-[14px]">
-                    <div class="mr-[14px]">
-                        <vs-select placeholder="เลือกอาคาร">
-                            <vs-option label="อาคาร A" value="1">
-                                อาคาร A
-                            </vs-option>
-                            <vs-option label="อาคาร B" value="2">
-                                อาคาร B
-                            </vs-option>
-                        </vs-select>
-                    </div>
                     <div class="mr-[14px] font-bold cursor-pointer">อาคาร A ชั้น 1</div>
                     <div class="text-[#8396A6] cursor-pointer">อาคาร A ชั้น 2</div>
                 </div>
@@ -337,6 +327,14 @@ export default {
         setTimeout(() => {
             loading.close()
         }, 1000)
+    },
+    methods: {
+        routeTo(path,id,id_room,number_room,status,id_contract) {
+            this.$router.push({
+                path: path,
+                query: {id_user:id, id_room:id_room, number_room:number_room, status:status,id_contract:id_contract},
+            })
+        }
     }
 }
 </script>

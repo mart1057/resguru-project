@@ -52,8 +52,8 @@
                                             </vs-select> -->
                                             <select placeholder="Select"
                                                 class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]"
-                                                :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''">
-                                                <option  v-for="selectEmployee in employee">
+                                                :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''" v-model="data.attributes.responEmployee">
+                                                <option  v-for="selectEmployee in employee" :value="selectEmployee.id">
                                                     {{selectEmployee.attributes.name}}
                                                 </option>
                                                 
@@ -72,7 +72,7 @@
                                 </div>
                             </div>
                             
-                                <vs-button @click="updateService(data.id)" color="#003765" class="w-[100%] h-[36px] rounded-[12px] mt-[30px]  text-[white] flex items-center justify-center">
+                                <vs-button @click="updateService(data.id,data.attributes.responEmployee,date_time)" color="#003765" class="w-[100%] h-[36px] rounded-[12px] mt-[30px]  text-[white] flex items-center justify-center">
                                     จบงาน
                                 </vs-button>
                                 
@@ -291,11 +291,13 @@ export default {
                     loading.close()
                 })
         },
-        updateService(serviceId) {
+        updateService(serviceId,empId,date) {
 
             axios.put(`https://api.resguru.app/api/services/${serviceId}`,{
                 data : {
-                    serviceStatus: "Completed"
+                    responEmployee: empId,
+                    serviceStatus: "Completed",
+                    completeJobDate: date
                 }
             }) .then(
                     this.openNotificationUpdateService('top-right', '#3A89CB', 6000).then(

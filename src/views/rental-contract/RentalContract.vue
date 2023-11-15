@@ -112,16 +112,6 @@
                 </div>
             </div>
             <div class="flex items-center mb-[8px] mt-[14px]">
-                <div class="mr-[14px]">
-                    <vs-select placeholder="เลือกอาคาร">
-                        <vs-option label="อาคาร A" value="1">
-                            อาคาร A
-                        </vs-option>
-                        <vs-option label="อาคาร B" value="2">
-                            อาคาร B
-                        </vs-option>
-                    </vs-select>
-                </div>
                 <div v-for="(data, i) in roomFloor">
                     <div class=" cursor-pointer mr-[8px]"
                         :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'" @click="tab_floor = i,filter.floor = data.id,getRentalContract(),name_floor=data.attributes.floorName"> อาคาร
@@ -431,14 +421,15 @@
                                 <div class="grid grid-cols-2  text-custom mt-[14px]  "
                                     v-if="room_detail_create.check_user == true">
                                     <div>
-                                        <div class="">เลือกข้อมูลผู้เช่า</div>
-                                        <select placeholder="Select" v-model="id_user" @change="getUserDetail()"
-                                            class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]">
-                                            <option v-for="user in users" :value="user.id">
-                                                {{ user.firstName }} {{ user.lastName }}
-                                            </option>
-                                        </select>
+                                        <div class="">ค้นหาผู้เช่าด้วยรหัสบัตรประชาชน</div>
+                                        <div>
+                                            <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            v-model="room_detail_create.id_card"  >
+                                            <vs-button primary @click="getUserDetail(room_detail_create.id_card)">ค้นหา</vs-button>
+                                        </div>
+                                        
                                     </div>
+
                                 </div>
                                 <div class="grid grid-cols-8  text-custom mt-[14px]  ">
                                     <div>
@@ -748,10 +739,10 @@ export default {
                 })
         },
         getUserDetail(id_room) {
-            fetch('https://api.resguru.app/api' + '/users/' + this.id_user + '?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3')
+            fetch(`https://api.resguru.app/api+/users?filters[idCard][$eq]=${this.id_room}`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log('detail', resp);
+                    console.log('detail from get user', resp);
                     this.room_detail_create.id = resp.id
                     this.room_detail_create.name = resp.firstName
                     this.room_detail_create.last_name = resp.lastName

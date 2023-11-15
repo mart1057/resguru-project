@@ -124,16 +124,6 @@
 
             </div>
             <div class="flex items-center mb-[8px] mt-[14px]">
-                <div class="mr-[14px]">
-                    <vs-select placeholder="เลือกอาคาร">
-                        <vs-option label="อาคาร A" value="1">
-                            อาคาร A
-                        </vs-option>
-                        <vs-option label="อาคาร B" value="2">
-                            อาคาร B
-                        </vs-option>
-                    </vs-select>
-                </div>
                 <div class="mr-[14px] font-bold cursor-pointer">อาคาร A ชั้น 1</div>
                 <div class="text-[#8396A6] cursor-pointer">อาคาร A ชั้น 2</div>
             </div>
@@ -280,7 +270,21 @@
                             </vs-td>
                             <vs-td>
                                 <div v-if="tr.tenant_bills[0] && tr.user_sign_contract" >
-                                    <vs-button  success class="small">แก้ไขใบแจ้งหนี้</vs-button>
+                                    <!-- <vs-button  primary class="small">แก้ไขใบแจ้งหนี้</vs-button>   -->
+                                        <!-- to: internal link -->
+                                        <vs-select placeholder="แก้ไขรายละเอียด" v-model="value">
+                                            <vs-option label="edit" value="1">
+                                            แก้ไขใบแจ้งหนี้
+                                            </vs-option>
+                                            <vs-option label="payment" value="2">
+                                            ชำระเงิน
+                                            </vs-option>
+                                            <vs-option label="partialPay" value="3">
+                                            ชำระเงินบางส่วน
+                                            </vs-option>
+                                        </vs-select>
+                                    
+                                    <!--  Need to add option for select here -->
                                 </div>
                                 <div v-else-if="tr.tenant_bills[0] && tr.user_sign_contract === null" >
                                     <vs-button  warn class="small">ผู้เช่าย้ายออก</vs-button>
@@ -319,6 +323,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
+            value: '',
             popup_filter: false,
             allCheck: false,
             selected: [],
@@ -465,7 +470,7 @@ export default {
         getRoomBill() {
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}`)
+            fetch(`https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}&month=11&year=2023`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoomBill()", resp.data);

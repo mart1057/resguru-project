@@ -87,7 +87,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="h-[107px] bg-[#9A77FF] rounded-[22px] mt-[14px] p-[14px]" v-if="tab == 1">
+                    <div class="h-[107px] bg-[#9A77FF] rounded-[22px] mt-[14px] p-[14px]" @click="routerTo('/checkout')" v-if="tab == 1">
+
                         <div>
                             <svg width="21" height="24" viewBox="0 0 21 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -254,15 +255,8 @@
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="buildingData.attributes.buildingFacebook"/>
                         </div>
                         <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">วันตัดรอบบิล</div>
-                            <vs-select state="primary" v-model="buildingData.attributes.buildingPaymentMonthlyDate">
-                                <vs-option label="อาคาร A" value="1">
-                                    อาคาร A
-                                </vs-option>
-                                <vs-option label="อาคาร B" value="2">
-                                    อาคาร B
-                                </vs-option>
-                            </vs-select>
+                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">อัตราภาษี</div>
+                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"  v-model="buildingData.attributes.vat_rate">
                         </div>
                     </div>
                     <div class="mt-[44px] mb-[50px]">
@@ -401,6 +395,15 @@ export default {
           this.buildingData.attributes.buildingSubDistrict = address.amphoe
           this.buildingData.attributes.buildingProvince = address.province
           this.buildingData.attributes.buildingPostcode = address.zipcode
+        },
+        routerTo(path) {
+            this.$router.push({
+                path: path,
+            })
+            setTimeout(() => {
+                this.sidebar = false
+            }, 200);
+
         }
         
     },

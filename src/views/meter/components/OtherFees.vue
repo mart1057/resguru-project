@@ -34,16 +34,17 @@
 
                         </vs-td>
                         <vs-td>
-                            <!-- {{ tr.attributes.user_sign_contract.data ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "" }}  -->
+                            {{ tr.attributes.user_sign_contract.data && tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data && tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.firstName : "" }} 
+                            {{ tr.attributes.user_sign_contract.data && tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data && tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.lastName ? tr.attributes.user_sign_contract.data.attributes.users_permissions_user.data.attributes.lastName : "" }} 
                        </vs-td>
                         <vs-td>
                             <div class="flex">
-                                <div v-for="data in tr.other">
+                                <div v-for="data in tr.attributes.other_of_buildings.data">
                                     <div
                                         class="bg-[#3A89CB] pl-[10px] cursor-pointer pr-[10px] pb-[10px] pt-[10px] ml-[8px] rounded-[12px] text-[white]">
 
                                         <div class="flex">
-                                            <div>{{ data }}</div>
+                                            <div>{{ data.attributes.title }} : {{ data.attributes.price }}</div>
                                             <div class="flex items-center ml-[8px]"><svg width="12" height="12"
                                                     viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path
@@ -55,7 +56,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <vs-tooltip bottom shadow not-hover v-model="tr.add_item">
+                                <!-- <vs-tooltip bottom shadow not-hover v-model="tr.add_item">
                                     <div @click="tr.add_item = true"
                                         class="bg-[#003765]  pl-[10px] cursor-pointer pr-[10px] pb-[10px] pt-[10px] ml-[8px] rounded-[12px] flex text-[white]">
                                         <div class="flex justify-center items-center"><svg width="16" height="15"
@@ -90,7 +91,7 @@
                                             </div>
                                         </div>
                                     </template>
-                                </vs-tooltip>
+                                </vs-tooltip> -->
                             </div>
                         </vs-td>
                     </vs-tr>

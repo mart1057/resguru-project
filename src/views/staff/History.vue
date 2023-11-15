@@ -22,7 +22,7 @@
                         </div>
                         <div class=" w-[100%] pt-[8px] p-[12px]">
                             <div class="flex justify-between items-center">
-                                <div class="font-bold text-[18px] ">ห้อง  {{ data.attributes.user_sign_contract.data.attributes.room.data.attributes.RoomNumber }}  แจ้งซ่อม <span
+                                <div class="font-bold text-[18px] ">ห้อง  {{ data.attributes.user_sign_contract && data.attributes.user_sign_contract.data.attributes.room ? data.attributes.user_sign_contract.data.attributes.room.data.attributes.RoomNumber : "" }}  แจ้งซ่อม <span
                                         class="text-[10px] font-normal text-[#8396A6]">{{ data.attributes.createdAt }}</span></div>
                                 <div
                                     class="bg-[#CFFBDA] text-[#0B9A3C] pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[12px]">
@@ -31,7 +31,7 @@
                             <div class="flex justify-between mt-[4px]">
                                 <div class="flex flex-col">
                                     <div>
-                                        <div class="text-[12px] text-[#8396A6]">วันเ/วลา</div>
+                                        <div class="text-[12px] text-[#8396A6]">วัน/เวลา</div>
                                     </div>
                                     <div>{{ data.attributes.createdAt }}</div>
                                 </div>
@@ -288,7 +288,7 @@ export default {
         getHistory() {
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`https://api.resguru.app/api/services?populate=deep,3&sort[0]=id:desc`)
+            fetch(`https://api.resguru.app/api/services?populate=*&sort[0]=id:desc&filters[building][id][$eq]=${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getHistory()",resp.data);

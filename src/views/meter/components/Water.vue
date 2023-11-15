@@ -31,13 +31,13 @@
                 <template #tbody>
                     <vs-tr :key="i" v-for="(tr, i) in WaterFee" :data="tr">
                         <vs-td>
-                            {{ tr.attributes.RoomNumber  }}
+                            {{ tr.RoomNumber  }}
                         </vs-td>
                         <vs-td>
                             <div class="flex justify-start items-center">
                                 <div class="pl-[12px] pr-[12px] pb-[4px] pt-[4px] rounded-[12px] text-center"
                                     :class="tr.status == 'มีผู้เช่า' ? 'text-[#1DC56A] bg-[#D8FAD5]' : 'text-[#8396A6] bg-[#DEEAF5]'">
-                                    {{ tr.attributes.user_sign_contract.data ? "มีผู้เข้าพัก" : "ห้องว่าง" }}  
+                                    {{ tr.user_sign_contract ? "มีผู้เข้าพัก" : "ห้องว่าง" }}  
                                 </div>
                             </div>
 
@@ -47,8 +47,8 @@
                         </vs-td>
                         <vs-td>
                             <div>
-                                <div v-if=tr.attributes.water_fees.data[1]>
-                                    <vs-input disabled v-model=tr.attributes.water_fees.data[1].attributes.meterUnit>
+                                <div v-if=tr.water_fees[1]>
+                                    <vs-input disabled v-model=tr.water_fees[1].meterUnit>
                                     <template #icon>
                                         <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -68,7 +68,7 @@
                             </div>
                         </vs-td>
                         <vs-td>
-                            <vs-input v-model=tr.attributes.water_fees.data[0].attributes.meterUnit >
+                            <vs-input v-model=tr.water_fees[0].meterUnit >
                                 <template #icon>
                                     <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -86,11 +86,11 @@
                             </vs-input>
                         </vs-td>
                         <vs-td>
-                            {{ tr.attributes.water_fees.data[0] ? tr.attributes.water_fees.data[0].attributes.meterUnit : "ยังไม่ได้ระบุ" }} 
+                            {{ tr.water_fees[0] ? (tr.water_fees[0].meterUnit - tr.water_fees[1].meterUnit) : "ยังไม่ได้ระบุ" }} 
                         </vs-td>
                         <vs-td>
                             <div>
-                                <vs-button @click="updateWaterfee(tr.attributes.water_fees.data[0].id,tr.attributes.water_fees.data[0].attributes.meterUnit)" >บันทึก</vs-button>
+                                <vs-button @click="updateWaterfee(tr.water_fees[0].id,tr.water_fees[0].meterUnit,(tr.water_fees[0].meterUnit - tr.water_fees[1].meterUnit) )" >บันทึก</vs-button>
                             </div>
                         </vs-td>
                     </vs-tr>
@@ -121,7 +121,8 @@ export default {
     methods: {
         getWaterFee() {
             const loading = this.$vs.loading()
-            fetch(`https://api.resguru.app/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep,3`)
+            fetch(`https://api.resguru.app/api/getwaterlist?buildingid=${this.$store.state.building}&buildingFloor=2&month=10&year=2023`)
+            // fetch(`https://api.resguru.app/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep,3`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()",resp.data);
@@ -130,10 +131,11 @@ export default {
                     loading.close()
                 })
         },
-        updateWaterfee(waterFeeId,waterUnit){
+        updateWaterfee(waterFeeId,waterUnit,usageMeter){
             axios.put(`https://api.resguru.app/api/water-fees/${waterFeeId}`,{
                 data : {
-                    meterUnit: waterUnit
+                    meterUnit: waterUnit,
+                    usageMeter: usageMeter
                 }
             }).then( 
                     this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)

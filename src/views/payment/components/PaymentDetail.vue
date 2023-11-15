@@ -547,7 +547,8 @@ export default {
                     otherPrice: data.attributes.otherPrice,
                     subTotal: data.attributes.subtotal,
                     vat: data.attributes.vat,
-                    total: data.attributes.total
+                    total: data.attributes.total,
+                    building: data.attributes.building.data.id
                 }
             })
                 .then(
