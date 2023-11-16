@@ -404,7 +404,11 @@
                                         fill="white" />
                                 </svg>
                             </div>
-                            <div class="text-white flex items-center justify-center ml-[4px]">เปลี่ยนรูป</div>
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" hidden
+                                    type="file" />
+                            <label for="upload">
+                            <div class="text-white flex items-center justify-center ml-[4px] cursor-pointer">เปลี่ยนรูป</div>
+                            </label>
                         </div>
                     </div>
                 </div>

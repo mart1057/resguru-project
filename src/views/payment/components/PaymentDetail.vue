@@ -569,7 +569,7 @@
                                 </vs-button>
                             </div>
                             <div>
-                                <vs-button @click="createPartialPayment()" color="#003765">
+                                <vs-button @click="createPartial()" color="#003765">
                                     <div class="text-custom">บันทึก</div>
                                 </vs-button>
                             </div>
@@ -685,6 +685,16 @@ export default {
             else if(this.menu_option == 3){
                 this.createPartialPayment = true   
             }
+        },
+        createFullPayment(){
+            this.createFullpayment = false
+            alert("Full payment is created")
+           
+        },
+        createPartial(){
+            this.createPartialPayment = false
+            alert("Partial payment is created")
+          
         },
         getInvoice(){
             const loading = this.$vs.loading()
