@@ -176,7 +176,7 @@
                                                 </svg>
                                             </div>
                                             <div class="flex items-center text-[16px]  ml-[8px] text-custom text-[#003765]  cursor-pointer"
-                                                @click=" routerTo('/login')">
+                                                @click=" logoutTo()">
                                                 ออกจากระบบ</div>
                                         </div>
                                     </div>
