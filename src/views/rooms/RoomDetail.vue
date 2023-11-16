@@ -17,7 +17,7 @@
             <div class="text-[18px] font-bold text-[#141629] flex items-center justify-center">ห้อง {{ $route.query.number_room }}</div>
             <div :class="$route.query.status == 'rent'?'bg-[#D7F1E3] text-[#39B974]':'bg-[#F0F8FF] text-[#003765]'"
                 class="ml-[14px] h-[36px] w-[auto] text-[12px] flex items-center justify-center p-[8px] rounded-[12px]">
-                {{$route.query.status == "rent"? 'ทำสัญญาแล้ว':'ยังไม่ทำสัญญา'}} </div>
+                {{$route.query.status == "rent"? 'ทำสัญญาแล้ว': $route.query.status == "reserved" ?'ยังไม่ทำสัญญา' :'ห้องว่าง'}} </div>
         </div>
         <div class="flex justify-start items-center rounded-[12px] mt-[14px]">
             <div class="bg-[#F3F7FA] rounded-[12px]">
