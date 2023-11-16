@@ -204,8 +204,12 @@
             </div>
             <div class="mt-[14px]">
                 <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]">
-                    <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px]  text-custom">เปลี่ยนรูปภาพปก
+                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" hidden
+                                    type="file" />
+                    <label for="upload">
+                    <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px]  text-custom cursor-pointer">เปลี่ยนรูปภาพปก
                     </div>
+                    </label>
                 </div>
                 <div class="flex w-[100%]">
                     <div class="w-[20%] ml-[18px] mt-[-70px]">
