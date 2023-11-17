@@ -363,21 +363,21 @@
                             <div class="text-custom">ยอดโอน (เต็มจำนวน)</div>
                             <div>
                                 <input
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="accountNumber" />
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="amount" />
                             </div>
                         </div>
                         <div class="mt-[14px]">
                             <div class="text-custom">วันที่</div>
                             <div>
                                 <input type="date"
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="accountNumber" />
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="paymentDate" />
                             </div>
                         </div>
                         <div class="mt-[14px]">
                             <div class="text-custom">เวลา</div>
                             <div>
                                 <input type="time"
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="accountNumber" />
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="paymentTime" />
                             </div>
                         </div>
                         <div class="mt-[14px]">
@@ -468,8 +468,8 @@
                         <div class="mt-[14px]">
                             <div class="text-custom">แนบหลักฐานการโอน</div>
                             <div class="mt-[4px] flex">
-                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                                    type="file" />
+                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="uploadPayment" ref="PartialPayment" hidden
+                                    @change="setUploadFilePayment()" type="file" />
                                 <label for="upload">
                                     <div
                                         class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
@@ -508,6 +508,7 @@ export default {
             createFullpayment: false,
             createPartialPayment: false,
             allCheck: false,
+            file: [],
             selected: [],
             payments: [],
             floor: [],
@@ -548,6 +549,31 @@ export default {
            
         },
         createPartial(){
+
+            let formData = new FormData();
+
+            axios.post("api/tenant-payment-evidence",{
+                bankName,
+                accountBankName,
+                amount,
+                paymentDate,
+                paymentTime
+            }).then(
+                (resp) => {
+                    if(this.file !== null){
+                        formData.append("files", this.file);
+                        formData.append("refId", String(resp.id));
+                        formData.append("ref", "api::tenant-evidence-payment.tenant-evidence-payment");
+                        formData.append("field", "evidence");
+
+                        axios.post("api/upload", formData, {
+                            headers: {
+                            "Content-Type": "multipart/form-data",
+                            },
+                        });
+                    }
+                }
+            )
             this.createPartialPayment = false
             alert("Partial payment is created")
           
@@ -592,8 +618,10 @@ export default {
                     alert(response.data.meta.message)
                 }
                 )
-        }
-
+        },
+        setUploadFilePayment(){
+            this.file = this.$refs.PartialPayment.files
+        },
     }
 }
 </script>
