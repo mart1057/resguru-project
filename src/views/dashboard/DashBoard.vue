@@ -7,8 +7,8 @@
         </div>
         <div class="w-[44%]">
             <Expenses/>
-            <Meters :data="dahboard"/>
-            <News/>
+            <Meters :data="db_meter"/>
+            <News :data="db_annocment"/>
         </div>
     </div>
 </template>
@@ -23,7 +23,9 @@ export default {
     components: { UserPlan,PayMent, Notification,Expenses,Meters,News    },
     data() {
         return {
-            dahboard: [],
+            db_meter : [],
+            db_annocment:[]
+
         }
 
     },
@@ -43,9 +45,11 @@ export default {
         getDashboard(){
             fetch(`https://api.resguru.app/api/getdashboard?buildingid=${this.$store.state.building}&month=10&year=2023`)
             .then(response => response.json())
-                .then((resp) => {
-                    this.dahboard = resp.room.roomData  
-                    console.log("Return from getRoom()", this.dahboard);
+                .then((resp) => { 
+                    console.log("Return from getRoom()", resp);
+                    this.db_meter = resp.room.roomData  
+                    this.db_annocment = resp.announcement.announceData
+                   
             })
         }
     }
