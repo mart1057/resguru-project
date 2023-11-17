@@ -1,16 +1,15 @@
 <template>
     <div class="flex mt-[10px] justify-between tt">
         <div class="w-[55%]">
-            <UserPlan :dashboard="this.dashboard" />
+            <UserPlan :dashboard="dahboard" />
             <PayMent/>
             <Notification/>
         </div>
         <div class="w-[44%]">
             <Expenses/>
-            <Meters/>
+            <Meters :data="dahboard"/>
             <News/>
         </div>
-
     </div>
 </template>
 <script>
@@ -38,7 +37,6 @@ export default {
         }, 1000)
     },
     mounted() {
-
         this.getDashboard();
     },
     methods:{
@@ -46,8 +44,8 @@ export default {
             fetch(`https://api.resguru.app/api/getdashboard?buildingid=${this.$store.state.building}&month=10&year=2023`)
             .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getRoom()", resp);
-                    this.dahboard = resp
+                    this.dahboard = resp.room.roomData  
+                    console.log("Return from getRoom()", this.dahboard);
             })
         }
     }
