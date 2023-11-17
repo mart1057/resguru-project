@@ -15,15 +15,15 @@
                 <div class="flex justify-center items-center cursor-pointer" @click=" routerTo('/announcement')">ดูทั้งหมด</div>
             </div>
         </div>
-        <div class="mt-[18px]">
+        <!-- <div class="mt-[18px]">
             <div class="flex w-[100%]  items-center justify-between">
                 <div class="flex justify-start items-center w-[80%]">
-                    <input class="h-[40px] w-[100%] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหา" type="input" />
+                    <input class="h-[40px] w-[100%] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหา" v-model="search" type="input" @input="filterData"/>
                 </div>
-                <button class="cursor-pointer flex justify-center items-center bg-[#003765] pl-[16px] h-[38px] pr-[16px] pt-[11px] pb-[11px] rounded-[12px] rounded-[8px] text-[white]">
+                <button class="cursor-pointer flex justify-center items-center bg-[#003765] pl-[16px] h-[38px] pr-[16px] pt-[11px] pb-[11px] rounded-[12px]  text-[white]">
                     ทั้งหมด</button>
             </div>
-        </div>
+        </div> -->
         <div class="mt-[18px]" :class="data.length > 5? 'table-container':''" >
             <vs-table>
                 <template #thead>
@@ -62,7 +62,7 @@ export default {
     props: {
         data: { type: Object },
     },
-    data() {
+    data(props) {
         return {
             tab: 1,
             convertDateNoTime,
@@ -74,7 +74,7 @@ export default {
                 path: path,
             })
             
-        }
+        },
     }
 }
 </script>

@@ -474,9 +474,9 @@ export default {
             this.room = this.room.filter(item =>
                 item.attributes.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase())
             );
-            if (this.filter.search == '') {
-                this.getRoom()
-            }
+            // if (this.filter.search == '') {
+            //     this.getRoom()
+            // }
         }
     }
 
