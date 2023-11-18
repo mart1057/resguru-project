@@ -360,7 +360,7 @@
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
                                 <div class="col-span-4 mt-[14px]">
                                     <div class="text-[#003765]">วันสิ้นสุดสัญญา</div>
-                                    <div class="mt-[12px]">10/10/2024</div>
+                                    <div class="mt-[12px]">{{ room_detail.exp_date }}</div>
                                 </div>
                             </div>
                         </div>
@@ -737,6 +737,7 @@ export default {
                     this.room_detail.contract_duration = resp.data.attributes.contractDuration
                     this.room_detail.roomInsurance_deposit = resp.data.attributes.roomInsuranceDeposit
                     this.room_detail.room_deposit = resp.data.attributes.roomDeposit
+                    this.room_detail.exp_date = resp.data.attributes.checkInDate
 
                 }).finally(() => {
                     loading.close()
@@ -816,6 +817,8 @@ export default {
                         room: this.room_detail_create.id_room,
                         contractStatus: "rent",
                         users_permissions_user: this.room_detail_create.id,
+                        checkInDate:this.room_detail.date_sign,
+                        contractEndDate:this.room_detail.exp_date,
                         roomDeposit: parseInt(this.room_detail_create.room_deposit),
                         roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
                         contractDuration: parseInt(this.room_detail_create.contract_duration)
@@ -862,6 +865,8 @@ export default {
                             room: this.room_detail_create.id_room,
                             contractStatus: "rent",
                             users_permissions_user: resp.data.id,
+                            checkInDate:this.room_detail.date_sign,
+                            contractEndDate:this.room_detail.exp_date,
                             roomDeposit: parseInt(this.room_detail_create.room_deposit),
                             roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
                             contractDuration: parseInt(this.room_detail_create.contract_duration)
