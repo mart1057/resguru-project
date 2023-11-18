@@ -529,13 +529,13 @@
                                     <div>วันที่ทำสัญญา</div>
                                     <input type="date"
                                         class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
-                                        v-model="date_sign" required />
+                                        v-model="room_detail.date_sign" required />
                                 </div>
                                 <div class="col-span-4  ml-[8px]">
                                     <div>วันสิ้นสุดสัญญา</div>
                                     <input type="date"
                                         class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
-                                        v-model="exp_date" required />
+                                        v-model="room_detail.exp_date" required />
                                 </div>
                                 <div class="col-span-4 mt-[16px]">
                                     <div>ประเภทห้องพัก</div>
@@ -777,7 +777,7 @@ export default {
 
                 }).catch(() => {
                     loading.close()
-                    this.openNotificationRenralPage('top-right', 'danger','User not found', 6000)
+                    this.openNotificationRenralPage('top-right', 'danger', 'User not found', 6000)
                 }).finally(() => {
                     loading.close()
                     console.log('object');
@@ -789,6 +789,7 @@ export default {
             this.create = true
             this.create_room_number = number
             this.id_user = ''
+            this.filter.Id_card = ''
             this.room_detail_create.id = ''
             this.room_detail_create.name = ''
             this.room_detail_create.last_name = ''
@@ -800,6 +801,12 @@ export default {
             this.room_detail_create.birth = ''
             this.room_detail_create.email = ''
             this.room_detail_create.id_room = id_room
+            this.room_detail_create.room_deposit = ''
+            this.room_detail_create.roomInsuranceDeposit = ''
+            this.room_detail_create.contract_duration = ''
+            this.room_detail_create.type_room = ''
+            this.room_detail.date_sign  = ''
+            this.room_detail.exp_date = ''
         },
         submitSign() {
             if (this.room_detail_create.check_user == true) {
@@ -820,6 +827,12 @@ export default {
                             room_type: this.room_detail_create.type_room,
                         }
                     })
+                }).catch((err) => {
+                    loading.close()
+                    if (err.response?.data?.error?.message) {
+                        this.openNotificationRenralPage('top-right', 'danger', err.response?.data?.error?.message, 6000)
+                    };
+
                 }).finally(() => {
                     loading.close()
                     this.create = false
@@ -865,6 +878,12 @@ export default {
                         this.create = false
                         this.getRentalContract()
                     })
+                }).catch((err) => {
+                    loading.close()
+                    if (err.response?.data?.error?.message) {
+                        this.openNotificationRenralPage('top-right', 'danger', err.response?.data?.error?.message, 6000)
+                    };
+
                 })
             }
         },
