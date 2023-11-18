@@ -31,7 +31,7 @@
                     </div>
                 </div>
                 <div class="flex">
-                    <div class="h-[36px] w-[132px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]"
+                    <!-- <div class="h-[36px] w-[132px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]"
                         @click="create = true">
                         <div class="flex justify-center items-center">
                             <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -42,10 +42,10 @@
                         </div>
                         <div @click="create = true"
                             class="text-white font-bold ml-[8px]   flex justify-center items-center">เพิ่มการจอง</div>
-                    </div>
-                    <div class="flex justify-start items-center   mt-[5px] ml-[14px]">
+                    </div> -->
+                    <div class="flex justify-start items-center   mt-[5px]">
                         <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาตามหมายเลขห้อง"
-                            v-model="search" @input="filterData" type="input" />
+                            v-model="filter.search" @input="filterData" type="input" />
                     </div>
                     <vs-tooltip bottom shadow not-hover v-model="popup_filter">
                         <div @click="popup_filter = true"
@@ -420,9 +420,9 @@ export default {
                 .then((resp) => {
                     console.log("Return from getRoomFloor()", resp.data);
                     this.roomFloor = resp.data
-                    if(resp.data[0]){
-                    this.filter.floor = resp.data[0].id
-                    this.name_floor = resp.data[0].attributes.floorName
+                    if (resp.data[0]) {
+                        this.filter.floor = resp.data[0].id
+                        this.name_floor = resp.data[0].attributes.floorName
                     }
                 }).finally(() => {
                     this.getRoom()
@@ -472,11 +472,11 @@ export default {
         },
         filterData() {
             this.room = this.room.filter(item =>
-                item.attributes.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase())
+                item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase()),
             );
-            // if (this.filter.search == '') {
-            //     this.getRoom()
-            // }
+            if (this.filter.search == '') {
+                this.getRoom()
+            }
         }
     }
 

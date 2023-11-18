@@ -894,7 +894,7 @@ export default {
         },
         filterData() {
             this.contract = this.contract.filter(item =>
-                item.attributes.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase())
+                item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase())
             );
             if (this.filter.search == '') {
                 this.getRentalContract()
