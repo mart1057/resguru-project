@@ -1,7 +1,8 @@
 <template>
     <div>
         <div class="grid grid-cols-5 w-[100%] gap-4 mt-[14px]">
-            <div class="h-[125px] border rounded-[12px] flex flex-col p-[12px] cursor-pointer " @click="create = true" v-for="item in contract">
+            <div class="h-[125px] border rounded-[12px] flex flex-col p-[12px] cursor-pointer " @click="create = true"
+                v-for="item in contract">
                 <div class="flex justify-between w-[100%]">
                     <div class="flex">
                         <div>
@@ -36,11 +37,13 @@
                 <div class="mt-[14px]">
                     <div class="flex">
                         <div class="text-[12px] text-[#5C6B79]">วันที่ทำสัญญา</div>
-                        <div class="ml-[14px]">{{ item.attributes.user_sign_contract.data.attributes.checkInDate? item.attributes.user_sign_contract.data.attributes.checkInDate:'ไม่มีข้อมูล' }}</div>
+                        <div class="ml-[14px]">{{ item.attributes.user_sign_contract.data.attributes.checkInDate ?
+                            item.attributes.user_sign_contract.data.attributes.checkInDate : 'ไม่มีข้อมูล' }}</div>
                     </div>
                     <div class="flex">
                         <div class="text-[12px] text-[#5C6B79]">วันที่สิ้นสุดสัญญา</div>
-                        <div class="ml-[14px]">{{ item.attributes.user_sign_contract.data.attributes.contractEndDate? item.attributes.user_sign_contract.data.attributes.contractEndDate:'ไม่มีข้อมูล' }}</div>
+                        <div class="ml-[14px]">{{ item.attributes.user_sign_contract.data.attributes.contractEndDate ?
+                            item.attributes.user_sign_contract.data.attributes.contractEndDate : 'ไม่มีข้อมูล' }}</div>
                     </div>
                 </div>
             </div>
@@ -183,10 +186,15 @@
                                 <div class="col-span-3 mt-[6px]">
                                     <div>แนบรูปบัตรประชาชน</div>
                                     <div class="flex mt-[4px]">
+                                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
+                                            id="upload" hidden type="file" />
+                                        <label for="upload">
+                                            <div
+                                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
+                                                อัพโหลดรูปภาพ</div>
+                                        </label>
                                         <div
-                                            class="flex justify-center items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
-                                            อัพโหลดรูปภาพ</div>
-                                        <div class="text-[#5C6B79] flex justify-center items-center ml-[8px] text-[12px]">
+                                            class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                             ยังไม่ได้เลือกไฟล์</div>
                                     </div>
                                 </div>
@@ -273,11 +281,15 @@
                                     <div class="col-span-3 mt-[6px]">
                                         <div>แนบรูปภาพยานพหนะคันที่ 1</div>
                                         <div class="flex mt-[4px]">
+                                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
+                                                id="upload" hidden type="file" />
+                                            <label for="upload">
+                                                <div
+                                                    class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
+                                                    อัพโหลดรูปภาพ</div>
+                                            </label>
                                             <div
-                                                class="flex justify-center items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
-                                                อัพโหลดรูปภาพ</div>
-                                            <div
-                                                class="text-[#5C6B79] flex justify-center items-center ml-[8px] text-[12px]">
+                                                class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                                 ยังไม่ได้เลือกไฟล์</div>
                                         </div>
                                     </div>
@@ -791,7 +803,7 @@ export default {
         getRentalContract() {
             this.contract = []
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3&filters[user_sign_contract][room][id][$eq]=' +  this.$route.query.id_room)
+            fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3&filters[user_sign_contract][room][id][$eq]=' + this.$route.query.id_room)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRentalContract()", resp.data);

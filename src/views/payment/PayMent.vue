@@ -387,7 +387,7 @@
                                     type="file" />
                                 <label for="upload">
                                     <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
+                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
                                         อัพโหลดรูปภาพ</div>
                                 </label>
                                 <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
@@ -472,7 +472,7 @@
                                     @change="setUploadFilePayment()" type="file" />
                                 <label for="upload">
                                     <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
+                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
                                         อัพโหลดรูปภาพ</div>
                                 </label>
                                 <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">

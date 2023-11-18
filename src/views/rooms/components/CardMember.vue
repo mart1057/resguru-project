@@ -6,7 +6,7 @@
                 <div :class="status == 'rent' ? 'bg-[#D7F1E3] text-[#39B974]' : 'bg-[#F0F8FF] text-[#003765]'"
                     @click="getDetailRentalContract()"
                     class="h-[24px] w-[auto] mt-[-22px] text-[12px] flex items-center justify-center p-[8px] rounded-[8px]">
-                    {{ status == "rent" ? 'ทำสัญญาแล้ว' :  status == "reserved" ?'ยังไม่ทำสัญญา' :'ห้องว่าง'}}
+                    {{ status == "rent" ? 'ทำสัญญาแล้ว' : status == "reserved" ? 'ยังไม่ทำสัญญา' : 'ห้องว่าง' }}
                 </div>
                 <img class="w-[78px] h-[78px] rounded-[22px]" :src="data.filePath" @click="getDetailRentalContract()" />
                 <div @click="getDetailRentalContract()">{{ data.firstName }} {{ data.lastName }}</div>
@@ -198,10 +198,15 @@
                                 <div class="col-span-3 mt-[6px]">
                                     <div>แนบรูปบัตรประชาชน</div>
                                     <div class="flex mt-[4px]">
+                                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
+                                            id="upload" hidden type="file" />
+                                        <label for="upload">
+                                            <div
+                                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
+                                                อัพโหลดรูปภาพ</div>
+                                        </label>
                                         <div
-                                            class="flex justify-center items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
-                                            อัพโหลดรูปภาพ</div>
-                                        <div class="text-[#5C6B79] flex justify-center items-center ml-[8px] text-[12px]">
+                                            class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                             ยังไม่ได้เลือกไฟล์</div>
                                     </div>
                                 </div>
@@ -297,11 +302,15 @@
                                         <div class="col-span-3 mt-[6px]">
                                             <div>แนบรูปภาพยานพหนะคันที่ 1</div>
                                             <div class="flex mt-[4px]">
+                                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
+                                                    id="upload" hidden type="file" />
+                                                <label for="upload">
+                                                    <div
+                                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
+                                                        อัพโหลดรูปภาพ</div>
+                                                </label>
                                                 <div
-                                                    class="flex justify-center items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
-                                                    อัพโหลดรูปภาพ</div>
-                                                <div
-                                                    class="text-[#5C6B79] flex justify-center items-center ml-[8px] text-[12px]">
+                                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                                     ยังไม่ได้เลือกไฟล์</div>
                                             </div>
                                         </div>
@@ -375,7 +384,7 @@
                             <div class="grid grid-cols-8 w-[100%] gap-2 mt-[14px]">
                                 <div v-for="room in floor.attributes">
                                     <div class="h-[32px] bg-[#DEEAF5] rounded-[12px] flex items-center justify-between pl-[8px] pr-[8px]"
-                                        @click=" room.status ? '' : room_move.id_room = room.id, room_move.Number = room.RoomNumber, confirm = true,tab=''"
+                                        @click=" room.status ? '' : room_move.id_room = room.id, room_move.Number = room.RoomNumber, confirm = true, tab = ''"
                                         :class="room.status ? 'bg-[#E8F0F8] text-[#B9CCDC]' : 'bg-[#DEEAF5] text-[#003765] cursor-pointer'">
                                         <div>{{ room.RoomNumber }}</div>
                                         <div>{{ room.status ? 'เต็ม' : 'ว่าง' }}
@@ -847,7 +856,7 @@ export default {
                             data: {
                                 room: this.room_move.id_room,
                                 users_permissions_user: this.$route.query.id_user,
-                                contractStatus:'reserved'
+                                contractStatus: 'reserved'
                             }
                         })
                     }).finally(() => {

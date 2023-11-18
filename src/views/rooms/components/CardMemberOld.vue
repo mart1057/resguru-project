@@ -1,7 +1,8 @@
 <template>
     <div>
         <div class="grid grid-cols-7 w-[100%] gap-4 mt-[14px]">
-            <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[12px] cursor-pointer " @click="create = true">
+            <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[12px] cursor-pointer "
+                @click="create = true">
                 <div class="w-[78px] h-[78px] rounded-[22px] bg-[#8396A6]"></div>
                 <div>ชัชพล บุญพันธุ์</div>
                 <div class="flex">
@@ -209,10 +210,15 @@
                                 <div class="col-span-3 mt-[6px]">
                                     <div>แนบรูปบัตรประชาชน</div>
                                     <div class="flex mt-[4px]">
+                                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
+                                            id="upload" hidden type="file" />
+                                        <label for="upload">
+                                            <div
+                                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
+                                                อัพโหลดรูปภาพ</div>
+                                        </label>
                                         <div
-                                            class="flex justify-center items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
-                                            อัพโหลดรูปภาพ</div>
-                                        <div class="text-[#5C6B79] flex justify-center items-center ml-[8px] text-[12px]">
+                                            class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                             ยังไม่ได้เลือกไฟล์</div>
                                     </div>
                                 </div>
@@ -299,11 +305,15 @@
                                     <div class="col-span-3 mt-[6px]">
                                         <div>แนบรูปภาพยานพหนะคันที่ 1</div>
                                         <div class="flex mt-[4px]">
+                                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
+                                                id="upload" hidden type="file" />
+                                            <label for="upload">
+                                                <div
+                                                    class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
+                                                    อัพโหลดรูปภาพ</div>
+                                            </label>
                                             <div
-                                                class="flex justify-center items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
-                                                อัพโหลดรูปภาพ</div>
-                                            <div
-                                                class="text-[#5C6B79] flex justify-center items-center ml-[8px] text-[12px]">
+                                                class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                                 ยังไม่ได้เลือกไฟล์</div>
                                         </div>
                                     </div>
@@ -373,13 +383,13 @@
                                     hidden type="file" />
                                 <label for="upload">
                                     <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
+                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
                                         อัพโหลดรูปภาพ</div>
                                 </label>
-
                                 <!-- <div
                                     class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                     ยังไม่ได้เลือกไฟล์</div> -->
+
                             </div>
                         </div>
                         <div class="flex flex-col justify-center items-center ml-[50px]">
@@ -390,10 +400,9 @@
                                     hidden type="file" />
                                 <label for="upload">
                                     <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
+                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
                                         อัพโหลดรูปภาพ</div>
                                 </label>
-
                                 <!-- <div
                                     class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                     ยังไม่ได้เลือกไฟล์</div> -->
@@ -458,7 +467,7 @@
                                     hidden type="file" />
                                 <label for="upload">
                                     <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
+                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
                                         อัพโหลดรูปภาพ</div>
                                 </label>
                                 <!-- <div
@@ -474,13 +483,12 @@
                                     hidden type="file" />
                                 <label for="upload">
                                     <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
+                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
                                         อัพโหลดรูปภาพ</div>
                                 </label>
-
                                 <!-- <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
+                                            class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                                            ยังไม่ได้เลือกไฟล์</div> -->
                             </div>
                         </div>
                         <div class="flex flex-col justify-center items-start ml-[50px]">
@@ -541,13 +549,12 @@
                                     hidden type="file" />
                                 <label for="upload">
                                     <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
+                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
                                         อัพโหลดรูปภาพ</div>
                                 </label>
-
                                 <!-- <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
+                                            class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                                            ยังไม่ได้เลือกไฟล์</div> -->
                             </div>
                         </div>
                         <div class="flex flex-col justify-center items-center ml-[50px]">
@@ -558,13 +565,12 @@
                                     hidden type="file" />
                                 <label for="upload">
                                     <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
+                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
                                         อัพโหลดรูปภาพ</div>
                                 </label>
-
                                 <!-- <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
+                                            class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                                            ยังไม่ได้เลือกไฟล์</div> -->
                             </div>
                         </div>
                         <div class="flex flex-col justify-center items-start ml-[50px]">
@@ -626,30 +632,28 @@
                                     hidden type="file" />
                                 <label for="upload">
                                     <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
+                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
                                         อัพโหลดรูปภาพ</div>
                                 </label>
-
                                 <!-- <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
+                                            class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                                            ยังไม่ได้เลือกไฟล์</div> -->
                             </div>
                         </div>
                         <div class="flex flex-col justify-center items-center ml-[50px]">
                             <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนย้ายออก
                             </div>
                             <div class="flex mt-[12px]">
-                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
-                                    hidden type="file" />
-                                <label for="upload">
-                                    <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                        อัพโหลดรูปภาพ</div>
-                                </label>
-
-                                <!-- <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
+                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
+                                            id="upload" hidden type="file" />
+                                        <label for="upload">
+                                            <div
+                                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
+                                                อัพโหลดรูปภาพ</div>
+                                        </label>
+                                        <!-- <div
+                                            class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                                            ยังไม่ได้เลือกไฟล์</div> -->
                             </div>
                         </div>
                         <div class="flex flex-col justify-center items-start ml-[50px]">
@@ -771,8 +775,8 @@
                                     class="bg-[#165D98] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
                                     <div class="flex">
                                         <div class="flex justify-center items-center ">
-                                            <svg width="22" height="23"
-                                                viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
                                                 <mask id="mask0_3285_9902" style="mask-type:alpha"
                                                     maskUnits="userSpaceOnUse" x="0" y="0" width="22" height="23">
                                                     <rect y="0.5" width="22" height="22" fill="#D9D9D9" />
