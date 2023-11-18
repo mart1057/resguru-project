@@ -28,27 +28,28 @@
             <vs-table>
                 <template #thead>
                     <vs-tr>
-                        <vs-th>
-                            วันที่
-                        </vs-th>
+                      
                         <vs-th>
                             เรื่อง
                         </vs-th>
                         <vs-th>
                             รายละเอียด
+                        </vs-th>  
+                        <vs-th>
+                            วันที่
                         </vs-th>
                     </vs-tr>
                 </template>
                 <template #tbody>
                     <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
                         <vs-td>
-                            {{ convertDateNoTime(tr.createdAt) }}
-                        </vs-td>
-                        <vs-td>
                             {{ tr.topic }}
                         </vs-td>
                         <vs-td>
                             {{ tr.description}}
+                        </vs-td> 
+                        <vs-td>
+                            {{ convertDateNoTime(tr.createdAt) }}
                         </vs-td>
                     </vs-tr>
                 </template>

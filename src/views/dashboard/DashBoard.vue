@@ -3,7 +3,7 @@
         <div class="w-[55%]">
             <UserPlan :dashboard="dahboard" />
             <PayMent/>
-            <Notification/>
+            <Notification :data="db_services"/>
         </div>
         <div class="w-[44%]">
             <Expenses/>
@@ -24,7 +24,8 @@ export default {
     data() {
         return {
             db_meter : [],
-            db_annocment:[]
+            db_annocment:[],
+            db_services:[]
 
         }
 
@@ -49,7 +50,7 @@ export default {
                     console.log("Return from getRoom()", resp);
                     this.db_meter = resp.room.roomData  
                     this.db_annocment = resp.announcement.announceData
-                   
+                    this.db_services = resp.service.notiData
             })
         }
     }
