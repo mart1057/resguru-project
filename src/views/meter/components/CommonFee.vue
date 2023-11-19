@@ -1,6 +1,6 @@
 <template>
     <div class="mt-[14px] bg-[white] rounded-[12px] p-[24px]">
-        <div class="font-bold text-[18px]">อาคาร A ชั้น 1</div>
+        <div class="font-bold text-[18px]">ชั้น {{ tab }}</div>
         <div class="mt-[14px]">
             <vs-table>
                 <template #thead>
@@ -63,6 +63,10 @@
 import axios from 'axios'
 
 export default {
+    props: {
+        tab: { type: { String } },
+        id: { type: { String } },
+    },
     data() {
         return {
             users: [
@@ -102,12 +106,12 @@ export default {
         }, 1000)
     },
     mounted() {
-        this.getCommonFeeRoom();
+        this.getCommonFeeRoom(this.id);
     },
     methods: {
-        getCommonFeeRoom() {
+        getCommonFeeRoom(id) {
             const loading = this.$vs.loading()
-            fetch(`https://api.resguru.app/api/getcommunallist?buildingid=${this.$store.state.building}&buildingFloor=2&month=10&year=2023`)
+            fetch(`https://api.resguru.app/api/getcommunallist?buildingid=${this.$store.state.building}&buildingFloor=${id}&month=10&year=2023`)
             
                 .then(response => response.json())
                 .then((resp) => {

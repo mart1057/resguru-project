@@ -120,11 +120,13 @@
                             </div>
                             <div class="text-[24px] font-bold ml-[8px] flex justify-center items-center">
                                 {{
-                                tab == 1 ? 'มิเตอร์น้ำ' : tab == 2 ? 'มิเตอร์ไฟฟ้า' : tab == 3 ? 'ค่าส่วนกลาง' : 'บริการอื่นๆ' 
+                                    tab == 1 ? 'มิเตอร์น้ำ' : tab == 2 ? 'มิเตอร์ไฟฟ้า' : tab == 3 ? 'ค่าส่วนกลาง' :
+                                        'บริการอื่นๆ'
                                 }}
-                                </div>
+                            </div>
                         </div>
-                        <div class="flex border pl-[14px] pr-[14px]  rounded-[12px] cursor-pointer " @click="routeTo('/setting')">
+                        <div class="flex border pl-[14px] pr-[14px]  rounded-[12px] cursor-pointer "
+                            @click="routeTo('/setting')">
                             <div class="flex justify-center items-center">
                                 <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -287,21 +289,28 @@
 
                 </div>
                 <div class="flex items-center mb-[8px] mt-[14px]">
-                    <div class="mr-[14px] font-bold cursor-pointer">อาคาร A ชั้น 1</div>
-                    <div class="text-[#8396A6] cursor-pointer">อาคาร A ชั้น 2</div>
+                    <div v-for="(data, i) in floor ">
+                        <div class=" cursor-pointer mr-[8px]"
+                            :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
+                            @click="tab_floor = i, filter.floor = data.id, callChildFunction(data.id), name_floor = data.attributes.floorName">
+                            อาคาร
+                            {{
+                                data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }}
+                        </div>
+                    </div>
                 </div>
             </div>
             <div v-if="tab == 1">
-                <Water />
+                <Water :id="filter.floor" :tab="name_floor"  ref="childComponentRef" />
             </div>
             <div v-if="tab == 2">
-                <Electricity />
+                <Electricity :id="filter.floor" :tab="name_floor" ref="childComponentRef" />
             </div>
             <div v-if="tab == 3">
-                <CommonFee />
+                <CommonFee  :id="filter.floor" :tab="name_floor" ref="childComponentRef" />
             </div>
             <div v-if="tab == 4">
-                <OtherFees />
+                <OtherFees :id="filter.floor" :tab="name_floor" ref="childComponentRef"/>
             </div>
         </div>
     </div>
@@ -316,7 +325,13 @@ export default {
     data() {
         return {
             tab: 1,
-            popup_filter: false
+            popup_filter: false,
+            filter: {
+                search: '',
+                floor: '',
+            },
+            floor: [],
+            tab_floor: '0',
         }
     },
     created() {
@@ -324,6 +339,7 @@ export default {
         const loading = this.$vs.loading({
             opacity: 1,
         })
+        this.getfloor()
         setTimeout(() => {
             loading.close()
         }, 1000)
@@ -334,13 +350,41 @@ export default {
                 path: path + '?tab=3'
             })
         },
-        getfloor(){
-            fetch('https://api.resguru.app/api/building-floors?filters[building][id][$eq]=' + this.$store.state.building)
-            .then(response => response.json())
-            .then((resp) => {
-                console.log("Return from getfloor()",resp.data);
-                this.floor = resp.data
-            })
+        callChildFunction(id) {
+            if (this.tab == 1) {
+                this.$refs.childComponentRef.getWaterFee(id);
+            }
+            if (this.tab == 2) {
+                this.$refs.childComponentRef.getElectricityFee(id);
+            }
+            if(this.tab == 3){
+                this.$refs.childComponentRef.getCommonFeeRoom(id)
+            }
+            if(this.tab == 4){
+                this.$refs.childComponentRef.getOtherFee(id)
+            }
+        },
+        // callChildFunctionEle(id) {
+        //     this.$refs.childComponentRefEle
+        // },
+        // callChildFunctionEle(id) {
+        //     this.$refs.childComponentRefEle.getElectricityFee(id);
+        // },
+        getfloor() {
+            // const loading = this.$vs.loading()
+            fetch('https://api.resguru.app/api' + '/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=deep,2')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getRoomFloor()", resp.data);
+                    this.floor = resp.data
+                    if (resp.data[0]) {
+                        this.filter.floor = resp.data[0].id
+                        this.name_floor = resp.data[0].attributes.floorName
+                    }
+                }).finally(() => {
+                    this.callChildFunction(this.filter.floor)
+                    // this.callChildFunctionEle(this.filter.floor)
+                })
         },
     }
 }
