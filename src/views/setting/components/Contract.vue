@@ -119,8 +119,8 @@
                 <div class="mt-[14px]">
                     <div class="text-custom">Template สัญญาเช่า</div>
                     <div class="mt-[8px] flex">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" accept="application/pdf"/>
+                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" ref="contractTemplate" hidden
+                            type="file" accept="application/pdf" @change="setUploadFile()"/>
                         <label for="upload" class="cursor-pointer">
                             <div
                                 class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
@@ -137,7 +137,7 @@
                         </vs-button>
                     </div>
                     <div>
-                        <vs-button @click="createPaymentOfBuilding()" color="#003765">
+                        <vs-button @click="createContractTemplate()" color="#003765">
                             <div class="text-custom">บันทึก</div>
                         </vs-button>
                     </div>
@@ -156,7 +156,8 @@ export default {
     data() {
         return {
            contract: [],
-           create:false
+           create:false,
+           file: [],
         }
     },
     created() {
@@ -211,29 +212,60 @@ export default {
         viewUploadFile(url){
             window.open('https://api.resguru.app'+url, '_blank', 'noreferrer');
         },
-        addContract(){
-            axios.post(`https://api.resguru.app/api/rooms/`,{
-                data : {
-                    RoomNumber: "RandomRoom 301",
-                    room_building: this.$store.state.building,
-                    room_type: this.roomType,
-                    building_floor: this.roomFloor,
-                }
-            }).then( 
-                    this.openNotificationAddContract('top-right', '#3A89CB', 6000)
-                )
+        // addContract(){
+        //     axios.post(`https://api.resguru.app/api/rooms/`,{
+        //         data : {
+        //             RoomNumber: "RandomRoom 301",
+        //             room_building: this.$store.state.building,
+        //             room_type: this.roomType,
+        //             building_floor: this.roomFloor,
+        //         }
+        //     }).then( 
+        //             this.openNotificationAddContract('top-right', '#3A89CB', 6000)
+        //         )
                 
+        // },
+        // openNotificationAddContract(position = null, color) {
+        //     const noti = this.$vs.notification({
+        //         sticky: true,
+        //         color,
+        //         position,
+        //         title: 'Add Room Success',
+        //     })
+        // },
+        setUploadFile(){
+            this.file = this.$refs.contractTemplate.files[0]
         },
-        openNotificationAddContract(position = null, color) {
-            const noti = this.$vs.notification({
-                sticky: true,
-                color,
-                position,
-                title: 'Add Room Success',
-            })
+        createContractTemplate(){
+            axios.post("https://api.resguru.app/api/contract-template",{
+                data:{
+                    building:this.fullPaymentForm.invoiceID,
+                    title: this.fullPaymentForm.userID,
+                }
+            }).then(
+                (resp) => {
+                    if(this.file !== null){
+                        let formData = new FormData();
+                        formData.append("files", this.file);
+                        formData.append("refId", String(resp.data.data.id));
+                        formData.append("ref", "api::contract-template.contract-template");
+                        formData.append("field", "templatePDF");
+
+                        axios.post("https://api.resguru.app/api/upload", formData, {
+                            headers: {
+                            "Content-Type": "multipart/form-data",
+                            },
+                        }).then( (result) => { console.log("Upload file",result)}) 
+                        .catch((error) => {
+                                    console.log(error);
+                        })
+                    }
+                }
+            )
+            this.createPartialPayment = false
+            alert("Contact Template is uploaded")
         },
         
     },
 }
-
 </script>
