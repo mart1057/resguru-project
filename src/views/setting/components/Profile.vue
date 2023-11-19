@@ -285,6 +285,7 @@ export default {
             amphoe: '',
             province: '',
             zipcode: '',
+            fileBanner: [],
         }
     },
     components: {
@@ -418,7 +419,30 @@ export default {
             if(this.$route.query.tab !== undefined){
                 this.tabSetting = this.$route.query.tabsetting
             }
-        }
+        },
+        editBannerwithUpload(){
+
+            this.fileBanner = this.$refs.contractTemplate.files[0]
+
+            if(this.fileBanner !== null){
+                        let formData = new FormData();
+                        formData.append("files", this.fileBanner);
+                        formData.append("refId", String(this.$store.state.building));
+                        formData.append("ref", "api::building.building");
+                        formData.append("field", "buildingBanner");
+
+                        axios.post("https://api.resguru.app/api/upload", formData, {
+                            headers: {
+                            "Content-Type": "multipart/form-data",
+                            },
+                        }).then( (result) => { console.log("Upload file",result)}) 
+                        .catch((error) => {
+                                    console.log(error);
+                        })
+            }
+            alert("Banner is uploaded")
+        },
+        
         
     },
 }

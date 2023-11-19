@@ -262,7 +262,7 @@ export default {
                     }
                 }
             )
-            this.createPartialPayment = false
+            this.create = false
             alert("Contact Template is uploaded")
         },
         
