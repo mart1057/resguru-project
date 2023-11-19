@@ -15,8 +15,8 @@
         </div>
         <div class="mt-[14px]">
             <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]">
-                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" hidden
-                                    type="file" />
+                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" ref="buildingBanner"  hidden
+                                   type="file" @change="editBannerwithUpload()" />
                 <label for="upload">
                 <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">เปลี่ยนรูปภาพปก</div>
                 </label>
@@ -422,7 +422,7 @@ export default {
         },
         editBannerwithUpload(){
 
-            this.fileBanner = this.$refs.contractTemplate.files[0]
+            this.fileBanner = this.$refs.buildingBanner.files[0]
 
             if(this.fileBanner !== null){
                         let formData = new FormData();

@@ -404,8 +404,8 @@
                                         fill="white" />
                                 </svg>
                             </div>
-                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" hidden
-                                    type="file" />
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" ref="paymentImage" hidden
+                                    type="file" @change="editPaymentImagewithUpload(data.id)" />
                             <label for="upload">
                             <div class="text-white flex items-center justify-center ml-[4px] cursor-pointer">เปลี่ยนรูป</div>
                             </label>
@@ -483,7 +483,7 @@
                 <div class="mt-[14px]">
                     <div class="text-custom">QR Code</div>
                     <div class="mt-[4px] flex">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
+                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" ref="fileForm" hidden
                             type="file" />
                         <label for="upload">
                             <div
@@ -521,6 +521,8 @@ export default {
             bankName: "",
             accountBankName: "",
             accountNumber: 0,
+            filePayment: [],
+            filepaymentForm: [],
         }
     },
     created() {
@@ -545,6 +547,9 @@ export default {
                     loading.close()
                 })
         },
+        tempUploadFilePayment(){
+            this.filepaymentForm = this.$refs.fileForm.files[0]
+        },
         createPaymentOfBuilding(){
             axios.post(`https://api.resguru.app/api/building-pay-methods/`,{
                 data : {
@@ -553,10 +558,27 @@ export default {
                     accountNumber: this.accountNumber,
                     building: this.$store.state.building
                 }
-            }).then( 
-                    this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
+            }).then(  (resp) => {
+
+                        if(this.filepaymentForm !== null){
+                                let formData = new FormData();
+                                formData.append("files", this.filepaymentForm);
+                                formData.append("refId", String(resp.data.data.id));
+                                formData.append("ref", "api::building-pay-method.building-pay-method");
+                                formData.append("field", "QRCode");
+
+                                axios.post("https://api.resguru.app/api/upload", formData, {
+                                    headers: {
+                                    "Content-Type": "multipart/form-data",
+                                    },
+                                }).then( (result) => { console.log("Upload file",result)}) 
+                                .catch((error) => {
+                                            console.log(error);
+                                })
+                        }
+                        this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
+                    }    
                 )
-                
         }, 
         updateUserBuildingPayment(buildingID){
             axios.put(`https://api.resguru.app/api/building-pay-methods/${buildingID}`,{
@@ -575,6 +597,28 @@ export default {
                 position,
                 title: 'Update Room Success',
             })
+        },
+        editPaymentImagewithUpload(Editid){
+
+            this.filePayment = this.$refs.paymentImage.files[0]
+
+            if(this.filePayment !== null){
+                        let formData = new FormData();
+                        formData.append("files", this.filePayment);
+                        formData.append("refId", String(Editid));
+                        formData.append("ref", "api::building-pay-method.building-pay-method");
+                        formData.append("field", "QRCode");
+
+                        axios.post("https://api.resguru.app/api/upload", formData, {
+                            headers: {
+                            "Content-Type": "multipart/form-data",
+                            },
+                        }).then( (result) => { console.log("Upload file",result)}) 
+                        .catch((error) => {
+                                    console.log(error);
+                        })
+            }
+            alert("QRCode is uploaded")
         },
     },
 }

@@ -554,6 +554,8 @@
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">หลักฐานการจ่ายเงิน</div>
                         <div class="flex mt-[4px]">
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadEvidence" ref="fileEvidence" hidden
+                                    type="file" @change="tempUploadEvidence()" />
                             <div
                                 class="flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
                                 เลือกรูปภาพ</div>
@@ -564,6 +566,8 @@
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">ใบสำคัญจ่าย</div>
                         <div class="flex mt-[4px]">
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadReceipt" ref="fileReceipt" hidden
+                                    type="file" @change="tempUploadReceipt()" />
                             <div
                                 class="flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
                                 เลือกรูปภาพ</div>
@@ -643,7 +647,9 @@ export default {
             date: "",
             remark: "",
             evidence: "",
-            receipt: ""
+            receipt: "",
+            fileEvidenceForm: [],
+            fileReceiptForm: []
         }
 
     },
@@ -733,6 +739,12 @@ export default {
                     this.expenseType = resp.data
                 })
         },
+        tempUploadEvidence(){
+            this.fileEvidenceForm = this.$refs.fileEvidence.files[0]
+        },
+        tempUploadReceipt(){
+            this.fileReceiptForm = this.$refs.fileReceipt.files[0]
+        },
         createExpense() {
             axios.post(`https://api.resguru.app/api/building-expenses`, {
                     data: {
@@ -746,6 +758,43 @@ export default {
                         // receipt: this.receipt
                     }
                 })
+                .then(  (resp) => {
+                        if(this.fileEvidenceForm !== null){
+                            let formData = new FormData();
+                            formData.append("files", this.fileEvidenceForm);
+                            formData.append("refId", String(resp.data.data.id));
+                            formData.append("ref", "api::building-expenses.building-expenses");
+                            formData.append("field", "evidence");
+
+                            axios.post("https://api.resguru.app/api/upload", formData, {
+                                headers: {
+                                "Content-Type": "multipart/form-data",
+                                },
+                            }).then( (result) => { console.log("Upload file",result)}) 
+                            .catch((error) => {
+                                        console.log(error);
+                            })
+                        }
+
+                        if(this.fileReceiptForm !== null){
+                            let formDataReceipt = new FormData();
+                            formDataReceipt.append("files", this.fileReceiptForm);
+                            formDataReceipt.append("refId", String(resp.data.data.id));
+                            formDataReceipt.append("ref", "api::building-expenses.building-expenses");
+                            formDataReceipt.append("field", "receipt");
+
+                            axios.post("https://api.resguru.app/api/upload", formData, {
+                                headers: {
+                                "Content-Type": "multipart/form-data",
+                                },
+                            }).then( (result) => { console.log("Upload file",result)}) 
+                            .catch((error) => {
+                                        console.log(error);
+                            })
+                        }
+                        alert("Expense is created")
+                    }    
+                )
         },
         getIncome() {
             const loading = this.$vs.loading() 
