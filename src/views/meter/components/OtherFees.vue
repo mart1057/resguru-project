@@ -110,6 +110,8 @@ export default {
         return {
             add_item: false,
             OtherFee:[],
+            code: 0,
+            text: ''
         }
     },
     created() {
@@ -128,17 +130,32 @@ export default {
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()",resp.data);
-                    this.OtherFee = resp.data
+                    if (this.code == 8) {
+                        
+                        this.OtherFee = resp.data .filter(item =>
+                        item.attributes.RoomNumber.toLowerCase().includes(this.text.toLowerCase()),
+                        );
+
+                    }
+                    else{
+                        this.OtherFee = resp.data   
+                    }
+                    
                 }).finally(() => {
                     loading.close()
                 })
         },
-        filterData(text) {
+        filterData(text,code) {
+            this.text = text
             console.log('filter',text);
             this.OtherFee = this.OtherFee.filter(item =>
                 item.attributes.RoomNumber.toLowerCase().includes(text.toLowerCase()),
             );
             if (text == '') {
+                this.getOtherFee(this.id)
+            }
+            if (code == 8) {
+                this.code = 8
                 this.getOtherFee(this.id)
             }
         }

@@ -118,6 +118,8 @@ export default {
             ],
             ElectricityFee:[],
             electicUnit:0,
+            code: 0,
+            text: ''
         }
     },
     created() {
@@ -139,7 +141,16 @@ export default {
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()",resp.data);
-                    this.ElectricityFee = resp.data
+                    if (this.code == 8) {
+                        
+                        this.ElectricityFee = resp.data .filter(item =>
+                            item.RoomNumber.toLowerCase().includes(this.text.toLowerCase()),
+                        );
+
+                    }
+                    else{
+                        this.ElectricityFee = resp.data   
+                    }
                 }).finally(() => {
                     loading.close()
                 })
@@ -168,12 +179,17 @@ export default {
                 title: 'Update Meter Success, <br> Please wait while the system is loading',
             })
         },
-        filterData(text) {
+        filterData(text,code) {
+            this.text = text
             console.log('filter',text);
             this.ElectricityFee = this.ElectricityFee.filter(item =>
                 item.RoomNumber.toLowerCase().includes(text.toLowerCase()),
             );
             if (text == '') {
+                this.getElectricityFee(this.id)
+            }
+            if (code == 8) {
+                this.code = 8
                 this.getElectricityFee(this.id)
             }
         }

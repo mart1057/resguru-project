@@ -97,6 +97,8 @@ export default {
             ],
             commonRoom: [],
             communalUnit:0,
+            code: 0,
+            text: ''
         }
     },
     created() {
@@ -116,7 +118,16 @@ export default {
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()",resp.data);
-                    this.commonRoom = resp.data
+                    if (this.code == 8) {
+                        
+                        this.commonRoom = resp.data .filter(item =>
+                            item.RoomNumber.toLowerCase().includes(this.text.toLowerCase()),
+                        );
+
+                    }
+                    else{
+                        this.commonRoom = resp.data   
+                    }
                 }).finally(() => {
                     loading.close()
                 })
@@ -143,12 +154,17 @@ export default {
                 title: 'Update Communual Success',
             })
         },
-        filterData(text) {
+        filterData(text,code) {
+            this.text = text
             console.log('filter',text);
             this.commonRoom = this.commonRoom.filter(item =>
                 item.RoomNumber.toLowerCase().includes(text.toLowerCase()),
             );
             if (text == '') {
+                this.getCommonFeeRoom(this.id)
+            }
+            if (code == 8) {
+                this.code = 8
                 this.getCommonFeeRoom(this.id)
             }
         }

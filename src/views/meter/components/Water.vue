@@ -114,6 +114,8 @@ export default {
             WaterFee: [],
             waterUnit: 0,
             floor: [],
+            code: 0,
+            text: ''
         }
     },
     created() {
@@ -133,7 +135,17 @@ export default {
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()", resp.data);
-                    this.WaterFee = resp.data
+                    if (this.code == 8) {
+                        
+                        this.WaterFee = resp.data .filter(item =>
+                            item.RoomNumber.toLowerCase().includes(this.text.toLowerCase()),
+                        );
+
+                    }
+                    else{
+                     this.WaterFee = resp.data   
+                    }
+                    
                 }).finally(() => {
                     loading.close()
                 })
@@ -162,21 +174,19 @@ export default {
                 title: 'Update Water Meter Success',
             })
         },
-         filterData(text,code) {
-            console.log('filter',text);
+        filterData(text, code) {
+            this.text = text
+            console.log('filter', text);
             this.WaterFee = this.WaterFee.filter(item =>
                 item.RoomNumber.toLowerCase().includes(text.toLowerCase()),
             );
             if (text == '') {
                 this.getWaterFee(this.id)
             }
-            // if(code == 8){
-            //     this.getWaterFee(this.id)
-            //     this.WaterFee = this.WaterFee.filter(item =>
-            //     item.RoomNumber.toLowerCase().includes(text.toLowerCase()),
-            // );
-
-            // }
+            if (code == 8) {
+                this.code = 8
+                this.getWaterFee(this.id)
+            }
         }
 
     },
