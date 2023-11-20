@@ -14,13 +14,28 @@
             </div>
         </div>
         <div class="mt-[14px]">
-            <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]">
-                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" hidden
-                                    type="file" />
-                <label for="upload">
-                <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">เปลี่ยนรูปภาพปก</div>
-                </label>
+            <div v-if="buildingData.attributes.buildingBanner.data">
+                <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]"
+                v-bind:style="{ backgroundImage: 'url(https://api.resguru.app' + buildingData.attributes.buildingBanner.data.attributes.url + ')' }">
+                    <!-- <img :src="`https://api.resguru.app${buildingData.attributes.buildingBanner.data.attributes.url}`" > -->
+                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" ref="buildingBanner"  hidden
+                                    type="file" @change="editBannerwithUpload()" />
+                    <label for="upload">
+                    <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">เปลี่ยนรูปภาพปก</div>
+                    </label>
+                </div>
             </div>
+            <div v-else>
+                <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]">
+                    
+                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" ref="buildingBanner"  hidden
+                                        type="file" @change="editBannerwithUpload()" />
+                    <label for="upload">
+                    <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">เปลี่ยนรูปภาพปก</div>
+                    </label>
+                </div>
+            </div>
+            
             <div class="flex w-[100%]">
                 <div class="w-[20%] ml-[18px] mt-[-70px]">
                     <div class="bg-[white] rounded-[22px] w-[246px] border p-[14px] flex flex-col items-center">
@@ -285,6 +300,7 @@ export default {
             amphoe: '',
             province: '',
             zipcode: '',
+            fileBanner: [],
         }
     },
     components: {
@@ -335,7 +351,7 @@ export default {
         }, 
         getBuildingData() {
             const loading = this.$vs.loading()
-            fetch(`https://api.resguru.app/api/buildings/${this.$store.state.building}`)
+            fetch(`https://api.resguru.app/api/buildings/${this.$store.state.building}?populate=*`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getBuilding()",resp);
@@ -418,7 +434,30 @@ export default {
             if(this.$route.query.tab !== undefined){
                 this.tabSetting = this.$route.query.tabsetting
             }
-        }
+        },
+        editBannerwithUpload(){
+
+            this.fileBanner = this.$refs.buildingBanner.files[0]
+
+            if(this.fileBanner !== null){
+                        let formData = new FormData();
+                        formData.append("files", this.fileBanner);
+                        formData.append("refId", String(this.$store.state.building));
+                        formData.append("ref", "api::building.building");
+                        formData.append("field", "buildingBanner");
+
+                        axios.post("https://api.resguru.app/api/upload", formData, {
+                            headers: {
+                            "Content-Type": "multipart/form-data",
+                            },
+                        }).then( (result) => { console.log("Upload file",result)}) 
+                        .catch((error) => {
+                                    console.log(error);
+                        })
+            }
+            alert("Banner is uploaded")
+        },
+        
         
     },
 }

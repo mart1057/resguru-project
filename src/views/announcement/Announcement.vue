@@ -165,6 +165,7 @@
                             v-model="description" />
                     </div>
                     <div class="mt-[14px]">
+                        
                         <div class="text-custom text-[14px] text-[#003765]">วันที่สิ้นสุด</div>
                         <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[12px] pr-[12px] flex justify-start" type="date"
                             v-model="date_execute" />
@@ -172,6 +173,8 @@
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">รูปภาพ</div>
                         <div class="flex mt-[4px]">
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" ref="AnnounceForm" hidden
+                            type="file" />
                             <div
                                 class="flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
                                 เลือกรูปภาพ</div>
@@ -341,6 +344,9 @@ export default {
                     loading.close()
                 })
         },
+        tempUploadFileAnnouncement(){
+            this.fileAnnounce = this.$refs.AnnounceForm.files[0]
+        },
         createAnnouncement() {
             axios.post('https://api.resguru.app/api' + '/announcements', {
                 data: {
@@ -352,12 +358,28 @@ export default {
                     building: this.$store.state.building
                 }
             })
-                .then(
+            .then(  (resp) => {
+                        if(this.fileAnnounce !== null){
+                                let formData = new FormData();
+                                formData.append("files", this.fileAnnounce);
+                                formData.append("refId", String(resp.data.data.id));
+                                formData.append("ref", "api::announcements.announcementsd");
+                                formData.append("field", "image");
+
+                                axios.post("https://api.resguru.app/api/upload", formData, {
+                                    headers: {
+                                    "Content-Type": "multipart/form-data",
+                                    },
+                                }).then( (result) => { console.log("Upload file",result)}) 
+                                .catch((error) => {
+                                            console.log(error);
+                                })
+                        }
                     this.openNotificationCreateAnnouncement('top-right', '#3A89CB', 6000).then(
                         this.$router.go(this.$router.currentRoute)
                     )
-                )
-                
+                    }    
+            )
         },
         editAnnouncement(postID) {
             axios.put(`https://api.resguru.app/api/announcements/${postID}`, {

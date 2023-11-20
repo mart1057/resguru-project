@@ -282,7 +282,7 @@
                                 <div v-if="tr.tenant_bills[0] && tr.user_sign_contract" >
                                     <!-- <vs-button  primary class="small">แก้ไขใบแจ้งหนี้</vs-button>   -->
                                         <!-- to: internal link -->
-                                        <vs-select placeholder="เมนู" v-model="menu_option" @change="selectMenu()">
+                                        <vs-select placeholder="เมนู" v-model="menu_option" @change="selectMenu(tr)">
                                             <vs-option label="อัพเดทใบแจ้งหนี้" value="1">
                                             อัพเดทใบแจ้งหนี้
                                             </vs-option>
@@ -346,45 +346,63 @@
                         </div>
                         <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
                         <div class="mt-[14px]">
+                            <div class="text-custom">เลขที่ใบแจ้งหนี้ (Invoice)</div>
+                            <div>
+                                <input disabled
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="fullPaymentForm.invoiceName" />
+                                <input
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="fullPaymentForm.invoiceID" hidden />
+                            </div>
+                        </div>
+                        <div class="mt-[14px]">
+                            <div class="text-custom">เลขห้อง</div>
+                            <div>
+                                <input disabled
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="fullPaymentForm.roomName" />
+                            </div>
+                        </div>
+                        <div class="mt-[14px]">
                             <div class="text-custom">ชื่อธนาคาร</div>
                             <div>
                                 <input
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="bankName" />
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="fullPaymentForm.bankName" />
                             </div>
                         </div>
                         <div class="mt-[14px]">
                             <div class="text-custom">ชื่อผู้โอน</div>
                             <div>
                                 <input
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="accountBankName" />
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="fullPaymentForm.accountBankName" />
+                                    <input
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="fullPaymentForm.userID" hidden />
                             </div>
                         </div>
                         <div class="mt-[14px]">
                             <div class="text-custom">ยอดโอน (เต็มจำนวน)</div>
                             <div>
-                                <input
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="amount" />
+                                <input disabled
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="fullPaymentForm.amount" />
                             </div>
                         </div>
                         <div class="mt-[14px]">
                             <div class="text-custom">วันที่</div>
                             <div>
                                 <input type="date"
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="paymentDate" />
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="fullPaymentForm.paymentDate" />
                             </div>
                         </div>
                         <div class="mt-[14px]">
                             <div class="text-custom">เวลา</div>
                             <div>
                                 <input type="time"
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="paymentTime" />
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="fullPaymentForm.paymentTime" />
                             </div>
                         </div>
                         <div class="mt-[14px]">
                             <div class="text-custom">แนบหลักฐานการโอน</div>
                             <div class="mt-[4px] flex">
-                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                                    type="file" />
+                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" ref="FullPayment" hidden
+                                    @change="setUploadFileFullPayment()"    type="file" />
                                 <label for="upload">
                                     <div
                                         class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
@@ -431,38 +449,56 @@
                         </div>
                         <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
                         <div class="mt-[14px]">
+                            <div class="text-custom">เลขที่ใบแจ้งหนี้ (Invoice)</div>
+                            <div>
+                                <input disabled
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="partialPaymentForm.invoiceName" />
+                                <input
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="partialPaymentForm.invoiceID" hidden />
+                            </div>
+                        </div>
+                        <div class="mt-[14px]">
+                            <div class="text-custom">เลขห้อง</div>
+                            <div>
+                                <input disabled
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="partialPaymentForm.roomName" />
+                            </div>
+                        </div>
+                        <div class="mt-[14px]">
                             <div class="text-custom">ชื่อธนาคาร</div>
                             <div>
                                 <input
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="bankName" />
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="partialPaymentForm.bankName" />
                             </div>
                         </div>
                         <div class="mt-[14px]">
                             <div class="text-custom">ชื่อผู้โอน</div>
                             <div>
                                 <input
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="accountBankName" />
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="partialPaymentForm.accountBankName" />
+                                <input
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="partialPaymentForm.userID" hidden />
                             </div>
                         </div>
                         <div class="mt-[14px]">
                             <div class="text-custom">ยอดโอน</div>
                             <div>
                                 <input
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="accountNumber" />
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="partialPaymentForm.amount" />
                             </div>
                         </div>
                         <div class="mt-[14px]">
                             <div class="text-custom">วันที่</div>
                             <div>
                                 <input type="date"
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="accountNumber" />
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="partialPaymentForm.paymentDate" />
                             </div>
                         </div>
                         <div class="mt-[14px]">
                             <div class="text-custom">เวลา</div>
                             <div>
                                 <input type="time"
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="accountNumber" />
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="partialPaymentForm.paymentTime" />
                             </div>
                         </div>
                         <div class="mt-[14px]">
@@ -497,7 +533,6 @@
     </div>
 </template>
 <script>
-
 import axios from 'axios'
 export default {
     data() {
@@ -509,15 +544,39 @@ export default {
             createPartialPayment: false,
             allCheck: false,
             file: [],
+            fileFullPayment: [],
+            fullPaymentForm:{
+                invoiceID:'',
+                invoiceName:'',
+                roomName:'',
+                userID: '',
+                bankName:'',
+                accountBankName:'',
+                amount:0,
+                paymentDate:'',
+                paymentTime:''
+            },
+            partialPaymentForm:{
+                invoiceID:'',
+                invoiceName:'',
+                roomName:'',
+                userID: '',
+                bankName:'',
+                accountBankName:'',
+                amount:0,
+                paymentDate:'',
+                paymentTime:''
+            },
             selected: [],
             payments: [],
             floor: [],
             tab_floor: '0',
             filter:{
                 search: '', 
-                floor:''  
+                floor:''  ,
             },
-            name_floor:'',
+            name_floor:''
+
         }
     },
     created() {
@@ -535,42 +594,105 @@ export default {
                 path: `/payment-detail?profileId=${profileID}`,
             })
         },
-        selectMenu(){
+        selectMenu(roomdata){
             if(this.menu_option == 2) {
+                //make this.form = inputfrom function
+                // ex. this.invoiceName = roomdata.attributes.invoiceName
+                console.log("Data from Select",roomdata )
+                this.fullPaymentForm.invoiceName = roomdata.tenant_bills[0].invoiceNumber
+                this.fullPaymentForm.invoiceID = roomdata.tenant_bills[0].id
+                this.fullPaymentForm.roomName = roomdata.RoomNumber
+                this.fullPaymentForm.amount = roomdata.tenant_bills[0].total
+                this.fullPaymentForm.userID = roomdata.user_sign_contract.id
                 this.createFullpayment = true
             }
             else if(this.menu_option == 3){
+                this.partialPaymentForm.invoiceName = roomdata.tenant_bills[0].invoiceNumber
+                this.partialPaymentForm.invoiceID = roomdata.tenant_bills[0].id
+                this.partialPaymentForm.roomName = roomdata.RoomNumber
+                this.partialPaymentForm.userID = roomdata.user_sign_contract.id
                 this.createPartialPayment = true   
             }
         },
         createFullPayment(){
-            this.createFullpayment = false
-            alert("Full payment is created")
-           
-        },
-        createPartial(){
-
-            let formData = new FormData();
-
-            axios.post("api/tenant-payment-evidence",{
-                bankName,
-                accountBankName,
-                amount,
-                paymentDate,
-                paymentTime
+            axios.post("https://api.resguru.app/api/tenant-evidence-payments",{
+                data:{
+                    tenant_bill:this.fullPaymentForm.invoiceID,
+                    user_sign_contract: this.fullPaymentForm.userID,
+                    bankName:  this.fullPaymentForm.accountBankName,
+                    accountBankName: this.fullPaymentForm.bankName,
+                    amount: this.fullPaymentForm.amount,
+                    paymentDate: this.fullPaymentForm.paymentDate,
+                    paymentTime: this.fullPaymentForm.paymentTime
+                }
             }).then(
                 (resp) => {
-                    if(this.file !== null){
-                        formData.append("files", this.file);
-                        formData.append("refId", String(resp.id));
+                    console.log("Response in create",resp)
+                    console.log("Response Evidence ID",resp.data.data.id)
+                    axios.put("https://api.resguru.app/api/tenant-bills/"+this.fullPaymentForm.invoiceID,{
+                        data:{
+                            paymentStatus:"Paid"
+                        }
+                    }).then((res)=> { console.log("Response in Edit Invoice",res) })
+
+                    if(this.fileFullPayment !== null){
+                        let formData = new FormData();
+                        formData.append("files", this.fileFullPayment);
+                        formData.append("refId", String(resp.data.data.id));
                         formData.append("ref", "api::tenant-evidence-payment.tenant-evidence-payment");
                         formData.append("field", "evidence");
 
-                        axios.post("api/upload", formData, {
+                        axios.post("https://api.resguru.app/api/upload", formData, {
                             headers: {
                             "Content-Type": "multipart/form-data",
                             },
-                        });
+                        }).then( (result) => { console.log("Upload file",result)}) 
+                        .catch((error) => {
+                                    console.log(error);
+                        })
+                    }
+                }
+            )
+            this.createPartialPayment = false
+            alert("Partial payment is created")
+          
+        },
+        createPartial(){
+            axios.post("https://api.resguru.app/api/tenant-evidence-payments",{
+                data:{
+                    tenant_bill:this.partialPaymentForm.invoiceID,
+                    user_sign_contract: this.partialPaymentForm.userID,
+                    bankName:  this.partialPaymentForm.accountBankName,
+                    accountBankName: this.partialPaymentForm.bankName,
+                    amount: this.partialPaymentForm.amount,
+                    paymentDate: this.partialPaymentForm.paymentDate,
+                    paymentTime: this.partialPaymentForm.paymentTime
+                }
+            }).then(
+                (resp) => {
+                    console.log("Response in create",resp)
+                    console.log("Response Evidence ID",resp.data.data.id)
+                    axios.put("https://api.resguru.app/api/tenant-bills/"+this.partialPaymentForm.invoiceID,{
+                        data:{
+                            paymentStatus:"Partial Paid"
+                        }
+                    }).then((res)=> { console.log("Response in Edit Invoice",res) })
+
+                    if(this.file !== null){
+                        let formData = new FormData();
+                        formData.append("files", this.file);
+                        formData.append("refId", String(resp.data.data.id));
+                        formData.append("ref", "api::tenant-evidence-payment.tenant-evidence-payment");
+                        formData.append("field", "evidence");
+
+                        axios.post("https://api.resguru.app/api/upload", formData, {
+                            headers: {
+                            "Content-Type": "multipart/form-data",
+                            },
+                        }).then( (result) => { console.log("Upload file",result)}) 
+                        .catch((error) => {
+                                    console.log(error);
+                        })
                     }
                 }
             )
@@ -579,9 +701,10 @@ export default {
           
         },
         getRoomBill() {
+            // console.log("this.filter.floor",this.filter.floor)
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}&floor=${this.filter.floor}&month=11&year=2023`)
+            fetch(`https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}&floor=2&month=11&year=2023`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoomBill()", resp.data);
@@ -596,6 +719,9 @@ export default {
             .then((resp) => {
                 console.log("Return from getfloor()",resp.data);
                 this.floor = resp.data
+                console.log("resp.data[0].id",resp.data[0].id)
+                console.log("resp.data[0].attributes.floorName",resp.data[0].attributes.floorName)
+                console.log("this.filter.floor",this.filter.floor)
                 if(resp.data[0]){
                     this.filter.floor = resp.data[0].id
                     this.name_floor = resp.data[0].attributes.floorName
@@ -620,7 +746,10 @@ export default {
                 )
         },
         setUploadFilePayment(){
-            this.file = this.$refs.PartialPayment.files
+            this.file = this.$refs.PartialPayment.files[0]
+        },
+        setUploadFileFullPayment(){
+            this.fileFullPayment = this.$refs.FullPayment.files[0]
         },
     }
 }
