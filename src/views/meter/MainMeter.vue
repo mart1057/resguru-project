@@ -3,7 +3,8 @@
         <div class="h-[100%] rounded-[12px] mt-[14px]">
             <div class="grid grid-cols-4 w-[100%] gap-2">
                 <div class=" h-[136px] rounded-[32px] flex justify-between items-center pl-[24px] pr-[24px] cursor-pointer"
-                    @click="tab = 1" :class="tab == 1 ? 'bg-[#2875E9] text-[white]' : 'bg-[white] text-[#003765]'">
+                    @click="tab = 1, filter.search = ''"
+                    :class="tab == 1 ? 'bg-[#2875E9] text-[white]' : 'bg-[white] text-[#003765]'">
                     <div>
                         <svg width="69" height="69" viewBox="0 0 69 69" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_528_14232" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -20,7 +21,8 @@
                     <div class=" text-[18px] font-bold">มิเตอร์น้ำ</div>
                 </div>
                 <div class=" h-[136px] rounded-[32px] flex justify-between items-center pl-[24px] pr-[24px] cursor-pointer"
-                    @click="tab = 2" :class="tab == 2 ? 'bg-[#F5D65E] text-[white]' : 'bg-[white] text-[#003765]'">
+                    @click="tab = 2, filter.search = ''"
+                    :class="tab == 2 ? 'bg-[#F5D65E] text-[white]' : 'bg-[white] text-[#003765]'">
                     <div>
                         <svg width="24" height="48" viewBox="0 0 24 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -31,7 +33,8 @@
                     <div class=" text-[18px] font-bold">มิเตอร์ไฟฟ้า</div>
                 </div>
                 <div class=" h-[136px] rounded-[32px] flex justify-between items-center pl-[24px] pr-[24px] cursor-pointer"
-                    @click="tab = 3" :class="tab == 3 ? 'bg-[#1DC56A] text-[white]' : 'bg-[white] text-[#003765]'">
+                    @click="tab = 3, filter.search = ''"
+                    :class="tab == 3 ? 'bg-[#1DC56A] text-[white]' : 'bg-[white] text-[#003765]'">
                     <div>
                         <svg width="51" height="52" viewBox="0 0 51 52" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -44,7 +47,8 @@
                     <div class=" text-[18px] font-bold">ค่าส่วนกลาง</div>
                 </div>
                 <div class=" h-[136px] rounded-[32px] flex justify-between items-center pl-[24px] pr-[24px] cursor-pointer"
-                    @click="tab = 4" :class="tab == 4 ? 'bg-[#5D5FEF] text-[white]' : 'bg-[white] text-[#003765]'">
+                    @click="tab = 4, filter.search = ''"
+                    :class="tab == 4 ? 'bg-[#5D5FEF] text-[white]' : 'bg-[white] text-[#003765]'">
                     <div>
                         <svg width="69" height="69" viewBox="0 0 69 69" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_528_18483" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -120,11 +124,13 @@
                             </div>
                             <div class="text-[24px] font-bold ml-[8px] flex justify-center items-center">
                                 {{
-                                tab == 1 ? 'มิเตอร์น้ำ' : tab == 2 ? 'มิเตอร์ไฟฟ้า' : tab == 3 ? 'ค่าส่วนกลาง' : 'บริการอื่นๆ' 
+                                    tab == 1 ? 'มิเตอร์น้ำ' : tab == 2 ? 'มิเตอร์ไฟฟ้า' : tab == 3 ? 'ค่าส่วนกลาง' :
+                                        'บริการอื่นๆ'
                                 }}
-                                </div>
+                            </div>
                         </div>
-                        <div class="flex border pl-[14px] pr-[14px]  rounded-[12px] cursor-pointer " @click="routeTo('/setting')">
+                        <div class="flex border pl-[14px] pr-[14px]  rounded-[12px] cursor-pointer "
+                            @click="routeTo('/setting')">
                             <div class="flex justify-center items-center">
                                 <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -159,7 +165,9 @@
                             </div>
                             <div class="flex justify-start items-center   mt-[5px] ml-[14px]">
                                 <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]"
-                                    placeholder="ค้นหาตามหมายเลขห้อง" type="input" />
+                                    placeholder="ค้นหาตามหมายเลขห้อง" v-model="filter.search"
+                                    @input="$refs.childComponentRef.filterData(filter.search)" type="input"
+                                    @keydown="handleKeyDown" />
                             </div>
                             <!-- <vs-tooltip bottom shadow not-hover v-model="popup_filter">
                                 <div @click="popup_filter = true" v-if="tab == 4"
@@ -270,38 +278,53 @@
                                 </template>
                             </vs-tooltip>
                         </div>
-                        <div v-if="tab == 1 || tab == 2"
-                            class="h-[36px] pl-[8px] pr-[8px] bg-[#39B974] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]">
-                            <div class="flex justify-center items-center">
-                                <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd" clip-rule="evenodd"
-                                        d="M4.58398 3.021C4.52321 3.021 4.46492 3.04514 4.42194 3.08812C4.37896 3.13109 4.35482 3.18938 4.35482 3.25016V6.68766H10.084C10.4637 6.68766 10.7715 6.99547 10.7715 7.37516V15.6252C10.7715 16.0049 10.4637 16.3127 10.084 16.3127H4.35482V19.7502C4.35482 19.8109 4.37896 19.8692 4.42194 19.9122C4.46492 19.9552 4.5232 19.9793 4.58398 19.9793H17.4173C17.4781 19.9793 17.5364 19.9552 17.5794 19.9122C17.6223 19.8692 17.6465 19.8109 17.6465 19.7502V3.25016C17.6465 3.18938 17.6223 3.13109 17.5794 3.08812C17.5364 3.04514 17.4781 3.021 17.4173 3.021H4.58398ZM2.97982 16.3127V19.7502C2.97982 20.1756 3.14883 20.5836 3.44967 20.8845C3.75051 21.1853 4.15853 21.3543 4.58398 21.3543H17.4173C17.8428 21.3543 18.2508 21.1853 18.5516 20.8845C18.8525 20.5836 19.0215 20.1756 19.0215 19.7502V3.25016C19.0215 2.82471 18.8525 2.41669 18.5516 2.11585C18.2508 1.81501 17.8428 1.646 17.4173 1.646H4.58398C4.15853 1.646 3.75051 1.81501 3.44967 2.11585C3.14883 2.41668 2.97982 2.82471 2.97982 3.25016V6.68766H1.83398C1.45429 6.68766 1.14648 6.99547 1.14648 7.37516V15.6252C1.14648 16.0049 1.45429 16.3127 1.83398 16.3127H2.97982ZM3.66616 14.9377C3.66655 14.9377 3.66693 14.9377 3.66732 14.9377C3.6677 14.9377 3.66809 14.9377 3.66848 14.9377H9.39649V8.06266H3.66732H2.52148V14.9377H3.66616ZM13.5215 7.37516C13.5215 6.99547 13.8293 6.68766 14.209 6.68766H15.584C15.9637 6.68766 16.2715 6.99547 16.2715 7.37516C16.2715 7.75486 15.9637 8.06266 15.584 8.06266H14.209C13.8293 8.06266 13.5215 7.75486 13.5215 7.37516ZM12.1465 11.0418C12.1465 10.6621 12.4543 10.3543 12.834 10.3543H15.584C15.9637 10.3543 16.2715 10.6621 16.2715 11.0418C16.2715 11.4215 15.9637 11.7293 15.584 11.7293H12.834C12.4543 11.7293 12.1465 11.4215 12.1465 11.0418ZM12.1465 14.7085C12.1465 14.3288 12.4543 14.021 12.834 14.021H15.584C15.9637 14.021 16.2715 14.3288 16.2715 14.7085C16.2715 15.0882 15.9637 15.396 15.584 15.396H12.834C12.4543 15.396 12.1465 15.0882 12.1465 14.7085ZM5.07012 9.63903C4.80163 9.37054 4.36633 9.37054 4.09785 9.63903C3.82936 9.90751 3.82936 10.3428 4.09785 10.6113L4.98671 11.5002L4.09785 12.389C3.82936 12.6575 3.82936 13.0928 4.09785 13.3613C4.36633 13.6298 4.80163 13.6298 5.07012 13.3613L5.95898 12.4724L6.84785 13.3613C7.11633 13.6298 7.55163 13.6298 7.82012 13.3613C8.08861 13.0928 8.08861 12.6575 7.82012 12.389L6.93126 11.5002L7.82012 10.6113C8.08861 10.3428 8.08861 9.90751 7.82012 9.63903C7.55163 9.37054 7.11633 9.37054 6.84785 9.63903L5.95898 10.5279L5.07012 9.63903Z"
-                                        fill="white" />
-                                </svg>
-                            </div>
-                            <div class="text-white font-bold ml-[8px]   flex justify-center items-center">นำเข้าผ่าน Excel
-                            </div>
+                        <div v-if="tab == 1 || tab == 2">
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
+                                type="file"
+                                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" />
+                            <label for="upload">
+                                <div
+                                    class="h-[36px] pl-[8px] pr-[8px] bg-[#39B974] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]">
+                                    <div class="flex justify-center items-center">
+                                        <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M4.58398 3.021C4.52321 3.021 4.46492 3.04514 4.42194 3.08812C4.37896 3.13109 4.35482 3.18938 4.35482 3.25016V6.68766H10.084C10.4637 6.68766 10.7715 6.99547 10.7715 7.37516V15.6252C10.7715 16.0049 10.4637 16.3127 10.084 16.3127H4.35482V19.7502C4.35482 19.8109 4.37896 19.8692 4.42194 19.9122C4.46492 19.9552 4.5232 19.9793 4.58398 19.9793H17.4173C17.4781 19.9793 17.5364 19.9552 17.5794 19.9122C17.6223 19.8692 17.6465 19.8109 17.6465 19.7502V3.25016C17.6465 3.18938 17.6223 3.13109 17.5794 3.08812C17.5364 3.04514 17.4781 3.021 17.4173 3.021H4.58398ZM2.97982 16.3127V19.7502C2.97982 20.1756 3.14883 20.5836 3.44967 20.8845C3.75051 21.1853 4.15853 21.3543 4.58398 21.3543H17.4173C17.8428 21.3543 18.2508 21.1853 18.5516 20.8845C18.8525 20.5836 19.0215 20.1756 19.0215 19.7502V3.25016C19.0215 2.82471 18.8525 2.41669 18.5516 2.11585C18.2508 1.81501 17.8428 1.646 17.4173 1.646H4.58398C4.15853 1.646 3.75051 1.81501 3.44967 2.11585C3.14883 2.41668 2.97982 2.82471 2.97982 3.25016V6.68766H1.83398C1.45429 6.68766 1.14648 6.99547 1.14648 7.37516V15.6252C1.14648 16.0049 1.45429 16.3127 1.83398 16.3127H2.97982ZM3.66616 14.9377C3.66655 14.9377 3.66693 14.9377 3.66732 14.9377C3.6677 14.9377 3.66809 14.9377 3.66848 14.9377H9.39649V8.06266H3.66732H2.52148V14.9377H3.66616ZM13.5215 7.37516C13.5215 6.99547 13.8293 6.68766 14.209 6.68766H15.584C15.9637 6.68766 16.2715 6.99547 16.2715 7.37516C16.2715 7.75486 15.9637 8.06266 15.584 8.06266H14.209C13.8293 8.06266 13.5215 7.75486 13.5215 7.37516ZM12.1465 11.0418C12.1465 10.6621 12.4543 10.3543 12.834 10.3543H15.584C15.9637 10.3543 16.2715 10.6621 16.2715 11.0418C16.2715 11.4215 15.9637 11.7293 15.584 11.7293H12.834C12.4543 11.7293 12.1465 11.4215 12.1465 11.0418ZM12.1465 14.7085C12.1465 14.3288 12.4543 14.021 12.834 14.021H15.584C15.9637 14.021 16.2715 14.3288 16.2715 14.7085C16.2715 15.0882 15.9637 15.396 15.584 15.396H12.834C12.4543 15.396 12.1465 15.0882 12.1465 14.7085ZM5.07012 9.63903C4.80163 9.37054 4.36633 9.37054 4.09785 9.63903C3.82936 9.90751 3.82936 10.3428 4.09785 10.6113L4.98671 11.5002L4.09785 12.389C3.82936 12.6575 3.82936 13.0928 4.09785 13.3613C4.36633 13.6298 4.80163 13.6298 5.07012 13.3613L5.95898 12.4724L6.84785 13.3613C7.11633 13.6298 7.55163 13.6298 7.82012 13.3613C8.08861 13.0928 8.08861 12.6575 7.82012 12.389L6.93126 11.5002L7.82012 10.6113C8.08861 10.3428 8.08861 9.90751 7.82012 9.63903C7.55163 9.37054 7.11633 9.37054 6.84785 9.63903L5.95898 10.5279L5.07012 9.63903Z"
+                                                fill="white" />
+                                        </svg>
+                                    </div>
+                                    <div class="text-white font-bold ml-[8px]   flex justify-center items-center">นำเข้าผ่าน
+                                        Excel
+                                    </div>
+                                </div>
+                            </label>
                         </div>
                     </div>
 
                 </div>
                 <div class="flex items-center mb-[8px] mt-[14px]">
-                    <div class="mr-[14px] font-bold cursor-pointer">อาคาร A ชั้น 1</div>
-                    <div class="text-[#8396A6] cursor-pointer">อาคาร A ชั้น 2</div>
+                    <div v-for="(data, i) in floor ">
+                        <div class=" cursor-pointer mr-[8px]"
+                            :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
+                            @click="tab_floor = i, filter.floor = data.id, callChildFunction(data.id), name_floor = data.attributes.floorName">
+                            อาคาร
+                            {{
+                                data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }}
+                        </div>
+                    </div>
                 </div>
             </div>
             <div v-if="tab == 1">
-                <Water />
+                <Water :id="filter.floor" :tab="name_floor" ref="childComponentRef" />
             </div>
             <div v-if="tab == 2">
-                <Electricity />
+                <Electricity :id="filter.floor" :tab="name_floor" ref="childComponentRef" />
             </div>
             <div v-if="tab == 3">
-                <CommonFee />
+                <CommonFee :id="filter.floor" :tab="name_floor" ref="childComponentRef" />
             </div>
             <div v-if="tab == 4">
-                <OtherFees />
+                <OtherFees :id="filter.floor" :tab="name_floor" ref="childComponentRef" />
             </div>
         </div>
     </div>
@@ -316,7 +339,13 @@ export default {
     data() {
         return {
             tab: 1,
-            popup_filter: false
+            popup_filter: false,
+            filter: {
+                search: '',
+                floor: '',
+            },
+            floor: [],
+            tab_floor: '0',
         }
     },
     created() {
@@ -324,6 +353,7 @@ export default {
         const loading = this.$vs.loading({
             opacity: 1,
         })
+        this.getfloor()
         setTimeout(() => {
             loading.close()
         }, 1000)
@@ -334,13 +364,48 @@ export default {
                 path: path + '?tab=3'
             })
         },
-        getfloor(){
-            fetch('https://api.resguru.app/api/building-floors?filters[building][id][$eq]=' + this.$store.state.building)
-            .then(response => response.json())
-            .then((resp) => {
-                console.log("Return from getfloor()",resp.data);
-                this.floor = resp.data
-            })
+        callChildFunction(id) {
+            if (this.tab == 1) {
+                this.$refs.childComponentRef.getWaterFee(id);
+            }
+            if (this.tab == 2) {
+                this.$refs.childComponentRef.getElectricityFee(id);
+            }
+            if (this.tab == 3) {
+                this.$refs.childComponentRef.getCommonFeeRoom(id)
+            }
+            if (this.tab == 4) {
+                this.$refs.childComponentRef.getOtherFee(id)
+            }
+        },
+        handleKeyDown(event) {
+            // Check if the pressed key is the backspace key
+            if (event.keyCode === 8) {
+                this.$refs.childComponentRef.filterData(this.filter.search,8)
+                // Perform your desired action here when backspace is pressed
+            }
+        },
+        // callChildFunctionEle(id) {
+        //     this.$refs.childComponentRefEle
+        // },
+        // callChildFunctionEle(id) {
+        //     this.$refs.childComponentRefEle.getElectricityFee(id);
+        // },
+        getfloor() {
+            // const loading = this.$vs.loading()
+            fetch('https://api.resguru.app/api' + '/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=deep,2')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getRoomFloor()", resp.data);
+                    this.floor = resp.data
+                    if (resp.data[0]) {
+                        this.filter.floor = resp.data[0].id
+                        this.name_floor = resp.data[0].attributes.floorName
+                    }
+                }).finally(() => {
+                    this.callChildFunction(this.filter.floor)
+                    // this.callChildFunctionEle(this.filter.floor)
+                })
         },
     }
 }

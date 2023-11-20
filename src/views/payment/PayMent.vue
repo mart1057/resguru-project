@@ -42,11 +42,11 @@
                             </div>
                             <div class="text-white font-bold ml-[8px]   flex justify-center items-center">พฤษภาคม/2023
                             </div>
-                            
+
                         </div>
                         <div class="flex justify-start items-center   mt-[5px] ml-[14px]">
                             <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาตามหมายเลขห้อง"
-                                type="input" />
+                            v-model="filter.search" @input="filterData" type="input" @keydown="handleKeyDown" />
                         </div>
                         <vs-tooltip bottom shadow not-hover v-model="popup_filter">
                             <div @click="popup_filter = true"
@@ -130,7 +130,7 @@
                 <div v-for="(data, i) in floor">
                     <div class=" cursor-pointer mr-[8px]"
                         :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
-                        @click="tab_floor = i, filter.floor = data.id, getRoomBill(), name_floor = data.attributes.floorName">
+                        @click="tab_floor = i, filter.floor = data.id, getRoomBill(data.id), name_floor = data.attributes.floorName">
                         อาคาร
                         {{
                             data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }}
@@ -200,7 +200,8 @@
                             <vs-td>
                                 <div @click="routeTo(tr.user_sign_contract.id)">
                                     <div v-if="tr.user_sign_contract && tr.user_sign_contract.users_permissions_user">
-                                             {{ tr.user_sign_contract.users_permissions_user.firstName }} {{ tr.user_sign_contract.users_permissions_user.lastName }}
+                                        {{ tr.user_sign_contract.users_permissions_user.firstName }} {{
+                                            tr.user_sign_contract.users_permissions_user.lastName }}
                                     </div>
                                     <div v-else>
                                         ยังไม่มีเช่า
@@ -209,8 +210,8 @@
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.user_sign_contract.id)">
-                                    {{  tr.room_type.roomTypeName }}
-                                    </div>
+                                    {{ tr.room_type.roomTypeName }}
+                                </div>
                             </vs-td>
                             <!-- <vs-td>
                                 <div @click="routeTo(tr.attributes.user_sign_contract.data.id)">
@@ -222,43 +223,43 @@
                             <vs-td>
                                 <div @click="routeTo(tr.user_sign_contract.id)">
                                     <div v-if="tr.tenant_bills[0]">
-                                        {{tr.tenant_bills[0].roomPrice}}
+                                        {{ tr.tenant_bills[0].roomPrice }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.user_sign_contract.id)">
-                               
+
                                     <div v-if="tr.tenant_bills[0]">
-                                        {{tr.tenant_bills[0].communalPrice}}
-                                    </div>
-                                </div>
-                            </vs-td>
-                            <vs-td>
-                                <div @click="routeTo(tr.user_sign_contract.id)">
-                                    <div v-if="tr.tenant_bills[0]">
-                                        {{tr.tenant_bills[0].otherPrice}}
+                                        {{ tr.tenant_bills[0].communalPrice }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.user_sign_contract.id)">
                                     <div v-if="tr.tenant_bills[0]">
-                                        {{tr.tenant_bills[0].total}}
+                                        {{ tr.tenant_bills[0].otherPrice }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.user_sign_contract.id)">
                                     <div v-if="tr.tenant_bills[0]">
-                                        {{tr.tenant_bills[0].overDue}}
+                                        {{ tr.tenant_bills[0].total }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.user_sign_contract.id)">
                                     <div v-if="tr.tenant_bills[0]">
-                                        {{tr.tenant_bills[0].grandTotal}}
+                                        {{ tr.tenant_bills[0].overDue }}
+                                    </div>
+                                </div>
+                            </vs-td>
+                            <vs-td>
+                                <div @click="routeTo(tr.user_sign_contract.id)">
+                                    <div v-if="tr.tenant_bills[0]">
+                                        {{ tr.tenant_bills[0].grandTotal }}
                                     </div>
                                 </div>
                             </vs-td>
@@ -266,11 +267,12 @@
                                 <div class="flex items-center justify-start">
                                     <!-- <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
                                         :class="tr.attributes.paymentStatus == 1 ? 'bg-[#CFFBDA] text-[#0B9A3C]' : tr.attributes.paymentStatus == 'ยังไม่ชำระ' ? 'bg-[#FFE1E8] text-[#EA2F5C]' : ' bg-[#FFF2BC] text-[#D48C00] '"> -->
-                                        <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]">
-                                            <div v-if="tr.tenant_bills[0]" >
-                                                {{tr.tenant_bills[0].paymentStatus}}
-                                            </div>
+                                    <div
+                                        class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]">
+                                        <div v-if="tr.tenant_bills[0]">
+                                            {{ tr.tenant_bills[0].paymentStatus }}
                                         </div>
+                                    </div>
                                 </div>
                                 <!-- <div v-if="tr.attributes.paymentStatus == ชำระบางส่วน">
                                         <vs-button >
@@ -279,7 +281,7 @@
                                 </div> -->
                             </vs-td>
                             <vs-td>
-                                <div v-if="tr.tenant_bills[0] && tr.user_sign_contract" >
+                                <div v-if="tr.tenant_bills[0] && tr.user_sign_contract">
                                     <!-- <vs-button  primary class="small">แก้ไขใบแจ้งหนี้</vs-button>   -->
                                         <!-- to: internal link -->
                                         <vs-select placeholder="เมนู" v-model="tr.tenant_bills[0].lastEvent" @change="selectMenu(tr.tenant_bills[0].lastEvent,tr)">
@@ -294,19 +296,20 @@
                                             </vs-option>
                                             <vs-option label="ชำระบางส่วน" value="Partial Payment">
                                             ชำระบางส่วน
-                                            </vs-option>
-                                        </vs-select>
-                                    
+                                        </vs-option>
+                                    </vs-select>
+
                                     <!--  Need to add option for select here -->
                                 </div>
-                                <div v-else-if="tr.tenant_bills[0] && tr.user_sign_contract === null" >
-                                    <vs-button  warn class="small">ผู้เช่าย้ายออก</vs-button>
+                                <div v-else-if="tr.tenant_bills[0] && tr.user_sign_contract === null">
+                                    <vs-button warn class="small">ผู้เช่าย้ายออก</vs-button>
                                 </div>
-                                <div v-else-if="tr.user_sign_contract" >
-                                    <vs-button  color="rgb(59,222,200)" class="small" @click="generateInvoice(tr.id)">สร้างใบแจ้งหนี้</vs-button>
+                                <div v-else-if="tr.user_sign_contract">
+                                    <vs-button color="rgb(59,222,200)" class="small"
+                                        @click="generateInvoice(tr.id)">สร้างใบแจ้งหนี้</vs-button>
                                 </div>
                                 <div v-else>
-                                    <vs-button  dark class="small">ยังไม่มีผู้เช่า</vs-button>
+                                    <vs-button dark class="small">ยังไม่มีผู้เช่า</vs-button>
                                 </div>
                             </vs-td>
                             <vs-td>
@@ -327,211 +330,229 @@
                     </template>
                 </vs-table>
             </div>
-                <b-modal centered v-model="createFullpayment" size="l" hide-backdrop hide-header-close hide-header hide-footer
-                    class="p-[-20px] text-custom">
-                    <div>
-                        <div class="flex justify-between">
-                            <div class="text-custom flex justify-center items-center text-[16px] font-bold">
-                                แนบหลักฐานการชำระแบบเต็มจำนวน</div>
-                            <div @click="createFullpayment = false" class="cursor-pointer">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-                                        width="24" height="24">
-                                        <rect width="24" height="24" fill="#D9D9D9" />
-                                    </mask>
-                                    <g mask="url(#mask0_417_4814)">
-                                        <path
-                                            d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
-                                            fill="#5C6B79" />
-                                    </g>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
-                        <div class="mt-[14px]">
-                            <div class="text-custom">เลขที่ใบแจ้งหนี้ (Invoice)</div>
-                            <div>
-                                <input disabled
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="fullPaymentForm.invoiceName" />
-                                <input
-                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="fullPaymentForm.invoiceID" hidden />
-                            </div>
-                        </div>
-                        <div class="mt-[14px]">
-                            <div class="text-custom">เลขห้อง</div>
-                            <div>
-                                <input disabled
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="fullPaymentForm.roomName" />
-                            </div>
-                        </div>
-                        <div class="mt-[14px]">
-                            <div class="text-custom">ชื่อธนาคาร</div>
-                            <div>
-                                <input
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="fullPaymentForm.bankName" />
-                            </div>
-                        </div>
-                        <div class="mt-[14px]">
-                            <div class="text-custom">ชื่อผู้โอน</div>
-                            <div>
-                                <input
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="fullPaymentForm.accountBankName" />
-                                    <input
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="fullPaymentForm.userID" hidden />
-                            </div>
-                        </div>
-                        <div class="mt-[14px]">
-                            <div class="text-custom">ยอดโอน (เต็มจำนวน)</div>
-                            <div>
-                                <input disabled
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="fullPaymentForm.amount" />
-                            </div>
-                        </div>
-                        <div class="mt-[14px]">
-                            <div class="text-custom">วันที่</div>
-                            <div>
-                                <input type="date"
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="fullPaymentForm.paymentDate" />
-                            </div>
-                        </div>
-                        <div class="mt-[14px]">
-                            <div class="text-custom">เวลา</div>
-                            <div>
-                                <input type="time"
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="fullPaymentForm.paymentTime" />
-                            </div>
-                        </div>
-                        <div class="mt-[14px]">
-                            <div class="text-custom">แนบหลักฐานการโอน</div>
-                            <div class="mt-[4px] flex">
-                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" ref="FullPayment" hidden
-                                    @change="setUploadFileFullPayment()"    type="file" />
-                                <label for="upload">
-                                    <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                        อัพโหลดรูปภาพ</div>
-                                </label>
-                                <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div>
-                            </div>
-                        </div>
-                        <div class="flex justify-end mt-[30px]">
-                            <div>
-                                <vs-button dark shadow @click="createFullpayment = false">
-                                    <div class="text-custom">ยกเลิก</div>
-                                </vs-button>
-                            </div>
-                            <div>
-                                <vs-button @click="createFullPayment()" color="#003765">
-                                    <div class="text-custom">บันทึก</div>
-                                </vs-button>
-                            </div>
+            <b-modal centered v-model="createFullpayment" size="l" hide-backdrop hide-header-close hide-header hide-footer
+                class="p-[-20px] text-custom">
+                <div>
+                    <div class="flex justify-between">
+                        <div class="text-custom flex justify-center items-center text-[16px] font-bold">
+                            แนบหลักฐานการชำระแบบเต็มจำนวน</div>
+                        <div @click="createFullpayment = false" class="cursor-pointer">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
+                                    width="24" height="24">
+                                    <rect width="24" height="24" fill="#D9D9D9" />
+                                </mask>
+                                <g mask="url(#mask0_417_4814)">
+                                    <path
+                                        d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                                        fill="#5C6B79" />
+                                </g>
+                            </svg>
                         </div>
                     </div>
-                </b-modal>
+                    <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom">เลขที่ใบแจ้งหนี้ (Invoice)</div>
+                        <div>
+                            <input disabled
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                v-model="fullPaymentForm.invoiceName" />
+                            <input
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                v-model="fullPaymentForm.invoiceID" hidden />
+                        </div>
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom">เลขห้อง</div>
+                        <div>
+                            <input disabled
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                v-model="fullPaymentForm.roomName" />
+                        </div>
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom">ชื่อธนาคาร</div>
+                        <div>
+                            <input
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                v-model="fullPaymentForm.bankName" />
+                        </div>
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom">ชื่อผู้โอน</div>
+                        <div>
+                            <input
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                v-model="fullPaymentForm.accountBankName" />
+                            <input
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                v-model="fullPaymentForm.userID" hidden />
+                        </div>
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom">ยอดโอน (เต็มจำนวน)</div>
+                        <div>
+                            <input disabled
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                v-model="fullPaymentForm.amount" />
+                        </div>
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom">วันที่</div>
+                        <div>
+                            <input type="date"
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                v-model="fullPaymentForm.paymentDate" />
+                        </div>
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom">เวลา</div>
+                        <div>
+                            <input type="time"
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                v-model="fullPaymentForm.paymentTime" />
+                        </div>
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom">แนบหลักฐานการโอน</div>
+                        <div class="mt-[4px] flex">
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
+                                ref="FullPayment" hidden @change="setUploadFileFullPayment()" type="file" />
+                            <label for="upload">
+                                <div
+                                    class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
+                                    อัพโหลดรูปภาพ</div>
+                            </label>
+                            <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                                ยังไม่ได้เลือกไฟล์</div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end mt-[30px]">
+                        <div>
+                            <vs-button dark shadow @click="createFullpayment = false">
+                                <div class="text-custom">ยกเลิก</div>
+                            </vs-button>
+                        </div>
+                        <div>
+                            <vs-button @click="createFullPayment()" color="#003765">
+                                <div class="text-custom">บันทึก</div>
+                            </vs-button>
+                        </div>
+                    </div>
+                </div>
+            </b-modal>
 
-                <b-modal centered v-model="createPartialPayment" size="l" hide-backdrop hide-header-close hide-header hide-footer
-                    class="p-[-20px] text-custom">
-                    <div>
-                        <div class="flex justify-between">
-                            <div class="text-custom flex justify-center items-center text-[16px] font-bold">
-                                แนบหลักฐานการชำระบางส่วน</div>
-                            <div @click="createPartialPayment = false" class="cursor-pointer">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-                                        width="24" height="24">
-                                        <rect width="24" height="24" fill="#D9D9D9" />
-                                    </mask>
-                                    <g mask="url(#mask0_417_4814)">
-                                        <path
-                                            d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
-                                            fill="#5C6B79" />
-                                    </g>
-                                </svg>
-                            </div>
-                        </div>
-                        <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
-                        <div class="mt-[14px]">
-                            <div class="text-custom">เลขที่ใบแจ้งหนี้ (Invoice)</div>
-                            <div>
-                                <input disabled
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="partialPaymentForm.invoiceName" />
-                                <input
-                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="partialPaymentForm.invoiceID" hidden />
-                            </div>
-                        </div>
-                        <div class="mt-[14px]">
-                            <div class="text-custom">เลขห้อง</div>
-                            <div>
-                                <input disabled
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="partialPaymentForm.roomName" />
-                            </div>
-                        </div>
-                        <div class="mt-[14px]">
-                            <div class="text-custom">ชื่อธนาคาร</div>
-                            <div>
-                                <input
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="partialPaymentForm.bankName" />
-                            </div>
-                        </div>
-                        <div class="mt-[14px]">
-                            <div class="text-custom">ชื่อผู้โอน</div>
-                            <div>
-                                <input
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="partialPaymentForm.accountBankName" />
-                                <input
-                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="partialPaymentForm.userID" hidden />
-                            </div>
-                        </div>
-                        <div class="mt-[14px]">
-                            <div class="text-custom">ยอดโอน</div>
-                            <div>
-                                <input
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="partialPaymentForm.amount" />
-                            </div>
-                        </div>
-                        <div class="mt-[14px]">
-                            <div class="text-custom">วันที่</div>
-                            <div>
-                                <input type="date"
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="partialPaymentForm.paymentDate" />
-                            </div>
-                        </div>
-                        <div class="mt-[14px]">
-                            <div class="text-custom">เวลา</div>
-                            <div>
-                                <input type="time"
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="partialPaymentForm.paymentTime" />
-                            </div>
-                        </div>
-                        <div class="mt-[14px]">
-                            <div class="text-custom">แนบหลักฐานการโอน</div>
-                            <div class="mt-[4px] flex">
-                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="uploadPayment" ref="PartialPayment" hidden
-                                    @change="setUploadFilePayment()" type="file" />
-                                <label for="upload">
-                                    <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                        อัพโหลดรูปภาพ</div>
-                                </label>
-                                <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div>
-                            </div>
-                        </div>
-                        <div class="flex justify-end mt-[30px]">
-                            <div>
-                                <vs-button dark shadow @click="createPartialPayment = false">
-                                    <div class="text-custom">ยกเลิก</div>
-                                </vs-button>
-                            </div>
-                            <div>
-                                <vs-button @click="createPartial()" color="#003765">
-                                    <div class="text-custom">บันทึก</div>
-                                </vs-button>
-                            </div>
+            <b-modal centered v-model="createPartialPayment" size="l" hide-backdrop hide-header-close hide-header
+                hide-footer class="p-[-20px] text-custom">
+                <div>
+                    <div class="flex justify-between">
+                        <div class="text-custom flex justify-center items-center text-[16px] font-bold">
+                            แนบหลักฐานการชำระบางส่วน</div>
+                        <div @click="createPartialPayment = false" class="cursor-pointer">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
+                                    width="24" height="24">
+                                    <rect width="24" height="24" fill="#D9D9D9" />
+                                </mask>
+                                <g mask="url(#mask0_417_4814)">
+                                    <path
+                                        d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                                        fill="#5C6B79" />
+                                </g>
+                            </svg>
                         </div>
                     </div>
-                </b-modal>
+                    <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom">เลขที่ใบแจ้งหนี้ (Invoice)</div>
+                        <div>
+                            <input disabled
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                v-model="partialPaymentForm.invoiceName" />
+                            <input
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                v-model="partialPaymentForm.invoiceID" hidden />
+                        </div>
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom">เลขห้อง</div>
+                        <div>
+                            <input disabled
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                v-model="partialPaymentForm.roomName" />
+                        </div>
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom">ชื่อธนาคาร</div>
+                        <div>
+                            <input
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                v-model="partialPaymentForm.bankName" />
+                        </div>
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom">ชื่อผู้โอน</div>
+                        <div>
+                            <input
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                v-model="partialPaymentForm.accountBankName" />
+                            <input
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                v-model="partialPaymentForm.userID" hidden />
+                        </div>
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom">ยอดโอน</div>
+                        <div>
+                            <input
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                v-model="partialPaymentForm.amount" />
+                        </div>
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom">วันที่</div>
+                        <div>
+                            <input type="date"
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                v-model="partialPaymentForm.paymentDate" />
+                        </div>
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom">เวลา</div>
+                        <div>
+                            <input type="time"
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                v-model="partialPaymentForm.paymentTime" />
+                        </div>
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom">แนบหลักฐานการโอน</div>
+                        <div class="mt-[4px] flex">
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="uploadPayment"
+                                ref="PartialPayment" hidden @change="setUploadFilePayment()" type="file" />
+                            <label for="upload">
+                                <div
+                                    class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
+                                    อัพโหลดรูปภาพ</div>
+                            </label>
+                            <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                                ยังไม่ได้เลือกไฟล์</div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end mt-[30px]">
+                        <div>
+                            <vs-button dark shadow @click="createPartialPayment = false">
+                                <div class="text-custom">ยกเลิก</div>
+                            </vs-button>
+                        </div>
+                        <div>
+                            <vs-button @click="createPartial()" color="#003765">
+                                <div class="text-custom">บันทึก</div>
+                            </vs-button>
+                        </div>
+                    </div>
+                </div>
+            </b-modal>
         </div>
     </div>
 </template>
@@ -551,37 +572,37 @@ export default {
             allCheck: false,
             file: [],
             fileFullPayment: [],
-            fullPaymentForm:{
-                invoiceID:'',
-                invoiceName:'',
-                roomName:'',
+            fullPaymentForm: {
+                invoiceID: '',
+                invoiceName: '',
+                roomName: '',
                 userID: '',
-                bankName:'',
-                accountBankName:'',
-                amount:0,
-                paymentDate:'',
-                paymentTime:''
+                bankName: '',
+                accountBankName: '',
+                amount: 0,
+                paymentDate: '',
+                paymentTime: ''
             },
-            partialPaymentForm:{
-                invoiceID:'',
-                invoiceName:'',
-                roomName:'',
+            partialPaymentForm: {
+                invoiceID: '',
+                invoiceName: '',
+                roomName: '',
                 userID: '',
-                bankName:'',
-                accountBankName:'',
-                amount:0,
-                paymentDate:'',
-                paymentTime:''
+                bankName: '',
+                accountBankName: '',
+                amount: 0,
+                paymentDate: '',
+                paymentTime: ''
             },
             selected: [],
             payments: [],
             floor: [],
             tab_floor: '0',
-            filter:{
-                search: '', 
-                floor:''  ,
+            filter: {
+                search: '',
+                floor: '',
             },
-            name_floor:''
+            name_floor: ''
 
         }
     },
@@ -618,15 +639,15 @@ export default {
                 this.partialPaymentForm.invoiceID = roomdata.tenant_bills[0].id
                 this.partialPaymentForm.roomName = roomdata.RoomNumber
                 this.partialPaymentForm.userID = roomdata.user_sign_contract.id
-                this.createPartialPayment = true   
+                this.createPartialPayment = true
             }
         },
-        createFullPayment(){
-            axios.post("https://api.resguru.app/api/tenant-evidence-payments",{
-                data:{
-                    tenant_bill:this.fullPaymentForm.invoiceID,
+        createFullPayment() {
+            axios.post("https://api.resguru.app/api/tenant-evidence-payments", {
+                data: {
+                    tenant_bill: this.fullPaymentForm.invoiceID,
                     user_sign_contract: this.fullPaymentForm.userID,
-                    bankName:  this.fullPaymentForm.accountBankName,
+                    bankName: this.fullPaymentForm.accountBankName,
                     accountBankName: this.fullPaymentForm.bankName,
                     amount: this.fullPaymentForm.amount,
                     paymentDate: this.fullPaymentForm.paymentDate,
@@ -634,15 +655,15 @@ export default {
                 }
             }).then(
                 (resp) => {
-                    console.log("Response in create",resp)
-                    console.log("Response Evidence ID",resp.data.data.id)
-                    axios.put("https://api.resguru.app/api/tenant-bills/"+this.fullPaymentForm.invoiceID,{
-                        data:{
-                            paymentStatus:"Paid"
+                    console.log("Response in create", resp)
+                    console.log("Response Evidence ID", resp.data.data.id)
+                    axios.put("https://api.resguru.app/api/tenant-bills/" + this.fullPaymentForm.invoiceID, {
+                        data: {
+                            paymentStatus: "Paid"
                         }
-                    }).then((res)=> { console.log("Response in Edit Invoice",res) })
+                    }).then((res) => { console.log("Response in Edit Invoice", res) })
 
-                    if(this.fileFullPayment !== null){
+                    if (this.fileFullPayment !== null) {
                         let formData = new FormData();
                         formData.append("files", this.fileFullPayment);
                         formData.append("refId", String(resp.data.data.id));
@@ -651,25 +672,25 @@ export default {
 
                         axios.post("https://api.resguru.app/api/upload", formData, {
                             headers: {
-                            "Content-Type": "multipart/form-data",
+                                "Content-Type": "multipart/form-data",
                             },
-                        }).then( (result) => { console.log("Upload file",result)}) 
-                        .catch((error) => {
-                                    console.log(error);
-                        })
+                        }).then((result) => { console.log("Upload file", result) })
+                            .catch((error) => {
+                                console.log(error);
+                            })
                     }
                 }
             )
             this.createPartialPayment = false
             alert("Partial payment is created")
-          
+
         },
-        createPartial(){
-            axios.post("https://api.resguru.app/api/tenant-evidence-payments",{
-                data:{
-                    tenant_bill:this.partialPaymentForm.invoiceID,
+        createPartial() {
+            axios.post("https://api.resguru.app/api/tenant-evidence-payments", {
+                data: {
+                    tenant_bill: this.partialPaymentForm.invoiceID,
                     user_sign_contract: this.partialPaymentForm.userID,
-                    bankName:  this.partialPaymentForm.accountBankName,
+                    bankName: this.partialPaymentForm.accountBankName,
                     accountBankName: this.partialPaymentForm.bankName,
                     amount: this.partialPaymentForm.amount,
                     paymentDate: this.partialPaymentForm.paymentDate,
@@ -677,15 +698,15 @@ export default {
                 }
             }).then(
                 (resp) => {
-                    console.log("Response in create",resp)
-                    console.log("Response Evidence ID",resp.data.data.id)
-                    axios.put("https://api.resguru.app/api/tenant-bills/"+this.partialPaymentForm.invoiceID,{
-                        data:{
-                            paymentStatus:"Partial Paid"
+                    console.log("Response in create", resp)
+                    console.log("Response Evidence ID", resp.data.data.id)
+                    axios.put("https://api.resguru.app/api/tenant-bills/" + this.partialPaymentForm.invoiceID, {
+                        data: {
+                            paymentStatus: "Partial Paid"
                         }
-                    }).then((res)=> { console.log("Response in Edit Invoice",res) })
+                    }).then((res) => { console.log("Response in Edit Invoice", res) })
 
-                    if(this.file !== null){
+                    if (this.file !== null) {
                         let formData = new FormData();
                         formData.append("files", this.file);
                         formData.append("refId", String(resp.data.data.id));
@@ -694,68 +715,75 @@ export default {
 
                         axios.post("https://api.resguru.app/api/upload", formData, {
                             headers: {
-                            "Content-Type": "multipart/form-data",
+                                "Content-Type": "multipart/form-data",
                             },
-                        }).then( (result) => { console.log("Upload file",result)}) 
-                        .catch((error) => {
-                                    console.log(error);
-                        })
+                        }).then((result) => { console.log("Upload file", result) })
+                            .catch((error) => {
+                                console.log(error);
+                            })
                     }
                 }
             )
             this.createPartialPayment = false
             alert("Partial payment is created")
-          
+
         },
-        getRoomBill() {
+        getRoomBill(id,code) {
             // console.log("this.filter.floor",this.filter.floor)
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}&floor=2&month=11&year=2023`)
+            fetch(`https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}&floor=${id}&month=11&year=2023`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoomBill()", resp.data);
-                    this.payments = resp.data
+                    if (code == 8) {
+                        this.payments = resp.data.filter(item =>
+                                item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase()),
+                            );
+                        }
+                        else {
+                            this.payments = resp.data
+                        }
+                    // this.payments = resp.data
                 }).finally(() => {
                     loading.close()
                 })
         },
-        getfloor(){
+        getfloor() {
             fetch('https://api.resguru.app/api/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=*')
-            .then(response => response.json())
-            .then((resp) => {
-                console.log("Return from getfloor()",resp.data);
-                this.floor = resp.data
-                console.log("resp.data[0].id",resp.data[0].id)
-                console.log("resp.data[0].attributes.floorName",resp.data[0].attributes.floorName)
-                console.log("this.filter.floor",this.filter.floor)
-                if(resp.data[0]){
-                    this.filter.floor = resp.data[0].id
-                    this.name_floor = resp.data[0].attributes.floorName
-                }
-            })
-            .finally(() => {
-                      this.getRoomBill();
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getfloor()", resp.data);
+                    this.floor = resp.data
+                    console.log("resp.data[0].id", resp.data[0].id)
+                    console.log("resp.data[0].attributes.floorName", resp.data[0].attributes.floorName)
+                    console.log("this.filter.floor", this.filter.floor)
+                    if (resp.data[0]) {
+                        this.filter.floor = resp.data[0].id
+                        this.name_floor = resp.data[0].attributes.floorName
+                    }
+                })
+                .finally(() => {
+                    this.getRoomBill(this.filter.floor);
                     // loading.close()
-            })
+                })
         },
-        generateInvoice(roomid){
+        generateInvoice(roomid) {
             const currentdate = new Date()
             const month = currentdate.getMonth()
             const year = currentdate.getFullYear()
 
             axios.get(`https://api.resguru.app/api/generateInvoice?buildingid=${this.$store.state.building}&roomid=${roomid}&month=${month}&year=${year}`)
-                .then((response) => 
-                {
-                    console.log("return from generateInvoice()",response.data.meta.message)
+                .then((response) => {
+                    console.log("return from generateInvoice()", response.data.meta.message)
                     alert(response.data.meta.message)
                 }
                 )
         },
-        setUploadFilePayment(){
+        setUploadFilePayment() {
             this.file = this.$refs.PartialPayment.files[0]
         },
-        setUploadFileFullPayment(){
+        setUploadFileFullPayment() {
             this.fileFullPayment = this.$refs.FullPayment.files[0]
         },
         async PDFPrint(){
@@ -790,7 +818,22 @@ export default {
 
                         // Trigger the browser to download the PDF document
                 download(pdfBytes, "pdf-lib_modification_example.pdf", "application/pdf");
-        }
+        },
+        filterData() {
+            this.payments =this.payments.filter(item =>
+                item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase()),
+            );
+            if (this.filter.search == '') {
+                this.getRoomBill(this.filter.floor)
+            }
+        },
+        handleKeyDown(event) {
+            // Check if the pressed key is the backspace key
+            if (event.keyCode === 8) {
+                this.getRoomBill(this.filter.floor,8)
+                // Perform your desired action here when backspace is pressed
+            }
+        },
     }
 }
 </script>

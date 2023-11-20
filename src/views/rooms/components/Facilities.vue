@@ -216,9 +216,13 @@
                                 <div class="text-custom text-[#5C6B79]">รูปภาพก่อนเข้าพัก</div>
                             </div>
                             <div class="flex">
-                                <div
-                                    class="flex text-custom justify-center items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
-                                    อัพโหลดรูปภาพ</div>
+                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
+                                    hidden type="file" />
+                                <label for="upload">
+                                    <div
+                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
+                                        อัพโหลดรูปภาพ</div>
+                                </label>
                                 <div
                                     class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                     ยังไม่ได้เลือกไฟล์</div>
@@ -260,7 +264,7 @@ export default {
             items: [],
             is_edit: false,
             facilities: {
-                id:'',
+                id: '',
                 title: '',
                 price: 0,
                 discount: true,

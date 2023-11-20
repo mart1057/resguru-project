@@ -53,7 +53,7 @@
                     </div>
                     <div class="flex justify-start items-center   mt-[5px] ml-[14px]">
                         <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาตามหมายเลขห้อง"
-                            v-model="filter.search" @input="filterData" type="input" />
+                            v-model="filter.search" @input="filterData" type="input" @keydown="handleKeyDown" />
                     </div>
                     <vs-tooltip bottom shadow not-hover v-model="popup_filter">
                         <div @click="popup_filter = true"
@@ -147,8 +147,8 @@
                         <div class="ml-[14px]">
                             <div class="flex">
                                 <div class="h-[32px] pr-[8px] pl-[8px]   cursor-pointer   rounded-[12px]"
-                                    :class="data.user_sign_contract?.contractStatus == null ? 'bg-[#165D98]' : data.user_sign_contract?.contractStatus == 'rent'? 'bg-[#003765]' : 'bg-[#165D98]'"
-                                    @click="data.user_sign_contract?.contractStatus == null ? create_sign(data.id,data.RoomNumber) : data.user_sign_contract?.contractStatus == 'reserved' ? create_sign(data.id) : getDetailRentalContract(data.user_sign_contract.id)">
+                                    :class="data.user_sign_contract?.contractStatus == null ? 'bg-[#165D98]' : data.user_sign_contract?.contractStatus == 'rent' ? 'bg-[#003765]' : 'bg-[#165D98]'"
+                                    @click="data.user_sign_contract?.contractStatus == null ? create_sign(data.id, data.RoomNumber) : data.user_sign_contract?.contractStatus == 'reserved' ? create_sign(data.id) : getDetailRentalContract(data.user_sign_contract.id)">
                                     <div class="flex items-center h-[100%]">
                                         <div class="flex justify-center items-center">
                                             <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
@@ -337,7 +337,8 @@
                                 </div>
                                 <div class="col-span-4  ml-[8px]  mt-[14px]">
                                     <div class="text-[#003765]">ระยะเวลาสัญญา</div>
-                                    <div class="mt-[12px]" v-if="room_detail.contract_duration">{{ room_detail.contract_duration }} เดือน</div>
+                                    <div class="mt-[12px]" v-if="room_detail.contract_duration">{{
+                                        room_detail.contract_duration }} เดือน</div>
                                 </div>
                             </div>
                         </div>
@@ -359,7 +360,7 @@
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
                                 <div class="col-span-4 mt-[14px]">
                                     <div class="text-[#003765]">วันสิ้นสุดสัญญา</div>
-                                    <div class="mt-[12px]">10/10/2024</div>
+                                    <div class="mt-[12px]">{{ room_detail.exp_date }}</div>
                                 </div>
                             </div>
                         </div>
@@ -393,7 +394,8 @@
             class="p-[-20px] text-custom">
             <div>
                 <div class="flex justify-between pl-[20px] pr-[20px]">
-                    <div class="text-custom flex justify-center items-center text-[18px] font-bold">เพิ่มสัญญาเช่าห้อง {{ create_room_number }}</div>
+                    <div class="text-custom flex justify-center items-center text-[18px] font-bold">เพิ่มสัญญาเช่าห้อง {{
+                        create_room_number }}</div>
                     <div @click="create = false" class="cursor-pointer">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -430,9 +432,8 @@
                                         <div class="">ค้นหาผู้เช่าด้วยรหัสบัตรประชาชน</div>
                                         <div>
                                             <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                                v-model="room_detail_create.id_card">
-                                            <vs-button primary
-                                                @click="getUserDetail(room_detail_create.id_card)">ค้นหา</vs-button>
+                                                v-model="filter.Id_card">
+                                            <vs-button primary @click="getUserDetail(filter.Id_card)">ค้นหา</vs-button>
                                         </div>
 
                                     </div>
@@ -528,13 +529,13 @@
                                     <div>วันที่ทำสัญญา</div>
                                     <input type="date"
                                         class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
-                                        v-model="date_sign" required />
+                                        v-model="room_detail.date_sign" required />
                                 </div>
                                 <div class="col-span-4  ml-[8px]">
                                     <div>วันสิ้นสุดสัญญา</div>
                                     <input type="date"
                                         class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
-                                        v-model="exp_date" required />
+                                        v-model="room_detail.exp_date" required />
                                 </div>
                                 <div class="col-span-4 mt-[16px]">
                                     <div>ประเภทห้องพัก</div>
@@ -604,7 +605,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            create_room_number:'',
+            create_room_number: '',
             detail: false,
             create: false,
             popup_filter: false,
@@ -615,7 +616,8 @@ export default {
             name_floor: '',
             filter: {
                 search: '',
-                floor: ''
+                floor: '',
+                Id_card: ''
             },
             room_detail: {
                 sex: null,
@@ -665,6 +667,7 @@ export default {
 
     },
     created() {
+
         // const loading = this.$vs.loading({
         //     opacity: 1,
         // })
@@ -673,19 +676,34 @@ export default {
         // }, 1000)
     },
     methods: {
+        openNotificationRenralPage(position = null, color, title, desc) {
+            const noti = this.$vs.notification({
+                sticky: true,
+                color,
+                position,
+                title,
+            })
+        },
         routeTo(path) {
             this.$router.push({
                 path: path,
             })
         },
-        getRentalContract() {
+        getRentalContract(code) {
             this.contract = []
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api/getRoomContract?buildingid=' + this.$store.state.building + '&buildingFloor='+this.filter.floor)
+            fetch('https://api.resguru.app/api/getRoomContract?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor)
                 .then(response => response.json())
                 .then((resp) => {
+                    if (code == 8) {
+                        this.contract = resp.data.filter(item =>
+                            item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase()),
+                        );
+                    }
+                    else {
+                        this.contract = resp.data
+                    }
                     console.log("Return from getRentalContract()", resp.data);
-                    this.contract = resp.data
                 }).finally(() => {
                     loading.close()
                 })
@@ -697,7 +715,7 @@ export default {
                 .then((resp) => {
                     console.log("Return from getRoomFloor()", resp.data);
                     this.roomFloor = resp.data
-                    if(resp.data[0]){
+                    if (resp.data[0]) {
                         this.filter.floor = resp.data[0].id
                         this.name_floor = resp.data[0].attributes.floorName
                     }
@@ -726,6 +744,7 @@ export default {
                     this.room_detail.contract_duration = resp.data.attributes.contractDuration
                     this.room_detail.roomInsurance_deposit = resp.data.attributes.roomInsuranceDeposit
                     this.room_detail.room_deposit = resp.data.attributes.roomDeposit
+                    this.room_detail.exp_date = resp.data.attributes.checkInDate
 
                 }).finally(() => {
                     loading.close()
@@ -741,35 +760,44 @@ export default {
                 })
         },
         getRoomType() {
-            fetch('https://api.resguru.app/api' + '/room-types?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3')
+            fetch('https://api.resguru.app/api' + '/room-types?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=*')
                 .then(response => response.json())
                 .then((resp) => {
                     this.room_type = resp.data;
                 })
         },
         getUserDetail(id_room) {
+            const loading = this.$vs.loading()
             fetch(`https://api.resguru.app/api/users?filters[idCard][$eq]=${id_room}`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log('detail from get user', resp);
-                    this.room_detail_create.id = resp.id
-                    this.room_detail_create.name = resp.firstName
-                    this.room_detail_create.last_name = resp.lastName
-                    this.room_detail_create.nick_name = resp.nickName
-                    this.room_detail_create.phone = resp.phone
-                    this.room_detail_create.email = resp.email
-                    this.room_detail_create.id_card = resp.idCard
-                    this.room_detail_create.address = resp.contactAddress
-                    this.room_detail_create.sex = resp.sex
-                    this.room_detail_create.birth = resp.dateOfBirth
+                    this.room_detail_create.id = resp[0].id
+                    this.room_detail_create.name = resp[0].firstName
+                    this.room_detail_create.last_name = resp[0].lastName
+                    this.room_detail_create.nick_name = resp[0].nickName
+                    this.room_detail_create.phone = resp[0].phone
+                    this.room_detail_create.email = resp[0].email
+                    this.room_detail_create.id_card = resp[0].idCard
+                    this.room_detail_create.address = resp[0].contactAddress
+                    this.room_detail_create.sex = resp[0].sex
+                    this.room_detail_create.birth = resp[0].dateOfBirth
+
+                }).catch(() => {
+                    loading.close()
+                    this.openNotificationRenralPage('top-right', 'danger', 'User not found', 6000)
                 }).finally(() => {
-                    this.getRoomType()
+                    loading.close()
+                    console.log('object');
+
                 })
         },
-        create_sign(id_room,number) {
+        create_sign(id_room, number) {
+            this.getRoomType()
             this.create = true
-            this.create_room_number = number 
+            this.create_room_number = number
             this.id_user = ''
+            this.filter.Id_card = ''
             this.room_detail_create.id = ''
             this.room_detail_create.name = ''
             this.room_detail_create.last_name = ''
@@ -781,6 +809,12 @@ export default {
             this.room_detail_create.birth = ''
             this.room_detail_create.email = ''
             this.room_detail_create.id_room = id_room
+            this.room_detail_create.room_deposit = ''
+            this.room_detail_create.roomInsuranceDeposit = ''
+            this.room_detail_create.contract_duration = ''
+            this.room_detail_create.type_room = ''
+            this.room_detail.date_sign = ''
+            this.room_detail.exp_date = ''
         },
         submitSign() {
             if (this.room_detail_create.check_user == true) {
@@ -790,6 +824,8 @@ export default {
                         room: this.room_detail_create.id_room,
                         contractStatus: "rent",
                         users_permissions_user: this.room_detail_create.id,
+                        checkInDate: this.room_detail.date_sign,
+                        contractEndDate: this.room_detail.exp_date,
                         roomDeposit: parseInt(this.room_detail_create.room_deposit),
                         roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
                         contractDuration: parseInt(this.room_detail_create.contract_duration)
@@ -801,6 +837,12 @@ export default {
                             room_type: this.room_detail_create.type_room,
                         }
                     })
+                }).catch((err) => {
+                    loading.close()
+                    if (err.response?.data?.error?.message) {
+                        this.openNotificationRenralPage('top-right', 'danger', err.response?.data?.error?.message, 6000)
+                    };
+
                 }).finally(() => {
                     loading.close()
                     this.create = false
@@ -822,7 +864,7 @@ export default {
                     "contactAddress": this.room_detail_create.address,
                     "sex": this.room_detail_create.sex,
                     // "dateOfBirth": this.room_detail_create.birth,
-                    "password": "mockpass",
+                    "password": this.room_detail_create.id_card,
                     "building": this.$store.state.building
                 }).then((resp) => {
                     axios.post('https://api.resguru.app/api' + '/user-sign-contracts', {
@@ -830,6 +872,8 @@ export default {
                             room: this.room_detail_create.id_room,
                             contractStatus: "rent",
                             users_permissions_user: resp.data.id,
+                            checkInDate: this.room_detail.date_sign,
+                            contractEndDate: this.room_detail.exp_date,
                             roomDeposit: parseInt(this.room_detail_create.room_deposit),
                             roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
                             contractDuration: parseInt(this.room_detail_create.contract_duration)
@@ -846,17 +890,30 @@ export default {
                         this.create = false
                         this.getRentalContract()
                     })
+                }).catch((err) => {
+                    loading.close()
+                    if (err.response?.data?.error?.message) {
+                        this.openNotificationRenralPage('top-right', 'danger', err.response?.data?.error?.message, 6000)
+                    };
+
                 })
             }
         },
         filterData() {
             this.contract = this.contract.filter(item =>
-                item.attributes.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase())
+                item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase())
             );
             if (this.filter.search == '') {
                 this.getRentalContract()
             }
-        }
+        },
+        handleKeyDown(event) {
+            // Check if the pressed key is the backspace key
+            if (event.keyCode === 8) {
+                this.getRentalContract(8)
+                // Perform your desired action here when backspace is pressed
+            }
+        },
     }
 }
 </script>
@@ -872,4 +929,5 @@ export default {
 /* .vs-select__input{
     height: 36px !important;
     width: 350px !important;
-} */</style>
+} */
+</style>

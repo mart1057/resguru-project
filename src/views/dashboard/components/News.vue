@@ -15,40 +15,41 @@
                 <div class="flex justify-center items-center cursor-pointer" @click=" routerTo('/announcement')">ดูทั้งหมด</div>
             </div>
         </div>
-        <div class="mt-[18px]">
+        <!-- <div class="mt-[18px]">
             <div class="flex w-[100%]  items-center justify-between">
                 <div class="flex justify-start items-center w-[80%]">
-                    <input class="h-[40px] w-[100%] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหา" type="input" />
+                    <input class="h-[40px] w-[100%] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหา" v-model="search" type="input" @input="filterData"/>
                 </div>
-                <button class="cursor-pointer flex justify-center items-center bg-[#003765] pl-[16px] h-[38px] pr-[16px] pt-[11px] pb-[11px] rounded-[12px] rounded-[8px] text-[white]">
+                <button class="cursor-pointer flex justify-center items-center bg-[#003765] pl-[16px] h-[38px] pr-[16px] pt-[11px] pb-[11px] rounded-[12px]  text-[white]">
                     ทั้งหมด</button>
             </div>
-        </div>
-        <div class="mt-[18px]">
+        </div> -->
+        <div class="mt-[18px]" :class="data.length > 5? 'table-container':''" >
             <vs-table>
                 <template #thead>
                     <vs-tr>
+                      
+                        <vs-th>
+                            เรื่อง
+                        </vs-th>
+                        <vs-th>
+                            รายละเอียด
+                        </vs-th>  
                         <vs-th>
                             วันที่
-                        </vs-th>
-                        <vs-th>
-                            ข้อความ
-                        </vs-th>
-                        <vs-th>
-                            โดย
                         </vs-th>
                     </vs-tr>
                 </template>
                 <template #tbody>
-                    <vs-tr :key="i" v-for="(tr, i) in users" :data="tr">
+                    <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
                         <vs-td>
-                            {{ tr.email }}
+                            {{ tr.topic }}
                         </vs-td>
                         <vs-td>
-                            {{ tr.username }}
-                        </vs-td>
+                            {{ tr.description}}
+                        </vs-td> 
                         <vs-td>
-                            {{ tr.username }}
+                            {{ convertDateNoTime(tr.createdAt) }}
                         </vs-td>
                     </vs-tr>
                 </template>
@@ -57,82 +58,15 @@
     </div>
 </template>
 <script>
+import { convertDateNoTime} from '@/components/hook/hook'
 export default {
-    data() {
+    props: {
+        data: { type: Object },
+    },
+    data(props) {
         return {
             tab: 1,
-            users: [
-                {
-                    "id": 1,
-                    "name": "101",
-                    "username": "Leanne Graham",
-                    "email": "12/04/66",
-                    "website": 1,
-                },
-                {
-                    "id": 2,
-                    "name": "102",
-                    "username": "Leanne Graham",
-                    "email": "12/04/66",
-                    "website": 2,
-                },
-                {
-                    "id": 3,
-                    "name": "103",
-                    "username": "Leanne Graham",
-                    "email": "12/04/66",
-                    "website": 1,
-                },
-                {
-                    "id": 4,
-                    "name": "104",
-                    "username": "Leanne Graham",
-                    "email": "12/04/66",
-                    "website": 3,
-                },
-                {
-                    "id": 5,
-                    "name": "105",
-                    "username": "Leanne Graham",
-                    "email": "12/04/66",
-                    "website": 1,
-                },
-                {
-                    "id": 6,
-                    "name": "106",
-                    "username": "Leanne Graham",
-                    "email": "12/04/66",
-                    "website": 3,
-                },
-                {
-                    "id": 7,
-                    "name": "107",
-                    "username": "Leanne Graham",
-                    "email": "12/04/66",
-                    "website": 1,
-                },
-                {
-                    "id": 8,
-                    "name": "108",
-                    "username": "Leanne Graham",
-                    "email": "12/04/66",
-                    "website": 3,
-                },
-                {
-                    "id": 9,
-                    "name": "109",
-                    "username": "Leanne Graham",
-                    "email": "12/04/66",
-                    "website": 1,
-                },
-                {
-                    "id": 10,
-                    "name": "110",
-                    "username": "Leanne Graham",
-                    "email": "12/04/66",
-                    "website": 2,
-                }
-            ]
+            convertDateNoTime,
         }
     },
     methods:{
@@ -141,7 +75,7 @@ export default {
                 path: path,
             })
             
-        }
+        },
     }
 }
 </script>
@@ -149,4 +83,36 @@ export default {
 #payment {
     background-color: rgb(255, 255, 255);
 }
+.table-container {
+    height: 250px;
+    /* Set a fixed height to enable scrolling */
+    overflow-y: scroll;
+    /* Enable vertical scrolling */
+    padding: 10px;
+    /* Optional: Add padding for spacing */
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px #ffff;
+    border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #E9EEF6;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #E9EEF6;
+}
+
 </style>

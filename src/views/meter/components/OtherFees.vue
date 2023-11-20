@@ -1,6 +1,6 @@
 <template>
     <div class="mt-[14px] bg-[white] rounded-[12px] p-[24px]">
-        <div class="font-bold text-[18px]">อาคาร A ชั้น 1</div>
+        <div class="font-bold text-[18px]">ชั้น {{ tab }}</div>
         <div class="mt-[14px]">
             <vs-table>
                 <template #thead>
@@ -102,110 +102,16 @@
 </template>
 <script>
 export default {
+    props: {
+        tab: { type: { String } },
+        id: { type: { String } },
+    },
     data() {
         return {
             add_item: false,
-            users: [
-                {
-                    "id": 1,
-                    "name": "Leanne Graham",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "4,000",
-                    "other": ['ที่จอดรถจักรยานยนต์', 'ที่จอดรถยนต์', 'ที่จอดรถยนต์'],
-                    "add_item": false,
-                },
-                {
-                    "id": 2,
-                    "name": "Ervin Howell",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "4,000",
-                    "other": ['ที่จอดรถจักรยานยนต์', 'ที่จอดรถยนต์'],
-                    "add_item": false,
-                },
-                {
-                    "id": 3,
-                    "name": "Clementine Bauch",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "4,000",
-                    "other": ['ที่จอดรถจักรยานยนต์', 'ที่จอดรถยนต์', 'ที่จอดรถยนต์'],
-                    "add_item": false,
-                },
-                {
-                    "id": 4,
-                    "name": "Patricia Lebsack",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "4,000",
-                    "add_item": false,
-                },
-                {
-                    "id": 5,
-                    "name": "Chelsey Dietrich",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "4,000",
-                    "other": ['ที่จอดรถจักรยานยนต์', 'ที่จอดรถยนต์', 'ที่จอดรถยนต์'],
-                    "add_item": false,
-                },
-                {
-                    "id": 6,
-                    "name": "Mrs. Dennis Schulist",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "4,000",
-                    "other": ['ที่จอดรถจักรยานยนต์', 'ที่จอดรถยนต์', 'ที่จอดรถยนต์'],
-                    "add_item": false,
-                },
-                {
-                    "id": 7,
-                    "name": "Kurtis Weissnat",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "4,000",
-                    "other": ['ที่จอดรถจักรยานยนต์', 'ที่จอดรถยนต์'],
-                    "add_item": false,
-                },
-                {
-                    "id": 8,
-                    "name": "",
-                    "status": "ห้องว่าง",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "",
-                    "add_item": false,
-                },
-                {
-                    "id": 9,
-                    "name": "Glenna Reichert",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "4,000",
-                    "other": ['ที่จอดรถจักรยานยนต์'],
-                    "add_item": false,
-                },
-                {
-                    "id": 10,
-                    "name": "Clementina DuBuque",
-                    "status": "มีผู้เช่า",
-                    "email": "Sincere@april.biz",
-                    "website": "hildegard.org",
-                    "unit": "4,000",
-                    "other": ['ที่จอดรถยนต์'],
-                    "add_item": false,
-                }
-            ],
             OtherFee:[],
+            code: 0,
+            text: ''
         }
     },
     created() {
@@ -215,19 +121,43 @@ export default {
         }, 1000)
     },
     mounted() {
-        this.getOtherFee();
+        this.getOtherFee(this.id);
     },
     methods: {
-        getOtherFee() {
+        getOtherFee(id) {
             const loading = this.$vs.loading()
-            fetch(`https://api.resguru.app/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&populate=deep,3`)
+            fetch(`https://api.resguru.app/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&filters[building_floor][id][$eq]=${id}&populate=deep,3`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()",resp.data);
-                    this.OtherFee = resp.data
+                    if (this.code == 8) {
+                        
+                        this.OtherFee = resp.data .filter(item =>
+                        item.attributes.RoomNumber.toLowerCase().includes(this.text.toLowerCase()),
+                        );
+
+                    }
+                    else{
+                        this.OtherFee = resp.data   
+                    }
+                    
                 }).finally(() => {
                     loading.close()
                 })
+        },
+        filterData(text,code) {
+            this.text = text
+            console.log('filter',text);
+            this.OtherFee = this.OtherFee.filter(item =>
+                item.attributes.RoomNumber.toLowerCase().includes(text.toLowerCase()),
+            );
+            if (text == '') {
+                this.getOtherFee(this.id)
+            }
+            if (code == 8) {
+                this.code = 8
+                this.getOtherFee(this.id)
+            }
         }
         
     },

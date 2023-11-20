@@ -35,7 +35,62 @@
                 </div>
             </div>
         </div>
-        <div class="mt-[18px]">
+        <div class="mt-[18px]" :class="data.length > 5? 'table-container':''" v-if="tab == 1|| tab == 2  || tab == 3">
+            <vs-table>
+                <template #thead>
+                    <vs-tr>
+                        <vs-th v-if="tab == 1 || tab == 2">
+                            เลขห้อง
+                        </vs-th>
+                        <vs-th v-if="tab == 1 || tab == 2">
+                            เดือนก่อน
+                        </vs-th>
+                        <vs-th v-if="tab == 1 || tab == 2">
+                            เดือนนี้
+                        </vs-th>
+                        <vs-th v-if="tab == 1 || tab == 2">
+                            หน่วยที่ใช้
+                        </vs-th>
+                        <vs-th v-if="tab == 3">
+                            <div class=" flex">
+                                <div>เลขห้อง</div>
+                                <div class="ml-[44px]">ค่าส่วนกลาง</div>
+                            </div>
+                        </vs-th>
+                    </vs-tr>
+                </template>
+                <template #tbody>
+                    <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
+                        <!-- {{ tr }} -->
+                        <vs-td v-if="tab == 1|| tab == 2">
+                            {{ tr.RoomNumber }}
+                        </vs-td>
+                        <vs-td v-if="tab == 1|| tab == 2">
+                            <div v-if="tab == 1">{{ tr.water_fees[1].meterUnit ? tr.water_fees[1]?.meterUnit : '-' }}</div>
+                            <div v-else-if="tab == 2"> {{ tr.electric_fees[1].electicUnit ? tr.electric_fees[1]?.electicUnit : '-' }}</div>
+                           
+                        </vs-td>
+                        <vs-td v-if="tab == 1|| tab == 2">
+                            <div v-if="tab == 1"> {{ tr.water_fees[0].meterUnit ? tr.water_fees[0].meterUnit : '-' }}</div>
+                            <div v-else-if="tab == 2">  {{ tr.electric_fees[0].electicUnit ? tr.electric_fees[0].electicUnit : '-' }}</div>
+                           
+                        </vs-td>
+                        <vs-td v-if="tab == 1|| tab == 2"> 
+                            <div v-if="tab == 1">  {{ tr.water_fees[1].usageMeter ? tr.water_fees[1].usageMeter : '-' }}</div>
+                            <div v-else-if="tab == 2">    {{ tr.electric_fees[0].usageMeter ? tr.electric_fees[0].usageMeter : '-' }}</div>
+                        </vs-td>
+                        <vs-td v-if="tab == 3">
+                            <div  class="flex">
+                                <div>{{ tr.RoomNumber }}</div>
+                                <div class="ml-[66px]"> {{ tr.communal_fees[0].communalUnit ?
+                                    tr.communal_fees[0].communalUnit : '-' }}</div>
+                            </div>
+                        </vs-td>
+                    </vs-tr>
+                </template>
+            </vs-table>
+        </div>
+        <!-- <div class="mt-[18px]" v-else-if="tab == 2">
             <vs-table>
                 <template #thead>
                     <vs-tr>
@@ -54,18 +109,56 @@
                     </vs-tr>
                 </template>
                 <template #tbody>
-                    <vs-tr :key="i" v-for="(tr, i) in users" :data="tr">
+                    <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
                         <vs-td>
-                            {{ tr.name }}
+                            {{ tr.RoomNumber }}
                         </vs-td>
                         <vs-td>
-                            {{ tr.email }}
+                            {{ tr.electric_fees[1].electicUnit ? tr.electric_fees[1]?.electicUnit : '-' }}
                         </vs-td>
                         <vs-td>
-                            {{ tr.id }}
+                            {{ tr.electric_fees[0].electicUnit ? tr.electric_fees[0].electicUnit : '-' }}
                         </vs-td>
                         <vs-td>
-                            {{ tr.email }}
+                            {{ tr.electric_fees[0].usageMeter ? tr.electric_fees[0].usageMeter : '-' }}
+                        </vs-td>
+                    </vs-tr>
+                </template>
+            </vs-table>
+        </div> -->
+        <div class="mt-[18px]" v-else-if="tab == 4">
+            <vs-table>
+                <template #thead>
+                    <vs-tr>
+                        <vs-th>
+                            เลขห้อง
+                        </vs-th>
+                        <vs-th>
+                            เดือนก่อน
+                        </vs-th>
+                        <vs-th>
+                            เดือนนี้
+                        </vs-th>
+                        <vs-th>
+                            หน่วยที่ใช้
+                        </vs-th>
+                    </vs-tr>
+                </template>
+                <template #tbody>
+                    <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
+                        {{ tr }}
+                        <vs-td>
+                            {{ tr.RoomNumber }}
+                        </vs-td>
+                        <vs-td>
+                            {{ tr.electric_fees[1].electicUnit ? tr.electric_fees[1]?.electicUnit : '-' }}
+                        </vs-td>
+                        <vs-td>
+                            {{ tr.electric_fees[0].electicUnit ? tr.electric_fees[0].electicUnit : '-' }}
+                        </vs-td>
+                        <vs-td>
+                            {{ tr.electric_fees[0].usageMeter ? tr.electric_fees[0].usageMeter : '-' }}
+                            {{  tr}}
                         </vs-td>
                     </vs-tr>
                 </template>
@@ -75,59 +168,49 @@
 </template>
 <script>
 export default {
+    props: {
+        data: { type: Object },
+    },
     data() {
         return {
             tab: 1,
-            users: [
-                {
-                    "id": 452,
-                    "name": "101",
-                    "username": "Leanne Graham",
-                    "email": "495",
-                    "website": 1,
-                },
-                {
-                    "id": 589,
-                    "name": "102",
-                    "username": "Leanne Graham",
-                    "email": "559",
-                    "website": 2,
-                },
-                {
-                    "id": 3,
-                    "name": "103",
-                    "username": "Leanne Graham",
-                    "email": "596",
-                    "website": 1,
-                },
-                {
-                    "id": 422,
-                    "name": "104",
-                    "username": "Leanne Graham",
-                    "email": "598",
-                    "website": 3,
-                },
-                {
-                    "id": 53,
-                    "name": "105",
-                    "username": "Leanne Graham",
-                    "email": "69",
-                    "website": 1,
-                },
-                {
-                    "id": 69,
-                    "name": "106",
-                    "username": "Leanne Graham",
-                    "email": "442",
-                    "website": 3,
-                },
-            ]
         }
     }
 }
 </script>
-<style scoped>
-#payment {
+<style scoped>#payment {
     background-color: rgb(255, 255, 255);
 }
+.table-container {
+    height: 250px;
+    /* Set a fixed height to enable scrolling */
+    overflow-y: scroll;
+    /* Enable vertical scrolling */
+    padding: 10px;
+    /* Optional: Add padding for spacing */
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px #ffff;
+    border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #E9EEF6;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #E9EEF6;
+}
+
 </style>
