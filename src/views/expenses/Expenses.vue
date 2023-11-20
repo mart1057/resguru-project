@@ -17,25 +17,10 @@
                     </div>
                     <div class="text-[24px] font-bold flex items-center ml-[8px]">ภาพรวมรายรับ-รายจ่าย</div>
                 </div>
-                <div class="flex items-center">
-                    <div
-                        class="h-[36px] pl-[8px] pr-[8px] bg-[#003765] flex cursor-pointer  justify-center items-center rounded-[12px]">
-                        <div class="flex justify-center items-center">
-                            <svg width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <mask id="mask0_528_31525" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-                                    width="22" height="22">
-                                    <rect width="22" height="22" fill="#D9D9D9" />
-                                </mask>
-                                <g mask="url(#mask0_528_31525)">
-                                    <path
-                                        d="M4.86604 19.7084C4.403 19.7084 4.01107 19.548 3.69023 19.2272C3.3694 18.9063 3.20898 18.5144 3.20898 18.0514V5.78219C3.20898 5.31915 3.3694 4.92721 3.69023 4.60638C4.01107 4.28555 4.403 4.12513 4.86604 4.12513H6.13528V2.89114C6.13528 2.69019 6.20257 2.52243 6.33713 2.38786C6.47168 2.25331 6.63944 2.18604 6.84041 2.18604C7.04135 2.18604 7.20911 2.25331 7.34368 2.38786C7.47823 2.52243 7.54551 2.69019 7.54551 2.89114V4.12513H14.491V2.87351C14.491 2.67843 14.5568 2.51508 14.6884 2.38346C14.82 2.25184 14.9834 2.18604 15.1785 2.18604C15.3736 2.18604 15.5369 2.25184 15.6685 2.38346C15.8002 2.51508 15.866 2.67843 15.866 2.87351V4.12513H17.1352C17.5983 4.12513 17.9902 4.28555 18.311 4.60638C18.6319 4.92721 18.7923 5.31915 18.7923 5.78219V18.0514C18.7923 18.5144 18.6319 18.9063 18.311 19.2272C17.9902 19.548 17.5983 19.7084 17.1352 19.7084H4.86604ZM4.86604 18.3334H17.1352C17.2057 18.3334 17.2704 18.3041 17.3292 18.2453C17.3879 18.1865 17.4173 18.1219 17.4173 18.0514V9.44885H4.58396V18.0514C4.58396 18.1219 4.61334 18.1865 4.6721 18.2453C4.73087 18.3041 4.79552 18.3334 4.86604 18.3334ZM4.58396 8.07388H17.4173V5.78219C17.4173 5.71167 17.3879 5.64702 17.3292 5.58824C17.2704 5.52949 17.2057 5.50011 17.1352 5.50011H4.86604C4.79552 5.50011 4.73087 5.52949 4.6721 5.58824C4.61334 5.64702 4.58396 5.71167 4.58396 5.78219V8.07388ZM11.0006 12.904C10.7762 12.904 10.5849 12.8249 10.4268 12.6669C10.2688 12.5088 10.1897 12.3175 10.1897 12.0931C10.1897 11.8686 10.2688 11.6773 10.4268 11.5193C10.5849 11.3612 10.7762 11.2822 11.0006 11.2822C11.2251 11.2822 11.4164 11.3612 11.5744 11.5193C11.7325 11.6773 11.8115 11.8686 11.8115 12.0931C11.8115 12.3175 11.7325 12.5088 11.5744 12.6669C11.4164 12.8249 11.2251 12.904 11.0006 12.904ZM7.33396 12.904C7.1095 12.904 6.91824 12.8249 6.76017 12.6669C6.60211 12.5088 6.52308 12.3175 6.52308 12.0931C6.52308 11.8686 6.60211 11.6773 6.76017 11.5193C6.91824 11.3612 7.1095 11.2822 7.33396 11.2822C7.55842 11.2822 7.74968 11.3612 7.90775 11.5193C8.06581 11.6773 8.14484 11.8686 8.14484 12.0931C8.14484 12.3175 8.06581 12.5088 7.90775 12.6669C7.74968 12.8249 7.55842 12.904 7.33396 12.904ZM14.6673 12.904C14.4428 12.904 14.2516 12.8249 14.0935 12.6669C13.9354 12.5088 13.8564 12.3175 13.8564 12.0931C13.8564 11.8686 13.9354 11.6773 14.0935 11.5193C14.2516 11.3612 14.4428 11.2822 14.6673 11.2822C14.8918 11.2822 15.083 11.3612 15.2411 11.5193C15.3991 11.6773 15.4782 11.8686 15.4782 12.0931C15.4782 12.3175 15.3991 12.5088 15.2411 12.6669C15.083 12.8249 14.8918 12.904 14.6673 12.904ZM11.0006 16.5001C10.7762 16.5001 10.5849 16.4211 10.4268 16.263C10.2688 16.1049 10.1897 15.9137 10.1897 15.6892C10.1897 15.4648 10.2688 15.2735 10.4268 15.1154C10.5849 14.9574 10.7762 14.8783 11.0006 14.8783C11.2251 14.8783 11.4164 14.9574 11.5744 15.1154C11.7325 15.2735 11.8115 15.4648 11.8115 15.6892C11.8115 15.9137 11.7325 16.1049 11.5744 16.263C11.4164 16.4211 11.2251 16.5001 11.0006 16.5001ZM7.33396 16.5001C7.1095 16.5001 6.91824 16.4211 6.76017 16.263C6.60211 16.1049 6.52308 15.9137 6.52308 15.6892C6.52308 15.4648 6.60211 15.2735 6.76017 15.1154C6.91824 14.9574 7.1095 14.8783 7.33396 14.8783C7.55842 14.8783 7.74968 14.9574 7.90775 15.1154C8.06581 15.2735 8.14484 15.4648 8.14484 15.6892C8.14484 15.9137 8.06581 16.1049 7.90775 16.263C7.74968 16.4211 7.55842 16.5001 7.33396 16.5001ZM14.6673 16.5001C14.4428 16.5001 14.2516 16.4211 14.0935 16.263C13.9354 16.1049 13.8564 15.9137 13.8564 15.6892C13.8564 15.4648 13.9354 15.2735 14.0935 15.1154C14.2516 14.9574 14.4428 14.8783 14.6673 14.8783C14.8918 14.8783 15.083 14.9574 15.2411 15.1154C15.3991 15.2735 15.4782 15.4648 15.4782 15.6892C15.4782 15.9137 15.3991 16.1049 15.2411 16.263C15.083 16.4211 14.8918 16.5001 14.6673 16.5001Z"
-                                        fill="white" />
-                                </g>
-                            </svg>
-                        </div>
-                        <div class="text-white font-bold ml-[8px]   flex justify-center items-center">พฤษภาคม/2023
-                        </div>
-                    </div>
+                <div class="flex items-center mt-[-10px]">
+                    <input v-model="selectedDate" type="month" placeholder="ค้นหาตามหมายเลขห้อง" id="datepicker"
+                        @input="filterByDate()"
+                        v-bind:class="{ 'h-[36px] pl-[8px] text-[center] pr-[8px] bg-[#003765] flex cursor-pointer text-[white]  justify-center  rounded-[12px] mt-[12px]': true }" />
                 </div>
             </div>
         </div>
@@ -47,9 +32,9 @@
                         <div class="mt-[8px]">
                             <div class="flex items-center">
                                 <div class="w-[12px] h-[12px] bg-[#F5D65E] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">ค่าใช้จ่ายรายเดือน</div>
+                                <div class="text-[12px] text-[#5C6B79]">รายรับ</div>
                             </div>
-                            <div class="flex items-center mt-[2px]">
+                            <!-- <div class="flex items-center mt-[2px]">
                                 <div class="w-[12px] h-[12px] bg-[#008EF4] rounded-[100px] mr-[8px]"></div>
                                 <div class="text-[12px] text-[#5C6B79]">ค่ามัดจำห้องพัก</div>
                             </div>
@@ -60,7 +45,7 @@
                             <div class="flex items-center mt-[2px]">
                                 <div class="w-[12px] h-[12px] bg-[#9A77FF] rounded-[100px] mr-[8px]"></div>
                                 <div class="text-[12px] text-[#5C6B79]">อื่น ๆ</div>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                     <div class="w-[50%]">
@@ -69,7 +54,7 @@
                         </div>
                     </div>
                     <div class="grid grid-cols-2 w-[100%] gap-2 content-start mt-[14px]">
-                        <div class="h-[52px] border rounded-[12px] p-[4px]">
+                        <!-- <div class="h-[52px] border rounded-[12px] p-[4px]">
                             <div class="flex justify-between">
                                 <div class="flex items-center">
                                     <svg width="33" height="33" viewBox="0 0 33 33" fill="none"
@@ -87,11 +72,11 @@
                                 </div>
                                 <div class="flex flex-col justify-around">
                                     <div class="text-[12px] text-[#B9CCDC]">60%</div>
-                                    <div class="text-[#F5D65E] font-bold text-[16px]">8,000</div>
+                                    <div class="text-[#F5D65E] font-bold text-[16px]">{{ data[0] }}</div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="h-[52px] border rounded-[12px] p-[4px]">
+                        </div> -->
+                        <!-- <div class="h-[52px] border rounded-[12px] p-[4px]">
                             <div class="flex justify-between">
                                 <div class="flex items-center">
                                     <svg width="29" height="21" viewBox="0 0 29 21" fill="none"
@@ -150,7 +135,7 @@
                                     <div class="text-[#9A77FF] font-bold text-[16px]">8,000</div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -161,23 +146,19 @@
                         <div class="mt-[8px]">
                             <div class="flex items-center">
                                 <div class="w-[12px] h-[12px] bg-[#F1B826] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">ค่าไฟฟ้า</div>
+                                <div class="text-[12px] text-[#5C6B79]">{{ label2[0] }}</div>
                             </div>
                             <div class="flex items-center mt-[2px]">
                                 <div class="w-[12px] h-[12px] bg-[#008EF4] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">ค่าน้ำ</div>
-                            </div>
-                            <div class="flex items-center mt-[2px]">
-                                <div class="w-[12px] h-[12px] bg-[#9A77FF] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">พนักงาน</div>
+                                <div class="text-[12px] text-[#5C6B79]">{{ label2[1] }}</div>
                             </div>
                             <div class="flex items-center mt-[2px]">
                                 <div class="w-[12px] h-[12px] bg-[#D44769] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">ประกัน</div>
+                                <div class="text-[12px] text-[#5C6B79]">{{ label2[2] }}</div>
                             </div>
                             <div class="flex items-center mt-[2px]">
                                 <div class="w-[12px] h-[12px] bg-[#9A77FF] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">อื่น ๆ</div>
+                                <div class="text-[12px] text-[#5C6B79]">{{ label2[3] }}</div>
                             </div>
                         </div>
                     </div>
@@ -205,7 +186,7 @@
                                 </div>
                                 <div class="flex flex-col justify-around">
                                     <div class="text-[12px] text-[#B9CCDC]">60%</div>
-                                    <div class="text-[#F5D65E] font-bold text-[16px]">8,000</div>
+                                    <div class="text-[#F5D65E] font-bold text-[16px]">{{ data2[0] }}</div>
                                 </div>
                             </div>
                         </div>
@@ -227,7 +208,7 @@
                                 </div>
                                 <div class="flex flex-col justify-around">
                                     <div class="text-[12px] text-[#B9CCDC]">60%</div>
-                                    <div class="text-[#008EF4] text-[16px] font-bold">8,000</div>
+                                    <div class="text-[#008EF4] text-[16px] font-bold">{{ data2[1] }}</div>
                                 </div>
                             </div>
                         </div>
@@ -243,13 +224,13 @@
                                         <g mask="url(#mask0_1373_19078)">
                                             <path
                                                 d="M18 17.539C16.5562 17.539 15.3203 17.0249 14.2922 15.9968C13.2641 14.9687 12.75 13.7328 12.75 12.289C12.75 10.8453 13.2641 9.60935 14.2922 8.58125C15.3203 7.55313 16.5562 7.03906 18 7.03906C19.4437 7.03906 20.6796 7.55313 21.7077 8.58125C22.7359 9.60935 23.2499 10.8453 23.2499 12.289C23.2499 13.7328 22.7359 14.9687 21.7077 15.9968C20.6796 17.0249 19.4437 17.539 18 17.539ZM8.10577 28.962C7.72165 28.962 7.39966 28.8321 7.13981 28.5722C6.87994 28.3124 6.75 27.9904 6.75 27.6062V25.6274C6.75 24.8852 6.94809 24.2031 7.34426 23.5809C7.74041 22.9588 8.27501 22.4794 8.94806 22.1429C10.3711 21.4506 11.8418 20.914 13.3599 20.5333C14.8781 20.1525 16.4257 19.9621 18.0027 19.9621C19.5797 19.9621 21.1264 20.1525 22.6427 20.5333C24.1591 20.914 25.6288 21.4506 27.0519 22.1429C27.7249 22.4794 28.2595 22.9588 28.6557 23.5809C29.0518 24.2031 29.2499 24.8852 29.2499 25.6274V27.6062C29.2499 27.9904 29.12 28.3124 28.8601 28.5722C28.6003 28.8321 28.2783 28.962 27.8941 28.962H8.10577ZM18 15.289C18.825 15.289 19.5312 14.9953 20.1187 14.4078C20.7062 13.8203 21 13.114 21 12.289C21 11.464 20.7062 10.7578 20.1187 10.1703C19.5312 9.58278 18.825 9.28903 18 9.28903C17.175 9.28903 16.4687 9.58278 15.8812 10.1703C15.2937 10.7578 15 11.464 15 12.289C15 13.114 15.2937 13.8203 15.8812 14.4078C16.4687 14.9953 17.175 15.289 18 15.289ZM23.5672 23.1322V26.7121H27V25.6274C27 25.3044 26.9086 25.0159 26.7259 24.7621C26.5432 24.5082 26.3076 24.3044 26.0192 24.1505C25.6307 23.9409 25.2283 23.7524 24.812 23.5851C24.3956 23.4178 23.9807 23.2669 23.5672 23.1322ZM14.6826 22.5467V24.4621H21.3173V22.5467C20.7692 22.4274 20.2175 22.3419 19.6622 22.2899C19.107 22.238 18.5517 22.2121 17.9964 22.2121C17.4411 22.2121 16.887 22.238 16.3341 22.2899C15.7812 22.3419 15.2307 22.4274 14.6826 22.5467ZM8.99996 26.7121H12.4327V23.1322C12.0192 23.2669 11.6043 23.4178 11.188 23.5851C10.7716 23.7524 10.3692 23.9409 9.98074 24.1505C9.69229 24.3044 9.45671 24.5082 9.27401 24.7621C9.09131 25.0159 8.99996 25.3044 8.99996 25.6274V26.7121Z"
-                                                fill="#CC00FF" />
+                                                fill="#D44769" />
                                         </g>
                                     </svg>
                                 </div>
                                 <div class="flex flex-col justify-around">
                                     <div class="text-[12px] text-[#B9CCDC]">60%</div>
-                                    <div class="text-[#CC00FF] font-bold text-[16px]">8,000</div>
+                                    <div class="text-[#D44769] font-bold text-[16px]">{{ data2[2] }}</div>
                                 </div>
                             </div>
                         </div>
@@ -265,17 +246,17 @@
                                         <g mask="url(#mask0_1373_19086)">
                                             <path
                                                 d="M18.3326 16.9491C17.401 16.9491 16.6126 16.6265 15.9673 15.9812C15.322 15.3359 14.9993 14.5474 14.9993 13.6158C14.9993 12.6842 15.322 11.8958 15.9673 11.2505C16.6126 10.6052 17.401 10.2825 18.3326 10.2825C19.2642 10.2825 20.0527 10.6052 20.698 11.2505C21.3433 11.8958 21.6659 12.6842 21.6659 13.6158C21.6659 14.5474 21.3433 15.3359 20.698 15.9812C20.0527 16.6265 19.2642 16.9491 18.3326 16.9491ZM9.53777 21.0773C8.87497 21.0773 8.30756 20.8413 7.83554 20.3693C7.36354 19.8973 7.12754 19.3299 7.12754 18.6671V8.56453C7.12754 7.90173 7.36354 7.33432 7.83554 6.8623C8.30756 6.3903 8.87497 6.1543 9.53777 6.1543H27.1274C27.7903 6.1543 28.3577 6.3903 28.8297 6.8623C29.3017 7.33432 29.5377 7.90173 29.5377 8.56453V18.6671C29.5377 19.3299 29.3017 19.8973 28.8297 20.3693C28.3577 20.8413 27.7903 21.0773 27.1274 21.0773H9.53777ZM11.5377 19.0774H25.1275C25.1275 18.4124 25.3635 17.8445 25.8355 17.3735C26.3075 16.9026 26.8749 16.6671 27.5377 16.6671V10.5645C26.8728 10.5645 26.3048 10.3285 25.8339 9.8565C25.363 9.38447 25.1275 8.81706 25.1275 8.15426H11.5377C11.5377 8.81922 11.3017 9.38716 10.8297 9.8581C10.3577 10.329 9.7903 10.5645 9.1275 10.5645V16.6671C9.79246 16.6671 10.3604 16.9031 10.8313 17.3751C11.3023 17.8471 11.5377 18.4145 11.5377 19.0774ZM4.87117 25.7439C4.20835 25.7439 3.64094 25.5079 3.16894 25.0359C2.69694 24.5639 2.46094 23.9965 2.46094 23.3337V11.1286C2.46094 10.8453 2.5568 10.6078 2.74854 10.4162C2.94029 10.2245 3.17789 10.1287 3.46134 10.1287C3.7448 10.1287 3.98226 10.2245 4.1737 10.4162C4.36515 10.6078 4.46087 10.8453 4.46087 11.1286V23.3337C4.46087 23.4363 4.50362 23.5303 4.5891 23.6158C4.67457 23.7012 4.76859 23.744 4.87117 23.744H24.5633C24.8467 23.744 25.0842 23.8398 25.2758 24.0316C25.4675 24.2233 25.5633 24.4609 25.5633 24.7444C25.5633 25.0278 25.4675 25.2653 25.2758 25.4567C25.0842 25.6482 24.8467 25.7439 24.5633 25.7439H4.87117ZM9.53777 19.0774H9.1275V8.15426H9.53777C9.42666 8.15426 9.3305 8.19486 9.2493 8.27606C9.1681 8.35726 9.1275 8.45342 9.1275 8.56453V18.6671C9.1275 18.7782 9.1681 18.8743 9.2493 18.9555C9.3305 19.0368 9.42666 19.0774 9.53777 19.0774Z"
-                                                fill="#D44769" />
+                                                fill="#CC00FF" />
                                         </g>
                                     </svg>
                                 </div>
                                 <div class="flex flex-col justify-around">
                                     <div class="text-[12px] text-[#B9CCDC]">60%</div>
-                                    <div class="text-[#D44769] font-bold text-[16px]">8,000</div>
+                                    <div class="text-[#CC00FF  ] font-bold text-[16px]">{{ data2[3] }}</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="h-[52px] border rounded-[12px] p-[4px]">
+                        <!-- <div class="h-[52px] border rounded-[12px] p-[4px]">
                             <div class="flex justify-between">
                                 <div class="flex items-center">
                                     <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
@@ -293,10 +274,10 @@
                                 </div>
                                 <div class="flex flex-col justify-around">
                                     <div class="text-[12px] text-[#B9CCDC]">60%</div>
-                                    <div class="text-[#9A77FF] font-bold text-[16px]">8,000</div>
+                                    <div class="text-[#9A77FF] font-bold text-[16px]">{{ data2[4] }}</div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -320,20 +301,20 @@
                     <div class="text-[18px] font-bold flex items-center ml-[8px]">รายรับ-รายจ่าย</div>
                 </div>
                 <div class="flex">
-                    
-                            
+
+
                     <div class="h-[36px] w-[150px] flex cursor-pointer  justify-left rounded-[12px] mt-[12px]">
                         <div @click="tab = 1" class="cursor-pointer "
-                                    :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
-                                    รายรับ</div>
+                            :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
+                            รายรับ</div>
                         <div @click="tab = 2" class="cursor-pointer ml-[8px]"
-                                :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
-                                รายจ่าย 
+                            :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
+                            รายจ่าย
                         </div>
                     </div>
                     <div class="h-[36px] w-[132px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]"
                         @click="create = true">
-                        
+
                         <div class="flex justify-center items-center">
                             <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -341,12 +322,12 @@
                                     fill="white" />
                             </svg>
                         </div>
-                        
+
                         <div @click="create = true"
                             class="text-white font-bold ml-[8px]   flex justify-center items-center">เพิ่มรายจ่าย</div>
-                            
+
                     </div>
-                    
+
                     <!-- <vs-tooltip bottom shadow not-hover v-model="popup_filter">
                         <div @click="popup_filter = true"
                             class="h-[36px] w-[132px]  flex  justify-center rounded-[12px] mt-[12px] ml-[14px] cursor-pointer">
@@ -407,7 +388,7 @@
                 <vs-table>
                     <template #thead>
                         <vs-tr>
-                            
+
                             <vs-th>
                                 วันที่
                             </vs-th>
@@ -430,7 +411,7 @@
                     </template>
                     <template #tbody>
                         <vs-tr :key="i" v-for="(tr, i) in expense" :data="tr">
-                            
+
                             <vs-td>
                                 {{ tr.attributes.date }}
                             </vs-td>
@@ -458,7 +439,7 @@
                 <vs-table>
                     <template #thead>
                         <vs-tr>
-                            <vs-th>                                
+                            <vs-th>
                                 หมายเลขใบเสร็จรับเงิน
                             </vs-th>
                             <vs-th>
@@ -527,35 +508,38 @@
                                 <!-- <vs-option label="Vuesax" value="1">
                                     Vuesax
                                 </vs-option> -->
-                                <option v-for="data in expenseType" :label="data.attributes.expenseTypeName" :value="data.attributes.id">
+                                <option v-for="data in expenseType" :label="data.attributes.expenseTypeName"
+                                    :value="data.attributes.id">
                                     {{ data.attributes.expenseTypeName }}
                                 </option>
                             </select>
-                            <div class="ml-[8px]" >
+                            <div class="ml-[8px]">
                                 <input class="h-[36px] w-[100%] ml-[8px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
                                     type="input" v-model="title" />
                             </div>
 
                         </div>
                     </div>
-                    <div class="mt-[8px]" >
+                    <div class="mt-[8px]">
                         <div class="text-custom text-[14px] text-[#003765]">หมายเหตุ</div>
-                        <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="remark"/>
+                        <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                            v-model="remark" />
                     </div>
-                    <div class="mt-[14px]" >
+                    <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">จำนวนเงิน (บาท)</div>
-                        <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="amount"/>
+                        <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                            v-model="amount" />
                     </div>
-                    <div class="mt-[14px]" >
+                    <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">วันที่</div>
-                        <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[14px] pr-[14px]  flex justify-start" 
-                            type="date" v-model="date"/>
+                        <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[14px] pr-[14px]  flex justify-start"
+                            type="date" v-model="date" />
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">หลักฐานการจ่ายเงิน</div>
                         <div class="flex mt-[4px]">
-                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadEvidence" ref="fileEvidence" hidden
-                                    type="file" @change="tempUploadEvidence()" />
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadEvidence"
+                                ref="fileEvidence" hidden type="file" @change="tempUploadEvidence()" />
                             <div
                                 class="flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
                                 เลือกรูปภาพ</div>
@@ -566,8 +550,8 @@
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">ใบสำคัญจ่าย</div>
                         <div class="flex mt-[4px]">
-                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadReceipt" ref="fileReceipt" hidden
-                                    type="file" @change="tempUploadReceipt()" />
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadReceipt"
+                                ref="fileReceipt" hidden type="file" @change="tempUploadReceipt()" />
                             <div
                                 class="flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
                                 เลือกรูปภาพ</div>
@@ -603,44 +587,15 @@ export default {
     },
     data() {
         return {
-            tab:1,
+            tab: 1,
             create: false,
             popup_filter: false,
-            data: [10, 5, 6, 8],
-            data2: [10, 5, 6, 8, 4],
+            data: [],
+            data2: [0, 0, 0, 0],
+            label2: [],
             expense: [],
             expenseType: [],
-            income:[],
-            users: [
-                {
-                    "id": "12/01/23",
-                    "name": "ใบเสร็จค่าเช่ารายเดือน#202301000031",
-                    "username": "ใบเสร็จค่าเช่า",
-                    "email": "101",
-                    "website": "1,000",
-                },
-                {
-                    "id": "12/01/23",
-                    "name": "ใบเสร็จค่าเช่ารายเดือน#202301000031",
-                    "username": "ใบเสร็จค่าเช่า",
-                    "email": "101",
-                    "website": "1,000",
-                },
-                {
-                    "id": "12/01/23",
-                    "name": "ใบเสร็จค่าเช่ารายเดือน#202301000031",
-                    "username": "ใบเสร็จค่าเช่า",
-                    "email": "101",
-                    "website": "1,000",
-                },
-                {
-                    "id": "12/01/23",
-                    "name": "ใบเสร็จค่าเช่ารายเดือน#202301000031",
-                    "username": "ใบเสร็จค่าเช่า",
-                    "email": "101",
-                    "website": "1,000",
-                },
-            ],
+            income: [],
             title: "",
             expense: "",
             amount: 0,
@@ -649,11 +604,19 @@ export default {
             evidence: "",
             receipt: "",
             fileEvidenceForm: [],
-            fileReceiptForm: []
+            fileReceiptForm: [],
+            selectedDate: null,
+            filter: {
+                search: '',
+                floor: '',
+                selectedMonth: '',
+                selectedYear: '',
+            },
         }
 
     },
     created() {
+        this.selectedDate = new Date().toISOString().substr(0, 7) // Set the default to current month
         const loading = this.$vs.loading({
             opacity: 1,
         })
@@ -674,9 +637,11 @@ export default {
                     show: false,
                 },
                 dashboard: [],
-                labels: ["จ่ายรายเดือน", "มัดจำห้องพัก", "ประกันความเสียหาย", "อื่น ๆ"],
+
+                labels: this.label2,
                 plotOptions: {
                     pie: {
+                        // data:[10,20,4,6,7],
                         donut: {
                             labels: {
                                 show: true,
@@ -692,7 +657,7 @@ export default {
                         },
                     },
                 },
-                colors: ["#F5D65E", "#008EF4", "#D44769", "#9A77FF", "#CC00FF"]
+                colors: ["#F5D65E", "#008EF4", "#D44769", "#9A77FF"]
 
                 // noData: {
                 //     text: this.loading ? "Loading..." : "No Data",
@@ -701,107 +666,123 @@ export default {
         },
     },
     mounted() {
-        this.getExpense();
+        this.filterByDate()
         this.getIncome();
         this.getExpenseType();
     },
     methods: {
+        filterByDate() {
+            const dateStr =  this.selectedDate;
+            const [a, b] = dateStr.split('-');
+            this.filter.selectedMonth = b
+            this.filter.selectedYear = a
+            this.getDashboard(this.filter.selectedMonth, this.filter.selectedYear);
+            this.getExpense(this.filter.selectedMonth, this.filter.selectedYear)
+        },
         routeTo(path) {
             this.$router.push({
                 path: path,
             })
         },
-        getDashboard(){
-                fetch(`https://api.resguru.app/api/getexpensedashboard?buildingid=${this.$store.state.building}`)
+        getDashboard(m,y) {
+            fetch(`https://api.resguru.app/api/getexpensedashboard?buildingid=${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getExpense()",resp);
+                    console.log("Return from getExpense()", resp.accounting.receive.toFixed(2));
+                    const desiredOrder = ["ค่าจ้างพนักงาน", "ค่าจ้างทำของ", "ค่าซ่อมบำรุง", "ค่าอื่นๆ"];
+                    const counts = desiredOrder.map(type => {
+                        const item = resp.expenseCategory.counts.find(item => item.type === type);
+                        return item ? item.count : 0;
+                    });
+                    this.label2 = desiredOrder
+                    this.data2 = counts
+                    this.data.push(Math.floor(resp.accounting.receive))
                     this.dashboard = resp
                 })
-        },  
-        getExpense() {
+        },
+        getExpense(m,y) {
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
             fetch(`https://api.resguru.app/api/building-expenses?populate=*&filters[building][id][$eq]=${this.$store.state.building}&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getExpense()",resp.data);
+                    console.log("Return from getExpense()", resp.data);
                     this.expense = resp.data
                 }).finally(() => {
                     loading.close()
                 })
         },
-        getExpenseType(){
+        getExpenseType() {
             fetch(`https://api.resguru.app/api/building-expense-types`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getExpense()",resp.data);
+                    console.log("Return from getExpense()", resp.data);
                     this.expenseType = resp.data
                 })
         },
-        tempUploadEvidence(){
+        tempUploadEvidence() {
             this.fileEvidenceForm = this.$refs.fileEvidence.files[0]
         },
-        tempUploadReceipt(){
+        tempUploadReceipt() {
             this.fileReceiptForm = this.$refs.fileReceipt.files[0]
         },
         createExpense() {
             axios.post(`https://api.resguru.app/api/building-expenses`, {
-                    data: {
-                        title: this.title,
-                        // expenseType: this.expense,
-                        amount: this.amount,
-                        date: this.date,
-                        remark: this.remark,
-                        building: this.$store.state.building,
-                        // evidence: this.evidence,
-                        // receipt: this.receipt
+                data: {
+                    title: this.title,
+                    // expenseType: this.expense,
+                    amount: this.amount,
+                    date: this.date,
+                    remark: this.remark,
+                    building: this.$store.state.building,
+                    // evidence: this.evidence,
+                    // receipt: this.receipt
+                }
+            })
+                .then((resp) => {
+                    if (this.fileEvidenceForm !== null) {
+                        let formData = new FormData();
+                        formData.append("files", this.fileEvidenceForm);
+                        formData.append("refId", String(resp.data.data.id));
+                        formData.append("ref", "api::building-expenses.building-expenses");
+                        formData.append("field", "evidence");
+
+                        axios.post("https://api.resguru.app/api/upload", formData, {
+                            headers: {
+                                "Content-Type": "multipart/form-data",
+                            },
+                        }).then((result) => { console.log("Upload file", result) })
+                            .catch((error) => {
+                                console.log(error);
+                            })
                     }
-                })
-                .then(  (resp) => {
-                        if(this.fileEvidenceForm !== null){
-                            let formData = new FormData();
-                            formData.append("files", this.fileEvidenceForm);
-                            formData.append("refId", String(resp.data.data.id));
-                            formData.append("ref", "api::building-expenses.building-expenses");
-                            formData.append("field", "evidence");
 
-                            axios.post("https://api.resguru.app/api/upload", formData, {
-                                headers: {
+                    if (this.fileReceiptForm !== null) {
+                        let formDataReceipt = new FormData();
+                        formDataReceipt.append("files", this.fileReceiptForm);
+                        formDataReceipt.append("refId", String(resp.data.data.id));
+                        formDataReceipt.append("ref", "api::building-expenses.building-expenses");
+                        formDataReceipt.append("field", "receipt");
+
+                        axios.post("https://api.resguru.app/api/upload", formData, {
+                            headers: {
                                 "Content-Type": "multipart/form-data",
-                                },
-                            }).then( (result) => { console.log("Upload file",result)}) 
+                            },
+                        }).then((result) => { console.log("Upload file", result) })
                             .catch((error) => {
-                                        console.log(error);
+                                console.log(error);
                             })
-                        }
-
-                        if(this.fileReceiptForm !== null){
-                            let formDataReceipt = new FormData();
-                            formDataReceipt.append("files", this.fileReceiptForm);
-                            formDataReceipt.append("refId", String(resp.data.data.id));
-                            formDataReceipt.append("ref", "api::building-expenses.building-expenses");
-                            formDataReceipt.append("field", "receipt");
-
-                            axios.post("https://api.resguru.app/api/upload", formData, {
-                                headers: {
-                                "Content-Type": "multipart/form-data",
-                                },
-                            }).then( (result) => { console.log("Upload file",result)}) 
-                            .catch((error) => {
-                                        console.log(error);
-                            })
-                        }
-                        alert("Expense is created")
-                    }    
+                    }
+                    alert("Expense is created")
+                }
                 )
         },
         getIncome() {
-            const loading = this.$vs.loading() 
+            const loading = this.$vs.loading()
             fetch(`https://api.resguru.app/api/tenant-receipts?populate=*?populate=building&filters[building][id][$eq]=${this.$store.state.building}&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getReceipt()",resp.data);
+                    console.log("Return from getReceipt()", resp.data);
                     this.income = resp.data
                 }).finally(() => {
                     loading.close()
@@ -824,4 +805,5 @@ export default {
 /* .vs-select__input{
     height: 36px !important;
     width: 350px !important;
-} */</style>
+} */
+</style>
