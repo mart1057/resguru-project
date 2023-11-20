@@ -153,12 +153,11 @@
                         <div class="flex justify-between  h-[100%]">
                             <div class="text-[12px] text-[#5C6B79] flex items-center">ประเภทห้อง</div>
                             <div class="mt-[]">
-                                <select placeholder="Select"
+                                <select placeholder="Select" v-model="data.attributes.roomType"
                                     class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]"
-                                    :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''">
-                                    
-                                    <option  v-for="data in roomType">
-                                        {{data.attributes.roomTypeName}}
+                                    :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''" @change="updateRoomType(data.id,data.attributes.roomType)">
+                                    <option  v-for="TypeData in roomType" :value=TypeData.id>
+                                        {{TypeData.attributes.roomTypeName}} 
                                     </option>
                                     
                                     <!-- <option label="เลือก" value="0" disabled>
@@ -924,27 +923,7 @@ export default {
                     loading.close()
                 })
         },
-        updateUserRoom(roomID){
-            axios.put(`https://api.resguru.app/api/rooms/${roomID}`,{
-                data : {
-                    rate: this.rate
-                }
-            }).then( 
-                    this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
-                )
-               
-        }, 
-        openNotificationUpdateRoom(position = null, color) {
-            const noti = this.$vs.notification({
-                sticky: true,
-                color,
-                position,
-                title: 'Update Room Success',
-            })
-        },
         addNewRoom(){
-
-            
             axios.post(`https://api.resguru.app/api/rooms/`,{
                 data : {
                     RoomNumber: this.roomName,
@@ -960,7 +939,26 @@ export default {
             })
                 
         }, 
+        updateRoomType(id,eachRoomType){
 
+            console.log("ID:",id)
+            console.log("RoomType",eachRoomType)
+            axios.put(`https://api.resguru.app/api/rooms/${id}`,{
+                data : {
+                    room_type: eachRoomType,
+                }
+            }).then( 
+                    this.openNotificationEditRoomType('top-right', '#3A89CB', 6000)
+                )
+        },
+        openNotificationEditRoomType(position = null, color) {
+            const noti = this.$vs.notification({
+                sticky: true,
+                color,
+                position,
+                title: 'Edit Room Type Success',
+            })
+        },
         addNewRoomType() {
             axios.post(`https://api.resguru.app/api/room-types/`,{
                 data : {

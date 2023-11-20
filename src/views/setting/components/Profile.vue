@@ -14,13 +14,28 @@
             </div>
         </div>
         <div class="mt-[14px]">
-            <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]">
-                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" ref="buildingBanner"  hidden
-                                   type="file" @change="editBannerwithUpload()" />
-                <label for="upload">
-                <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">เปลี่ยนรูปภาพปก</div>
-                </label>
+            <div v-if="buildingData.attributes.buildingBanner.data">
+                <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]"
+                v-bind:style="{ backgroundImage: 'url(https://api.resguru.app' + buildingData.attributes.buildingBanner.data.attributes.url + ')' }">
+                    <!-- <img :src="`https://api.resguru.app${buildingData.attributes.buildingBanner.data.attributes.url}`" > -->
+                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" ref="buildingBanner"  hidden
+                                    type="file" @change="editBannerwithUpload()" />
+                    <label for="upload">
+                    <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">เปลี่ยนรูปภาพปก</div>
+                    </label>
+                </div>
             </div>
+            <div v-else>
+                <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]">
+                    
+                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" ref="buildingBanner"  hidden
+                                        type="file" @change="editBannerwithUpload()" />
+                    <label for="upload">
+                    <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">เปลี่ยนรูปภาพปก</div>
+                    </label>
+                </div>
+            </div>
+            
             <div class="flex w-[100%]">
                 <div class="w-[20%] ml-[18px] mt-[-70px]">
                     <div class="bg-[white] rounded-[22px] w-[246px] border p-[14px] flex flex-col items-center">
@@ -336,7 +351,7 @@ export default {
         }, 
         getBuildingData() {
             const loading = this.$vs.loading()
-            fetch(`https://api.resguru.app/api/buildings/${this.$store.state.building}`)
+            fetch(`https://api.resguru.app/api/buildings/${this.$store.state.building}?populate=*`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getBuilding()",resp);
