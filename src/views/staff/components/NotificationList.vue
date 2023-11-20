@@ -253,7 +253,9 @@ export default {
             create: false,
             selectedEmployee: 0,
             service: [],
-            employee: []
+            employee: [],
+            code: 0,
+            text: ''
         }
     },
     created() {
@@ -267,6 +269,20 @@ export default {
         this.getEmployeeOption();
     },
     methods: {
+        filterData(text, code) {
+            this.text = text
+            console.log('filter', text);
+            this.service = this.service.filter(item =>
+                item.attributes.user_sign_contract.data.attributes.room.data.attributes.RoomNumber.toLowerCase().includes(text.toLowerCase()),
+            );
+            if (text == '') {
+                this.getService(this.id)
+            }
+            if (code == 8) {
+                this.code = 8
+                this.getService(this.id)
+            }
+        },
         getService() {
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
@@ -274,7 +290,14 @@ export default {
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getService()",resp.data);
-                    this.service = resp.data
+                    if (this.code == 8) {
+                        this.service = resp.data .filter(item =>
+                            item.attributes.user_sign_contract.data.attributes.room.data.attributes.RoomNumber.toLowerCase().includes(this.text.toLowerCase()),
+                        );
+                    }
+                    else{
+                        this.service = resp.data   
+                    }
                 }).finally(() => {
                     loading.close()
                 })
