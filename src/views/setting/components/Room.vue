@@ -153,9 +153,9 @@
                         <div class="flex justify-between  h-[100%]">
                             <div class="text-[12px] text-[#5C6B79] flex items-center">ประเภทห้อง</div>
                             <div class="mt-[]">
-                                <select placeholder="Select" v-model="data.attributes.roomType"
+                                <select placeholder="Select" v-model="data.attributes.room_type.data.id"
                                     class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]"
-                                    :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''" @change="updateRoomType(data.id,data.attributes.roomType)">
+                                    :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''" @change="updateRoomType(data.id,data.attributes.room_type.data.id)">
                                     <option  v-for="TypeData in roomType" :value=TypeData.id>
                                         {{TypeData.attributes.roomTypeName}} 
                                     </option>

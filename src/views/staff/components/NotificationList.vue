@@ -21,7 +21,7 @@
                         </div>
                         <div class=" w-[100%] pt-[8px] p-[12px]">
                             <div class="flex justify-between items-center">
-                                <div class="font-bold text-[18px] ">ห้อง {{ data.attributes.user_sign_contract.data.attributes.room.data.attributes.RoomNumber }} แจ้งซ่อม <span
+                                <div class="font-bold text-[18px] ">ห้อง {{ data.attributes.user_sign_contract.data.attributes.room.data.attributes.RoomNumber }} | {{ data.attributes.Type }} <span
                                         class="text-[10px] font-normal text-[#8396A6]"> {{ data.attributes.createdAt }}</span></div>
                                 <div
                                     class="bg-[#FFF2BC] text-[#D48C00] pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[12px]">
@@ -52,7 +52,7 @@
                                             </vs-select> -->
                                             <select placeholder="Select"
                                                 class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]"
-                                                :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''" v-model="data.attributes.responEmployee">
+                                                :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''" v-model="data.attributes.responEmployee.data.id">
                                                 <option  v-for="selectEmployee in employee" :value="selectEmployee.id">
                                                     {{selectEmployee.attributes.name}}
                                                 </option>
@@ -66,17 +66,17 @@
                                     <div class="w-[100%]">
                                         <div class="mt-[5px] w-[100%]  con-selects">
                                            
-                                            <vs-input type="date" v-model="date_time" />
+                                            <vs-input type="date" v-model="data.attributes.appointmentDate" />
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
-                                <vs-button @click="updateService(data.id,data.attributes.responEmployee,date_time)" color="#003765" class="w-[100%] h-[36px] rounded-[12px] mt-[30px]  text-[white] flex items-center justify-center">
-                                    จบงาน
-                                </vs-button>
-                                
-                        
+                            <vs-button @click="updateService(data.id,data.attributes.responEmployee,date_time)" color="#003765" class="w-[100%] h-[36px] rounded-[12px] mt-[30px]  text-[white] flex items-center justify-center">
+                                กำหนดผู้ดูแล
+                            </vs-button>
+                            <vs-button @click="closeService(data.id)" color="#003765" class="w-[100%] h-[36px] rounded-[12px] mt-[30px]  text-[white] flex items-center justify-center">
+                                จบงาน
+                            </vs-button>
                         </div>
                     </div>
                 </div>
@@ -296,8 +296,8 @@ export default {
             axios.put(`https://api.resguru.app/api/services/${serviceId}`,{
                 data : {
                     responEmployee: empId,
-                    serviceStatus: "Completed",
-                    completeJobDate: date
+                    serviceStatus: "In Progress",
+                    appointmentDate: date
                 }
             }) .then(
                     this.openNotificationUpdateService('top-right', '#3A89CB', 6000).then(
@@ -309,12 +309,35 @@ export default {
             )
                 
         },
+        closeService(serviceId){
+
+            axios.put(`https://api.resguru.app/api/services/${serviceId}`,{
+                data : {
+                    serviceStatus: "Completed",
+                }
+            }) .then(
+                    this.openNotificationCloseServicee('top-right', '#3A89CB', 6000).then(
+                        this.$router.go(this.$router.currentRoute)
+                    )
+                    .then(
+                        setTimeout(() => location.reload(), 1500)
+                    )
+            )
+        },
         openNotificationUpdateService(position = null, color) {
             const noti = this.$vs.notification({
                 sticky: true,
                 color,
                 position,
                 title: 'Update Service Success',
+            })
+        },
+        openNotificationCloseServicee(position = null, color) {
+            const noti = this.$vs.notification({
+                sticky: true,
+                color,
+                position,
+                title: 'Closed Service Success',
             })
         },
     }

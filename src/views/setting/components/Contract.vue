@@ -14,8 +14,7 @@
                     </g>
                 </svg>
             </div>
-            <div class="ml-[8px]">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the
-                industry's</div>
+            <div class="ml-[8px]">กรุณาอัพโหลดสัญญา เพื่อใช้เป็นเทมเพลตพื้นฐานสำหรับการจัดการสัญญาเช่าระหว่างผู้เช่าและหอพัก</div>
         </div>
         <div class="grid grid-cols-5 w-[100%] gap-4 mt-[14px]">
             <div class="h-[125px] border rounded-[12px] flex flex-col p-[12px] cursor-pointer " v-for="contract in contract">
@@ -50,7 +49,22 @@
                                         fill="#5C6B79" />
                                 </g>
                             </svg>
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
+
+                            <div @click="deleteContract(contract.id)" class="">
+                                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <mask id="mask0_967_25233" style="mask-type:alpha"
+                                                    maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
+                                                    <rect width="20" height="20" fill="#D9D9D9" />
+                                                </mask>
+                                                <g mask="url(#mask0_967_25233)">
+                                                    <path
+                                                        d="M6.08975 17.0822C5.66881 17.0822 5.3125 16.9363 5.02083 16.6447C4.72917 16.353 4.58333 15.9967 4.58333 15.5758V4.99886H4.375C4.19765 4.99886 4.04915 4.93904 3.9295 4.81939C3.80983 4.69973 3.75 4.55123 3.75 4.37389C3.75 4.19654 3.80983 4.04804 3.9295 3.92839C4.04915 3.80872 4.19765 3.74889 4.375 3.74889H7.49998C7.49998 3.5395 7.57316 3.36429 7.71952 3.22326C7.8659 3.08223 8.04378 3.01172 8.25319 3.01172H11.7468C11.9562 3.01172 12.1341 3.08223 12.2804 3.22326C12.4268 3.36429 12.5 3.5395 12.5 3.74889H15.625C15.8023 3.74889 15.9508 3.80872 16.0705 3.92839C16.1901 4.04804 16.25 4.19654 16.25 4.37389C16.25 4.55123 16.1901 4.69973 16.0705 4.81939C15.9508 4.93904 15.8023 4.99886 15.625 4.99886H15.4166V15.5758C15.4166 15.9967 15.2708 16.353 14.9791 16.6447C14.6875 16.9363 14.3312 17.0822 13.9102 17.0822H6.08975ZM5.83331 4.99886V15.5758C5.83331 15.6506 5.85735 15.712 5.90544 15.7601C5.95352 15.8082 6.01496 15.8322 6.08975 15.8322H13.9102C13.985 15.8322 14.0464 15.8082 14.0945 15.7601C14.1426 15.712 14.1666 15.6506 14.1666 15.5758V4.99886H5.83331ZM7.83654 13.5406C7.83654 13.7179 7.89637 13.8664 8.01602 13.9861C8.13567 14.1057 8.28417 14.1655 8.46152 14.1655C8.63887 14.1655 8.78737 14.1057 8.90702 13.9861C9.02669 13.8664 9.08652 13.7179 9.08652 13.5406V7.29051C9.08652 7.11316 9.02669 6.96466 8.90702 6.84501C8.78737 6.72536 8.63887 6.66553 8.46152 6.66553C8.28417 6.66553 8.13567 6.72536 8.01602 6.84501C7.89637 6.96466 7.83654 7.11316 7.83654 7.29051V13.5406ZM10.9134 13.5406C10.9134 13.7179 10.9733 13.8664 11.0929 13.9861C11.2126 14.1057 11.3611 14.1655 11.5384 14.1655C11.7158 14.1655 11.8643 14.1057 11.9839 13.9861C12.1036 13.8664 12.1634 13.7179 12.1634 13.5406V7.29051C12.1634 7.11316 12.1036 6.96466 11.9839 6.84501C11.8643 6.72536 11.7158 6.66553 11.5384 6.66553C11.3611 6.66553 11.2126 6.72536 11.0929 6.84501C10.9733 6.96466 10.9134 7.11316 10.9134 7.29051V13.5406ZM5.83331 4.99886V15.5758C5.83331 15.6506 5.85735 15.712 5.90544 15.7601C5.95352 15.8082 6.01496 15.8322 6.08975 15.8322H5.83331V4.99886Z"
+                                                        fill="#5C6B79" />
+                                                </g>
+                                            </svg>
+                            </div>
+                            <!-- <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"
                                 class="ml-[4px]">
                                 <ellipse cx="10.0013" cy="4.16667" rx="1.66667" ry="1.66667"
                                     transform="rotate(90 10.0013 4.16667)" fill="#5C6B79" />
@@ -58,7 +72,7 @@
                                     fill="#5C6B79" />
                                 <ellipse cx="10.0013" cy="15.8346" rx="1.66667" ry="1.66667"
                                     transform="rotate(90 10.0013 15.8346)" fill="#5C6B79" />
-                            </svg>
+                            </svg> -->
 
                         </div>
                     </div>
@@ -112,7 +126,7 @@
                     <div class="text-custom">ชื่อสัญญาเช่า</div>
                     <div>
                         <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"  type="input"/>
+                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="contractTitle" type="input"/>
                             
                     </div>
                 </div>
@@ -156,6 +170,7 @@ export default {
     data() {
         return {
            contract: [],
+           contractTitle: '',
            create:false,
            file: [],
         }
@@ -185,16 +200,6 @@ export default {
             axios.put(`https://api.resguru.app/api/contract-templates/${contractID}`,{
                 data : {
                     default: status
-                }
-            }).then( 
-                    this.openNotificationUpdatContract('top-right', '#3A89CB', 6000)
-                )
-               
-        }, 
-        updateContract(roomID){
-            axios.put(`https://api.resguru.app/api/rooms/${roomID}`,{
-                data : {
-                    rate: this.rate
                 }
             }).then( 
                     this.openNotificationUpdatContract('top-right', '#3A89CB', 6000)
@@ -233,14 +238,28 @@ export default {
         //         title: 'Add Room Success',
         //     })
         // },
+        deleteContract(contractID){
+                if(confirm("Do you really want to delete this contract template?")){
+                    axios.delete(`https://api.resguru.app/api/contract-templates/${contractID}`)
+                    .then(resp => {
+                       console.log(resp);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                    })
+                    .then(
+                        this.getContract()
+                    )
+                }
+        },
         setUploadFile(){
             this.file = this.$refs.contractTemplate.files[0]
         },
         createContractTemplate(){
-            axios.post("https://api.resguru.app/api/contract-template",{
+            axios.post("https://api.resguru.app/api/contract-templates",{
                 data:{
-                    building:this.fullPaymentForm.invoiceID,
-                    title: this.fullPaymentForm.userID,
+                    building: this.$store.state.building,
+                    title: this.contractTitle,
                 }
             }).then(
                 (resp) => {

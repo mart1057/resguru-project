@@ -45,337 +45,12 @@
                         <div>เลขที่บัญชี</div>
                         <div class="font-bold">{{ data.attributes.accountNumber }}</div>
                     </div>
-                    <div class="flex items-center justify-center w-[100%] mt-[14px]">
-                        <svg width="124" height="124" viewBox="0 0 124 124" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <g clip-path="url(#clip0_967_25043)">
-                                <path d="M124 0H0V124H124V0Z" fill="white" />
-                                <path d="M10.2213 5.71875H5.71875V10.2213H10.2213V5.71875Z" fill="black" />
-                                <path d="M14.7239 5.71875H10.2213V10.2213H14.7239V5.71875Z" fill="black" />
-                                <path d="M19.2265 5.71875H14.7239V10.2213H19.2265V5.71875Z" fill="black" />
-                                <path d="M23.7291 5.71875H19.2265V10.2213H23.7291V5.71875Z" fill="black" />
-                                <path d="M28.2317 5.71875H23.7291V10.2213H28.2317V5.71875Z" fill="black" />
-                                <path d="M32.7343 5.71875H28.2317V10.2213H32.7343V5.71875Z" fill="black" />
-                                <path d="M37.2369 5.71875H32.7343V10.2213H37.2369V5.71875Z" fill="black" />
-                                <path d="M46.2421 5.71875H41.7395V10.2213H46.2421V5.71875Z" fill="black" />
-                                <path d="M50.7447 5.71875H46.2421V10.2213H50.7447V5.71875Z" fill="black" />
-                                <path d="M55.2473 5.71875H50.7447V10.2213H55.2473V5.71875Z" fill="black" />
-                                <path d="M59.7499 5.71875H55.2473V10.2213H59.7499V5.71875Z" fill="black" />
-                                <path d="M64.2525 5.71875H59.7499V10.2213H64.2525V5.71875Z" fill="black" />
-                                <path d="M73.2577 5.71875H68.7551V10.2213H73.2577V5.71875Z" fill="black" />
-                                <path d="M82.2628 5.71875H77.7602V10.2213H82.2628V5.71875Z" fill="black" />
-                                <path d="M91.268 5.71875H86.7654V10.2213H91.268V5.71875Z" fill="black" />
-                                <path d="M95.7706 5.71875H91.268V10.2213H95.7706V5.71875Z" fill="black" />
-                                <path d="M100.273 5.71875H95.7706V10.2213H100.273V5.71875Z" fill="black" />
-                                <path d="M104.776 5.71875H100.273V10.2213H104.776V5.71875Z" fill="black" />
-                                <path d="M109.278 5.71875H104.776V10.2213H109.278V5.71875Z" fill="black" />
-                                <path d="M113.781 5.71875H109.278V10.2213H113.781V5.71875Z" fill="black" />
-                                <path d="M118.284 5.71875H113.781V10.2213H118.284V5.71875Z" fill="black" />
-                                <path d="M10.2213 10.2213H5.71875V14.7239H10.2213V10.2213Z" fill="black" />
-                                <path d="M37.2369 10.2213H32.7343L32.7343 14.7239H37.2369V10.2213Z" fill="black" />
-                                <path d="M55.2473 10.2213H50.7447V14.7239H55.2473V10.2213Z" fill="black" />
-                                <path d="M64.2525 10.2213H59.7499V14.7239H64.2525V10.2213Z" fill="black" />
-                                <path d="M77.7602 10.2213H73.2577L73.2577 14.7239H77.7602V10.2213Z" fill="black" />
-                                <path d="M91.268 10.2213H86.7654V14.7239H91.268V10.2213Z" fill="black" />
-                                <path d="M118.284 10.2213H113.781V14.7239H118.284V10.2213Z" fill="black" />
-                                <path d="M10.2213 14.7239H5.71875V19.2265H10.2213V14.7239Z" fill="black" />
-                                <path d="M19.2265 14.7239H14.7239V19.2265H19.2265V14.7239Z" fill="black" />
-                                <path d="M23.7291 14.7239H19.2265V19.2265H23.7291V14.7239Z" fill="black" />
-                                <path d="M28.2317 14.7239H23.7291V19.2265H28.2317V14.7239Z" fill="black" />
-                                <path d="M37.2369 14.7239H32.7343V19.2265H37.2369V14.7239Z" fill="black" />
-                                <path d="M46.2421 14.7239H41.7395V19.2265H46.2421V14.7239Z" fill="black" />
-                                <path d="M55.2473 14.7239H50.7447V19.2265H55.2473V14.7239Z" fill="black" />
-                                <path d="M59.7499 14.7239H55.2473V19.2265H59.7499V14.7239Z" fill="black" />
-                                <path d="M73.2577 14.7239H68.7551V19.2265H73.2577L73.2577 14.7239Z" fill="black" />
-                                <path d="M91.268 14.7239H86.7654V19.2265H91.268V14.7239Z" fill="black" />
-                                <path d="M100.273 14.7239H95.7706V19.2265H100.273V14.7239Z" fill="black" />
-                                <path d="M104.776 14.7239H100.273V19.2265H104.776V14.7239Z" fill="black" />
-                                <path d="M109.278 14.7239H104.776V19.2265H109.278V14.7239Z" fill="black" />
-                                <path d="M118.284 14.7239H113.781V19.2265H118.284V14.7239Z" fill="black" />
-                                <path d="M10.2213 19.2265H5.71875V23.7291H10.2213V19.2265Z" fill="black" />
-                                <path d="M19.2265 19.2265H14.7239V23.7291H19.2265V19.2265Z" fill="black" />
-                                <path d="M23.7291 19.2265H19.2265V23.7291H23.7291V19.2265Z" fill="black" />
-                                <path d="M28.2317 19.2265H23.7291V23.7291H28.2317V19.2265Z" fill="black" />
-                                <path d="M37.2369 19.2265H32.7343V23.7291H37.2369V19.2265Z" fill="black" />
-                                <path d="M55.2473 19.2265H50.7447V23.7291H55.2473V19.2265Z" fill="black" />
-                                <path d="M59.7499 19.2265H55.2473V23.7291H59.7499V19.2265Z" fill="black" />
-                                <path d="M68.7551 19.2265H64.2525V23.7291H68.7551V19.2265Z" fill="black" />
-                                <path d="M73.2577 19.2265H68.7551V23.7291H73.2577V19.2265Z" fill="black" />
-                                <path d="M77.7602 19.2265H73.2577V23.7291H77.7602V19.2265Z" fill="black" />
-                                <path d="M91.268 19.2265H86.7654V23.7291H91.268V19.2265Z" fill="black" />
-                                <path d="M100.273 19.2265H95.7706V23.7291H100.273V19.2265Z" fill="black" />
-                                <path d="M104.776 19.2265H100.273V23.7291H104.776V19.2265Z" fill="black" />
-                                <path d="M109.278 19.2265H104.776V23.7291H109.278V19.2265Z" fill="black" />
-                                <path d="M118.284 19.2265H113.781V23.7291H118.284V19.2265Z" fill="black" />
-                                <path d="M10.2213 23.7291H5.71875V28.2317H10.2213V23.7291Z" fill="black" />
-                                <path d="M19.2265 23.7291H14.7239V28.2317H19.2265V23.7291Z" fill="black" />
-                                <path d="M23.7291 23.7291H19.2265V28.2317H23.7291V23.7291Z" fill="black" />
-                                <path d="M28.2317 23.7291H23.7291V28.2317H28.2317V23.7291Z" fill="black" />
-                                <path d="M37.2369 23.7291H32.7343V28.2317H37.2369V23.7291Z" fill="black" />
-                                <path d="M46.2421 23.7291H41.7395V28.2317H46.2421V23.7291Z" fill="black" />
-                                <path d="M55.2473 23.7291H50.7447V28.2317H55.2473V23.7291Z" fill="black" />
-                                <path d="M68.7551 23.7291H64.2525V28.2317H68.7551V23.7291Z" fill="black" />
-                                <path d="M91.268 23.7291H86.7654V28.2317H91.268V23.7291Z" fill="black" />
-                                <path d="M100.273 23.7291H95.7706V28.2317H100.273V23.7291Z" fill="black" />
-                                <path d="M104.776 23.7291H100.273V28.2317H104.776V23.7291Z" fill="black" />
-                                <path d="M109.278 23.7291H104.776V28.2317H109.278V23.7291Z" fill="black" />
-                                <path d="M118.284 23.7291H113.781V28.2317H118.284V23.7291Z" fill="black" />
-                                <path d="M10.2213 28.2317H5.71875V32.7343H10.2213V28.2317Z" fill="black" />
-                                <path d="M37.2369 28.2317H32.7343V32.7343H37.2369V28.2317Z" fill="black" />
-                                <path d="M55.2473 28.2317H50.7447V32.7343H55.2473V28.2317Z" fill="black" />
-                                <path d="M64.2525 28.2317H59.7499V32.7343H64.2525V28.2317Z" fill="black" />
-                                <path d="M77.7602 28.2317H73.2577V32.7343H77.7602V28.2317Z" fill="black" />
-                                <path d="M82.2628 28.2317H77.7602V32.7343H82.2628V28.2317Z" fill="black" />
-                                <path d="M91.268 28.2317H86.7654V32.7343H91.268V28.2317Z" fill="black" />
-                                <path d="M118.284 28.2317H113.781V32.7343H118.284V28.2317Z" fill="black" />
-                                <path d="M10.2213 32.7343H5.71875V37.2369H10.2213V32.7343Z" fill="black" />
-                                <path d="M14.7239 32.7343L10.2213 32.7343V37.2369H14.7239V32.7343Z" fill="black" />
-                                <path d="M19.2265 32.7343H14.7239V37.2369H19.2265V32.7343Z" fill="black" />
-                                <path d="M23.7291 32.7343H19.2265V37.2369H23.7291V32.7343Z" fill="black" />
-                                <path d="M28.2317 32.7343H23.7291V37.2369H28.2317V32.7343Z" fill="black" />
-                                <path d="M32.7343 32.7343L28.2317 32.7343V37.2369H32.7343L32.7343 32.7343Z" fill="black" />
-                                <path d="M37.2369 32.7343H32.7343L32.7343 37.2369H37.2369V32.7343Z" fill="black" />
-                                <path d="M46.2421 32.7343H41.7395V37.2369H46.2421V32.7343Z" fill="black" />
-                                <path d="M55.2473 32.7343H50.7447V37.2369H55.2473V32.7343Z" fill="black" />
-                                <path d="M64.2525 32.7343H59.7499V37.2369H64.2525V32.7343Z" fill="black" />
-                                <path d="M73.2577 32.7343L68.7551 32.7343V37.2369H73.2577L73.2577 32.7343Z" fill="black" />
-                                <path d="M82.2628 32.7343H77.7602V37.2369H82.2628V32.7343Z" fill="black" />
-                                <path d="M91.268 32.7343H86.7654V37.2369H91.268V32.7343Z" fill="black" />
-                                <path d="M95.7706 32.7343L91.268 32.7343V37.2369H95.7706V32.7343Z" fill="black" />
-                                <path d="M100.273 32.7343H95.7706V37.2369H100.273V32.7343Z" fill="black" />
-                                <path d="M104.776 32.7343H100.273V37.2369H104.776V32.7343Z" fill="black" />
-                                <path d="M109.278 32.7343H104.776V37.2369H109.278V32.7343Z" fill="black" />
-                                <path d="M113.781 32.7343L109.278 32.7343V37.2369H113.781V32.7343Z" fill="black" />
-                                <path d="M118.284 32.7343H113.781V37.2369H118.284V32.7343Z" fill="black" />
-                                <path d="M55.2473 37.2369H50.7447V41.7395H55.2473V37.2369Z" fill="black" />
-                                <path d="M64.2525 37.2369H59.7499V41.7395H64.2525V37.2369Z" fill="black" />
-                                <path d="M77.7602 37.2369H73.2577L73.2577 41.7395H77.7602V37.2369Z" fill="black" />
-                                <path d="M82.2628 37.2369H77.7602V41.7395H82.2628V37.2369Z" fill="black" />
-                                <path d="M14.7239 41.7395H10.2213V46.2421H14.7239V41.7395Z" fill="black" />
-                                <path d="M28.2317 41.7395H23.7291V46.2421H28.2317V41.7395Z" fill="black" />
-                                <path d="M37.2369 41.7395H32.7343V46.2421H37.2369V41.7395Z" fill="black" />
-                                <path d="M50.7447 41.7395H46.2421V46.2421H50.7447V41.7395Z" fill="black" />
-                                <path d="M59.7499 41.7395H55.2473V46.2421H59.7499V41.7395Z" fill="black" />
-                                <path d="M68.7551 41.7395H64.2525V46.2421H68.7551V41.7395Z" fill="black" />
-                                <path d="M86.7654 41.7395H82.2628V46.2421H86.7654V41.7395Z" fill="black" />
-                                <path d="M100.273 41.7395H95.7706V46.2421H100.273V41.7395Z" fill="black" />
-                                <path d="M109.278 41.7395H104.776V46.2421H109.278V41.7395Z" fill="black" />
-                                <path d="M118.284 41.7395H113.781V46.2421H118.284V41.7395Z" fill="black" />
-                                <path d="M10.2213 46.2421H5.71875V50.7447H10.2213V46.2421Z" fill="black" />
-                                <path d="M14.7239 46.2421H10.2213V50.7447H14.7239V46.2421Z" fill="black" />
-                                <path d="M19.2265 46.2421H14.7239V50.7447H19.2265V46.2421Z" fill="black" />
-                                <path d="M32.7343 46.2421H28.2317V50.7447H32.7343L32.7343 46.2421Z" fill="black" />
-                                <path d="M50.7447 46.2421H46.2421V50.7447H50.7447V46.2421Z" fill="black" />
-                                <path d="M59.7499 46.2421H55.2473V50.7447H59.7499V46.2421Z" fill="black" />
-                                <path d="M77.7602 46.2421H73.2577V50.7447H77.7602V46.2421Z" fill="black" />
-                                <path d="M82.2628 46.2421H77.7602V50.7447H82.2628V46.2421Z" fill="black" />
-                                <path d="M113.781 46.2421H109.278V50.7447H113.781V46.2421Z" fill="black" />
-                                <path d="M14.7239 50.7447H10.2213V55.2473H14.7239V50.7447Z" fill="black" />
-                                <path d="M32.7343 50.7447H28.2317V55.2473H32.7343V50.7447Z" fill="black" />
-                                <path d="M37.2369 50.7447H32.7343V55.2473H37.2369V50.7447Z" fill="black" />
-                                <path d="M41.7395 50.7447H37.2369V55.2473H41.7395V50.7447Z" fill="black" />
-                                <path d="M46.2421 50.7447H41.7395V55.2473H46.2421V50.7447Z" fill="black" />
-                                <path d="M55.2473 50.7447H50.7447V55.2473H55.2473V50.7447Z" fill="black" />
-                                <path d="M64.2525 50.7447H59.7499V55.2473H64.2525V50.7447Z" fill="black" />
-                                <path d="M68.7551 50.7447H64.2525V55.2473H68.7551V50.7447Z" fill="black" />
-                                <path d="M73.2577 50.7447H68.7551V55.2473H73.2577L73.2577 50.7447Z" fill="black" />
-                                <path d="M77.7602 50.7447H73.2577L73.2577 55.2473H77.7602V50.7447Z" fill="black" />
-                                <path d="M86.7654 50.7447H82.2628V55.2473H86.7654V50.7447Z" fill="black" />
-                                <path d="M91.268 50.7447H86.7654V55.2473H91.268V50.7447Z" fill="black" />
-                                <path d="M95.7706 50.7447H91.268V55.2473H95.7706V50.7447Z" fill="black" />
-                                <path d="M100.273 50.7447H95.7706V55.2473H100.273V50.7447Z" fill="black" />
-                                <path d="M104.776 50.7447H100.273V55.2473H104.776V50.7447Z" fill="black" />
-                                <path d="M113.781 50.7447H109.278V55.2473H113.781V50.7447Z" fill="black" />
-                                <path d="M19.2265 55.2473H14.7239V59.7499H19.2265V55.2473Z" fill="black" />
-                                <path d="M32.7343 55.2473H28.2317V59.7499H32.7343V55.2473Z" fill="black" />
-                                <path d="M46.2421 55.2473H41.7395V59.7499H46.2421V55.2473Z" fill="black" />
-                                <path d="M55.2473 55.2473H50.7447V59.7499H55.2473V55.2473Z" fill="black" />
-                                <path d="M59.7499 55.2473H55.2473V59.7499H59.7499V55.2473Z" fill="black" />
-                                <path d="M68.7551 55.2473H64.2525V59.7499H68.7551V55.2473Z" fill="black" />
-                                <path d="M73.2577 55.2473H68.7551V59.7499H73.2577V55.2473Z" fill="black" />
-                                <path d="M82.2628 55.2473H77.7602V59.7499H82.2628V55.2473Z" fill="black" />
-                                <path d="M86.7654 55.2473H82.2628V59.7499H86.7654V55.2473Z" fill="black" />
-                                <path d="M95.7706 55.2473H91.268V59.7499H95.7706V55.2473Z" fill="black" />
-                                <path d="M104.776 55.2473H100.273V59.7499H104.776V55.2473Z" fill="black" />
-                                <path d="M109.278 55.2473H104.776V59.7499H109.278V55.2473Z" fill="black" />
-                                <path d="M118.284 55.2473H113.781V59.7499H118.284V55.2473Z" fill="black" />
-                                <path d="M14.7239 59.7499H10.2213V64.2525H14.7239V59.7499Z" fill="black" />
-                                <path d="M23.7291 59.7499H19.2265V64.2525H23.7291V59.7499Z" fill="black" />
-                                <path d="M28.2317 59.7499H23.7291V64.2525H28.2317V59.7499Z" fill="black" />
-                                <path d="M32.7343 59.7499H28.2317V64.2525H32.7343V59.7499Z" fill="black" />
-                                <path d="M37.2369 59.7499H32.7343V64.2525H37.2369V59.7499Z" fill="black" />
-                                <path d="M41.7395 59.7499H37.2369V64.2525H41.7395V59.7499Z" fill="black" />
-                                <path d="M50.7447 59.7499H46.2421V64.2525H50.7447V59.7499Z" fill="black" />
-                                <path d="M55.2473 59.7499H50.7447V64.2525H55.2473V59.7499Z" fill="black" />
-                                <path d="M59.7499 59.7499H55.2473V64.2525H59.7499V59.7499Z" fill="black" />
-                                <path d="M64.2525 59.7499H59.7499V64.2525H64.2525V59.7499Z" fill="black" />
-                                <path d="M68.7551 59.7499H64.2525V64.2525H68.7551V59.7499Z" fill="black" />
-                                <path d="M73.2577 59.7499H68.7551V64.2525H73.2577V59.7499Z" fill="black" />
-                                <path d="M77.7602 59.7499H73.2577V64.2525H77.7602V59.7499Z" fill="black" />
-                                <path d="M100.273 59.7499H95.7706V64.2525H100.273V59.7499Z" fill="black" />
-                                <path d="M104.776 59.7499H100.273V64.2525H104.776V59.7499Z" fill="black" />
-                                <path d="M109.278 59.7499H104.776V64.2525H109.278V59.7499Z" fill="black" />
-                                <path d="M113.781 59.7499H109.278V64.2525H113.781V59.7499Z" fill="black" />
-                                <path d="M14.7239 64.2525H10.2213V68.7551H14.7239V64.2525Z" fill="black" />
-                                <path d="M28.2317 64.2525H23.7291V68.7551H28.2317V64.2525Z" fill="black" />
-                                <path d="M32.7343 64.2525H28.2317V68.7551H32.7343V64.2525Z" fill="black" />
-                                <path d="M41.7395 64.2525H37.2369V68.7551H41.7395V64.2525Z" fill="black" />
-                                <path d="M46.2421 64.2525H41.7395V68.7551H46.2421V64.2525Z" fill="black" />
-                                <path d="M55.2473 64.2525H50.7447V68.7551H55.2473V64.2525Z" fill="black" />
-                                <path d="M59.7499 64.2525H55.2473V68.7551H59.7499V64.2525Z" fill="black" />
-                                <path d="M64.2525 64.2525H59.7499V68.7551H64.2525V64.2525Z" fill="black" />
-                                <path d="M68.7551 64.2525H64.2525V68.7551H68.7551V64.2525Z" fill="black" />
-                                <path d="M73.2577 64.2525H68.7551V68.7551H73.2577V64.2525Z" fill="black" />
-                                <path d="M77.7602 64.2525H73.2577V68.7551H77.7602V64.2525Z" fill="black" />
-                                <path d="M91.268 64.2525H86.7654V68.7551H91.268V64.2525Z" fill="black" />
-                                <path d="M104.776 64.2525H100.273V68.7551H104.776V64.2525Z" fill="black" />
-                                <path d="M113.781 64.2525H109.278V68.7551H113.781V64.2525Z" fill="black" />
-                                <path d="M10.2213 68.7551H5.71875V73.2577H10.2213V68.7551Z" fill="black" />
-                                <path d="M14.7239 68.7551H10.2213V73.2577H14.7239V68.7551Z" fill="black" />
-                                <path d="M19.2265 68.7551H14.7239V73.2577H19.2265V68.7551Z" fill="black" />
-                                <path d="M23.7291 68.7551H19.2265V73.2577H23.7291V68.7551Z" fill="black" />
-                                <path d="M28.2317 68.7551H23.7291V73.2577H28.2317V68.7551Z" fill="black" />
-                                <path d="M37.2369 68.7551H32.7343L32.7343 73.2577H37.2369V68.7551Z" fill="black" />
-                                <path d="M41.7395 68.7551H37.2369V73.2577H41.7395V68.7551Z" fill="black" />
-                                <path d="M77.7602 68.7551H73.2577L73.2577 73.2577H77.7602V68.7551Z" fill="black" />
-                                <path d="M82.2628 68.7551H77.7602V73.2577H82.2628V68.7551Z" fill="black" />
-                                <path d="M109.278 68.7551H104.776V73.2577H109.278V68.7551Z" fill="black" />
-                                <path d="M113.781 68.7551H109.278V73.2577H113.781V68.7551Z" fill="black" />
-                                <path d="M118.284 68.7551H113.781V73.2577H118.284V68.7551Z" fill="black" />
-                                <path d="M10.2213 73.2577H5.71875V77.7602H10.2213V73.2577Z" fill="black" />
-                                <path d="M14.7239 73.2577H10.2213V77.7602H14.7239V73.2577Z" fill="black" />
-                                <path d="M28.2317 73.2577H23.7291V77.7602H28.2317V73.2577Z" fill="black" />
-                                <path d="M32.7343 73.2577H28.2317V77.7602H32.7343L32.7343 73.2577Z" fill="black" />
-                                <path d="M41.7395 73.2577H37.2369V77.7602H41.7395V73.2577Z" fill="black" />
-                                <path d="M46.2421 73.2577L41.7395 73.2577V77.7602H46.2421V73.2577Z" fill="black" />
-                                <path d="M59.7499 73.2577H55.2473V77.7602H59.7499V73.2577Z" fill="black" />
-                                <path d="M86.7654 73.2577L82.2628 73.2577V77.7602H86.7654V73.2577Z" fill="black" />
-                                <path d="M91.268 73.2577H86.7654V77.7602H91.268V73.2577Z" fill="black" />
-                                <path d="M104.776 73.2577L100.273 73.2577V77.7602H104.776V73.2577Z" fill="black" />
-                                <path d="M113.781 73.2577H109.278V77.7602H113.781V73.2577Z" fill="black" />
-                                <path d="M32.7343 77.7602H28.2317V82.2628H32.7343V77.7602Z" fill="black" />
-                                <path d="M37.2369 77.7602H32.7343V82.2628H37.2369V77.7602Z" fill="black" />
-                                <path d="M46.2421 77.7602H41.7395V82.2628H46.2421V77.7602Z" fill="black" />
-                                <path d="M50.7447 77.7602H46.2421V82.2628H50.7447V77.7602Z" fill="black" />
-                                <path d="M59.7499 77.7602H55.2473V82.2628H59.7499V77.7602Z" fill="black" />
-                                <path d="M68.7551 77.7602H64.2525V82.2628H68.7551V77.7602Z" fill="black" />
-                                <path d="M73.2577 77.7602H68.7551V82.2628H73.2577V77.7602Z" fill="black" />
-                                <path d="M82.2628 77.7602H77.7602V82.2628H82.2628V77.7602Z" fill="black" />
-                                <path d="M86.7654 77.7602H82.2628V82.2628H86.7654V77.7602Z" fill="black" />
-                                <path d="M91.268 77.7602H86.7654V82.2628H91.268V77.7602Z" fill="black" />
-                                <path d="M95.7706 77.7602H91.268V82.2628H95.7706V77.7602Z" fill="black" />
-                                <path d="M100.273 77.7602H95.7706V82.2628H100.273V77.7602Z" fill="black" />
-                                <path d="M109.278 77.7602H104.776V82.2628H109.278V77.7602Z" fill="black" />
-                                <path d="M113.781 77.7602H109.278V82.2628H113.781V77.7602Z" fill="black" />
-                                <path d="M118.284 77.7602H113.781V82.2628H118.284V77.7602Z" fill="black" />
-                                <path d="M50.7447 82.2628H46.2421V86.7654H50.7447V82.2628Z" fill="black" />
-                                <path d="M59.7499 82.2628H55.2473V86.7654H59.7499V82.2628Z" fill="black" />
-                                <path d="M64.2525 82.2628H59.7499V86.7654H64.2525V82.2628Z" fill="black" />
-                                <path d="M73.2577 82.2628H68.7551V86.7654H73.2577V82.2628Z" fill="black" />
-                                <path d="M77.7602 82.2628H73.2577V86.7654H77.7602V82.2628Z" fill="black" />
-                                <path d="M82.2628 82.2628H77.7602V86.7654H82.2628V82.2628Z" fill="black" />
-                                <path d="M100.273 82.2628H95.7706V86.7654H100.273V82.2628Z" fill="black" />
-                                <path d="M109.278 82.2628H104.776V86.7654H109.278V82.2628Z" fill="black" />
-                                <path d="M10.2213 86.7654H5.71875V91.268H10.2213V86.7654Z" fill="black" />
-                                <path d="M14.7239 86.7654H10.2213V91.268H14.7239V86.7654Z" fill="black" />
-                                <path d="M19.2265 86.7654H14.7239V91.268H19.2265V86.7654Z" fill="black" />
-                                <path d="M23.7291 86.7654H19.2265V91.268H23.7291V86.7654Z" fill="black" />
-                                <path d="M28.2317 86.7654H23.7291V91.268H28.2317V86.7654Z" fill="black" />
-                                <path d="M32.7343 86.7654H28.2317V91.268H32.7343V86.7654Z" fill="black" />
-                                <path d="M37.2369 86.7654H32.7343V91.268H37.2369V86.7654Z" fill="black" />
-                                <path d="M50.7447 86.7654H46.2421V91.268H50.7447V86.7654Z" fill="black" />
-                                <path d="M55.2473 86.7654H50.7447V91.268H55.2473V86.7654Z" fill="black" />
-                                <path d="M64.2525 86.7654H59.7499V91.268H64.2525V86.7654Z" fill="black" />
-                                <path d="M73.2577 86.7654H68.7551V91.268H73.2577V86.7654Z" fill="black" />
-                                <path d="M82.2628 86.7654H77.7602V91.268H82.2628V86.7654Z" fill="black" />
-                                <path d="M91.268 86.7654H86.7654V91.268H91.268V86.7654Z" fill="black" />
-                                <path d="M100.273 86.7654H95.7706V91.268H100.273V86.7654Z" fill="black" />
-                                <path d="M109.278 86.7654H104.776V91.268H109.278V86.7654Z" fill="black" />
-                                <path d="M118.284 86.7654H113.781V91.268H118.284V86.7654Z" fill="black" />
-                                <path d="M10.2213 91.268H5.71875V95.7706H10.2213V91.268Z" fill="black" />
-                                <path d="M37.2369 91.268H32.7343L32.7343 95.7706H37.2369V91.268Z" fill="black" />
-                                <path d="M50.7447 91.268H46.2421V95.7706H50.7447V91.268Z" fill="black" />
-                                <path d="M55.2473 91.268H50.7447V95.7706H55.2473V91.268Z" fill="black" />
-                                <path d="M68.7551 91.268H64.2525V95.7706H68.7551V91.268Z" fill="black" />
-                                <path d="M73.2577 91.268H68.7551V95.7706H73.2577V91.268Z" fill="black" />
-                                <path d="M82.2628 91.268H77.7602V95.7706H82.2628V91.268Z" fill="black" />
-                                <path d="M100.273 91.268H95.7706V95.7706H100.273V91.268Z" fill="black" />
-                                <path d="M109.278 91.268H104.776V95.7706H109.278V91.268Z" fill="black" />
-                                <path d="M113.781 91.268H109.278V95.7706H113.781V91.268Z" fill="black" />
-                                <path d="M10.2213 95.7706H5.71875V100.273H10.2213V95.7706Z" fill="black" />
-                                <path d="M19.2265 95.7706H14.7239V100.273H19.2265V95.7706Z" fill="black" />
-                                <path d="M23.7291 95.7706H19.2265V100.273H23.7291V95.7706Z" fill="black" />
-                                <path d="M28.2317 95.7706H23.7291V100.273H28.2317V95.7706Z" fill="black" />
-                                <path d="M37.2369 95.7706H32.7343V100.273H37.2369V95.7706Z" fill="black" />
-                                <path d="M46.2421 95.7706H41.7395V100.273H46.2421V95.7706Z" fill="black" />
-                                <path d="M59.7499 95.7706H55.2473V100.273H59.7499V95.7706Z" fill="black" />
-                                <path d="M73.2577 95.7706H68.7551V100.273H73.2577V95.7706Z" fill="black" />
-                                <path d="M82.2628 95.7706H77.7602V100.273H82.2628V95.7706Z" fill="black" />
-                                <path d="M86.7654 95.7706H82.2628V100.273H86.7654V95.7706Z" fill="black" />
-                                <path d="M91.268 95.7706H86.7654V100.273H91.268V95.7706Z" fill="black" />
-                                <path d="M95.7706 95.7706H91.268V100.273H95.7706V95.7706Z" fill="black" />
-                                <path d="M100.273 95.7706H95.7706V100.273H100.273V95.7706Z" fill="black" />
-                                <path d="M104.776 95.7706H100.273V100.273H104.776V95.7706Z" fill="black" />
-                                <path d="M109.278 95.7706H104.776V100.273H109.278V95.7706Z" fill="black" />
-                                <path d="M113.781 95.7706H109.278V100.273H113.781V95.7706Z" fill="black" />
-                                <path d="M118.284 95.7706H113.781V100.273H118.284V95.7706Z" fill="black" />
-                                <path d="M10.2213 100.273H5.71875V104.776H10.2213V100.273Z" fill="black" />
-                                <path d="M19.2265 100.273H14.7239V104.776H19.2265V100.273Z" fill="black" />
-                                <path d="M23.7291 100.273H19.2265V104.776H23.7291V100.273Z" fill="black" />
-                                <path d="M28.2317 100.273H23.7291V104.776H28.2317V100.273Z" fill="black" />
-                                <path d="M37.2369 100.273H32.7343V104.776H37.2369V100.273Z" fill="black" />
-                                <path d="M50.7447 100.273H46.2421V104.776H50.7447V100.273Z" fill="black" />
-                                <path d="M55.2473 100.273H50.7447V104.776H55.2473V100.273Z" fill="black" />
-                                <path d="M59.7499 100.273H55.2473V104.776H59.7499V100.273Z" fill="black" />
-                                <path d="M68.7551 100.273H64.2525V104.776H68.7551V100.273Z" fill="black" />
-                                <path d="M91.268 100.273H86.7654V104.776H91.268V100.273Z" fill="black" />
-                                <path d="M100.273 100.273H95.7706V104.776H100.273V100.273Z" fill="black" />
-                                <path d="M109.278 100.273H104.776V104.776H109.278V100.273Z" fill="black" />
-                                <path d="M118.284 100.273H113.781V104.776H118.284V100.273Z" fill="black" />
-                                <path d="M10.2213 104.776H5.71875V109.278H10.2213V104.776Z" fill="black" />
-                                <path d="M19.2265 104.776H14.7239V109.278H19.2265V104.776Z" fill="black" />
-                                <path d="M23.7291 104.776H19.2265V109.278H23.7291V104.776Z" fill="black" />
-                                <path d="M28.2317 104.776H23.7291V109.278H28.2317V104.776Z" fill="black" />
-                                <path d="M37.2369 104.776H32.7343V109.278H37.2369V104.776Z" fill="black" />
-                                <path d="M73.2577 104.776H68.7551V109.278H73.2577V104.776Z" fill="black" />
-                                <path d="M82.2628 104.776H77.7602V109.278H82.2628V104.776Z" fill="black" />
-                                <path d="M109.278 104.776H104.776V109.278H109.278V104.776Z" fill="black" />
-                                <path d="M10.2213 109.278H5.71875V113.781H10.2213V109.278Z" fill="black" />
-                                <path d="M37.2369 109.278H32.7343V113.781H37.2369V109.278Z" fill="black" />
-                                <path d="M46.2421 109.278H41.7395V113.781H46.2421V109.278Z" fill="black" />
-                                <path d="M55.2473 109.278H50.7447V113.781H55.2473V109.278Z" fill="black" />
-                                <path d="M64.2525 109.278H59.7499V113.781H64.2525V109.278Z" fill="black" />
-                                <path d="M68.7551 109.278H64.2525V113.781H68.7551V109.278Z" fill="black" />
-                                <path d="M73.2577 109.278H68.7551V113.781H73.2577V109.278Z" fill="black" />
-                                <path d="M77.7602 109.278H73.2577V113.781H77.7602V109.278Z" fill="black" />
-                                <path d="M91.268 109.278H86.7654V113.781H91.268V109.278Z" fill="black" />
-                                <path d="M100.273 109.278H95.7706V113.781H100.273V109.278Z" fill="black" />
-                                <path d="M113.781 109.278H109.278V113.781H113.781V109.278Z" fill="black" />
-                                <path d="M118.284 109.278H113.781V113.781H118.284V109.278Z" fill="black" />
-                                <path d="M10.2213 113.781H5.71875V118.284H10.2213V113.781Z" fill="black" />
-                                <path d="M14.7239 113.781H10.2213V118.284H14.7239V113.781Z" fill="black" />
-                                <path d="M19.2265 113.781H14.7239V118.284H19.2265V113.781Z" fill="black" />
-                                <path d="M23.7291 113.781H19.2265V118.284H23.7291V113.781Z" fill="black" />
-                                <path d="M28.2317 113.781H23.7291V118.284H28.2317V113.781Z" fill="black" />
-                                <path d="M32.7343 113.781H28.2317V118.284H32.7343L32.7343 113.781Z" fill="black" />
-                                <path d="M37.2369 113.781H32.7343L32.7343 118.284H37.2369V113.781Z" fill="black" />
-                                <path d="M50.7447 113.781H46.2421V118.284H50.7447V113.781Z" fill="black" />
-                                <path d="M55.2473 113.781H50.7447V118.284H55.2473V113.781Z" fill="black" />
-                                <path d="M64.2525 113.781H59.7499V118.284H64.2525V113.781Z" fill="black" />
-                                <path d="M68.7551 113.781H64.2525V118.284H68.7551V113.781Z" fill="black" />
-                                <path d="M73.2577 113.781H68.7551V118.284H73.2577V113.781Z" fill="black" />
-                                <path d="M77.7602 113.781H73.2577V118.284H77.7602V113.781Z" fill="black" />
-                                <path d="M82.2628 113.781H77.7602V118.284H82.2628V113.781Z" fill="black" />
-                                <path d="M91.268 113.781H86.7654V118.284H91.268V113.781Z" fill="black" />
-                                <path d="M100.273 113.781H95.7706V118.284H100.273V113.781Z" fill="black" />
-                                <path d="M109.278 113.781H104.776V118.284H109.278V113.781Z" fill="black" />
-                                <path d="M118.284 113.781H113.781V118.284H118.284V113.781Z" fill="black" />
-                            </g>
-                            <defs>
-                                <clipPath id="clip0_967_25043">
-                                    <rect width="124" height="124" fill="white" />
-                                </clipPath>
-                            </defs>
-                        </svg>
+
+                    <div v-if=data.attributes.QRCode.data class="flex items-center justify-center w-[100%] mt-[14px]">
+                        <img :src='"https://api.resguru.app" + data.attributes.QRCode.data.attributes.url'>
+                    </div>
+                    <div v-else class="flex items-center justify-center w-[100%] mt-[14px]">
+                        <div class="flex justify-center mt-[14px]">Please Upload Your Building QR Payment</div>
                     </div>
                     <div class="flex justify-center mt-[14px] ">
                         <div class="flex bg-[#003765]  rounded-[12px] pl-[12px] pr-[12px] pt-[4px] pb-[4px] ">
@@ -404,9 +79,9 @@
                                         fill="white" />
                                 </svg>
                             </div>
-                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" ref="paymentImage" hidden
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadBanner" ref="paymentImage" hidden
                                     type="file" @change="editPaymentImagewithUpload(data.id)" />
-                            <label for="upload">
+                            <label for="uploadBanner">
                             <div class="text-white flex items-center justify-center ml-[4px] cursor-pointer">เปลี่ยนรูป</div>
                             </label>
                         </div>
@@ -538,7 +213,7 @@ export default {
     methods: {
         getPaymentBuilding() {
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/building-pay-methods?filters[building][id][$eq]='+this.$store.state.building)
+            fetch('https://api.resguru.app/api' + '/building-pay-methods?populate=*&filters[building][id][$eq]='+this.$store.state.building)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getOther()",resp.data);
@@ -600,25 +275,26 @@ export default {
         },
         editPaymentImagewithUpload(Editid){
 
-            this.filePayment = this.$refs.paymentImage.files[0]
+            console.log("payment Image",this.$refs.paymentImage)
+            console.log("ID",Editid)
+            // this.filePayment = this.$refs.paymentImage.files[0]
+            // if(this.filePayment !== null){
+            //             let formData = new FormData();
+            //             formData.append("files", this.filePayment);
+            //             formData.append("refId", String(Editid));
+            //             formData.append("ref", "api::building-pay-method.building-pay-method");
+            //             formData.append("field", "QRCode");
 
-            if(this.filePayment !== null){
-                        let formData = new FormData();
-                        formData.append("files", this.filePayment);
-                        formData.append("refId", String(Editid));
-                        formData.append("ref", "api::building-pay-method.building-pay-method");
-                        formData.append("field", "QRCode");
-
-                        axios.post("https://api.resguru.app/api/upload", formData, {
-                            headers: {
-                            "Content-Type": "multipart/form-data",
-                            },
-                        }).then( (result) => { console.log("Upload file",result)}) 
-                        .catch((error) => {
-                                    console.log(error);
-                        })
-            }
-            alert("QRCode is uploaded")
+            //             axios.post("https://api.resguru.app/api/upload", formData, {
+            //                 headers: {
+            //                 "Content-Type": "multipart/form-data",
+            //                 },
+            //             }).then( (result) => { console.log("Upload file",result)}) 
+            //             .catch((error) => {
+            //                         console.log(error);
+            //             })
+            // }
+            // alert("QRCode is uploaded")
         },
     },
 }
