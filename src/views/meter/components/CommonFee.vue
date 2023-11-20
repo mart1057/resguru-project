@@ -143,6 +143,15 @@ export default {
                 title: 'Update Communual Success',
             })
         },
+        filterData(text) {
+            console.log('filter',text);
+            this.commonRoom = this.commonRoom.filter(item =>
+                item.RoomNumber.toLowerCase().includes(text.toLowerCase()),
+            );
+            if (text == '') {
+                this.getCommonFeeRoom(this.id)
+            }
+        }
         
     },
 }

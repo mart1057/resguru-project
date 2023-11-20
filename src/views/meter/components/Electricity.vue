@@ -168,6 +168,15 @@ export default {
                 title: 'Update Meter Success, <br> Please wait while the system is loading',
             })
         },
+        filterData(text) {
+            console.log('filter',text);
+            this.ElectricityFee = this.ElectricityFee.filter(item =>
+                item.RoomNumber.toLowerCase().includes(text.toLowerCase()),
+            );
+            if (text == '') {
+                this.getElectricityFee(this.id)
+            }
+        }
         
     },
 }

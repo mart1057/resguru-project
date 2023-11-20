@@ -132,6 +132,15 @@ export default {
                 }).finally(() => {
                     loading.close()
                 })
+        },
+        filterData(text) {
+            console.log('filter',text);
+            this.OtherFee = this.OtherFee.filter(item =>
+                item.attributes.RoomNumber.toLowerCase().includes(text.toLowerCase()),
+            );
+            if (text == '') {
+                this.getOtherFee(this.id)
+            }
         }
         
     },

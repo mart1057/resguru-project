@@ -162,6 +162,22 @@ export default {
                 title: 'Update Water Meter Success',
             })
         },
+         filterData(text,code) {
+            console.log('filter',text);
+            this.WaterFee = this.WaterFee.filter(item =>
+                item.RoomNumber.toLowerCase().includes(text.toLowerCase()),
+            );
+            if (text == '') {
+                this.getWaterFee(this.id)
+            }
+            // if(code == 8){
+            //     this.getWaterFee(this.id)
+            //     this.WaterFee = this.WaterFee.filter(item =>
+            //     item.RoomNumber.toLowerCase().includes(text.toLowerCase()),
+            // );
+
+            // }
+        }
 
     },
 }
