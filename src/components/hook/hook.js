@@ -7,6 +7,14 @@ function convertDateNoTime(data_date) {
     const formattedDate = `${day}/${month}/${year}`;
     return formattedDate
 }
+function notiAlertSuccess(){
+    console.log("this hook")
+}
+function notiAlertFail(){
+    console.log("this hook")
+}
 export {
-    convertDateNoTime
+    convertDateNoTime,
+    notiAlertSuccess,
+    notiAlertFail
 }

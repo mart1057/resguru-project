@@ -281,7 +281,7 @@
                                 </div> -->
                             </vs-td>
                             <vs-td>
-                                <div v-if="tr.tenant_bills[0] && tr.user_sign_contract">
+                                <div v-if="tr.tenant_bills[0] && tr.tenant_bills[0].paymentStatus === 'Not Paid'">
                                     <!-- <vs-button  primary class="small">แก้ไขใบแจ้งหนี้</vs-button>   -->
                                         <!-- to: internal link -->
                                         <vs-select placeholder="เมนู" v-model="tr.tenant_bills[0].lastEvent" @change="selectMenu(tr.tenant_bills[0].lastEvent,tr)">
@@ -300,6 +300,23 @@
                                     </vs-select>
 
                                     <!--  Need to add option for select here -->
+                                </div>
+                                <div v-else-if="tr.tenant_bills[0] && tr.tenant_bills[0].paymentStatus === 'Partial Paid'">
+                                    <!-- <vs-button  primary class="small">แก้ไขใบแจ้งหนี้</vs-button>   -->
+                                        <!-- to: internal link -->
+                                        <vs-select placeholder="เมนู" v-model="tr.tenant_bills[0].lastEvent" @change="selectMenu(tr.tenant_bills[0].lastEvent,tr)">
+                                            <vs-option label="เลือกเมนู" value="Select Menu">
+                                            เลือกเมนู
+                                            </vs-option>
+                                            <vs-option label="ชำระบางส่วน" value="Partial Payment">
+                                            ชำระบางส่วน
+                                            </vs-option>
+                                    </vs-select>
+
+                                    <!--  Need to add option for select here -->
+                                </div>
+                                <div v-else-if="tr.tenant_bills[0] && tr.tenant_bills[0].paymentStatus === 'Paid'">
+                                    <vs-button success class="small">ชำระใบแจ้งหนี้แล้ว</vs-button>
                                 </div>
                                 <div v-else-if="tr.tenant_bills[0] && tr.user_sign_contract === null">
                                     <vs-button warn class="small">ผู้เช่าย้ายออก</vs-button>
