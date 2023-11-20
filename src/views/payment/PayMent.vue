@@ -759,7 +759,6 @@ export default {
             this.fileFullPayment = this.$refs.FullPayment.files[0]
         },
         async PDFPrint(){
-                console.log("hello this is print pdf")
                 // Fetch an existing PDF document
                 const url = 'https://api.resguru.app/uploads/Res_Guru_Invoice_958f9f65e6.pdf'
                     const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer())
@@ -777,7 +776,7 @@ export default {
                 const { width, height } = firstPage.getSize()
 
                 // Draw a string of text diagonally across the first page
-                firstPage.drawText('Only in Resguru application', {
+                firstPage.drawText('Work in progress', {
                     x: 5,
                     y: height / 2 + 300,
                     size: 50,
