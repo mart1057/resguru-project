@@ -53,7 +53,7 @@
                     </div>
                     <div class="flex justify-start items-center   mt-[5px] ml-[14px]">
                         <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาตามหมายเลขห้อง"
-                            v-model="filter.search" @input="filterData" type="input" />
+                            v-model="filter.search" @input="filterData" type="input" @keydown="handleKeyDown" />
                     </div>
                     <vs-tooltip bottom shadow not-hover v-model="popup_filter">
                         <div @click="popup_filter = true"
@@ -689,14 +689,21 @@ export default {
                 path: path,
             })
         },
-        getRentalContract() {
+        getRentalContract(code) {
             this.contract = []
             const loading = this.$vs.loading()
             fetch('https://api.resguru.app/api/getRoomContract?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor)
                 .then(response => response.json())
                 .then((resp) => {
+                    if (code == 8) {
+                        this.contract = resp.data.filter(item =>
+                            item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase()),
+                        );
+                    }
+                    else {
+                        this.contract = resp.data
+                    }
                     console.log("Return from getRentalContract()", resp.data);
-                    this.contract = resp.data
                 }).finally(() => {
                     loading.close()
                 })
@@ -806,7 +813,7 @@ export default {
             this.room_detail_create.roomInsuranceDeposit = ''
             this.room_detail_create.contract_duration = ''
             this.room_detail_create.type_room = ''
-            this.room_detail.date_sign  = ''
+            this.room_detail.date_sign = ''
             this.room_detail.exp_date = ''
         },
         submitSign() {
@@ -817,8 +824,8 @@ export default {
                         room: this.room_detail_create.id_room,
                         contractStatus: "rent",
                         users_permissions_user: this.room_detail_create.id,
-                        checkInDate:this.room_detail.date_sign,
-                        contractEndDate:this.room_detail.exp_date,
+                        checkInDate: this.room_detail.date_sign,
+                        contractEndDate: this.room_detail.exp_date,
                         roomDeposit: parseInt(this.room_detail_create.room_deposit),
                         roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
                         contractDuration: parseInt(this.room_detail_create.contract_duration)
@@ -865,8 +872,8 @@ export default {
                             room: this.room_detail_create.id_room,
                             contractStatus: "rent",
                             users_permissions_user: resp.data.id,
-                            checkInDate:this.room_detail.date_sign,
-                            contractEndDate:this.room_detail.exp_date,
+                            checkInDate: this.room_detail.date_sign,
+                            contractEndDate: this.room_detail.exp_date,
                             roomDeposit: parseInt(this.room_detail_create.room_deposit),
                             roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
                             contractDuration: parseInt(this.room_detail_create.contract_duration)
@@ -899,7 +906,14 @@ export default {
             if (this.filter.search == '') {
                 this.getRentalContract()
             }
-        }
+        },
+        handleKeyDown(event) {
+            // Check if the pressed key is the backspace key
+            if (event.keyCode === 8) {
+                this.getRentalContract(8)
+                // Perform your desired action here when backspace is pressed
+            }
+        },
     }
 }
 </script>
