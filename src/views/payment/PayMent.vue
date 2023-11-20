@@ -282,14 +282,17 @@
                                 <div v-if="tr.tenant_bills[0] && tr.user_sign_contract" >
                                     <!-- <vs-button  primary class="small">แก้ไขใบแจ้งหนี้</vs-button>   -->
                                         <!-- to: internal link -->
-                                        <vs-select placeholder="เมนู" v-model="menu_option" @change="selectMenu(tr)">
-                                            <vs-option label="อัพเดทใบแจ้งหนี้" value="1">
+                                        <vs-select placeholder="เมนู" v-model="tr.tenant_bills[0].lastEvent" @change="selectMenu(tr.tenant_bills[0].lastEvent,tr)">
+                                            <vs-option label="เลือกเมนู" value="Select Menu">
+                                            เลือกเมนู
+                                            </vs-option>
+                                            <vs-option label="อัพเดทใบแจ้งหนี้" value="Update">
                                             อัพเดทใบแจ้งหนี้
                                             </vs-option>
-                                            <vs-option label="ชำระเงิน" value="2">
+                                            <vs-option label="ชำระเงิน" value="Full Payment">
                                             ชำระเงิน
                                             </vs-option>
-                                            <vs-option label="ชำระบางส่วน" value="3">
+                                            <vs-option label="ชำระบางส่วน" value="Partial Payment">
                                             ชำระบางส่วน
                                             </vs-option>
                                         </vs-select>
@@ -307,7 +310,7 @@
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                <svg @click="PDFPrint()" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_2691_23279" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="24" height="24">
@@ -534,6 +537,9 @@
 </template>
 <script>
 import axios from 'axios'
+import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import download from 'downloadjs';
+
 export default {
     data() {
         return {
@@ -594,10 +600,11 @@ export default {
                 path: `/payment-detail?profileId=${profileID}`,
             })
         },
-        selectMenu(roomdata){
-            if(this.menu_option == 2) {
+        selectMenu(menu_option,roomdata){
+            if(menu_option === 'Full Payment') {
                 //make this.form = inputfrom function
                 // ex. this.invoiceName = roomdata.attributes.invoiceName
+                
                 console.log("Data from Select",roomdata )
                 this.fullPaymentForm.invoiceName = roomdata.tenant_bills[0].invoiceNumber
                 this.fullPaymentForm.invoiceID = roomdata.tenant_bills[0].id
@@ -606,7 +613,7 @@ export default {
                 this.fullPaymentForm.userID = roomdata.user_sign_contract.id
                 this.createFullpayment = true
             }
-            else if(this.menu_option == 3){
+            else if(menu_option === 'Partial Payment'){
                 this.partialPaymentForm.invoiceName = roomdata.tenant_bills[0].invoiceNumber
                 this.partialPaymentForm.invoiceID = roomdata.tenant_bills[0].id
                 this.partialPaymentForm.roomName = roomdata.RoomNumber
@@ -751,6 +758,40 @@ export default {
         setUploadFileFullPayment(){
             this.fileFullPayment = this.$refs.FullPayment.files[0]
         },
+        async PDFPrint(){
+                console.log("hello this is print pdf")
+                // Fetch an existing PDF document
+                const url = 'https://api.resguru.app/uploads/Res_Guru_Invoice_958f9f65e6.pdf'
+                    const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer())
+                // Load a PDFDocument from the existing PDF bytes
+                const pdfDoc = await PDFDocument.load(existingPdfBytes)
+
+                // Embed the Helvetica font
+                const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
+
+                // Get the first page of the document
+                const pages = pdfDoc.getPages()
+                const firstPage = pages[0]
+
+                // Get the width and height of the first page
+                const { width, height } = firstPage.getSize()
+
+                // Draw a string of text diagonally across the first page
+                firstPage.drawText('Only in Resguru application', {
+                    x: 5,
+                    y: height / 2 + 300,
+                    size: 50,
+                    font: helveticaFont,
+                    color: rgb(0.95, 0.1, 0.1),
+                    rotate: degrees(-45),
+                })
+
+                // Serialize the PDFDocument to bytes (a Uint8Array)
+                const pdfBytes = await pdfDoc.save()
+
+                        // Trigger the browser to download the PDF document
+                download(pdfBytes, "pdf-lib_modification_example.pdf", "application/pdf");
+        }
     }
 }
 </script>
