@@ -14,7 +14,7 @@
             </div>
         </div>
         <div class="mt-[14px]">
-            <div v-if="buildingData.attributes.buildingBanner.data">
+            <div v-if="buildingData.attributes.buildingBanner">
                 <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]"
                 v-bind:style="{ backgroundImage: 'url(https://api.resguru.app' + buildingData.attributes.buildingBanner.data.attributes.url + ')' }">
                     <!-- <img :src="`https://api.resguru.app${buildingData.attributes.buildingBanner.data.attributes.url}`" > -->
