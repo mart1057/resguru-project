@@ -45,7 +45,7 @@
                     </div> -->
                     <div class="flex justify-start items-center   mt-[5px]">
                         <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาตามหมายเลขห้อง"
-                            v-model="filter.search" @input="filterData" type="input" />
+                            v-model="filter.search" @input="filterData" type="input" @keydown="handleKeyDown" />
                     </div>
                     <vs-tooltip bottom shadow not-hover v-model="popup_filter">
                         <div @click="popup_filter = true"
@@ -402,18 +402,24 @@ export default {
                 query: { id_user: id, id_room: id_room, number_room: number_room, status: status, id_contract: id_contract },
             })
         },
-        getRoom() {
+        getRoom(code) {
             const loading = this.$vs.loading()
             fetch('https://api.resguru.app/api/getRoom?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getRoom()", resp.data);
-                    this.room = resp.data
+                    if (code == 8) {
+                            this.room = resp.data.filter(item =>
+                                item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase()),
+                            );
+                        }
+                        else {
+                            this.room = resp.data
+                        }
                 }).finally(() => {
                     loading.close()
                 })
         },
-        getFloorRoom() {
+        getFloorRoom(code) {
             // const loading = this.$vs.loading()
             fetch('https://api.resguru.app/api' + '/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=deep,2')
                 .then(response => response.json())
@@ -477,7 +483,14 @@ export default {
             if (this.filter.search == '') {
                 this.getRoom()
             }
-        }
+        },
+        handleKeyDown(event) {
+            // Check if the pressed key is the backspace key
+            if (event.keyCode === 8) {
+                this.getRoom(8)
+                // Perform your desired action here when backspace is pressed
+            }
+        },
     }
 
 
