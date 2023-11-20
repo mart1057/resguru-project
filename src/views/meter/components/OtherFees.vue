@@ -111,7 +111,9 @@ export default {
             add_item: false,
             OtherFee:[],
             code: 0,
-            text: ''
+            text: '',
+            month:'',
+            year:'',
         }
     },
     created() {
@@ -121,10 +123,15 @@ export default {
         }, 1000)
     },
     mounted() {
-        this.getOtherFee(this.id);
+        const dateStr =  new Date().toISOString().substr(0, 7);
+        const [y, m] = dateStr.split('-');
+        this.month = m
+        this.year = y
+        this.getOtherFee(this.id,this.month,this.year);
     },
     methods: {
-        getOtherFee(id) {
+        getOtherFee(id,m,y) {
+            //// รอ custom api เดือน/ปี
             const loading = this.$vs.loading()
             fetch(`https://api.resguru.app/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&filters[building_floor][id][$eq]=${id}&populate=deep,3`)
                 .then(response => response.json())
@@ -152,11 +159,11 @@ export default {
                 item.attributes.RoomNumber.toLowerCase().includes(text.toLowerCase()),
             );
             if (text == '') {
-                this.getOtherFee(this.id)
+                this.getOtherFee(this.id,this.month,this.year)
             }
             if (code == 8) {
                 this.code = 8
-                this.getOtherFee(this.id)
+                this.getOtherFee(this.id,this.month,this.year)
             }
         }
         
