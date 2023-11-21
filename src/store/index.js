@@ -51,6 +51,12 @@ export default new Vuex.Store({
         //   commit('setErr', err.response.data.error.message);
         // })
       })
+      .catch(error => {
+        console.log(error)
+        const errorMessage = 'Email หรือ Password ผิดพลาด';
+        // this.$showNotification('danger', errorMessage); 
+        alert(errorMessage)
+      })
     }
   },
   modules: {

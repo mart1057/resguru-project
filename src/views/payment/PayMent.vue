@@ -665,35 +665,39 @@ export default {
                     paymentTime: this.fullPaymentForm.paymentTime
                 }
             }).then(
-                (resp) => {
-                    console.log("Response in create", resp)
-                    console.log("Response Evidence ID", resp.data.data.id)
-                    axios.put("https://api.resguru.app/api/tenant-bills/" + this.fullPaymentForm.invoiceID, {
-                        data: {
-                            paymentStatus: "Paid"
+                    (resp) => {
+                        console.log("Response in create", resp)
+                        console.log("Response Evidence ID", resp.data.data.id)
+                        axios.put("https://api.resguru.app/api/tenant-bills/" + this.fullPaymentForm.invoiceID, {
+                            data: {
+                                paymentStatus: "Paid"
+                            }
+                        }).then((res) => { console.log("Response in Edit Invoice", res) })
+
+                        if (this.fileFullPayment !== null) {
+                            let formData = new FormData();
+                            formData.append("files", this.fileFullPayment);
+                            formData.append("refId", String(resp.data.data.id));
+                            formData.append("ref", "api::tenant-evidence-payment.tenant-evidence-payment");
+                            formData.append("field", "evidence");
+
+                            axios.post("https://api.resguru.app/api/upload", formData, {
+                                headers: {
+                                    "Content-Type": "multipart/form-data",
+                                },
+                            }).then((result) => { console.log("Upload file", result) })
+                                .catch((error) => {
+                                    console.log(error);
+                                })
                         }
-                    }).then((res) => { console.log("Response in Edit Invoice", res) })
-
-                    if (this.fileFullPayment !== null) {
-                        let formData = new FormData();
-                        formData.append("files", this.fileFullPayment);
-                        formData.append("refId", String(resp.data.data.id));
-                        formData.append("ref", "api::tenant-evidence-payment.tenant-evidence-payment");
-                        formData.append("field", "evidence");
-
-                        axios.post("https://api.resguru.app/api/upload", formData, {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                            },
-                        }).then((result) => { console.log("Upload file", result) })
-                            .catch((error) => {
-                                console.log(error);
-                            })
+                        this.$showNotification('#3A89CB', 'Update Service Success')
                     }
-                }
-            )
+                )
+                .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+                })
             this.createPartialPayment = false
-            alert("Partial payment is created")
 
         },
         createPartial() {
@@ -708,36 +712,40 @@ export default {
                     paymentTime: this.partialPaymentForm.paymentTime
                 }
             }).then(
-                (resp) => {
-                    console.log("Response in create", resp)
-                    console.log("Response Evidence ID", resp.data.data.id)
-                    axios.put("https://api.resguru.app/api/tenant-bills/" + this.partialPaymentForm.invoiceID, {
-                        data: {
-                            paymentStatus: "Partial Paid"
+                    (resp) => {
+                        console.log("Response in create", resp)
+                        console.log("Response Evidence ID", resp.data.data.id)
+                        axios.put("https://api.resguru.app/api/tenant-bills/" + this.partialPaymentForm.invoiceID, {
+                            data: {
+                                paymentStatus: "Partial Paid"
+                            }
+                        }).then((res) => { console.log("Response in Edit Invoice", res) })
+
+                        if (this.file !== null) {
+                            let formData = new FormData();
+                            formData.append("files", this.file);
+                            formData.append("refId", String(resp.data.data.id));
+                            formData.append("ref", "api::tenant-evidence-payment.tenant-evidence-payment");
+                            formData.append("field", "evidence");
+
+                            axios.post("https://api.resguru.app/api/upload", formData, {
+                                headers: {
+                                    "Content-Type": "multipart/form-data",
+                                },
+                            }).then((result) => { console.log("Upload file", result) })
+                                .catch((error) => {
+                                    console.log(error);
+                                })
                         }
-                    }).then((res) => { console.log("Response in Edit Invoice", res) })
-
-                    if (this.file !== null) {
-                        let formData = new FormData();
-                        formData.append("files", this.file);
-                        formData.append("refId", String(resp.data.data.id));
-                        formData.append("ref", "api::tenant-evidence-payment.tenant-evidence-payment");
-                        formData.append("field", "evidence");
-
-                        axios.post("https://api.resguru.app/api/upload", formData, {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                            },
-                        }).then((result) => { console.log("Upload file", result) })
-                            .catch((error) => {
-                                console.log(error);
-                            })
+                        this.$showNotification('#3A89CB', 'Update Service Success')
                     }
-                }
-            )
+                )
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage); 
+                    })
             this.createPartialPayment = false
-            alert("Partial payment is created")
-
+          
         },
         getRoomBill(id,code,m,y) {
             // console.log("this.filter.floor",this.filter.floor)
@@ -785,11 +793,13 @@ export default {
             const year = currentdate.getFullYear()
 
             axios.get(`https://api.resguru.app/api/generateInvoice?buildingid=${this.$store.state.building}&roomid=${roomid}&month=${month}&year=${year}`)
-                .then((response) => {
-                    console.log("return from generateInvoice()", response.data.meta.message)
-                    alert(response.data.meta.message)
-                }
-                )
+                .then( (response) =>{
+                        this.$showNotification('#3A89CB', response.data.meta.message)
+                    })
+                .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+                })
         },
         setUploadFilePayment() {
             this.file = this.$refs.PartialPayment.files[0]
