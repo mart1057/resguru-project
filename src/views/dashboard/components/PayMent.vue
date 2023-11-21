@@ -64,12 +64,13 @@
                         </vs-td>
                         <vs-td>
                             {{ convertDateNoTime(tr.createdAt) }}
+                            {{ data.room}}
                         </vs-td>
                         <vs-td>
                             <div class="flex items-center justify-start">
                                 <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
-                                    :class="tr.roomStatus == 'Available' ? 'bg-[#CFFBDA] text-[#0B9A3C]' : tr.website == 2 ? 'bg-[#FFE1E8] text-[#EA2F5C]' : ' bg-[#FFF2BC] text-[#D48C00] '">
-                                    {{ tr.roomStatus == 'Available' ? 'ชำระแล้ว' : 'ค้างชำระ' }} </div>
+                                    :class="tr.tenant_bills[0]?.paymentStatus == 'Paid' ? 'bg-[#CFFBDA] text-[#0B9A3C]' : tr.website == 2 ? 'bg-[#FFE1E8] text-[#EA2F5C]' : ' bg-[#FFF2BC] text-[#D48C00] '">
+                                    {{ tr.tenant_bills[0]?.paymentStatus== 'Paid' ?'ชำระแล้ว' :'ยังไม่ชำระ'}} </div>
                             </div>
                         </vs-td>
                     </vs-tr>

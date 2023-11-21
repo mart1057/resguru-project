@@ -101,14 +101,14 @@
                                                             <div></div>
                                                             <div>{{ data.desc }}</div>
                                                         </div>
-                                                        <div v-if="data.type == 'connect'" class="flex mt-[4px]">
+                                                        <!-- <div v-if="data.type == 'connect'" class="flex mt-[4px]">
                                                             <div
                                                                 class="pt-[4px] pb-[4px] pl-[8px] pr-[8px] bg-[#003765] rounded-[12px] text-[white] cursor-pointer ">
                                                                 ยืนยัน</div>
                                                             <div
                                                                 class="pt-[4px] pb-[4px] pl-[8px] pr-[8px] bg-[#D44769] rounded-[12px] text-[white] ml-[8px] cursor-pointer ">
                                                                 ยกเลิก</div>
-                                                        </div>
+                                                        </div> -->
                                                     </div>
                                                 </div>
                                                 <div class="text-[#8396A6] text-[10px] text-custom">10 นาที</div>
