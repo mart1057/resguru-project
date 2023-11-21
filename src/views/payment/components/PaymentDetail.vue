@@ -235,7 +235,7 @@
                             </vs-td>
                             <vs-td>
                                 <!-- <vs-input  v-model="tr.attributes.total"/>   -->
-                                {{ tr.attributes.total }}
+                                {{ $formatNumber(tr.attributes.total) }}
                             </vs-td>
                             <vs-td>
                                 {{ tr.attributes.createdAt }}
@@ -330,25 +330,25 @@
                                 {{ tr.attributes.receiptNumber }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.roomPrice }}
+                                {{ $formatNumber(tr.attributes.roomPrice) }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.waterPrice }}
+                                {{ $formatNumber(tr.attributes.waterPrice) }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.electricPrice }}
+                                {{ $formatNumber(tr.attributes.electricPrice) }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.communalPrice }}
+                                {{ $formatNumber(tr.attributes.communalPrice) }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.paidAmount }}
+                                {{ $formatNumber(tr.attributes.paidAmount) }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.otherPrice }}
+                                {{ $formatNumber(tr.attributes.otherPrice) }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.total }}
+                                {{ $formatNumber(tr.attributes.total) }}
                             </vs-td>
                             <vs-td>
                                 {{ tr.attributes.createdAt }} 
@@ -379,6 +379,9 @@
                                 วันเวลาที่โอน
                             </vs-th>
                             <vs-th>
+                                Ref: Invoice Number
+                            </vs-th>
+                            <vs-th>
                                 ธนาคาร
                             </vs-th>
                             <vs-th>
@@ -398,6 +401,9 @@
                                 {{ tr.attributes.createdAt }}
                             </vs-td>
                             <vs-td>
+                                {{ tr.attributes.tenant_bill.data.attributes.invoiceNumber }}
+                            </vs-td>
+                            <vs-td>
                                 {{ tr.attributes.bankName }}
                             </vs-td>
                             <vs-td>
@@ -406,7 +412,7 @@
                                 </div>
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.amount }}
+                                {{ $formatNumber(tr.attributes.amount) }}
                             </vs-td>
                             <vs-td>
                                 <vs-button small>สร้างใบเสร็จ</vs-button>

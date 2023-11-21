@@ -205,7 +205,7 @@
                             <vs-td>
                                 <div @click="routeTo(tr.user_sign_contract.id)">
                                     <div v-if="tr.tenant_bills[0]">
-                                        {{ tr.tenant_bills[0].roomPrice }}
+                                        {{ $formatNumber(tr.tenant_bills[0].roomPrice) }}
                                     </div>
                                 </div>
                             </vs-td>
@@ -213,35 +213,35 @@
                                 <div @click="routeTo(tr.user_sign_contract.id)">
 
                                     <div v-if="tr.tenant_bills[0]">
-                                        {{ tr.tenant_bills[0].communalPrice }}
+                                        {{ $formatNumber(tr.tenant_bills[0].communalPrice) }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.user_sign_contract.id)">
                                     <div v-if="tr.tenant_bills[0]">
-                                        {{ tr.tenant_bills[0].otherPrice }}
+                                        {{ $formatNumber(tr.tenant_bills[0].otherPrice) }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.user_sign_contract.id)">
                                     <div v-if="tr.tenant_bills[0]">
-                                        {{ tr.tenant_bills[0].total }}
+                                        {{ $formatNumber(tr.tenant_bills[0].total) }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.user_sign_contract.id)">
                                     <div v-if="tr.tenant_bills[0]">
-                                        {{ tr.tenant_bills[0].overDue }}
+                                        {{ $formatNumber(tr.tenant_bills[0].overDue) }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.user_sign_contract.id)">
                                     <div v-if="tr.tenant_bills[0]">
-                                        {{ tr.tenant_bills[0].grandTotal }}
+                                        {{ $formatNumber(tr.tenant_bills[0].grandTotal) }}
                                     </div>
                                 </div>
                             </vs-td>
