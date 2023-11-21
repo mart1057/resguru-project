@@ -415,7 +415,7 @@
                                 {{ $formatNumber(tr.attributes.amount) }}
                             </vs-td>
                             <vs-td>
-                                <vs-button small>สร้างใบเสร็จ</vs-button>
+                                <vs-button @click="createReceipt(tr)" small>สร้างใบเสร็จ</vs-button>
                             </vs-td>
                         </vs-tr>
                     </template>
@@ -760,24 +760,31 @@ export default {
             axios.post('https://api.resguru.app/api' + '/tenant-receipts', {
                 data: {
                     // date_execute: this.date_execute,
-                    tenant_bill: data.id,
+                    tenant_bill: data.attributes.tenant_bill.data.id,
                     user_sign_contract: data.attributes.user_sign_contract.data.id,
-                    paidAmount: data.attributes.total,
-                    receiptNumber: "RECEIPT_" + data.attributes.invoiceNumber,
-                    roomPrice: data.attributes.roomPrice,
-                    waterPrice: data.attributes.waterPrice,
-                    electricPrice: data.attributes.electricPrice,
-                    communalPrice: data.attributes.communalPrice,
-                    otherPrice: data.attributes.otherPrice,
-                    subTotal: data.attributes.subtotal,
-                    vat: data.attributes.vat,
-                    total: data.attributes.total,
-                    building: data.attributes.building.data.id
+                    paidAmount: data.attributes.amount,
+                    receiptNumber: "RECEIPT_" +  data.attributes.tenant_bill.data.attributes.invoiceNumber,
+                    //roomPrice: data.attributes.roomPrice,
+                    //waterPrice: data.attributes.waterPrice,
+                    //electricPrice: data.attributes.electricPrice,
+                    //communalPrice: data.attributes.communalPrice,
+                    //otherPrice: data.attributes.otherPrice,
+                    //subTotal: data.attributes.subtotal,
+                    //vat: data.attributes.vat,
+                    //total: data.attributes.total,
+                    building: data.attributes.building.data.id,
+                    tenant_evidence_payment: data.id
                 }
             })
-                .then(
-                    alert("Created Suceess")
-                )
+            .then( (res) => {
+                this.$showNotification('#3A89CB', 'Create Receipt Success')
+                }   
+            )
+            .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+            })
+       
         },
         async PDFPrint(){
                 // Fetch an existing PDF document

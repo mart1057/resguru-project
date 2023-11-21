@@ -580,7 +580,8 @@ export default {
                 accountBankName: '',
                 amount: 0,
                 paymentDate: '',
-                paymentTime: ''
+                paymentTime: '',
+                building: ''
             },
             partialPaymentForm: {
                 invoiceID: '',
@@ -591,7 +592,8 @@ export default {
                 accountBankName: '',
                 amount: 0,
                 paymentDate: '',
-                paymentTime: ''
+                paymentTime: '',
+                building: ''
             },
             selected: [],
             payments: [],
@@ -643,6 +645,7 @@ export default {
                 this.fullPaymentForm.roomName = roomdata.RoomNumber
                 this.fullPaymentForm.amount = roomdata.tenant_bills[0].total
                 this.fullPaymentForm.userID = roomdata.user_sign_contract.id
+                this.fullPaymentForm.building = roomdata.room_building.id
                 this.createFullpayment = true
             }
             else if(menu_option === 'Partial Payment'){
@@ -650,6 +653,7 @@ export default {
                 this.partialPaymentForm.invoiceID = roomdata.tenant_bills[0].id
                 this.partialPaymentForm.roomName = roomdata.RoomNumber
                 this.partialPaymentForm.userID = roomdata.user_sign_contract.id
+                this.partialPaymentForm.building = roomdata.room_building.id
                 this.createPartialPayment = true
             }
         },
@@ -662,7 +666,8 @@ export default {
                     accountBankName: this.fullPaymentForm.bankName,
                     amount: this.fullPaymentForm.amount,
                     paymentDate: this.fullPaymentForm.paymentDate,
-                    paymentTime: this.fullPaymentForm.paymentTime
+                    paymentTime: this.fullPaymentForm.paymentTime,
+                    building:  this.fullPaymentForm.building 
                 }
             }).then(
                     (resp) => {
@@ -712,7 +717,8 @@ export default {
                     accountBankName: this.partialPaymentForm.bankName,
                     amount: this.partialPaymentForm.amount,
                     paymentDate: this.partialPaymentForm.paymentDate,
-                    paymentTime: this.partialPaymentForm.paymentTime
+                    paymentTime: this.partialPaymentForm.paymentTime,
+                    building:  this.partialPaymentForm.building
                 }
             }).then(
                     (resp) => {
