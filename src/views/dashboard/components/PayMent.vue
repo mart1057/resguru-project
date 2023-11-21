@@ -18,7 +18,7 @@
                 <div class="text-[18px] font-bold flex items-center ml-[4px]">การจ่ายเงิน</div>
             </div>
             <div class="flex">
-                <div></div> 
+                <div></div>
                 <!-- <div class="icon">
                     <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -29,10 +29,10 @@
                 <div class="flex justify-center items-center">
                     <input class="h-[40px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหา" type="input" />
                 </div>
-               
+
             </div>
         </div>
-        <div class="center mt-[14px]">
+        <div class="mt-[14px]">
             <vs-table>
                 <template #thead>
                     <vs-tr>
@@ -54,22 +54,22 @@
                     </vs-tr>
                 </template>
                 <template #tbody>
-                    <vs-tr :key="i" v-for="(tr, i) in users" :data="tr" :danger="tr.id == 3" :success="tr.id == 5"
-                        :primary="tr.id == 8" :warn="tr.id == 9">
+                    <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
                         <vs-td>
-                            {{ tr.name }}
+                            {{ tr.RoomNumber }}
                         </vs-td>
                         <vs-td>
-                            {{ tr.username }}
+                            -
                         </vs-td>
                         <vs-td>
-                            {{ tr.email }}
+                            {{ convertDateNoTime(tr.createdAt) }}
                         </vs-td>
                         <vs-td>
                             <div class="flex items-center justify-start">
-                              <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]" :class="tr.website == 1 ?'bg-[#CFFBDA] text-[#0B9A3C]':tr.website == 2 ?'bg-[#FFE1E8] text-[#EA2F5C]':' bg-[#FFF2BC] text-[#D48C00] '"> {{ tr.website == 1 ?'ชำระแล้ว':tr.website == 2 ?'ค้างชำระ':'ชำระบางส่วน' }}  </div>
+                                <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
+                                    :class="tr.roomStatus == 'Available' ? 'bg-[#CFFBDA] text-[#0B9A3C]' : tr.website == 2 ? 'bg-[#FFE1E8] text-[#EA2F5C]' : ' bg-[#FFF2BC] text-[#D48C00] '">
+                                    {{ tr.roomStatus == 'Available' ? 'ชำระแล้ว' : 'ค้างชำระ' }} </div>
                             </div>
-                            
                         </vs-td>
                     </vs-tr>
                 </template>
@@ -78,87 +78,23 @@
     </div>
 </template>
 <script>
+import { convertDateNoTime} from '@/components/hook/hook'
 export default {
-    data: () => ({
-        users: [
-            {
-                "id": 1,
-                "name": "101",
-                "username": "Leanne Graham",
-                "email": "12/04/66",
-                "website": 1,
-            },
-            {
-                "id": 2,
-                "name": "102",
-                "username": "Leanne Graham",
-                "email": "12/04/66",
-                "website": 2,
-            },
-            {
-                "id": 3,
-                "name": "103",
-                "username": "Leanne Graham",
-                "email": "12/04/66",
-                "website": 1,
-            },
-            {
-                "id": 4,
-                "name": "104",
-                "username": "Leanne Graham",
-                "email": "12/04/66",
-                "website": 3,
-            },
-            {
-                "id": 5,
-                "name": "105",
-                "username": "Leanne Graham",
-                "email": "12/04/66",
-                "website": 1,
-            },
-            {
-                "id": 6,
-                "name": "106",
-                "username": "Leanne Graham",
-                "email": "12/04/66",
-                "website": 3,
-            },
-            {
-                "id": 7,
-                "name": "107",
-                "username": "Leanne Graham",
-                "email": "12/04/66",
-                "website": 1,
-            },
-            {
-                "id": 8,
-                "name": "108",
-                "username": "Leanne Graham",
-                "email": "12/04/66",
-                "website": 3,
-            },
-            {
-                "id": 9,
-                "name": "109",
-                "username": "Leanne Graham",
-                "email": "12/04/66",
-                "website": 1,
-            },
-            {
-                "id": 10,
-                "name": "110",
-                "username": "Leanne Graham",
-                "email": "12/04/66",
-                "website": 2,
-            }
-        ]
-    })
+    props: {
+        data: { type: Object },
+    },
+    data(){
+        return{
+            convertDateNoTime
+        }
+    }
 }
 </script>
 <style scoped>
 #payment {
     background-color: rgb(255, 255, 255);
 }
+
 .icon {
     position: absolute;
     top: 20.2rem;
@@ -168,5 +104,4 @@ export default {
 input[type=input] {
     padding-left: 32px;
     margin: 8px 0;
-}
-</style>
+}</style>
