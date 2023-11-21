@@ -39,8 +39,16 @@
             <div class="flex w-[100%]">
                 <div class="w-[20%] ml-[18px] mt-[-70px]">
                     <div class="bg-[white] rounded-[22px] w-[246px] border p-[14px] flex flex-col items-center">
-                        <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
-                            src="https://media.wired.com/photos/63b89b5b995aa119ba7ba7be/1:1/w_1800,h_1800,c_limit/Profile-Photos-Gear-1411545652.jpg" />
+                        
+                        <img v-if="userData.imageProfile" class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
+                            :src="`https://api.resguru.app${userData.imageProfile.url}`" />
+                        <img v-else class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
+                        src="https://media.wired.com/photos/63b89b5b995aa119ba7ba7be/1:1/w_1800,h_1800,c_limit/Profile-Photos-Gear-1411545652.jpg" />
+                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile" ref="buildingProfile"  hidden
+                                    type="file" @change="editProfilewithUpload()" />
+                        <label for="uploadProfile">
+                        <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">เปลี่ยนรูปภาพโปรไฟล์</div>
+                        </label>
                         <div class="text-[18px] font-bold mt-[8px]">{{ userData.firstName }} {{userData.lastName}}</div>
                         <div class="w-[100%]" v-if="tabSetting == 2">
                             <div class="w-[100%] mt-[8px]">
@@ -301,6 +309,7 @@ export default {
             province: '',
             zipcode: '',
             fileBanner: [],
+            fileProfile: [],
         }
     },
     components: {
@@ -322,7 +331,7 @@ export default {
         getUserDetail() {
             const loading = this.$vs.loading()
             console.log("ID :",this.$store.state.userInfo.user.id)
-            fetch(`https://api.resguru.app/api/users/${this.$store.state.userInfo.user.id}`)
+            fetch(`https://api.resguru.app/api/users/${this.$store.state.userInfo.user.id}?populate=*`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getUser()",resp);
@@ -434,6 +443,27 @@ export default {
             if(this.$route.query.tab !== undefined){
                 this.tabSetting = this.$route.query.tabsetting
             }
+        },
+        editProfilewithUpload(){
+            this.fileProfile = this.$refs.buildingProfile.files[0]
+
+            if(this.fileProfile !== null){
+                        let formData = new FormData();
+                        formData.append("files", this.fileProfile);
+                        formData.append("refId", String(this.$store.state.userInfo.user.id));
+                        formData.append("ref", "plugin::users-permissions.user");
+                        formData.append("field", "imageProfile");
+
+                        axios.post("https://api.resguru.app/api/upload", formData, {
+                            headers: {
+                            "Content-Type": "multipart/form-data",
+                            },
+                        }).then( (result) => { console.log("Upload file",result)}) 
+                        .catch((error) => {
+                                    console.log(error);
+                        })
+            }
+            alert("Profile is uploaded")
         },
         editBannerwithUpload(){
 
