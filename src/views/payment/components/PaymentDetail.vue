@@ -397,7 +397,9 @@
                                 {{ tr.attributes.bankName }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.evidence.data.attributes.url }}
+                                <div v-if="tr.attributes.evidence.data">
+                                    {{ tr.attributes.evidence.data.attributes.url }}
+                                </div>
                             </vs-td>
                             <vs-td>
                                 {{ tr.attributes.amount }}

@@ -545,9 +545,9 @@
                     <div class="mt-[14px]">
                         <div class="text-custom">แนบหลักฐานการโอน</div>
                         <div class="mt-[4px] flex">
-                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="uploadPayment"
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="uploadPartialPayment"
                                 ref="PartialPayment" hidden @change="setUploadFilePayment()" type="file" />
-                            <label for="upload">
+                            <label for="uploadPartialPayment">
                                 <div
                                     class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
                                     อัพโหลดรูปภาพ</div>

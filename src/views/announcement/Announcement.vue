@@ -300,7 +300,6 @@
 <script>
 import axios from 'axios'
 import router from '@/router'
-import { notiAlert} from '@/components/hook/hook'
 
 export default {
     data() {
@@ -330,7 +329,6 @@ export default {
     },
     mounted() {
         this.getAnnouncement();
-        notiAlert();
     },
     methods: {
         getAnnouncement() {
