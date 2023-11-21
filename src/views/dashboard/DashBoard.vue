@@ -6,7 +6,7 @@
             <Notification :data="db_services"/>
         </div>
         <div class="w-[44%]">
-            <Expenses/>
+            <Expenses :data="db_expense"/>
             <Meters :data="db_meter"/>
             <News :data="db_annocment"/>
         </div>
@@ -27,6 +27,7 @@ export default {
             db_annocment:[],
             db_services:[],
             db_payment:[],
+            db_expense:[],
             count_user:''
 
         }
@@ -54,6 +55,7 @@ export default {
                     this.db_annocment = resp.announcement.announceData
                     this.db_services = resp.service.notiData
                     this.db_payment = resp.paymentStatus.paymentStatus
+                    this.db_expense = resp.accounting
                     this.count_user = ''
             })
         }

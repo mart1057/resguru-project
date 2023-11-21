@@ -59,7 +59,8 @@
                             {{ tr.RoomNumber }}
                         </vs-td>
                         <vs-td>
-                            -
+                            {{ tr.user_sign_contract?.users_permissions_user
+                                ?.firstName }} {{ tr.user_sign_contract?.users_permissions_user?.lastName }}
                         </vs-td>
                         <vs-td>
                             {{ convertDateNoTime(tr.createdAt) }}
@@ -78,13 +79,13 @@
     </div>
 </template>
 <script>
-import { convertDateNoTime} from '@/components/hook/hook'
+import { convertDateNoTime } from '@/components/hook/hook'
 export default {
     props: {
         data: { type: Object },
     },
-    data(){
-        return{
+    data() {
+        return {
             convertDateNoTime
         }
     }
@@ -104,4 +105,5 @@ export default {
 input[type=input] {
     padding-left: 32px;
     margin: 8px 0;
-}</style>
+}
+</style>
