@@ -1,6 +1,6 @@
 <template>
     <div class="mt-[14px]">
-        <div class="font-bold">รายการทรัพสินทั้งหมด</div>
+        <div class="font-bold">รายการทรัพย์สินทั้งหมด</div>
         <div class="flex mt-[14px]">
             <div class="w-[118px] h-[137px] rounded-[12px] flex items-center justify-center cursor-pointer"
                 @click="tab = false" :class="tab == false ? 'bg-[#FFF2C0] text-[#D48C00] ' : 'bg-[#F3F7FA]'">

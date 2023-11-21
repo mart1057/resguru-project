@@ -1,6 +1,6 @@
 <template>
     <div class="mt-[14px]">
-        <div class="font-bold">รายการทรัพสินทั้งหมด</div>
+        <div class="font-bold">รายการทรัพย์สินทั้งหมด</div>
         <button
             class="bg-[#003765] w-[129px] rounded-[12px] flex justify-center items-center pt-[8px] pb-[8px] pl-[12px] pr-[12px] mt-[14px]">
             <div class="flex">
@@ -11,7 +11,7 @@
                             fill="white" />
                     </svg>
                 </div>
-                <div class="text-[white] ml-[4px]" @click="create = true, is_edit = false">เพิ่มทรัพสินย์</div>
+                <div class="text-[white] ml-[4px]" @click="create = true, is_edit = false">เพิ่มทรัพย์สิน</div>
             </div>
         </button>
         <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px]">
@@ -110,7 +110,7 @@
                         </div>
                         <div>
                             <div class="text-[18px] font-bold">{{ item.attributes.title }}</div>
-                            <div class="text-[#141629] mt-[8px]">กระณีเสียหายค่าปรับ {{ item.attributes.price }} บาท</div>
+                            <div class="text-[#141629] mt-[8px]">กรณีเสียหายค่าปรับ {{ item.attributes.price }} บาท</div>
                         </div>
                     </div>
 
@@ -136,7 +136,7 @@
                 class="p-[-20px] text-custom">
                 <div>
                     <div class="flex justify-between pl-[20px] pr-[20px]">
-                        <div class="text-custom flex justify-center items-center text-[18px] font-bold">แก้ไขข้อมูลทรัพสินย์
+                        <div class="text-custom flex justify-center items-center text-[18px] font-bold">แก้ไขข้อมูลทรัพย์สิน
                         </div>
                         <div @click="create = false" class="cursor-pointer">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
