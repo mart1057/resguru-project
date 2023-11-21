@@ -934,11 +934,13 @@ export default {
                     room_type: this.roomType,
                     building_floor: this.roomFloor,
                 }
-            }).then( 
-                    this.openNotificationAddRoom('top-right', '#3A89CB', 6000)
-                )
-            .catch((err)=>{
-                console.log("Add Room",err);
+            })
+            .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Add Room Success')
+                        })
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
             })
                 
         }, 
@@ -950,16 +952,13 @@ export default {
                 data : {
                     room_type: eachRoomType,
                 }
-            }).then( 
-                    this.openNotificationEditRoomType('top-right', '#3A89CB', 6000)
-                )
-        },
-        openNotificationEditRoomType(position = null, color) {
-            const noti = this.$vs.notification({
-                sticky: true,
-                color,
-                position,
-                title: 'Edit Room Type Success',
+            })
+            .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Edit Room Success')
+                        })
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
             })
         },
         addNewRoomType() {
@@ -969,9 +968,14 @@ export default {
                     roomPrice: this.roomTypePrice,
                     roomType_building: this.$store.state.building
                 }
-            }).then( 
-                    this.openNotificationAddRoom('top-right', '#3A89CB', 6000)
-                )
+            })
+            .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Add Room Type Success')
+                        })
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
+            })
                 
         },
         updateRoomPrice(id,roomPrice){
@@ -979,16 +983,13 @@ export default {
                 data : {
                     roomPrice: roomPrice,
                 }
-            }).then( 
-                    this.openNotificationEditPrice('top-right', '#3A89CB', 6000)
-                )
-        },
-        openNotificationEditPrice(position = null, color) {
-            const noti = this.$vs.notification({
-                sticky: true,
-                color,
-                position,
-                title: 'Edit Price Success',
+            })
+            .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Edit Room Success')
+                        })
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
             })
         },
         create_floor() {
@@ -997,16 +998,13 @@ export default {
                     floorName: this.buildingfloorName,
                     building: this.$store.state.building,
                 }
-            }).then( 
-                    this.openNotificationCreateFloor('top-right', '#3A89CB', 6000)
-                )
-        },
-        openNotificationCreateFloor(position = null, color) {
-            const noti = this.$vs.notification({
-                sticky: true,
-                color,
-                position,
-                title: 'Create Floor Success',
+            })
+            .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Create Floor Success')
+                        })
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
             })
         },
         updateFloor(floorID,buildFloorName) {
@@ -1014,16 +1012,13 @@ export default {
                 data : {
                     floorName: buildFloorName,
                 }
-            }).then( 
-                    this.openNotificationEditFloor('top-right', '#3A89CB', 6000)
-                )
-        },
-        openNotificationEditFloor(position = null, color) {
-            const noti = this.$vs.notification({
-                sticky: true,
-                color,
-                position,
-                title: 'Edit Floor Success',
+            })
+            .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Update Floor Success')
+                        })
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
             })
         },
         removeFloor(floorID){
@@ -1031,23 +1026,14 @@ export default {
             axios.delete(`https://api.resguru.app/api/building-floors/${floorID}`).then( 
                     this.openNotificationDeleteFloor('top-right', '#3A89CB', 6000)
                 )
+                .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Delete Floor Success')
+                        })
+                .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+                })
             }
-        },
-        openNotificationDeleteFloor(position = null, color) {
-            const noti = this.$vs.notification({
-                sticky: true,
-                color,
-                position,
-                title: 'Delete Floor Success',
-            })
-        },
-        openNotificationAddRoom(position = null, color) {
-            const noti = this.$vs.notification({
-                sticky: true,
-                color,
-                position,
-                title: 'Add Room Success',
-            })
         },
         
     },

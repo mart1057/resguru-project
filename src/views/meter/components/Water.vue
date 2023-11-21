@@ -163,22 +163,20 @@ export default {
                     usageMeter: usageMeter
                 }
             })
-                .then(
-                    this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
-                )
-                .then(
-                    setTimeout(() => {
-                        this.getWaterFee(this.id,this.month,this.year)
-                    }, 1000)
-                )
-        },
-        openNotificationUpdateWater(position = null, color) {
-            const noti = this.$vs.notification({
-                sticky: true,
-                color,
-                position,
-                title: 'Update Water Meter Success',
+            .then( (resp) =>{
+                
+                setTimeout(() => {
+                    this.getWaterFee(this.id,this.month,this.year)
+                }, 1000)
             })
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
+            })
+            .finally(()=>{
+                this.$showNotification('#3A89CB', 'Update Electric Fee Success')
+            })
+
         },
         filterData(text, code) {
             this.text = text

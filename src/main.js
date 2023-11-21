@@ -22,6 +22,8 @@ import VueApexCharts from 'vue-apexcharts'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
 import notification from '@/components/hook/notify';
+import formatNumber from '@/components/hook/formatNumber';
+
 
 
 Vue.config.productionTip = false
@@ -30,6 +32,7 @@ Vue.use(VueMaterial)
 // Vue.use(axios);
 Vue.use(VueAxios, axios)
 Vue.use(notification);
+Vue.use(formatNumber);
 
 
 new Vue({

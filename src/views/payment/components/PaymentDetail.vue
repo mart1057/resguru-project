@@ -106,26 +106,6 @@
                                 <div class="ml-[4px] flex items-center">ใบแจ้งหนี้</div>
                             </div>
                         </div>
-                        <div @click="tab = 2" class="cursor-pointer "
-                            :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
-                            <div class="flex">
-                                <div>
-                                    <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_3440_16537" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="22" height="23">
-                                            <rect y="0.5" width="22" height="22" fill="#D9D9D9" />
-                                        </mask>
-                                        <g mask="url(#mask0_3440_16537)">
-                                            <path
-                                                d="M5.49867 20.2087C4.8582 20.2087 4.31614 19.9869 3.87249 19.5433C3.42885 19.0996 3.20703 18.5575 3.20703 17.9171V16.454C3.20703 16.2192 3.28644 16.0224 3.44525 15.8636C3.60405 15.7048 3.80082 15.6254 4.03556 15.6254H5.95703V3.61535C5.95703 3.4661 6.02255 3.36885 6.15359 3.3236C6.28462 3.27836 6.41125 3.31686 6.53348 3.43908L7.22627 4.13185L8.21806 3.15565C8.3043 3.07076 8.40319 3.02832 8.51471 3.02832C8.62626 3.02832 8.72385 3.07122 8.8075 3.15702L9.79997 4.13185L10.7918 3.15565C10.878 3.07076 10.9769 3.02832 11.0884 3.02832C11.2 3.02832 11.2976 3.07122 11.3812 3.15702L12.3737 4.13185L13.3655 3.15565C13.4517 3.07076 13.5506 3.02832 13.6621 3.02832C13.7737 3.02832 13.8713 3.07122 13.9549 3.15702L14.9474 4.13185L15.9392 3.15565C16.0254 3.07076 16.1243 3.02832 16.2358 3.02832C16.3474 3.02832 16.445 3.07122 16.5286 3.15702L17.5211 4.13185L18.2139 3.43908C18.3361 3.31686 18.4627 3.27601 18.5938 3.31654C18.7248 3.35709 18.7903 3.45669 18.7903 3.61535V17.9171C18.7903 18.5575 18.5685 19.0996 18.1249 19.5433C17.6812 19.9869 17.1392 20.2087 16.4987 20.2087H5.49867ZM16.4987 18.8337C16.7584 18.8337 16.9761 18.7459 17.1518 18.5702C17.3275 18.3945 17.4153 18.1768 17.4153 17.9171V5.08374H7.33201V15.6254H14.7535C14.9882 15.6254 15.185 15.7048 15.3438 15.8636C15.5026 16.0224 15.582 16.2192 15.582 16.454V17.9171C15.582 18.1768 15.6699 18.3945 15.8455 18.5702C16.0212 18.7459 16.239 18.8337 16.4987 18.8337ZM9.08953 8.52122C8.90033 8.52122 8.74227 8.45531 8.61534 8.32349C8.48843 8.19166 8.42497 8.02831 8.42497 7.83344C8.42497 7.63856 8.49086 7.47531 8.62263 7.34369C8.75438 7.21207 8.91766 7.14626 9.11245 7.14626H12.9378C13.1326 7.14626 13.2958 7.21217 13.4276 7.34399C13.5594 7.47582 13.6253 7.63917 13.6253 7.83404C13.6253 8.02892 13.5594 8.19217 13.4276 8.32379C13.2958 8.45541 13.1326 8.52122 12.9378 8.52122H9.08953ZM9.08953 11.2712C8.90033 11.2712 8.74227 11.2053 8.61534 11.0735C8.48843 10.9417 8.42497 10.7783 8.42497 10.5834C8.42497 10.3886 8.49086 10.2253 8.62263 10.0937C8.75438 9.96207 8.91766 9.89626 9.11245 9.89626H12.9378C13.1326 9.89626 13.2958 9.96217 13.4276 10.094C13.5594 10.2258 13.6253 10.3892 13.6253 10.584C13.6253 10.7789 13.5594 10.9422 13.4276 11.0738C13.2958 11.2054 13.1326 11.2712 12.9378 11.2712H9.08953ZM15.5291 8.64462C15.3047 8.64462 15.1134 8.56559 14.9553 8.40753C14.7973 8.24946 14.7182 8.0582 14.7182 7.83374C14.7182 7.60928 14.7973 7.41802 14.9553 7.25995C15.1134 7.10189 15.3047 7.02286 15.5291 7.02286C15.7536 7.02286 15.9448 7.10189 16.1029 7.25995C16.261 7.41802 16.34 7.60928 16.34 7.83374C16.34 8.0582 16.261 8.24946 16.1029 8.40753C15.9448 8.56559 15.7536 8.64462 15.5291 8.64462ZM15.5291 11.3946C15.3047 11.3946 15.1134 11.3156 14.9553 11.1575C14.7973 10.9995 14.7182 10.8082 14.7182 10.5837C14.7182 10.3593 14.7973 10.168 14.9553 10.01C15.1134 9.85189 15.3047 9.77286 15.5291 9.77286C15.7536 9.77286 15.9448 9.85189 16.1029 10.01C16.261 10.168 16.34 10.3593 16.34 10.5837C16.34 10.8082 16.261 10.9995 16.1029 11.1575C15.9448 11.3156 15.7536 11.3946 15.5291 11.3946ZM5.49867 18.8337H14.207V17.0004H4.58201V17.9171C4.58201 18.1768 4.66986 18.3945 4.84555 18.5702C5.02124 18.7459 5.23895 18.8337 5.49867 18.8337Z"
-                                                :fill="tab == 2 ? 'white' : '#003765'" />
-                                        </g>
-                                    </svg>
-                                </div>
-                                <div class="ml-[4px] flex items-center">ใบเสร็จ</div>
-                            </div>
-                        </div>
                         <div @click="tab = 3" class="cursor-pointer "
                             :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                             <div class="flex">
@@ -143,9 +123,30 @@
                                         </g>
                                     </svg>
                                 </div>
-                                <div class="ml-[4px] flex items-center">ประวัติการจ่าย</div>
+                                <div class="ml-[4px] flex items-center">หลักฐานการชำระและประวัติการจ่าย</div>
                             </div>
                         </div>
+                        <div @click="tab = 2" class="cursor-pointer "
+                            :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
+                            <div class="flex">
+                                <div>
+                                    <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg">
+                                        <mask id="mask0_3440_16537" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
+                                            y="0" width="22" height="23">
+                                            <rect y="0.5" width="22" height="22" fill="#D9D9D9" />
+                                        </mask>
+                                        <g mask="url(#mask0_3440_16537)">
+                                            <path
+                                                d="M5.49867 20.2087C4.8582 20.2087 4.31614 19.9869 3.87249 19.5433C3.42885 19.0996 3.20703 18.5575 3.20703 17.9171V16.454C3.20703 16.2192 3.28644 16.0224 3.44525 15.8636C3.60405 15.7048 3.80082 15.6254 4.03556 15.6254H5.95703V3.61535C5.95703 3.4661 6.02255 3.36885 6.15359 3.3236C6.28462 3.27836 6.41125 3.31686 6.53348 3.43908L7.22627 4.13185L8.21806 3.15565C8.3043 3.07076 8.40319 3.02832 8.51471 3.02832C8.62626 3.02832 8.72385 3.07122 8.8075 3.15702L9.79997 4.13185L10.7918 3.15565C10.878 3.07076 10.9769 3.02832 11.0884 3.02832C11.2 3.02832 11.2976 3.07122 11.3812 3.15702L12.3737 4.13185L13.3655 3.15565C13.4517 3.07076 13.5506 3.02832 13.6621 3.02832C13.7737 3.02832 13.8713 3.07122 13.9549 3.15702L14.9474 4.13185L15.9392 3.15565C16.0254 3.07076 16.1243 3.02832 16.2358 3.02832C16.3474 3.02832 16.445 3.07122 16.5286 3.15702L17.5211 4.13185L18.2139 3.43908C18.3361 3.31686 18.4627 3.27601 18.5938 3.31654C18.7248 3.35709 18.7903 3.45669 18.7903 3.61535V17.9171C18.7903 18.5575 18.5685 19.0996 18.1249 19.5433C17.6812 19.9869 17.1392 20.2087 16.4987 20.2087H5.49867ZM16.4987 18.8337C16.7584 18.8337 16.9761 18.7459 17.1518 18.5702C17.3275 18.3945 17.4153 18.1768 17.4153 17.9171V5.08374H7.33201V15.6254H14.7535C14.9882 15.6254 15.185 15.7048 15.3438 15.8636C15.5026 16.0224 15.582 16.2192 15.582 16.454V17.9171C15.582 18.1768 15.6699 18.3945 15.8455 18.5702C16.0212 18.7459 16.239 18.8337 16.4987 18.8337ZM9.08953 8.52122C8.90033 8.52122 8.74227 8.45531 8.61534 8.32349C8.48843 8.19166 8.42497 8.02831 8.42497 7.83344C8.42497 7.63856 8.49086 7.47531 8.62263 7.34369C8.75438 7.21207 8.91766 7.14626 9.11245 7.14626H12.9378C13.1326 7.14626 13.2958 7.21217 13.4276 7.34399C13.5594 7.47582 13.6253 7.63917 13.6253 7.83404C13.6253 8.02892 13.5594 8.19217 13.4276 8.32379C13.2958 8.45541 13.1326 8.52122 12.9378 8.52122H9.08953ZM9.08953 11.2712C8.90033 11.2712 8.74227 11.2053 8.61534 11.0735C8.48843 10.9417 8.42497 10.7783 8.42497 10.5834C8.42497 10.3886 8.49086 10.2253 8.62263 10.0937C8.75438 9.96207 8.91766 9.89626 9.11245 9.89626H12.9378C13.1326 9.89626 13.2958 9.96217 13.4276 10.094C13.5594 10.2258 13.6253 10.3892 13.6253 10.584C13.6253 10.7789 13.5594 10.9422 13.4276 11.0738C13.2958 11.2054 13.1326 11.2712 12.9378 11.2712H9.08953ZM15.5291 8.64462C15.3047 8.64462 15.1134 8.56559 14.9553 8.40753C14.7973 8.24946 14.7182 8.0582 14.7182 7.83374C14.7182 7.60928 14.7973 7.41802 14.9553 7.25995C15.1134 7.10189 15.3047 7.02286 15.5291 7.02286C15.7536 7.02286 15.9448 7.10189 16.1029 7.25995C16.261 7.41802 16.34 7.60928 16.34 7.83374C16.34 8.0582 16.261 8.24946 16.1029 8.40753C15.9448 8.56559 15.7536 8.64462 15.5291 8.64462ZM15.5291 11.3946C15.3047 11.3946 15.1134 11.3156 14.9553 11.1575C14.7973 10.9995 14.7182 10.8082 14.7182 10.5837C14.7182 10.3593 14.7973 10.168 14.9553 10.01C15.1134 9.85189 15.3047 9.77286 15.5291 9.77286C15.7536 9.77286 15.9448 9.85189 16.1029 10.01C16.261 10.168 16.34 10.3593 16.34 10.5837C16.34 10.8082 16.261 10.9995 16.1029 11.1575C15.9448 11.3156 15.7536 11.3946 15.5291 11.3946ZM5.49867 18.8337H14.207V17.0004H4.58201V17.9171C4.58201 18.1768 4.66986 18.3945 4.84555 18.5702C5.02124 18.7459 5.23895 18.8337 5.49867 18.8337Z"
+                                                :fill="tab == 2 ? 'white' : '#003765'" />
+                                        </g>
+                                    </svg>
+                                </div>
+                                <div class="ml-[4px] flex items-center">ใบเสร็จรับเงิน</div>
+                            </div>
+                        </div>
+                       
                     </div>
                 </div>
             </div>
@@ -234,7 +235,7 @@
                             </vs-td>
                             <vs-td>
                                 <!-- <vs-input  v-model="tr.attributes.total"/>   -->
-                                {{ tr.attributes.total }}
+                                {{ $formatNumber(tr.attributes.total) }}
                             </vs-td>
                             <vs-td>
                                 {{ tr.attributes.createdAt }}
@@ -329,25 +330,25 @@
                                 {{ tr.attributes.receiptNumber }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.roomPrice }}
+                                {{ $formatNumber(tr.attributes.roomPrice) }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.waterPrice }}
+                                {{ $formatNumber(tr.attributes.waterPrice) }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.electricPrice }}
+                                {{ $formatNumber(tr.attributes.electricPrice) }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.communalPrice }}
+                                {{ $formatNumber(tr.attributes.communalPrice) }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.paidAmount }}
+                                {{ $formatNumber(tr.attributes.paidAmount) }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.otherPrice }}
+                                {{ $formatNumber(tr.attributes.otherPrice) }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.total }}
+                                {{ $formatNumber(tr.attributes.total) }}
                             </vs-td>
                             <vs-td>
                                 {{ tr.attributes.createdAt }} 
@@ -378,6 +379,9 @@
                                 วันเวลาที่โอน
                             </vs-th>
                             <vs-th>
+                                Ref: Invoice Number
+                            </vs-th>
+                            <vs-th>
                                 ธนาคาร
                             </vs-th>
                             <vs-th>
@@ -386,12 +390,18 @@
                             <vs-th>
                                 จำนวนเงิน
                             </vs-th>
+                            <vs-th>
+                                Event Action
+                            </vs-th>
                         </vs-tr>
                     </template>
                     <template #tbody>
                         <vs-tr :key="i" v-for="(tr, i) in userEvidencePayment" :data="tr">
                             <vs-td>
                                 {{ tr.attributes.createdAt }}
+                            </vs-td>
+                            <vs-td>
+                                {{ tr.attributes.tenant_bill.data.attributes.invoiceNumber }}
                             </vs-td>
                             <vs-td>
                                 {{ tr.attributes.bankName }}
@@ -402,7 +412,10 @@
                                 </div>
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.amount }}
+                                {{ $formatNumber(tr.attributes.amount) }}
+                            </vs-td>
+                            <vs-td>
+                                <vs-button @click="createReceipt(tr)" small>สร้างใบเสร็จ</vs-button>
                             </vs-td>
                         </vs-tr>
                     </template>
@@ -747,24 +760,31 @@ export default {
             axios.post('https://api.resguru.app/api' + '/tenant-receipts', {
                 data: {
                     // date_execute: this.date_execute,
-                    tenant_bill: data.id,
+                    tenant_bill: data.attributes.tenant_bill.data.id,
                     user_sign_contract: data.attributes.user_sign_contract.data.id,
-                    paidAmount: data.attributes.total,
-                    receiptNumber: "RECEIPT_" + data.attributes.invoiceNumber,
-                    roomPrice: data.attributes.roomPrice,
-                    waterPrice: data.attributes.waterPrice,
-                    electricPrice: data.attributes.electricPrice,
-                    communalPrice: data.attributes.communalPrice,
-                    otherPrice: data.attributes.otherPrice,
-                    subTotal: data.attributes.subtotal,
-                    vat: data.attributes.vat,
-                    total: data.attributes.total,
-                    building: data.attributes.building.data.id
+                    paidAmount: data.attributes.amount,
+                    receiptNumber: "RECEIPT_" +  data.attributes.tenant_bill.data.attributes.invoiceNumber,
+                    //roomPrice: data.attributes.roomPrice,
+                    //waterPrice: data.attributes.waterPrice,
+                    //electricPrice: data.attributes.electricPrice,
+                    //communalPrice: data.attributes.communalPrice,
+                    //otherPrice: data.attributes.otherPrice,
+                    //subTotal: data.attributes.subtotal,
+                    //vat: data.attributes.vat,
+                    //total: data.attributes.total,
+                    building: data.attributes.building.data.id,
+                    tenant_evidence_payment: data.id
                 }
             })
-                .then(
-                    alert("Created Suceess")
-                )
+            .then( (res) => {
+                this.$showNotification('#3A89CB', 'Create Receipt Success')
+                }   
+            )
+            .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+            })
+       
         },
         async PDFPrint(){
                 // Fetch an existing PDF document

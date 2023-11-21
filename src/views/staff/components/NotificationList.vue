@@ -52,7 +52,7 @@
                                             </vs-select> -->
                                             <select placeholder="Select"
                                                 class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]"
-                                                :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''" v-model="data.attributes.responEmployee.data.id">
+                                                :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''" v-model="data.attributes.responEmployee">
                                                 <option  v-for="selectEmployee in employee" :value="selectEmployee.id">
                                                     {{selectEmployee.attributes.name}}
                                                 </option>
@@ -322,14 +322,17 @@ export default {
                     serviceStatus: "In Progress",
                     appointmentDate: date
                 }
-            }) .then(
-                    this.openNotificationUpdateService('top-right', '#3A89CB', 6000).then(
-                        this.$router.go(this.$router.currentRoute)
-                    )
-                    .then(
-                        setTimeout(() => location.reload(), 1500)
-                    )
-            )
+            })
+            .then( (resp) =>{
+                console.log(resp)
+            })
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
+            })
+            .finally(()=>{
+                this.$showNotification('#3A89CB', 'Update Service Success')
+            }) 
                 
         },
         closeService(serviceId){
@@ -338,31 +341,18 @@ export default {
                 data : {
                     serviceStatus: "Completed",
                 }
-            }) .then(
-                    this.openNotificationCloseServicee('top-right', '#3A89CB', 6000).then(
-                        this.$router.go(this.$router.currentRoute)
-                    )
-                    .then(
-                        setTimeout(() => location.reload(), 1500)
-                    )
-            )
-        },
-        openNotificationUpdateService(position = null, color) {
-            const noti = this.$vs.notification({
-                sticky: true,
-                color,
-                position,
-                title: 'Update Service Success',
+            }) 
+            .then( (resp) =>{
+                console.log(resp)
             })
-        },
-        openNotificationCloseServicee(position = null, color) {
-            const noti = this.$vs.notification({
-                sticky: true,
-                color,
-                position,
-                title: 'Closed Service Success',
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
             })
-        },
+            .finally(()=>{
+                this.$showNotification('#3A89CB', 'Closed Job Service Success')
+            }) 
+        }
     }
 }
 </script>

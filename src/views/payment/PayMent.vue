@@ -205,7 +205,7 @@
                             <vs-td>
                                 <div @click="routeTo(tr.user_sign_contract.id)">
                                     <div v-if="tr.tenant_bills[0]">
-                                        {{ tr.tenant_bills[0].roomPrice }}
+                                        {{ $formatNumber(tr.tenant_bills[0].roomPrice) }}
                                     </div>
                                 </div>
                             </vs-td>
@@ -213,35 +213,35 @@
                                 <div @click="routeTo(tr.user_sign_contract.id)">
 
                                     <div v-if="tr.tenant_bills[0]">
-                                        {{ tr.tenant_bills[0].communalPrice }}
+                                        {{ $formatNumber(tr.tenant_bills[0].communalPrice) }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.user_sign_contract.id)">
                                     <div v-if="tr.tenant_bills[0]">
-                                        {{ tr.tenant_bills[0].otherPrice }}
+                                        {{ $formatNumber(tr.tenant_bills[0].otherPrice) }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.user_sign_contract.id)">
                                     <div v-if="tr.tenant_bills[0]">
-                                        {{ tr.tenant_bills[0].total }}
+                                        {{ $formatNumber(tr.tenant_bills[0].total) }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.user_sign_contract.id)">
                                     <div v-if="tr.tenant_bills[0]">
-                                        {{ tr.tenant_bills[0].overDue }}
+                                        {{ $formatNumber(tr.tenant_bills[0].overDue) }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.user_sign_contract.id)">
                                     <div v-if="tr.tenant_bills[0]">
-                                        {{ tr.tenant_bills[0].grandTotal }}
+                                        {{ $formatNumber(tr.tenant_bills[0].grandTotal) }}
                                     </div>
                                 </div>
                             </vs-td>
@@ -580,7 +580,8 @@ export default {
                 accountBankName: '',
                 amount: 0,
                 paymentDate: '',
-                paymentTime: ''
+                paymentTime: '',
+                building: ''
             },
             partialPaymentForm: {
                 invoiceID: '',
@@ -591,7 +592,8 @@ export default {
                 accountBankName: '',
                 amount: 0,
                 paymentDate: '',
-                paymentTime: ''
+                paymentTime: '',
+                building: ''
             },
             selected: [],
             payments: [],
@@ -643,6 +645,7 @@ export default {
                 this.fullPaymentForm.roomName = roomdata.RoomNumber
                 this.fullPaymentForm.amount = roomdata.tenant_bills[0].total
                 this.fullPaymentForm.userID = roomdata.user_sign_contract.id
+                this.fullPaymentForm.building = roomdata.room_building.id
                 this.createFullpayment = true
             }
             else if(menu_option === 'Partial Payment'){
@@ -650,6 +653,7 @@ export default {
                 this.partialPaymentForm.invoiceID = roomdata.tenant_bills[0].id
                 this.partialPaymentForm.roomName = roomdata.RoomNumber
                 this.partialPaymentForm.userID = roomdata.user_sign_contract.id
+                this.partialPaymentForm.building = roomdata.room_building.id
                 this.createPartialPayment = true
             }
         },
@@ -662,38 +666,46 @@ export default {
                     accountBankName: this.fullPaymentForm.bankName,
                     amount: this.fullPaymentForm.amount,
                     paymentDate: this.fullPaymentForm.paymentDate,
-                    paymentTime: this.fullPaymentForm.paymentTime
+                    paymentTime: this.fullPaymentForm.paymentTime,
+                    building:  this.fullPaymentForm.building 
                 }
             }).then(
-                (resp) => {
-                    console.log("Response in create", resp)
-                    console.log("Response Evidence ID", resp.data.data.id)
-                    axios.put("https://api.resguru.app/api/tenant-bills/" + this.fullPaymentForm.invoiceID, {
-                        data: {
-                            paymentStatus: "Paid"
+                    (resp) => {
+                        console.log("Response in create", resp)
+                        console.log("Response Evidence ID", resp.data.data.id)
+                        axios.put("https://api.resguru.app/api/tenant-bills/" + this.fullPaymentForm.invoiceID, {
+                            data: {
+                                paymentStatus: "Paid"
+                            }
+                        }).then((res) => { console.log("Response in Edit Invoice", res) })
+
+                        if (this.fileFullPayment !== null) {
+                            let formData = new FormData();
+                            formData.append("files", this.fileFullPayment);
+                            formData.append("refId", String(resp.data.data.id));
+                            formData.append("ref", "api::tenant-evidence-payment.tenant-evidence-payment");
+                            formData.append("field", "evidence");
+
+                            axios.post("https://api.resguru.app/api/upload", formData, {
+                                headers: {
+                                    "Content-Type": "multipart/form-data",
+                                },
+                            }).then((result) => { console.log("Upload file", result) })
+                                .catch((error) => {
+                                    console.log(error);
+                                })
                         }
-                    }).then((res) => { console.log("Response in Edit Invoice", res) })
-
-                    if (this.fileFullPayment !== null) {
-                        let formData = new FormData();
-                        formData.append("files", this.fileFullPayment);
-                        formData.append("refId", String(resp.data.data.id));
-                        formData.append("ref", "api::tenant-evidence-payment.tenant-evidence-payment");
-                        formData.append("field", "evidence");
-
-                        axios.post("https://api.resguru.app/api/upload", formData, {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                            },
-                        }).then((result) => { console.log("Upload file", result) })
-                            .catch((error) => {
-                                console.log(error);
-                            })
+                       
                     }
-                }
-            )
+                )
+                .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+                })
+                .finally(()=>{
+                    this.$showNotification('#3A89CB', 'Update Service Success')
+                 })
             this.createPartialPayment = false
-            alert("Partial payment is created")
 
         },
         createPartial() {
@@ -705,39 +717,44 @@ export default {
                     accountBankName: this.partialPaymentForm.bankName,
                     amount: this.partialPaymentForm.amount,
                     paymentDate: this.partialPaymentForm.paymentDate,
-                    paymentTime: this.partialPaymentForm.paymentTime
+                    paymentTime: this.partialPaymentForm.paymentTime,
+                    building:  this.partialPaymentForm.building
                 }
             }).then(
-                (resp) => {
-                    console.log("Response in create", resp)
-                    console.log("Response Evidence ID", resp.data.data.id)
-                    axios.put("https://api.resguru.app/api/tenant-bills/" + this.partialPaymentForm.invoiceID, {
-                        data: {
-                            paymentStatus: "Partial Paid"
+                    (resp) => {
+                        console.log("Response in create", resp)
+                        console.log("Response Evidence ID", resp.data.data.id)
+                        axios.put("https://api.resguru.app/api/tenant-bills/" + this.partialPaymentForm.invoiceID, {
+                            data: {
+                                paymentStatus: "Partial Paid"
+                            }
+                        }).then((res) => { console.log("Response in Edit Invoice", res) })
+
+                        if (this.file !== null) {
+                            let formData = new FormData();
+                            formData.append("files", this.file);
+                            formData.append("refId", String(resp.data.data.id));
+                            formData.append("ref", "api::tenant-evidence-payment.tenant-evidence-payment");
+                            formData.append("field", "evidence");
+
+                            axios.post("https://api.resguru.app/api/upload", formData, {
+                                headers: {
+                                    "Content-Type": "multipart/form-data",
+                                },
+                            }).then((result) => { console.log("Upload file", result) })
+                                .catch((error) => {
+                                    console.log(error);
+                                })
                         }
-                    }).then((res) => { console.log("Response in Edit Invoice", res) })
-
-                    if (this.file !== null) {
-                        let formData = new FormData();
-                        formData.append("files", this.file);
-                        formData.append("refId", String(resp.data.data.id));
-                        formData.append("ref", "api::tenant-evidence-payment.tenant-evidence-payment");
-                        formData.append("field", "evidence");
-
-                        axios.post("https://api.resguru.app/api/upload", formData, {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                            },
-                        }).then((result) => { console.log("Upload file", result) })
-                            .catch((error) => {
-                                console.log(error);
-                            })
+                        this.$showNotification('#3A89CB', 'Update Service Success')
                     }
-                }
-            )
+                )
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage); 
+                    })
             this.createPartialPayment = false
-            alert("Partial payment is created")
-
+          
         },
         getRoomBill(id,code,m,y) {
             // console.log("this.filter.floor",this.filter.floor)
@@ -785,11 +802,13 @@ export default {
             const year = currentdate.getFullYear()
 
             axios.get(`https://api.resguru.app/api/generateInvoice?buildingid=${this.$store.state.building}&roomid=${roomid}&month=${month}&year=${year}`)
-                .then((response) => {
-                    console.log("return from generateInvoice()", response.data.meta.message)
-                    alert(response.data.meta.message)
-                }
-                )
+                .then( (response) =>{
+                        this.$showNotification('#3A89CB', response.data.meta.message)
+                    })
+                .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+                })
         },
         setUploadFilePayment() {
             this.file = this.$refs.PartialPayment.files[0]

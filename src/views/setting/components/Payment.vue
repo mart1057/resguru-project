@@ -251,28 +251,35 @@ export default {
                                             console.log(error);
                                 })
                         }
-                        this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
+                      
                     }    
                 )
+                .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+                })
+                .finally(()=>{
+                    this.$showNotification('#3A89CB', 'Create Payment Success')
+                }) 
         }, 
         updateUserBuildingPayment(buildingID){
             axios.put(`https://api.resguru.app/api/building-pay-methods/${buildingID}`,{
                 data : {
                     waterUnitPrice: this.waterUnitPrice
                 }
-            }).then( 
-                    this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
-                )
+            })            
+            .then( (resp) =>{
+                console.log(resp)
+            })
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
+            })
+            .finally(()=>{
+                this.$showNotification('#3A89CB', 'Update Building Payment Success')
+            }) 
               
         }, 
-        openNotificationUpdateRoom(position = null, color) {
-            const noti = this.$vs.notification({
-                sticky: true,
-                color,
-                position,
-                title: 'Update Room Success',
-            })
-        },
         editPaymentImagewithUpload(Editid){
 
             console.log("payment Image",this.$refs.paymentImage)

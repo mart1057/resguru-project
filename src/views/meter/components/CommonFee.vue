@@ -143,21 +143,18 @@ export default {
                 data : {
                     communalUnit: communalUnit
                 }
-            }).then( 
-                    this.openNotificationUpdateWater('top-right', '#3A89CB', 6000)
-                )
-            .then(
-                setTimeout(() => {
-                    this.getCommonFeeRoom(this.id,this.month,this.year)
-                }, 1000)
-            )
-        }, 
-        openNotificationUpdateWater(position = null, color) {
-            const noti = this.$vs.notification({
-                sticky: true,
-                color,
-                position,
-                title: 'Update Communual Success',
+            })           
+            .then( (resp) =>{
+                    setTimeout(() => {
+                        this.getCommonFeeRoom(this.id,this.month,this.year)
+                    }, 1000)
+                })
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
+            })
+            .finally(()=>{
+                    this.$showNotification('#3A89CB', 'Update Communal Fee Success')
             })
         },
         filterData(text,code) {
