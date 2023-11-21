@@ -119,7 +119,10 @@ export default {
             ElectricityFee:[],
             electicUnit:0,
             code: 0,
-            text: ''
+            text: '',
+            month:'',
+            year:'',
+            
         }
     },
     created() {
@@ -129,14 +132,18 @@ export default {
         }, 1000)
     },
     mounted() {
+        const dateStr =  new Date().toISOString().substr(0, 7);
+        const [y, m] = dateStr.split('-');
+        this.month = m
+        this.year = y
         setTimeout(()=>{
-             this.getElectricityFee(this.id);
+             this.getElectricityFee(this.id,this.month,this.year);
         },1000)
     },
     methods: {
-        getElectricityFee(id) {
+        getElectricityFee(id,m,y) {
             const loading = this.$vs.loading()
-            fetch(`https://api.resguru.app/api/getelectriclist?buildingid=${this.$store.state.building}&buildingFloor=${id}&month=10&year=2023`)
+            fetch(`https://api.resguru.app/api/getelectriclist?buildingid=${this.$store.state.building}&buildingFloor=${id}&month=${m}&year=${y}`)
             
                 .then(response => response.json())
                 .then((resp) => {
@@ -166,7 +173,7 @@ export default {
                 )
             .then(
                 setTimeout(() => {
-                    this.getElectricityFee()
+                    this.getElectricityFee(this.id,this.month,this.year)
                 }, 1000)
             )
                 
@@ -186,11 +193,11 @@ export default {
                 item.RoomNumber.toLowerCase().includes(text.toLowerCase()),
             );
             if (text == '') {
-                this.getElectricityFee(this.id)
+                this.getElectricityFee(this.id,this.month,this.year)
             }
             if (code == 8) {
                 this.code = 8
-                this.getElectricityFee(this.id)
+                this.getElectricityFee(this.id,this.month,this.year)
             }
         }
         

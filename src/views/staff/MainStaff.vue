@@ -15,10 +15,12 @@
                             บริการและการจัดการพนักงาน</div>
                     </div>
                 </div>
-                <div class="flex">
+                <div class="flex" v-if="tab == 1">
                     <div class="flex justify-start items-center mt-[5px]">
                         <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาตามหมายเลขห้อง"
-                            type="input" />
+                        v-model="filter.search"
+                                    @input="$refs.childComponentRef.filterData(filter.search)" type="input"
+                                    @keydown="handleKeyDown" />
                     </div>
                     <vs-tooltip bottom shadow not-hover v-model="popup_filter">
                         <div @click="popup_filter = true"
@@ -101,7 +103,7 @@
                 <div class="flex justify-start items-center rounded-[12px] mt-[14px] mb-[8px]">
                     <div class="bg-[#F3F7FA] rounded-[12px]">
                         <div class="flex justify-start items-center">
-                            <div @click="tab = 1" class="cursor-pointer "
+                            <div @click="tab = 1,filter.search=''" class="cursor-pointer "
                                 :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                                 รายการแจ้ง</div>
                             <div @click="tab = 2" class="cursor-pointer ml-[8px]"
@@ -145,7 +147,7 @@
         </div>
         <!-- //////////////////////////// card /////////////////////// -->
         <div v-if="tab == 1">
-            <NotificationList />
+            <NotificationList ref="childComponentRef"/>
         </div>
         <div v-if="tab == 2">
             <Employee />
@@ -164,7 +166,11 @@ export default {
     data() {
         return {
             popup_filter: false,
-            tab: 1
+            tab: 1,
+            filter: {
+                search: '',
+                floor: '',
+            },
         }
     },
     created() {
@@ -180,6 +186,18 @@ export default {
             this.$router.push({
                 path: path + '?tab=6'
             })
+        },
+        callChildFunction(id) {
+            if (this.tab == 1) {
+                this.$refs.childComponentRef.getService();
+            }
+        },
+        handleKeyDown(event) {
+            // Check if the pressed key is the backspace key
+            if (event.keyCode === 8) {
+                this.$refs.childComponentRef.filterData(this.filter.search,8)
+                // Perform your desired action here when backspace is pressed
+            }
         },
     }
 

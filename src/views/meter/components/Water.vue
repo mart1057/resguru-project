@@ -115,7 +115,9 @@ export default {
             waterUnit: 0,
             floor: [],
             code: 0,
-            text: ''
+            text: '',
+            month:'',
+            year:'',
         }
     },
     created() {
@@ -125,22 +127,26 @@ export default {
         }, 1000)
     },
     mounted() {
-        this.getWaterFee(this.id);
+        const dateStr =  new Date().toISOString().substr(0, 7);
+        const [y, m] = dateStr.split('-');
+        this.month = m
+        this.year = y
+        this.getWaterFee(this.id,this.month,this.year);
     },
     methods: {
-        getWaterFee(id) {
+        getWaterFee(id,m,y) {
+            console.log(m);
+            console.log(y);
             this.WaterFee = []
             const loading = this.$vs.loading()
-            fetch(`https://api.resguru.app/api/getwaterlist?buildingid=${this.$store.state.building}&buildingFloor=${id}&month=10&year=2023`)
+            fetch(`https://api.resguru.app/api/getwaterlist?buildingid=${this.$store.state.building}&buildingFloor=${id}&month=${m}&year=${y}`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()", resp.data);
                     if (this.code == 8) {
-                        
                         this.WaterFee = resp.data .filter(item =>
                             item.RoomNumber.toLowerCase().includes(this.text.toLowerCase()),
                         );
-
                     }
                     else{
                      this.WaterFee = resp.data   
@@ -162,7 +168,7 @@ export default {
                 )
                 .then(
                     setTimeout(() => {
-                        this.getWaterFee()
+                        this.getWaterFee(this.id,this.month,this.year)
                     }, 1000)
                 )
         },
@@ -181,11 +187,11 @@ export default {
                 item.RoomNumber.toLowerCase().includes(text.toLowerCase()),
             );
             if (text == '') {
-                this.getWaterFee(this.id)
+                this.getWaterFee(this.id,this.month,this.year)
             }
             if (code == 8) {
                 this.code = 8
-                this.getWaterFee(this.id)
+                this.getWaterFee(this.id,this.month,this.year)
             }
         }
 

@@ -24,26 +24,8 @@
                 </div>
                 <div class="flex justify-between">
                     <div class="flex">
-                        <div
-                            class="h-[36px] pl-[8px] pr-[8px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]">
-                            <div class="flex justify-center items-center">
-                                <svg width="22" height="22" viewBox="0 0 22 22" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <mask id="mask0_528_31525" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                        y="0" width="22" height="22">
-                                        <rect width="22" height="22" fill="#D9D9D9" />
-                                    </mask>
-                                    <g mask="url(#mask0_528_31525)">
-                                        <path
-                                            d="M4.86604 19.7084C4.403 19.7084 4.01107 19.548 3.69023 19.2272C3.3694 18.9063 3.20898 18.5144 3.20898 18.0514V5.78219C3.20898 5.31915 3.3694 4.92721 3.69023 4.60638C4.01107 4.28555 4.403 4.12513 4.86604 4.12513H6.13528V2.89114C6.13528 2.69019 6.20257 2.52243 6.33713 2.38786C6.47168 2.25331 6.63944 2.18604 6.84041 2.18604C7.04135 2.18604 7.20911 2.25331 7.34368 2.38786C7.47823 2.52243 7.54551 2.69019 7.54551 2.89114V4.12513H14.491V2.87351C14.491 2.67843 14.5568 2.51508 14.6884 2.38346C14.82 2.25184 14.9834 2.18604 15.1785 2.18604C15.3736 2.18604 15.5369 2.25184 15.6685 2.38346C15.8002 2.51508 15.866 2.67843 15.866 2.87351V4.12513H17.1352C17.5983 4.12513 17.9902 4.28555 18.311 4.60638C18.6319 4.92721 18.7923 5.31915 18.7923 5.78219V18.0514C18.7923 18.5144 18.6319 18.9063 18.311 19.2272C17.9902 19.548 17.5983 19.7084 17.1352 19.7084H4.86604ZM4.86604 18.3334H17.1352C17.2057 18.3334 17.2704 18.3041 17.3292 18.2453C17.3879 18.1865 17.4173 18.1219 17.4173 18.0514V9.44885H4.58396V18.0514C4.58396 18.1219 4.61334 18.1865 4.6721 18.2453C4.73087 18.3041 4.79552 18.3334 4.86604 18.3334ZM4.58396 8.07388H17.4173V5.78219C17.4173 5.71167 17.3879 5.64702 17.3292 5.58824C17.2704 5.52949 17.2057 5.50011 17.1352 5.50011H4.86604C4.79552 5.50011 4.73087 5.52949 4.6721 5.58824C4.61334 5.64702 4.58396 5.71167 4.58396 5.78219V8.07388ZM11.0006 12.904C10.7762 12.904 10.5849 12.8249 10.4268 12.6669C10.2688 12.5088 10.1897 12.3175 10.1897 12.0931C10.1897 11.8686 10.2688 11.6773 10.4268 11.5193C10.5849 11.3612 10.7762 11.2822 11.0006 11.2822C11.2251 11.2822 11.4164 11.3612 11.5744 11.5193C11.7325 11.6773 11.8115 11.8686 11.8115 12.0931C11.8115 12.3175 11.7325 12.5088 11.5744 12.6669C11.4164 12.8249 11.2251 12.904 11.0006 12.904ZM7.33396 12.904C7.1095 12.904 6.91824 12.8249 6.76017 12.6669C6.60211 12.5088 6.52308 12.3175 6.52308 12.0931C6.52308 11.8686 6.60211 11.6773 6.76017 11.5193C6.91824 11.3612 7.1095 11.2822 7.33396 11.2822C7.55842 11.2822 7.74968 11.3612 7.90775 11.5193C8.06581 11.6773 8.14484 11.8686 8.14484 12.0931C8.14484 12.3175 8.06581 12.5088 7.90775 12.6669C7.74968 12.8249 7.55842 12.904 7.33396 12.904ZM14.6673 12.904C14.4428 12.904 14.2516 12.8249 14.0935 12.6669C13.9354 12.5088 13.8564 12.3175 13.8564 12.0931C13.8564 11.8686 13.9354 11.6773 14.0935 11.5193C14.2516 11.3612 14.4428 11.2822 14.6673 11.2822C14.8918 11.2822 15.083 11.3612 15.2411 11.5193C15.3991 11.6773 15.4782 11.8686 15.4782 12.0931C15.4782 12.3175 15.3991 12.5088 15.2411 12.6669C15.083 12.8249 14.8918 12.904 14.6673 12.904ZM11.0006 16.5001C10.7762 16.5001 10.5849 16.4211 10.4268 16.263C10.2688 16.1049 10.1897 15.9137 10.1897 15.6892C10.1897 15.4648 10.2688 15.2735 10.4268 15.1154C10.5849 14.9574 10.7762 14.8783 11.0006 14.8783C11.2251 14.8783 11.4164 14.9574 11.5744 15.1154C11.7325 15.2735 11.8115 15.4648 11.8115 15.6892C11.8115 15.9137 11.7325 16.1049 11.5744 16.263C11.4164 16.4211 11.2251 16.5001 11.0006 16.5001ZM7.33396 16.5001C7.1095 16.5001 6.91824 16.4211 6.76017 16.263C6.60211 16.1049 6.52308 15.9137 6.52308 15.6892C6.52308 15.4648 6.60211 15.2735 6.76017 15.1154C6.91824 14.9574 7.1095 14.8783 7.33396 14.8783C7.55842 14.8783 7.74968 14.9574 7.90775 15.1154C8.06581 15.2735 8.14484 15.4648 8.14484 15.6892C8.14484 15.9137 8.06581 16.1049 7.90775 16.263C7.74968 16.4211 7.55842 16.5001 7.33396 16.5001ZM14.6673 16.5001C14.4428 16.5001 14.2516 16.4211 14.0935 16.263C13.9354 16.1049 13.8564 15.9137 13.8564 15.6892C13.8564 15.4648 13.9354 15.2735 14.0935 15.1154C14.2516 14.9574 14.4428 14.8783 14.6673 14.8783C14.8918 14.8783 15.083 14.9574 15.2411 15.1154C15.3991 15.2735 15.4782 15.4648 15.4782 15.6892C15.4782 15.9137 15.3991 16.1049 15.2411 16.263C15.083 16.4211 14.8918 16.5001 14.6673 16.5001Z"
-                                            fill="white" />
-                                    </g>
-                                </svg>
-                            </div>
-                            <div class="text-white font-bold ml-[8px]   flex justify-center items-center">พฤษภาคม/2023
-                            </div>
-
-                        </div>
+                        <input v-model="selectedDate" type="month" placeholder="ค้นหาตามหมายเลขห้อง" id="datepicker" @input="filterByDate()"
+                                v-bind:class="{ 'h-[36px] pl-[8px] text-[center] pr-[8px] bg-[#003765] flex cursor-pointer text-[white]  justify-center  rounded-[12px] mt-[12px]': true }" />
                         <div class="flex justify-start items-center   mt-[5px] ml-[14px]">
                             <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาตามหมายเลขห้อง"
                             v-model="filter.search" @input="filterData" type="input" @keydown="handleKeyDown" />
@@ -130,7 +112,7 @@
                 <div v-for="(data, i) in floor">
                     <div class=" cursor-pointer mr-[8px]"
                         :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
-                        @click="tab_floor = i, filter.floor = data.id, getRoomBill(data.id), name_floor = data.attributes.floorName">
+                        @click="tab_floor = i, filter.floor = data.id, getRoomBill(data.id,0,filter.selectedMonth, filter.selectedYear), name_floor = data.attributes.floorName">
                         อาคาร
                         {{
                             data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }}
@@ -618,21 +600,33 @@ export default {
             filter: {
                 search: '',
                 floor: '',
+                selectedMonth: '',
+                selectedYear: '',
             },
-            name_floor: ''
+            name_floor: '',
+            selectedDate: null
 
         }
     },
     created() {
         const loading = this.$vs.loading({})
+   
         setTimeout(() => {
             loading.close()
         }, 1000)
     },
-    mounted() {
+    mounted() {     
+        this.selectedDate = new Date().toISOString().substr(0, 7), // Set the default to current month
         this.getfloor();
     },
     methods: {
+        filterByDate() {
+            const dateStr =  this.selectedDate;
+            const [a, b] = dateStr.split('-');
+            this.filter.selectedMonth = b
+            this.filter.selectedYear = a
+            this.getRoomBill(this.filter.floor,0,this.filter.selectedMonth, this.filter.selectedYear);
+        },
         routeTo(profileID) {
             this.$router.push({
                 path: `/payment-detail?profileId=${profileID}`,
@@ -745,11 +739,11 @@ export default {
             alert("Partial payment is created")
 
         },
-        getRoomBill(id,code) {
+        getRoomBill(id,code,m,y) {
             // console.log("this.filter.floor",this.filter.floor)
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}&floor=${id}&month=11&year=2023`)
+            fetch(`https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}&floor=${id}&month=${m}&year=${y}`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoomBill()", resp.data);
@@ -781,7 +775,7 @@ export default {
                     }
                 })
                 .finally(() => {
-                    this.getRoomBill(this.filter.floor);
+                    this.filterByDate()
                     // loading.close()
                 })
         },
@@ -841,13 +835,13 @@ export default {
                 item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase()),
             );
             if (this.filter.search == '') {
-                this.getRoomBill(this.filter.floor)
+                this.getRoomBill(this.filter.floor,0,this.filter.selectedMonth, this.filter.selectedYear)
             }
         },
         handleKeyDown(event) {
             // Check if the pressed key is the backspace key
             if (event.keyCode === 8) {
-                this.getRoomBill(this.filter.floor,8)
+                this.getRoomBill(this.filter.floor,8,this.filter.selectedMonth, this.filter.selectedYear)
                 // Perform your desired action here when backspace is pressed
             }
         },

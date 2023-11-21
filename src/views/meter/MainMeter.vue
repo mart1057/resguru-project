@@ -144,7 +144,7 @@
                     </div>
                     <div class="flex justify-between">
                         <div class="flex">
-                            <div
+                            <!-- <div
                                 class="h-[36px] pl-[8px] pr-[8px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]">
                                 <div class="flex justify-center items-center">
                                     <svg width="22" height="22" viewBox="0 0 22 22" fill="none"
@@ -162,7 +162,9 @@
                                 </div>
                                 <div class="text-white font-bold ml-[8px]   flex justify-center items-center">พฤษภาคม/2023
                                 </div>
-                            </div>
+                            </div> -->
+                            <input v-model="selectedDate" type="month" placeholder="ค้นหาตามหมายเลขห้อง" id="datepicker" @input="filterByDate()"
+                                v-bind:class="{ 'h-[36px] pl-[8px] text-[center] pr-[8px] bg-[#003765] flex cursor-pointer text-[white]  justify-center  rounded-[12px] mt-[12px]': true }" />
                             <div class="flex justify-start items-center   mt-[5px] ml-[14px]">
                                 <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]"
                                     placeholder="ค้นหาตามหมายเลขห้อง" v-model="filter.search"
@@ -343,12 +345,16 @@ export default {
             filter: {
                 search: '',
                 floor: '',
+                selectedMonth: '',
+                selectedYear: '',
             },
             floor: [],
             tab_floor: '0',
+            selectedDate: null
         }
     },
     created() {
+        this.selectedDate = new Date().toISOString().substr(0, 7), // Set the default to current month
         this.$store.state.main = true
         const loading = this.$vs.loading({
             opacity: 1,
@@ -364,24 +370,31 @@ export default {
                 path: path + '?tab=3'
             })
         },
+        filterByDate() {
+            const dateStr =  this.selectedDate;
+            const [a, b] = dateStr.split('-');
+            this.filter.selectedMonth = b
+            this.filter.selectedYear = a
+            this.callChildFunction(this.filter.floor,this.filter.selectedMonth, this.filter.selectedYear)
+        },
         callChildFunction(id) {
             if (this.tab == 1) {
-                this.$refs.childComponentRef.getWaterFee(id);
+                this.$refs.childComponentRef.getWaterFee(id,this.filter.selectedMonth, this.filter.selectedYear);
             }
             if (this.tab == 2) {
-                this.$refs.childComponentRef.getElectricityFee(id);
+                this.$refs.childComponentRef.getElectricityFee(id,this.filter.selectedMonth, this.filter.selectedYear);
             }
             if (this.tab == 3) {
-                this.$refs.childComponentRef.getCommonFeeRoom(id)
+                this.$refs.childComponentRef.getCommonFeeRoom(id,this.filter.selectedMonth, this.filter.selectedYear)
             }
             if (this.tab == 4) {
-                this.$refs.childComponentRef.getOtherFee(id)
+                this.$refs.childComponentRef.getOtherFee(id,this.filter.selectedMonth, this.filter.selectedYear)
             }
         },
         handleKeyDown(event) {
             // Check if the pressed key is the backspace key
             if (event.keyCode === 8) {
-                this.$refs.childComponentRef.filterData(this.filter.search,8)
+                this.$refs.childComponentRef.filterData(this.filter.search, 8)
                 // Perform your desired action here when backspace is pressed
             }
         },
@@ -403,7 +416,7 @@ export default {
                         this.name_floor = resp.data[0].attributes.floorName
                     }
                 }).finally(() => {
-                    this.callChildFunction(this.filter.floor)
+                    this.filterByDate()
                     // this.callChildFunctionEle(this.filter.floor)
                 })
         },
