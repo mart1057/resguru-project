@@ -52,7 +52,7 @@
                                             </vs-select> -->
                                             <select placeholder="Select"
                                                 class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]"
-                                                :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''" v-model="data.attributes.responEmployee.data.id">
+                                                :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''" v-model="data.attributes.responEmployee">
                                                 <option  v-for="selectEmployee in employee" :value="selectEmployee.id">
                                                     {{selectEmployee.attributes.name}}
                                                 </option>
