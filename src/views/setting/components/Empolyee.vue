@@ -379,11 +379,12 @@ export default {
                                 users: {disconnect:[adminID]}
                         }
                     })
-                    .then(resp => {
-                       console.log(resp);
-                    })
+                    .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Update Success')
+                        })
                     .catch(error => {
-                        console.log(error);
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage); 
                     })
             }
 
@@ -391,15 +392,13 @@ export default {
         deleteEmployee(employeeID){
                 if(confirm("Do you really want to delete this employee?")){
                     axios.delete(`https://api.resguru.app/api/building-employees/${employeeID}`)
-                    .then(resp => {
-                       console.log(resp);
-                    })
+                    .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Update Success')
+                        })
                     .catch(error => {
-                        console.log(error);
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage); 
                     })
-                    .then(
-                        this.getEmployer()
-                    )
                 }
         }
     }

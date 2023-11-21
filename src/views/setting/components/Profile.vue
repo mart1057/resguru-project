@@ -350,12 +350,13 @@ export default {
                     currentAddress: this.buildingData.attributes.currentAddress,
                 
             })
-            .then( (resp) => {
-                console.log("Update User",resp)
+            .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Upload Profile Success')
+                        })
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
             })
-            .then( 
-                    this.openNotificationUser('top-right', '#3A89CB', 6000)
-                )
               
         }, 
         getBuildingData() {
@@ -396,19 +397,17 @@ export default {
                     vat_rate: this.buildingData.attributes.vat_rate
                 }
             })
-            .then( 
-                    this.openNotificationBuilding('top-right', '#3A89CB', 6000)
-                )
+            .then( (resp) =>{
+                            console.log("Result from",resp)
+                            this.$showNotification('#3A89CB', 'Upload Building Success')
+                        })
+            .catch(error => {
+                console.log("Err",error)
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
+            })
                
         }, 
-        openNotificationUser(position = null, color) {
-            const noti = this.$vs.notification({
-                sticky: true,
-                color,
-                position,
-                title: 'Update Profile Success',
-            })
-        },
         openNotificationBuilding(position = null, color) {
             const noti = this.$vs.notification({
                 sticky: true,
@@ -458,12 +457,15 @@ export default {
                             headers: {
                             "Content-Type": "multipart/form-data",
                             },
-                        }).then( (result) => { console.log("Upload file",result)}) 
-                        .catch((error) => {
-                                    console.log(error);
+                        })
+                        .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Upload Profile Success')
+                        })
+                        .catch(error => {
+                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        this.$showNotification('danger', errorMessage); 
                         })
             }
-            alert("Profile is uploaded")
         },
         editBannerwithUpload(){
 
@@ -480,12 +482,15 @@ export default {
                             headers: {
                             "Content-Type": "multipart/form-data",
                             },
-                        }).then( (result) => { console.log("Upload file",result)}) 
-                        .catch((error) => {
-                                    console.log(error);
+                        })                
+                        .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Upload Banner Success')
+                        })
+                        .catch(error => {
+                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        this.$showNotification('danger', errorMessage); 
                         })
             }
-            alert("Banner is uploaded")
         },
         
         

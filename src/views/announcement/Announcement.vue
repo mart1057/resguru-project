@@ -381,21 +381,21 @@ export default {
                 this.$showNotification('danger', errorMessage); 
              })
         },
-        editAnnouncement(postID) {
-            axios.put(`https://api.resguru.app/api/announcements/${postID}`, {
-                data: {
-                    topic: this.topic,
-                    description: this.description,
-                    date_execute: this.date_execute,
-                    users_created: this.$store.state.userInfo.user.id
-                }
-            })
-                .then(this.$showNotification('#3A89CB', 'Edit Announcement Success'))
-                .catch(error => {
-                const errorMessage = error.response ? error.response.data.message : 'Error updating information';
-                this.$showNotification('danger', 'errorMessage'); 
-                })
-        },
+        // editAnnouncement(postID) {
+        //     axios.put(`https://api.resguru.app/api/announcements/${postID}`, {
+        //         data: {
+        //             topic: this.topic,
+        //             description: this.description,
+        //             date_execute: this.date_execute,
+        //             users_created: this.$store.state.userInfo.user.id
+        //         }
+        //     })
+        //         .then(this.$showNotification('#3A89CB', 'Edit Announcement Success'))
+        //         .catch(error => {
+        //         const errorMessage = error.response ? error.response.data.message : 'Error updating information';
+        //         this.$showNotification('danger', errorMessage); 
+        //         })
+        // },
         deleteAnnouncement() {
             const loading = this.$vs.loading({
                 color: '#003765'
@@ -403,10 +403,12 @@ export default {
             this.selected.forEach(element => {
                 console.log(element.id);
                 axios.delete('https://api.resguru.app/api' + '/announcements/' + element.id)
-                .then(this.$showNotification('warn', 'Delete Announcement Success'))
+                .then( () =>
+                {this.$showNotification('warn', 'Delete Announcement Success')}
+                )
                 .catch(error => {
                 const errorMessage = error.response ? error.response.data.message : 'Error updating information';
-                this.$showNotification('danger', 'errorMessage'); 
+                this.$showNotification('danger', errorMessage); 
                 })
             });
             setTimeout(() => {

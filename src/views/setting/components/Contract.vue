@@ -201,9 +201,14 @@ export default {
                 data : {
                     default: status
                 }
-            }).then( 
-                    this.openNotificationUpdatContract('top-right', '#3A89CB', 6000)
-                )
+            })
+            .then( (resp) =>{
+                    this.$showNotification('#3A89CB', 'Set Default Success')
+                })
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
+            })
                
         }, 
         openNotificationUpdatContract(position = null, color) {
@@ -241,15 +246,13 @@ export default {
         deleteContract(contractID){
                 if(confirm("Do you really want to delete this contract template?")){
                     axios.delete(`https://api.resguru.app/api/contract-templates/${contractID}`)
-                    .then(resp => {
-                       console.log(resp);
-                    })
+                    .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Delete Contract Success')
+                        })
                     .catch(error => {
-                        console.log(error);
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage); 
                     })
-                    .then(
-                        this.getContract()
-                    )
                 }
         },
         setUploadFile(){
@@ -262,27 +265,31 @@ export default {
                     title: this.contractTitle,
                 }
             }).then(
-                (resp) => {
-                    if(this.file !== null){
-                        let formData = new FormData();
-                        formData.append("files", this.file);
-                        formData.append("refId", String(resp.data.data.id));
-                        formData.append("ref", "api::contract-template.contract-template");
-                        formData.append("field", "templatePDF");
+                    (resp) => {
+                        if(this.file !== null){
+                            let formData = new FormData();
+                            formData.append("files", this.file);
+                            formData.append("refId", String(resp.data.data.id));
+                            formData.append("ref", "api::contract-template.contract-template");
+                            formData.append("field", "templatePDF");
 
-                        axios.post("https://api.resguru.app/api/upload", formData, {
-                            headers: {
-                            "Content-Type": "multipart/form-data",
-                            },
-                        }).then( (result) => { console.log("Upload file",result)}) 
-                        .catch((error) => {
-                                    console.log(error);
-                        })
+                            axios.post("https://api.resguru.app/api/upload", formData, {
+                                headers: {
+                                "Content-Type": "multipart/form-data",
+                                },
+                            }).then( (result) => { console.log("Upload file",result)}) 
+                            .catch((error) => {
+                                        console.log(error);
+                            })
+                        }
+                        this.$showNotification('#3A89CB', 'Create Contract Template Success')
                     }
-                }
-            )
+                )
+                .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+                })
             this.create = false
-            alert("Contact Template is uploaded")
         },
         
     },

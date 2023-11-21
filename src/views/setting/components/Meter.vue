@@ -603,9 +603,14 @@ export default {
                     discountAmount: this.discountAmount,
                     building: this.$store.state.building
                 }
-            }).then( 
-                    this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
-                )
+            })
+            .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Create Other Success')
+                        })
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
+            })
                 
         }, 
         updateUserBuildingWater(){
@@ -613,9 +618,14 @@ export default {
                 data : {
                     waterUnitPrice: this.building[0].attributes.waterUnitPrice
                 }
-            }).then( 
-                    this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
-                )
+            })
+            .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Update Water Unit Success')
+                        })
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
+            })
                 
         }, 
         updateUserBuildingElectric(){
@@ -623,9 +633,14 @@ export default {
                 data : {
                     electricUnitPrice: this.building[0].attributes.electricUnitPrice
                 }
-            }).then( 
-                    this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
-                )
+            })
+            .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Update Electric Unit Success')
+                        })
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
+            })
               
         }, 
         updateUserBuildingCommunual(){
@@ -633,9 +648,14 @@ export default {
                 data : {
                     communalUnitPrice: this.building[0].attributes.communalUnitPrice
                 }
-            }).then( 
-                    this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
-                )
+            })
+            .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Update Building Communual Success')
+                        })
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
+            })
                
         }, 
         changeotherPrice(id,price){
@@ -643,27 +663,29 @@ export default {
                 data : {
                     price: price
                 }
-            }).then( 
-                    this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
-            )
+            })
+            .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Update Other Price Success')
+                        })
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
+            })
         },
         changeotherDiscountPrice(id,discountAmount){
             axios.put(`https://api.resguru.app/api/other-of-buildings/${id}`,{
                 data : {
                     discountAmount: discountAmount
                 }
-            }).then( 
-                    this.openNotificationUpdateRoom('top-right', '#3A89CB', 6000)
-            )
-        },
-        openNotificationUpdateRoom(position = null, color) {
-            const noti = this.$vs.notification({
-                sticky: true,
-                color,
-                position,
-                title: 'Update Room Success',
             })
-        }
+            .then( (resp) =>{
+                            this.$showNotification('#3A89CB', 'Update Success')
+                        })
+            .catch(error => {
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage); 
+            })
+        },
     },
 }
 
