@@ -142,12 +142,12 @@
         <div class="mt-[24px] bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px] rounded-[12px]" v-if="tab == 1">
             <div class="text-[24px] font-bold mt-[14px]">อาคาร A ชั้น 1</div>
             <div class="grid grid-cols-4 w-[100%] gap-4 mt-[14px] ">
-                <div class="rounded-[16px]  p-[14px] h-[202px] border cursor-pointer" v-for="data in room">
+                <div class="rounded-[16px]  p-[14px] h-[240px] border cursor-pointer" v-for="data in room">
                     <div class="flex justify-between">
                         <div class="text-[18px] font-bold text-[#003765]">ห้อง {{ data.attributes.RoomNumber }}</div>
-                        <div class="flex">
+                        <!-- <div class="flex">
                             <vs-checkbox v-model="option" color="#003765"> </vs-checkbox>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="mt-[24px]">
                         <div class="flex justify-between  h-[100%]">
@@ -174,6 +174,9 @@
                                     </option> -->
                                 </select>
                             </div>
+                        </div>
+                        <div class="grid w-[100%] gap-4 mt-[14px] ">
+                            มิเตอร์น้ำ-ไฟฟ้า เดือนล่าสุด
                         </div>
                         <div class="grid grid-cols-2 w-[100%] gap-4 mt-[14px] ">
                             <div class="w-[100%]">

@@ -8,5 +8,6 @@ function convertDateNoTime(data_date) {
     return formattedDate
 }
 export {
-    convertDateNoTime
+    convertDateNoTime,
+
 }

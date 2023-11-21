@@ -301,7 +301,6 @@
 import axios from 'axios'
 import router from '@/router'
 
-
 export default {
     data() {
         return {
@@ -330,6 +329,7 @@ export default {
     },
     mounted() {
         this.getAnnouncement();
+        //this.$showNotification('success', 'Update Building Information Success');  //Example of use Notify in global
     },
     methods: {
         getAnnouncement() {
