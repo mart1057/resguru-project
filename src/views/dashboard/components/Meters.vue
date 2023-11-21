@@ -146,7 +146,6 @@
                 </template>
                 <template #tbody>
                     <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
-                        {{ tr }}
                         <vs-td>
                             {{ tr.RoomNumber }}
                         </vs-td>
@@ -158,7 +157,6 @@
                         </vs-td>
                         <vs-td>
                             {{ tr.electric_fees[0].usageMeter ? tr.electric_fees[0].usageMeter : '-' }}
-                            {{  tr}}
                         </vs-td>
                     </vs-tr>
                 </template>

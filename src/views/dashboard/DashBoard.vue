@@ -1,7 +1,7 @@
 <template>
     <div class="flex mt-[10px] justify-between tt">
         <div class="w-[55%]">
-            <UserPlan :dashboard="dahboard" />
+            <UserPlan :data="count_user" />
             <PayMent :data="db_payment"/>
             <Notification :data="db_services"/>
         </div>
@@ -28,7 +28,7 @@ export default {
             db_services:[],
             db_payment:[],
             db_expense:[],
-            count_user:''
+            count_user:{},
 
         }
 
@@ -56,7 +56,7 @@ export default {
                     this.db_services = resp.service.notiData
                     this.db_payment = resp.paymentStatus.paymentStatus
                     this.db_expense = resp.accounting
-                    this.count_user = ''
+                    this.count_user = resp.room.meta
             })
         }
     }
