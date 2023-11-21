@@ -21,12 +21,16 @@ import VueApexCharts from 'vue-apexcharts'
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+import notification from '@/components/hook/notify';
+
 
 Vue.config.productionTip = false
 Vue.use(Vuesax).use(IconsPlugin).use(BootstrapVue).use(VueApexCharts)
 Vue.use(VueMaterial)
 // Vue.use(axios);
 Vue.use(VueAxios, axios)
+Vue.use(notification);
+
 
 new Vue({
   router,
