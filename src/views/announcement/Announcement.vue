@@ -329,7 +329,6 @@ export default {
     },
     mounted() {
         this.getAnnouncement();
-        //this.$showNotification('success', 'Update Building Information Success');  //Example of use Notify in global
     },
     methods: {
         getAnnouncement() {
@@ -375,11 +374,12 @@ export default {
                                             console.log(error);
                                 })
                         }
-                    this.openNotificationCreateAnnouncement('top-right', '#3A89CB', 6000).then(
-                        this.$router.go(this.$router.currentRoute)
-                    )
+                        this.$showNotification('#3A89CB', 'Create Announcement Success')
                     }    
-            )
+             ).catch(error => {
+                const errorMessage = error.response ? error.response.data.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+             })
         },
         editAnnouncement(postID) {
             axios.put(`https://api.resguru.app/api/announcements/${postID}`, {
@@ -390,14 +390,11 @@ export default {
                     users_created: this.$store.state.userInfo.user.id
                 }
             })
-                .then(
-                    this.openNotificationCreateAnnouncement('top-right', '#3A89CB', 6000).then(
-                        this.$router.go(this.$router.currentRoute)
-                    )
-                )
-                .then(
-                    this.$forceUpdate()
-                )
+                .then(this.$showNotification('#3A89CB', 'Edit Announcement Success'))
+                .catch(error => {
+                const errorMessage = error.response ? error.response.data.message : 'Error updating information';
+                this.$showNotification('danger', 'errorMessage'); 
+                })
         },
         deleteAnnouncement() {
             const loading = this.$vs.loading({
@@ -406,20 +403,17 @@ export default {
             this.selected.forEach(element => {
                 console.log(element.id);
                 axios.delete('https://api.resguru.app/api' + '/announcements/' + element.id)
+                .then(this.$showNotification('warn', 'Delete Announcement Success'))
+                .catch(error => {
+                const errorMessage = error.response ? error.response.data.message : 'Error updating information';
+                this.$showNotification('danger', 'errorMessage'); 
+                })
             });
             setTimeout(() => {
                 this.getAnnouncement()
                 this.delete_popup = false
                 loading.close()
             }, 1000)
-        },
-        openNotificationCreateAnnouncement(position = null, color) {
-            const noti = this.$vs.notification({
-                sticky: true,
-                color,
-                position,
-                title: 'Create Announcement Success',
-            })
         },
     }
 
