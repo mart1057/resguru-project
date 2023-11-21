@@ -329,6 +329,7 @@ export default {
     },
     mounted() {
         this.getAnnouncement();
+        //this.$showNotification('success', 'Update Building Information Success');  //Example of use Notify in global
     },
     methods: {
         getAnnouncement() {
