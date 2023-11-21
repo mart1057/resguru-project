@@ -96,7 +96,7 @@
                         <div class="flex justify-between w-[100%] p-[8px]">
                             <div class="flex flex-col justify-between">
                                 <div>
-                                    <div class="font-bold">ห้อง 201 {{ item.title }}</div>
+                                    <div class="font-bold">ห้อง {{ item.user_sign_contract.room.RoomNumber }} {{ item.title }}</div>
                                     <div class="text-[12px] text-[#8396A6]">รายละเอียด</div>
                                 </div>
                                 <div>{{ item.description }}</div>

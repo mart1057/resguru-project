@@ -85,23 +85,29 @@
                                         </div>
                                     </div>
                                     <div>
-                                        <div v-for="data in data_noti" class="p-[8px] mt-[14px]  hover:bg-[#F3F7FA] rounded-[6px]">
+                                        <div v-for="data in data_noti"
+                                            class="p-[8px] mt-[14px]  hover:bg-[#F3F7FA] rounded-[6px]">
                                             <div class="flex justify-between">
                                                 <div class="flex justify-start">
                                                     <div>
                                                         <vs-avatar size="40" primary>
-                                                            <img :src="data.img"/>
+                                                            <img :src="data.img" />
                                                         </vs-avatar>
                                                     </div>
-                                                    <div class="flex flex-col items-start justify-start ml-[8px] text-[#003765] text-custom">
+                                                    <div
+                                                        class="flex flex-col items-start justify-start ml-[8px] text-[#003765] text-custom">
                                                         <div class="font-bold">{{ data.name }}</div>
                                                         <div class="">
                                                             <div></div>
                                                             <div>{{ data.desc }}</div>
                                                         </div>
                                                         <div v-if="data.type == 'connect'" class="flex mt-[4px]">
-                                                            <div class="pt-[4px] pb-[4px] pl-[8px] pr-[8px] bg-[#003765] rounded-[12px] text-[white] cursor-pointer ">ยืนยัน</div>
-                                                            <div class="pt-[4px] pb-[4px] pl-[8px] pr-[8px] bg-[#D44769] rounded-[12px] text-[white] ml-[8px] cursor-pointer ">ยกเลิก</div>
+                                                            <div
+                                                                class="pt-[4px] pb-[4px] pl-[8px] pr-[8px] bg-[#003765] rounded-[12px] text-[white] cursor-pointer ">
+                                                                ยืนยัน</div>
+                                                            <div
+                                                                class="pt-[4px] pb-[4px] pl-[8px] pr-[8px] bg-[#D44769] rounded-[12px] text-[white] ml-[8px] cursor-pointer ">
+                                                                ยกเลิก</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -122,7 +128,7 @@
                             Professional
                         </div>
                         <div class="flex ml-[10px] items-center">
-                            <vs-tooltip bottom shadow interactivity>
+                            <vs-tooltip bottom shadow interactivity  not-arrow>
                                 <div class="cursor-pointer">
                                     <vs-avatar size="40" primary>
                                         <!-- <img :src="$store.state.userInfo"/> -->
@@ -540,5 +546,4 @@ export default {
     -moz-animation-delay: 1s;
     -o-animation-duration: 1s;
     animation-delay: 0.1s;
-}
-</style>
+}</style>
