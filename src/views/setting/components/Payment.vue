@@ -251,13 +251,16 @@ export default {
                                             console.log(error);
                                 })
                         }
-                        this.$showNotification('#3A89CB', 'Create Payment Success')
+                      
                     }    
                 )
                 .catch(error => {
                 const errorMessage = error.message ? error.message : 'Error updating information';
                 this.$showNotification('danger', errorMessage); 
                 })
+                .finally(()=>{
+                    this.$showNotification('#3A89CB', 'Create Payment Success')
+                }) 
         }, 
         updateUserBuildingPayment(buildingID){
             axios.put(`https://api.resguru.app/api/building-pay-methods/${buildingID}`,{
@@ -266,12 +269,15 @@ export default {
                 }
             })            
             .then( (resp) =>{
-                this.$showNotification('#3A89CB', 'Update Building Payment Success')
+                console.log(resp)
             })
             .catch(error => {
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
             })
+            .finally(()=>{
+                this.$showNotification('#3A89CB', 'Update Building Payment Success')
+            }) 
               
         }, 
         editPaymentImagewithUpload(Editid){

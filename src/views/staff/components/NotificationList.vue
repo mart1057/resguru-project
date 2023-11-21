@@ -324,12 +324,15 @@ export default {
                 }
             })
             .then( (resp) =>{
-                this.$showNotification('#3A89CB', 'Update Service Success')
+                console.log(resp)
             })
             .catch(error => {
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
             })
+            .finally(()=>{
+                this.$showNotification('#3A89CB', 'Update Service Success')
+            }) 
                 
         },
         closeService(serviceId){
@@ -340,12 +343,15 @@ export default {
                 }
             }) 
             .then( (resp) =>{
-                this.$showNotification('#3A89CB', 'Closed Job Service Success')
+                console.log(resp)
             })
             .catch(error => {
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
             })
+            .finally(()=>{
+                this.$showNotification('#3A89CB', 'Closed Job Service Success')
+            }) 
         }
     }
 }

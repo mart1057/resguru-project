@@ -351,12 +351,15 @@ export default {
                 
             })
             .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Upload Profile Success')
+                           console.log(resp)
                         })
             .catch(error => {
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
             })
+            .finally(()=>{
+                this.$showNotification('#3A89CB', 'Upload Profile Success')
+            }) 
               
         }, 
         getBuildingData() {
@@ -399,13 +402,16 @@ export default {
             })
             .then( (resp) =>{
                             console.log("Result from",resp)
-                            this.$showNotification('#3A89CB', 'Upload Building Success')
+                            
                         })
             .catch(error => {
                 console.log("Err",error)
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
             })
+            .finally(()=>{
+                this.$showNotification('#3A89CB', 'Upload Building Success')
+            }) 
                
         }, 
         openNotificationBuilding(position = null, color) {
@@ -459,12 +465,15 @@ export default {
                             },
                         })
                         .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Upload Profile Success')
+                                console.log(resp)
                         })
                         .catch(error => {
                         const errorMessage = error.message ? error.message : 'Error updating information';
                         this.$showNotification('danger', errorMessage); 
                         })
+                        .finally(()=>{
+                            this.$showNotification('#3A89CB', 'Upload Profile Success')
+                        }) 
             }
         },
         editBannerwithUpload(){
@@ -484,12 +493,15 @@ export default {
                             },
                         })                
                         .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Upload Banner Success')
+                            console.log(resp)
                         })
                         .catch(error => {
                         const errorMessage = error.message ? error.message : 'Error updating information';
                         this.$showNotification('danger', errorMessage); 
                         })
+                        .finally(()=>{
+                            this.$showNotification('#3A89CB', 'Upload Banner Success')
+                        }) 
             }
         },
         

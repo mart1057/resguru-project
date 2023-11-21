@@ -67,8 +67,12 @@
             <div class="flex flex-col justify-around w-[100%] h-[100%]">
                 <div>
                     <div class="w-[100%] flex justify-center items-center">
+                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
+                                ref="buildingProfile" hidden @change="setTempUploadbuildingProfile()" type="file" />
+                            <label for="upload">
                         <div
                             class="text-[white] text-[32px]  w-[150px] h-[150px] rounded-[22px] bg-[#F3F7FA] text-center flex flex-col justify-end  cursor-pointer">
+                            
                             <svg width="43" height="40" viewBox="0 0 43 40" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <g filter="url(#filter0_d_902_20136)">
                                     <circle cx="20" cy="20" r="12" fill="#5C6B79" fill-opacity="0.5" />
@@ -83,7 +87,7 @@
                                     </g>
                                 </g>
                                 <defs>
-                                    <filter id="filter0_d_902_20136" x="-3" y="0" width="46" height="46"
+                                    <filter id="filter0_d_902_20136" x="-3" y="0" width="46" height="46" 
                                         filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
                                         <feFlood flood-opacity="0" result="BackgroundImageFix" />
                                         <feColorMatrix in="SourceAlpha" type="matrix"
@@ -99,8 +103,8 @@
                                     </filter>
                                 </defs>
                             </svg>
-                            
                         </div>
+                        </label>
                     </div>
                     <div class="flex justify-center items-center w-[100%] pl-[50px] pr-[50px]">
                         <div class="flex flex-col justify-center items-center w-[100%]">
@@ -192,13 +196,9 @@
                             </div>
                             <div class="grid grid-cols-2 w-[100%]  gap-4 mt-[10px] ">
                                 <div>
-                                    <div class="font-bold">วันตัดรอบบิลค่าน้ำ-ค่าไฟ</div>
+                                    <div class="font-bold">อัตราภาษีหอพัก</div>
                                     <div class="mt-[5px]">
-                                        <vs-select  color="#003765">
-                                            <vs-option>
-                                                555
-                                            </vs-option>
-                                        </vs-select>
+                                        <vs-input  />
                                     </div>
                                 </div>
                             </div>
@@ -232,7 +232,8 @@ export default {
             buildingEmail: "",
             buildingLine: "",
             buildingFacebook: "",
-            buildingPaymentMonthlyDate: ""   
+            buildingPaymentMonthlyDate: ""   ,
+            tempBuilding: [],
         }
     },
     mounted() {
@@ -261,17 +262,37 @@ export default {
                 }
             })
             .then(
-                openNotificationCreateBuilding('top-right', '#3A89CB', 6000)
-            )
+                    (resp) => {
+                        if (this.tempBuilding !== null) {
+                            let formData = new FormData();
+                            formData.append("files", this.tempBuilding);
+                            formData.append("refId", String(resp.data.data.id));
+                            formData.append("ref", "api::building.building");
+                            formData.append("field", "buildingLogo");
+
+                            axios.post("https://api.resguru.app/api/upload", formData, {
+                                headers: {
+                                    "Content-Type": "multipart/form-data",
+                                },
+                            }).then((result) => { console.log("Upload file", result) })
+                            .catch((error) => {
+                                console.log(error);
+                            })
+                        }
+                        this.routeTo()
+                    }
+                )
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage); 
+                })
+                .finally(()=>{
+                    this.$showNotification('#3A89CB', 'Created Building Success')
+                })
                
         },
-        openNotificationCreateBuilding(position = null, color) {
-            const noti = this.$vs.notification({
-                sticky: true,
-                color,
-                position,
-                title: 'Created Building Success',
-            })
+        setTempUploadbuildingProfile(){
+            this.tempBuilding = this.$refs.buildingProfile.files[0]
         },
         routeTo() {
             this.$router.push({

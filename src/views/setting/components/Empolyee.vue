@@ -380,12 +380,15 @@ export default {
                         }
                     })
                     .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Update Success')
+                            console.log(resp)
                         })
                     .catch(error => {
                     const errorMessage = error.message ? error.message : 'Error updating information';
                     this.$showNotification('danger', errorMessage); 
                     })
+                    .finally(()=>{
+                        this.$showNotification('#3A89CB', 'Update Success')
+                    })  
             }
 
         },
@@ -393,12 +396,15 @@ export default {
                 if(confirm("Do you really want to delete this employee?")){
                     axios.delete(`https://api.resguru.app/api/building-employees/${employeeID}`)
                     .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Update Success')
+                           console.log(resp)
                         })
                     .catch(error => {
                     const errorMessage = error.message ? error.message : 'Error updating information';
                     this.$showNotification('danger', errorMessage); 
                     })
+                    .finally(()=>{
+                        this.$showNotification('warn', 'Delete Employee Success')
+                    }) 
                 }
         }
     }

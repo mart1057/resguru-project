@@ -605,12 +605,15 @@ export default {
                 }
             })
             .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Create Other Success')
+                           console.log(resp)
                         })
             .catch(error => {
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
             })
+            .finally(()=>{
+                this.$showNotification('#3A89CB', 'Create Other Success')
+            }) 
                 
         }, 
         updateUserBuildingWater(){
@@ -620,12 +623,15 @@ export default {
                 }
             })
             .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Update Water Unit Success')
+                           console.log(resp)
                         })
             .catch(error => {
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
             })
+            .finally(()=>{
+                this.$showNotification('#3A89CB', 'Update Water Unit Success')
+            }) 
                 
         }, 
         updateUserBuildingElectric(){
@@ -635,12 +641,15 @@ export default {
                 }
             })
             .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Update Electric Unit Success')
+                           console.log(resp)
                         })
             .catch(error => {
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
             })
+            .finally(()=>{
+                this.$showNotification('#3A89CB', 'Update Electric Unit Success')
+            }) 
               
         }, 
         updateUserBuildingCommunual(){
@@ -650,12 +659,15 @@ export default {
                 }
             })
             .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Update Building Communual Success')
-                        })
+                           console.log(resp)
+            })
             .catch(error => {
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
             })
+            .finally(()=>{
+                this.$showNotification('#3A89CB', 'Update Building Communual Success')
+            }) 
                
         }, 
         changeotherPrice(id,price){
@@ -665,12 +677,15 @@ export default {
                 }
             })
             .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Update Other Price Success')
+                         console.log(resp)
                         })
             .catch(error => {
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
             })
+            .finally(()=>{
+                this.$showNotification('#3A89CB', 'Update Other Price Success')
+            }) 
         },
         changeotherDiscountPrice(id,discountAmount){
             axios.put(`https://api.resguru.app/api/other-of-buildings/${id}`,{
@@ -679,12 +694,15 @@ export default {
                 }
             })
             .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Update Success')
+                           console.log(resp)
                         })
             .catch(error => {
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
             })
+            .finally(()=>{
+                this.$showNotification('#3A89CB', 'Update Success')
+            }) 
         },
     },
 }

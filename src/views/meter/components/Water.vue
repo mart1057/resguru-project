@@ -164,7 +164,7 @@ export default {
                 }
             })
             .then( (resp) =>{
-                this.$showNotification('#3A89CB', 'Update Electric Fee Success')
+                
                 setTimeout(() => {
                     this.getWaterFee(this.id,this.month,this.year)
                 }, 1000)
@@ -172,6 +172,9 @@ export default {
             .catch(error => {
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
+            })
+            .finally(()=>{
+                this.$showNotification('#3A89CB', 'Update Electric Fee Success')
             })
 
         },

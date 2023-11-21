@@ -773,12 +773,15 @@ export default {
                                 console.log(error);
                             })
                     }
-                    this.$showNotification('#3A89CB', 'Expense is created Successfully')
+                    
                 }
                 )
                 .catch(error => {
                     const errorMessage = error.message ? error.message : 'Error updating information';
                     this.$showNotification('danger', errorMessage); 
+                })
+                .finally(()=>{
+                    this.$showNotification('#3A89CB', 'Expense is created Successfully')
                 })
         },
         getIncome() {

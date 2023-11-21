@@ -203,11 +203,14 @@ export default {
                 }
             })
             .then( (resp) =>{
-                    this.$showNotification('#3A89CB', 'Set Default Success')
+                   console.log(resp)
                 })
             .catch(error => {
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
+            })
+            .finally(()=>{
+                this.$showNotification('#3A89CB', 'Set Default Success')
             })
                
         }, 
@@ -247,11 +250,14 @@ export default {
                 if(confirm("Do you really want to delete this contract template?")){
                     axios.delete(`https://api.resguru.app/api/contract-templates/${contractID}`)
                     .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Delete Contract Success')
+                            console.log(resp)
                         })
                     .catch(error => {
                     const errorMessage = error.message ? error.message : 'Error updating information';
                     this.$showNotification('danger', errorMessage); 
+                    })
+                    .finally(()=>{
+                        this.$showNotification('#3A89CB', 'Delete Contract Success')
                     })
                 }
         },
@@ -282,12 +288,15 @@ export default {
                                         console.log(error);
                             })
                         }
-                        this.$showNotification('#3A89CB', 'Create Contract Template Success')
+                       
                     }
                 )
                 .catch(error => {
                 const errorMessage = error.message ? error.message : 'Error updating information';
                 this.$showNotification('danger', errorMessage); 
+                })
+                .finally(()=>{
+                    this.$showNotification('#3A89CB', 'Create Contract Template Success')
                 })
             this.create = false
         },
