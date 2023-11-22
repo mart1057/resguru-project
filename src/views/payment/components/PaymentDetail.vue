@@ -391,6 +391,12 @@
                                 จำนวนเงิน
                             </vs-th>
                             <vs-th>
+                                Status
+                            </vs-th>
+                            <vs-th>
+                                Receipt
+                            </vs-th>
+                            <vs-th>
                                 Event Action
                             </vs-th>
                         </vs-tr>
@@ -415,7 +421,17 @@
                                 {{ $formatNumber(tr.attributes.amount) }}
                             </vs-td>
                             <vs-td>
-                                <vs-button @click="createReceipt(tr)" small>สร้างใบเสร็จ</vs-button>
+                                {{ tr.attributes.evidenceStatus }}
+                            </vs-td>
+                            <vs-td>
+                                <div v-if="tr.attributes.tenant_receipt.data">
+                                    {{ tr.attributes.tenant_receipt.data.attributes.receiptNumber }}
+                                </div>
+                            </vs-td>
+                            <vs-td>
+                                <div v-if="!tr.attributes.tenant_receipt.data">
+                                    <vs-button @click="createReceipt(tr)" small>สร้างใบเสร็จ</vs-button>
+                                </div>
                             </vs-td>
                         </vs-tr>
                     </template>
@@ -773,7 +789,8 @@ export default {
                     //vat: data.attributes.vat,
                     //total: data.attributes.total,
                     building: data.attributes.building.data.id,
-                    tenant_evidence_payment: data.id
+                    tenant_evidence_payment: data.id,
+                    tenant_evidence_payment_receipt: data.id
                 }
             })
             .then( (res) => {
