@@ -35,7 +35,7 @@
                 </div>
             </div>
         </div>
-        <div class="mt-[18px]" :class="data.length > 5? 'table-container':''" v-if="tab == 1|| tab == 2  || tab == 3">
+        <div class="mt-[18px]" :class="data.length > 5 ? 'table-container' : ''" v-if="tab == 1 || tab == 2 || tab == 3">
             <vs-table>
                 <template #thead>
                     <vs-tr>
@@ -62,25 +62,29 @@
                 <template #tbody>
                     <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
                         <!-- {{ tr }} -->
-                        <vs-td v-if="tab == 1|| tab == 2">
+                        <vs-td v-if="tab == 1 || tab == 2">
                             {{ tr.RoomNumber }}
                         </vs-td>
-                        <vs-td v-if="tab == 1|| tab == 2">
+                        <vs-td v-if="tab == 1 || tab == 2">
                             <div v-if="tab == 1">{{ tr.water_fees[1].meterUnit ? tr.water_fees[1]?.meterUnit : '-' }}</div>
-                            <div v-else-if="tab == 2"> {{ tr.electric_fees[1].electicUnit ? tr.electric_fees[1]?.electicUnit : '-' }}</div>
-                           
+                            <div v-else-if="tab == 2"> {{ tr.electric_fees[1].electicUnit ? tr.electric_fees[1]?.electicUnit
+                                : '-' }}</div>
+
                         </vs-td>
-                        <vs-td v-if="tab == 1|| tab == 2">
+                        <vs-td v-if="tab == 1 || tab == 2">
                             <div v-if="tab == 1"> {{ tr.water_fees[0].meterUnit ? tr.water_fees[0].meterUnit : '-' }}</div>
-                            <div v-else-if="tab == 2">  {{ tr.electric_fees[0].electicUnit ? tr.electric_fees[0].electicUnit : '-' }}</div>
-                           
+                            <div v-else-if="tab == 2"> {{ tr.electric_fees[0].electicUnit ? tr.electric_fees[0].electicUnit
+                                : '-' }}</div>
+
                         </vs-td>
-                        <vs-td v-if="tab == 1|| tab == 2"> 
-                            <div v-if="tab == 1">  {{ tr.water_fees[1].usageMeter ? tr.water_fees[1].usageMeter : '-' }}</div>
-                            <div v-else-if="tab == 2">    {{ tr.electric_fees[0].usageMeter ? tr.electric_fees[0].usageMeter : '-' }}</div>
+                        <vs-td v-if="tab == 1 || tab == 2">
+                            <div v-if="tab == 1"> {{ tr.water_fees[1].usageMeter ? tr.water_fees[1].usageMeter : '-' }}
+                            </div>
+                            <div v-else-if="tab == 2"> {{ tr.electric_fees[0].usageMeter ? tr.electric_fees[0].usageMeter :
+                                '-' }}</div>
                         </vs-td>
                         <vs-td v-if="tab == 3">
-                            <div  class="flex">
+                            <div class="flex">
                                 <div>{{ tr.RoomNumber }}</div>
                                 <div class="ml-[66px]"> {{ tr.communal_fees[0].communalUnit ?
                                     tr.communal_fees[0].communalUnit : '-' }}</div>
@@ -90,42 +94,6 @@
                 </template>
             </vs-table>
         </div>
-        <!-- <div class="mt-[18px]" v-else-if="tab == 2">
-            <vs-table>
-                <template #thead>
-                    <vs-tr>
-                        <vs-th>
-                            เลขห้อง
-                        </vs-th>
-                        <vs-th>
-                            เดือนก่อน
-                        </vs-th>
-                        <vs-th>
-                            เดือนนี้
-                        </vs-th>
-                        <vs-th>
-                            หน่วยที่ใช้
-                        </vs-th>
-                    </vs-tr>
-                </template>
-                <template #tbody>
-                    <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
-                        <vs-td>
-                            {{ tr.RoomNumber }}
-                        </vs-td>
-                        <vs-td>
-                            {{ tr.electric_fees[1].electicUnit ? tr.electric_fees[1]?.electicUnit : '-' }}
-                        </vs-td>
-                        <vs-td>
-                            {{ tr.electric_fees[0].electicUnit ? tr.electric_fees[0].electicUnit : '-' }}
-                        </vs-td>
-                        <vs-td>
-                            {{ tr.electric_fees[0].usageMeter ? tr.electric_fees[0].usageMeter : '-' }}
-                        </vs-td>
-                    </vs-tr>
-                </template>
-            </vs-table>
-        </div> -->
         <div class="mt-[18px]" v-else-if="tab == 4">
             <vs-table>
                 <template #thead>
@@ -134,32 +102,34 @@
                             เลขห้อง
                         </vs-th>
                         <vs-th>
-                            เดือนก่อน
+                            ประเภท
                         </vs-th>
                         <vs-th>
-                            เดือนนี้
+                            จำนวน
                         </vs-th>
-                        <vs-th>
-                            หน่วยที่ใช้
-                        </vs-th>
+                        <!-- <vs-th>
+                            รวม
+                        </vs-th> -->
                     </vs-tr>
                 </template>
                 <template #tbody>
                     <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
-                        {{ tr }}
                         <vs-td>
                             {{ tr.RoomNumber }}
                         </vs-td>
                         <vs-td>
-                            {{ tr.electric_fees[1].electicUnit ? tr.electric_fees[1]?.electicUnit : '-' }}
+                            <div v-for="item in tr.other_of_buildings">
+                                {{ item.title }}
+                            </div>
                         </vs-td>
                         <vs-td>
-                            {{ tr.electric_fees[0].electicUnit ? tr.electric_fees[0].electicUnit : '-' }}
+                            <div v-for="item in tr.other_of_buildings">
+                                {{ item.price }}
+                            </div>
                         </vs-td>
-                        <vs-td>
-                            {{ tr.electric_fees[0].usageMeter ? tr.electric_fees[0].usageMeter : '-' }}
-                            {{  tr}}
-                        </vs-td>
+                        <!-- <vs-td>
+                            {{totalSum}}
+                        </vs-td> -->
                     </vs-tr>
                 </template>
             </vs-table>
@@ -175,12 +145,19 @@ export default {
         return {
             tab: 1,
         }
+    },
+    computed: {
+        // totalSum() {
+        //     return this.data.other_of_buildings.reduce((acc, val) => acc + val,price, 0);
+        // }
     }
 }
 </script>
-<style scoped>#payment {
+<style scoped>
+#payment {
     background-color: rgb(255, 255, 255);
 }
+
 .table-container {
     height: 250px;
     /* Set a fixed height to enable scrolling */
@@ -212,5 +189,4 @@ export default {
 ::-webkit-scrollbar-thumb:hover {
     background: #E9EEF6;
 }
-
 </style>

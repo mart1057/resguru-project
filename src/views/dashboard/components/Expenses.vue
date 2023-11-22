@@ -31,45 +31,132 @@
         <div>
             <div class="mt-[4px] w-[100%]">
                 <div class="flex w-[100%]">
-                    <div>
-                        <div class="mt-[8px] w-[80%]">
-                            <vs-select placeholder="เดือน" color="#003765">
-                                <vs-option v-for="mouth in mouths" :label="mouth" :value="mouth">
-                                    {{ mouth }}
-                                </vs-option>
-                            </vs-select>
+                    <input v-model="selectedDate" type="month" placeholder="ค้นหาตามหมายเลขห้อง" id="datepicker"
+                        @input="filterByDate()"
+                        v-bind:class="{ 'h-[36px] pl-[8px] text-[center] pr-[8px] bg-[#003765] flex cursor-pointer text-[white]  justify-center  rounded-[12px] mt-[12px]': true }" />
+                </div>
+            </div>
+            <div class="flex w-[100%] mt-[4px]" v-if="tab == 1">
+                <div class="w-[40%]">
+                    <div class="flex mt-[4px]">
+                        <div class="mt-[8px]">
+                            <!-- <div class="flex items-center">
+                                <div class="w-[12px] h-[12px] bg-[#F1B826] rounded-[100px] mr-[8px]"></div>
+                                <div class="text-[12px] text-[#5C6B79]">{{ label2[0] }}</div>
+                            </div> -->
+                            <div class="flex items-center mt-[2px]">
+                                <div class="w-[12px] h-[12px] bg-[#008EF4] rounded-[100px] mr-[8px]"></div>
+                                <div class="text-[12px] text-[#5C6B79]">{{ label1[0] }}</div>
+                            </div>
+                            <!-- <div class="flex items-center mt-[2px]">
+                                <div class="w-[12px] h-[12px] bg-[#D44769] rounded-[100px] mr-[8px]"></div>
+                                <div class="text-[12px] text-[#5C6B79]">{{ label2[2] }}</div>
+                            </div>
+                            <div class="flex items-center mt-[2px]">
+                                <div class="w-[12px] h-[12px] bg-[#9A77FF] rounded-[100px] mr-[8px]"></div>
+                                <div class="text-[12px] text-[#5C6B79]">{{ label2[3] }}</div>
+                            </div> -->
                         </div>
                     </div>
-                    <div>
-                        <div class="mt-[8px] w-[60%] ml-[-24px]">
-                            <vs-select placeholder="ปี" color="#003765">
-                                <vs-option v-for="year in years" :label="year" :value="year">
-                                    {{ year }}
-                                </vs-option>
-                            </vs-select>
+                    <div class="flex mt-[4px] w-[100%]">
+                        <div class="mt-[8px] w-[100%] ">
+                            <!-- <div
+                                class="flex items-center justify-between border h-[28px] rounded-[8px] pl-[12px] pr-[12px]">
+                                <div class="flex justify-center items-center">
+                                    <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <mask id="mask0_2861_23329" style="mask-type:alpha" maskUnits="userSpaceOnUse"
+                                                x="0" y="0" width="24" height="24">
+                                                <rect width="24" height="24" fill="#D9D9D9" />
+                                            </mask>
+                                            <g mask="url(#mask0_2861_23329)">
+                                                <path
+                                                    d="M13.7514 12.7113C13.0527 12.7113 12.4614 12.4694 11.9774 11.9854C11.4934 11.5014 11.2515 10.9101 11.2515 10.2114C11.2515 9.51266 11.4934 8.92133 11.9774 8.43736C12.4614 7.95339 13.0527 7.71141 13.7514 7.71141C14.4501 7.71141 15.0415 7.95339 15.5254 8.43736C16.0094 8.92133 16.2514 9.51266 16.2514 10.2114C16.2514 10.9101 16.0094 11.5014 15.5254 11.9854C15.0415 12.4694 14.4501 12.7113 13.7514 12.7113ZM7.15528 15.8075C6.65818 15.8075 6.23262 15.6305 5.87861 15.2765C5.52461 14.9225 5.34761 14.4969 5.34761 13.9998V6.42291C5.34761 5.92581 5.52461 5.50025 5.87861 5.14623C6.23262 4.79223 6.65818 4.61523 7.15528 4.61523H20.3475C20.8446 4.61523 21.2702 4.79223 21.6242 5.14623C21.9782 5.50025 22.1552 5.92581 22.1552 6.42291V13.9998C22.1552 14.4969 21.9782 14.9225 21.6242 15.2765C21.2702 15.6305 20.8446 15.8075 20.3475 15.8075H7.15528ZM8.65526 14.3075H18.8476C18.8476 13.8088 19.0246 13.3829 19.3786 13.0297C19.7326 12.6764 20.1581 12.4998 20.6553 12.4998V7.92288C20.1565 7.92288 19.7306 7.74588 19.3774 7.39188C19.0242 7.03787 18.8476 6.61231 18.8476 6.11521H8.65526C8.65526 6.61393 8.47826 7.03988 8.12426 7.39308C7.77024 7.74628 7.34468 7.92288 6.84758 7.92288V12.4998C7.3463 12.4998 7.77226 12.6768 8.12546 13.0309C8.47866 13.3849 8.65526 13.8104 8.65526 14.3075ZM3.65533 19.3075C3.15821 19.3075 2.73266 19.1305 2.37866 18.7764C2.02466 18.4224 1.84766 17.9969 1.84766 17.4998V8.34598C1.84766 8.13348 1.91956 7.95537 2.06336 7.81163C2.20717 7.66788 2.38537 7.59601 2.59796 7.59601C2.81056 7.59601 2.98865 7.66788 3.13223 7.81163C3.27581 7.95537 3.34761 8.13348 3.34761 8.34598V17.4998C3.34761 17.5767 3.37966 17.6472 3.44378 17.7113C3.50788 17.7754 3.5784 17.8075 3.65533 17.8075H18.4245C18.637 17.8075 18.8151 17.8794 18.9588 18.0232C19.1026 18.167 19.1745 18.3452 19.1745 18.5578C19.1745 18.7704 19.1026 18.9485 18.9588 19.0921C18.8151 19.2357 18.637 19.3075 18.4245 19.3075H3.65533ZM7.15528 14.3075H6.84758V6.11521H7.15528C7.07195 6.11521 6.99983 6.14566 6.93893 6.20656C6.87803 6.26746 6.84758 6.33958 6.84758 6.42291V13.9998C6.84758 14.0831 6.87803 14.1553 6.93893 14.2162C6.99983 14.2771 7.07195 14.3075 7.15528 14.3075Z"
+                                                    fill="#F5D65E" />
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-[8px] text-[#F5D65E] font-bold">{{ data2[0] }}</div>
+                                </div>
+                                <div class="text-[12px] text-[#5C6B79]">60%</div>
+                            </div> -->
+                            <div
+                                class="mt-[8px] flex items-center justify-between border h-[28px] rounded-[8px] pl-[12px] pr-[12px]">
+                                <div class="flex justify-center items-center">
+                                    <div>
+                                        <svg width="22" height="16" viewBox="0 0 22 16" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M12.7514 8.71133C12.0527 8.71133 11.4614 8.46935 10.9774 7.98538C10.4934 7.50142 10.2515 6.91007 10.2515 6.21136C10.2515 5.51266 10.4934 4.92133 10.9774 4.43736C11.4614 3.95339 12.0527 3.71141 12.7514 3.71141C13.4501 3.71141 14.0415 3.95339 14.5254 4.43736C15.0094 4.92133 15.2514 5.51266 15.2514 6.21136C15.2514 6.91007 15.0094 7.50142 14.5254 7.98538C14.0415 8.46935 13.4501 8.71133 12.7514 8.71133ZM6.15528 11.8075C5.65818 11.8075 5.23262 11.6305 4.87861 11.2765C4.52461 10.9225 4.34761 10.4969 4.34761 9.99981V2.42291C4.34761 1.92581 4.52461 1.50025 4.87861 1.14623C5.23262 0.792234 5.65818 0.615234 6.15528 0.615234H19.3475C19.8446 0.615234 20.2702 0.792234 20.6242 1.14623C20.9782 1.50025 21.1552 1.92581 21.1552 2.42291V9.99981C21.1552 10.4969 20.9782 10.9225 20.6242 11.2765C20.2702 11.6305 19.8446 11.8075 19.3475 11.8075H6.15528ZM7.65526 10.3075H17.8476C17.8476 9.80882 18.0246 9.38286 18.3786 9.02966C18.7326 8.67644 19.1581 8.49983 19.6553 8.49983V3.92288C19.1565 3.92288 18.7306 3.74588 18.3774 3.39188C18.0242 3.03787 17.8476 2.61231 17.8476 2.11521H7.65526C7.65526 2.61393 7.47826 3.03988 7.12426 3.39308C6.77024 3.74628 6.34468 3.92288 5.84758 3.92288V8.49983C6.3463 8.49983 6.77226 8.67684 7.12546 9.03086C7.47866 9.38486 7.65526 9.81042 7.65526 10.3075ZM2.65533 15.3075C2.15821 15.3075 1.73266 15.1305 1.37866 14.7764C1.02466 14.4224 0.847656 13.9969 0.847656 13.4998V4.34598C0.847656 4.13348 0.919556 3.95537 1.06336 3.81163C1.20717 3.66788 1.38537 3.59601 1.59796 3.59601C1.81056 3.59601 1.98865 3.66788 2.13223 3.81163C2.27581 3.95537 2.34761 4.13348 2.34761 4.34598V13.4998C2.34761 13.5767 2.37966 13.6472 2.44378 13.7113C2.50788 13.7754 2.5784 13.8075 2.65533 13.8075H17.4245C17.637 13.8075 17.8151 13.8794 17.9588 14.0232C18.1026 14.167 18.1745 14.3452 18.1745 14.5578C18.1745 14.7704 18.1026 14.9485 17.9588 15.0921C17.8151 15.2357 17.637 15.3075 17.4245 15.3075H2.65533ZM6.15528 10.3075H5.84758V2.11521H6.15528C6.07195 2.11521 5.99983 2.14566 5.93893 2.20656C5.87803 2.26746 5.84758 2.33958 5.84758 2.42291V9.99981C5.84758 10.0831 5.87803 10.1553 5.93893 10.2162C5.99983 10.2771 6.07195 10.3075 6.15528 10.3075Z"
+                                                fill="#008EF4" />
+                                        </svg>
+                                    </div>
+                                    <div class="ml-[8px] text-[#008EF4] font-bold">{{ data1[0] }}</div>
+                                </div>
+                                <div class="text-[12px] text-[#5C6B79]">100%</div>
+                            </div>
+                            <!-- <div
+                                class="mt-[8px] flex items-center justify-between border h-[28px] rounded-[8px] pl-[12px] pr-[12px]">
+                                <div class="flex justify-center items-center">
+                                    <div>
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <mask id="mask0_2861_23339" style="mask-type:alpha" maskUnits="userSpaceOnUse"
+                                                x="0" y="0" width="24" height="24">
+                                                <rect width="24" height="24" fill="#D9D9D9" />
+                                            </mask>
+                                            <g mask="url(#mask0_2861_23339)">
+                                                <path
+                                                    d="M5.67498 18.5L5.15383 19.9769C5.12798 20.0494 5.08273 20.1098 5.0181 20.1582C4.95345 20.2065 4.87775 20.2307 4.791 20.2307H4.67948C4.58033 20.2307 4.49358 20.1932 4.41923 20.1182C4.34488 20.0432 4.3077 19.9557 4.3077 19.8557V18.5C3.81058 18.5 3.38503 18.3229 3.03102 17.9689C2.67701 17.6149 2.5 17.1894 2.5 16.6923V6.3077C2.5 5.81058 2.67701 5.38503 3.03102 5.03103C3.38503 4.67701 3.81058 4.5 4.3077 4.5H19.6923C20.1894 4.5 20.6149 4.67701 20.9689 5.03103C21.3229 5.38503 21.5 5.81058 21.5 6.3077V16.6923C21.5 17.1898 21.3229 17.6156 20.9689 17.9699C20.6149 18.3242 20.1894 18.5013 19.6923 18.5013V19.8807C19.6923 19.9789 19.6585 20.0618 19.591 20.1294C19.5234 20.1969 19.4405 20.2307 19.3423 20.2307H19.2077C19.1307 20.2307 19.0602 20.2093 18.9961 20.1665C18.932 20.1237 18.8872 20.0656 18.8615 19.9922L18.3596 18.5H5.67498ZM4.3077 17H19.6923C19.782 17 19.8557 16.9711 19.9134 16.9134C19.9711 16.8557 20 16.782 20 16.6923V6.3077C20 6.21795 19.9711 6.14423 19.9134 6.08653C19.8557 6.02883 19.782 5.99998 19.6923 5.99998H4.3077C4.21795 5.99998 4.14423 6.02883 4.08653 6.08653C4.02883 6.14423 3.99998 6.21795 3.99998 6.3077V16.6923C3.99998 16.782 4.02883 16.8557 4.08653 16.9134C4.14423 16.9711 4.21795 17 4.3077 17Z"
+                                                    fill="#D44769" />
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div class="ml-[8px] text-[#D44769] font-bold">{{ data2[2] }}</div>
+                                </div>
+                                <div class="text-[12px] text-[#5C6B79]">60%</div>
+                            </div> -->
+                            <!-- <div
+                                class=" mt-[8px] flex items-center justify-between border h-[28px] rounded-[8px] pl-[12px] pr-[12px]">
+                                <div class="flex justify-center items-center">
+                                    <div>
+                                        <svg width="24" height="18" viewBox="0 0 20 18" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path
+                                                d="M1.86323 17.5771C1.45426 17.5771 1.10203 17.4294 0.806531 17.1339C0.511031 16.8384 0.363281 16.4861 0.363281 16.0772V1.57712C0.363281 1.16816 0.511031 0.815915 0.806531 0.520399C1.10203 0.224899 1.45426 0.0771484 1.86323 0.0771484H8.36326C8.77222 0.0771484 9.12446 0.224899 9.41998 0.520399C9.71548 0.815915 9.86323 1.16816 9.86323 1.57712V4.07715H18.1325C18.5414 4.07715 18.8937 4.2249 19.1892 4.5204C19.4847 4.81592 19.6325 5.16816 19.6325 5.57712V16.0772C19.6325 16.4861 19.4847 16.8384 19.1892 17.1339C18.8937 17.4294 18.5414 17.5771 18.1325 17.5771H1.86323ZM1.86323 16.0772H4.36326V13.5771H1.86323V16.0772ZM1.86323 12.0772H4.36326V9.57712H1.86323V12.0772ZM1.86323 8.07715H4.36326V5.57712H1.86323V8.07715ZM1.86323 4.07715H4.36326V1.57712H1.86323V4.07715ZM5.86323 16.0772H8.36326V13.5771H5.86323V16.0772ZM5.86323 12.0772H8.36326V9.57712H5.86323V12.0772ZM5.86323 8.07715H8.36326V5.57712H5.86323V8.07715ZM5.86323 4.07715H8.36326V1.57712H5.86323V4.07715ZM9.86323 16.0772H18.1325V5.57712H9.86323V8.07715H12.0556V9.57712H9.86323V12.0772H12.0556V13.5771H9.86323V16.0772ZM14.2479 9.57712V8.07715H15.7478V9.57712H14.2479ZM14.2479 13.5771V12.0772H15.7478V13.5771H14.2479Z"
+                                                fill="#9A77FF" />
+                                        </svg>
+                                    </div>
+                                    <div class="ml-[8px] text-[#9A77FF] font-bold">{{ data2[3] }}</div>
+                                </div>
+                                <div class="text-[12px] text-[#5C6B79]">60%</div>
+                            </div> -->
                         </div>
                     </div>
                 </div>
+                <div class="w-[60%]">
+                    <apexchart :options="options1" :series="data1"></apexchart>
+                </div>
             </div>
-            <div class="flex w-[100%]">
+            <div class="flex w-[100%] mt-[4px]" v-else-if="tab == 2">
                 <div class="w-[40%]">
                     <div class="flex mt-[4px]">
                         <div class="mt-[8px]">
                             <div class="flex items-center">
-                                <div class="w-[12px] h-[12px] bg-[#F5D65E] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">ค่าใช้จ่ายรายเดือน</div>
+                                <div class="w-[12px] h-[12px] bg-[#F1B826] rounded-[100px] mr-[8px]"></div>
+                                <div class="text-[12px] text-[#5C6B79]">{{ label2[0] }}</div>
                             </div>
                             <div class="flex items-center mt-[2px]">
                                 <div class="w-[12px] h-[12px] bg-[#008EF4] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">ค่ามัดจำห้องพัก</div>
+                                <div class="text-[12px] text-[#5C6B79]">{{ label2[1] }}</div>
                             </div>
                             <div class="flex items-center mt-[2px]">
                                 <div class="w-[12px] h-[12px] bg-[#D44769] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">ค่าประกันความเสียหาย</div>
+                                <div class="text-[12px] text-[#5C6B79]">{{ label2[2] }}</div>
                             </div>
                             <div class="flex items-center mt-[2px]">
                                 <div class="w-[12px] h-[12px] bg-[#9A77FF] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">อื่น ๆ</div>
+                                <div class="text-[12px] text-[#5C6B79]">{{ label2[3] }}</div>
                             </div>
                         </div>
                     </div>
@@ -91,7 +178,7 @@
                                             </g>
                                         </svg>
                                     </div>
-                                    <div class="ml-[8px] text-[#F5D65E] font-bold">8,000</div>
+                                    <div class="ml-[8px] text-[#F5D65E] font-bold">{{ data2[0] }}</div>
                                 </div>
                                 <div class="text-[12px] text-[#5C6B79]">60%</div>
                             </div>
@@ -106,7 +193,7 @@
                                                 fill="#008EF4" />
                                         </svg>
                                     </div>
-                                    <div class="ml-[8px] text-[#008EF4] font-bold">8,000</div>
+                                    <div class="ml-[8px] text-[#008EF4] font-bold">{{ data2[1] }}</div>
                                 </div>
                                 <div class="text-[12px] text-[#5C6B79]">60%</div>
                             </div>
@@ -127,7 +214,7 @@
                                             </g>
                                         </svg>
                                     </div>
-                                    <div class="ml-[8px] text-[#D44769] font-bold">8,000</div>
+                                    <div class="ml-[8px] text-[#D44769] font-bold">{{ data2[2] }}</div>
                                 </div>
                                 <div class="text-[12px] text-[#5C6B79]">60%</div>
                             </div>
@@ -142,7 +229,7 @@
                                                 fill="#9A77FF" />
                                         </svg>
                                     </div>
-                                    <div class="ml-[8px] text-[#9A77FF] font-bold">8,000</div>
+                                    <div class="ml-[8px] text-[#9A77FF] font-bold">{{ data2[3] }}</div>
                                 </div>
                                 <div class="text-[12px] text-[#5C6B79]">60%</div>
                             </div>
@@ -150,7 +237,7 @@
                     </div>
                 </div>
                 <div class="w-[60%]">
-                    <apexchart :options="options" :series="data"></apexchart>
+                    <apexchart :options="options2" :series="data2"></apexchart>
                 </div>
             </div>
         </div>
@@ -169,11 +256,16 @@ export default {
             tab: 1,
             years: [],
             mouths: [...Array(12).keys()].map((day) => day + 1),
-            data: [10, 5, 6, 8],
+            data1: [],
+            data2: [],
+            db_expense: [],
+            label1: ["รายรับทั้งหมด"],
+            label2: ["ค่าจ้างพนักงาน", "ค่าจ้างทำของ", "ค่าซ่อมบำรุง", "ค่าอื่นๆ"]
         }
     },
     created() {
         this.runYears
+        this.getDashboard()
     },
 
     methods: {
@@ -181,11 +273,22 @@ export default {
             for (var year = 1923; year <= 2023; year++) {
                 this.years.push(year);
             }
+        },
+        getDashboard() {
+            fetch(`https://api.resguru.app/api/getdashboard?buildingid=${this.$store.state.building}&month=10&year=2023`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getRoom()", resp);
+                    this.db_expense = resp.accounting
+                    const counts = resp.accounting.expense.map(item => item.count);
+                    this.data2 = counts
+                    this.data1.push(Math.floor(resp.accounting.receive))
+                })
         }
 
     },
     computed: {
-        options() {
+        options1() {
             return {
                 chart: {
                     type: "donut",
@@ -196,7 +299,7 @@ export default {
                 legend: {
                     show: false,
                 },
-                labels: ["จ่ายรายเดือน", "มัดจำห้องพัก", "ประกันความเสียหาย", "อื่น ๆ"],
+                labels: ["รายรับทั้งหมด"],
                 plotOptions: {
                     pie: {
                         donut: {
@@ -205,6 +308,42 @@ export default {
                                 total: {
                                     show: true,
                                     label: "รายรับทั้งหมด",
+                                    fontSize: "14px",
+                                    fontWeight: "bold",
+                                    color: "#6B7490",
+                                    fontFamily: "Prompt",
+                                },
+                            },
+                        },
+                    },
+                },
+                colors: ["#008EF4"]
+
+                // noData: {
+                //     text: this.loading ? "Loading..." : "No Data",
+                // },
+            };
+        },
+        options2() {
+            return {
+                chart: {
+                    type: "donut",
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                legend: {
+                    show: false,
+                },
+                labels: ["ค่าจ้างพนักงาน", "ค่าจ้างทำของ", "ค่าซ่อมบำรุง", "ค่าอื่นๆ"],
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            labels: {
+                                show: true,
+                                total: {
+                                    show: true,
+                                    label: "รายจ่ายทั้งหมด",
                                     fontSize: "14px",
                                     fontWeight: "bold",
                                     color: "#6B7490",
