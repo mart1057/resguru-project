@@ -47,7 +47,7 @@
                         </vs-td>
                         <vs-td>
                             <div>
-                                <div v-if=tr.water_fees[1]>
+                                <div v-if="tr.water_fees[1]">
                                     <vs-input disabled v-model=tr.water_fees[1].meterUnit>
                                         <template #icon>
                                             <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
@@ -86,13 +86,25 @@
                             </vs-input>
                         </vs-td>
                         <vs-td>
-                            {{ tr.water_fees[0] ? (tr.water_fees[0].meterUnit - tr.water_fees[1].meterUnit) :
+                            <div v-if="tr.water_fees[1]">
+                                {{ tr.water_fees[0] ? (tr.water_fees[0].meterUnit - tr.water_fees[1].meterUnit) :
                                 "ยังไม่ได้ระบุ" }}
+                            </div>
+                            <div v-else>
+                                {{ tr.water_fees[0] ? tr.water_fees[0].meterUnit :
+                                "ยังไม่ได้ระบุ" }}
+                            </div>
                         </vs-td>
                         <vs-td>
                             <div>
-                                <vs-button
+                                <div v-if="tr.water_fees[1]">
+                                    <vs-button
                                     @click="updateWaterfee(tr.water_fees[0].id, tr.water_fees[0].meterUnit, (tr.water_fees[0].meterUnit - tr.water_fees[1].meterUnit))">บันทึก</vs-button>
+                                </div>
+                                <div v-else>
+                                    <vs-button
+                                    @click="updateWaterfee(tr.water_fees[0].id, tr.water_fees[0].meterUnit, tr.water_fees[0].meterUnit)">บันทึก</vs-button>
+                                </div>
                             </div>
                         </vs-td>
                     </vs-tr>
