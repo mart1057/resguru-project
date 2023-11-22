@@ -197,6 +197,9 @@
                                 ยอดรวม
                             </vs-th>
                             <vs-th>
+                                ชำระแล้ว
+                            </vs-th>
+                            <vs-th>
                                 วันที่สร้างเอกสาร
                             </vs-th>
                             <vs-th>
@@ -236,6 +239,9 @@
                             <vs-td>
                                 <!-- <vs-input  v-model="tr.attributes.total"/>   -->
                                 {{ $formatNumber(tr.attributes.total) }}
+                            </vs-td>
+                            <vs-td>
+                                
                             </vs-td>
                             <vs-td>
                                 {{ tr.attributes.createdAt }}
@@ -308,10 +314,10 @@
                                 ค่าบริการอื่น ๆ
                             </vs-th>
                             <vs-th>
-                                ชำระแล้ว
+                                ยอดรวม
                             </vs-th>
                             <vs-th>
-                                ยอดรวม
+                                ชำระแล้ว
                             </vs-th>
                             <vs-th>
                                 วันที่ออกใบเสร็จ
@@ -342,10 +348,10 @@
                                 {{ $formatNumber(tr.attributes.communalPrice) }}
                             </vs-td>
                             <vs-td>
-                                {{ $formatNumber(tr.attributes.paidAmount) }}
+                                {{ $formatNumber(tr.attributes.otherPrice) }}
                             </vs-td>
                             <vs-td>
-                                {{ $formatNumber(tr.attributes.otherPrice) }}
+                                {{ $formatNumber(tr.attributes.paidAmount) }}
                             </vs-td>
                             <vs-td>
                                 {{ $formatNumber(tr.attributes.total) }}
