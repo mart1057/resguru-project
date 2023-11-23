@@ -375,7 +375,7 @@
                 </div>
                 <!-- <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
                 <div class="pl-[20px] pr-[20px] mt-[24px]">
-                    <div class="text-[#5C6B79] text-custom">
+                    <div class="text-[#5C6B79] text-custom text-[16px]">
                         เลือกห้องที่ต้องการย้าย
                     </div>
                     <div v-for="data in roomFloor" class="text-custom">
