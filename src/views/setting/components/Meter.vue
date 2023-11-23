@@ -46,7 +46,9 @@
                         <div
                             class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] text-[#2875E9]">
                             <div>ราคา</div>
-                            <input type="number" @change="updateUserBuildingWater()"  class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]"  v-model="building[0].attributes.waterUnitPrice">
+                            <input type="number" @change="updateUserBuildingWater()"
+                                class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
+                                v-model="building[0].attributes.waterUnitPrice">
                             <!-- <div class="font-bold">{{ building[0].attributes.waterUnitPrice }}</div> -->
                         </div>
                     </div>
@@ -73,7 +75,9 @@
                         <div
                             class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] text-[#EEA10B]">
                             <div>ราคา</div>
-                            <input type="number" @change="updateUserBuildingElectric()" class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]"  v-model="building[0].attributes.electricUnitPrice">
+                            <input type="number" @change="updateUserBuildingElectric()"
+                                class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
+                                v-model="building[0].attributes.electricUnitPrice">
                             <!-- <div class="font-bold">{{ building[0].attributes.electricUnitPrice }}</div> -->
                         </div>
                     </div>
@@ -106,7 +110,9 @@
                         </div>
                         <div class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] ">
                             <div>ราคา</div>
-                            <input type="number" @change="updateUserBuildingCommunual()" class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]"  v-model="building[0].attributes.communalUnitPrice">
+                            <input type="number" @change="updateUserBuildingCommunual()"
+                                class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
+                                v-model="building[0].attributes.communalUnitPrice">
                             <!-- <div class="font-bold">{{ building[0].attributes.communalUnitPrice }}</div> -->
                         </div>
                     </div>
@@ -119,8 +125,9 @@
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 3">
             <div class="text-[16px] font-bold mt-[24px]">ค่าบริการ</div>
             <div class="grid grid-cols-6 gap-4 mt-[14px] w-[100%]">
-                <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]" v-for="data in otherOfBuilding">
-                    <div class="flex flex-col justify-between h-[100%]" >
+                <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]" v-for="data in otherOfBuilding"
+                    @click="getDetailFacilities(data.id)">
+                    <div class="flex flex-col justify-between h-[100%]">
                         <div class="flex justify-between">
                             <div class="text-[16px]"> {{ data.attributes.title }}</div>
                             <div>
@@ -139,18 +146,22 @@
                             class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]  mt-[14px]">
                             <div>ราคา</div>
                             <!-- <div class="font-bold">{{ data.attributes.price }}</div> -->
-                            <input type="number" @change="changeotherPrice(data.id,data.attributes.price)" v-model="data.attributes.price" class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]" >
+                            <input type="number" @change="changeotherPrice(data.id, data.attributes.price)"
+                                v-model="data.attributes.price"
+                                class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]">
                         </div>
                         <div
                             class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]  mt-[4px]">
                             <div>ส่วนลด</div>
                             <!-- <div class="font-bold">{{ data.attributes.discountAmount }}</div> -->
-                            <input type="number" @change="changeotherDiscountPrice(data.id,data.attributes.discountAmount)" v-model="data.attributes.discountAmount" class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]" >
+                            <input type="number" @change="changeotherDiscountPrice(data.id, data.attributes.discountAmount)"
+                                v-model="data.attributes.discountAmount"
+                                class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]">
                         </div>
                     </div>
                 </div>
                 <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
-                    @click="create_service = true">
+                    @click="is_edit = false, discountAmount = '', price = '', title = '', create_service = true">
                     <div>
                         <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
@@ -509,35 +520,53 @@
                 <div class="mt-[14px]">
                     <div class="text-custom">ชื่อบริการ</div>
                     <div>
-                        <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="title" />
+                        <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                            v-model="title" />
                     </div>
                 </div>
-                <div class="mt-[14px]">
+                <!-- <div class="mt-[14px]">
                     <div class="text-custom">ราคา/เดือน</div>
                     <div>
                         <input
                             class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="price" />
                     </div>
+                </div> -->
+                <div class="mt-[14px]">
+                    <div class="text-custom">ค่าปรับ (กรณีเสียหาย)</div>
+                    <div>
+                        <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                            v-model="price" />
+                    </div>
                 </div>
                 <div class="mt-[14px]">
                     <div class="text-custom">ส่วนลด</div>
                     <div>
-                        <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="discountAmount"/>
+                        <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                            v-model="discountAmount" />
                     </div>
                 </div>
-                <div class="flex justify-end mt-[30px]">
+                <div class=" flex justify-between mt-[30px]">
                     <div>
-                        <vs-button dark shadow @click="create_service = false">
-                            <div class="text-custom">ยกเลิก</div>
-                        </vs-button>
+                        <div>
+                            <vs-button @click="delectFacilities(id_Facilities)" color="#D44769">
+                                <div class="text-custom">ลบรายการนี้</div>
+                            </vs-button>
+                        </div>
                     </div>
-                    <div>
-                        <vs-button @click="createOtherOfBuilding()" color="#003765">
-                            <div class="text-custom">บันทึก</div>
-                        </vs-button>
+                    <div class="flex justify-end">
+                        <div>
+                            <vs-button dark shadow @click="create_service = false">
+                                <div class="text-custom">ยกเลิก</div>
+                            </vs-button>
+                        </div>
+                        <div>
+                            <vs-button @click="is_edit == true ? editFacilities() : createOtherOfBuilding()"
+                                color="#003765">
+                                <div class="text-custom">บันทึก</div>
+                            </vs-button>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </b-modal>
@@ -555,11 +584,13 @@ export default {
             type: false,
             create_type: false,
             create_service: false,
+            is_edit: false,
             building: [],
             otherOfBuilding: [],
             title: "",
             price: 0,
-            discountAmount: 0
+            discountAmount: 0,
+            id_Facilities: ''
         }
     },
     created() {
@@ -575,10 +606,10 @@ export default {
     methods: {
         getUserBuilding() {
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/buildings?filters[id][$eq]='+this.$store.state.building)
+            fetch('https://api.resguru.app/api' + '/buildings?filters[id][$eq]=' + this.$store.state.building)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getRoom()",resp.data);
+                    console.log("Return from getRoom()", resp.data);
                     this.building = resp.data
                 }).finally(() => {
                     loading.close()
@@ -586,123 +617,165 @@ export default {
         },
         getOtherBuilding() {
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/other-of-buildings?filters[building][id][$eq]='+this.$store.state.building)
+            fetch('https://api.resguru.app/api' + '/other-of-buildings?filters[building][id][$eq]=' + this.$store.state.building)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getOther()",resp.data);
+                    console.log("Return from getOther()", resp.data);
                     this.otherOfBuilding = resp.data
                 }).finally(() => {
                     loading.close()
                 })
         },
-        createOtherOfBuilding(){
-            axios.post(`https://api.resguru.app/api/other-of-buildings/`,{
-                data : {
+        getDetailFacilities(id) {
+            this.is_edit = true
+            const loading = this.$vs.loading()
+            fetch('https://api.resguru.app/api' + '/other-of-buildings/' + id)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log(resp);
+                    this.id_Facilities = resp.data.id,
+                        this.title = resp.data.attributes.title,
+                        this.price = resp.data.attributes.price,
+                        this.discountAmount = resp.data.attributes.discountAmount
+                }).finally(() => {
+                    this.create_service = true,
+                        loading.close()
+                })
+        },
+        editFacilities() {
+            const loading = this.$vs.loading()
+            axios.put('https://api.resguru.app/api' + '/other-of-buildings/' + this.id_Facilities, {
+                data: {
+                    title: this.title,
+                    price: this.price,
+                    discountAmount: this.discountAmount,
+                }
+            })
+                .finally(() => {
+                    this.create_service = false,
+                        this.getOtherBuilding()
+                    loading.close()
+                })
+        },
+        delectFacilities(id) {
+            const loading = this.$vs.loading()
+            axios.delete('https://api.resguru.app/api' + '/other-of-buildings/' + id)
+                .finally(() => {
+                    this.create_service = false,
+                        this.getOtherBuilding()
+                    loading.close()
+                })
+        },
+        createOtherOfBuilding() {
+            axios.post(`https://api.resguru.app/api/other-of-buildings/`, {
+                data: {
                     title: this.title,
                     price: this.price,
                     discountAmount: this.discountAmount,
                     building: this.$store.state.building
                 }
             })
-            .then( (resp) =>{
-                           console.log(resp)
-                        })
-            .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
-            this.$showNotification('danger', errorMessage); 
-            })
-            .finally(()=>{
-                this.$showNotification('#3A89CB', 'Create Other Success')
-            }) 
-                
-        }, 
-        updateUserBuildingWater(){
-            axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`,{
-                data : {
+                .then((resp) => {
+                    console.log(resp)
+                })
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.create_service = false,
+                        this.getOtherBuilding()
+                    this.$showNotification('#3A89CB', 'Create Other Success')
+                })
+
+        },
+        updateUserBuildingWater() {
+            axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`, {
+                data: {
                     waterUnitPrice: this.building[0].attributes.waterUnitPrice
                 }
             })
-            .then( (resp) =>{
-                           console.log(resp)
-                        })
-            .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
-            this.$showNotification('danger', errorMessage); 
-            })
-            .finally(()=>{
-                this.$showNotification('#3A89CB', 'Update Water Unit Success')
-            }) 
-                
-        }, 
-        updateUserBuildingElectric(){
-            axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`,{
-                data : {
+                .then((resp) => {
+                    console.log(resp)
+                })
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.$showNotification('#3A89CB', 'Update Water Unit Success')
+                })
+
+        },
+        updateUserBuildingElectric() {
+            axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`, {
+                data: {
                     electricUnitPrice: this.building[0].attributes.electricUnitPrice
                 }
             })
-            .then( (resp) =>{
-                           console.log(resp)
-                        })
-            .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
-            this.$showNotification('danger', errorMessage); 
-            })
-            .finally(()=>{
-                this.$showNotification('#3A89CB', 'Update Electric Unit Success')
-            }) 
-              
-        }, 
-        updateUserBuildingCommunual(){
-            axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`,{
-                data : {
+                .then((resp) => {
+                    console.log(resp)
+                })
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.$showNotification('#3A89CB', 'Update Electric Unit Success')
+                })
+
+        },
+        updateUserBuildingCommunual() {
+            axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`, {
+                data: {
                     communalUnitPrice: this.building[0].attributes.communalUnitPrice
                 }
             })
-            .then( (resp) =>{
-                           console.log(resp)
-            })
-            .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
-            this.$showNotification('danger', errorMessage); 
-            })
-            .finally(()=>{
-                this.$showNotification('#3A89CB', 'Update Building Communual Success')
-            }) 
-               
-        }, 
-        changeotherPrice(id,price){
-            axios.put(`https://api.resguru.app/api/other-of-buildings/${id}`,{
-                data : {
+                .then((resp) => {
+                    console.log(resp)
+                })
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.$showNotification('#3A89CB', 'Update Building Communual Success')
+                })
+
+        },
+        changeotherPrice(id, price) {
+            axios.put(`https://api.resguru.app/api/other-of-buildings/${id}`, {
+                data: {
                     price: price
                 }
             })
-            .then( (resp) =>{
-                         console.log(resp)
-                        })
-            .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
-            this.$showNotification('danger', errorMessage); 
-            })
-            .finally(()=>{
-                this.$showNotification('#3A89CB', 'Update Other Price Success')
-            }) 
+                .then((resp) => {
+                    console.log(resp)
+                })
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.$showNotification('#3A89CB', 'Update Other Price Success')
+                })
         },
-        changeotherDiscountPrice(id,discountAmount){
-            axios.put(`https://api.resguru.app/api/other-of-buildings/${id}`,{
-                data : {
+        changeotherDiscountPrice(id, discountAmount) {
+            axios.put(`https://api.resguru.app/api/other-of-buildings/${id}`, {
+                data: {
                     discountAmount: discountAmount
                 }
             })
-            .then( (resp) =>{
-                           console.log(resp)
-                        })
-            .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
-            this.$showNotification('danger', errorMessage); 
-            })
-            .finally(()=>{
-                this.$showNotification('#3A89CB', 'Update Success')
-            }) 
+                .then((resp) => {
+                    console.log(resp)
+                })
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.$showNotification('#3A89CB', 'Update Success')
+                })
         },
     },
 }

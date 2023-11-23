@@ -176,7 +176,7 @@
 
                             </div>
                         </div>
-                        <div class="flex w-[100%] mt-[14px]">
+                        <!-- <div class="flex w-[100%] mt-[14px]">
                             <div class="w-[20%]">
                                 <div class="text-custom text-[#5C6B79]">สถานะทรัพย์สิน</div>
                             </div>
@@ -201,7 +201,7 @@
                                     <div class="text-custom">เสียหาย</div>
                                 </vs-radio>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="flex w-[100%] mt-[14px]">
                             <div class="w-[20%]">
                                 <div class="text-custom text-[#5C6B79]">หมายเหตุ</div>
@@ -211,7 +211,7 @@
                                     type="input" v-model="facilities.note" />
                             </div>
                         </div>
-                        <div class="flex w-[100%] mt-[14px]">
+                        <!-- <div class="flex w-[100%] mt-[14px]">
                             <div class="w-[20%]">
                                 <div class="text-custom text-[#5C6B79]">รูปภาพก่อนเข้าพัก</div>
                             </div>
@@ -227,7 +227,7 @@
                                     class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                     ยังไม่ได้เลือกไฟล์</div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="flex justify-between mt-[34px] mb-[14px]">
                         <div>
@@ -244,7 +244,7 @@
                                 </vs-button>
                             </div>
                             <div>
-                                <vs-button @click="createOrEdit()" color="#003765">
+                                <vs-button @click="EditFacilities()" color="#003765">
                                     <div class="text-custom">บันทึก</div>
                                 </vs-button>
                             </div>
@@ -327,7 +327,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            add_on: true,
+            add_on: false,
             create: false,
             items: [],
             is_edit: false,
@@ -380,17 +380,24 @@ export default {
         },
         createOrEdit() {
             const loading = this.$vs.loading()
-            this.items.forEach((data) => {
+            console.log(this.items);
+            let ids = this.items.map(item => item.id);
+            axios.put('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room, {
+                data: {
+                    "other_of_buildings": [],
+                }
+            }).then(() => {
                 axios.put('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room, {
                     data: {
-                        "other_of_buildings": data.id,
+                        "other_of_buildings": ids,
                     }
                 })
+
+            }).finally(() => {
+                this.add_on = false
+                this.getFacilities()
+                loading.close()
             })
-            this.add_on = false
-            loading.close()
-
-
 
 
         },
@@ -411,6 +418,21 @@ export default {
                 }).finally(() => {
                     this.create = true,
                         loading.close()
+                })
+        },
+        EditFacilities() {
+            const loading = this.$vs.loading()
+            axios.put('https://api.resguru.app/api' + '/other-of-buildings/' + this.facilities.id, {
+                data: {
+                    title: this.facilities.title,
+                    price: this.facilities.price,
+                    note: this.facilities.note,
+                }
+            })
+                .finally(() => {
+                    this.create = false,
+                    this.getFacilities()
+                    loading.close()
                 })
         },
         delectFacilities(id) {
