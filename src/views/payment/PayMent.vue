@@ -326,7 +326,7 @@
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <svg @click="PDFPrint()" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                <svg @click="PDFPrint(tr)" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_2691_23279" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="24" height="24">
@@ -342,7 +342,7 @@
                         </vs-tr>
                     </template>
                 </vs-table>
-            </div>
+            </div>  <div><PDFgenerator ref="childComponentPDF"/></div>
             <b-modal centered v-model="createFullpayment" size="l" hide-backdrop hide-header-close hide-header hide-footer
                 class="p-[-20px] text-custom">
                 <div>
@@ -567,14 +567,16 @@
                 </div>
             </b-modal>
         </div>
+      
     </div>
 </template>
 <script>
 import axios from 'axios'
 import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import download from 'downloadjs';
-
+import PDFgenerator from '@/views/payment/components/PDFgenerator'
 export default {
+    components:{PDFgenerator},
     data() {
         return {
             value: '',
@@ -833,38 +835,8 @@ export default {
         setUploadFileFullPayment() {
             this.fileFullPayment = this.$refs.FullPayment.files[0]
         },
-        async PDFPrint(){
-                // Fetch an existing PDF document
-                const url = 'https://api.resguru.app/uploads/Res_Guru_Invoice_958f9f65e6.pdf'
-                    const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer())
-                // Load a PDFDocument from the existing PDF bytes
-                const pdfDoc = await PDFDocument.load(existingPdfBytes)
-
-                // Embed the Helvetica font
-                const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
-
-                // Get the first page of the document
-                const pages = pdfDoc.getPages()
-                const firstPage = pages[0]
-
-                // Get the width and height of the first page
-                const { width, height } = firstPage.getSize()
-
-                // Draw a string of text diagonally across the first page
-                firstPage.drawText('Work in progress', {
-                    x: 5,
-                    y: height / 2 + 300,
-                    size: 50,
-                    font: helveticaFont,
-                    color: rgb(0.95, 0.1, 0.1),
-                    rotate: degrees(-45),
-                })
-
-                // Serialize the PDFDocument to bytes (a Uint8Array)
-                const pdfBytes = await pdfDoc.save()
-
-                        // Trigger the browser to download the PDF document
-                download(pdfBytes, "pdf-lib_modification_example.pdf", "application/pdf");
+        async PDFPrint(tr){
+            this.$refs.childComponentPDF.generatePDF(tr)
         },
         filterData() {
             this.payments =this.payments.filter(item =>
