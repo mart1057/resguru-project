@@ -99,7 +99,6 @@
                     <div class="flex justify-center mt-[4px]">ทันสมัย จำกัด</div>
                 </div>
             </div>
-            {{  data_bill }}
         </div>
         <button @click="generatePDF">Generate PDF</button>
     </div>
