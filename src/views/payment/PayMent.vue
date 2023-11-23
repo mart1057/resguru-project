@@ -328,7 +328,7 @@
                         </vs-tr>
                     </template>
                 </vs-table>
-            </div>
+            </div>  <div><PDFgenerator ref="childComponentPDF"/></div>
             <b-modal centered v-model="createFullpayment" size="l" hide-backdrop hide-header-close hide-header hide-footer
                 class="p-[-20px] text-custom">
                 <div>
@@ -553,7 +553,7 @@
                 </div>
             </b-modal>
         </div>
-        <div><PDFgenerator ref="childComponentPDF"/></div>
+      
     </div>
 </template>
 <script>

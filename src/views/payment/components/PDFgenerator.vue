@@ -1,26 +1,29 @@
 <template>
-    <div hidden>
+    <div>
         <!-- Your HTML content to convert to PDF -->
         <div ref="pdfContent" class="p-[8px]">
             <div class="flex justify-between">
                 <div>
+                    <div>
+                        <img :src="Res_Guru_Logo_create12" class="w-[100px] h-[100px] ml-[-18px] mb-[-14px]"/>
+                    </div>
                     <div class="text-[16px]">ทันสมัย จำกัด</div>
                     <div>241/41 หมู่ที่ 6 ถ.แจ้งวัฒนะ บางตลาด</div>
                     <div>Tel : 0888888585</div>
                 </div>
                 <div>
-                    <div>invoice No. IV254999440</div>
+                    <div>invoice No. {{ data_bill.tenant_bills[0]?.invoiceNumber }}</div>
                 </div>
             </div>
             <div class="flex justify-between mt-[18px]">
                 <div>
-                    <div class="text-[16px]">ชื่อผู้เช่า ชัชพล บุญพันธุ์ Tel. 0966366569</div>
-                    <div>ที่อยู่ : 241/41 หมู่ที่ 6 ถ.แจ้งวัฒนะ บางตลาด</div>
-                    <div>ห้อง : A103</div>
+                    <div class="text-[16px]">ชื่อผู้เช่า {{ data_bill.user_sign_contract?.users_permissions_user?.firstName }} {{ data_bill.user_sign_contract?.users_permissions_user?.lastName }} Tel. {{ data_bill.user_sign_contract?.users_permissions_user?.phone}}</div>
+                    <div>ที่อยู่ : {{ data_bill.user_sign_contract?.users_permissions_user?.contactAddress}}</div>
+                    <div>ห้อง : {{ data_bill.RoomNumber }}</div>
                 </div>
                 <div>
-                    <div>วันที่ออกบิล 10/11/2023 / ประจำเดือน 09/2023</div>
-                    <div>กำหนดชำระ 30/11/2023</div>
+                    <div>วันที่ออกบิล {{ convertDateNoTime(data_bill.tenant_bills[0]?.createdAt) }} / ประจำเดือน 11/2023</div>
+                    <div>กำหนดชำระ -</div>
                 </div>
             </div>
             <div class="bill-table mt-[24px]">
@@ -31,38 +34,60 @@
                             <th>รายการ</th>
                             <th>จำนวน</th>
                             <th>ราคา</th>
-                            <th>จำนวนเงิน</th>
-                            <th>ภาษี</th>
                             <th>รวมเงิน</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td>ค่าห้อง666666666666666</td>
-                            <td>1</td>
-                            <td>3500.00</td>
-                            <td>3500.00</td>
-                            <td>-</td>
-                            <td>3500.00</td>
-                        </tr>
-                        <tr>
-                            <td>1</td>
                             <td>ค่าห้อง</td>
                             <td>1</td>
-                            <td>3500.00</td>
-                            <td>3500.00</td>
+                            <td>{{ data_bill.tenant_bills[0]?.roomPrice }}</td>
+                            <td>{{ data_bill.tenant_bills[0]?.roomPrice }}</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>ค่าน้ำ</td>
                             <td>-</td>
-                            <td>3500.00</td>
+                            <td>{{ data_bill.tenant_bills[0]?.waterPrice }}</td>
+                            <td>{{ data_bill.tenant_bills[0]?.waterPrice }}</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>ค่าไฟ</td>
+                            <td>-</td>
+                            <td>{{ data_bill.tenant_bills[0]?.electricPrice }}</td>
+                            <td>{{ data_bill.tenant_bills[0]?.electricPrice }}</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>ค่าส่วนกลาง</td>
+                            <td>1</td>
+                            <td>{{ data_bill.tenant_bills[0]?.communalPrice }}</td>
+                            <td>{{ data_bill.tenant_bills[0]?.communalPrice }}</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>ค่าอื่น ๆ</td>
+                            <td>-</td>
+                            <td>{{ data_bill.tenant_bills[0]?.otherPrice }}</td>
+                            <td>{{ data_bill.tenant_bills[0]?.otherPrice }}</td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="5" class="total-label">
+                            <td colspan="3" class="total-label">
+                                <div class="flex justify-center"></div>
+                            </td>
+                            <td class="total-amount">ภาษี</td>
+                            <td class="total-amount">{{ data_bill.tenant_bills[0]?.vat }}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="total-label">
                                 <div class="flex justify-center">สามพันห้าร้อยบาท</div>
                             </td>
                             <td class="total-amount">รวม</td>
-                            <td class="total-amount">3500.00</td>
+                            <td class="total-amount">{{ data_bill.tenant_bills[0]?.total }}</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -82,11 +107,14 @@
   
 <script>
 import html2pdf from 'html2pdf.js';
-
+import Res_Guru_Logo_create12 from '@/assets/img/Res_Guru_Logo_create-12.png'
+import { convertDateNoTime} from '@/components/hook/hook'
 export default {
     data() {
         return {
-            data_bill: []
+            data_bill: [],
+            convertDateNoTime,
+            Res_Guru_Logo_create12
         }
 
     },
@@ -95,6 +123,7 @@ export default {
     // },
     methods: {
         generatePDF(data) {
+            console.log(data);
             this.data_bill = data
             const content = this.$refs.pdfContent;
             const opt = {
