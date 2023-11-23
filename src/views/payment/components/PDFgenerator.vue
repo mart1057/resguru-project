@@ -1,11 +1,12 @@
 <template>
-    <div>
+    <div hidden>
         <!-- Your HTML content to convert to PDF -->
         <div ref="pdfContent" class="p-[8px]">
+            <img class="watermarked" :src="Res_Guru_Logo_create06" />
             <div class="flex justify-between">
                 <div>
                     <div>
-                        <img :src="Res_Guru_Logo_create12" class="w-[100px] h-[100px] ml-[-18px] mb-[-14px]"/>
+                        <img :src="Res_Guru_Logo_create12" class="w-[100px] h-[100px] ml-[-18px] mb-[-14px]" />
                     </div>
                     <div class="text-[16px]">ทันสมัย จำกัด</div>
                     <div>241/41 หมู่ที่ 6 ถ.แจ้งวัฒนะ บางตลาด</div>
@@ -17,12 +18,15 @@
             </div>
             <div class="flex justify-between mt-[18px]">
                 <div>
-                    <div class="text-[16px]">ชื่อผู้เช่า {{ data_bill.user_sign_contract?.users_permissions_user?.firstName }} {{ data_bill.user_sign_contract?.users_permissions_user?.lastName }} Tel. {{ data_bill.user_sign_contract?.users_permissions_user?.phone}}</div>
-                    <div>ที่อยู่ : {{ data_bill.user_sign_contract?.users_permissions_user?.contactAddress}}</div>
+                    <div class="text-[16px]">ชื่อผู้เช่า {{ data_bill.user_sign_contract?.users_permissions_user?.firstName
+                    }} {{ data_bill.user_sign_contract?.users_permissions_user?.lastName }} Tel. {{
+    data_bill.user_sign_contract?.users_permissions_user?.phone }}</div>
+                    <div>ที่อยู่ : {{ data_bill.user_sign_contract?.users_permissions_user?.contactAddress }}</div>
                     <div>ห้อง : {{ data_bill.RoomNumber }}</div>
                 </div>
                 <div>
-                    <div>วันที่ออกบิล {{ convertDateNoTime(data_bill.tenant_bills[0]?.createdAt) }} / ประจำเดือน 11/2023</div>
+                    <div>วันที่ออกบิล {{ convertDateNoTime(data_bill.tenant_bills[0]?.createdAt) }} / ประจำเดือน 11/2023
+                    </div>
                     <div>กำหนดชำระ -</div>
                 </div>
             </div>
@@ -48,16 +52,17 @@
                         <tr>
                             <td>2</td>
                             <td>ค่าน้ำ</td>
-                            <td>-</td>
+                            <td>{{ data_bill.tenant_bills[0]?.usageWater }}</td>
                             <td>{{ data_bill.tenant_bills[0]?.waterPrice }}</td>
-                            <td>{{ data_bill.tenant_bills[0]?.waterPrice }}</td>
+                            <td>{{ data_bill.tenant_bills[0]?.waterPrice * data_bill.tenant_bills[0]?.usageWater }}</td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td>ค่าไฟ</td>
-                            <td>-</td>
+                            <td>{{ data_bill.tenant_bills[0]?.usageElectric }} </td>
                             <td>{{ data_bill.tenant_bills[0]?.electricPrice }}</td>
-                            <td>{{ data_bill.tenant_bills[0]?.electricPrice }}</td>
+                            <td>{{ data_bill.tenant_bills[0]?.electricPrice * data_bill.tenant_bills[0]?.usageElectric }}
+                            </td>
                         </tr>
                         <tr>
                             <td>4</td>
@@ -69,7 +74,7 @@
                         <tr>
                             <td>5</td>
                             <td>ค่าอื่น ๆ</td>
-                            <td>-</td>
+                            <td>1</td>
                             <td>{{ data_bill.tenant_bills[0]?.otherPrice }}</td>
                             <td>{{ data_bill.tenant_bills[0]?.otherPrice }}</td>
                         </tr>
@@ -84,7 +89,7 @@
                         </tr>
                         <tr>
                             <td colspan="3" class="total-label">
-                                <div class="flex justify-center">สามพันห้าร้อยบาท</div>
+                                <div class="flex justify-center">{{ THBText(data_bill.tenant_bills[0]?.total) }}</div>
                             </td>
                             <td class="total-amount">รวม</td>
                             <td class="total-amount">{{ data_bill.tenant_bills[0]?.total }}</td>
@@ -93,27 +98,30 @@
                 </table>
             </div>
             <div class="mt-[14px]">กรุณาชำระ ทุกวันที่ 1-5 ของเดือนถัดไป ล่าช้าปรับวันละ 100 บาท</div>
-            <div class="flex justify-end mt-[24px]">
+            <div class="flex justify-end mt-[50px]">
                 <div class="flex justify-center flex-col">
                     <div>ลงชื่อ___________________________ผู้จัดทำ</div>
                     <div class="flex justify-center mt-[4px]">ทันสมัย จำกัด</div>
                 </div>
             </div>
         </div>
-        <button @click="generatePDF">Generate PDF</button>
     </div>
 </template>
   
 <script>
 import html2pdf from 'html2pdf.js';
+import Res_Guru_Logo_create06 from '@/assets/img/Res_Guru_Logo_create-06.png'
 import Res_Guru_Logo_create12 from '@/assets/img/Res_Guru_Logo_create-12.png'
-import { convertDateNoTime} from '@/components/hook/hook'
+import { convertDateNoTime } from '@/components/hook/hook'
+import THBText from 'thai-baht-text'
 export default {
     data() {
         return {
             data_bill: [],
             convertDateNoTime,
-            Res_Guru_Logo_create12
+            Res_Guru_Logo_create12,
+            Res_Guru_Logo_create06,
+            THBText
         }
 
     },
@@ -173,4 +181,8 @@ export default {
 .total-amount {
     font-weight: bold;
 }
-</style>
+
+.watermarked {
+    position: absolute;
+    opacity: 0.05;
+}</style>
