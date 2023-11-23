@@ -16,6 +16,7 @@
     "bootstrap-vue": "^2.23.1",
     "core-js": "^3.8.3",
     "downloadjs": "^1.4.7",
+    "html2pdf.js": "^0.10.1",
     "pdf-lib": "^1.17.1",
     "vue": "^2.7.14",
     "vue-apexcharts": "^1.6.2",

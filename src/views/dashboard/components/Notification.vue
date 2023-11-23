@@ -43,6 +43,7 @@
                 <div class="h-[78px] bg-[#F3F7FA] rounded-[22px] w-[100%] p-[4px]"
                     v-for="item in tab == 1 ? data : tab == 2 ? data_maintenace : tab == 3 ? data_clean : tab == 4 ? data_move : data_emergency">
                     <div class="flex items-center h-[100%]">
+                        
                         <div class="w-[54px]  h-[100%] flex justify-center items-center rounded-[19px]"
                             :class="item.Type == 'Move out' ? 'bg-[#2011D3]' : item.Type == 'Maintenance' ? 'bg-[#F5D65E]' : item.Type == 'Clean' ? 'bg-[#5FB3FA]' : 'bg-[#F4003B]'">
                             <!-- <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -168,7 +169,7 @@ export default {
                     console.log('dfgdfss', this.notiData['Move out']);
                     console.log('dfgdfss', this.notiData['Clean']);
                     console.log('dfgdfss', this.notiData['Maintenace']);
-                    this.data_emergenc = this.notiData['Emergency'];
+                    this.data_emergency = this.notiData['Emergency'];
                     this.data_move = this.notiData['Move out']
                     this.data_clean = this.notiData['Clean']
                     this.data_maintenace = this.notiData['Maintenace']
