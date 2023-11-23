@@ -267,11 +267,14 @@
                                     <!-- <vs-button  primary class="small">แก้ไขใบแจ้งหนี้</vs-button>   -->
                                         <!-- to: internal link -->
                                         <vs-select placeholder="เมนู" v-model="tr.tenant_bills[0].lastEvent" @change="selectMenu(tr.tenant_bills[0].lastEvent,tr)">
-                                            <vs-option label="เลือกเมนู" value="Select Menu">
+                                            <vs-option label="เลือกเมนู" value="">
                                             เลือกเมนู
                                             </vs-option>
                                             <vs-option label="อัพเดทใบแจ้งหนี้" value="Update">
                                             อัพเดทใบแจ้งหนี้
+                                            </vs-option>
+                                            <vs-option label="ดูรายการใบแจ้งหนี้" value="View">
+                                            ดูรายการใบแจ้งหนี้
                                             </vs-option>
                                             <vs-option label="ชำระเงิน" value="Full Payment">
                                             ชำระเงิน
@@ -283,12 +286,18 @@
 
                                     <!--  Need to add option for select here -->
                                 </div>
+                                <div v-else-if="tr.user_sign_contract === null && tr.tenant_bills[0]">
+                                    <vs-button warn class="small">ผู้เช่าย้ายออก</vs-button>
+                                </div>
                                 <div v-else-if="tr.tenant_bills[0] && tr.tenant_bills[0].paymentStatus === 'Partial Paid'">
                                     <!-- <vs-button  primary class="small">แก้ไขใบแจ้งหนี้</vs-button>   -->
                                         <!-- to: internal link -->
-                                        <vs-select placeholder="เมนู" v-model="tr.tenant_bills[0].lastEvent" @change="selectMenu(tr.tenant_bills[0].lastEvent,tr)">
-                                            <vs-option label="เลือกเมนู" value="Select Menu">
+                                    <vs-select placeholder="เมนู" v-model="tr.tenant_bills[0].lastEvent" @change="selectMenu(tr.tenant_bills[0].lastEvent,tr)">
+                                            <vs-option label="เลือกเมนู" value="">
                                             เลือกเมนู
+                                            </vs-option>
+                                            <vs-option label="ดูรายการใบแจ้งหนี้" value="View">
+                                            ดูรายการใบแจ้งหนี้
                                             </vs-option>
                                             <vs-option label="ชำระบางส่วน" value="Partial Payment">
                                             ชำระบางส่วน
@@ -298,11 +307,16 @@
                                     <!--  Need to add option for select here -->
                                 </div>
                                 <div v-else-if="tr.tenant_bills[0] && tr.tenant_bills[0].paymentStatus === 'Paid'">
-                                    <vs-button success class="small">ชำระใบแจ้งหนี้แล้ว</vs-button>
+                                    <vs-select placeholder="เมนู" v-model="tr.tenant_bills[0].lastEvent" @change="selectMenu(tr.tenant_bills[0].lastEvent,tr)">
+                                            <vs-option label="เลือกเมนู" value="">
+                                            เลือกเมนู
+                                            </vs-option>
+                                            <vs-option label="ดูรายการใบแจ้งหนี้" value="View">
+                                            ดูรายการใบแจ้งหนี้
+                                            </vs-option>
+                                    </vs-select>
                                 </div>
-                                <div v-else-if="tr.tenant_bills[0] && tr.user_sign_contract === null">
-                                    <vs-button warn class="small">ผู้เช่าย้ายออก</vs-button>
-                                </div>
+
                                 <div v-else-if="tr.user_sign_contract">
                                     <vs-button color="rgb(59,222,200)" class="small"
                                         @click="generateInvoice(tr.id)">สร้างใบแจ้งหนี้</vs-button>
@@ -657,6 +671,9 @@ export default {
                 this.partialPaymentForm.userID = roomdata.user_sign_contract.id
                 this.partialPaymentForm.building = roomdata.room_building.id
                 this.createPartialPayment = true
+            }
+            else if(menu_option === 'View'){
+               this.routeTo(roomdata.user_sign_contract.id)
             }
         },
         createFullPayment() {
