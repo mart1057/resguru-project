@@ -11,7 +11,7 @@
                             fill="white" />
                     </svg>
                 </div>
-                <div class="text-[white] ml-[4px]" @click="create = true, is_edit = false">เพิ่มทรัพย์สิน</div>
+                <div class="text-[white] ml-[4px]" @click="add_on = true, is_edit = false">เพิ่มทรัพย์สิน</div>
             </div>
         </button>
         <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px]">
@@ -295,14 +295,26 @@
                                         <div
                                             class="h-[32px] bg-[#165D98] rounded-[12px] flex items-center justify-between pl-[8px] pr-[8px] text-white">
                                             <div>{{ data.attributes.title }}</div>
-                                            <div> 
-                                                <vs-checkbox color="#a3aab1">
+                                            <div>
+                                                <vs-checkbox color="#a3aab1" :val="data" v-model="items">
                                                 </vs-checkbox>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end mt-[30px]">
+                        <div>
+                            <vs-button dark shadow @click="getFacilities()">
+                                <div class="text-custom">ยกเลิก</div>
+                            </vs-button>
+                        </div>
+                        <div>
+                            <vs-button color="#003765" @click="createOrEdit()">
+                                <div class="text-custom">บันทึก</div>
+                            </vs-button>
                         </div>
                     </div>
                 </div>
@@ -350,8 +362,8 @@ export default {
                 .then(response => response.json())
                 .then((resp) => {
                     this.items = resp.data[0]?.attributes.other_of_buildings.data;
-                    console.log(this.items);
                 }).finally(() => {
+                    this.add_on = false
                     loading.close()
                 })
         },
@@ -368,51 +380,18 @@ export default {
         },
         createOrEdit() {
             const loading = this.$vs.loading()
-            if (this.is_edit == true) {
-                axios.put('https://api.resguru.app/api' + '/other-of-buildings/' + this.facilities.id, {
+            this.items.forEach((data) => {
+                axios.put('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room, {
                     data: {
-                        "title": this.facilities.title,
-                        "price": this.facilities.price,
-                        "note": this.facilities.note,
-                        "discount": this.facilities.discount,
-                        "discountAmount": this.facilities.discountAmount,
-                        "status": this.facilities.status,
-                        "remain": this.facilities.remain
+                        "other_of_buildings": data.id,
                     }
-                }).finally(() => {
-                    this.getFacilities()
-                    this.create = false,
-                        loading.close()
-
                 })
+            })
+            this.add_on = false
+            loading.close()
 
-            }
-            else {
-                axios.post('https://api.resguru.app/api' + '/other-of-buildings', {
-                    data: {
-                        "title": this.facilities.title,
-                        "price": this.facilities.price,
-                        "note": this.facilities.note,
-                        "discount": this.facilities.discount,
-                        "discountAmount": this.facilities.discountAmount,
-                        "status": this.facilities.status,
-                        "remain": this.facilities.remain,
-                        "building": this.$store.state.building
-                    }
-                }).then((resp) => {
-                    axios.put('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room, {
-                        data: {
-                            "other_of_buildings": resp.data.data.id,
-                        }
-                    })
-                })
-                    .finally(() => {
-                        this.getFacilities()
-                        this.create = false,
-                            loading.close()
 
-                    })
-            }
+
 
         },
         getDetailFacilities(id) {

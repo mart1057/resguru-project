@@ -71,7 +71,7 @@ export default {
     components: { CardMember, CardMemberOld, Contract, Facilites,MoveOut  },
     data() {
         return {
-            tab: 1
+            tab: 3
         }
     },
     created() {
