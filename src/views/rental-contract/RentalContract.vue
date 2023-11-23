@@ -137,9 +137,9 @@
                         <div class="ml-[14px]">
                             <div class="text-[24px] font-bold text-[#141629] ">ห้อง {{ data.RoomNumber }}</div>
                             <div class="text-[18px] mt-[12px] font-bold text-[#003765]">{{
-                                data.user_sign_contract ?
+                                data.user_sign_contract && data.user_sign_contract.users_permissions_user ?
                                 data.user_sign_contract.users_permissions_user.firstName
-                                : "" }} {{ data.user_sign_contract ?
+                                : "" }} {{ data.user_sign_contract && data.user_sign_contract.users_permissions_user ?
         data.user_sign_contract.users_permissions_user.lastName
         : "" }}</div>
 
