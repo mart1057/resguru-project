@@ -75,7 +75,7 @@
                         </vs-td>
                 
                         <vs-td>
-                            <div v-if="tr.water_fees[1]">
+                            <div v-if="tr.electric_fees[1]">
                                 {{ tr.electric_fees[0] ? (tr.electric_fees[0].electicUnit - tr.electric_fees[1].electicUnit) : "ยังไม่ได้ระบุ" }} 
                             </div>
                             <div v-else>
@@ -86,7 +86,7 @@
                         <vs-td>
                             <div>
                                
-                                <div v-if="tr.water_fees[1]">
+                                <div v-if="tr.electric_fees[1]">
                                     <vs-button @click="updateElectfee(tr.electric_fees[0].id,tr.electric_fees[0].electicUnit,(tr.electric_fees[0].electicUnit - tr.electric_fees[1].electicUnit))" >บันทึก</vs-button>
                                </div>
                                 <div v-else>
