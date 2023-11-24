@@ -11,7 +11,7 @@
                             fill="white" />
                     </svg>
                 </div>
-                <div class="text-[white] ml-[4px]" @click="create = true, is_edit = false">เพิ่มทรัพย์สิน</div>
+                <div class="text-[white] ml-[4px]" @click="add_on = true, is_edit = false">เพิ่มทรัพย์สิน</div>
             </div>
         </button>
         <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px]">
@@ -176,7 +176,7 @@
 
                             </div>
                         </div>
-                        <div class="flex w-[100%] mt-[14px]">
+                        <!-- <div class="flex w-[100%] mt-[14px]">
                             <div class="w-[20%]">
                                 <div class="text-custom text-[#5C6B79]">สถานะทรัพย์สิน</div>
                             </div>
@@ -201,7 +201,7 @@
                                     <div class="text-custom">เสียหาย</div>
                                 </vs-radio>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="flex w-[100%] mt-[14px]">
                             <div class="w-[20%]">
                                 <div class="text-custom text-[#5C6B79]">หมายเหตุ</div>
@@ -211,7 +211,7 @@
                                     type="input" v-model="facilities.note" />
                             </div>
                         </div>
-                        <div class="flex w-[100%] mt-[14px]">
+                        <!-- <div class="flex w-[100%] mt-[14px]">
                             <div class="w-[20%]">
                                 <div class="text-custom text-[#5C6B79]">รูปภาพก่อนเข้าพัก</div>
                             </div>
@@ -227,7 +227,7 @@
                                     class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                     ยังไม่ได้เลือกไฟล์</div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                     <div class="flex justify-between mt-[34px] mb-[14px]">
                         <div>
@@ -244,7 +244,7 @@
                                 </vs-button>
                             </div>
                             <div>
-                                <vs-button @click="createOrEdit()" color="#003765">
+                                <vs-button @click="EditFacilities()" color="#003765">
                                     <div class="text-custom">บันทึก</div>
                                 </vs-button>
                             </div>
@@ -295,14 +295,26 @@
                                         <div
                                             class="h-[32px] bg-[#165D98] rounded-[12px] flex items-center justify-between pl-[8px] pr-[8px] text-white">
                                             <div>{{ data.attributes.title }}</div>
-                                            <div> 
-                                                <vs-checkbox color="#a3aab1">
+                                            <div>
+                                                <vs-checkbox color="#a3aab1" :val="data" v-model="items">
                                                 </vs-checkbox>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+                    </div>
+                    <div class="flex justify-end mt-[30px]">
+                        <div>
+                            <vs-button dark shadow @click="getFacilities()">
+                                <div class="text-custom">ยกเลิก</div>
+                            </vs-button>
+                        </div>
+                        <div>
+                            <vs-button color="#003765" @click="createOrEdit()">
+                                <div class="text-custom">บันทึก</div>
+                            </vs-button>
                         </div>
                     </div>
                 </div>
@@ -315,7 +327,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            add_on: true,
+            add_on: false,
             create: false,
             items: [],
             is_edit: false,
@@ -350,8 +362,8 @@ export default {
                 .then(response => response.json())
                 .then((resp) => {
                     this.items = resp.data[0]?.attributes.other_of_buildings.data;
-                    console.log(this.items);
                 }).finally(() => {
+                    this.add_on = false
                     loading.close()
                 })
         },
@@ -368,51 +380,25 @@ export default {
         },
         createOrEdit() {
             const loading = this.$vs.loading()
-            if (this.is_edit == true) {
-                axios.put('https://api.resguru.app/api' + '/other-of-buildings/' + this.facilities.id, {
+            console.log(this.items);
+            let ids = this.items.map(item => item.id);
+            axios.put('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room, {
+                data: {
+                    "other_of_buildings": [],
+                }
+            }).then(() => {
+                axios.put('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room, {
                     data: {
-                        "title": this.facilities.title,
-                        "price": this.facilities.price,
-                        "note": this.facilities.note,
-                        "discount": this.facilities.discount,
-                        "discountAmount": this.facilities.discountAmount,
-                        "status": this.facilities.status,
-                        "remain": this.facilities.remain
+                        "other_of_buildings": ids,
                     }
-                }).finally(() => {
-                    this.getFacilities()
-                    this.create = false,
-                        loading.close()
-
                 })
 
-            }
-            else {
-                axios.post('https://api.resguru.app/api' + '/other-of-buildings', {
-                    data: {
-                        "title": this.facilities.title,
-                        "price": this.facilities.price,
-                        "note": this.facilities.note,
-                        "discount": this.facilities.discount,
-                        "discountAmount": this.facilities.discountAmount,
-                        "status": this.facilities.status,
-                        "remain": this.facilities.remain,
-                        "building": this.$store.state.building
-                    }
-                }).then((resp) => {
-                    axios.put('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room, {
-                        data: {
-                            "other_of_buildings": resp.data.data.id,
-                        }
-                    })
-                })
-                    .finally(() => {
-                        this.getFacilities()
-                        this.create = false,
-                            loading.close()
+            }).finally(() => {
+                this.add_on = false
+                this.getFacilities()
+                loading.close()
+            })
 
-                    })
-            }
 
         },
         getDetailFacilities(id) {
@@ -432,6 +418,21 @@ export default {
                 }).finally(() => {
                     this.create = true,
                         loading.close()
+                })
+        },
+        EditFacilities() {
+            const loading = this.$vs.loading()
+            axios.put('https://api.resguru.app/api' + '/other-of-buildings/' + this.facilities.id, {
+                data: {
+                    title: this.facilities.title,
+                    price: this.facilities.price,
+                    note: this.facilities.note,
+                }
+            })
+                .finally(() => {
+                    this.create = false,
+                    this.getFacilities()
+                    loading.close()
                 })
         },
         delectFacilities(id) {
