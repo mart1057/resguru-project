@@ -597,7 +597,7 @@ export default {
                 }
                 }).then(  (resp) => {
 
-                        if(this.fileProfileForm !== null){
+                        if(this.fileProfileForm.length != 0){
                                 let formData = new FormData();
                                 formData.append("files", this.fileProfileForm);
                                 formData.append("refId", String(resp.data.data.id));
@@ -654,7 +654,7 @@ export default {
 
                 }).then(  (resp) => {
 
-                        if(this.fileAdminProfileForm !== null){
+                        if(this.fileAdminProfileForm.length != 0){
                                 let formData = new FormData();
                                 formData.append("files", this.fileAdminProfileForm);
                                 formData.append("refId", String(resp.data.data.id));

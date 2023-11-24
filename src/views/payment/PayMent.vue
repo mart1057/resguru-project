@@ -698,7 +698,7 @@ export default {
                             }
                         }).then((res) => { console.log("Response in Edit Invoice", res) })
 
-                        if (this.fileFullPayment !== null) {
+                        if (this.fileFullPayment.length != 0) {
                             let formData = new FormData();
                             formData.append("files", this.fileFullPayment);
                             formData.append("refId", String(resp.data.data.id));
@@ -749,7 +749,7 @@ export default {
                             }
                         }).then((res) => { console.log("Response in Edit Invoice", res) })
 
-                        if (this.file !== null) {
+                        if (this.file.length != 0) {
                             let formData = new FormData();
                             formData.append("files", this.file);
                             formData.append("refId", String(resp.data.data.id));
