@@ -677,6 +677,26 @@ export default {
             else if(menu_option === 'View'){
                this.routeTo(roomdata.user_sign_contract.id)
             }
+            else if(menu_option === 'Update'){
+                this.reGenerateInvoice(roomdata.tenant_bills[0].id)
+            }
+        },
+        reGenerateInvoice(invoiceID){
+            console.log("Invoice",invoiceID)
+            console.log("building",this.$store.state.building)
+            const currentdate = new Date()
+            const month = currentdate.getMonth()
+            const year = currentdate.getFullYear()
+
+            axios.get(`https://api.resguru.app/api/regenerateinvoice?buildingid=${this.$store.state.building}&invoiceid=${invoiceID}&month=${month}&year=${year}`)
+                .then( (response) =>{
+                        this.$showNotification('#3A89CB', response.data.meta.message)
+                    })
+                .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+                console.log(error)
+                })
         },
         createFullPayment() {
             axios.post("https://api.resguru.app/api/tenant-evidence-payments", {
