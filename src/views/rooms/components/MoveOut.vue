@@ -314,21 +314,26 @@
                         <div>
                             <div class="text-[12px] text-[#8396A6]">รายการ</div>
                             <div class="mt-[8px]">
-                                <div class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">ค่าหอพัก
+                                <div
+                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                    ค่าหอพัก
                                 </div>
                             </div>
                             <div class="mt-[8px]">
-                                <div class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                <div
+                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
                                     ค่าน้ำ
                                 </div>
                             </div>
                             <div class="mt-[8px]">
-                                <div class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]" >
+                                <div
+                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
                                     ค่าไฟ
                                 </div>
                             </div>
                             <div class="mt-[8px]">
-                                <div class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                <div
+                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
                                     ค่าอื่น ๆ
                                 </div>
                             </div>
@@ -336,16 +341,17 @@
                         <div>
                             <div class="text-[12px] text-[#8396A6]">จำนวนเงินบาท</div>
                             <div class="flex">
-                                <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]"
-                                    type="input" v-model="bill_detail.room"/>
+                                <input
+                                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]"
+                                    type="input" v-model="bill_detail.room" />
                             </div>
                             <div class="flex mt-[-8px]">
                                 <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" v-model="bill_detail.water"/>
+                                    type="input" v-model="bill_detail.water" />
                             </div>
                             <div class="flex mt-[-8px]">
                                 <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" v-model="bill_detail.ele"/>
+                                    type="input" v-model="bill_detail.ele" />
                             </div>
                             <div class="flex mt-[-8px]">
                                 <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
@@ -371,8 +377,10 @@
                                     รายการ
                                 </div>
                                 <div>
-                                    <input class="h-[28px] w-[200px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                        type="input" />
+                                    <div
+                                        class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                        เงินประกัน
+                                    </div>
                                 </div>
                             </div>
                             <div class="ml-[8px]">
@@ -382,48 +390,14 @@
                                         จำนวนเงิน(บาท)
                                     </div>
                                     <div>
-                                        <input class="h-[28px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                            type="input" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ml-[8px] ">
-                                <div>
-                                    <div
-                                        class="font-bold text-custom text-[12px] flex text-[white] justify-start items-start">
-                                        .
-                                    </div>
-                                    <div class="flex justify-center items-center mt-[4px] cursor-pointer"> <svg width="32"
-                                            height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect width="32" height="32" rx="8" fill="#D44769" />
-                                            <mask id="mask0_1747_22483" style="mask-type:alpha" maskUnits="userSpaceOnUse"
-                                                x="5" y="5" width="22" height="22">
-                                                <rect x="5" y="5" width="22" height="22" fill="#D9D9D9" />
-                                            </mask>
-                                            <g mask="url(#mask0_1747_22483)">
-                                                <path
-                                                    d="M10.5 16.6875C10.3052 16.6875 10.1419 16.6215 10.0102 16.4897C9.87839 16.3579 9.8125 16.1945 9.8125 15.9997C9.8125 15.8048 9.87839 15.6415 10.0102 15.5099C10.1419 15.3783 10.3052 15.3125 10.5 15.3125H21.5C21.6948 15.3125 21.8581 15.3784 21.9898 15.5102C22.1216 15.6421 22.1875 15.8054 22.1875 16.0003C22.1875 16.1952 22.1216 16.3584 21.9898 16.49C21.8581 16.6216 21.6948 16.6875 21.5 16.6875H10.5Z"
-                                                    fill="white" />
-                                            </g>
-                                        </svg>
+                                        <input
+                                            class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]"
+                                            type="input" v-model="list_debt.deposit2" />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button
-                            class="bg-[#165D98] w-[288px] rounded-[12px] flex justify-center items-center pt-[4px] pb-[4px]">
-                            <div class="flex">
-                                <div class="flex justify-center items-center "><svg width="14" height="13"
-                                        viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M6.99968 12.6875C6.8048 12.6875 6.64155 12.6216 6.50993 12.4898C6.37831 12.3581 6.3125 12.1948 6.3125 12V7.18746H1.49998C1.30519 7.18746 1.14191 7.12155 1.01016 6.98973C0.878385 6.8579 0.8125 6.69455 0.8125 6.49968C0.8125 6.3048 0.878385 6.14155 1.01016 6.00993C1.14191 5.87831 1.30519 5.8125 1.49998 5.8125H6.3125V0.999977C6.3125 0.805185 6.37841 0.641904 6.51023 0.510133C6.64206 0.378378 6.80541 0.3125 7.00028 0.3125C7.19516 0.3125 7.35841 0.378378 7.49003 0.510133C7.62165 0.641904 7.68745 0.805185 7.68745 0.999977V5.8125H12.5C12.6948 5.8125 12.8581 5.87841 12.9898 6.01023C13.1216 6.14206 13.1875 6.30541 13.1875 6.50028C13.1875 6.69516 13.1216 6.85841 12.9898 6.99003C12.8581 7.12164 12.6948 7.18746 12.5 7.18746H7.68745V12C7.68745 12.1948 7.62155 12.3581 7.48973 12.4898C7.3579 12.6216 7.19455 12.6875 6.99968 12.6875Z"
-                                            fill="white" />
-                                    </svg>
-                                </div>
-                                <div class="text-[white] ml-[4px]">เพิ่มรายการคืนเงิน</div>
-                            </div>
-                        </button>
-                        <div class="flex mt-[24px]">
+                        <!-- <div class="flex mt-[24px]">
                             <div>
                                 <div class="font-bold text-custom text-[12px] flex justify-start items-start">
                                     รวมทั้งหมด
@@ -432,11 +406,11 @@
                             <div class="ml-[168px]">
                                 <div>
                                     <div class="font-bold text-custom text-[12px] flex justify-start items-start">
-                                        1,000
+                                        {{ list_debt.deposit2 }}
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="w-[2%] flex justify-center items-center ">
@@ -697,14 +671,14 @@ export default {
                     remark: 'เสียหาย'
                 }
             ],
-            bill_detail:{
+            bill_detail: {
 
             },
             user_detail: {
-                ele:0,
-                water:0,
-                room:0,
-                other:0
+                ele: 0,
+                water: 0,
+                room: 0,
+                other: 0
             }
 
         }
@@ -726,11 +700,11 @@ export default {
                     this.list_debt.deposit = resp.data?.attributes.roomDeposit
                     this.list_debt.deposit2 = resp.data?.attributes.roomInsuranceDeposit
                     this.list_debt.total = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.total
-                    this.user_detail = resp.data?.attributes.users_permissions_user.data?.attributes 
-                    this.bill_detail.ele =  resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.electricPrice
-                    this.bill_detail.water =  resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.waterPrice
-                    this.bill_detail.room =  resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.roomPrice
-                    this.bill_detail.other =  resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.otherPrice
+                    this.user_detail = resp.data?.attributes.users_permissions_user.data?.attributes
+                    this.bill_detail.ele = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.electricPrice
+                    this.bill_detail.water = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.waterPrice
+                    this.bill_detail.room = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.roomPrice
+                    this.bill_detail.other = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.otherPrice
 
                     fetch('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room + '?populate=deep')
                         .then(response => response.json())
