@@ -452,7 +452,7 @@ export default {
         editProfilewithUpload(){
             this.fileProfile = this.$refs.buildingProfile.files[0]
 
-            if(this.fileProfile !== null){
+            if(this.fileProfile.length != 0){
                         let formData = new FormData();
                         formData.append("files", this.fileProfile);
                         formData.append("refId", String(this.$store.state.userInfo.user.id));
@@ -480,7 +480,7 @@ export default {
 
             this.fileBanner = this.$refs.buildingBanner.files[0]
 
-            if(this.fileBanner !== null){
+            if(this.fileBanner.length != 0){
                         let formData = new FormData();
                         formData.append("files", this.fileBanner);
                         formData.append("refId", String(this.$store.state.building));

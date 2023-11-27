@@ -358,7 +358,7 @@ export default {
                 }
             })
             .then(  (resp) => {
-                        if(this.fileAnnounce !== null){
+                        if(this.fileAnnounce.length != 0){
                                 let formData = new FormData();
                                 formData.append("files", this.fileAnnounce);
                                 formData.append("refId", String(resp.data.data.id));

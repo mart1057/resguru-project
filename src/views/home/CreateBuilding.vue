@@ -263,7 +263,7 @@ export default {
             })
             .then(
                     (resp) => {
-                        if (this.tempBuilding !== null) {
+                        if (this.tempBuilding.length != 0) {
                             let formData = new FormData();
                             formData.append("files", this.tempBuilding);
                             formData.append("refId", String(resp.data.data.id));

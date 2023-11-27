@@ -237,7 +237,7 @@ export default {
                 }
             }).then(  (resp) => {
 
-                        if(this.filepaymentForm !== null){
+                        if(this.filepaymentForm.length != 0){
                                 let formData = new FormData();
                                 formData.append("files", this.filepaymentForm);
                                 formData.append("refId", String(resp.data.data.id));
@@ -287,7 +287,7 @@ export default {
             console.log("payment Image",this.$refs.paymentImage)
             console.log("ID",Editid)
             // this.filePayment = this.$refs.paymentImage.files[0]
-            // if(this.filePayment !== null){
+            // if(this.filePayment.length != 0){
             //             let formData = new FormData();
             //             formData.append("files", this.filePayment);
             //             formData.append("refId", String(Editid));

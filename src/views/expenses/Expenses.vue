@@ -393,6 +393,9 @@
                                 วันที่
                             </vs-th>
                             <vs-th>
+                                ประเภท
+                            </vs-th>
+                            <vs-th>
                                 หัวข้อ
                             </vs-th>
                             <vs-th>
@@ -416,16 +419,19 @@
                                 {{ tr.attributes.date }}
                             </vs-td>
                             <vs-td>
+                                {{ tr.attributes.building_expense_type.data ? tr.attributes.building_expense_type.data.attributes.expenseTypeName : "" }}
+                            </vs-td>
+                            <vs-td>
                                 {{ tr.attributes.title }}
                             </vs-td>
                             <vs-td>
                                 {{ tr.attributes.remark }}
                             </vs-td>
                             <vs-td>
-                                Image.png
+                                {{ tr.attributes.evidence.data ? tr.attributes.evidence.data.attributes.url : "" }}
                             </vs-td>
                             <vs-td>
-                                Image.png
+                                {{ tr.attributes.receipt.data ? tr.attributes.receipt.data.attributes.url : "" }}
                             </vs-td>
                             <vs-td>
                                 {{ tr.attributes.amount }}
@@ -502,22 +508,18 @@
                 <!-- <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
                 <div class="pl-[20px] pr-[20px] mt-[24px]">
                     <div>
-                        <div class="text-custom text-[14px] text-[#003765]">ประเภทรายจ่าย ตรงนี้</div>
+                        <div class="text-custom text-[14px] text-[#003765]">ประเภทรายจ่าย</div>
                         <div class="flex  items-center">
-                            <select placeholder="Select">
-                                <!-- <vs-option label="Vuesax" value="1">
-                                    Vuesax
-                                </vs-option> -->
-                                <option v-for="data in expenseType" :label="data.attributes.expenseTypeName"
-                                    :value="data.attributes.id">
-                                    {{ data.attributes.expenseTypeName }}
+                            <select placeholder="Select"  class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]" v-model="expenseTypeValue">
+                                <option v-for="expenseType in expenseType"
+                                    :value="expenseType.id">
+                                    {{ expenseType.attributes.expenseTypeName }}
                                 </option>
                             </select>
                             <div class="ml-[8px]">
                                 <input class="h-[36px] w-[100%] ml-[8px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
                                     type="input" v-model="title" />
                             </div>
-
                         </div>
                     </div>
                     <div class="mt-[8px]">
@@ -540,9 +542,11 @@
                         <div class="flex mt-[4px]">
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadEvidence"
                                 ref="fileEvidence" hidden type="file" @change="tempUploadEvidence()" />
+                            <label for="uploadEvidence">
                             <div
-                                class="flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
+                                class="flex justify-center text-custom items-center bg-[#165D98] text-[14px] cursor-pointer text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
                                 เลือกรูปภาพ</div>
+                            </label>
                             <div class="text-[#5C6B79] text-custom  flex justify-center items-center ml-[8px] text-[12px]">
                                 ยังไม่ได้เลือกไฟล์</div>
                         </div>
@@ -552,9 +556,11 @@
                         <div class="flex mt-[4px]">
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadReceipt"
                                 ref="fileReceipt" hidden type="file" @change="tempUploadReceipt()" />
+                            <label for="uploadReceipt">
                             <div
-                                class="flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
+                                class="flex justify-center text-custom items-center bg-[#165D98] cursor-pointer text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
                                 เลือกรูปภาพ</div>
+                            </label>
                             <div class="text-[#5C6B79] text-custom  flex justify-center items-center ml-[8px] text-[12px]">
                                 ยังไม่ได้เลือกไฟล์</div>
                         </div>
@@ -597,7 +603,7 @@ export default {
             expenseType: [],
             income: [],
             title: "",
-            expense: "",
+            expenseTypeValue: 0,
             amount: 0,
             date: "",
             remark: "",
@@ -730,7 +736,7 @@ export default {
             axios.post(`https://api.resguru.app/api/building-expenses`, {
                 data: {
                     title: this.title,
-                    // expenseType: this.expense,
+                    building_expense_type: this.expenseTypeValue,
                     amount: this.amount,
                     date: this.date,
                     remark: this.remark,
@@ -740,11 +746,12 @@ export default {
                 }
             })
                 .then((resp) => {
-                    if (this.fileEvidenceForm !== null) {
+
+                    if (this.fileEvidenceForm.length != 0) {
                         let formData = new FormData();
                         formData.append("files", this.fileEvidenceForm);
                         formData.append("refId", String(resp.data.data.id));
-                        formData.append("ref", "api::building-expenses.building-expenses");
+                        formData.append("ref", "api::building-expense.building-expense");
                         formData.append("field", "evidence");
 
                         axios.post("https://api.resguru.app/api/upload", formData, {
@@ -757,11 +764,11 @@ export default {
                             })
                     }
 
-                    if (this.fileReceiptForm !== null) {
+                    if (this.fileReceiptForm.length != 0) {
                         let formDataReceipt = new FormData();
                         formDataReceipt.append("files", this.fileReceiptForm);
                         formDataReceipt.append("refId", String(resp.data.data.id));
-                        formDataReceipt.append("ref", "api::building-expenses.building-expenses");
+                        formDataReceipt.append("ref", "api::building-expense.building-expense");
                         formDataReceipt.append("field", "receipt");
 
                         axios.post("https://api.resguru.app/api/upload", formData, {

@@ -1,10 +1,10 @@
 <template>
     <div class="h-[100%]">
-        <div class="bg-[#E0ECE4] flex items-center justify-between h-[70px] w-[100%]" :style="{ height: toolbarHeight }">
-            <div class="flex justify-center items-center w-[100%]">
+        <div class="bg-[#E0ECE4] flex items-center justify-between h-[70px] w-[100%]" :style="{ height: toolbarHeight }" >
+            <div class="flex justify-center items-center w-[100%]" >
                 <div class="flex justify-between  w-[100%] pl-[24px] pr-[24px]">
                     <div class="flex">
-                        <div @click="sidebar = true"
+                        <div @click="sidebar = true"  
                             class="cursor-pointer bg-[#E8F0F8] w-[44px] h-[44px] justify-center items-center flex rounded-[9px]">
                             <div><svg width="19" height="14" viewBox="0 0 19 14" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -30,9 +30,9 @@
                             <div class="text-[12px] text-[#8396A6]">แดชบอร์ด</div>
                         </div>
                     </div>
-                    <div class="flex justify-center items-center">
-                        <vs-tooltip bottom shadow not-hover not-arrow v-model="noti_popup">
-                            <div class="cursor-pointer" @click="noti_popup = true"><svg width="28" height="28"
+                    <div class="flex justify-center items-center" >
+                        <vs-tooltip bottom shadow not-hover not-arrow v-model="noti_popup" @mouseleave="noti_popup = false">
+                            <div class="cursor-pointer" @click="noti_popup = true" ><svg width="28" height="28"
                                     viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1490_26602" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="28" height="28">
@@ -464,13 +464,14 @@ export default {
 
     },
     methods: {
-        routerTo(path) {
-            this.$router.push({
+        async routerTo(path) {
+            await setTimeout(() => {
+                this.sidebar = false
+            }, 1)
+            await this.$router.push({
                 path: path,
             })
-            setTimeout(() => {
-                this.sidebar = false
-            }, 200);
+
 
         },
         clearLocalDtorage() {
