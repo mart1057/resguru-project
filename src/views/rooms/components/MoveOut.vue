@@ -496,7 +496,7 @@
                     <div class="w-[100%] mt-[14px]">
                         <div class="flex justify-between w-[100%]">
                             <div class="text-custom ">ค้างชำระ</div>
-                            <div class="text-custom ">4500 <span class="ml-[4px] text-custom ">บาท</span></div>
+                            <div class="text-custom ">{{ list_debt.total }} <span class="ml-[4px] text-custom ">บาท</span></div>
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]">
                             <div class="text-custom ">ค่าปรับทรัพย์สินเสียหาย(ทีวี)</div>
@@ -504,7 +504,7 @@
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]">
                             <div class="text-custom ">คืนเงินประกัน</div>
-                            <div class="text-custom ">4500 <span class="ml-[4px] text-custom ">บาท</span></div>
+                            <div class="text-custom ">-{{ list_debt.deposit2 }} <span class="ml-[4px] text-custom ">บาท</span></div>
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]">
                             <div class="text-custom text-[#D44769] font-bold text-[16px]">หนี้สูญ 900 บาท</div>
