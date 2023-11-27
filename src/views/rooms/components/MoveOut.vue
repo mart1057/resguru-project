@@ -51,11 +51,11 @@
                 </div>
                 <div class="flex flex-col justify-between w-[339px] h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
                     <div>เงินมัดจำ</div>
-                    <div class="text-[#D44769] font-bold text-[16px]">{{list_debt.deposit}}</div>
+                    <div class="text-[#D44769] font-bold text-[16px]">{{ list_debt.deposit }}</div>
                 </div>
                 <div class="flex flex-col justify-between w-[339px] h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
                     <div>เงินประกัน</div>
-                    <div class="text-[#D44769] font-bold text-[16px]">{{list_debt.deposit2}}</div>
+                    <div class="text-[#D44769] font-bold text-[16px]">{{ list_debt.deposit2 }}</div>
                 </div>
             </div>
 
@@ -64,7 +64,7 @@
         <div class="mt-[24px]">
             <div class="text-[18px] text-[#141629] text-custom font-bold">รายการตรวจจับ</div>
         </div>
-        <div class="mt-[14px]">
+        <!-- <div class="mt-[14px]">
             <div class="flex">
                 <div class="">
                     <svg width="70" height="82" viewBox="0 0 70 82" fill="none"
@@ -117,9 +117,9 @@
                                 อัพโหลดรูปภาพ</div>
                         </label>
 
-                        <!-- <div
+                        <div
                                     class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
+                                    ยังไม่ได้เลือกไฟล์</div>
                     </div>
                 </div>
                 <div class="flex flex-col justify-center items-center ml-[50px]">
@@ -134,9 +134,9 @@
                                 อัพโหลดรูปภาพ</div>
                         </label>
 
-                        <!-- <div
+                        <div
                                     class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
+                                    ยังไม่ได้เลือกไฟล์</div>
                     </div>
                 </div>
                 <div class="flex flex-col justify-center items-start ml-[50px]">
@@ -150,8 +150,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="mt-[14px]">
+        </div> -->
+        <!-- <div class="mt-[14px]">
             <div class="flex">
                 <div class=""><svg width="70" height="82" viewBox="0 0 70 82" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -203,9 +203,9 @@
                                 class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
                                 อัพโหลดรูปภาพ</div>
                         </label>
-                        <!-- <div
+                        <div
                                     class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
+                                    ยังไม่ได้เลือกไฟล์</div>
                     </div>
                 </div>
                 <div class="flex flex-col justify-center items-center ml-[50px]">
@@ -220,9 +220,9 @@
                                 อัพโหลดรูปภาพ</div>
                         </label>
 
-                        <!-- <div
+                        <div
                                     class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
+                                    ยังไม่ได้เลือกไฟล์</div>
                     </div>
                 </div>
                 <div class="flex flex-col justify-center items-start ml-[50px]">
@@ -231,8 +231,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="mt-[14px]">
+        </div> -->
+        <!-- <div class="mt-[14px]">
             <div class="flex">
                 <div class=""><svg width="70" height="82" viewBox="0 0 70 82" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -284,9 +284,9 @@
                                 อัพโหลดรูปภาพ</div>
                         </label>
 
-                        <!-- <div
+                        <div
                                     class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
+                                    ยังไม่ได้เลือกไฟล์</div>
                     </div>
                 </div>
                 <div class="flex flex-col justify-center items-center ml-[50px]">
@@ -301,9 +301,9 @@
                                 อัพโหลดรูปภาพ</div>
                         </label>
 
-                        <!-- <div
+                        <div
                                     class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
+                                    ยังไม่ได้เลือกไฟล์</div>
                     </div>
                 </div>
                 <div class="flex flex-col justify-center items-start ml-[50px]">
@@ -312,25 +312,25 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="mt-[14px]">
             <div class="flex">
-                <div class=""><svg width="70" height="82" viewBox="0 0 70 82" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <g filter="url(#filter0_d_2182_22211)">
+                <div class="">
+                    <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g filter="url(#filter0_d_2182_22275)">
                             <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
-                            <mask id="mask0_2182_22211" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11" y="17"
+                            <mask id="mask0_2182_22275" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11" y="17"
                                 width="44" height="44">
                                 <rect x="11" y="17" width="44" height="44" fill="#D9D9D9" />
                             </mask>
-                            <g mask="url(#mask0_2182_22211)">
+                            <g mask="url(#mask0_2182_22275)">
                                 <path
-                                    d="M16.9564 50.9167C16.5667 50.9167 16.2402 50.785 15.9769 50.5214C15.7137 50.2579 15.582 49.9313 15.582 49.5417V40.8334C15.582 40.1495 15.7442 39.4861 16.0686 38.8432C16.3929 38.2004 16.8419 37.6721 17.4154 37.2585V32.5835C17.4154 31.3025 17.859 30.2184 18.7463 29.3312C19.6336 28.4439 20.7177 28.0002 21.9987 28.0002H29.7904C30.4579 28.0002 31.0561 28.1301 31.5849 28.3898C32.1137 28.6495 32.585 29.0086 32.9987 29.4669C33.4123 29.0086 33.8836 28.6495 34.4124 28.3898C34.9413 28.1301 35.5394 28.0002 36.2069 28.0002H43.9987C45.2796 28.0002 46.3637 28.4439 47.251 29.3312C48.1383 30.2184 48.5819 31.3025 48.5819 32.5835V37.2585C49.1554 37.6721 49.6044 38.2004 49.9287 38.8432C50.2531 39.4861 50.4153 40.1495 50.4153 40.8334V49.5417C50.4153 49.9313 50.2834 50.2579 50.0198 50.5214C49.7561 50.785 49.4294 50.9167 49.0397 50.9167C48.6499 50.9167 48.3234 50.785 48.0602 50.5214C47.7969 50.2579 47.6653 49.9313 47.6653 49.5417V47.2501H18.332V49.5417C18.332 49.9313 18.2002 50.2579 17.9365 50.5214C17.6729 50.785 17.3462 50.9167 16.9564 50.9167ZM34.3736 36.2502H45.832V32.5835C45.832 32.064 45.6563 31.6286 45.3049 31.2772C44.9535 30.9258 44.5181 30.7502 43.9987 30.7502H36.2069C35.6875 30.7502 35.2521 30.9258 34.9007 31.2772C34.5493 31.6286 34.3736 32.064 34.3736 32.5835V36.2502ZM20.1653 36.2502H31.6237V32.5835C31.6237 32.064 31.448 31.6286 31.0966 31.2772C30.7452 30.9258 30.3098 30.7502 29.7904 30.7502H21.9987C21.4792 30.7502 21.0438 30.9258 20.6924 31.2772C20.341 31.6286 20.1653 32.064 20.1653 32.5835V36.2502ZM18.332 44.5001H47.6653V40.8334C47.6653 40.314 47.4896 39.8786 47.1382 39.5272C46.7869 39.1758 46.3514 39.0001 45.832 39.0001H20.1653C19.6459 39.0001 19.2105 39.1758 18.8591 39.5272C18.5077 39.8786 18.332 40.314 18.332 40.8334V44.5001Z"
+                                    d="M31.1662 56.5929C30.41 56.5929 29.7626 56.3237 29.224 55.7851C28.6855 55.2466 28.4162 54.5992 28.4162 53.843V45.2403H22.7047C21.7786 45.2403 20.9947 44.9195 20.3531 44.2778C19.7114 43.6362 19.3906 42.8523 19.3906 41.9263V29.3045C19.3906 27.6369 19.9844 26.2093 21.1719 25.0218C22.3594 23.8342 23.787 23.2405 25.4546 23.2405H46.6084V41.9263C46.6084 42.8523 46.2876 43.6362 45.6459 44.2778C45.0043 44.9195 44.2204 45.2403 43.2943 45.2403H37.5828V53.843C37.5828 54.5992 37.3135 55.2466 36.775 55.7851C36.2364 56.3237 35.5891 56.5929 34.8328 56.5929H31.1662ZM22.1405 35.7212H43.8585V25.9904H41.4963V31.7725C41.4963 32.1621 41.3644 32.4886 41.1008 32.7521C40.8371 33.0157 40.5104 33.1474 40.1207 33.1474C39.7309 33.1474 39.4044 33.0157 39.1412 32.7521C38.8779 32.4886 38.7463 32.1621 38.7463 31.7725V25.9904H36.2078V28.2821C36.2078 28.6717 36.076 28.9982 35.8123 29.2618C35.5487 29.5253 35.222 29.6571 34.8322 29.6571C34.4425 29.6571 34.116 29.5253 33.8527 29.2618C33.5895 28.9982 33.4579 28.6717 33.4579 28.2821V25.9904H25.4546C24.5286 25.9904 23.7447 26.3113 23.103 26.9529C22.4614 27.5946 22.1405 28.3784 22.1405 29.3045V35.7212ZM22.7047 42.4904H43.2943C43.4589 42.4904 43.594 42.4375 43.6998 42.3318C43.8056 42.226 43.8585 42.0908 43.8585 41.9263V38.4712H22.1405V41.9263C22.1405 42.0908 22.1934 42.226 22.2992 42.3318C22.405 42.4375 22.5402 42.4904 22.7047 42.4904Z"
                                     fill="white" />
                             </g>
                         </g>
                         <defs>
-                            <filter id="filter0_d_2182_22211" x="0" y="0" width="70" height="82"
+                            <filter id="filter0_d_2182_22275" x="0" y="0" width="70" height="82"
                                 filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
                                 <feFlood flood-opacity="0" result="BackgroundImageFix" />
                                 <feColorMatrix in="SourceAlpha" type="matrix"
@@ -339,16 +339,15 @@
                                 <feGaussianBlur stdDeviation="4" />
                                 <feComposite in2="hardAlpha" operator="out" />
                                 <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
-                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2182_22211" />
-                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2182_22211"
+                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2182_22275" />
+                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2182_22275"
                                     result="shape" />
                             </filter>
                         </defs>
                     </svg>
-
                 </div>
                 <div class="flex justify-start items-center text-[16px] font-bold text-custom text-[#003765] w-[150px]">
-                    เตียง</div>
+                    ค่าทีสีผนัง</div>
                 <div class="flex flex-col justify-center items-center ml-[50px]">
                     <div class="font-bold text-custom text-[12px]">ค่าปรับกรณีเสียหาย (บาท)</div>
                     <div><input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" type="input" />
@@ -366,9 +365,8 @@
                                 อัพโหลดรูปภาพ</div>
                         </label>
 
-                        <!-- <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
+                        <!-- <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            ยังไม่ได้เลือกไฟล์</div> -->
                     </div>
                 </div>
                 <div class="flex flex-col justify-center items-center ml-[50px]">
@@ -383,14 +381,103 @@
                                 อัพโหลดรูปภาพ</div>
                         </label>
 
-                        <!-- <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
+                        <!-- <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            ยังไม่ได้เลือกไฟล์</div> -->
                     </div>
                 </div>
                 <div class="flex flex-col justify-center items-start ml-[50px]">
                     <div class="font-bold text-custom text-[12px] flex justify-start items-start">หมายเหตุ</div>
-                    <div><input class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                    <div>
+                        <select class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt"
+                            type="input">
+                            <option>รอซ่อม</option>
+                            <option>เสียหาย</option>
+                            <option>ไม่เสียหาย</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <!-- /////////////////////////////////// items ///////////////////////////////// -->
+            <div class="flex mt-[14px]" v-for="item in items_other">
+                <div class="">
+                    <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g filter="url(#filter0_d_2182_22275)">
+                            <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
+                            <mask id="mask0_2182_22275" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11" y="17"
+                                width="44" height="44">
+                                <rect x="11" y="17" width="44" height="44" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_2182_22275)">
+                                <path
+                                    d="M31.1662 56.5929C30.41 56.5929 29.7626 56.3237 29.224 55.7851C28.6855 55.2466 28.4162 54.5992 28.4162 53.843V45.2403H22.7047C21.7786 45.2403 20.9947 44.9195 20.3531 44.2778C19.7114 43.6362 19.3906 42.8523 19.3906 41.9263V29.3045C19.3906 27.6369 19.9844 26.2093 21.1719 25.0218C22.3594 23.8342 23.787 23.2405 25.4546 23.2405H46.6084V41.9263C46.6084 42.8523 46.2876 43.6362 45.6459 44.2778C45.0043 44.9195 44.2204 45.2403 43.2943 45.2403H37.5828V53.843C37.5828 54.5992 37.3135 55.2466 36.775 55.7851C36.2364 56.3237 35.5891 56.5929 34.8328 56.5929H31.1662ZM22.1405 35.7212H43.8585V25.9904H41.4963V31.7725C41.4963 32.1621 41.3644 32.4886 41.1008 32.7521C40.8371 33.0157 40.5104 33.1474 40.1207 33.1474C39.7309 33.1474 39.4044 33.0157 39.1412 32.7521C38.8779 32.4886 38.7463 32.1621 38.7463 31.7725V25.9904H36.2078V28.2821C36.2078 28.6717 36.076 28.9982 35.8123 29.2618C35.5487 29.5253 35.222 29.6571 34.8322 29.6571C34.4425 29.6571 34.116 29.5253 33.8527 29.2618C33.5895 28.9982 33.4579 28.6717 33.4579 28.2821V25.9904H25.4546C24.5286 25.9904 23.7447 26.3113 23.103 26.9529C22.4614 27.5946 22.1405 28.3784 22.1405 29.3045V35.7212ZM22.7047 42.4904H43.2943C43.4589 42.4904 43.594 42.4375 43.6998 42.3318C43.8056 42.226 43.8585 42.0908 43.8585 41.9263V38.4712H22.1405V41.9263C22.1405 42.0908 22.1934 42.226 22.2992 42.3318C22.405 42.4375 22.5402 42.4904 22.7047 42.4904Z"
+                                    fill="white" />
+                            </g>
+                        </g>
+                        <defs>
+                            <filter id="filter0_d_2182_22275" x="0" y="0" width="70" height="82"
+                                filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                <feColorMatrix in="SourceAlpha" type="matrix"
+                                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                <feOffset dx="2" dy="2" />
+                                <feGaussianBlur stdDeviation="4" />
+                                <feComposite in2="hardAlpha" operator="out" />
+                                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
+                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2182_22275" />
+                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2182_22275"
+                                    result="shape" />
+                            </filter>
+                        </defs>
+                    </svg>
+                </div>
+                <div class="flex justify-start items-center text-[16px] font-bold text-custom text-[#003765] w-[150px]">
+                    {{ item.name }}</div>
+                <div class="flex flex-col justify-center items-center ml-[50px]">
+                    <div class="font-bold text-custom text-[12px]">ค่าปรับกรณีเสียหาย (บาท)</div>
+                    <div><input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" v-model="item.price" type="input" />
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center items-center ml-[50px]">
+                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนเข้าหอพัก
+                    </div>
+                    <div class="flex mt-[12px]">
+                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
+                            type="file" />
+                        <label for="upload">
+                            <div
+                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
+                                อัพโหลดรูปภาพ</div>
+                        </label>
+
+                        <!-- <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            ยังไม่ได้เลือกไฟล์</div> -->
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center items-center ml-[50px]">
+                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนย้ายออก
+                    </div>
+                    <div class="flex mt-[12px]">
+                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
+                            type="file" />
+                        <label for="upload">
+                            <div
+                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
+                                อัพโหลดรูปภาพ</div>
+                        </label>
+
+                        <!-- <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            ยังไม่ได้เลือกไฟล์</div> -->
+                    </div>
+                </div>
+                <div class="flex flex-col justify-center items-start ml-[50px]">
+                    <div class="font-bold text-custom text-[12px] flex justify-start items-start">หมายเหตุ</div>
+                    <div>
+                        <select class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt" v-model="item.remark"
+                            type="input" >
+                            <option value="รอซ่อม">รอซ่อม</option>
+                            <option value="เสียหาย">เสียหาย</option>
+                            <option value="รอซ่อม">ไม่เสียหาย</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -804,12 +891,13 @@ export default {
             move_confirm: false,
             payment: false,
             move_done: false,
-            list_debt:{
-                total:0,
-                deposit:0,
-                deposit2:0
-            }
-            
+            list_debt: {
+                total: 0,
+                deposit: 0,
+                deposit2: 0
+            },
+            items_other: []
+
         }
     },
     created() {
@@ -819,16 +907,32 @@ export default {
             loading.close()
         }, 1000)
     },
-    methods:{
+    methods: {
         getDetailRoom(id) {
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api/getRoom?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor)
-            fetch('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract+'?populate=deep,3')
+            fetch('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract + '?populate=deep,4')
                 .then(response => response.json())
                 .then((resp) => {
-                    this.list_debt.deposit =  resp.data.attributes.roomDeposit
+                    this.list_debt.deposit = resp.data.attributes.roomDeposit
                     this.list_debt.deposit2 = resp.data.attributes.roomInsuranceDeposit
-                    this.list_debt.total = resp.data.attributes.room.data.attributes.tenant_bills.data[0].attributes.total                    
+                    this.list_debt.total = resp.data.attributes.room.data.attributes.tenant_bills.data[0].attributes.total
+                    fetch('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room + '?populate=deep')
+                        .then(response => response.json())
+                        .then((resp) => {
+                            console.log(resp.data.attributes.other_of_buildings.data.forEach((item) => {
+                                this.items_other.push({
+                                    name: item.attributes.title,
+                                    price: item.attributes.price,
+                                    img_bf: '',
+                                    img_af: '',
+                                    remark: 'เสียหาย'
+                                })
+                            }))
+                        }).finally(()=>{
+                           console.log(this.items_other)
+
+                        })
                 }).finally(() => {
                     loading.close()
                 })
