@@ -241,7 +241,7 @@
                                 {{ $formatNumber(tr.attributes.total) }}
                             </vs-td>
                             <vs-td>
-                                
+                                <vs-input  v-model="tr.attributes.paid"/> 
                             </vs-td>
                             <vs-td>
                                 {{ tr.attributes.createdAt }}
@@ -255,7 +255,13 @@
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <vs-select placeholder="เมนู" v-model="menu_option" @change="selectMenu()">
+                                <vs-select v-if="tr.attributes.paymentStatus==='Paid'" placeholder="เมนู" v-model="menu_option" @change="selectMenu()">
+                                            <vs-option label="อัพเดท" value="1">
+                                            อัพเดท
+                                            </vs-option>
+                                </vs-select>
+                                <!-- <vs-button @click="createReceipt(tr)">สร้างใบเสร็จ</vs-button> -->
+                                <vs-select v-else placeholder="เมนู" v-model="menu_option" @change="selectMenu()">
                                             <vs-option label="อัพเดท" value="1">
                                             อัพเดท
                                             </vs-option>
@@ -266,7 +272,6 @@
                                             ชำระบางส่วน
                                             </vs-option>
                                 </vs-select>
-                                <!-- <vs-button @click="createReceipt(tr)">สร้างใบเสร็จ</vs-button> -->
                             </vs-td>
                             <vs-td>
                                 
@@ -420,8 +425,11 @@
                             </vs-td>
                             <vs-td>
                                 <div v-if="tr.attributes.evidence.data">
-                                    {{ tr.attributes.evidence.data.attributes.url }}
-                                </div>
+                                    <a :href="'https://api.resguru.app' + tr.attributes.evidence.data.attributes.url" target="_blank"> {{ tr.attributes.evidence.data.attributes.name }}</a>
+                                </div> 
+                                <div v-else>
+                                    <div> No evidence uploaded</div>
+                                </div>                 
                             </vs-td>
                             <vs-td>
                                 {{ $formatNumber(tr.attributes.amount) }}
@@ -437,6 +445,9 @@
                             <vs-td>
                                 <div v-if="!tr.attributes.tenant_receipt.data">
                                     <vs-button @click="createReceipt(tr)" small>สร้างใบเสร็จ</vs-button>
+                                </div>
+                                <div>
+                                    <vs-button @click="updateInvoice(tr)" small>ทดสอบ</vs-button>
                                 </div>
                             </vs-td>
                         </vs-tr>
@@ -778,6 +789,40 @@ export default {
                 })
 
         },
+        updateEvidence(){
+            axios.put('https://api.resguru.app/api/tenant-evidence-payments/' + this.userEvidencePayment[0].id, {
+                data: {
+                    evidenceStatus: "Approve"
+                }
+            })
+            .then( (res) => {
+                this.$showNotification('#3A89CB', 'Update Evidence Success')
+                }   
+            )
+            .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+            })
+
+        },
+        updateInvoice(){
+            axios.put('https://api.resguru.app/api/tenant-bills/' + this.userInvoice[0].id, {
+                data: {
+                    paymentStatus: "Paid",
+                    paid: this.userEvidencePayment[0].attributes.amount
+                }
+            })
+            .then( (res) => {
+                this.$showNotification('#3A89CB', 'Update Invoice Success')
+                }   
+            )
+            .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+            })
+                // console.log(this.userInvoice[0])
+                // console.log(this.userEvidencePayment[0].attributes)
+        },
         createReceipt(data){
             axios.post('https://api.resguru.app/api' + '/tenant-receipts', {
                 data: {
@@ -785,7 +830,7 @@ export default {
                     tenant_bill: data.attributes.tenant_bill.data.id,
                     user_sign_contract: data.attributes.user_sign_contract.data.id,
                     paidAmount: data.attributes.amount,
-                    receiptNumber: "RECEIPT_" +  data.attributes.tenant_bill.data.attributes.invoiceNumber,
+                    receiptNumber: "RE_" +  data.attributes.tenant_bill.data.attributes.invoiceNumber,
                     //roomPrice: data.attributes.roomPrice,
                     //waterPrice: data.attributes.waterPrice,
                     //electricPrice: data.attributes.electricPrice,
@@ -801,13 +846,14 @@ export default {
             })
             .then( (res) => {
                 this.$showNotification('#3A89CB', 'Create Receipt Success')
+                updateEvidence()
+                updateInvoice()
                 }   
             )
             .catch(error => {
                 const errorMessage = error.message ? error.message : 'Error updating information';
                 this.$showNotification('danger', errorMessage); 
             })
-       
         },
         async PDFPrint(){
                 // Fetch an existing PDF document
