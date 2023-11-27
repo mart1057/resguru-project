@@ -268,7 +268,8 @@
                         </div>
                         <div class="mt-[12px]">
                             <select class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt"
-                                type="input" v-model="item.remark" @change="item.remark == 'ไม่เสียหาย'?item.price = 0:item.price=item.price">
+                                type="input" v-model="item.remark"
+                                @change="item.remark == 'ไม่เสียหาย' ? item.price = 0 : item.price = item.price">
                                 <option value="รอซ่อม">รอซ่อม</option>
                                 <option value="เสียหาย">เสียหาย</option>
                                 <option value="ไม่เสียหาย">ไม่เสียหาย</option>
@@ -360,7 +361,7 @@
                     </div>
                     <div class="flex mt-[24px]">
                         <div>
-                            <div class="font-bold text-custom text-[14px] flex justify-start items-start">
+                            <div class="font-bold text-custom text-[14px] flex justify-start items-start">บันทึกหนี้สูญแล้ว
                                 รวมทั้งหมด
                             </div>
                         </div>
@@ -374,11 +375,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="w-[10%]">
+                <!-- <div class="w-[10%]">
                     <div @click="payment = true"
                         class="bg-[#CFFBDA] text-[#0B9A3C] rounded-[12px] pt-[7px] pb-[7px] pl-[12px] pr-[12px] text-center cursor-pointer">
                         บันทึกหนี้สูญแล้ว</div>
-                </div>
+                </div> -->
             </div>
             <div class=" flex w-[100%] justify-between mt-[100px]">
                 <div class="w-[48%] flex justify-center items-start text-custom">
@@ -460,15 +461,18 @@
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]" v-if="tab == true">
                             <div class="text-custom text-[#D44769] font-bold text-[16px]">หนี้สูญ {{
-                                (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) > 0 ? 0 : (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) }}
+                                (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) > 0 ? 0
+                                : (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) }}
                                 บาท</div>
                         </div>
                     </div>
                     <div class="text-custom text-[12px] font-bold text-[#003765] mt-[24px]">วันที่ย้ายออก</div>
                     <div>
-                        <input class="h-[28px] w-[180px] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                        <input
+                            class="h-[28px] w-[180px] bg-[#F3F8FD] rounded-[12px] mt-[4px]  flex justify-start pl-[8px] pr-[8px]"
+                            type="date" v-model="date_moveout"/>
                     </div>
-                    <div class="flex mt-[4px]">
+                    <div class="flex mt-[14px]">
                         <button
                             class="bg-[#165D98] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
                             <div class="flex">
@@ -532,7 +536,7 @@
                     คุณได้ตรวจสอบความถูกต้องของผู้เช่าห้อง {{ $route.query.number_room }} ก่อนจะย้ายออกแล้วหรือไม่ ?
                 </div>
                 <div class="center mt-[4px]">
-                    <vs-checkbox v-model="option">
+                    <vs-checkbox v-model="check_final" color="#003765">
                         ตรวจสอบแล้ว
                     </vs-checkbox>
                 </div>
@@ -542,7 +546,7 @@
                     <vs-button @click="move_confirm = false" transparent>
                         <div class="text-[#5C6B79] text-[14px]">ยกเลิก</div>
                     </vs-button>
-                    <vs-button @click="move_confirm = !move_confirm, move_done = true" color="#D44769">
+                    <vs-button @click="submitBill()" color="#003765" :disabled="check_final == false">
                         <div class="text-[white] text-[14px]">ยืนยันการย้ายออก</div>
                     </vs-button>
                 </div>
@@ -632,16 +636,19 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
     data() {
         return {
             add_item: false,
             value_item: '',
+            check_final: false,
             create: false,
             tab: false,
             move_confirm: false,
             payment: false,
             move_done: false,
+            date_moveout:'',
             list_debt: {
                 total: 0,
                 deposit: 0,
@@ -772,9 +779,34 @@ export default {
             return totalPrice;
         },
         submitBill() {
-
+            axios.post('https://api.resguru.app/api' + '/room-histories', {
+                data: {
+                    "building": this.$store.state.building,
+                    "room": this.$route.query.id_room,
+                    "users_permissions_user": this.$route.query.id_user,
+                    "date_moveout" :this.date_moveout
+                }
+            }
+            ).then((resp) => {
+                this.items_other.forEach(element => {
+                    axios.post('https://api.resguru.app/api' + '/room-detect-histories', {
+                        data: {
+                            "remark": element.remark,
+                            "charge": element.price,
+                            "room_history": resp.data.data.id,
+                            "name": element.name
+                        }
+                    })
+                });
+            }).finally(() => {
+                axios.delete('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract)
+                this.move_confirm = !this.move_confirm,
+                    this.move_done = true
+                this.$router.push({
+                    path: '/rooms',
+                })
+            })
         }
-
     }
 }
 
