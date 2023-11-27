@@ -47,15 +47,15 @@
             <div class="grid grid-cols-4">
                 <div class="flex flex-col justify-between w-[339px] h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
                     <div>คงเหลือ</div>
-                    <div class="text-[#D44769] font-bold text-[16px]">4,500</div>
+                    <div class="text-[#D44769] font-bold text-[16px]">{{ list_debt.total }}</div>
                 </div>
                 <div class="flex flex-col justify-between w-[339px] h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
                     <div>เงินมัดจำ</div>
-                    <div class="text-[#D44769] font-bold text-[16px]">4,500</div>
+                    <div class="text-[#D44769] font-bold text-[16px]">{{list_debt.deposit}}</div>
                 </div>
                 <div class="flex flex-col justify-between w-[339px] h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
                     <div>เงินประกัน</div>
-                    <div class="text-[#D44769] font-bold text-[16px]">4,500</div>
+                    <div class="text-[#D44769] font-bold text-[16px]">{{list_debt.deposit2}}</div>
                 </div>
             </div>
 
@@ -66,7 +66,8 @@
         </div>
         <div class="mt-[14px]">
             <div class="flex">
-                <div class=""><svg width="70" height="82" viewBox="0 0 70 82" fill="none"
+                <div class="">
+                    <svg width="70" height="82" viewBox="0 0 70 82" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <g filter="url(#filter0_d_2182_22275)">
                             <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
@@ -802,17 +803,37 @@ export default {
             tab: false,
             move_confirm: false,
             payment: false,
-            move_done: false
+            move_done: false,
+            list_debt:{
+                total:0,
+                deposit:0,
+                deposit2:0
+            }
+            
         }
     },
     created() {
         const loading = this.$vs.loading({})
+        this.getDetailRoom()
         setTimeout(() => {
             loading.close()
         }, 1000)
     },
     methods:{
-        
+        getDetailRoom(id) {
+            const loading = this.$vs.loading()
+            // fetch('https://api.resguru.app/api/getRoom?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor)
+            fetch('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract+'?populate=deep,3')
+                .then(response => response.json())
+                .then((resp) => {
+                    this.list_debt.deposit =  resp.data.attributes.roomDeposit
+                    this.list_debt.deposit2 = resp.data.attributes.roomInsuranceDeposit
+                    this.list_debt.total = resp.data.attributes.room.data.attributes.tenant_bills.data[0].attributes.total                    
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+
     }
 }
 
