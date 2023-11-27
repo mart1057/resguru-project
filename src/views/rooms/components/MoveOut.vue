@@ -267,12 +267,11 @@
                         <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">หมายเหตุ
                         </div>
                         <div class="mt-[12px]">
-
                             <select class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt"
-                                type="input" v-model="item.remark">
+                                type="input" v-model="item.remark" @change="item.remark == 'ไม่เสียหาย'?item.price = 0:item.price=item.price">
                                 <option value="รอซ่อม">รอซ่อม</option>
                                 <option value="เสียหาย">เสียหาย</option>
-                                <option value="รอซ่อม">ไม่เสียหาย</option>
+                                <option value="ไม่เสียหาย">ไม่เสียหาย</option>
                             </select>
                         </div>
                     </div>
@@ -368,7 +367,8 @@
                         <div class="ml-[188px]">
                             <div>
                                 <div class="font-bold text-custom text-[14px] flex justify-start items-start">
-                                    {{ parseInt(bill_detail.room+bill_detail.other+bill_detail.water+bill_detail.ele)}}
+                                    {{ parseInt(bill_detail.room + bill_detail.other + bill_detail.water + bill_detail.ele)
+                                    }}
                                 </div>
                             </div>
                         </div>
@@ -454,11 +454,14 @@
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]">
                             <div class="text-custom text-[16px] font-bold ">รวมทั้งสิ้น</div>
-                            <div class="text-custom text-[16px] font-bold">{{ list_debt.deposit2 }} <span
+                            <div class="text-custom text-[16px] font-bold">{{
+                                totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total }} <span
                                     class="ml-[4px] text-custom ">บาท</span></div>
                         </div>
-                        <div class="flex justify-between w-[100%] mt-[4px]">
-                            <div class="text-custom text-[#D44769] font-bold text-[16px]">หนี้สูญ 900 บาท</div>
+                        <div class="flex justify-between w-[100%] mt-[4px]" v-if="tab == true">
+                            <div class="text-custom text-[#D44769] font-bold text-[16px]">หนี้สูญ {{
+                                (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) > 0 ? 0 : (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) }}
+                                บาท</div>
                         </div>
                     </div>
                     <div class="text-custom text-[12px] font-bold text-[#003765] mt-[24px]">วันที่ย้ายออก</div>
@@ -526,7 +529,7 @@
             </template>
             <div class="con-content pl-[16px]  pr-[16px]">
                 <div class="text-[#D44769]">
-                    คุณได้ตรวจสอบความถูกต้องของผู้เช่าห้อง 101 ก่อนจะย้ายออกแล้วหรือไม่ ?
+                    คุณได้ตรวจสอบความถูกต้องของผู้เช่าห้อง {{ $route.query.number_room }} ก่อนจะย้ายออกแล้วหรือไม่ ?
                 </div>
                 <div class="center mt-[4px]">
                     <vs-checkbox v-model="option">
@@ -554,7 +557,7 @@
             </template>
             <div class="con-content pl-[16px]  pr-[16px]">
                 <div class="text-[#141629]">
-                    ห้อง 101 ได้ทำการชำระเงินแล้ว ?
+                    ห้อง {{ $route.query.number_room }} ได้ทำการชำระเงินแล้ว ?
                 </div>
                 <div class="center mt-[12px] flex justify-center ">
                     <vs-select placeholder="เลือก">
@@ -759,6 +762,17 @@ export default {
                 remark: 'เสียหาย'
             })
             this.value_item = ''
+        },
+        totalBillItems() {
+            let totalPrice = 0;
+            // Loop through each item and add its price to totalPrice
+            this.items_other.forEach(item => {
+                totalPrice += item.price;
+            });
+            return totalPrice;
+        },
+        submitBill() {
+
         }
 
     }
