@@ -64,11 +64,12 @@
         <div class="mt-[24px]">
             <div class="text-[18px] text-[#141629] text-custom font-bold">รายการตรวจจับ</div>
         </div>
-        <!-- <div class="mt-[14px]">
-            <div class="flex">
+        <div class="mt-[14px]">
+            <!-- /////////////////////////////////// items ///////////////////////////////// -->
+            <div class="flex" v-for="item in items_other">
                 <div class="">
-                    <svg width="70" height="82" viewBox="0 0 70 82" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
+                    <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        v-if="item.name == 'ค่าทีสีผนัง'">
                         <g filter="url(#filter0_d_2182_22275)">
                             <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
                             <mask id="mask0_2182_22275" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11" y="17"
@@ -97,78 +98,82 @@
                             </filter>
                         </defs>
                     </svg>
-                </div>
-                <div class="flex justify-start items-center text-[16px] font-bold text-custom text-[#003765] w-[150px]">
-                    ค่าทีสีผนัง</div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px]">ค่าปรับกรณีเสียหาย (บาท)</div>
-                    <div><input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" type="input" />
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนเข้าหอพัก
-                    </div>
-                    <div class="flex mt-[12px]">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" />
-                        <label for="upload">
-                            <div
-                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
-                        </label>
-
-                        <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div>
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนย้ายออก
-                    </div>
-                    <div class="flex mt-[12px]">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" />
-                        <label for="upload">
-                            <div
-                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
-                        </label>
-
-                        <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div>
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-start ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start items-start">หมายเหตุ</div>
-                    <div>
-                        <select class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt" type="input">
-                            <option>รอซ่อม</option>
-                            <option>เสียหาย</option>
-                            <option>ไม่เสียหาย</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <!-- <div class="mt-[14px]">
-            <div class="flex">
-                <div class=""><svg width="70" height="82" viewBox="0 0 70 82" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <g filter="url(#filter0_d_2182_22306)">
+                    <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        v-else-if="item.name == 'โทรทัศน์' || item.name == 'ทีวี'">
+                        <g filter="url(#filter0_d_3063_30664)">
                             <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
-                            <mask id="mask0_2182_22306" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="13" y="19"
+                            <mask id="mask0_3063_30664" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11" y="17"
+                                width="44" height="44">
+                                <rect x="11" y="17" width="44" height="44" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_3063_30664)">
+                                <path
+                                    d="M21.4048 50.9166L20.4493 53.6242C20.4019 53.7572 20.319 53.868 20.2005 53.9566C20.082 54.0453 19.9432 54.0896 19.7842 54.0896H19.5797C19.3979 54.0896 19.2389 54.0209 19.1026 53.8834C18.9663 53.7459 18.8981 53.5854 18.8981 53.4021V50.9166C17.9867 50.9166 17.2065 50.5921 16.5575 49.943C15.9085 49.294 15.584 48.5138 15.584 47.6025V28.5641C15.584 27.6527 15.9085 26.8725 16.5575 26.2235C17.2065 25.5745 17.9867 25.25 18.8981 25.25H47.1031C48.0145 25.25 48.7947 25.5745 49.4437 26.2235C50.0927 26.8725 50.4172 27.6527 50.4172 28.5641V47.6025C50.4172 48.5145 50.0927 49.2953 49.4437 49.9448C48.7947 50.5943 48.0145 50.919 47.1031 50.919V53.4479C47.1031 53.628 47.0412 53.78 46.9174 53.9039C46.7936 54.0277 46.6416 54.0896 46.4615 54.0896H46.2147C46.0737 54.0896 45.9444 54.0504 45.8269 53.9719C45.7094 53.8934 45.6271 53.7869 45.5801 53.6524L44.6599 50.9166H21.4048ZM18.8981 48.1666H47.1031C47.2677 48.1666 47.4028 48.1137 47.5086 48.0079C47.6144 47.9022 47.6673 47.767 47.6673 47.6025V28.5641C47.6673 28.3996 47.6144 28.2644 47.5086 28.1586C47.4028 28.0528 47.2677 28 47.1031 28H18.8981C18.7336 28 18.5984 28.0528 18.4926 28.1586C18.3868 28.2644 18.3339 28.3996 18.3339 28.5641V47.6025C18.3339 47.767 18.3868 47.9022 18.4926 48.0079C18.5984 48.1137 18.7336 48.1666 18.8981 48.1666Z"
+                                    fill="white" />
+                            </g>
+                        </g>
+                        <defs>
+                            <filter id="filter0_d_3063_30664" x="0" y="0" width="70" height="82"
+                                filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                <feColorMatrix in="SourceAlpha" type="matrix"
+                                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                <feOffset dx="2" dy="2" />
+                                <feGaussianBlur stdDeviation="4" />
+                                <feComposite in2="hardAlpha" operator="out" />
+                                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
+                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3063_30664" />
+                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3063_30664"
+                                    result="shape" />
+                            </filter>
+                        </defs>
+                    </svg>
+                    <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        v-else-if="item.name == 'เตียง'">
+                        <g filter="url(#filter0_d_3063_30696)">
+                            <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
+                            <mask id="mask0_3063_30696" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11" y="17"
+                                width="44" height="44">
+                                <rect x="11" y="17" width="44" height="44" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_3063_30696)">
+                                <path
+                                    d="M16.9583 50.9167C16.5686 50.9167 16.2421 50.785 15.9789 50.5214C15.7156 50.2579 15.584 49.9313 15.584 49.5417V40.8334C15.584 40.1495 15.7462 39.4861 16.0706 38.8432C16.3949 38.2004 16.8438 37.6721 17.4173 37.2585V32.5835C17.4173 31.3025 17.861 30.2184 18.7482 29.3312C19.6355 28.4439 20.7197 28.0002 22.0006 28.0002H29.7923C30.4598 28.0002 31.058 28.1301 31.5868 28.3898C32.1157 28.6495 32.5869 29.0086 33.0006 29.4669C33.4143 29.0086 33.8855 28.6495 34.4144 28.3898C34.9432 28.1301 35.5414 28.0002 36.2089 28.0002H44.0006C45.2816 28.0002 46.3657 28.4439 47.253 29.3312C48.1403 30.2184 48.5839 31.3025 48.5839 32.5835V37.2585C49.1574 37.6721 49.6063 38.2004 49.9307 38.8432C50.255 39.4861 50.4172 40.1495 50.4172 40.8334V49.5417C50.4172 49.9313 50.2854 50.2579 50.0217 50.5214C49.7581 50.785 49.4314 50.9167 49.0416 50.9167C48.6519 50.9167 48.3254 50.785 48.0621 50.5214C47.7989 50.2579 47.6673 49.9313 47.6673 49.5417V47.2501H18.3339V49.5417C18.3339 49.9313 18.2021 50.2579 17.9384 50.5214C17.6748 50.785 17.3481 50.9167 16.9583 50.9167ZM34.3756 36.2502H45.8339V32.5835C45.8339 32.064 45.6583 31.6286 45.3069 31.2772C44.9555 30.9258 44.5201 30.7502 44.0006 30.7502H36.2089C35.6895 30.7502 35.254 30.9258 34.9026 31.2772C34.5513 31.6286 34.3756 32.064 34.3756 32.5835V36.2502ZM20.1673 36.2502H31.6257V32.5835C31.6257 32.064 31.45 31.6286 31.0986 31.2772C30.7472 30.9258 30.3118 30.7502 29.7923 30.7502H22.0006C21.4812 30.7502 21.0457 30.9258 20.6944 31.2772C20.343 31.6286 20.1673 32.064 20.1673 32.5835V36.2502ZM18.3339 44.5001H47.6673V40.8334C47.6673 40.314 47.4916 39.8786 47.1402 39.5272C46.7888 39.1758 46.3534 39.0001 45.8339 39.0001H20.1673C19.6478 39.0001 19.2124 39.1758 18.861 39.5272C18.5096 39.8786 18.3339 40.314 18.3339 40.8334V44.5001Z"
+                                    fill="white" />
+                            </g>
+                        </g>
+                        <defs>
+                            <filter id="filter0_d_3063_30696" x="0" y="0" width="70" height="82"
+                                filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                <feColorMatrix in="SourceAlpha" type="matrix"
+                                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                <feOffset dx="2" dy="2" />
+                                <feGaussianBlur stdDeviation="4" />
+                                <feComposite in2="hardAlpha" operator="out" />
+                                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
+                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3063_30696" />
+                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3063_30696"
+                                    result="shape" />
+                            </filter>
+                        </defs>
+                    </svg>
+                    <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        v-else-if="item.name == 'ค่าทำความสะอาด'">
+                        <g filter="url(#filter0_d_3063_30791)">
+                            <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
+                            <mask id="mask0_3063_30791" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="13" y="19"
                                 width="40" height="40">
                                 <rect x="13" y="19" width="40" height="40" fill="#D9D9D9" />
                             </mask>
-                            <g mask="url(#mask0_2182_22306)">
+                            <g mask="url(#mask0_3063_30791)">
                                 <path
                                     d="M31.0761 37.7499H34.9223V25.8268C34.9223 25.2905 34.7359 24.8359 34.363 24.463C33.9902 24.0902 33.5356 23.9037 32.9992 23.9037C32.4629 23.9037 32.0083 24.0902 31.6354 24.463C31.2626 24.8359 31.0761 25.2905 31.0761 25.8268V37.7499ZM21.2364 44.0961H44.7621V40.7627C44.7621 40.6131 44.714 40.4903 44.6178 40.3941C44.5216 40.2979 44.3988 40.2499 44.2492 40.2499H21.7493C21.5997 40.2499 21.4768 40.2979 21.3806 40.3941C21.2845 40.4903 21.2364 40.6131 21.2364 40.7627V44.0961ZM19.3646 54.0961H23.5762V50.346C23.5762 49.9919 23.696 49.695 23.9357 49.4554C24.1754 49.2159 24.4724 49.0961 24.8267 49.0961C25.181 49.0961 25.4778 49.2159 25.7172 49.4554C25.9565 49.695 26.0761 49.9919 26.0761 50.346V54.0961H31.7493V50.346C31.7493 49.9919 31.8691 49.695 32.1088 49.4554C32.3485 49.2159 32.6455 49.0961 32.9998 49.0961C33.3541 49.0961 33.6509 49.2159 33.8902 49.4554C34.1295 49.695 34.2492 49.9919 34.2492 50.346V54.0961H39.9223V50.346C39.9223 49.9919 40.0422 49.695 40.2818 49.4554C40.5215 49.2159 40.8185 49.0961 41.1728 49.0961C41.5271 49.0961 41.824 49.2159 42.0633 49.4554C42.3026 49.695 42.4223 49.9919 42.4223 50.346V54.0961H46.6338C46.8047 54.0961 46.9437 54.0293 47.0505 53.8957C47.1573 53.7622 47.1841 53.6153 47.1306 53.455L45.2716 46.596H20.7268L18.8678 53.455C18.8144 53.6153 18.8411 53.7622 18.9479 53.8957C19.0548 54.0293 19.1937 54.0961 19.3646 54.0961ZM46.762 56.596H19.2364C18.292 56.596 17.5238 56.2189 16.932 55.4646C16.3401 54.7103 16.1723 53.8695 16.4288 52.9422L18.7365 44.3685V40.6666C18.7365 39.8567 19.0201 39.1682 19.5874 38.6009C20.1547 38.0336 20.8433 37.7499 21.6531 37.7499H28.5762V25.8268C28.5762 24.5982 29.0062 23.5539 29.8662 22.6939C30.7263 21.8338 31.7706 21.4038 32.9992 21.4038C34.2278 21.4038 35.2722 21.8338 36.1322 22.6939C36.9922 23.5539 37.4223 24.5982 37.4223 25.8268V37.7499H44.3453C45.1552 37.7499 45.8437 38.0336 46.4111 38.6009C46.9783 39.1682 47.262 39.8567 47.262 40.6666V44.3685L49.5697 52.9742C49.8774 53.8909 49.731 54.7237 49.1306 55.4726C48.5302 56.2215 47.7406 56.596 46.762 56.596Z"
                                     fill="white" />
                             </g>
                         </g>
                         <defs>
-                            <filter id="filter0_d_2182_22306" x="0" y="0" width="70" height="82"
+                            <filter id="filter0_d_3063_30791" x="0" y="0" width="70" height="82"
                                 filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
                                 <feFlood flood-opacity="0" result="BackgroundImageFix" />
                                 <feColorMatrix in="SourceAlpha" type="matrix"
@@ -177,79 +182,21 @@
                                 <feGaussianBlur stdDeviation="4" />
                                 <feComposite in2="hardAlpha" operator="out" />
                                 <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
-                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2182_22306" />
-                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2182_22306"
+                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3063_30791" />
+                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3063_30791"
                                     result="shape" />
                             </filter>
                         </defs>
                     </svg>
-
-                </div>
-                <div class="flex justify-start items-center text-[16px] font-bold text-custom text-[#003765] w-[150px]">
-                    ค่าทำความสะอาด</div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px]">ค่าปรับกรณีเสียหาย (บาท)</div>
-                    <div><input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" type="input" />
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนเข้าหอพัก
-                    </div>
-                    <div class="flex mt-[12px]">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" />
-                        <label for="upload">
-                            <div
-                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
-                        </label>
-                        <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div>
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนย้ายออก
-                    </div>
-                    <div class="flex mt-[12px]">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" />
-                        <label for="upload">
-                            <div
-                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
-                        </label>
-
-                        <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div>
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-start ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start items-start">หมายเหตุ</div>
-                    <div><input class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <!-- <div class="mt-[14px]">
-            <div class="flex">
-                <div class=""><svg width="70" height="82" viewBox="0 0 70 82" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <g filter="url(#filter0_d_2182_22179)">
+                    <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg" v-else>
+                        <g filter="url(#filter0_d_3063_30728)">
                             <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
-                            <mask id="mask0_2182_22179" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11" y="17"
-                                width="44" height="44">
-                                <rect x="11" y="17" width="44" height="44" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_2182_22179)">
-                                <path
-                                    d="M21.4028 50.9166L20.4474 53.6242C20.4 53.7572 20.317 53.868 20.1985 53.9566C20.08 54.0453 19.9412 54.0896 19.7822 54.0896H19.5777C19.396 54.0896 19.2369 54.0209 19.1006 53.8834C18.9643 53.7459 18.8961 53.5854 18.8961 53.4021V50.9166C17.9848 50.9166 17.2046 50.5921 16.5556 49.943C15.9065 49.294 15.582 48.5138 15.582 47.6025V28.5641C15.582 27.6527 15.9065 26.8725 16.5556 26.2235C17.2046 25.5745 17.9848 25.25 18.8961 25.25H47.1012C48.0125 25.25 48.7927 25.5745 49.4417 26.2235C50.0908 26.8725 50.4153 27.6527 50.4153 28.5641V47.6025C50.4153 48.5145 50.0908 49.2953 49.4417 49.9448C48.7927 50.5943 48.0125 50.919 47.1012 50.919V53.4479C47.1012 53.628 47.0393 53.78 46.9154 53.9039C46.7916 54.0277 46.6396 54.0896 46.4595 54.0896H46.2127C46.0717 54.0896 45.9425 54.0504 45.8249 53.9719C45.7074 53.8934 45.6251 53.7869 45.5781 53.6524L44.658 50.9166H21.4028ZM18.8961 48.1666H47.1012C47.2657 48.1666 47.4009 48.1137 47.5067 48.0079C47.6124 47.9022 47.6653 47.767 47.6653 47.6025V28.5641C47.6653 28.3996 47.6124 28.2644 47.5067 28.1586C47.4009 28.0528 47.2657 28 47.1012 28H18.8961C18.7316 28 18.5964 28.0528 18.4907 28.1586C18.3849 28.2644 18.332 28.3996 18.332 28.5641V47.6025C18.332 47.767 18.3849 47.9022 18.4907 48.0079C18.5964 48.1137 18.7316 48.1666 18.8961 48.1666Z"
-                                    fill="white" />
-                            </g>
+                            <ellipse cx="20.1667" cy="38.9999" rx="3.66667" ry="3.66667" fill="white" />
+                            <circle cx="33.0006" cy="38.9999" r="3.66667" fill="white" />
+                            <ellipse cx="45.8327" cy="38.9999" rx="3.66667" ry="3.66667" fill="white" />
                         </g>
                         <defs>
-                            <filter id="filter0_d_2182_22179" x="0" y="0" width="70" height="82"
+                            <filter id="filter0_d_3063_30728" x="0" y="0" width="70" height="82"
                                 filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
                                 <feFlood flood-opacity="0" result="BackgroundImageFix" />
                                 <feColorMatrix in="SourceAlpha" type="matrix"
@@ -258,173 +205,8 @@
                                 <feGaussianBlur stdDeviation="4" />
                                 <feComposite in2="hardAlpha" operator="out" />
                                 <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
-                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2182_22179" />
-                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2182_22179"
-                                    result="shape" />
-                            </filter>
-                        </defs>
-                    </svg>
-                </div>
-                <div class="flex justify-start items-center text-[16px] font-bold text-custom text-[#003765] w-[150px]">
-                    โทรทัศน์</div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px]">ค่าปรับกรณีเสียหาย (บาท)</div>
-                    <div><input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" type="input" />
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนเข้าหอพัก
-                    </div>
-                    <div class="flex mt-[12px]">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" />
-                        <label for="upload">
-                            <div
-                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
-                        </label>
-
-                        <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div>
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนย้ายออก
-                    </div>
-                    <div class="flex mt-[12px]">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" />
-                        <label for="upload">
-                            <div
-                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
-                        </label>
-
-                        <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div>
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-start ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start items-start">หมายเหตุ</div>
-                    <div><input class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
-                    </div>
-                </div>
-            </div>
-        </div> -->
-        <div class="mt-[14px]">
-            <div class="flex">
-                <div class="">
-                    <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g filter="url(#filter0_d_2182_22275)">
-                            <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
-                            <mask id="mask0_2182_22275" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11" y="17"
-                                width="44" height="44">
-                                <rect x="11" y="17" width="44" height="44" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_2182_22275)">
-                                <path
-                                    d="M31.1662 56.5929C30.41 56.5929 29.7626 56.3237 29.224 55.7851C28.6855 55.2466 28.4162 54.5992 28.4162 53.843V45.2403H22.7047C21.7786 45.2403 20.9947 44.9195 20.3531 44.2778C19.7114 43.6362 19.3906 42.8523 19.3906 41.9263V29.3045C19.3906 27.6369 19.9844 26.2093 21.1719 25.0218C22.3594 23.8342 23.787 23.2405 25.4546 23.2405H46.6084V41.9263C46.6084 42.8523 46.2876 43.6362 45.6459 44.2778C45.0043 44.9195 44.2204 45.2403 43.2943 45.2403H37.5828V53.843C37.5828 54.5992 37.3135 55.2466 36.775 55.7851C36.2364 56.3237 35.5891 56.5929 34.8328 56.5929H31.1662ZM22.1405 35.7212H43.8585V25.9904H41.4963V31.7725C41.4963 32.1621 41.3644 32.4886 41.1008 32.7521C40.8371 33.0157 40.5104 33.1474 40.1207 33.1474C39.7309 33.1474 39.4044 33.0157 39.1412 32.7521C38.8779 32.4886 38.7463 32.1621 38.7463 31.7725V25.9904H36.2078V28.2821C36.2078 28.6717 36.076 28.9982 35.8123 29.2618C35.5487 29.5253 35.222 29.6571 34.8322 29.6571C34.4425 29.6571 34.116 29.5253 33.8527 29.2618C33.5895 28.9982 33.4579 28.6717 33.4579 28.2821V25.9904H25.4546C24.5286 25.9904 23.7447 26.3113 23.103 26.9529C22.4614 27.5946 22.1405 28.3784 22.1405 29.3045V35.7212ZM22.7047 42.4904H43.2943C43.4589 42.4904 43.594 42.4375 43.6998 42.3318C43.8056 42.226 43.8585 42.0908 43.8585 41.9263V38.4712H22.1405V41.9263C22.1405 42.0908 22.1934 42.226 22.2992 42.3318C22.405 42.4375 22.5402 42.4904 22.7047 42.4904Z"
-                                    fill="white" />
-                            </g>
-                        </g>
-                        <defs>
-                            <filter id="filter0_d_2182_22275" x="0" y="0" width="70" height="82"
-                                filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                                <feColorMatrix in="SourceAlpha" type="matrix"
-                                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                                <feOffset dx="2" dy="2" />
-                                <feGaussianBlur stdDeviation="4" />
-                                <feComposite in2="hardAlpha" operator="out" />
-                                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
-                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2182_22275" />
-                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2182_22275"
-                                    result="shape" />
-                            </filter>
-                        </defs>
-                    </svg>
-                </div>
-                <div class="flex justify-start items-center text-[16px] font-bold text-custom text-[#003765] w-[150px]">
-                    ค่าทีสีผนัง</div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px]">ค่าปรับกรณีเสียหาย (บาท)</div>
-                    <div><input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" type="input" />
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนเข้าหอพัก
-                    </div>
-                    <div class="flex mt-[12px]">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" />
-                        <label for="upload">
-                            <div
-                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
-                        </label>
-
-                        <!-- <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                            ยังไม่ได้เลือกไฟล์</div> -->
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนย้ายออก
-                    </div>
-                    <div class="flex mt-[12px]">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" />
-                        <label for="upload">
-                            <div
-                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
-                        </label>
-
-                        <!-- <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                            ยังไม่ได้เลือกไฟล์</div> -->
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-start ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start items-start">หมายเหตุ</div>
-                    <div>
-                        <select class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt"
-                            type="input">
-                            <option>รอซ่อม</option>
-                            <option>เสียหาย</option>
-                            <option>ไม่เสียหาย</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <!-- /////////////////////////////////// items ///////////////////////////////// -->
-            <div class="flex mt-[14px]" v-for="item in items_other">
-                <div class="">
-                    <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <g filter="url(#filter0_d_2182_22275)">
-                            <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
-                            <mask id="mask0_2182_22275" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11" y="17"
-                                width="44" height="44">
-                                <rect x="11" y="17" width="44" height="44" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_2182_22275)">
-                                <path
-                                    d="M31.1662 56.5929C30.41 56.5929 29.7626 56.3237 29.224 55.7851C28.6855 55.2466 28.4162 54.5992 28.4162 53.843V45.2403H22.7047C21.7786 45.2403 20.9947 44.9195 20.3531 44.2778C19.7114 43.6362 19.3906 42.8523 19.3906 41.9263V29.3045C19.3906 27.6369 19.9844 26.2093 21.1719 25.0218C22.3594 23.8342 23.787 23.2405 25.4546 23.2405H46.6084V41.9263C46.6084 42.8523 46.2876 43.6362 45.6459 44.2778C45.0043 44.9195 44.2204 45.2403 43.2943 45.2403H37.5828V53.843C37.5828 54.5992 37.3135 55.2466 36.775 55.7851C36.2364 56.3237 35.5891 56.5929 34.8328 56.5929H31.1662ZM22.1405 35.7212H43.8585V25.9904H41.4963V31.7725C41.4963 32.1621 41.3644 32.4886 41.1008 32.7521C40.8371 33.0157 40.5104 33.1474 40.1207 33.1474C39.7309 33.1474 39.4044 33.0157 39.1412 32.7521C38.8779 32.4886 38.7463 32.1621 38.7463 31.7725V25.9904H36.2078V28.2821C36.2078 28.6717 36.076 28.9982 35.8123 29.2618C35.5487 29.5253 35.222 29.6571 34.8322 29.6571C34.4425 29.6571 34.116 29.5253 33.8527 29.2618C33.5895 28.9982 33.4579 28.6717 33.4579 28.2821V25.9904H25.4546C24.5286 25.9904 23.7447 26.3113 23.103 26.9529C22.4614 27.5946 22.1405 28.3784 22.1405 29.3045V35.7212ZM22.7047 42.4904H43.2943C43.4589 42.4904 43.594 42.4375 43.6998 42.3318C43.8056 42.226 43.8585 42.0908 43.8585 41.9263V38.4712H22.1405V41.9263C22.1405 42.0908 22.1934 42.226 22.2992 42.3318C22.405 42.4375 22.5402 42.4904 22.7047 42.4904Z"
-                                    fill="white" />
-                            </g>
-                        </g>
-                        <defs>
-                            <filter id="filter0_d_2182_22275" x="0" y="0" width="70" height="82"
-                                filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                                <feColorMatrix in="SourceAlpha" type="matrix"
-                                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                                <feOffset dx="2" dy="2" />
-                                <feGaussianBlur stdDeviation="4" />
-                                <feComposite in2="hardAlpha" operator="out" />
-                                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
-                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2182_22275" />
-                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2182_22275"
+                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3063_30728" />
+                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3063_30728"
                                     result="shape" />
                             </filter>
                         </defs>
@@ -433,51 +215,64 @@
                 <div class="flex justify-start items-center text-[16px] font-bold text-custom text-[#003765] w-[150px]">
                     {{ item.name }}</div>
                 <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px]">ค่าปรับกรณีเสียหาย (บาท)</div>
-                    <div><input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" v-model="item.price" type="input" />
+                    <div class="flex flex-col justify-between h-[50%]">
+                        <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">ค่าปรับกรณีเสียหาย (บาท)
+                        </div>
+                        <div class="flex mt-[4px]">
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" v-model="item.price"
+                            type="input" />
+                        </div>
                     </div>
                 </div>
                 <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนเข้าหอพัก
-                    </div>
-                    <div class="flex mt-[12px]">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" />
-                        <label for="upload">
-                            <div
-                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
-                        </label>
+                    <div class="flex flex-col justify-between h-[50%]">
+                        <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนเข้าหอพัก
+                        </div>
+                        <div class="flex mt-[12px]">
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
+                                type="file" />
+                            <label for="upload">
+                                <div
+                                    class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
+                                    อัพโหลดรูปภาพ</div>
+                            </label>
 
-                        <!-- <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            <!-- <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                             ยังไม่ได้เลือกไฟล์</div> -->
+                        </div>
                     </div>
                 </div>
                 <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนย้ายออก
-                    </div>
-                    <div class="flex mt-[12px]">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" />
-                        <label for="upload">
-                            <div
-                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
-                        </label>
+                    <div class="flex flex-col justify-between h-[50%]">
+                        <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนย้ายออก
+                        </div>
+                        <div class="flex mt-[12px]">
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
+                                type="file" />
+                            <label for="upload">
+                                <div
+                                    class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
+                                    อัพโหลดรูปภาพ</div>
+                            </label>
 
-                        <!-- <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            <!-- <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                             ยังไม่ได้เลือกไฟล์</div> -->
+                        </div>
                     </div>
+
                 </div>
                 <div class="flex flex-col justify-center items-start ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start items-start">หมายเหตุ</div>
-                    <div>
-                        <select class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt" v-model="item.remark"
-                            type="input" >
-                            <option value="รอซ่อม">รอซ่อม</option>
-                            <option value="เสียหาย">เสียหาย</option>
-                            <option value="รอซ่อม">ไม่เสียหาย</option>
-                        </select>
+                    <div class="flex flex-col justify-between h-[50%]">
+                        <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">หมายเหตุ
+                        </div>
+                        <div class="mt-[12px]">
+                            <select class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt"
+                                v-model="item.remark" type="input">
+                                <option value="รอซ่อม">รอซ่อม</option>
+                                <option value="เสียหาย">เสียหาย</option>
+                                <option value="รอซ่อม">ไม่เสียหาย</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -896,7 +691,22 @@ export default {
                 deposit: 0,
                 deposit2: 0
             },
-            items_other: []
+            items_other: [
+                {
+                    name: 'ค่าทีสีผนัง',
+                    price: 500,
+                    img_bf: '',
+                    img_af: '',
+                    remark: 'เสียหาย'
+                },
+                {
+                    name: 'ค่าทำความสะอาด',
+                    price: 500,
+                    img_bf: '',
+                    img_af: '',
+                    remark: 'เสียหาย'
+                }
+            ]
 
         }
     },
@@ -929,8 +739,8 @@ export default {
                                     remark: 'เสียหาย'
                                 })
                             }))
-                        }).finally(()=>{
-                           console.log(this.items_other)
+                        }).finally(() => {
+                            console.log(this.items_other)
 
                         })
                 }).finally(() => {
