@@ -222,7 +222,7 @@
                                 {{ tr.attributes.invoiceNumber }}
                             </vs-td>
                             <vs-td>
-                                <div v-if="tr.attributes.paymentStatus==='Paid' || tr.attributes.paymentStatus==='Partial Paid' ">
+                                <div v-if="tr.attributes.paymentStatus==='Paid' || tr.attributes.paymentStatus==='Partial Paid'|| tr.attributes.paymentStatus==='Waiting Review'  ">
                                     <vs-input disabled  v-model="tr.attributes.roomPrice" @change="updateRoomPriceInvoice(tr.id,tr.attributes.roomPrice)"/> 
                                 </div>
                                 <div v-else>
@@ -230,7 +230,7 @@
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <div v-if="tr.attributes.paymentStatus==='Paid' || tr.attributes.paymentStatus==='Partial Paid' ">
+                                <div v-if="tr.attributes.paymentStatus==='Paid' || tr.attributes.paymentStatus==='Partial Paid'|| tr.attributes.paymentStatus==='Waiting Review'  ">
                                     <vs-input disabled  v-model="tr.attributes.waterPrice" @change="updateWaterPriceInvoice(tr.id,tr.attributes.waterPrice)"/>  
                                 </div>
                                 <div v-else>
@@ -239,7 +239,7 @@
                                 
                             </vs-td>
                             <vs-td>
-                                <div v-if="tr.attributes.paymentStatus==='Paid' || tr.attributes.paymentStatus==='Partial Paid' ">
+                                <div v-if="tr.attributes.paymentStatus==='Paid' || tr.attributes.paymentStatus==='Partial Paid'|| tr.attributes.paymentStatus==='Waiting Review'  ">
                                     
                                      <vs-input disabled  v-model="tr.attributes.electricPrice" @change="updateElecPriceInvoice(tr.id,tr.attributes.electricPrice)"/>  
                                 </div>
@@ -250,7 +250,7 @@
                                 
                             </vs-td>
                             <vs-td>
-                                <div v-if="tr.attributes.paymentStatus==='Paid' || tr.attributes.paymentStatus==='Partial Paid' ">
+                                <div v-if="tr.attributes.paymentStatus==='Paid' || tr.attributes.paymentStatus==='Partial Paid' || tr.attributes.paymentStatus==='Waiting Review' ">
                                     
                                     <vs-input disabled v-model="tr.attributes.communalPrice" @change="updateCommunualPriceInvoice(tr.id,tr.attributes.communalPrice)"/>  
                                </div>
@@ -261,7 +261,7 @@
                                
                             </vs-td>
                             <vs-td>
-                                <div v-if="tr.attributes.paymentStatus==='Paid' || tr.attributes.paymentStatus==='Partial Paid' ">
+                                <div v-if="tr.attributes.paymentStatus==='Paid' || tr.attributes.paymentStatus==='Partial Paid' || tr.attributes.paymentStatus==='Waiting Review' ">
                                     
                                      <vs-input disabled  v-model="tr.attributes.otherPrice" @change="updateOtherInvoice(tr.id,tr.attributes.otherPrice)"/> 
                                </div>
