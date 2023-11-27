@@ -399,7 +399,7 @@
                                 {{ tr.attributes.createdAt }} 
                             </vs-td>
                             <vs-td>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                <svg @click="PDFPrintReceipt(tr)" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_2691_23279" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="24" height="24">
@@ -487,8 +487,9 @@
                         </vs-tr>
                     </template>
                 </vs-table>
-            </div>
+            </div> <div><PDFgenerator ref="childComponentPDFReceipt"/></div>
         </div>
+        
         <b-modal centered v-model="createFullpayment" size="l" hide-backdrop hide-header-close hide-header hide-footer
                     class="p-[-20px] text-custom">
                     <div>
@@ -665,9 +666,10 @@
 import axios from 'axios'
 import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import download from 'downloadjs';
-
+import PDFgenerator from '@/views/payment/components/PDFgeneratorReceipt'
 
 export default {
+    components:{PDFgenerator},
     data() {
         return {
             popup_filter: false,
@@ -963,6 +965,9 @@ export default {
                 const errorMessage = error.message ? error.message : 'Error updating information';
                 this.$showNotification('danger', errorMessage); 
             })
+        },
+        async PDFPrintReceipt(tr){
+            this.$refs.childComponentPDFReceipt.generatePDF(tr)
         },
         async PDFPrint(){
                 // Fetch an existing PDF document

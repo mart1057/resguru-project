@@ -547,7 +547,9 @@
                                 class="flex justify-center text-custom items-center bg-[#165D98] text-[14px] cursor-pointer text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
                                 เลือกรูปภาพ</div>
                             </label>
-                            <div class="text-[#5C6B79] text-custom  flex justify-center items-center ml-[8px] text-[12px]">
+                            <div v-if="this.fileEvidenceForm.name" class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                                {{this.fileEvidenceForm.name}}</div>
+                            <div v-else class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                 ยังไม่ได้เลือกไฟล์</div>
                         </div>
                     </div>
@@ -561,7 +563,9 @@
                                 class="flex justify-center text-custom items-center bg-[#165D98] cursor-pointer text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
                                 เลือกรูปภาพ</div>
                             </label>
-                            <div class="text-[#5C6B79] text-custom  flex justify-center items-center ml-[8px] text-[12px]">
+                            <div v-if="this.fileReceiptForm.name" class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                                {{this.fileReceiptForm.name}}</div>
+                            <div v-else class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                 ยังไม่ได้เลือกไฟล์</div>
                         </div>
                     </div>
