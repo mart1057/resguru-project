@@ -69,7 +69,7 @@
             <div class="flex" v-for="item in items_other">
                 <div class="">
                     <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg"
-                        v-if="item.name == 'ค่าทีสีผนัง'">
+                        v-if="item.name == 'ค่าทาสีผนัง'">
                         <g filter="url(#filter0_d_2182_22275)">
                             <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
                             <mask id="mask0_2182_22275" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11" y="17"
@@ -359,6 +359,20 @@
                             </div>
                         </div>
                     </div>
+                    <div class="flex mt-[24px]">
+                        <div>
+                            <div class="font-bold text-custom text-[14px] flex justify-start items-start">
+                                รวมทั้งหมด
+                            </div>
+                        </div>
+                        <div class="ml-[188px]">
+                            <div>
+                                <div class="font-bold text-custom text-[14px] flex justify-start items-start">
+                                    {{ parseInt(bill_detail.room+bill_detail.other+bill_detail.water+bill_detail.ele)}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="w-[10%]">
                     <div @click="payment = true"
@@ -424,13 +438,23 @@
                             <div class="text-custom ">{{ list_debt.total }} <span class="ml-[4px] text-custom ">บาท</span>
                             </div>
                         </div>
+                        <div class="flex justify-between w-[100%] mt-[4px]" v-for="item in items_other">
+                            <div class="text-custom ">ค่าปรับทรัพย์สินเสียหาย ({{ item.name }})</div>
+                            <div class="text-custom ">{{ item.price }} <span class="ml-[4px] text-custom ">บาท</span></div>
+                        </div>
                         <div class="flex justify-between w-[100%] mt-[4px]">
-                            <div class="text-custom ">ค่าปรับทรัพย์สินเสียหาย(ทีวี)</div>
-                            <div class="text-custom ">4500 <span class="ml-[4px] text-custom ">บาท</span></div>
+                            <div class="text-custom ">คืนค่ามัดจำ</div>
+                            <div class="text-custom ">-{{ list_debt.deposit }} <span
+                                    class="ml-[4px] text-custom ">บาท</span></div>
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]">
                             <div class="text-custom ">คืนเงินประกัน</div>
                             <div class="text-custom ">-{{ list_debt.deposit2 }} <span
+                                    class="ml-[4px] text-custom ">บาท</span></div>
+                        </div>
+                        <div class="flex justify-between w-[100%] mt-[4px]">
+                            <div class="text-custom text-[16px] font-bold ">รวมทั้งสิ้น</div>
+                            <div class="text-custom text-[16px] font-bold">{{ list_debt.deposit2 }} <span
                                     class="ml-[4px] text-custom ">บาท</span></div>
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]">
@@ -657,7 +681,7 @@ export default {
             ],
             items_other: [
                 {
-                    name: 'ค่าทีสีผนัง',
+                    name: 'ค่าทาสีผนัง',
                     price: 500,
                     img_bf: '',
                     img_af: '',
