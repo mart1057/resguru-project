@@ -279,7 +279,8 @@
                 </div>
             </div>
             <div class="mt-[12px]">
-                <select class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt" type="input" v-model="value_item" >
+                <select class="h-[40px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt" type="input"
+                    v-model="value_item" @change="addItem(value_item)">
                     <option value="" disabled>เพิ่มรายการ</option>
                     <option v-for="item in list_items" :value="item.name">{{ item.name }}</option>
                 </select>
@@ -312,90 +313,43 @@
                     <div class="w-[50%] flex justify-between mt-[8px]">
                         <div>
                             <div class="text-[12px] text-[#8396A6]">รายการ</div>
-                            <div class="mt-[8px]"><input
-                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" /></div>
-                            <div class="mt-[8px]"><input
-                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" /></div>
-                            <div class="mt-[8px]"><input
-                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" /></div>
-
+                            <div class="mt-[8px]">
+                                <div class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">ค่าหอพัก
+                                </div>
+                            </div>
+                            <div class="mt-[8px]">
+                                <div class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                    ค่าน้ำ
+                                </div>
+                            </div>
+                            <div class="mt-[8px]">
+                                <div class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]" >
+                                    ค่าไฟ
+                                </div>
+                            </div>
+                            <div class="mt-[8px]">
+                                <div class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                    ค่าอื่น ๆ
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <div class="text-[12px] text-[#8396A6]">จำนวนเงินบาท</div>
                             <div class="flex">
-                                <input class="h-[36px] w-[80px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" />
-
-                                <div class="ml-[8px] mt-[6px] ">
-                                    <div>
-                                        <div class="flex justify-center items-center mt-[4px] cursor-pointer"> <svg
-                                                width="32" height="32" viewBox="0 0 32 32" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect width="32" height="32" rx="8" fill="#D44769" />
-                                                <mask id="mask0_1747_22483" style="mask-type:alpha"
-                                                    maskUnits="userSpaceOnUse" x="5" y="5" width="22" height="22">
-                                                    <rect x="5" y="5" width="22" height="22" fill="#D9D9D9" />
-                                                </mask>
-                                                <g mask="url(#mask0_1747_22483)">
-                                                    <path
-                                                        d="M10.5 16.6875C10.3052 16.6875 10.1419 16.6215 10.0102 16.4897C9.87839 16.3579 9.8125 16.1945 9.8125 15.9997C9.8125 15.8048 9.87839 15.6415 10.0102 15.5099C10.1419 15.3783 10.3052 15.3125 10.5 15.3125H21.5C21.6948 15.3125 21.8581 15.3784 21.9898 15.5102C22.1216 15.6421 22.1875 15.8054 22.1875 16.0003C22.1875 16.1952 22.1216 16.3584 21.9898 16.49C21.8581 16.6216 21.6948 16.6875 21.5 16.6875H10.5Z"
-                                                        fill="white" />
-                                                </g>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
+                                <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]"
+                                    type="input" v-model="bill_detail.room"/>
                             </div>
                             <div class="flex mt-[-8px]">
-                                <input class="h-[36px] w-[80px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" />
-
-                                <div class="ml-[8px] mt-[6px] ">
-                                    <div>
-                                        <div class="flex justify-center items-center mt-[4px] cursor-pointer"> <svg
-                                                width="32" height="32" viewBox="0 0 32 32" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect width="32" height="32" rx="8" fill="#D44769" />
-                                                <mask id="mask0_1747_22483" style="mask-type:alpha"
-                                                    maskUnits="userSpaceOnUse" x="5" y="5" width="22" height="22">
-                                                    <rect x="5" y="5" width="22" height="22" fill="#D9D9D9" />
-                                                </mask>
-                                                <g mask="url(#mask0_1747_22483)">
-                                                    <path
-                                                        d="M10.5 16.6875C10.3052 16.6875 10.1419 16.6215 10.0102 16.4897C9.87839 16.3579 9.8125 16.1945 9.8125 15.9997C9.8125 15.8048 9.87839 15.6415 10.0102 15.5099C10.1419 15.3783 10.3052 15.3125 10.5 15.3125H21.5C21.6948 15.3125 21.8581 15.3784 21.9898 15.5102C22.1216 15.6421 22.1875 15.8054 22.1875 16.0003C22.1875 16.1952 22.1216 16.3584 21.9898 16.49C21.8581 16.6216 21.6948 16.6875 21.5 16.6875H10.5Z"
-                                                        fill="white" />
-                                                </g>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
+                                <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    type="input" v-model="bill_detail.water"/>
                             </div>
                             <div class="flex mt-[-8px]">
-                                <input class="h-[36px] w-[80px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" />
-
-                                <div class="ml-[8px] mt-[6px] ">
-                                    <div>
-                                        <div class="flex justify-center items-center mt-[4px] cursor-pointer"> <svg
-                                                width="32" height="32" viewBox="0 0 32 32" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect width="32" height="32" rx="8" fill="#D44769" />
-                                                <mask id="mask0_1747_22483" style="mask-type:alpha"
-                                                    maskUnits="userSpaceOnUse" x="5" y="5" width="22" height="22">
-                                                    <rect x="5" y="5" width="22" height="22" fill="#D9D9D9" />
-                                                </mask>
-                                                <g mask="url(#mask0_1747_22483)">
-                                                    <path
-                                                        d="M10.5 16.6875C10.3052 16.6875 10.1419 16.6215 10.0102 16.4897C9.87839 16.3579 9.8125 16.1945 9.8125 15.9997C9.8125 15.8048 9.87839 15.6415 10.0102 15.5099C10.1419 15.3783 10.3052 15.3125 10.5 15.3125H21.5C21.6948 15.3125 21.8581 15.3784 21.9898 15.5102C22.1216 15.6421 22.1875 15.8054 22.1875 16.0003C22.1875 16.1952 22.1216 16.3584 21.9898 16.49C21.8581 16.6216 21.6948 16.6875 21.5 16.6875H10.5Z"
-                                                        fill="white" />
-                                                </g>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
+                                <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    type="input" v-model="bill_detail.ele"/>
+                            </div>
+                            <div class="flex mt-[-8px]">
+                                <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    type="input" v-model="bill_detail.other" />
                             </div>
                         </div>
                     </div>
@@ -428,7 +382,7 @@
                                         จำนวนเงิน(บาท)
                                     </div>
                                     <div>
-                                        <input class="h-[28px] w-[80px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                        <input class="h-[28px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
                                             type="input" />
                                     </div>
                                 </div>
@@ -681,7 +635,7 @@ export default {
     data() {
         return {
             add_item: false,
-            value_item:'',
+            value_item: '',
             create: false,
             tab: false,
             move_confirm: false,
@@ -743,7 +697,15 @@ export default {
                     remark: 'เสียหาย'
                 }
             ],
-            user_detail: {}
+            bill_detail:{
+
+            },
+            user_detail: {
+                ele:0,
+                water:0,
+                room:0,
+                other:0
+            }
 
         }
     },
@@ -764,7 +726,12 @@ export default {
                     this.list_debt.deposit = resp.data?.attributes.roomDeposit
                     this.list_debt.deposit2 = resp.data?.attributes.roomInsuranceDeposit
                     this.list_debt.total = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.total
-                    this.user_detail = resp.data?.attributes.users_permissions_user.data?.attributes
+                    this.user_detail = resp.data?.attributes.users_permissions_user.data?.attributes 
+                    this.bill_detail.ele =  resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.electricPrice
+                    this.bill_detail.water =  resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.waterPrice
+                    this.bill_detail.room =  resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.roomPrice
+                    this.bill_detail.other =  resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.otherPrice
+
                     fetch('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room + '?populate=deep')
                         .then(response => response.json())
                         .then((resp) => {
@@ -785,6 +752,16 @@ export default {
                     loading.close()
                 })
         },
+        addItem(data) {
+            this.items_other.push({
+                name: data,
+                price: 0,
+                img_bf: '',
+                img_af: '',
+                remark: 'เสียหาย'
+            })
+            this.value_item = ''
+        }
 
     }
 }
