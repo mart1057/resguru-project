@@ -80,4 +80,8 @@ input[type='month']::-webkit-calendar-picker-indicator {
     border-width: thin;
  
 }
+.select-opt,
+textarea {
+  padding-left: 10px;
+}
 </style>

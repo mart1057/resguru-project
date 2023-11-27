@@ -44,10 +44,21 @@
         <div class="w-[100%] h-[1px]  mt-[34px] mb-[34px] bg-gray-200 border-0 dark:bg-gray-700"></div>
         <div class="">
             <div class="font-bold text-[16px]">ยอดค้างชำระ</div>
-            <div class="flex flex-col justify-between w-[339px] h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
-                <div>คงเหลือ</div>
-                <div class="text-[#D44769] font-bold text-[16px]">4,500</div>
+            <div class="grid grid-cols-4">
+                <div class="flex flex-col justify-between w-[339px] h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
+                    <div>คงเหลือ</div>
+                    <div class="text-[#D44769] font-bold text-[16px]">4,500</div>
+                </div>
+                <div class="flex flex-col justify-between w-[339px] h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
+                    <div>เงินมัดจำ</div>
+                    <div class="text-[#D44769] font-bold text-[16px]">4,500</div>
+                </div>
+                <div class="flex flex-col justify-between w-[339px] h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
+                    <div>เงินประกัน</div>
+                    <div class="text-[#D44769] font-bold text-[16px]">4,500</div>
+                </div>
             </div>
+
         </div>
         <div class="w-[100%] h-[1px]  mt-[34px] mb-[34px] bg-gray-200 border-0 dark:bg-gray-700"></div>
         <div class="mt-[24px]">
@@ -129,7 +140,12 @@
                 </div>
                 <div class="flex flex-col justify-center items-start ml-[50px]">
                     <div class="font-bold text-custom text-[12px] flex justify-start items-start">หมายเหตุ</div>
-                    <div><input class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                    <div>
+                        <select class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt" type="input">
+                            <option>รอซ่อม</option>
+                            <option>เสียหาย</option>
+                            <option>ไม่เสียหาย</option>
+                        </select>
                     </div>
                 </div>
             </div>
@@ -392,8 +408,8 @@
             <div class="w-[100%] h-[1px]  mt-[34px] mb-[34px] bg-gray-200 border-0 dark:bg-gray-700"></div>
             <div class="flex w-[100%]">
                 <div class="w-[40%]">
-                    <div class="font-bold text-[16px]">ยอดค้างชำระ</div>
-                    <div class="mt-[14px]">รายละเอียด</div>
+                    <div class="font-bold text-[16px]">รายละเอียด</div>
+                    <!-- <div class="mt-[14px]">รายละเอียด</div>
                     <div class="mt-[8px]">
                         <vs-select placeholder="เลือกผู้ใช้จากระบบ">
                             <vs-option label="อาคาร A" value="1">
@@ -403,7 +419,7 @@
                                 อาคาร B
                             </vs-option>
                         </vs-select>
-                    </div>
+                    </div> -->
                     <div class="mt-[14px] text-[12px] text-[#141629]">
                         <div>นาย ปริรม โอภาสเจริญ</div>
                         <div>21-29 ถนนนาคราช แขวงคลองมหานาค เขตป้อมปราบ จ.กรุงเทพฯ 10100</div>
@@ -689,7 +705,7 @@
                     <vs-button @click="move_confirm = false" transparent>
                         <div class="text-[#5C6B79] text-[14px]">ยกเลิก</div>
                     </vs-button>
-                    <vs-button @click="move_confirm = !move_confirm,move_done = true" color="#D44769">
+                    <vs-button @click="move_confirm = !move_confirm, move_done = true" color="#D44769">
                         <div class="text-[white] text-[14px]">ยืนยันการย้ายออก</div>
                     </vs-button>
                 </div>
@@ -795,6 +811,9 @@ export default {
             loading.close()
         }, 1000)
     },
+    methods:{
+        
+    }
 }
 
 </script>
