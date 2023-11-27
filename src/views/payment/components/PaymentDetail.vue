@@ -255,13 +255,14 @@
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <vs-select v-if="tr.attributes.paymentStatus==='Paid'" placeholder="เมนู" v-model="menu_option" @change="selectMenu()">
+                                <vs-select v-if="tr.attributes.paymentStatus==='Paid' || tr.attributes.paymentStatus==='Partial Paid' || tr.attributes.paymentStatus==='Waiting Review'" 
+                                placeholder="เมนู" v-model="menu_option" @change="selectMenu(tr)">
                                             <vs-option label="อัพเดท" value="1">
                                             อัพเดท
                                             </vs-option>
                                 </vs-select>
                                 <!-- <vs-button @click="createReceipt(tr)">สร้างใบเสร็จ</vs-button> -->
-                                <vs-select v-else placeholder="เมนู" v-model="menu_option" @change="selectMenu()">
+                                <vs-select v-else placeholder="เมนู" v-model="menu_option" @change="selectMenu(tr)">
                                             <vs-option label="อัพเดท" value="1">
                                             อัพเดท
                                             </vs-option>
@@ -493,22 +494,22 @@
                         <div class="mt-[14px]">
                             <div class="text-custom">ยอดโอน (เต็มจำนวน)</div>
                             <div>
-                                <input
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="accountNumber" />
+                                <input disabled
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="amount" />
                             </div>
                         </div>
                         <div class="mt-[14px]">
                             <div class="text-custom">วันที่</div>
                             <div>
                                 <input type="date"
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="accountNumber" />
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="paymentDate" />
                             </div>
                         </div>
                         <div class="mt-[14px]">
                             <div class="text-custom">เวลา</div>
                             <div>
                                 <input type="time"
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="accountNumber" />
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="paymentTime" />
                             </div>
                         </div>
                         <div class="mt-[14px]">
@@ -694,6 +695,30 @@ export default {
             userReceipt: [],
             userProfileImage: [],
             userEvidencePayment: [],
+            fullPaymentForm: {
+                invoiceID: '',
+                invoiceName: '',
+                roomName: '',
+                userID: '',
+                bankName: '',
+                accountBankName: '',
+                amount: 0,
+                paymentDate: '',
+                paymentTime: '',
+                building: ''
+            },
+            partialPaymentForm: {
+                invoiceID: '',
+                invoiceName: '',
+                roomName: '',
+                userID: '',
+                bankName: '',
+                accountBankName: '',
+                amount: 0,
+                paymentDate: '',
+                paymentTime: '',
+                building: ''
+            },
         }
     },
     created() {
@@ -735,9 +760,11 @@ export default {
                     loading.close()
                 })
         },
-                selectMenu(){
+        selectMenu(tr){
+            console.log("?????", tr)
             if(this.menu_option == 2) {
                 this.createFullpayment = true
+                this.amount = tr.attributes.total
             }
             else if(this.menu_option == 3){
                 this.createPartialPayment = true   
