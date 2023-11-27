@@ -216,11 +216,12 @@
                     {{ item.name }}</div>
                 <div class="flex flex-col justify-center items-center ml-[50px]">
                     <div class="flex flex-col justify-between h-[50%]">
-                        <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">ค่าปรับกรณีเสียหาย (บาท)
+                        <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">ค่าปรับกรณีเสียหาย
+                            (บาท)
                         </div>
                         <div class="flex mt-[4px]">
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" v-model="item.price"
-                            type="input" />
+                                type="input" />
                         </div>
                     </div>
                 </div>
@@ -266,8 +267,9 @@
                         <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">หมายเหตุ
                         </div>
                         <div class="mt-[12px]">
+
                             <select class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt"
-                                v-model="item.remark" type="input">
+                                type="input" v-model="item.remark">
                                 <option value="รอซ่อม">รอซ่อม</option>
                                 <option value="เสียหาย">เสียหาย</option>
                                 <option value="รอซ่อม">ไม่เสียหาย</option>
@@ -276,18 +278,12 @@
                     </div>
                 </div>
             </div>
-            <button class="bg-[#165D98] w-[178px] rounded-[12px] flex justify-center items-center pt-[6px] pb-[6px]">
-                <div class="flex">
-                    <div class="flex justify-center items-center "><svg width="14" height="13" viewBox="0 0 14 13"
-                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M6.99968 12.6875C6.8048 12.6875 6.64155 12.6216 6.50993 12.4898C6.37831 12.3581 6.3125 12.1948 6.3125 12V7.18746H1.49998C1.30519 7.18746 1.14191 7.12155 1.01016 6.98973C0.878385 6.8579 0.8125 6.69455 0.8125 6.49968C0.8125 6.3048 0.878385 6.14155 1.01016 6.00993C1.14191 5.87831 1.30519 5.8125 1.49998 5.8125H6.3125V0.999977C6.3125 0.805185 6.37841 0.641904 6.51023 0.510133C6.64206 0.378378 6.80541 0.3125 7.00028 0.3125C7.19516 0.3125 7.35841 0.378378 7.49003 0.510133C7.62165 0.641904 7.68745 0.805185 7.68745 0.999977V5.8125H12.5C12.6948 5.8125 12.8581 5.87841 12.9898 6.01023C13.1216 6.14206 13.1875 6.30541 13.1875 6.50028C13.1875 6.69516 13.1216 6.85841 12.9898 6.99003C12.8581 7.12164 12.6948 7.18746 12.5 7.18746H7.68745V12C7.68745 12.1948 7.62155 12.3581 7.48973 12.4898C7.3579 12.6216 7.19455 12.6875 6.99968 12.6875Z"
-                                fill="white" />
-                        </svg>
-                    </div>
-                    <div class="text-[white] ml-[4px]">เพิ่มรายการ</div>
-                </div>
-            </button>
+            <div class="mt-[12px]">
+                <select class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt" type="input" v-model="value_item" >
+                    <option value="" disabled>เพิ่มรายการ</option>
+                    <option v-for="item in list_items" :value="item.name">{{ item.name }}</option>
+                </select>
+            </div>
             <div class="w-[100%] h-[1px]  mt-[34px] mb-[34px] bg-gray-200 border-0 dark:bg-gray-700"></div>
             <div class="flex w-[100%]">
                 <div class="w-[40%]">
@@ -304,9 +300,10 @@
                         </vs-select>
                     </div> -->
                     <div class="mt-[14px] text-[12px] text-[#141629]">
-                        <div>{{ user_detail.sex?'นาง':'นาย' }} {{ user_detail.firstName }} {{ user_detail.lastName }}</div>
+                        <div>{{ user_detail.sex ? 'นาง' : 'นาย' }} {{ user_detail.firstName }} {{ user_detail.lastName }}
+                        </div>
                         <div>{{ user_detail.contactAddress }}</div>
-                        <div>เลขประจำตัวผู้เสียภาษี {{ user_detail.idCard?user_detail.idCard:'-' }}</div>
+                        <div>เลขประจำตัวผู้เสียภาษี {{ user_detail.idCard ? user_detail.idCard : '-' }}</div>
                         <!-- <div>วันที่ 07/06/2023</div> -->
                     </div>
                 </div>
@@ -496,7 +493,8 @@
                     <div class="w-[100%] mt-[14px]">
                         <div class="flex justify-between w-[100%]">
                             <div class="text-custom ">ค้างชำระ</div>
-                            <div class="text-custom ">{{ list_debt.total }} <span class="ml-[4px] text-custom ">บาท</span></div>
+                            <div class="text-custom ">{{ list_debt.total }} <span class="ml-[4px] text-custom ">บาท</span>
+                            </div>
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]">
                             <div class="text-custom ">ค่าปรับทรัพย์สินเสียหาย(ทีวี)</div>
@@ -504,7 +502,8 @@
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]">
                             <div class="text-custom ">คืนเงินประกัน</div>
-                            <div class="text-custom ">-{{ list_debt.deposit2 }} <span class="ml-[4px] text-custom ">บาท</span></div>
+                            <div class="text-custom ">-{{ list_debt.deposit2 }} <span
+                                    class="ml-[4px] text-custom ">บาท</span></div>
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]">
                             <div class="text-custom text-[#D44769] font-bold text-[16px]">หนี้สูญ 900 บาท</div>
@@ -681,6 +680,8 @@
 export default {
     data() {
         return {
+            add_item: false,
+            value_item:'',
             create: false,
             tab: false,
             move_confirm: false,
@@ -691,6 +692,41 @@ export default {
                 deposit: 0,
                 deposit2: 0
             },
+            list_items: [
+                { name: 'ลูกบิดห้องน้ำ' },
+                { name: 'ประตูห้องน้ำ' },
+                { name: 'ประตูหน้าห้อง' },
+                { name: 'ลูกบิดหน้าห้อง' },
+                { name: 'กระจกห้องน้ำ' },
+                { name: 'ชั้นวางหน้ากระจกในห้องน้ำ' },
+                { name: 'รางแขวนผ้าในห้องน้ำ' },
+                { name: 'ก๊อกน้ำ' },
+                { name: 'สายฝักบัว' },
+                { name: 'ก๊อกฝักบัว' },
+                { name: 'ตะแกรงน้ำห้องน้ำ' },
+                { name: 'สายฉีดชำระ' },
+                { name: 'เครื่องทำน้ำอึ่น' },
+                { name: 'ที่เสียบทิชชู่' },
+                { name: 'ผนังห้องน้ำ' },
+                { name: 'ผนังห้องสีด้าน' },
+                { name: 'พื้นห้อง' },
+                { name: 'ตู้เสื้อผ้า' },
+                { name: 'โต๊ะเครื่องแป้ง' },
+                { name: 'โต๊ะวางของ' },
+                { name: 'เต้าเสียบปลั๊ก' },
+                { name: 'เต้าเสียบสายทีวี' },
+                { name: 'เตียงนอน' },
+                { name: 'ฟูกนอน' },
+                { name: 'หน้าต่าง' },
+                { name: 'มุ้งลวด' },
+                { name: 'ผ้าม่านใหญ่' },
+                { name: 'ราวม่าน' },
+                { name: 'หลอดไฟหัวนอน' },
+                { name: 'หลอดไฟห้องน้ำ' },
+                { name: 'ระเบียง+ราวระเบียง' },
+                { name: 'ตะแกรงน้ำระเบียง' },
+                { name: 'ชักโครก' },
+            ],
             items_other: [
                 {
                     name: 'ค่าทีสีผนัง',
@@ -707,7 +743,7 @@ export default {
                     remark: 'เสียหาย'
                 }
             ],
-            user_detail:{}
+            user_detail: {}
 
         }
     },
