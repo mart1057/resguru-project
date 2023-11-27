@@ -304,10 +304,10 @@
                         </vs-select>
                     </div> -->
                     <div class="mt-[14px] text-[12px] text-[#141629]">
-                        <div>นาย ปริรม โอภาสเจริญ</div>
-                        <div>21-29 ถนนนาคราช แขวงคลองมหานาค เขตป้อมปราบ จ.กรุงเทพฯ 10100</div>
-                        <div>เลขประจำตัวผู้เสียภาษี 3723545463409</div>
-                        <div>วันที่ 07/06/2023</div>
+                        <div>{{ user_detail.sex?'นาง':'นาย' }} {{ user_detail.firstName }} {{ user_detail.lastName }}</div>
+                        <div>{{ user_detail.contactAddress }}</div>
+                        <div>เลขประจำตัวผู้เสียภาษี {{ user_detail.idCard?user_detail.idCard:'-' }}</div>
+                        <!-- <div>วันที่ 07/06/2023</div> -->
                     </div>
                 </div>
                 <div class="w-[50%] flex flex-col justify-end mt-[150px]">
@@ -706,7 +706,8 @@ export default {
                     img_af: '',
                     remark: 'เสียหาย'
                 }
-            ]
+            ],
+            user_detail:{}
 
         }
     },
@@ -724,13 +725,14 @@ export default {
             fetch('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract + '?populate=deep,4')
                 .then(response => response.json())
                 .then((resp) => {
-                    this.list_debt.deposit = resp.data.attributes.roomDeposit
-                    this.list_debt.deposit2 = resp.data.attributes.roomInsuranceDeposit
-                    this.list_debt.total = resp.data.attributes.room.data.attributes.tenant_bills.data[0].attributes.total
+                    this.list_debt.deposit = resp.data?.attributes.roomDeposit
+                    this.list_debt.deposit2 = resp.data?.attributes.roomInsuranceDeposit
+                    this.list_debt.total = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.total
+                    this.user_detail = resp.data?.attributes.users_permissions_user.data?.attributes
                     fetch('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room + '?populate=deep')
                         .then(response => response.json())
                         .then((resp) => {
-                            console.log(resp.data.attributes.other_of_buildings.data.forEach((item) => {
+                            console.log(resp.data?.attributes.other_of_buildings.data?.forEach((item) => {
                                 this.items_other.push({
                                     name: item.attributes.title,
                                     price: item.attributes.price,
