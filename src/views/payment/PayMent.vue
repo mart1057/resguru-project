@@ -550,7 +550,9 @@
                                     class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
                                     อัพโหลดรูปภาพ</div>
                             </label>
-                            <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            <div v-if="this.file.name" class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                                {{this.file.name}}</div>
+                            <div v-else class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                 ยังไม่ได้เลือกไฟล์</div>
                         </div>
                     </div>
@@ -677,6 +679,26 @@ export default {
             else if(menu_option === 'View'){
                this.routeTo(roomdata.user_sign_contract.id)
             }
+            else if(menu_option === 'Update'){
+                this.reGenerateInvoice(roomdata.tenant_bills[0].id)
+            }
+        },
+        reGenerateInvoice(invoiceID){
+            console.log("Invoice",invoiceID)
+            console.log("building",this.$store.state.building)
+            const currentdate = new Date()
+            const month = currentdate.getMonth()
+            const year = currentdate.getFullYear()
+
+            axios.get(`https://api.resguru.app/api/regenerateinvoice?buildingid=${this.$store.state.building}&invoiceid=${invoiceID}&month=${month}&year=${year}`)
+                .then( (response) =>{
+                        this.$showNotification('#3A89CB', response.data.meta.message)
+                    })
+                .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+                console.log(error)
+                })
         },
         createFullPayment() {
             axios.post("https://api.resguru.app/api/tenant-evidence-payments", {
