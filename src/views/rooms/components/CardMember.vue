@@ -581,8 +581,8 @@ export default {
                     console.log("Return from getRoomFloor()", resp.data);
                     const transformedData = resp.data.reduce((result, item) => {
                         console.log('ssdfgdf', item);
-                        console.log('dfgdfg', item.attributes.building_floor.data.attributes.floorName);
-                        const floorName = item.attributes.building_floor.data.attributes.floorName;
+                        console.log('dfgdfg', item.attributes.building_floor.data?.attributes.floorName);
+                        const floorName = item?.attributes.building_floor.data?.attributes.floorName;
                         const roomId = item.id;
                         // Find existing floor entry
                         const floorEntry = result.find(entry => entry.floorName === floorName);
