@@ -331,12 +331,25 @@
                                     ค่าไฟ
                                 </div>
                             </div>
+
+                            <div class="mt-[8px]">
+                                <div
+                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                    ค่าส่วนกลาง
+                                </div>
+                            </div>
                             <div class="mt-[8px]">
                                 <div
                                     class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
                                     ค่าอื่น ๆ
                                 </div>
                             </div>
+                            <div class="mt-[32px]">
+                                <div class="font-bold text-custom text-[14px] flex justify-start items-start ml-[16px]">
+                                    รวมทั้งหมด
+                                </div>
+                            </div>
+
                         </div>
                         <div>
                             <div class="text-[12px] text-[#8396A6]">จำนวนเงินบาท</div>
@@ -355,23 +368,21 @@
                             </div>
                             <div class="flex mt-[-8px]">
                                 <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    type="input" v-model="bill_detail.communalPrice" />
+                            </div>
+                            <div class="flex mt-[-8px]">
+                                <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
                                     type="input" v-model="bill_detail.other" />
                             </div>
-                        </div>
-                    </div>
-                    <div class="flex mt-[24px]">
-                        <div>
-                            <div class="font-bold text-custom text-[14px] flex justify-start items-start">
-                                รวมทั้งหมด
-                            </div>
-                        </div>
-                        <div class="ml-[180px]">
                             <div>
-                                <div class="font-bold text-custom text-[14px] flex justify-start items-start">
-                                    {{ parseInt(bill_detail.room + bill_detail.other + bill_detail.water + bill_detail.ele)
+                                <div
+                                    class="font-bold text-custom text-[14px] flex justify-start items-start pl-[16px] mt-[24px]">
+                                    {{ parseInt(bill_detail.room + bill_detail.other + bill_detail.water +
+                                        bill_detail.ele + bill_detail.communalPrice)
                                     }}
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -436,7 +447,7 @@
                     <div class="w-[100%] mt-[14px]">
                         <div class="flex justify-between w-[100%]">
                             <div class="text-custom ">ค้างชำระ</div>
-                            <div class="text-custom ">{{ list_debt.total }} <span class="ml-[4px] text-custom ">บาท</span>
+                            <div class="text-custom ">{{ bill_detail.room + bill_detail.water + bill_detail.ele + bill_detail.other+bill_detail.communalPrice }} <span class="ml-[4px] text-custom ">บาท</span>
                             </div>
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]" v-for="item in items_other">
@@ -731,14 +742,16 @@ export default {
                     this.bill_detail.id = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.id
                     this.bill_detail.ele = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.electricPrice
                     this.bill_detail.water = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.waterPrice
+                    this.bill_detail.communalPrice = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.communalPrice
+                    this.bill_detail.vat = 7
                     this.bill_detail.room = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.roomPrice
                     this.bill_detail.other = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.otherPrice
                 }).finally(() => {
-                    fetch('https://api.resguru.app/api' + '/room-histories?populate=*&filters[building][id][$eq]=' + this.$store.state.building + '&filters[room][id][$eq]=' + this.$route.query.id_room + '&filters[user_sign_contract][id][$eq]=' + this.$route.query.id_contract+'&filters[publishedAt][$null]=true&publicationState=preview')
+                    fetch('https://api.resguru.app/api' + '/room-histories?populate=*&filters[building][id][$eq]=' + this.$store.state.building + '&filters[room][id][$eq]=' + this.$route.query.id_room + '&filters[user_sign_contract][id][$eq]=' + this.$route.query.id_contract + '&filters[publishedAt][$null]=true&publicationState=preview')
                         .then(response => response.json())
                         .then((resp) => {
                             console.log(resp?.data.length == 0);
-                            if (resp?.data.length == 0) { 
+                            if (resp?.data.length == 0) {
                                 console.log('1');
                                 fetch('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room + '?populate=deep')
                                     .then(response => response.json())
@@ -759,7 +772,7 @@ export default {
                             else {
                                 resp.data[0]?.attributes.room_detect_histories.data?.forEach((item) => {
                                     this.items_other.push({
-                                        id:item.id,
+                                        id: item.id,
                                         name: item.attributes.name,
                                         price: item.attributes.charge,
                                         img_bf: '',
@@ -792,7 +805,7 @@ export default {
             return totalPrice;
         },
         darftBill() {
-            fetch('https://api.resguru.app/api' + '/room-histories?populate=*&filters[building][id][$eq]=' + this.$store.state.building + '&filters[room][id][$eq]=' + this.$route.query.id_room + '&filters[user_sign_contract][id][$eq]=' + this.$route.query.id_contract+'&filters[publishedAt][$null]=true&publicationState=preview')
+            fetch('https://api.resguru.app/api' + '/room-histories?populate=*&filters[building][id][$eq]=' + this.$store.state.building + '&filters[room][id][$eq]=' + this.$route.query.id_room + '&filters[user_sign_contract][id][$eq]=' + this.$route.query.id_contract + '&filters[publishedAt][$null]=true&publicationState=preview')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log(resp?.data.length == 0);
@@ -825,6 +838,9 @@ export default {
                                     "waterPrice": this.bill_detail.water,
                                     "electricPrice": this.bill_detail.ele,
                                     "otherPrice": this.bill_detail.other,
+                                    "communalPrice": this.bill_detail.communalPrice,
+                                    "subtotal": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other,
+                                    "total": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice+ ((this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other+this.bill_detail.communalPrice) * 0.07),
                                     "publishedAt": null
                                 }
                             }
@@ -856,6 +872,9 @@ export default {
                                     "waterPrice": this.bill_detail.water,
                                     "electricPrice": this.bill_detail.ele,
                                     "otherPrice": this.bill_detail.other,
+                                    "communalPrice": this.bill_detail.communalPrice,
+                                    "subtotal": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other,
+                                    "total": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice+ ((this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other+this.bill_detail.communalPrice) * 0.07),
                                     "publishedAt": null
                                 }
                             }
@@ -866,7 +885,7 @@ export default {
                 })
         },
         submitBill() {
-            fetch('https://api.resguru.app/api' + '/room-histories?populate=*&filters[building][id][$eq]=' + this.$store.state.building + '&filters[room][id][$eq]=' + this.$route.query.id_room + '&filters[user_sign_contract][id][$eq]=' + this.$route.query.id_contract+'&filters[publishedAt][$null]=true&publicationState=preview')
+            fetch('https://api.resguru.app/api' + '/room-histories?populate=*&filters[building][id][$eq]=' + this.$store.state.building + '&filters[room][id][$eq]=' + this.$route.query.id_room + '&filters[user_sign_contract][id][$eq]=' + this.$route.query.id_contract + '&filters[publishedAt][$null]=true&publicationState=preview')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log(resp?.data.length == 0);
@@ -897,6 +916,9 @@ export default {
                                     "waterPrice": this.bill_detail.water,
                                     "electricPrice": this.bill_detail.ele,
                                     "otherPrice": this.bill_detail.other,
+                                    "communalPrice": this.bill_detail.communalPrice,
+                                    "subtotal": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other,
+                                    "total": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice+ ((this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other+this.bill_detail.communalPrice) * 0.07),
                                     "publishedAt": Date.now()
                                 }
                             }).then(() => {
@@ -934,7 +956,10 @@ export default {
                                     "waterPrice": this.bill_detail.water,
                                     "electricPrice": this.bill_detail.ele,
                                     "otherPrice": this.bill_detail.other,
-                                    "publishedAt": null
+                                    "communalPrice": this.bill_detail.communalPrice,
+                                    "subtotal": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other,
+                                    "total": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice+ ((this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other+this.bill_detail.communalPrice) * 0.07),
+                                    "publishedAt": Date.now()
                                 }
                             }
                             ).then(() => {
