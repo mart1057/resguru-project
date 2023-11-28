@@ -447,7 +447,9 @@
                     <div class="w-[100%] mt-[14px]">
                         <div class="flex justify-between w-[100%]">
                             <div class="text-custom ">ค้างชำระ</div>
-                            <div class="text-custom ">{{ bill_detail.room + bill_detail.water + bill_detail.ele + bill_detail.other+bill_detail.communalPrice }} <span class="ml-[4px] text-custom ">บาท</span>
+                            <div class="text-custom ">{{ bill_detail.room + bill_detail.water + bill_detail.ele +
+                                bill_detail.other + bill_detail.communalPrice }} <span
+                                    class="ml-[4px] text-custom ">บาท</span>
                             </div>
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]" v-for="item in items_other">
@@ -770,17 +772,17 @@ export default {
                                     })
                             }
                             else {
-                                this.tab =  resp.data[0]?.attributes.ExitType == 'Missing'?true:false,
-                                resp.data[0]?.attributes.room_detect_histories.data?.forEach((item) => {
-                                    this.items_other.push({
-                                        id: item.id,
-                                        name: item.attributes.name,
-                                        price: item.attributes.charge,
-                                        img_bf: '',
-                                        img_af: '',
-                                        remark: item.attributes.remark
+                                this.tab = resp.data[0]?.attributes.ExitType == 'Missing' ? true : false,
+                                    resp.data[0]?.attributes.room_detect_histories.data?.forEach((item) => {
+                                        this.items_other.push({
+                                            id: item.id,
+                                            name: item.attributes.name,
+                                            price: item.attributes.charge,
+                                            img_bf: '',
+                                            img_af: '',
+                                            remark: item.attributes.remark
+                                        })
                                     })
-                                })
                             }
 
                         })
@@ -818,7 +820,7 @@ export default {
                                 "users_permissions_user": this.$route.query.id_user,
                                 "date_moveout": this.date_moveout,
                                 "user_sign_contract": this.$route.query.id_contract,
-                                "ExitType":this.tab?'Missing':'Move',
+                                "ExitType": this.tab ? 'Missing' : 'Move',
                                 "publishedAt": null
                             }
                         }
@@ -842,7 +844,7 @@ export default {
                                     "otherPrice": this.bill_detail.other,
                                     "communalPrice": this.bill_detail.communalPrice,
                                     "subtotal": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other,
-                                    "total": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice+ ((this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other+this.bill_detail.communalPrice) * 0.07),
+                                    "total": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice + ((this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice) * 0.07),
                                     "publishedAt": null
                                 }
                             }
@@ -853,7 +855,7 @@ export default {
                         axios.put('https://api.resguru.app/api' + '/room-histories/' + resp?.data[0].id, {
                             data: {
                                 "date_moveout": this.date_moveout,
-                                "ExitType":this.tab?'Missing':'Move',
+                                "ExitType": this.tab ? 'Missing' : 'Move',
                                 "publishedAt": null
                             }
                         }
@@ -877,7 +879,7 @@ export default {
                                     "otherPrice": this.bill_detail.other,
                                     "communalPrice": this.bill_detail.communalPrice,
                                     "subtotal": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other,
-                                    "total": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice+ ((this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other+this.bill_detail.communalPrice) * 0.07),
+                                    "total": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice + ((this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice) * 0.07),
                                     "publishedAt": null
                                 }
                             }
@@ -885,7 +887,7 @@ export default {
                         })
 
                     }
-                }).finally(()=>{
+                }).finally(() => {
                     this.$showNotification('#3A89CB', 'บันทึกแบบร่างสำเร็จ')
                 })
         },
@@ -900,7 +902,7 @@ export default {
                                 "building": this.$store.state.building,
                                 "room": this.$route.query.id_room,
                                 "users_permissions_user": this.$route.query.id_user,
-                                "ExitType":this.tab?'Missing':'Move',
+                                "ExitType": this.tab ? 'Missing' : 'Move',
                                 "date_moveout": this.date_moveout
                             }
                         }
@@ -916,6 +918,11 @@ export default {
                                 })
                             });
                         }).finally(() => {
+                            axios.put('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract, {
+                                data: {
+                                    "room": null
+                                }
+                            })
                             axios.put('https://api.resguru.app/api' + '/tenant-bills/' + this.bill_detail.id, {
                                 data: {
                                     "roomPrice": this.bill_detail.room,
@@ -924,11 +931,12 @@ export default {
                                     "otherPrice": this.bill_detail.other,
                                     "communalPrice": this.bill_detail.communalPrice,
                                     "subtotal": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other,
-                                    "total": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice+ ((this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other+this.bill_detail.communalPrice) * 0.07),
+                                    "total": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice + ((this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice) * 0.07),
                                     "publishedAt": Date.now()
                                 }
                             }).then(() => {
-                                axios.delete('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract)
+                                console.log(this.$route.query.id_contract);
+
                             })
                             this.move_confirm = !this.move_confirm,
                                 this.move_done = true
@@ -941,7 +949,7 @@ export default {
                         axios.put('https://api.resguru.app/api' + '/room-histories/' + resp?.data[0].id, {
                             data: {
                                 "date_moveout": this.date_moveout,
-                                "ExitType":this.tab?'Missing':'Move',
+                                "ExitType": this.tab ? 'Missing' : 'Move',
                                 "publishedAt": Date.now()
                             }
                         }
@@ -957,6 +965,12 @@ export default {
                                 })
                             });
                         }).finally(() => {
+                            // axios.delete('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract)
+                            axios.put('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract, {
+                                data: {
+                                    "room": null
+                                }
+                            })
                             axios.put('https://api.resguru.app/api' + '/tenant-bills/' + this.bill_detail.id, {
                                 data: {
                                     "roomPrice": this.bill_detail.room,
@@ -965,12 +979,11 @@ export default {
                                     "otherPrice": this.bill_detail.other,
                                     "communalPrice": this.bill_detail.communalPrice,
                                     "subtotal": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other,
-                                    "total": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice+ ((this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other+this.bill_detail.communalPrice) * 0.07),
+                                    "total": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice + ((this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice) * 0.07),
                                     "publishedAt": Date.now()
                                 }
                             }
                             ).then(() => {
-                                axios.delete('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract)
                                 this.move_confirm = !this.move_confirm,
                                     this.move_done = true
                                 this.$router.push({
@@ -980,7 +993,7 @@ export default {
                         })
 
                     }
-                }).finally(()=>{
+                }).finally(() => {
                     this.$showNotification('#3A89CB', 'สำเร็จ')
                 })
         }
