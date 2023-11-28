@@ -770,6 +770,7 @@ export default {
                                     })
                             }
                             else {
+                                this.tab =  resp.data[0]?.attributes.ExitType == 'Missing'?true:false,
                                 resp.data[0]?.attributes.room_detect_histories.data?.forEach((item) => {
                                     this.items_other.push({
                                         id: item.id,
@@ -817,6 +818,7 @@ export default {
                                 "users_permissions_user": this.$route.query.id_user,
                                 "date_moveout": this.date_moveout,
                                 "user_sign_contract": this.$route.query.id_contract,
+                                "ExitType":this.tab?'Missing':'Move',
                                 "publishedAt": null
                             }
                         }
@@ -851,6 +853,7 @@ export default {
                         axios.put('https://api.resguru.app/api' + '/room-histories/' + resp?.data[0].id, {
                             data: {
                                 "date_moveout": this.date_moveout,
+                                "ExitType":this.tab?'Missing':'Move',
                                 "publishedAt": null
                             }
                         }
@@ -882,6 +885,8 @@ export default {
                         })
 
                     }
+                }).finally(()=>{
+                    this.$showNotification('#3A89CB', 'บันทึกแบบร่างสำเร็จ')
                 })
         },
         submitBill() {
@@ -895,6 +900,7 @@ export default {
                                 "building": this.$store.state.building,
                                 "room": this.$route.query.id_room,
                                 "users_permissions_user": this.$route.query.id_user,
+                                "ExitType":this.tab?'Missing':'Move',
                                 "date_moveout": this.date_moveout
                             }
                         }
@@ -935,6 +941,7 @@ export default {
                         axios.put('https://api.resguru.app/api' + '/room-histories/' + resp?.data[0].id, {
                             data: {
                                 "date_moveout": this.date_moveout,
+                                "ExitType":this.tab?'Missing':'Move',
                                 "publishedAt": Date.now()
                             }
                         }
@@ -973,6 +980,8 @@ export default {
                         })
 
                     }
+                }).finally(()=>{
+                    this.$showNotification('#3A89CB', 'สำเร็จ')
                 })
         }
     }
