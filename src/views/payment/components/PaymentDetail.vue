@@ -222,19 +222,53 @@
                                 {{ tr.attributes.invoiceNumber }}
                             </vs-td>
                             <vs-td>
-                               <vs-input  v-model="tr.attributes.roomPrice"/> 
+                                <div v-if="tr.attributes.paymentStatus==='Paid' || tr.attributes.paymentStatus==='Partial Paid'|| tr.attributes.paymentStatus==='Waiting Review'  ">
+                                    <vs-input disabled  v-model="tr.attributes.roomPrice" @change="updateRoomPriceInvoice(tr.id,tr.attributes.roomPrice)"/> 
+                                </div>
+                                <div v-else>
+                                    <vs-input v-model="tr.attributes.roomPrice" @change="updateRoomPriceInvoice(tr.id,tr.attributes.roomPrice)"/> 
+                                </div>
                             </vs-td>
                             <vs-td>
-                                <vs-input  v-model="tr.attributes.waterPrice"/>  
+                                <div v-if="tr.attributes.paymentStatus==='Paid' || tr.attributes.paymentStatus==='Partial Paid'|| tr.attributes.paymentStatus==='Waiting Review'  ">
+                                    <vs-input disabled  v-model="tr.attributes.waterPrice" @change="updateWaterPriceInvoice(tr.id,tr.attributes.waterPrice)"/>  
+                                </div>
+                                <div v-else>
+                                    <vs-input  v-model="tr.attributes.waterPrice" @change="updateWaterPriceInvoice(tr.id,tr.attributes.waterPrice)"/>  
+                                </div>
+                                
                             </vs-td>
                             <vs-td>
-                                <vs-input  v-model="tr.attributes.electricPrice"/>  
+                                <div v-if="tr.attributes.paymentStatus==='Paid' || tr.attributes.paymentStatus==='Partial Paid'|| tr.attributes.paymentStatus==='Waiting Review'  ">
+                                    
+                                     <vs-input disabled  v-model="tr.attributes.electricPrice" @change="updateElecPriceInvoice(tr.id,tr.attributes.electricPrice)"/>  
+                                </div>
+                                <div v-else>
+
+                                    <vs-input  v-model="tr.attributes.electricPrice" @change="updateElecPriceInvoice(tr.id,tr.attributes.electricPrice)"/>  
+                                </div>
+                                
                             </vs-td>
                             <vs-td>
-                                <vs-input  v-model="tr.attributes.communalPrice"/>  
+                                <div v-if="tr.attributes.paymentStatus==='Paid' || tr.attributes.paymentStatus==='Partial Paid' || tr.attributes.paymentStatus==='Waiting Review' ">
+                                    
+                                    <vs-input disabled v-model="tr.attributes.communalPrice" @change="updateCommunualPriceInvoice(tr.id,tr.attributes.communalPrice)"/>  
+                               </div>
+                               <div v-else>
+
+                                     <vs-input  v-model="tr.attributes.communalPrice" @change="updateCommunualPriceInvoice(tr.id,tr.attributes.communalPrice)"/>  
+                               </div>
+                               
                             </vs-td>
                             <vs-td>
-                                <vs-input  v-model="tr.attributes.otherPrice"/>  
+                                <div v-if="tr.attributes.paymentStatus==='Paid' || tr.attributes.paymentStatus==='Partial Paid' || tr.attributes.paymentStatus==='Waiting Review' ">
+                                    
+                                     <vs-input disabled  v-model="tr.attributes.otherPrice" @change="updateOtherInvoice(tr.id,tr.attributes.otherPrice)"/> 
+                               </div>
+                               <div v-else>
+
+                                    <vs-input  v-model="tr.attributes.otherPrice" @change="updateOtherInvoice(tr.id,tr.attributes.otherPrice)"/> 
+                               </div> 
                             </vs-td>
                             <vs-td>
                                 <!-- <vs-input  v-model="tr.attributes.total"/>   -->
@@ -372,7 +406,7 @@
                                 {{ tr.attributes.createdAt }} 
                             </vs-td>
                             <vs-td>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                <svg @click="PDFPrintReceipt(tr)" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_2691_23279" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="24" height="24">
@@ -460,8 +494,9 @@
                         </vs-tr>
                     </template>
                 </vs-table>
-            </div>
+            </div> <div><PDFgenerator ref="childComponentPDFReceipt"/></div>
         </div>
+        
         <b-modal centered v-model="createFullpayment" size="l" hide-backdrop hide-header-close hide-header hide-footer
                     class="p-[-20px] text-custom">
                     <div>
@@ -665,9 +700,10 @@
 import axios from 'axios'
 import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import download from 'downloadjs';
-
+import PDFgenerator from '@/views/payment/components/PDFgeneratorReceipt'
 
 export default {
+    components:{PDFgenerator},
     data() {
         return {
             popup_filter: false,
@@ -773,6 +809,81 @@ export default {
         routeTo(path) {
             this.$router.push({
                 path: path,
+            })
+        },
+        updateRoomPriceInvoice(invoiceid,value){
+            axios.put('https://api.resguru.app/api/tenant-bills/' + invoiceid, {
+                data: {
+                    roomPrice: value,
+                }
+            })
+            .then( (res) => {
+                this.$showNotification('#3A89CB', 'Update Room Price Success')
+                }   
+            )
+            .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+            })
+        },
+        updateWaterPriceInvoice(invoiceid,value){
+            axios.put('https://api.resguru.app/api/tenant-bills/' + invoiceid, {
+                data: {
+                    waterPrice: value,
+                }
+            })
+            .then( (res) => {
+                this.$showNotification('#3A89CB', 'Update Water Price Success')
+                }   
+            )
+            .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+            })
+        },
+        updateElecPriceInvoice(invoiceid,value){
+            axios.put('https://api.resguru.app/api/tenant-bills/' + invoiceid, {
+                data: {
+                    electricPrice: value,
+                }
+            })
+            .then( (res) => {
+                this.$showNotification('#3A89CB', 'Update Electric Price Success')
+                }   
+            )
+            .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+            })
+        },
+        updateCommunualPriceInvoice(invoiceid,value){
+            axios.put('https://api.resguru.app/api/tenant-bills/' + invoiceid, {
+                data: {
+                    communalPrice: value,
+                }
+            })
+            .then( (res) => {
+                this.$showNotification('#3A89CB', 'Update Communal Price Success')
+                }   
+            )
+            .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+            })
+        },
+        updateOtherInvoice(invoiceid,value){
+            axios.put('https://api.resguru.app/api/tenant-bills/' + invoiceid, {
+                data: {
+                    otherPrice: value,
+                }
+            })
+            .then( (res) => {
+                this.$showNotification('#3A89CB', 'Update Other Price Success')
+                }   
+            )
+            .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
             })
         },
         getUserProfile() {
@@ -1031,6 +1142,9 @@ export default {
                 const errorMessage = error.message ? error.message : 'Error updating information';
                 this.$showNotification('danger', errorMessage); 
             })
+        },
+        async PDFPrintReceipt(tr){
+            this.$refs.childComponentPDFReceipt.generatePDF(tr)
         },
         async PDFPrint(){
                 // Fetch an existing PDF document
