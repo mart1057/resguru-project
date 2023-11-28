@@ -186,7 +186,7 @@
                                             tr.user_sign_contract.users_permissions_user.lastName }}
                                     </div>
                                     <div v-else>
-                                        ยังไม่มีเช่า
+                                        ยังไม่มีผู้เช่า
                                     </div>
                                 </div>
                             </vs-td>
@@ -306,7 +306,7 @@
 
                                     <!--  Need to add option for select here -->
                                 </div>
-                                <div v-else-if="tr.tenant_bills[0] && tr.tenant_bills[0].paymentStatus === 'Paid'">
+                                <div v-else-if="tr.tenant_bills[0] && (tr.tenant_bills[0].paymentStatus === 'Paid' || tr.tenant_bills[0].paymentStatus === 'In Review Progress')">
                                     <vs-select placeholder="เมนู" v-model="tr.tenant_bills[0].lastEvent" @change="selectMenu(tr.tenant_bills[0].lastEvent,tr)">
                                             <vs-option label="เลือกเมนู" value="">
                                             เลือกเมนู
@@ -436,7 +436,9 @@
                                     class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
                                     อัพโหลดรูปภาพ</div>
                             </label>
-                            <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            <div v-if="this.fileFullPayment.name" class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                                {{this.fileFullPayment.name}}</div>
+                            <div v-else class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                 ยังไม่ได้เลือกไฟล์</div>
                         </div>
                     </div>
@@ -548,7 +550,9 @@
                                     class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
                                     อัพโหลดรูปภาพ</div>
                             </label>
-                            <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            <div v-if="this.file.name" class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                                {{this.file.name}}</div>
+                            <div v-else class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                 ยังไม่ได้เลือกไฟล์</div>
                         </div>
                     </div>
@@ -675,6 +679,26 @@ export default {
             else if(menu_option === 'View'){
                this.routeTo(roomdata.user_sign_contract.id)
             }
+            else if(menu_option === 'Update'){
+                this.reGenerateInvoice(roomdata.tenant_bills[0].id)
+            }
+        },
+        reGenerateInvoice(invoiceID){
+            console.log("Invoice",invoiceID)
+            console.log("building",this.$store.state.building)
+            const currentdate = new Date()
+            const month = currentdate.getMonth()
+            const year = currentdate.getFullYear()
+
+            axios.get(`https://api.resguru.app/api/regenerateinvoice?buildingid=${this.$store.state.building}&invoiceid=${invoiceID}&month=${month}&year=${year}`)
+                .then( (response) =>{
+                        this.$showNotification('#3A89CB', response.data.meta.message)
+                    })
+                .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+                console.log(error)
+                })
         },
         createFullPayment() {
             axios.post("https://api.resguru.app/api/tenant-evidence-payments", {
@@ -694,7 +718,7 @@ export default {
                         console.log("Response Evidence ID", resp.data.data.id)
                         axios.put("https://api.resguru.app/api/tenant-bills/" + this.fullPaymentForm.invoiceID, {
                             data: {
-                                paymentStatus: "Paid"
+                                paymentStatus: "Waiting Review"
                             }
                         }).then((res) => { console.log("Response in Edit Invoice", res) })
 
@@ -724,7 +748,7 @@ export default {
                 .finally(()=>{
                     this.$showNotification('#3A89CB', 'Update Service Success')
                  })
-            this.createPartialPayment = false
+            this.createFullpayment = false
 
         },
         createPartial() {
@@ -745,7 +769,7 @@ export default {
                         console.log("Response Evidence ID", resp.data.data.id)
                         axios.put("https://api.resguru.app/api/tenant-bills/" + this.partialPaymentForm.invoiceID, {
                             data: {
-                                paymentStatus: "Partial Paid"
+                                paymentStatus: "Waiting Review"
                             }
                         }).then((res) => { console.log("Response in Edit Invoice", res) })
 
