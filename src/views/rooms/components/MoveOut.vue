@@ -44,19 +44,32 @@
         <div class="w-[100%] h-[1px]  mt-[34px] mb-[34px] bg-gray-200 border-0 dark:bg-gray-700"></div>
         <div class="">
             <div class="font-bold text-[16px]">ยอดค้างชำระ</div>
-            <div class="flex flex-col justify-between w-[339px] h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
-                <div>คงเหลือ</div>
-                <div class="text-[#D44769] font-bold text-[16px]">4,500</div>
+            <div class="grid grid-cols-4">
+                <div class="flex flex-col justify-between w-[339px] h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
+                    <div>คงเหลือ</div>
+                    <div class="text-[#D44769] font-bold text-[16px]">{{ list_debt.total }}</div>
+                </div>
+                <div class="flex flex-col justify-between w-[339px] h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
+                    <div>เงินมัดจำ</div>
+                    <div class="text-[#D44769] font-bold text-[16px]">{{ list_debt.deposit }}</div>
+                </div>
+                <div class="flex flex-col justify-between w-[339px] h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
+                    <div>เงินประกัน</div>
+                    <div class="text-[#D44769] font-bold text-[16px]">{{ list_debt.deposit2 }}</div>
+                </div>
             </div>
+
         </div>
         <div class="w-[100%] h-[1px]  mt-[34px] mb-[34px] bg-gray-200 border-0 dark:bg-gray-700"></div>
         <div class="mt-[24px]">
             <div class="text-[18px] text-[#141629] text-custom font-bold">รายการตรวจจับ</div>
         </div>
         <div class="mt-[14px]">
-            <div class="flex">
-                <div class=""><svg width="70" height="82" viewBox="0 0 70 82" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
+            <!-- /////////////////////////////////// items ///////////////////////////////// -->
+            <div class="flex" v-for="item in items_other">
+                <div class="">
+                    <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        v-if="item.name == 'ค่าทาสีผนัง'">
                         <g filter="url(#filter0_d_2182_22275)">
                             <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
                             <mask id="mask0_2182_22275" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11" y="17"
@@ -85,73 +98,82 @@
                             </filter>
                         </defs>
                     </svg>
-                </div>
-                <div class="flex justify-start items-center text-[16px] font-bold text-custom text-[#003765] w-[150px]">
-                    ค่าทีสีผนัง</div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px]">ค่าปรับกรณีเสียหาย (บาท)</div>
-                    <div><input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" type="input" />
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนเข้าหอพัก
-                    </div>
-                    <div class="flex mt-[12px]">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" />
-                        <label for="upload">
-                            <div
-                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
-                        </label>
-
-                        <!-- <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนย้ายออก
-                    </div>
-                    <div class="flex mt-[12px]">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" />
-                        <label for="upload">
-                            <div
-                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
-                        </label>
-
-                        <!-- <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-start ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start items-start">หมายเหตุ</div>
-                    <div><input class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="mt-[14px]">
-            <div class="flex">
-                <div class=""><svg width="70" height="82" viewBox="0 0 70 82" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <g filter="url(#filter0_d_2182_22306)">
+                    <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        v-else-if="item.name == 'โทรทัศน์' || item.name == 'ทีวี'">
+                        <g filter="url(#filter0_d_3063_30664)">
                             <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
-                            <mask id="mask0_2182_22306" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="13" y="19"
+                            <mask id="mask0_3063_30664" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11" y="17"
+                                width="44" height="44">
+                                <rect x="11" y="17" width="44" height="44" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_3063_30664)">
+                                <path
+                                    d="M21.4048 50.9166L20.4493 53.6242C20.4019 53.7572 20.319 53.868 20.2005 53.9566C20.082 54.0453 19.9432 54.0896 19.7842 54.0896H19.5797C19.3979 54.0896 19.2389 54.0209 19.1026 53.8834C18.9663 53.7459 18.8981 53.5854 18.8981 53.4021V50.9166C17.9867 50.9166 17.2065 50.5921 16.5575 49.943C15.9085 49.294 15.584 48.5138 15.584 47.6025V28.5641C15.584 27.6527 15.9085 26.8725 16.5575 26.2235C17.2065 25.5745 17.9867 25.25 18.8981 25.25H47.1031C48.0145 25.25 48.7947 25.5745 49.4437 26.2235C50.0927 26.8725 50.4172 27.6527 50.4172 28.5641V47.6025C50.4172 48.5145 50.0927 49.2953 49.4437 49.9448C48.7947 50.5943 48.0145 50.919 47.1031 50.919V53.4479C47.1031 53.628 47.0412 53.78 46.9174 53.9039C46.7936 54.0277 46.6416 54.0896 46.4615 54.0896H46.2147C46.0737 54.0896 45.9444 54.0504 45.8269 53.9719C45.7094 53.8934 45.6271 53.7869 45.5801 53.6524L44.6599 50.9166H21.4048ZM18.8981 48.1666H47.1031C47.2677 48.1666 47.4028 48.1137 47.5086 48.0079C47.6144 47.9022 47.6673 47.767 47.6673 47.6025V28.5641C47.6673 28.3996 47.6144 28.2644 47.5086 28.1586C47.4028 28.0528 47.2677 28 47.1031 28H18.8981C18.7336 28 18.5984 28.0528 18.4926 28.1586C18.3868 28.2644 18.3339 28.3996 18.3339 28.5641V47.6025C18.3339 47.767 18.3868 47.9022 18.4926 48.0079C18.5984 48.1137 18.7336 48.1666 18.8981 48.1666Z"
+                                    fill="white" />
+                            </g>
+                        </g>
+                        <defs>
+                            <filter id="filter0_d_3063_30664" x="0" y="0" width="70" height="82"
+                                filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                <feColorMatrix in="SourceAlpha" type="matrix"
+                                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                <feOffset dx="2" dy="2" />
+                                <feGaussianBlur stdDeviation="4" />
+                                <feComposite in2="hardAlpha" operator="out" />
+                                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
+                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3063_30664" />
+                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3063_30664"
+                                    result="shape" />
+                            </filter>
+                        </defs>
+                    </svg>
+                    <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        v-else-if="item.name == 'เตียง'">
+                        <g filter="url(#filter0_d_3063_30696)">
+                            <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
+                            <mask id="mask0_3063_30696" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11" y="17"
+                                width="44" height="44">
+                                <rect x="11" y="17" width="44" height="44" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_3063_30696)">
+                                <path
+                                    d="M16.9583 50.9167C16.5686 50.9167 16.2421 50.785 15.9789 50.5214C15.7156 50.2579 15.584 49.9313 15.584 49.5417V40.8334C15.584 40.1495 15.7462 39.4861 16.0706 38.8432C16.3949 38.2004 16.8438 37.6721 17.4173 37.2585V32.5835C17.4173 31.3025 17.861 30.2184 18.7482 29.3312C19.6355 28.4439 20.7197 28.0002 22.0006 28.0002H29.7923C30.4598 28.0002 31.058 28.1301 31.5868 28.3898C32.1157 28.6495 32.5869 29.0086 33.0006 29.4669C33.4143 29.0086 33.8855 28.6495 34.4144 28.3898C34.9432 28.1301 35.5414 28.0002 36.2089 28.0002H44.0006C45.2816 28.0002 46.3657 28.4439 47.253 29.3312C48.1403 30.2184 48.5839 31.3025 48.5839 32.5835V37.2585C49.1574 37.6721 49.6063 38.2004 49.9307 38.8432C50.255 39.4861 50.4172 40.1495 50.4172 40.8334V49.5417C50.4172 49.9313 50.2854 50.2579 50.0217 50.5214C49.7581 50.785 49.4314 50.9167 49.0416 50.9167C48.6519 50.9167 48.3254 50.785 48.0621 50.5214C47.7989 50.2579 47.6673 49.9313 47.6673 49.5417V47.2501H18.3339V49.5417C18.3339 49.9313 18.2021 50.2579 17.9384 50.5214C17.6748 50.785 17.3481 50.9167 16.9583 50.9167ZM34.3756 36.2502H45.8339V32.5835C45.8339 32.064 45.6583 31.6286 45.3069 31.2772C44.9555 30.9258 44.5201 30.7502 44.0006 30.7502H36.2089C35.6895 30.7502 35.254 30.9258 34.9026 31.2772C34.5513 31.6286 34.3756 32.064 34.3756 32.5835V36.2502ZM20.1673 36.2502H31.6257V32.5835C31.6257 32.064 31.45 31.6286 31.0986 31.2772C30.7472 30.9258 30.3118 30.7502 29.7923 30.7502H22.0006C21.4812 30.7502 21.0457 30.9258 20.6944 31.2772C20.343 31.6286 20.1673 32.064 20.1673 32.5835V36.2502ZM18.3339 44.5001H47.6673V40.8334C47.6673 40.314 47.4916 39.8786 47.1402 39.5272C46.7888 39.1758 46.3534 39.0001 45.8339 39.0001H20.1673C19.6478 39.0001 19.2124 39.1758 18.861 39.5272C18.5096 39.8786 18.3339 40.314 18.3339 40.8334V44.5001Z"
+                                    fill="white" />
+                            </g>
+                        </g>
+                        <defs>
+                            <filter id="filter0_d_3063_30696" x="0" y="0" width="70" height="82"
+                                filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                <feColorMatrix in="SourceAlpha" type="matrix"
+                                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                <feOffset dx="2" dy="2" />
+                                <feGaussianBlur stdDeviation="4" />
+                                <feComposite in2="hardAlpha" operator="out" />
+                                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
+                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3063_30696" />
+                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3063_30696"
+                                    result="shape" />
+                            </filter>
+                        </defs>
+                    </svg>
+                    <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg"
+                        v-else-if="item.name == 'ค่าทำความสะอาด'">
+                        <g filter="url(#filter0_d_3063_30791)">
+                            <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
+                            <mask id="mask0_3063_30791" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="13" y="19"
                                 width="40" height="40">
                                 <rect x="13" y="19" width="40" height="40" fill="#D9D9D9" />
                             </mask>
-                            <g mask="url(#mask0_2182_22306)">
+                            <g mask="url(#mask0_3063_30791)">
                                 <path
                                     d="M31.0761 37.7499H34.9223V25.8268C34.9223 25.2905 34.7359 24.8359 34.363 24.463C33.9902 24.0902 33.5356 23.9037 32.9992 23.9037C32.4629 23.9037 32.0083 24.0902 31.6354 24.463C31.2626 24.8359 31.0761 25.2905 31.0761 25.8268V37.7499ZM21.2364 44.0961H44.7621V40.7627C44.7621 40.6131 44.714 40.4903 44.6178 40.3941C44.5216 40.2979 44.3988 40.2499 44.2492 40.2499H21.7493C21.5997 40.2499 21.4768 40.2979 21.3806 40.3941C21.2845 40.4903 21.2364 40.6131 21.2364 40.7627V44.0961ZM19.3646 54.0961H23.5762V50.346C23.5762 49.9919 23.696 49.695 23.9357 49.4554C24.1754 49.2159 24.4724 49.0961 24.8267 49.0961C25.181 49.0961 25.4778 49.2159 25.7172 49.4554C25.9565 49.695 26.0761 49.9919 26.0761 50.346V54.0961H31.7493V50.346C31.7493 49.9919 31.8691 49.695 32.1088 49.4554C32.3485 49.2159 32.6455 49.0961 32.9998 49.0961C33.3541 49.0961 33.6509 49.2159 33.8902 49.4554C34.1295 49.695 34.2492 49.9919 34.2492 50.346V54.0961H39.9223V50.346C39.9223 49.9919 40.0422 49.695 40.2818 49.4554C40.5215 49.2159 40.8185 49.0961 41.1728 49.0961C41.5271 49.0961 41.824 49.2159 42.0633 49.4554C42.3026 49.695 42.4223 49.9919 42.4223 50.346V54.0961H46.6338C46.8047 54.0961 46.9437 54.0293 47.0505 53.8957C47.1573 53.7622 47.1841 53.6153 47.1306 53.455L45.2716 46.596H20.7268L18.8678 53.455C18.8144 53.6153 18.8411 53.7622 18.9479 53.8957C19.0548 54.0293 19.1937 54.0961 19.3646 54.0961ZM46.762 56.596H19.2364C18.292 56.596 17.5238 56.2189 16.932 55.4646C16.3401 54.7103 16.1723 53.8695 16.4288 52.9422L18.7365 44.3685V40.6666C18.7365 39.8567 19.0201 39.1682 19.5874 38.6009C20.1547 38.0336 20.8433 37.7499 21.6531 37.7499H28.5762V25.8268C28.5762 24.5982 29.0062 23.5539 29.8662 22.6939C30.7263 21.8338 31.7706 21.4038 32.9992 21.4038C34.2278 21.4038 35.2722 21.8338 36.1322 22.6939C36.9922 23.5539 37.4223 24.5982 37.4223 25.8268V37.7499H44.3453C45.1552 37.7499 45.8437 38.0336 46.4111 38.6009C46.9783 39.1682 47.262 39.8567 47.262 40.6666V44.3685L49.5697 52.9742C49.8774 53.8909 49.731 54.7237 49.1306 55.4726C48.5302 56.2215 47.7406 56.596 46.762 56.596Z"
                                     fill="white" />
                             </g>
                         </g>
                         <defs>
-                            <filter id="filter0_d_2182_22306" x="0" y="0" width="70" height="82"
+                            <filter id="filter0_d_3063_30791" x="0" y="0" width="70" height="82"
                                 filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
                                 <feFlood flood-opacity="0" result="BackgroundImageFix" />
                                 <feColorMatrix in="SourceAlpha" type="matrix"
@@ -160,79 +182,21 @@
                                 <feGaussianBlur stdDeviation="4" />
                                 <feComposite in2="hardAlpha" operator="out" />
                                 <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
-                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2182_22306" />
-                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2182_22306"
+                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3063_30791" />
+                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3063_30791"
                                     result="shape" />
                             </filter>
                         </defs>
                     </svg>
-
-                </div>
-                <div class="flex justify-start items-center text-[16px] font-bold text-custom text-[#003765] w-[150px]">
-                    ค่าทำความสะอาด</div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px]">ค่าปรับกรณีเสียหาย (บาท)</div>
-                    <div><input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" type="input" />
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนเข้าหอพัก
-                    </div>
-                    <div class="flex mt-[12px]">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" />
-                        <label for="upload">
-                            <div
-                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
-                        </label>
-                        <!-- <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนย้ายออก
-                    </div>
-                    <div class="flex mt-[12px]">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" />
-                        <label for="upload">
-                            <div
-                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
-                        </label>
-
-                        <!-- <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-start ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start items-start">หมายเหตุ</div>
-                    <div><input class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="mt-[14px]">
-            <div class="flex">
-                <div class=""><svg width="70" height="82" viewBox="0 0 70 82" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <g filter="url(#filter0_d_2182_22179)">
+                    <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg" v-else>
+                        <g filter="url(#filter0_d_3063_30728)">
                             <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
-                            <mask id="mask0_2182_22179" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11" y="17"
-                                width="44" height="44">
-                                <rect x="11" y="17" width="44" height="44" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_2182_22179)">
-                                <path
-                                    d="M21.4028 50.9166L20.4474 53.6242C20.4 53.7572 20.317 53.868 20.1985 53.9566C20.08 54.0453 19.9412 54.0896 19.7822 54.0896H19.5777C19.396 54.0896 19.2369 54.0209 19.1006 53.8834C18.9643 53.7459 18.8961 53.5854 18.8961 53.4021V50.9166C17.9848 50.9166 17.2046 50.5921 16.5556 49.943C15.9065 49.294 15.582 48.5138 15.582 47.6025V28.5641C15.582 27.6527 15.9065 26.8725 16.5556 26.2235C17.2046 25.5745 17.9848 25.25 18.8961 25.25H47.1012C48.0125 25.25 48.7927 25.5745 49.4417 26.2235C50.0908 26.8725 50.4153 27.6527 50.4153 28.5641V47.6025C50.4153 48.5145 50.0908 49.2953 49.4417 49.9448C48.7927 50.5943 48.0125 50.919 47.1012 50.919V53.4479C47.1012 53.628 47.0393 53.78 46.9154 53.9039C46.7916 54.0277 46.6396 54.0896 46.4595 54.0896H46.2127C46.0717 54.0896 45.9425 54.0504 45.8249 53.9719C45.7074 53.8934 45.6251 53.7869 45.5781 53.6524L44.658 50.9166H21.4028ZM18.8961 48.1666H47.1012C47.2657 48.1666 47.4009 48.1137 47.5067 48.0079C47.6124 47.9022 47.6653 47.767 47.6653 47.6025V28.5641C47.6653 28.3996 47.6124 28.2644 47.5067 28.1586C47.4009 28.0528 47.2657 28 47.1012 28H18.8961C18.7316 28 18.5964 28.0528 18.4907 28.1586C18.3849 28.2644 18.332 28.3996 18.332 28.5641V47.6025C18.332 47.767 18.3849 47.9022 18.4907 48.0079C18.5964 48.1137 18.7316 48.1666 18.8961 48.1666Z"
-                                    fill="white" />
-                            </g>
+                            <ellipse cx="20.1667" cy="38.9999" rx="3.66667" ry="3.66667" fill="white" />
+                            <circle cx="33.0006" cy="38.9999" r="3.66667" fill="white" />
+                            <ellipse cx="45.8327" cy="38.9999" rx="3.66667" ry="3.66667" fill="white" />
                         </g>
                         <defs>
-                            <filter id="filter0_d_2182_22179" x="0" y="0" width="70" height="82"
+                            <filter id="filter0_d_3063_30728" x="0" y="0" width="70" height="82"
                                 filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
                                 <feFlood flood-opacity="0" result="BackgroundImageFix" />
                                 <feColorMatrix in="SourceAlpha" type="matrix"
@@ -241,159 +205,91 @@
                                 <feGaussianBlur stdDeviation="4" />
                                 <feComposite in2="hardAlpha" operator="out" />
                                 <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
-                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2182_22179" />
-                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2182_22179"
+                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_3063_30728" />
+                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3063_30728"
                                     result="shape" />
                             </filter>
                         </defs>
                     </svg>
                 </div>
                 <div class="flex justify-start items-center text-[16px] font-bold text-custom text-[#003765] w-[150px]">
-                    โทรทัศน์</div>
+                    {{ item.name }}</div>
                 <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px]">ค่าปรับกรณีเสียหาย (บาท)</div>
-                    <div><input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" type="input" />
+                    <div class="flex flex-col justify-between h-[50%]">
+                        <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">ค่าปรับกรณีเสียหาย
+                            (บาท)
+                        </div>
+                        <div class="flex mt-[4px]">
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" v-model="item.price"
+                                type="input" />
+                        </div>
                     </div>
                 </div>
                 <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนเข้าหอพัก
-                    </div>
-                    <div class="flex mt-[12px]">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" />
-                        <label for="upload">
-                            <div
-                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
-                        </label>
+                    <div class="flex flex-col justify-between h-[50%]">
+                        <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนเข้าหอพัก
+                        </div>
+                        <div class="flex mt-[12px]">
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
+                                type="file" />
+                            <label for="upload">
+                                <div
+                                    class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
+                                    อัพโหลดรูปภาพ</div>
+                            </label>
 
-                        <!-- <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
+                            <!-- <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            ยังไม่ได้เลือกไฟล์</div> -->
+                        </div>
                     </div>
                 </div>
                 <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนย้ายออก
-                    </div>
-                    <div class="flex mt-[12px]">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" />
-                        <label for="upload">
-                            <div
-                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
-                        </label>
+                    <div class="flex flex-col justify-between h-[50%]">
+                        <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนย้ายออก
+                        </div>
+                        <div class="flex mt-[12px]">
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
+                                type="file" />
+                            <label for="upload">
+                                <div
+                                    class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
+                                    อัพโหลดรูปภาพ</div>
+                            </label>
 
-                        <!-- <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
+                            <!-- <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            ยังไม่ได้เลือกไฟล์</div> -->
+                        </div>
                     </div>
+
                 </div>
                 <div class="flex flex-col justify-center items-start ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start items-start">หมายเหตุ</div>
-                    <div><input class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                    <div class="flex flex-col justify-between h-[50%]">
+                        <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">หมายเหตุ
+                        </div>
+                        <div class="mt-[12px]">
+                            <select class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt"
+                                type="input" v-model="item.remark"
+                                @change="item.remark == 'ไม่เสียหาย' ? item.price = 0 : item.price = item.price">
+                                <option value="รอซ่อม">รอซ่อม</option>
+                                <option value="เสียหาย">เสียหาย</option>
+                                <option value="ไม่เสียหาย">ไม่เสียหาย</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="mt-[14px]">
-            <div class="flex">
-                <div class=""><svg width="70" height="82" viewBox="0 0 70 82" fill="none"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <g filter="url(#filter0_d_2182_22211)">
-                            <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
-                            <mask id="mask0_2182_22211" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11" y="17"
-                                width="44" height="44">
-                                <rect x="11" y="17" width="44" height="44" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_2182_22211)">
-                                <path
-                                    d="M16.9564 50.9167C16.5667 50.9167 16.2402 50.785 15.9769 50.5214C15.7137 50.2579 15.582 49.9313 15.582 49.5417V40.8334C15.582 40.1495 15.7442 39.4861 16.0686 38.8432C16.3929 38.2004 16.8419 37.6721 17.4154 37.2585V32.5835C17.4154 31.3025 17.859 30.2184 18.7463 29.3312C19.6336 28.4439 20.7177 28.0002 21.9987 28.0002H29.7904C30.4579 28.0002 31.0561 28.1301 31.5849 28.3898C32.1137 28.6495 32.585 29.0086 32.9987 29.4669C33.4123 29.0086 33.8836 28.6495 34.4124 28.3898C34.9413 28.1301 35.5394 28.0002 36.2069 28.0002H43.9987C45.2796 28.0002 46.3637 28.4439 47.251 29.3312C48.1383 30.2184 48.5819 31.3025 48.5819 32.5835V37.2585C49.1554 37.6721 49.6044 38.2004 49.9287 38.8432C50.2531 39.4861 50.4153 40.1495 50.4153 40.8334V49.5417C50.4153 49.9313 50.2834 50.2579 50.0198 50.5214C49.7561 50.785 49.4294 50.9167 49.0397 50.9167C48.6499 50.9167 48.3234 50.785 48.0602 50.5214C47.7969 50.2579 47.6653 49.9313 47.6653 49.5417V47.2501H18.332V49.5417C18.332 49.9313 18.2002 50.2579 17.9365 50.5214C17.6729 50.785 17.3462 50.9167 16.9564 50.9167ZM34.3736 36.2502H45.832V32.5835C45.832 32.064 45.6563 31.6286 45.3049 31.2772C44.9535 30.9258 44.5181 30.7502 43.9987 30.7502H36.2069C35.6875 30.7502 35.2521 30.9258 34.9007 31.2772C34.5493 31.6286 34.3736 32.064 34.3736 32.5835V36.2502ZM20.1653 36.2502H31.6237V32.5835C31.6237 32.064 31.448 31.6286 31.0966 31.2772C30.7452 30.9258 30.3098 30.7502 29.7904 30.7502H21.9987C21.4792 30.7502 21.0438 30.9258 20.6924 31.2772C20.341 31.6286 20.1653 32.064 20.1653 32.5835V36.2502ZM18.332 44.5001H47.6653V40.8334C47.6653 40.314 47.4896 39.8786 47.1382 39.5272C46.7869 39.1758 46.3514 39.0001 45.832 39.0001H20.1653C19.6459 39.0001 19.2105 39.1758 18.8591 39.5272C18.5077 39.8786 18.332 40.314 18.332 40.8334V44.5001Z"
-                                    fill="white" />
-                            </g>
-                        </g>
-                        <defs>
-                            <filter id="filter0_d_2182_22211" x="0" y="0" width="70" height="82"
-                                filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                                <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                                <feColorMatrix in="SourceAlpha" type="matrix"
-                                    values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                                <feOffset dx="2" dy="2" />
-                                <feGaussianBlur stdDeviation="4" />
-                                <feComposite in2="hardAlpha" operator="out" />
-                                <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
-                                <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2182_22211" />
-                                <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2182_22211"
-                                    result="shape" />
-                            </filter>
-                        </defs>
-                    </svg>
-
-                </div>
-                <div class="flex justify-start items-center text-[16px] font-bold text-custom text-[#003765] w-[150px]">
-                    เตียง</div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px]">ค่าปรับกรณีเสียหาย (บาท)</div>
-                    <div><input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" type="input" />
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนเข้าหอพัก
-                    </div>
-                    <div class="flex mt-[12px]">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" />
-                        <label for="upload">
-                            <div
-                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
-                        </label>
-
-                        <!-- <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-center ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนย้ายออก
-                    </div>
-                    <div class="flex mt-[12px]">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" hidden
-                            type="file" />
-                        <label for="upload">
-                            <div
-                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
-                        </label>
-
-                        <!-- <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
-                    </div>
-                </div>
-                <div class="flex flex-col justify-center items-start ml-[50px]">
-                    <div class="font-bold text-custom text-[12px] flex justify-start items-start">หมายเหตุ</div>
-                    <div><input class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
-                    </div>
-                </div>
+            <div class="mt-[12px]">
+                <select class="h-[40px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt" type="input"
+                    v-model="value_item" @change="addItem(value_item)">
+                    <option value="" disabled>เพิ่มรายการ</option>
+                    <option v-for="item in list_items" :value="item.name">{{ item.name }}</option>
+                </select>
             </div>
-            <button class="bg-[#165D98] w-[178px] rounded-[12px] flex justify-center items-center pt-[6px] pb-[6px]">
-                <div class="flex">
-                    <div class="flex justify-center items-center "><svg width="14" height="13" viewBox="0 0 14 13"
-                            fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path
-                                d="M6.99968 12.6875C6.8048 12.6875 6.64155 12.6216 6.50993 12.4898C6.37831 12.3581 6.3125 12.1948 6.3125 12V7.18746H1.49998C1.30519 7.18746 1.14191 7.12155 1.01016 6.98973C0.878385 6.8579 0.8125 6.69455 0.8125 6.49968C0.8125 6.3048 0.878385 6.14155 1.01016 6.00993C1.14191 5.87831 1.30519 5.8125 1.49998 5.8125H6.3125V0.999977C6.3125 0.805185 6.37841 0.641904 6.51023 0.510133C6.64206 0.378378 6.80541 0.3125 7.00028 0.3125C7.19516 0.3125 7.35841 0.378378 7.49003 0.510133C7.62165 0.641904 7.68745 0.805185 7.68745 0.999977V5.8125H12.5C12.6948 5.8125 12.8581 5.87841 12.9898 6.01023C13.1216 6.14206 13.1875 6.30541 13.1875 6.50028C13.1875 6.69516 13.1216 6.85841 12.9898 6.99003C12.8581 7.12164 12.6948 7.18746 12.5 7.18746H7.68745V12C7.68745 12.1948 7.62155 12.3581 7.48973 12.4898C7.3579 12.6216 7.19455 12.6875 6.99968 12.6875Z"
-                                fill="white" />
-                        </svg>
-                    </div>
-                    <div class="text-[white] ml-[4px]">เพิ่มรายการ</div>
-                </div>
-            </button>
             <div class="w-[100%] h-[1px]  mt-[34px] mb-[34px] bg-gray-200 border-0 dark:bg-gray-700"></div>
             <div class="flex w-[100%]">
                 <div class="w-[40%]">
-                    <div class="font-bold text-[16px]">ยอดค้างชำระ</div>
-                    <div class="mt-[14px]">รายละเอียด</div>
+                    <div class="font-bold text-[16px]">รายละเอียด</div>
+                    <!-- <div class="mt-[14px]">รายละเอียด</div>
                     <div class="mt-[8px]">
                         <vs-select placeholder="เลือกผู้ใช้จากระบบ">
                             <vs-option label="อาคาร A" value="1">
@@ -403,12 +299,13 @@
                                 อาคาร B
                             </vs-option>
                         </vs-select>
-                    </div>
+                    </div> -->
                     <div class="mt-[14px] text-[12px] text-[#141629]">
-                        <div>นาย ปริรม โอภาสเจริญ</div>
-                        <div>21-29 ถนนนาคราช แขวงคลองมหานาค เขตป้อมปราบ จ.กรุงเทพฯ 10100</div>
-                        <div>เลขประจำตัวผู้เสียภาษี 3723545463409</div>
-                        <div>วันที่ 07/06/2023</div>
+                        <div>{{ user_detail.sex ? 'นาง' : 'นาย' }} {{ user_detail.firstName }} {{ user_detail.lastName }}
+                        </div>
+                        <div>{{ user_detail.contactAddress }}</div>
+                        <div>เลขประจำตัวผู้เสียภาษี {{ user_detail.idCard ? user_detail.idCard : '-' }}</div>
+                        <!-- <div>วันที่ 07/06/2023</div> -->
                     </div>
                 </div>
                 <div class="w-[50%] flex flex-col justify-end mt-[150px]">
@@ -416,99 +313,73 @@
                     <div class="w-[50%] flex justify-between mt-[8px]">
                         <div>
                             <div class="text-[12px] text-[#8396A6]">รายการ</div>
-                            <div class="mt-[8px]"><input
-                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" /></div>
-                            <div class="mt-[8px]"><input
-                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" /></div>
-                            <div class="mt-[8px]"><input
-                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" /></div>
-
+                            <div class="mt-[8px]">
+                                <div
+                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                    ค่าหอพัก
+                                </div>
+                            </div>
+                            <div class="mt-[8px]">
+                                <div
+                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                    ค่าน้ำ
+                                </div>
+                            </div>
+                            <div class="mt-[8px]">
+                                <div
+                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                    ค่าไฟ
+                                </div>
+                            </div>
+                            <div class="mt-[8px]">
+                                <div
+                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                    ค่าอื่น ๆ
+                                </div>
+                            </div>
                         </div>
                         <div>
                             <div class="text-[12px] text-[#8396A6]">จำนวนเงินบาท</div>
                             <div class="flex">
-                                <input class="h-[36px] w-[80px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" />
-
-                                <div class="ml-[8px] mt-[6px] ">
-                                    <div>
-                                        <div class="flex justify-center items-center mt-[4px] cursor-pointer"> <svg
-                                                width="32" height="32" viewBox="0 0 32 32" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect width="32" height="32" rx="8" fill="#D44769" />
-                                                <mask id="mask0_1747_22483" style="mask-type:alpha"
-                                                    maskUnits="userSpaceOnUse" x="5" y="5" width="22" height="22">
-                                                    <rect x="5" y="5" width="22" height="22" fill="#D9D9D9" />
-                                                </mask>
-                                                <g mask="url(#mask0_1747_22483)">
-                                                    <path
-                                                        d="M10.5 16.6875C10.3052 16.6875 10.1419 16.6215 10.0102 16.4897C9.87839 16.3579 9.8125 16.1945 9.8125 15.9997C9.8125 15.8048 9.87839 15.6415 10.0102 15.5099C10.1419 15.3783 10.3052 15.3125 10.5 15.3125H21.5C21.6948 15.3125 21.8581 15.3784 21.9898 15.5102C22.1216 15.6421 22.1875 15.8054 22.1875 16.0003C22.1875 16.1952 22.1216 16.3584 21.9898 16.49C21.8581 16.6216 21.6948 16.6875 21.5 16.6875H10.5Z"
-                                                        fill="white" />
-                                                </g>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
+                                <input
+                                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]"
+                                    type="input" v-model="bill_detail.room" />
                             </div>
                             <div class="flex mt-[-8px]">
-                                <input class="h-[36px] w-[80px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" />
-
-                                <div class="ml-[8px] mt-[6px] ">
-                                    <div>
-                                        <div class="flex justify-center items-center mt-[4px] cursor-pointer"> <svg
-                                                width="32" height="32" viewBox="0 0 32 32" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect width="32" height="32" rx="8" fill="#D44769" />
-                                                <mask id="mask0_1747_22483" style="mask-type:alpha"
-                                                    maskUnits="userSpaceOnUse" x="5" y="5" width="22" height="22">
-                                                    <rect x="5" y="5" width="22" height="22" fill="#D9D9D9" />
-                                                </mask>
-                                                <g mask="url(#mask0_1747_22483)">
-                                                    <path
-                                                        d="M10.5 16.6875C10.3052 16.6875 10.1419 16.6215 10.0102 16.4897C9.87839 16.3579 9.8125 16.1945 9.8125 15.9997C9.8125 15.8048 9.87839 15.6415 10.0102 15.5099C10.1419 15.3783 10.3052 15.3125 10.5 15.3125H21.5C21.6948 15.3125 21.8581 15.3784 21.9898 15.5102C22.1216 15.6421 22.1875 15.8054 22.1875 16.0003C22.1875 16.1952 22.1216 16.3584 21.9898 16.49C21.8581 16.6216 21.6948 16.6875 21.5 16.6875H10.5Z"
-                                                        fill="white" />
-                                                </g>
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
+                                <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    type="input" v-model="bill_detail.water" />
                             </div>
                             <div class="flex mt-[-8px]">
-                                <input class="h-[36px] w-[80px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" />
-
-                                <div class="ml-[8px] mt-[6px] ">
-                                    <div>
-                                        <div class="flex justify-center items-center mt-[4px] cursor-pointer"> <svg
-                                                width="32" height="32" viewBox="0 0 32 32" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <rect width="32" height="32" rx="8" fill="#D44769" />
-                                                <mask id="mask0_1747_22483" style="mask-type:alpha"
-                                                    maskUnits="userSpaceOnUse" x="5" y="5" width="22" height="22">
-                                                    <rect x="5" y="5" width="22" height="22" fill="#D9D9D9" />
-                                                </mask>
-                                                <g mask="url(#mask0_1747_22483)">
-                                                    <path
-                                                        d="M10.5 16.6875C10.3052 16.6875 10.1419 16.6215 10.0102 16.4897C9.87839 16.3579 9.8125 16.1945 9.8125 15.9997C9.8125 15.8048 9.87839 15.6415 10.0102 15.5099C10.1419 15.3783 10.3052 15.3125 10.5 15.3125H21.5C21.6948 15.3125 21.8581 15.3784 21.9898 15.5102C22.1216 15.6421 22.1875 15.8054 22.1875 16.0003C22.1875 16.1952 22.1216 16.3584 21.9898 16.49C21.8581 16.6216 21.6948 16.6875 21.5 16.6875H10.5Z"
-                                                        fill="white" />
-                                                </g>
-                                            </svg>
-                                        </div>
-                                    </div>
+                                <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    type="input" v-model="bill_detail.ele" />
+                            </div>
+                            <div class="flex mt-[-8px]">
+                                <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    type="input" v-model="bill_detail.other" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex mt-[24px]">
+                        <div>
+                            <div class="font-bold text-custom text-[14px] flex justify-start items-start">บันทึกหนี้สูญแล้ว
+                                รวมทั้งหมด
+                            </div>
+                        </div>
+                        <div class="ml-[188px]">
+                            <div>
+                                <div class="font-bold text-custom text-[14px] flex justify-start items-start">
+                                    {{ parseInt(bill_detail.room + bill_detail.other + bill_detail.water + bill_detail.ele)
+                                    }}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="w-[10%]">
+                <!-- <div class="w-[10%]">
                     <div @click="payment = true"
                         class="bg-[#CFFBDA] text-[#0B9A3C] rounded-[12px] pt-[7px] pb-[7px] pl-[12px] pr-[12px] text-center cursor-pointer">
                         บันทึกหนี้สูญแล้ว</div>
-                </div>
+                </div> -->
             </div>
             <div class=" flex w-[100%] justify-between mt-[100px]">
                 <div class="w-[48%] flex justify-center items-start text-custom">
@@ -521,8 +392,10 @@
                                     รายการ
                                 </div>
                                 <div>
-                                    <input class="h-[28px] w-[200px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                        type="input" />
+                                    <div
+                                        class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                        เงินประกัน
+                                    </div>
                                 </div>
                             </div>
                             <div class="ml-[8px]">
@@ -532,48 +405,14 @@
                                         จำนวนเงิน(บาท)
                                     </div>
                                     <div>
-                                        <input class="h-[28px] w-[80px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                            type="input" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ml-[8px] ">
-                                <div>
-                                    <div
-                                        class="font-bold text-custom text-[12px] flex text-[white] justify-start items-start">
-                                        .
-                                    </div>
-                                    <div class="flex justify-center items-center mt-[4px] cursor-pointer"> <svg width="32"
-                                            height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <rect width="32" height="32" rx="8" fill="#D44769" />
-                                            <mask id="mask0_1747_22483" style="mask-type:alpha" maskUnits="userSpaceOnUse"
-                                                x="5" y="5" width="22" height="22">
-                                                <rect x="5" y="5" width="22" height="22" fill="#D9D9D9" />
-                                            </mask>
-                                            <g mask="url(#mask0_1747_22483)">
-                                                <path
-                                                    d="M10.5 16.6875C10.3052 16.6875 10.1419 16.6215 10.0102 16.4897C9.87839 16.3579 9.8125 16.1945 9.8125 15.9997C9.8125 15.8048 9.87839 15.6415 10.0102 15.5099C10.1419 15.3783 10.3052 15.3125 10.5 15.3125H21.5C21.6948 15.3125 21.8581 15.3784 21.9898 15.5102C22.1216 15.6421 22.1875 15.8054 22.1875 16.0003C22.1875 16.1952 22.1216 16.3584 21.9898 16.49C21.8581 16.6216 21.6948 16.6875 21.5 16.6875H10.5Z"
-                                                    fill="white" />
-                                            </g>
-                                        </svg>
+                                        <input
+                                            class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]"
+                                            type="input" v-model="list_debt.deposit2" />
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button
-                            class="bg-[#165D98] w-[288px] rounded-[12px] flex justify-center items-center pt-[4px] pb-[4px]">
-                            <div class="flex">
-                                <div class="flex justify-center items-center "><svg width="14" height="13"
-                                        viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M6.99968 12.6875C6.8048 12.6875 6.64155 12.6216 6.50993 12.4898C6.37831 12.3581 6.3125 12.1948 6.3125 12V7.18746H1.49998C1.30519 7.18746 1.14191 7.12155 1.01016 6.98973C0.878385 6.8579 0.8125 6.69455 0.8125 6.49968C0.8125 6.3048 0.878385 6.14155 1.01016 6.00993C1.14191 5.87831 1.30519 5.8125 1.49998 5.8125H6.3125V0.999977C6.3125 0.805185 6.37841 0.641904 6.51023 0.510133C6.64206 0.378378 6.80541 0.3125 7.00028 0.3125C7.19516 0.3125 7.35841 0.378378 7.49003 0.510133C7.62165 0.641904 7.68745 0.805185 7.68745 0.999977V5.8125H12.5C12.6948 5.8125 12.8581 5.87841 12.9898 6.01023C13.1216 6.14206 13.1875 6.30541 13.1875 6.50028C13.1875 6.69516 13.1216 6.85841 12.9898 6.99003C12.8581 7.12164 12.6948 7.18746 12.5 7.18746H7.68745V12C7.68745 12.1948 7.62155 12.3581 7.48973 12.4898C7.3579 12.6216 7.19455 12.6875 6.99968 12.6875Z"
-                                            fill="white" />
-                                    </svg>
-                                </div>
-                                <div class="text-[white] ml-[4px]">เพิ่มรายการคืนเงิน</div>
-                            </div>
-                        </button>
-                        <div class="flex mt-[24px]">
+                        <!-- <div class="flex mt-[24px]">
                             <div>
                                 <div class="font-bold text-custom text-[12px] flex justify-start items-start">
                                     รวมทั้งหมด
@@ -582,11 +421,11 @@
                             <div class="ml-[168px]">
                                 <div>
                                     <div class="font-bold text-custom text-[12px] flex justify-start items-start">
-                                        1,000
+                                        {{ list_debt.deposit2 }}
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="w-[2%] flex justify-center items-center ">
@@ -597,25 +436,43 @@
                     <div class="w-[100%] mt-[14px]">
                         <div class="flex justify-between w-[100%]">
                             <div class="text-custom ">ค้างชำระ</div>
-                            <div class="text-custom ">4500 <span class="ml-[4px] text-custom ">บาท</span></div>
+                            <div class="text-custom ">{{ list_debt.total }} <span class="ml-[4px] text-custom ">บาท</span>
+                            </div>
+                        </div>
+                        <div class="flex justify-between w-[100%] mt-[4px]" v-for="item in items_other">
+                            <div class="text-custom ">ค่าปรับทรัพย์สินเสียหาย ({{ item.name }})</div>
+                            <div class="text-custom ">{{ item.price }} <span class="ml-[4px] text-custom ">บาท</span></div>
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]">
-                            <div class="text-custom ">ค่าปรับทรัพย์สินเสียหาย(ทีวี)</div>
-                            <div class="text-custom ">4500 <span class="ml-[4px] text-custom ">บาท</span></div>
+                            <div class="text-custom ">คืนค่ามัดจำ</div>
+                            <div class="text-custom ">-{{ list_debt.deposit }} <span
+                                    class="ml-[4px] text-custom ">บาท</span></div>
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]">
                             <div class="text-custom ">คืนเงินประกัน</div>
-                            <div class="text-custom ">4500 <span class="ml-[4px] text-custom ">บาท</span></div>
+                            <div class="text-custom ">-{{ list_debt.deposit2 }} <span
+                                    class="ml-[4px] text-custom ">บาท</span></div>
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]">
-                            <div class="text-custom text-[#D44769] font-bold text-[16px]">หนี้สูญ 900 บาท</div>
+                            <div class="text-custom text-[16px] font-bold ">รวมทั้งสิ้น</div>
+                            <div class="text-custom text-[16px] font-bold">{{
+                                totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total }} <span
+                                    class="ml-[4px] text-custom ">บาท</span></div>
+                        </div>
+                        <div class="flex justify-between w-[100%] mt-[4px]" v-if="tab == true">
+                            <div class="text-custom text-[#D44769] font-bold text-[16px]">หนี้สูญ {{
+                                (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) > 0 ? 0
+                                : (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) }}
+                                บาท</div>
                         </div>
                     </div>
                     <div class="text-custom text-[12px] font-bold text-[#003765] mt-[24px]">วันที่ย้ายออก</div>
                     <div>
-                        <input class="h-[28px] w-[180px] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" />
+                        <input
+                            class="h-[28px] w-[180px] bg-[#F3F8FD] rounded-[12px] mt-[4px]  flex justify-start pl-[8px] pr-[8px]"
+                            type="date" v-model="date_moveout"/>
                     </div>
-                    <div class="flex mt-[4px]">
+                    <div class="flex mt-[14px]">
                         <button
                             class="bg-[#165D98] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
                             <div class="flex">
@@ -676,10 +533,10 @@
             </template>
             <div class="con-content pl-[16px]  pr-[16px]">
                 <div class="text-[#D44769]">
-                    คุณได้ตรวจสอบความถูกต้องของผู้เช่าห้อง 101 ก่อนจะย้ายออกแล้วหรือไม่ ?
+                    คุณได้ตรวจสอบความถูกต้องของผู้เช่าห้อง {{ $route.query.number_room }} ก่อนจะย้ายออกแล้วหรือไม่ ?
                 </div>
                 <div class="center mt-[4px]">
-                    <vs-checkbox v-model="option">
+                    <vs-checkbox v-model="check_final" color="#003765">
                         ตรวจสอบแล้ว
                     </vs-checkbox>
                 </div>
@@ -689,7 +546,7 @@
                     <vs-button @click="move_confirm = false" transparent>
                         <div class="text-[#5C6B79] text-[14px]">ยกเลิก</div>
                     </vs-button>
-                    <vs-button @click="move_confirm = !move_confirm,move_done = true" color="#D44769">
+                    <vs-button @click="submitBill()" color="#003765" :disabled="check_final == false">
                         <div class="text-[white] text-[14px]">ยืนยันการย้ายออก</div>
                     </vs-button>
                 </div>
@@ -704,7 +561,7 @@
             </template>
             <div class="con-content pl-[16px]  pr-[16px]">
                 <div class="text-[#141629]">
-                    ห้อง 101 ได้ทำการชำระเงินแล้ว ?
+                    ห้อง {{ $route.query.number_room }} ได้ทำการชำระเงินแล้ว ?
                 </div>
                 <div class="center mt-[12px] flex justify-center ">
                     <vs-select placeholder="เลือก">
@@ -779,22 +636,178 @@
     </div>
 </template>
 <script>
+import axios from 'axios'
 export default {
     data() {
         return {
+            add_item: false,
+            value_item: '',
+            check_final: false,
             create: false,
             tab: false,
             move_confirm: false,
             payment: false,
-            move_done: false
+            move_done: false,
+            date_moveout:'',
+            list_debt: {
+                total: 0,
+                deposit: 0,
+                deposit2: 0
+            },
+            list_items: [
+                { name: 'ลูกบิดห้องน้ำ' },
+                { name: 'ประตูห้องน้ำ' },
+                { name: 'ประตูหน้าห้อง' },
+                { name: 'ลูกบิดหน้าห้อง' },
+                { name: 'กระจกห้องน้ำ' },
+                { name: 'ชั้นวางหน้ากระจกในห้องน้ำ' },
+                { name: 'รางแขวนผ้าในห้องน้ำ' },
+                { name: 'ก๊อกน้ำ' },
+                { name: 'สายฝักบัว' },
+                { name: 'ก๊อกฝักบัว' },
+                { name: 'ตะแกรงน้ำห้องน้ำ' },
+                { name: 'สายฉีดชำระ' },
+                { name: 'เครื่องทำน้ำอึ่น' },
+                { name: 'ที่เสียบทิชชู่' },
+                { name: 'ผนังห้องน้ำ' },
+                { name: 'ผนังห้องสีด้าน' },
+                { name: 'พื้นห้อง' },
+                { name: 'ตู้เสื้อผ้า' },
+                { name: 'โต๊ะเครื่องแป้ง' },
+                { name: 'โต๊ะวางของ' },
+                { name: 'เต้าเสียบปลั๊ก' },
+                { name: 'เต้าเสียบสายทีวี' },
+                { name: 'เตียงนอน' },
+                { name: 'ฟูกนอน' },
+                { name: 'หน้าต่าง' },
+                { name: 'มุ้งลวด' },
+                { name: 'ผ้าม่านใหญ่' },
+                { name: 'ราวม่าน' },
+                { name: 'หลอดไฟหัวนอน' },
+                { name: 'หลอดไฟห้องน้ำ' },
+                { name: 'ระเบียง+ราวระเบียง' },
+                { name: 'ตะแกรงน้ำระเบียง' },
+                { name: 'ชักโครก' },
+            ],
+            items_other: [
+                {
+                    name: 'ค่าทาสีผนัง',
+                    price: 500,
+                    img_bf: '',
+                    img_af: '',
+                    remark: 'เสียหาย'
+                },
+                {
+                    name: 'ค่าทำความสะอาด',
+                    price: 500,
+                    img_bf: '',
+                    img_af: '',
+                    remark: 'เสียหาย'
+                }
+            ],
+            bill_detail: {
+
+            },
+            user_detail: {
+                ele: 0,
+                water: 0,
+                room: 0,
+                other: 0
+            }
+
         }
     },
     created() {
         const loading = this.$vs.loading({})
+        this.getDetailRoom()
         setTimeout(() => {
             loading.close()
         }, 1000)
     },
+    methods: {
+        getDetailRoom(id) {
+            const loading = this.$vs.loading()
+            // fetch('https://api.resguru.app/api/getRoom?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor)
+            fetch('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract + '?populate=deep,4')
+                .then(response => response.json())
+                .then((resp) => {
+                    this.list_debt.deposit = resp.data?.attributes.roomDeposit
+                    this.list_debt.deposit2 = resp.data?.attributes.roomInsuranceDeposit
+                    this.list_debt.total = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.total
+                    this.user_detail = resp.data?.attributes.users_permissions_user.data?.attributes
+                    this.bill_detail.ele = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.electricPrice
+                    this.bill_detail.water = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.waterPrice
+                    this.bill_detail.room = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.roomPrice
+                    this.bill_detail.other = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.otherPrice
+
+                    fetch('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room + '?populate=deep')
+                        .then(response => response.json())
+                        .then((resp) => {
+                            console.log(resp.data?.attributes.other_of_buildings.data?.forEach((item) => {
+                                this.items_other.push({
+                                    name: item.attributes.title,
+                                    price: item.attributes.price,
+                                    img_bf: '',
+                                    img_af: '',
+                                    remark: 'เสียหาย'
+                                })
+                            }))
+                        }).finally(() => {
+                            console.log(this.items_other)
+
+                        })
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        addItem(data) {
+            this.items_other.push({
+                name: data,
+                price: 0,
+                img_bf: '',
+                img_af: '',
+                remark: 'เสียหาย'
+            })
+            this.value_item = ''
+        },
+        totalBillItems() {
+            let totalPrice = 0;
+            // Loop through each item and add its price to totalPrice
+            this.items_other.forEach(item => {
+                totalPrice += item.price;
+            });
+            return totalPrice;
+        },
+        submitBill() {
+            axios.post('https://api.resguru.app/api' + '/room-histories', {
+                data: {
+                    "building": this.$store.state.building,
+                    "room": this.$route.query.id_room,
+                    "users_permissions_user": this.$route.query.id_user,
+                    "date_moveout" :this.date_moveout
+                }
+            }
+            ).then((resp) => {
+                this.items_other.forEach(element => {
+                    axios.post('https://api.resguru.app/api' + '/room-detect-histories', {
+                        data: {
+                            "remark": element.remark,
+                            "charge": element.price,
+                            "room_history": resp.data.data.id,
+                            "name": element.name
+                        }
+                    })
+                });
+            }).finally(() => {
+                axios.delete('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract)
+                this.move_confirm = !this.move_confirm,
+                    this.move_done = true
+                this.$router.push({
+                    path: '/rooms',
+                })
+            })
+        }
+    }
 }
 
 </script>
