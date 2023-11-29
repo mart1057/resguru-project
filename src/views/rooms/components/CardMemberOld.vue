@@ -1,15 +1,17 @@
 <template>
     <div>
         <div class="grid grid-cols-7 w-[100%] gap-4 mt-[14px]">
-            <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[12px] "
-                v-for="user in history"> 
+            <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[12px]"
+                v-for="user in history" @click="getDetailRentalContract(user.attributes
+                    .users_permissions_user
+                    .data?.id)">
                 <!-- <img   v-if="user.attributes.users_permissions_user.data?.attributes.imageProfile":src="user.attributes
                     .users_permissions_user
                     .data.attributes.
                     imageProfile" /> -->
-                <div  class="w-[78px] h-[78px] rounded-[22px] bg-[#8396A6]">
+                <div class="w-[78px] h-[78px] rounded-[22px] bg-[#8396A6]">
                 </div>
-               
+
                 <div>{{ user.attributes
                     .users_permissions_user
                     .data?.attributes.firstName }} {{ user.attributes
@@ -55,7 +57,8 @@
             class="p-[-20px] text-custom">
             <div>
                 <div class="flex justify-between pl-[20px] pr-[20px]">
-                    <div class="text-custom flex justify-center items-center text-[18px] font-bold">ชัชพล บุญพันธุ์</div>
+                    <div class="text-custom flex justify-center items-center text-[18px] font-bold">{{ room_detail.name }}
+                        {{ room_detail.last_name }}</div>
                     <div @click="create = false" class="cursor-pointer">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -77,46 +80,74 @@
                         <div class="w-[100%] flex">
                             <div class="w-[30%] text-custom flex items-start">ข้อมูลหลัก</div>
                             <dvi class=" w-[70%] ">
-                                <div class="grid grid-cols-4 gap-2  text-custom  ">
+                                <div class="grid grid-cols-2  text-custom " v-if="is_edit == false">
+                                    <div class="flex">
+                                        <vs-radio v-model="room_detail.check_user" color="#003765" :val="true">
+                                            ผู้เช่าในระบบ
+                                        </vs-radio>
+                                        <vs-radio v-model="room_detail.check_user" color="#003765" :val="false">
+                                            ผู้เช่าใหม่
+                                        </vs-radio>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2  text-custom mt-[14px]  "
+                                    v-if="room_detail.check_user == true && is_edit == false">
+                                    <div>
+                                        <div class="">เลือกข้อมูลผู้เช่า</div>
+                                        <select placeholder="Select" v-model="id_user" @change="getUserDetail()"
+                                            class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]">
+                                            <option v-for="user in users" :value="user.id">
+                                                {{ user.firstName }} {{ user.lastName }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-4 gap-2  text-custom mt-[14px] ">
                                     <div class="col-span-2">
                                         <div>อีเมลล์</div>
-                                        <input type="input" placeholder="ทะเบียนรถ"
-                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" v-model="room_detail.email"
+                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" disabled />
                                     </div>
                                     <div class="col-span-1">
                                         <div>เลขมิเตอร์ค่าน้ำเริ่มต้น</div>
-                                        <input type="input" placeholder="ค่าน้ำ"
-                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            disabled />
                                     </div>
                                     <div class="col-span-1">
                                         <div>เลขมิเตอร์ค่าน้ำไฟเริ่มต้น</div>
-                                        <input type="input" placeholder="ค่าไฟ"
-                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            disabled />
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8  text-custom mt-[14px]  ">
                                     <div>
                                         <div>คำนำหน้า</div>
-                                        <vs-select placeholder="ชื่อ" id="mr" class="mt-[6px]">
-                                            <vs-option label="อาคาร A" value="1">
-                                                อาคาร A
-                                            </vs-option>
-                                            <vs-option label="อาคาร B" value="2">
-                                                อาคาร B
-                                            </vs-option>
-                                        </vs-select>
+                                        <select placeholder="ชื่อ" id="mr"
+                                            class="mt-[6px] pl-[4px] pr-[4px] h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            v-model="room_detail.sex"
+                                            :disabled="is_edit == true || room_detail.check_user == true">
+                                            <option label="นาย" :value="true">
+                                                นาย
+                                            </option>
+                                            <option label="นางสาว" :value="false">
+                                                นางสาว
+                                            </option>
+                                        </select>
                                     </div>
                                     <div class="col-span-3 ml-[8px]">
                                         <div>ชื่อ</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            v-model="room_detail.name" disabled />
                                     </div>
                                     <div class="col-span-3  ml-[8px]">
                                         <div>สกุล</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            v-model="room_detail.last_name" disabled />
                                     </div>
                                     <div class="ml-[8px]">
                                         <div>ชื่อเล่น</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            v-model="room_detail.nick_name" disabled />
                                     </div>
                                 </div>
                             </dvi>
@@ -127,11 +158,13 @@
                                 <div class="col-span-4">
                                     <div>เบอร์โทรศัพท์ <span class="text-[#5C6B79]">(ไม่ต้องใส่ขีด ตัวอย่าง.
                                             0815578945)</span></div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail.phone" disabled />
                                 </div>
                                 <div class="col-span-4  ml-[8px]">
                                     <div>หมายเลขบัตรประชาชน</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail.id_card" disabled />
                                 </div>
                             </div>
                         </div>
@@ -140,36 +173,9 @@
                             <div class="grid grid-cols-6  text-custom w-[70%] ">
                                 <div class="col-span-2">
                                     <div>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
-                                    <vs-select placeholder="ชื่อ" class="mt-[6px]">
-                                        <vs-option label="อาคาร A" value="1">
-                                            อาคาร A
-                                        </vs-option>
-                                        <vs-option label="อาคาร B" value="2">
-                                            อาคาร B
-                                        </vs-option>
-                                    </vs-select>
-                                </div>
-                                <div class="col-span-2  ml-[8px]">
-                                    <div class="text-[white]">.</div>
-                                    <vs-select placeholder="ชื่อ" class="mt-[6px]">
-                                        <vs-option label="อาคาร A" value="1">
-                                            อาคาร A
-                                        </vs-option>
-                                        <vs-option label="อาคาร B" value="2">
-                                            อาคาร B
-                                        </vs-option>
-                                    </vs-select>
-                                </div>
-                                <div class="col-span-2 ml-[8px]">
-                                    <div class="text-[white]">.</div>
-                                    <vs-select placeholder="ชื่อ" class="mt-[6px]">
-                                        <vs-option label="อาคาร A" value="1">
-                                            อาคาร A
-                                        </vs-option>
-                                        <vs-option label="อาคาร B" value="2">
-                                            อาคาร B
-                                        </vs-option>
-                                    </vs-select>
+                                    <input type="date"
+                                        class="h-[36px] mt-[6px] pl-[8px] pr-[8px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail.birth" disabled />
                                 </div>
                             </div>
                         </div>
@@ -178,11 +184,12 @@
                             <div class="grid grid-cols-6  text-custom w-[70%] ">
                                 <div class="col-span-6">
                                     <div>ที่อยู่</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail.address" disabled />
                                 </div>
                             </div>
                         </div>
-                        <div class="w-[100%] flex mt-[14px]">
+                        <!-- <div class="w-[100%] flex mt-[14px]">
                             <div class="w-[30%] text-custom flex items-start"></div>
                             <div class="grid grid-cols-6  text-custom w-[70%] ">
                                 <div class="col-span-3 mt-[6px]">
@@ -201,108 +208,111 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                         <div class="w-[100%] flex mt-[14px]">
                             <div class="w-[30%] text-custom flex  items-start">ข้อมูลเพิ่มเติม</div>
                             <div class="w-[70%]">
                                 <div class="grid grid-cols-8  text-custom w-[100%] ">
                                     <div class="col-span-4">
-                                        <div>อีเมลล์</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
-                                    </div>
-                                    <div class="col-span-4  ml-[8px]">
                                         <div>Line ID</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            v-model="room_detail.lineID" disabled />
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8  text-custom w-[100%] mt-[6px] ">
                                     <div class="col-span-8 ">
                                         <div>สถาบันการศึกษา / สถานที่ทำงานปัจจุบัน</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            v-model="room_detail.workplace" disabled />
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8 gap-2  text-custom w-[100%] mt-[6px] ">
                                     <div class="col-span-4 ">
                                         <div>คณะ / แผนก</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            v-model="room_detail.faculty" disabled />
                                     </div>
                                     <div class="col-span-4 ">
                                         <div>ชั้นปี / ตำแหน่ง</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            v-model="room_detail.rank" disabled />
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8  text-custom w-[100%] ">
                                     <div class="col-span-4 mt-[6px]">
                                         <div>รหัสนักศึกษา / รหัสพนักงาน</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            v-model="room_detail.idEmployee" disabled />
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8 gap-2  text-custom w-[100%] mt-[6px] ">
                                     <div class="col-span-4 ">
                                         <div>บุคลที่สามารถติดต่อได้กรณีฉุกเฉิน</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            v-model="room_detail.emergencyPerson" disabled />
                                     </div>
                                     <div class="col-span-2">
                                         <div>ความสัมพันธ์</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            v-model="room_detail.relation" disabled />
                                     </div>
                                     <div class="col-span-2">
                                         <div>เบอร์โทรศัพท์ผู้ติดต่อฉุกเฉิน</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            v-model="room_detail.emergencyPhone" disabled />
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="w-[100%] flex mt-[14px]">
                             <div class="w-[30%] text-custom flex  items-start">ข้อมูลยานพหนะ</div>
-                            <div class="w-[70%]">
-                                <div class="grid grid-cols-8  text-custom w-[100%] ">
-                                    <div class="col-span-2">
-                                        <div>คันที่ 1</div>
-                                        <vs-select placeholder="ชื่อ" class="mt-[6px]">
-                                            <vs-option label="อาคาร A" value="1">
-                                                อาคาร A
-                                            </vs-option>
-                                            <vs-option label="อาคาร B" value="2">
-                                                อาคาร B
-                                            </vs-option>
-                                        </vs-select>
-                                    </div>
-                                    <div class="col-span-3  ml-[8px]">
-                                        <div class="text-[white]">.</div>
-                                        <input type="input" placeholder="ทะเบียนรถ"
-                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
-                                    </div>
-                                    <div class="col-span-3  ml-[8px]">
-                                        <div class="text-[white]">.</div>
-                                        <input type="input" placeholder="รายละเอียดรถ"
-                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
-                                    </div>
-                                </div>
-                                <div class="grid grid-cols-8  text-custom w-[100%] ">
-                                    <div class="col-span-3 mt-[6px]">
-                                        <div>แนบรูปภาพยานพหนะคันที่ 1</div>
-                                        <div class="flex mt-[4px]">
-                                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
-                                                id="upload" hidden type="file" />
-                                            <label for="upload">
-                                                <div
-                                                    class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
-                                                    อัพโหลดรูปภาพ</div>
-                                            </label>
-                                            <div
-                                                class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                                ยังไม่ได้เลือกไฟล์</div>
+                            <div class="w-[70%]" v-if="room_detail.vehicles.length > 0">
+                                <div v-for="(data, i) in  room_detail.vehicles">
+                                    <div class="grid grid-cols-8  text-custom w-[100%]">
+                                        <div class="col-span-2">
+                                            <div>คันที่ {{ i + 1 }}</div>
+                                            <select placeholder="ชื่อ"
+                                                class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]"
+                                                v-model="data.Type" disabled>
+                                                <option label="รถยนต์" value="Car">
+                                                    รถยนต์
+                                                </option>
+                                                <option label="มอเตอร์ไซต์" value="Motocycle">
+                                                    มอเตอร์ไซต์
+                                                </option>
+                                            </select>
+                                        </div>
+                                        <div class="col-span-3  ml-[8px]">
+                                            <div class="text-[white]">.</div>
+                                            <input type="input" placeholder="ทะเบียนรถ"
+                                                class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                                v-model="data.licensePlate" disabled />
+                                        </div>
+                                        <div class="col-span-3  ml-[8px]">
+                                            <div class="text-[white]">.</div>
+                                            <input type="input" placeholder="รายละเอียดรถ"
+                                                class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="data.remark"
+                                                disabled />
                                         </div>
                                     </div>
+                                    <!-- <div class="grid grid-cols-8  text-custom w-[100%] mb-[18px]  ">
+                                        <div class="col-span-3 mt-[6px]">
+                                            <div>แนบรูปภาพยานพหนะคันที่ 1</div>
+                                            <div class="flex mt-[4px]">
+                                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
+                                                    id="upload" hidden type="file" />
+                                                <label for="upload">
+                                                    <div
+                                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
+                                                        อัพโหลดรูปภาพ</div>
+                                                </label>
+                                                <div
+                                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                                                    ยังไม่ได้เลือกไฟล์</div>
+                                            </div>
+                                        </div>
+                                    </div> -->
                                 </div>
-                                <!-- <div class="flex flex-col justify-center items-start ml-[50px]">
-                                    <div class="font-bold text-custom text-[12px] flex justify-start items-start">หมายเหตุ
-                                    </div>
-                                    <div><input class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                            type="input" />
-                                    </div>
-                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -312,9 +322,10 @@
                     <div class="text-[18px] text-[#141629] text-custom font-bold">รายการตรวจจับ</div>
                 </div>
                 <div class="mt-[14px]">
-                    <div class="flex">
-                        <div class=""><svg width="70" height="82" viewBox="0 0 70 82" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
+                    <div class="flex" v-for="item in items_other">
+                        <div class="">
+                            <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                v-if="item.name == 'ค่าทาสีผนัง'">
                                 <g filter="url(#filter0_d_2182_22275)">
                                     <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
                                     <mask id="mask0_2182_22275" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11"
@@ -344,74 +355,84 @@
                                     </filter>
                                 </defs>
                             </svg>
-                        </div>
-                        <div
-                            class="flex justify-start items-center text-[16px] font-bold text-custom text-[#003765] w-[150px]">
-                            ค่าทีสีผนัง</div>
-                        <div class="flex flex-col justify-center items-center ml-[50px]">
-                            <div class="font-bold text-custom text-[12px]">ค่าปรับกรณีเสียหาย (บาท)</div>
-                            <div><input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" type="input" />
-                            </div>
-                        </div>
-                        <div class="flex flex-col justify-center items-center ml-[50px]">
-                            <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนเข้าหอพัก
-                            </div>
-                            <div class="flex mt-[12px]">
-                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
-                                    hidden type="file" />
-                                <label for="upload">
-                                    <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
-                                        อัพโหลดรูปภาพ</div>
-                                </label>
-                                <!-- <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
-
-                            </div>
-                        </div>
-                        <div class="flex flex-col justify-center items-center ml-[50px]">
-                            <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนย้ายออก
-                            </div>
-                            <div class="flex mt-[12px]">
-                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
-                                    hidden type="file" />
-                                <label for="upload">
-                                    <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
-                                        อัพโหลดรูปภาพ</div>
-                                </label>
-                                <!-- <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
-                            </div>
-                        </div>
-                        <div class="flex flex-col justify-center items-start ml-[50px]">
-                            <div class="font-bold text-custom text-[12px] flex justify-start items-start">หมายเหตุ</div>
-                            <div><input class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-[14px]">
-                    <div class="flex">
-                        <div class=""><svg width="70" height="82" viewBox="0 0 70 82" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <g filter="url(#filter0_d_2182_22306)">
+                            <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                v-else-if="item.name == 'โทรทัศน์' || item.name == 'ทีวี'">
+                                <g filter="url(#filter0_d_3063_30664)">
                                     <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
-                                    <mask id="mask0_2182_22306" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="13"
+                                    <mask id="mask0_3063_30664" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11"
+                                        y="17" width="44" height="44">
+                                        <rect x="11" y="17" width="44" height="44" fill="#D9D9D9" />
+                                    </mask>
+                                    <g mask="url(#mask0_3063_30664)">
+                                        <path
+                                            d="M21.4048 50.9166L20.4493 53.6242C20.4019 53.7572 20.319 53.868 20.2005 53.9566C20.082 54.0453 19.9432 54.0896 19.7842 54.0896H19.5797C19.3979 54.0896 19.2389 54.0209 19.1026 53.8834C18.9663 53.7459 18.8981 53.5854 18.8981 53.4021V50.9166C17.9867 50.9166 17.2065 50.5921 16.5575 49.943C15.9085 49.294 15.584 48.5138 15.584 47.6025V28.5641C15.584 27.6527 15.9085 26.8725 16.5575 26.2235C17.2065 25.5745 17.9867 25.25 18.8981 25.25H47.1031C48.0145 25.25 48.7947 25.5745 49.4437 26.2235C50.0927 26.8725 50.4172 27.6527 50.4172 28.5641V47.6025C50.4172 48.5145 50.0927 49.2953 49.4437 49.9448C48.7947 50.5943 48.0145 50.919 47.1031 50.919V53.4479C47.1031 53.628 47.0412 53.78 46.9174 53.9039C46.7936 54.0277 46.6416 54.0896 46.4615 54.0896H46.2147C46.0737 54.0896 45.9444 54.0504 45.8269 53.9719C45.7094 53.8934 45.6271 53.7869 45.5801 53.6524L44.6599 50.9166H21.4048ZM18.8981 48.1666H47.1031C47.2677 48.1666 47.4028 48.1137 47.5086 48.0079C47.6144 47.9022 47.6673 47.767 47.6673 47.6025V28.5641C47.6673 28.3996 47.6144 28.2644 47.5086 28.1586C47.4028 28.0528 47.2677 28 47.1031 28H18.8981C18.7336 28 18.5984 28.0528 18.4926 28.1586C18.3868 28.2644 18.3339 28.3996 18.3339 28.5641V47.6025C18.3339 47.767 18.3868 47.9022 18.4926 48.0079C18.5984 48.1137 18.7336 48.1666 18.8981 48.1666Z"
+                                            fill="white" />
+                                    </g>
+                                </g>
+                                <defs>
+                                    <filter id="filter0_d_3063_30664" x="0" y="0" width="70" height="82"
+                                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feColorMatrix in="SourceAlpha" type="matrix"
+                                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                        <feOffset dx="2" dy="2" />
+                                        <feGaussianBlur stdDeviation="4" />
+                                        <feComposite in2="hardAlpha" operator="out" />
+                                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
+                                        <feBlend mode="normal" in2="BackgroundImageFix"
+                                            result="effect1_dropShadow_3063_30664" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3063_30664"
+                                            result="shape" />
+                                    </filter>
+                                </defs>
+                            </svg>
+                            <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                v-else-if="item.name == 'เตียง'">
+                                <g filter="url(#filter0_d_3063_30696)">
+                                    <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
+                                    <mask id="mask0_3063_30696" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11"
+                                        y="17" width="44" height="44">
+                                        <rect x="11" y="17" width="44" height="44" fill="#D9D9D9" />
+                                    </mask>
+                                    <g mask="url(#mask0_3063_30696)">
+                                        <path
+                                            d="M16.9583 50.9167C16.5686 50.9167 16.2421 50.785 15.9789 50.5214C15.7156 50.2579 15.584 49.9313 15.584 49.5417V40.8334C15.584 40.1495 15.7462 39.4861 16.0706 38.8432C16.3949 38.2004 16.8438 37.6721 17.4173 37.2585V32.5835C17.4173 31.3025 17.861 30.2184 18.7482 29.3312C19.6355 28.4439 20.7197 28.0002 22.0006 28.0002H29.7923C30.4598 28.0002 31.058 28.1301 31.5868 28.3898C32.1157 28.6495 32.5869 29.0086 33.0006 29.4669C33.4143 29.0086 33.8855 28.6495 34.4144 28.3898C34.9432 28.1301 35.5414 28.0002 36.2089 28.0002H44.0006C45.2816 28.0002 46.3657 28.4439 47.253 29.3312C48.1403 30.2184 48.5839 31.3025 48.5839 32.5835V37.2585C49.1574 37.6721 49.6063 38.2004 49.9307 38.8432C50.255 39.4861 50.4172 40.1495 50.4172 40.8334V49.5417C50.4172 49.9313 50.2854 50.2579 50.0217 50.5214C49.7581 50.785 49.4314 50.9167 49.0416 50.9167C48.6519 50.9167 48.3254 50.785 48.0621 50.5214C47.7989 50.2579 47.6673 49.9313 47.6673 49.5417V47.2501H18.3339V49.5417C18.3339 49.9313 18.2021 50.2579 17.9384 50.5214C17.6748 50.785 17.3481 50.9167 16.9583 50.9167ZM34.3756 36.2502H45.8339V32.5835C45.8339 32.064 45.6583 31.6286 45.3069 31.2772C44.9555 30.9258 44.5201 30.7502 44.0006 30.7502H36.2089C35.6895 30.7502 35.254 30.9258 34.9026 31.2772C34.5513 31.6286 34.3756 32.064 34.3756 32.5835V36.2502ZM20.1673 36.2502H31.6257V32.5835C31.6257 32.064 31.45 31.6286 31.0986 31.2772C30.7472 30.9258 30.3118 30.7502 29.7923 30.7502H22.0006C21.4812 30.7502 21.0457 30.9258 20.6944 31.2772C20.343 31.6286 20.1673 32.064 20.1673 32.5835V36.2502ZM18.3339 44.5001H47.6673V40.8334C47.6673 40.314 47.4916 39.8786 47.1402 39.5272C46.7888 39.1758 46.3534 39.0001 45.8339 39.0001H20.1673C19.6478 39.0001 19.2124 39.1758 18.861 39.5272C18.5096 39.8786 18.3339 40.314 18.3339 40.8334V44.5001Z"
+                                            fill="white" />
+                                    </g>
+                                </g>
+                                <defs>
+                                    <filter id="filter0_d_3063_30696" x="0" y="0" width="70" height="82"
+                                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
+                                        <feColorMatrix in="SourceAlpha" type="matrix"
+                                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
+                                        <feOffset dx="2" dy="2" />
+                                        <feGaussianBlur stdDeviation="4" />
+                                        <feComposite in2="hardAlpha" operator="out" />
+                                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
+                                        <feBlend mode="normal" in2="BackgroundImageFix"
+                                            result="effect1_dropShadow_3063_30696" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3063_30696"
+                                            result="shape" />
+                                    </filter>
+                                </defs>
+                            </svg>
+                            <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                v-else-if="item.name == 'ค่าทำความสะอาด'">
+                                <g filter="url(#filter0_d_3063_30791)">
+                                    <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
+                                    <mask id="mask0_3063_30791" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="13"
                                         y="19" width="40" height="40">
                                         <rect x="13" y="19" width="40" height="40" fill="#D9D9D9" />
                                     </mask>
-                                    <g mask="url(#mask0_2182_22306)">
+                                    <g mask="url(#mask0_3063_30791)">
                                         <path
                                             d="M31.0761 37.7499H34.9223V25.8268C34.9223 25.2905 34.7359 24.8359 34.363 24.463C33.9902 24.0902 33.5356 23.9037 32.9992 23.9037C32.4629 23.9037 32.0083 24.0902 31.6354 24.463C31.2626 24.8359 31.0761 25.2905 31.0761 25.8268V37.7499ZM21.2364 44.0961H44.7621V40.7627C44.7621 40.6131 44.714 40.4903 44.6178 40.3941C44.5216 40.2979 44.3988 40.2499 44.2492 40.2499H21.7493C21.5997 40.2499 21.4768 40.2979 21.3806 40.3941C21.2845 40.4903 21.2364 40.6131 21.2364 40.7627V44.0961ZM19.3646 54.0961H23.5762V50.346C23.5762 49.9919 23.696 49.695 23.9357 49.4554C24.1754 49.2159 24.4724 49.0961 24.8267 49.0961C25.181 49.0961 25.4778 49.2159 25.7172 49.4554C25.9565 49.695 26.0761 49.9919 26.0761 50.346V54.0961H31.7493V50.346C31.7493 49.9919 31.8691 49.695 32.1088 49.4554C32.3485 49.2159 32.6455 49.0961 32.9998 49.0961C33.3541 49.0961 33.6509 49.2159 33.8902 49.4554C34.1295 49.695 34.2492 49.9919 34.2492 50.346V54.0961H39.9223V50.346C39.9223 49.9919 40.0422 49.695 40.2818 49.4554C40.5215 49.2159 40.8185 49.0961 41.1728 49.0961C41.5271 49.0961 41.824 49.2159 42.0633 49.4554C42.3026 49.695 42.4223 49.9919 42.4223 50.346V54.0961H46.6338C46.8047 54.0961 46.9437 54.0293 47.0505 53.8957C47.1573 53.7622 47.1841 53.6153 47.1306 53.455L45.2716 46.596H20.7268L18.8678 53.455C18.8144 53.6153 18.8411 53.7622 18.9479 53.8957C19.0548 54.0293 19.1937 54.0961 19.3646 54.0961ZM46.762 56.596H19.2364C18.292 56.596 17.5238 56.2189 16.932 55.4646C16.3401 54.7103 16.1723 53.8695 16.4288 52.9422L18.7365 44.3685V40.6666C18.7365 39.8567 19.0201 39.1682 19.5874 38.6009C20.1547 38.0336 20.8433 37.7499 21.6531 37.7499H28.5762V25.8268C28.5762 24.5982 29.0062 23.5539 29.8662 22.6939C30.7263 21.8338 31.7706 21.4038 32.9992 21.4038C34.2278 21.4038 35.2722 21.8338 36.1322 22.6939C36.9922 23.5539 37.4223 24.5982 37.4223 25.8268V37.7499H44.3453C45.1552 37.7499 45.8437 38.0336 46.4111 38.6009C46.9783 39.1682 47.262 39.8567 47.262 40.6666V44.3685L49.5697 52.9742C49.8774 53.8909 49.731 54.7237 49.1306 55.4726C48.5302 56.2215 47.7406 56.596 46.762 56.596Z"
                                             fill="white" />
                                     </g>
                                 </g>
                                 <defs>
-                                    <filter id="filter0_d_2182_22306" x="0" y="0" width="70" height="82"
+                                    <filter id="filter0_d_3063_30791" x="0" y="0" width="70" height="82"
                                         filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
                                         <feFlood flood-opacity="0" result="BackgroundImageFix" />
                                         <feColorMatrix in="SourceAlpha" type="matrix"
@@ -421,80 +442,22 @@
                                         <feComposite in2="hardAlpha" operator="out" />
                                         <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
                                         <feBlend mode="normal" in2="BackgroundImageFix"
-                                            result="effect1_dropShadow_2182_22306" />
-                                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2182_22306"
+                                            result="effect1_dropShadow_3063_30791" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3063_30791"
                                             result="shape" />
                                     </filter>
                                 </defs>
                             </svg>
-
-                        </div>
-                        <div
-                            class="flex justify-start items-center text-[16px] font-bold text-custom text-[#003765] w-[150px]">
-                            ค่าทำความสะอาด</div>
-                        <div class="flex flex-col justify-center items-center ml-[50px]">
-                            <div class="font-bold text-custom text-[12px]">ค่าปรับกรณีเสียหาย (บาท)</div>
-                            <div><input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" type="input" />
-                            </div>
-                        </div>
-                        <div class="flex flex-col justify-center items-center ml-[50px]">
-                            <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนเข้าหอพัก
-                            </div>
-                            <div class="flex mt-[12px]">
-                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
-                                    hidden type="file" />
-                                <label for="upload">
-                                    <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
-                                        อัพโหลดรูปภาพ</div>
-                                </label>
-                                <!-- <div
-                                    class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                    ยังไม่ได้เลือกไฟล์</div> -->
-                            </div>
-                        </div>
-                        <div class="flex flex-col justify-center items-center ml-[50px]">
-                            <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนย้ายออก
-                            </div>
-                            <div class="flex mt-[12px]">
-                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
-                                    hidden type="file" />
-                                <label for="upload">
-                                    <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
-                                        อัพโหลดรูปภาพ</div>
-                                </label>
-                                <!-- <div
-                                            class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                            ยังไม่ได้เลือกไฟล์</div> -->
-                            </div>
-                        </div>
-                        <div class="flex flex-col justify-center items-start ml-[50px]">
-                            <div class="font-bold text-custom text-[12px] flex justify-start items-start">หมายเหตุ</div>
-                            <div><input class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-[14px]">
-                    <div class="flex">
-                        <div class=""><svg width="70" height="82" viewBox="0 0 70 82" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <g filter="url(#filter0_d_2182_22179)">
+                            <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                v-else>
+                                <g filter="url(#filter0_d_3063_30728)">
                                     <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
-                                    <mask id="mask0_2182_22179" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11"
-                                        y="17" width="44" height="44">
-                                        <rect x="11" y="17" width="44" height="44" fill="#D9D9D9" />
-                                    </mask>
-                                    <g mask="url(#mask0_2182_22179)">
-                                        <path
-                                            d="M21.4028 50.9166L20.4474 53.6242C20.4 53.7572 20.317 53.868 20.1985 53.9566C20.08 54.0453 19.9412 54.0896 19.7822 54.0896H19.5777C19.396 54.0896 19.2369 54.0209 19.1006 53.8834C18.9643 53.7459 18.8961 53.5854 18.8961 53.4021V50.9166C17.9848 50.9166 17.2046 50.5921 16.5556 49.943C15.9065 49.294 15.582 48.5138 15.582 47.6025V28.5641C15.582 27.6527 15.9065 26.8725 16.5556 26.2235C17.2046 25.5745 17.9848 25.25 18.8961 25.25H47.1012C48.0125 25.25 48.7927 25.5745 49.4417 26.2235C50.0908 26.8725 50.4153 27.6527 50.4153 28.5641V47.6025C50.4153 48.5145 50.0908 49.2953 49.4417 49.9448C48.7927 50.5943 48.0125 50.919 47.1012 50.919V53.4479C47.1012 53.628 47.0393 53.78 46.9154 53.9039C46.7916 54.0277 46.6396 54.0896 46.4595 54.0896H46.2127C46.0717 54.0896 45.9425 54.0504 45.8249 53.9719C45.7074 53.8934 45.6251 53.7869 45.5781 53.6524L44.658 50.9166H21.4028ZM18.8961 48.1666H47.1012C47.2657 48.1666 47.4009 48.1137 47.5067 48.0079C47.6124 47.9022 47.6653 47.767 47.6653 47.6025V28.5641C47.6653 28.3996 47.6124 28.2644 47.5067 28.1586C47.4009 28.0528 47.2657 28 47.1012 28H18.8961C18.7316 28 18.5964 28.0528 18.4907 28.1586C18.3849 28.2644 18.332 28.3996 18.332 28.5641V47.6025C18.332 47.767 18.3849 47.9022 18.4907 48.0079C18.5964 48.1137 18.7316 48.1666 18.8961 48.1666Z"
-                                            fill="white" />
-                                    </g>
+                                    <ellipse cx="20.1667" cy="38.9999" rx="3.66667" ry="3.66667" fill="white" />
+                                    <circle cx="33.0006" cy="38.9999" r="3.66667" fill="white" />
+                                    <ellipse cx="45.8327" cy="38.9999" rx="3.66667" ry="3.66667" fill="white" />
                                 </g>
                                 <defs>
-                                    <filter id="filter0_d_2182_22179" x="0" y="0" width="70" height="82"
+                                    <filter id="filter0_d_3063_30728" x="0" y="0" width="70" height="82"
                                         filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
                                         <feFlood flood-opacity="0" result="BackgroundImageFix" />
                                         <feColorMatrix in="SourceAlpha" type="matrix"
@@ -504,8 +467,8 @@
                                         <feComposite in2="hardAlpha" operator="out" />
                                         <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
                                         <feBlend mode="normal" in2="BackgroundImageFix"
-                                            result="effect1_dropShadow_2182_22179" />
-                                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2182_22179"
+                                            result="effect1_dropShadow_3063_30728" />
+                                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3063_30728"
                                             result="shape" />
                                     </filter>
                                 </defs>
@@ -513,267 +476,77 @@
                         </div>
                         <div
                             class="flex justify-start items-center text-[16px] font-bold text-custom text-[#003765] w-[150px]">
-                            โทรทัศน์</div>
+                            {{ item.name }}</div>
                         <div class="flex flex-col justify-center items-center ml-[50px]">
-                            <div class="font-bold text-custom text-[12px]">ค่าปรับกรณีเสียหาย (บาท)</div>
-                            <div><input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" type="input" />
-                            </div>
-                        </div>
-                        <div class="flex flex-col justify-center items-center ml-[50px]">
-                            <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนเข้าหอพัก
-                            </div>
-                            <div class="flex mt-[12px]">
-                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
-                                    hidden type="file" />
-                                <label for="upload">
-                                    <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
-                                        อัพโหลดรูปภาพ</div>
-                                </label>
-                                <!-- <div
-                                            class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                            ยังไม่ได้เลือกไฟล์</div> -->
+                            <div class="flex flex-col justify-between h-[50%]">
+                                <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">
+                                    ค่าปรับกรณีเสียหาย
+                                    (บาท)
+                                </div>
+                                <div class="flex mt-[4px]">
+                                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
+                                        v-model="item.price" type="input" disabled/>
+                                </div>
                             </div>
                         </div>
                         <div class="flex flex-col justify-center items-center ml-[50px]">
-                            <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนย้ายออก
-                            </div>
-                            <div class="flex mt-[12px]">
-                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
-                                    hidden type="file" />
-                                <label for="upload">
-                                    <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
-                                        อัพโหลดรูปภาพ</div>
-                                </label>
-                                <!-- <div
-                                            class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                            ยังไม่ได้เลือกไฟล์</div> -->
-                            </div>
-                        </div>
-                        <div class="flex flex-col justify-center items-start ml-[50px]">
-                            <div class="font-bold text-custom text-[12px] flex justify-start items-start">หมายเหตุ</div>
-                            <div><input class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" />
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-[14px]">
-                    <div class="flex">
-                        <div class=""><svg width="70" height="82" viewBox="0 0 70 82" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <g filter="url(#filter0_d_2182_22211)">
-                                    <rect x="6" y="6" width="54" height="66" rx="12" fill="#165D98" />
-                                    <mask id="mask0_2182_22211" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="11"
-                                        y="17" width="44" height="44">
-                                        <rect x="11" y="17" width="44" height="44" fill="#D9D9D9" />
-                                    </mask>
-                                    <g mask="url(#mask0_2182_22211)">
-                                        <path
-                                            d="M16.9564 50.9167C16.5667 50.9167 16.2402 50.785 15.9769 50.5214C15.7137 50.2579 15.582 49.9313 15.582 49.5417V40.8334C15.582 40.1495 15.7442 39.4861 16.0686 38.8432C16.3929 38.2004 16.8419 37.6721 17.4154 37.2585V32.5835C17.4154 31.3025 17.859 30.2184 18.7463 29.3312C19.6336 28.4439 20.7177 28.0002 21.9987 28.0002H29.7904C30.4579 28.0002 31.0561 28.1301 31.5849 28.3898C32.1137 28.6495 32.585 29.0086 32.9987 29.4669C33.4123 29.0086 33.8836 28.6495 34.4124 28.3898C34.9413 28.1301 35.5394 28.0002 36.2069 28.0002H43.9987C45.2796 28.0002 46.3637 28.4439 47.251 29.3312C48.1383 30.2184 48.5819 31.3025 48.5819 32.5835V37.2585C49.1554 37.6721 49.6044 38.2004 49.9287 38.8432C50.2531 39.4861 50.4153 40.1495 50.4153 40.8334V49.5417C50.4153 49.9313 50.2834 50.2579 50.0198 50.5214C49.7561 50.785 49.4294 50.9167 49.0397 50.9167C48.6499 50.9167 48.3234 50.785 48.0602 50.5214C47.7969 50.2579 47.6653 49.9313 47.6653 49.5417V47.2501H18.332V49.5417C18.332 49.9313 18.2002 50.2579 17.9365 50.5214C17.6729 50.785 17.3462 50.9167 16.9564 50.9167ZM34.3736 36.2502H45.832V32.5835C45.832 32.064 45.6563 31.6286 45.3049 31.2772C44.9535 30.9258 44.5181 30.7502 43.9987 30.7502H36.2069C35.6875 30.7502 35.2521 30.9258 34.9007 31.2772C34.5493 31.6286 34.3736 32.064 34.3736 32.5835V36.2502ZM20.1653 36.2502H31.6237V32.5835C31.6237 32.064 31.448 31.6286 31.0966 31.2772C30.7452 30.9258 30.3098 30.7502 29.7904 30.7502H21.9987C21.4792 30.7502 21.0438 30.9258 20.6924 31.2772C20.341 31.6286 20.1653 32.064 20.1653 32.5835V36.2502ZM18.332 44.5001H47.6653V40.8334C47.6653 40.314 47.4896 39.8786 47.1382 39.5272C46.7869 39.1758 46.3514 39.0001 45.832 39.0001H20.1653C19.6459 39.0001 19.2105 39.1758 18.8591 39.5272C18.5077 39.8786 18.332 40.314 18.332 40.8334V44.5001Z"
-                                            fill="white" />
-                                    </g>
-                                </g>
-                                <defs>
-                                    <filter id="filter0_d_2182_22211" x="0" y="0" width="70" height="82"
-                                        filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-                                        <feFlood flood-opacity="0" result="BackgroundImageFix" />
-                                        <feColorMatrix in="SourceAlpha" type="matrix"
-                                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha" />
-                                        <feOffset dx="2" dy="2" />
-                                        <feGaussianBlur stdDeviation="4" />
-                                        <feComposite in2="hardAlpha" operator="out" />
-                                        <feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.15 0" />
-                                        <feBlend mode="normal" in2="BackgroundImageFix"
-                                            result="effect1_dropShadow_2182_22211" />
-                                        <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2182_22211"
-                                            result="shape" />
-                                    </filter>
-                                </defs>
-                            </svg>
-
-                        </div>
-                        <div
-                            class="flex justify-start items-center text-[16px] font-bold text-custom text-[#003765] w-[150px]">
-                            เตียง</div>
-                        <div class="flex flex-col justify-center items-center ml-[50px]">
-                            <div class="font-bold text-custom text-[12px]">ค่าปรับกรณีเสียหาย (บาท)</div>
-                            <div><input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" type="input" />
-                            </div>
-                        </div>
-                        <div class="flex flex-col justify-center items-center ml-[50px]">
-                            <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนเข้าหอพัก
-                            </div>
-                            <div class="flex mt-[12px]">
-                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
-                                    hidden type="file" />
-                                <label for="upload">
-                                    <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
-                                        อัพโหลดรูปภาพ</div>
-                                </label>
-                                <!-- <div
-                                            class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                            ยังไม่ได้เลือกไฟล์</div> -->
-                            </div>
-                        </div>
-                        <div class="flex flex-col justify-center items-center ml-[50px]">
-                            <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">รูปภาพก่อนย้ายออก
-                            </div>
-                            <div class="flex mt-[12px]">
-                                <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
-                                    hidden type="file" />
-                                <label for="upload">
-                                    <div
-                                        class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
-                                        อัพโหลดรูปภาพ</div>
-                                </label>
-                                <!-- <div
-                                            class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                            ยังไม่ได้เลือกไฟล์</div> -->
-                            </div>
-                        </div>
-                        <div class="flex flex-col justify-center items-start ml-[50px]">
-                            <div class="font-bold text-custom text-[12px] flex justify-start items-start">หมายเหตุ</div>
-                            <div><input class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-[100%] h-[1px]  mt-[24px] mb-[24px] bg-gray-200 border-0 dark:bg-gray-700"></div>
-                    <div class=" flex w-[100%] justify-between">
-                        <div class="w-[48%] flex justify-center items-start text-custom">
-                            <div>
-                                <div class="flex justify-start items-start">คืนเงินประกัน</div>
-                                <div class="flex mt-[14px] justify-center items-center">
-                                    <div>
+                            <div class="flex flex-col justify-between h-[50%]">
+                                <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">
+                                    รูปภาพก่อนเข้าหอพัก
+                                </div>
+                                <div class="flex mt-[12px]">
+                                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
+                                        hidden type="file" />
+                                    <label for="upload">
                                         <div
-                                            class="font-bold text-custom text-[#8396A6] text-[12px] flex justify-start items-start">
-                                            รายการ
-                                        </div>
-                                        <div>
-                                            <input
-                                                class="h-[28px] w-[200px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                                type="input" />
-                                        </div>
-                                    </div>
-                                    <div class="ml-[8px]">
-                                        <div>
-                                            <div
-                                                class="font-bold text-custom text-[#8396A6] text-[12px] flex justify-start items-start">
-                                                จำนวนเงิน(บาท)
-                                            </div>
-                                            <div>
-                                                <input
-                                                    class="h-[28px] w-[80px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                                    type="input" />
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="ml-[8px] ">
-                                        <div>
-                                            <div
-                                                class="font-bold text-custom text-[12px] flex text-[white] justify-start items-start">
-                                                .
-                                            </div>
-                                            <div class="flex justify-center items-center mt-[4px] cursor-pointer"> <svg
-                                                    width="32" height="32" viewBox="0 0 32 32" fill="none"
-                                                    xmlns="http://www.w3.org/2000/svg">
-                                                    <rect width="32" height="32" rx="8" fill="#D44769" />
-                                                    <mask id="mask0_1747_22483" style="mask-type:alpha"
-                                                        maskUnits="userSpaceOnUse" x="5" y="5" width="22" height="22">
-                                                        <rect x="5" y="5" width="22" height="22" fill="#D9D9D9" />
-                                                    </mask>
-                                                    <g mask="url(#mask0_1747_22483)">
-                                                        <path
-                                                            d="M10.5 16.6875C10.3052 16.6875 10.1419 16.6215 10.0102 16.4897C9.87839 16.3579 9.8125 16.1945 9.8125 15.9997C9.8125 15.8048 9.87839 15.6415 10.0102 15.5099C10.1419 15.3783 10.3052 15.3125 10.5 15.3125H21.5C21.6948 15.3125 21.8581 15.3784 21.9898 15.5102C22.1216 15.6421 22.1875 15.8054 22.1875 16.0003C22.1875 16.1952 22.1216 16.3584 21.9898 16.49C21.8581 16.6216 21.6948 16.6875 21.5 16.6875H10.5Z"
-                                                            fill="white" />
-                                                    </g>
-                                                </svg>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <button
-                                    class="bg-[#165D98] w-[288px] rounded-[12px] flex justify-center items-center pt-[4px] pb-[4px]">
-                                    <div class="flex">
-                                        <div class="flex justify-center items-center "><svg width="14" height="13"
-                                                viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M6.99968 12.6875C6.8048 12.6875 6.64155 12.6216 6.50993 12.4898C6.37831 12.3581 6.3125 12.1948 6.3125 12V7.18746H1.49998C1.30519 7.18746 1.14191 7.12155 1.01016 6.98973C0.878385 6.8579 0.8125 6.69455 0.8125 6.49968C0.8125 6.3048 0.878385 6.14155 1.01016 6.00993C1.14191 5.87831 1.30519 5.8125 1.49998 5.8125H6.3125V0.999977C6.3125 0.805185 6.37841 0.641904 6.51023 0.510133C6.64206 0.378378 6.80541 0.3125 7.00028 0.3125C7.19516 0.3125 7.35841 0.378378 7.49003 0.510133C7.62165 0.641904 7.68745 0.805185 7.68745 0.999977V5.8125H12.5C12.6948 5.8125 12.8581 5.87841 12.9898 6.01023C13.1216 6.14206 13.1875 6.30541 13.1875 6.50028C13.1875 6.69516 13.1216 6.85841 12.9898 6.99003C12.8581 7.12164 12.6948 7.18746 12.5 7.18746H7.68745V12C7.68745 12.1948 7.62155 12.3581 7.48973 12.4898C7.3579 12.6216 7.19455 12.6875 6.99968 12.6875Z"
-                                                    fill="white" />
-                                            </svg>
-                                        </div>
-                                        <div class="text-[white] ml-[4px]">เพิ่มรายการคืนเงิน</div>
-                                    </div>
-                                </button>
-                                <div class="flex mt-[24px]">
-                                    <div>
-                                        <div class="font-bold text-custom text-[12px] flex justify-start items-start">
-                                            รวมทั้งหมด
-                                        </div>
-                                    </div>
-                                    <div class="ml-[168px]">
-                                        <div>
-                                            <div class="font-bold text-custom text-[12px] flex justify-start items-start">
-                                                1,000
-                                            </div>
-                                        </div>
-                                    </div>
+                                            class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
+                                            อัพโหลดรูปภาพ</div>
+                                    </label>
+
+                                    <!-- <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            ยังไม่ได้เลือกไฟล์</div> -->
                                 </div>
                             </div>
                         </div>
-                        <div class="w-[2%] flex justify-center items-center ">
-                            <div class="w-[1px] h-[100%] bg-gray-200 border-0 dark:bg-gray-700"></div>
+                        <div class="flex flex-col justify-center items-center ml-[50px]">
+                            <div class="flex flex-col justify-between h-[50%]">
+                                <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">
+                                    รูปภาพก่อนย้ายออก
+                                </div>
+                                <div class="flex mt-[12px]">
+                                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
+                                        hidden type="file" />
+                                    <label for="upload">
+                                        <div
+                                            class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
+                                            อัพโหลดรูปภาพ</div>
+                                    </label>
+
+                                    <!-- <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            ยังไม่ได้เลือกไฟล์</div> -->
+                                </div>
+                            </div>
+
                         </div>
-                        <div class="w-[48%] flex flex-col justify-center items-center pl-[100px] pr-[100px] ">
-                            <div class="text-custom text-[18px] font-bold text-[#003765]">สรุปการย้ายออก</div>
-                            <div class="w-[100%] mt-[14px]">
-                                <div class="flex justify-between w-[100%]">
-                                    <div class="text-custom ">ค้างชำระ</div>
-                                    <div class="text-custom ">4500 <span class="ml-[4px] text-custom ">บาท</span></div>
+                        <div class="flex flex-col justify-center items-start ml-[50px]">
+                            <div class="flex flex-col justify-between h-[50%]">
+                                <div class="font-bold text-custom text-[12px] flex justify-start mt-[-12px]">หมายเหตุ
                                 </div>
-                                <div class="flex justify-between w-[100%] mt-[4px]">
-                                    <div class="text-custom ">ค่าปรับทรัพย์สินเสียหาย(ทีวี)</div>
-                                    <div class="text-custom ">4500 <span class="ml-[4px] text-custom ">บาท</span></div>
+                                <div class="mt-[12px]">
+                                    <select
+                                        class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt"
+                                        type="input" v-model="item.remark"
+                                        @change="item.remark == 'ไม่เสียหาย' ? item.price = 0 : item.price = item.price" disabled>
+                                        <option value="รอซ่อม">รอซ่อม</option>
+                                        <option value="เสียหาย">เสียหาย</option>
+                                        <option value="ไม่เสียหาย">ไม่เสียหาย</option>
+                                    </select>
                                 </div>
-                                <div class="flex justify-between w-[100%] mt-[4px]">
-                                    <div class="text-custom ">คืนเงินประกัน</div>
-                                    <div class="text-custom ">4500 <span class="ml-[4px] text-custom ">บาท</span></div>
-                                </div>
-                            </div>
-                            <div class="text-custom text-[12px] font-bold text-[#003765]">วันที่ย้ายออก</div>
-                            <div>
-                                <input class="h-[28px] w-[180px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" />
-                            </div>
-                            <div>
-                                <button
-                                    class="bg-[#165D98] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
-                                    <div class="flex">
-                                        <div class="flex justify-center items-center ">
-                                            <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <mask id="mask0_3285_9902" style="mask-type:alpha"
-                                                    maskUnits="userSpaceOnUse" x="0" y="0" width="22" height="23">
-                                                    <rect y="0.5" width="22" height="22" fill="#D9D9D9" />
-                                                </mask>
-                                                <g mask="url(#mask0_3285_9902)">
-                                                    <path
-                                                        d="M14.6652 8.11546V5.36546H7.33187V8.11546H5.9569V4.81532C5.9569 4.58155 6.0363 4.38564 6.19511 4.22757C6.35391 4.06951 6.55068 3.99048 6.78543 3.99048H15.208C15.4466 3.99048 15.645 4.06954 15.8031 4.22767C15.9611 4.38579 16.0402 4.58173 16.0402 4.81548V8.11546H14.6652ZM16.3222 11.7821C16.582 11.7821 16.7997 11.6942 16.9754 11.5185C17.1511 11.3428 17.2389 11.1251 17.2389 10.8654C17.2389 10.6057 17.1511 10.388 16.9754 10.2123C16.7997 10.0366 16.582 9.94874 16.3222 9.94874C16.0625 9.94874 15.8448 10.0366 15.6691 10.2123C15.4934 10.388 15.4056 10.6057 15.4056 10.8654C15.4056 11.1251 15.4934 11.3428 15.6691 11.5185C15.8448 11.6942 16.0625 11.7821 16.3222 11.7821ZM7.61395 17.9167H14.3831C14.4654 17.9167 14.533 17.8903 14.5859 17.8374C14.6388 17.7845 14.6652 17.7169 14.6652 17.6346V14.0032H7.33187V17.6346C7.33187 17.7169 7.35832 17.7845 7.41121 17.8374C7.4641 17.8903 7.53168 17.9167 7.61395 17.9167ZM7.61395 19.2917C7.15826 19.2917 6.76817 19.1294 6.44367 18.8049C6.11915 18.4804 5.9569 18.0903 5.9569 17.6346V15.625H3.38319C3.14845 15.625 2.95168 15.5456 2.79288 15.3868C2.63409 15.228 2.55469 15.0312 2.55469 14.7965V10.4071C2.55469 9.75779 2.77651 9.21352 3.22014 8.77429C3.66378 8.33507 4.20583 8.11546 4.84631 8.11546H17.1508C17.8001 8.11546 18.3443 8.33507 18.7836 8.77429C19.2228 9.21352 19.4424 9.75779 19.4424 10.4071V14.7965C19.4424 15.0312 19.363 15.228 19.2042 15.3868C19.0454 15.5456 18.8486 15.625 18.6139 15.625H16.0402V17.6346C16.0402 18.0903 15.8779 18.4804 15.5534 18.8049C15.2289 19.1294 14.8388 19.2917 14.3831 19.2917H7.61395ZM18.0674 14.25V10.4071C18.0674 10.1474 17.9796 9.92965 17.8039 9.75395C17.6282 9.57826 17.4105 9.49041 17.1508 9.49041H4.84631C4.58659 9.49041 4.36888 9.57826 4.19318 9.75395C4.01749 9.92965 3.92964 10.1474 3.92964 10.4071V14.25H5.9569V12.6283H16.0402V14.25H18.0674Z"
-                                                        fill="white" />
-                                                </g>
-                                            </svg>
-                                        </div>
-                                        <div class="text-[white] ml-[4px] ">พิมพ์</div>
-                                    </div>
-                                </button>
                             </div>
                         </div>
                     </div>
-
                 </div>
+
             </div>
         </b-modal>
     </div>
@@ -782,8 +555,38 @@
 export default {
     data() {
         return {
-            create: false,
-            history: []
+            create: true,
+            history: [],
+            room_detail: {
+                id: '',
+                sex: null,
+                check_user: true,
+                email: '',
+                name: '',
+                last_name: '',
+                nick_name: '',
+                phone: '',
+                id_card: '',
+                birth: '',
+                address: '',
+                date_sign: '',
+                exp_date: '',
+                roomInsurance_deposit: '',
+                contract_duration: '',
+                room_deposit: '',
+                type_room: '',
+                workplace: '',
+                faculty: '',
+                rank: '',
+                idEmployee: '',
+                emergencyPerson: '',
+                relation: '',
+                emergencyPhone: '',
+                lineID: '',
+                vehicles: [],
+
+            },
+            items_other: [],
         }
     },
     created() {
@@ -800,7 +603,58 @@ export default {
                 .then((resp) => {
                     this.history = resp.data;
                 })
-        }
+        },
+        getDetailRentalContract(id) {
+            fetch('https://api.resguru.app/api' + '/users/' + id + '?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log('detail', resp);
+                    this.room_detail.id = resp.id
+                    this.room_detail.name = resp.firstName
+                    this.room_detail.last_name = resp.lastName
+                    this.room_detail.nick_name = resp.nickName
+                    this.room_detail.phone = resp.phone
+                    this.room_detail.email = resp.email
+                    this.room_detail.id_card = resp.idCard
+                    this.room_detail.address = resp.contactAddress
+                    this.room_detail.sex = resp.sex
+                    this.room_detail.birth = resp.dateOfBirth
+                    this.room_detail.date_sign = resp.checkInDate
+                    this.room_detail.workplace = resp.workplace,
+                        this.room_detail.faculty = resp.faculty,
+                        this.room_detail.rank = resp.rank,
+                        this.room_detail.idEmployee = resp.idEmployee,
+                        this.room_detail.emergencyPerson = resp.emergencyPerson,
+                        this.room_detail.relation = resp.relation,
+                        this.room_detail.emergencyPhone = resp.emergencyPhone,
+                        this.room_detail.lineID = resp.lineID
+                }).finally(() => {
+                    fetch('https://api.resguru.app/api' + '/users/' + id + '?&populate=*')
+                        .then(response => response.json())
+                        .then((resp) => {
+                            console.log('fffff', resp);
+                            this.room_detail.vehicles = resp.tenant_vehicles;
+                        }).then(() => {
+                            fetch('https://api.resguru.app/api' + '/room-histories?populate=*&filters[building][id][$eq]=' + this.$store.state.building + '&filters[room][id][$eq]=' + this.$route.query.id_room + '&filters[users_permissions_user][id][$eq]=' + id)
+                                .then(response => response.json())
+                                .then((resp) => {
+                                    resp.data[0]?.attributes.room_detect_histories.data?.forEach((item) => {
+                                        this.items_other.push({
+                                            id: item.id,
+                                            name: item.attributes.name,
+                                            price: item.attributes.charge,
+                                            img_bf: '',
+                                            img_af: '',
+                                            remark: item.attributes.remark
+                                        })
+                                    })
+                                }).finally(() => {
+                                    this.create = true
+                                })
+                        })
+                })
+
+        },
 
     },
 }

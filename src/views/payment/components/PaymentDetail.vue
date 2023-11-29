@@ -97,7 +97,7 @@
                     <div>
                         <div class="text-[12px]">คงเหลือ</div>
                         <div class="flex justify-between">
-                            <div class="text-[18px] font-bold flex items-center">{{ sumRemainPaid(userInvoice) }} </div>
+                            <div class="text-[28px] font-bold flex items-center">{{this.userPayRemain}}</div>
                             <!-- <div class="flex pt-[4px] pb-[4px] pl-[12px] pr-[12px] border rounded-[12px]  ">
                                 <div>
                                     <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
@@ -802,6 +802,8 @@ export default {
             ],
             userProfile: [],
             userInvoice: [],
+            userUnpaidInvoice: [],
+            userPayRemain: 0,
             userReceipt: [],
             contractProfile: [],
             roomDetail: [],
@@ -1093,13 +1095,20 @@ export default {
                 .then((resp) => {
                     console.log("Return from getInvoice()",resp.data);
                     this.userInvoice = resp.data
+                    this.userInvoice.forEach(element => {
+                        if(element.attributes.remainPaid != null && element.attributes.remainPaid > 0){
+                            this.userUnpaidInvoice.push(element)
+                            this.userPayRemain = this.userPayRemain + element.attributes.remainPaid
+                            console.log("in if",this.userPayRemain)
+                        }
+                    });
                 }).finally(() => {
                     loading.close()
                 })
         },
         getReceipt(){
             const loading = this.$vs.loading()
-            fetch(`https://api.resguru.app/api/tenant-receipts?filters[room][id][$eq]=${this.$route.query.roomID}&populate=*`)
+            fetch(`https://api.resguru.app/api/tenant-receipts?filters[room][id][$eq]=${this.$route.query.roomID}&populate=*&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getReceipt()",resp.data);
@@ -1111,7 +1120,7 @@ export default {
         },
         getEvidence(){
             const loading = this.$vs.loading()
-            fetch(`https://api.resguru.app/api/tenant-evidence-payments?filters[room][id][$eq]=${this.$route.query.roomID}&populate=*`)
+            fetch(`https://api.resguru.app/api/tenant-evidence-payments?filters[room][id][$eq]=${this.$route.query.roomID}&populate=*&sort[0]=id:desc`)
             // fetch(`https://api.resguru.app/api/tenant-evidence-payments`)
                .then(response => response.json())
                 .then((resp) => {
@@ -1155,10 +1164,16 @@ export default {
 
         },
         updateInvoice(){
+            this.userUnpaidInvoice.slice().reverse().forEach(element => {
+                console.log("Update Invoice",element.id)
+            }); 
+            
+
             axios.put('https://api.resguru.app/api/tenant-bills/' + this.userInvoice[0].id, {
                 data: {
                     paymentStatus: "Paid",
-                    paid: this.userEvidencePayment[0].attributes.amount
+                    paid: this.userEvidencePayment[0].attributes.amount,
+                    remainPaid:'xxxxxxxxx'
                 }
             })
             .then( (res) => {
