@@ -221,7 +221,7 @@
                         </div>
                         <div class="flex mt-[4px]">
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" v-model="item.price"
-                            type="number" />
+                                type="number" />
                         </div>
                     </div>
                 </div>
@@ -360,11 +360,11 @@
                             </div>
                             <div class="flex mt-[-8px]">
                                 <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                type="number" v-model="bill_detail.water" />
+                                    type="number" v-model="bill_detail.water" />
                             </div>
                             <div class="flex mt-[-8px]">
                                 <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                type="number" v-model="bill_detail.ele" />
+                                    type="number" v-model="bill_detail.ele" />
                             </div>
                             <div class="flex mt-[-8px]">
                                 <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
@@ -372,7 +372,7 @@
                             </div>
                             <div class="flex mt-[-8px]">
                                 <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                type="number" v-model="bill_detail.other" />
+                                    type="number" v-model="bill_detail.other" />
                             </div>
                             <div>
                                 <div v-if="bill_detail.room"
@@ -451,12 +451,12 @@
                     <div class="w-[100%] mt-[14px]">
                         <div class="flex justify-between w-[100%]">
                             <div class="text-custom ">ค้างชำระ</div>
-                            <div class="text-custom " v-if="bill_detail.water || bill_detail.room || bill_detail.other ">{{ bill_detail.room + bill_detail.water + bill_detail.ele +
+                            <div class="text-custom " v-if="bill_detail.water || bill_detail.room || bill_detail.other">{{
+                                bill_detail.room + bill_detail.water + bill_detail.ele +
                                 bill_detail.other + bill_detail.communalPrice }} <span
                                     class="ml-[4px] text-custom ">บาท</span>
                             </div>
-                            <div class="text-custom " v-else>-<span
-                                    class="ml-[4px] text-custom ">บาท</span>
+                            <div class="text-custom " v-else>-<span class="ml-[4px] text-custom ">บาท</span>
                             </div>
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]" v-for="item in items_other">
@@ -477,14 +477,14 @@
                             <div class="text-custom text-[16px] font-bold ">รวมทั้งสิ้น</div>
                             <div class="text-custom text-[16px] font-bold" v-if="list_debt.total">
                                 {{
-                                totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + parseInt(list_debt.total) }} <span
-                                    class="ml-[4px] text-custom ">บาท</span>
-                                </div>
-                                <div class="text-custom text-[16px] font-bold" v-else>
+                                    totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + parseInt(list_debt.total)
+                                }} <span class="ml-[4px] text-custom ">บาท</span>
+                            </div>
+                            <div class="text-custom text-[16px] font-bold" v-else>
                                 {{
-                                totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit)}} <span
+                                    totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) }} <span
                                     class="ml-[4px] text-custom ">บาท</span>
-                                </div>
+                            </div>
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]" v-if="tab == true">
                             <div class="text-custom text-[#D44769] font-bold text-[16px]">หนี้สูญ {{
@@ -751,56 +751,67 @@ export default {
             fetch('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract + '?populate=deep,4')
                 .then(response => response.json())
                 .then((resp) => {
+
                     this.list_debt.deposit = resp.data?.attributes.roomDeposit
                     this.list_debt.deposit2 = resp.data?.attributes.roomInsuranceDeposit
-                    this.list_debt.total = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.total
                     this.user_detail = resp.data?.attributes.users_permissions_user.data?.attributes
-                    this.bill_detail.id = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.id
-                    this.bill_detail.ele = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.electricPrice
-                    this.bill_detail.water = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.waterPrice
-                    this.bill_detail.communalPrice = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.communalPrice
-                    this.bill_detail.vat = 7
-                    this.bill_detail.room = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.roomPrice
-                    this.bill_detail.other = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.otherPrice
                 }).finally(() => {
-                    fetch('https://api.resguru.app/api' + '/room-histories?populate=*&filters[building][id][$eq]=' + this.$store.state.building + '&filters[room][id][$eq]=' + this.$route.query.id_room + '&filters[user_sign_contract][id][$eq]=' + this.$route.query.id_contract + '&filters[publishedAt][$null]=true&publicationState=preview')
+                    fetch('https://api.resguru.app/api' + '/tenant-bills' + '?populate=*&filters[user_sign_contract][id][$eq]=' + this.$route.query.id_contract)
                         .then(response => response.json())
                         .then((resp) => {
-                            console.log(resp?.data.length == 0);
-                            if (resp?.data.length == 0) {
-                                console.log('1');
-                                fetch('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room + '?populate=deep')
-                                    .then(response => response.json())
-                                    .then((resp) => {
-                                        resp.data?.attributes.other_of_buildings.data?.forEach((item) => {
-                                            this.items_other.push({
-                                                name: item.attributes.title,
-                                                price: item.attributes.price,
-                                                img_bf: '',
-                                                img_af: '',
-                                                remark: 'เสียหาย'
+                            if (resp.data.length == 0) {
+                                this.$showNotification('#3A89CB', 'กรูณากดสร้างบิล')
+                            }
+                            console.log('bill', resp.data[0]);
+                            this.list_debt.total = resp.data[0]?.attributes.total
+                            this.bill_detail.id = resp.data[0]?.id
+                            this.bill_detail.ele = resp.data[0]?.attributes.electricPrice
+                            this.bill_detail.water = resp.data[0]?.attributes.waterPrice
+                            this.bill_detail.communalPrice = resp.data[0]?.attributes.communalPrice
+                            this.bill_detail.vat = 7
+                            this.bill_detail.room = resp.data[0]?.attributes.roomPrice
+                            this.bill_detail.other = resp.data[0]?.attributes.otherPrice
+                        }).finally(() => {
+                            fetch('https://api.resguru.app/api' + '/room-histories?populate=*&filters[building][id][$eq]=' + this.$store.state.building + '&filters[room][id][$eq]=' + this.$route.query.id_room + '&filters[user_sign_contract][id][$eq]=' + this.$route.query.id_contract + '&filters[publishedAt][$null]=true&publicationState=preview')
+                                .then(response => response.json())
+                                .then((resp) => {
+                                    console.log(resp?.data.length == 0);
+                                    if (resp?.data.length == 0) {
+                                        console.log('1');
+                                        fetch('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room + '?populate=deep')
+                                            .then(response => response.json())
+                                            .then((resp) => {
+                                                resp.data?.attributes.other_of_buildings.data?.forEach((item) => {
+                                                    this.items_other.push({
+                                                        name: item.attributes.title,
+                                                        price: item.attributes.price,
+                                                        img_bf: '',
+                                                        img_af: '',
+                                                        remark: 'เสียหาย'
+                                                    })
+                                                })
+                                            }).finally(() => {
+
                                             })
-                                        })
-                                    }).finally(() => {
+                                    }
+                                    else {
+                                        this.tab = resp.data[0]?.attributes.ExitType == 'Missing' ? true : false,
+                                            resp.data[0]?.attributes.room_detect_histories.data?.forEach((item) => {
+                                                this.items_other.push({
+                                                    id: item.id,
+                                                    name: item.attributes.name,
+                                                    price: item.attributes.charge,
+                                                    img_bf: '',
+                                                    img_af: '',
+                                                    remark: item.attributes.remark
+                                                })
+                                            })
+                                    }
 
-                                    })
-                            }
-                            else {
-                                this.tab = resp.data[0]?.attributes.ExitType == 'Missing' ? true : false,
-                                    resp.data[0]?.attributes.room_detect_histories.data?.forEach((item) => {
-                                        this.items_other.push({
-                                            id: item.id,
-                                            name: item.attributes.name,
-                                            price: item.attributes.charge,
-                                            img_bf: '',
-                                            img_af: '',
-                                            remark: item.attributes.remark
-                                        })
-                                    })
-                            }
-
+                                })
+                            loading.close()
                         })
-                    loading.close()
+
                 })
         },
         addItem(data) {
@@ -858,7 +869,7 @@ export default {
                                     "otherPrice": this.bill_detail.other,
                                     "communalPrice": this.bill_detail.communalPrice,
                                     "subtotal": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other),
-                                    "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice )+ ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) +parseInt(this.bill_detail.communalPrice) ) * 0.07),
+                                    "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice) + ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice)) * 0.07),
                                     "publishedAt": null
                                 }
                             }
@@ -893,7 +904,7 @@ export default {
                                     "otherPrice": this.bill_detail.other,
                                     "communalPrice": this.bill_detail.communalPrice,
                                     "subtotal": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other),
-                                    "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice )+ ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) +parseInt(this.bill_detail.communalPrice) ) * 0.07),
+                                    "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice) + ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice)) * 0.07),
                                     "publishedAt": null
                                 }
                             }
@@ -945,7 +956,7 @@ export default {
                                     "otherPrice": this.bill_detail.other,
                                     "communalPrice": this.bill_detail.communalPrice,
                                     "subtotal": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other),
-                                    "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice )+ ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) +parseInt(this.bill_detail.communalPrice) ) * 0.07),
+                                    "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice) + ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice)) * 0.07),
                                     "publishedAt": Date.now()
                                 }
                             }).then(() => {
@@ -993,7 +1004,7 @@ export default {
                                     "otherPrice": this.bill_detail.other,
                                     "communalPrice": this.bill_detail.communalPrice,
                                     "subtotal": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other),
-                                    "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice )+ ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) +parseInt(this.bill_detail.communalPrice) ) * 0.07),
+                                    "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice) + ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice)) * 0.07),
                                     "publishedAt": Date.now()
                                 }
                             }
