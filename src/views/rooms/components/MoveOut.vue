@@ -809,10 +809,9 @@ export default {
                                     }
 
                                 })
-                            loading.close()
                         })
-
                 })
+            loading.close()
         },
         addItem(data) {
             this.items_other.push({
