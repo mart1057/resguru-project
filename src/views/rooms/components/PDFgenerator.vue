@@ -1,5 +1,5 @@
 <template>
-    <div hidden>
+    <div >
         <!-- Your HTML content to convert to PDF -->
         <div ref="pdfContent" class="p-[8px]">
             <img class="watermarked" :src="Res_Guru_Logo_create06" />
@@ -12,9 +12,9 @@
                         <div>Tel. 08889899988</div>
                     </div>
                 </div>
-                <div class="flex flex-col justify-between">
-                    <!-- <div>invoice# {{ data_bill.tenant_bills[0]?.invoiceNumber }}</div> -->
-                    <div>
+                <div class="">
+                    <div>invoice# {{  bill_detail.invoiceNumber }}</div>
+                    <div class="">
                         <div>Issue date</div>
                         <div>10/10/2023</div>
                     </div>
@@ -40,7 +40,7 @@
                 <div class="pr-[14px]">
                     <hr class="h-[10px]">
                     <div class="font-bold mb-[8px]">DETAILS</div>
-                    <div>ลูกบ้านอยู่เดือนสุดท้าย</div>
+                    <div>ใบชำระค่าห้องประจำเดือน</div>
                 </div>
                 <div class=" pr-[14px]">
                     <hr class="h-[10px]">
@@ -50,77 +50,83 @@
                 </div>
             </div>
             <div class="mt-[24px]">
-                <table>
-                    <tr class="border-b-[1px]">
+                <table class="">
+                    <tr class="border-b-[1px] flex justify-between ">
                         <th colspan="6">ITEM</th>
                         <th>QTY</th>
                         <th>PRICE</th>
                         <th>AMOUNT</th>
                     </tr>
-                    <tr class="border-b-[1px]">
+                    <tr class="border-b-[1px] flex justify-between ">
                         <td colspan="6">ค่าห้อง</td>
                         <td>1</td>
                         <td>{{ bill_detail.room }}</td>
                         <td>{{ bill_detail.room }}</td>
                     </tr>
-                    <tr class="border-b-[1px]">
+                    <tr class="border-b-[1px] flex justify-between ">
                         <td colspan="6">ค่าน้ำ</td>
-                        <td>{{ }}</td>
-                        <td>{{ }}</td>
+                        <td>{{ '-'}}</td>
+                        <td>{{ '-'}}</td>
                         <td>{{ bill_detail.water }}</td>
                     </tr>
-                    <tr class="border-b-[1px]">
+                    <tr class="border-b-[1px] flex justify-between ">
                         <td colspan="6">ค่าไฟ</td>
-                        <td>{{ }} </td>
-                        <td>{{ }}</td>
+                        <td>{{' -'}} </td>
+                        <td>{{' -'}}</td>
                         <td>{{ bill_detail.ele }}
                         </td>
                     </tr>
-                    <tr class="border-b-[1px]">
+                    <tr class="border-b-[1px] flex justify-between ">
                         <td colspan="6">ค่าส่วนกลาง</td>
-                        <td></td>
-                        <td>{{ bill_detail.communalPrice }}</td>
+                        <td>-</td>
+                        <td><div class="flex justify-start">{{ bill_detail.communalPrice }}</div></td>
                         <td>{{ bill_detail.communalPrice }}</td>
                     </tr>
-                    <tr class="border-b-[1px]">
+                    <tr class="border-b-[1px] flex justify-between ">
                         <td colspan="6">ค่าอื่น ๆ</td>
-                        <td></td>
+                        <td>-</td>
                         <td>{{ bill_detail.other }}</td>
                         <td>{{ bill_detail.other }}</td>
                     </tr>
-                    <tr class="border-b-[1px]" v-for="item in items_other">
+                    <tr class="border-b-[1px] flex justify-between " v-for="item in items_other">
                         <td colspan="6">ค่าปรับทรัพย์สินเสียหาย ({{ item.name }})</td>
-                        <td></td>
+                        <td>-</td>
                         <td>{{ item.price }}</td>
                         <td>{{ item.price }}</td>
                     </tr>
-                    <tr class="border-b-[1px]">
+                    <tr class="border-b-[1px] flex justify-between ">
                         <td colspan="6">คืนค่ามัดจำ</td>
-                        <td></td>
+                        <td>-</td>
                         <td>-{{ list_debt.deposit }}</td>
                         <td>-{{ list_debt.deposit }}</td>
                     </tr>
-                    <tr class="border-b-[1px]">
+                    <tr class="border-b-[1px] flex justify-between ">
                         <td colspan="6">คืนค่ามัดจำ</td>
-                        <td></td>
+                        <td>-</td>
                         <td>-{{ list_debt.deposit2 }}</td>
                         <td>-{{ list_debt.deposit2 }}</td>
                     </tr>
-                    <tr class="border-b-[1px]">
+                    <tr class="border-b-[1px] flex justify-between  ">
                         <td colspan="8">SubTotal</td>
+                        <td colspan="8" class="font-bold"></td>
+                        <td colspan="8" class="font-bold"></td>
                         <td>{{ (totalBillItems() - parseInt(list_debt.deposit2) - parseInt(list_debt.deposit) +
                             parseInt(bill_detail.ele) + parseInt(bill_detail.water) + parseInt(bill_detail.other) + parseInt(
                                 bill_detail.communalPrice) + parseInt(bill_detail.room)) }}
                         </td>
                     </tr>
-                    <tr class="border-b-[1px]">
+                    <tr class="border-b-[1px] flex justify-between  ">
                         <td colspan="8">Tax</td>
+                        <td colspan="8" class="font-bold"></td>
+                        <td colspan="8" class="font-bold"></td>
                         <td>{{ ((totalBillItems() - parseInt(list_debt.deposit2) - parseInt(list_debt.deposit) +
                             parseInt(bill_detail.ele) + parseInt(bill_detail.water) + parseInt(bill_detail.other) + parseInt(
                                 bill_detail.communalPrice) + parseInt(bill_detail.room)) * 0.07) }}</td>
                     </tr>
-                    <tr class="border-b-[1px]">
+                    <tr class="border-b-[1px] flex justify-between  ">
                         <td colspan="8" class="font-bold">Total Due</td>
+                        <td colspan="8" class="font-bold"></td>
+                        <td colspan="8" class="font-bold"></td>
                         <td class="font-bold"> {{
                             (totalBillItems() - parseInt(list_debt.deposit2) - parseInt(list_debt.deposit) +
                                 parseInt(bill_detail.ele) + parseInt(bill_detail.water) + parseInt(bill_detail.other) + parseInt(
@@ -241,7 +247,11 @@ th,
 td {
     padding-top: 8px;
     padding-bottom: 8px;
-    text-align: left;
+    width:100%
+  
+}
+td{
+    
 }
 
 .custom-table {

@@ -772,6 +772,7 @@ export default {
                             this.bill_detail.water = resp.data[0]?.attributes.waterPrice
                             this.bill_detail.communalPrice = resp.data[0]?.attributes.communalPrice
                             this.bill_detail.vat = 7
+                            this.bill_detail.invoiceNumber = resp.data[0]?.attributes.invoiceNumber 
                             this.bill_detail.room = resp.data[0]?.attributes.roomPrice
                             this.bill_detail.other = resp.data[0]?.attributes.otherPrice
                         }).finally(() => {
