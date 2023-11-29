@@ -45,7 +45,7 @@ nav {
 
 input[type=input],
 [type=email],
-[type=password] {
+[type=password],[type=number] {
   padding: 12px 16px;
   margin: 8px 0;
 }

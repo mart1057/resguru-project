@@ -221,7 +221,7 @@
                         </div>
                         <div class="flex mt-[4px]">
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" v-model="item.price"
-                                type="input" />
+                            type="number" />
                         </div>
                     </div>
                 </div>
@@ -355,24 +355,24 @@
                             <div class="text-[12px] text-[#8396A6]">จำนวนเงินบาท</div>
                             <div class="flex">
                                 <input
-                                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]"
-                                    type="input" v-model="bill_detail.room" />
+                                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center"
+                                    type="number" v-model="bill_detail.room" />
                             </div>
                             <div class="flex mt-[-8px]">
                                 <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" v-model="bill_detail.water" />
+                                type="number" v-model="bill_detail.water" />
                             </div>
                             <div class="flex mt-[-8px]">
                                 <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" v-model="bill_detail.ele" />
+                                type="number" v-model="bill_detail.ele" />
                             </div>
                             <div class="flex mt-[-8px]">
                                 <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" v-model="bill_detail.communalPrice" />
+                                    type="number" v-model="bill_detail.communalPrice" />
                             </div>
                             <div class="flex mt-[-8px]">
                                 <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" v-model="bill_detail.other" />
+                                type="number" v-model="bill_detail.other" />
                             </div>
                             <div>
                                 <div
@@ -843,8 +843,8 @@ export default {
                                     "electricPrice": this.bill_detail.ele,
                                     "otherPrice": this.bill_detail.other,
                                     "communalPrice": this.bill_detail.communalPrice,
-                                    "subtotal": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other,
-                                    "total": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice + ((this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice) * 0.07),
+                                    "subtotal": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other),
+                                    "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice )+ ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) +parseInt(this.bill_detail.communalPrice) ) * 0.07),
                                     "publishedAt": null
                                 }
                             }
@@ -878,8 +878,8 @@ export default {
                                     "electricPrice": this.bill_detail.ele,
                                     "otherPrice": this.bill_detail.other,
                                     "communalPrice": this.bill_detail.communalPrice,
-                                    "subtotal": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other,
-                                    "total": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice + ((this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice) * 0.07),
+                                    "subtotal": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other),
+                                    "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice )+ ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) +parseInt(this.bill_detail.communalPrice) ) * 0.07),
                                     "publishedAt": null
                                 }
                             }
@@ -930,8 +930,8 @@ export default {
                                     "electricPrice": this.bill_detail.ele,
                                     "otherPrice": this.bill_detail.other,
                                     "communalPrice": this.bill_detail.communalPrice,
-                                    "subtotal": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other,
-                                    "total": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice + ((this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice) * 0.07),
+                                    "subtotal": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other),
+                                    "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice )+ ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) +parseInt(this.bill_detail.communalPrice) ) * 0.07),
                                     "publishedAt": Date.now()
                                 }
                             }).then(() => {
@@ -978,8 +978,8 @@ export default {
                                     "electricPrice": this.bill_detail.ele,
                                     "otherPrice": this.bill_detail.other,
                                     "communalPrice": this.bill_detail.communalPrice,
-                                    "subtotal": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other,
-                                    "total": this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice + ((this.bill_detail.room + this.bill_detail.water + this.bill_detail.ele + this.bill_detail.other + this.bill_detail.communalPrice) * 0.07),
+                                    "subtotal": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other),
+                                    "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice )+ ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) +parseInt(this.bill_detail.communalPrice) ) * 0.07),
                                     "publishedAt": Date.now()
                                 }
                             }
