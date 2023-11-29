@@ -47,7 +47,7 @@
             <div class="grid grid-cols-4">
                 <div class="flex flex-col justify-between w-[339px] h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
                     <div>คงเหลือ</div>
-                    <div class="text-[#D44769] font-bold text-[16px]">{{ list_debt.total }}</div>
+                    <div class="text-[#D44769] font-bold text-[16px]" v-if="list_debt.total">{{ list_debt.total }}</div>
                 </div>
                 <div class="flex flex-col justify-between w-[339px] h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
                     <div>เงินมัดจำ</div>
@@ -375,11 +375,15 @@
                                 type="number" v-model="bill_detail.other" />
                             </div>
                             <div>
-                                <div
+                                <div v-if="bill_detail.room"
                                     class="font-bold text-custom text-[14px] flex justify-start items-start pl-[16px] mt-[24px]">
                                     {{ parseInt(bill_detail.room + bill_detail.other + bill_detail.water +
                                         bill_detail.ele + bill_detail.communalPrice)
                                     }}
+                                </div>
+                                <div v-else
+                                    class="font-bold text-custom text-[14px] flex justify-start items-start pl-[16px] mt-[24px]">
+                                    -
                                 </div>
                             </div>
 
@@ -447,8 +451,11 @@
                     <div class="w-[100%] mt-[14px]">
                         <div class="flex justify-between w-[100%]">
                             <div class="text-custom ">ค้างชำระ</div>
-                            <div class="text-custom ">{{ bill_detail.room + bill_detail.water + bill_detail.ele +
+                            <div class="text-custom " v-if="bill_detail.water || bill_detail.room || bill_detail.other ">{{ bill_detail.room + bill_detail.water + bill_detail.ele +
                                 bill_detail.other + bill_detail.communalPrice }} <span
+                                    class="ml-[4px] text-custom ">บาท</span>
+                            </div>
+                            <div class="text-custom " v-else>-<span
                                     class="ml-[4px] text-custom ">บาท</span>
                             </div>
                         </div>
@@ -468,9 +475,16 @@
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]">
                             <div class="text-custom text-[16px] font-bold ">รวมทั้งสิ้น</div>
-                            <div class="text-custom text-[16px] font-bold">{{
-                                totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total }} <span
-                                    class="ml-[4px] text-custom ">บาท</span></div>
+                            <div class="text-custom text-[16px] font-bold" v-if="list_debt.total">
+                                {{
+                                totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + parseInt(list_debt.total) }} <span
+                                    class="ml-[4px] text-custom ">บาท</span>
+                                </div>
+                                <div class="text-custom text-[16px] font-bold" v-else>
+                                {{
+                                totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit)}} <span
+                                    class="ml-[4px] text-custom ">บาท</span>
+                                </div>
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]" v-if="tab == true">
                             <div class="text-custom text-[#D44769] font-bold text-[16px]">หนี้สูญ {{
