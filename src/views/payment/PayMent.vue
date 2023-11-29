@@ -175,23 +175,25 @@
                                 <vs-checkbox :val="tr" v-model="selected" />
                             </vs-td> -->
                             <vs-td>
-                                <div @click="routeTo(tr.user_sign_contract.id)">
+                                <div @click="routeTo(tr.id)">
                                     {{ tr.RoomNumber }}
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <div @click="routeTo(tr.user_sign_contract.id)">
+                                <div @click="routeTo(tr.id)">
                                     <div v-if="tr.user_sign_contract && tr.user_sign_contract.users_permissions_user">
                                         {{ tr.user_sign_contract.users_permissions_user.firstName }} {{
                                             tr.user_sign_contract.users_permissions_user.lastName }}
                                     </div>
                                     <div v-else>
                                         ยังไม่มีผู้เช่า
+                                        
+                                       
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <div @click="routeTo(tr.user_sign_contract.id)">
+                                <div @click="routeTo(tr.id)">
                                     {{ tr.room_type.roomTypeName }}
                                 </div>
                             </vs-td>
@@ -202,56 +204,60 @@
                                     : "" }}
                                     </div>
                             </vs-td> -->
+                            
+                          
+                             
                             <vs-td>
-                                <div @click="routeTo(tr.user_sign_contract.id)">
-                                    <div v-if="tr.tenant_bills[0]">
+                                <div @click="routeTo(tr.id)">
+                                    <div  v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                         {{ $formatNumber(tr.tenant_bills[0].roomPrice) }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <div @click="routeTo(tr.user_sign_contract.id)">
+                                <div @click="routeTo(tr.id)">
 
-                                    <div v-if="tr.tenant_bills[0]">
+                                    <div  v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                         {{ $formatNumber(tr.tenant_bills[0].communalPrice) }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <div @click="routeTo(tr.user_sign_contract.id)">
-                                    <div v-if="tr.tenant_bills[0]">
+                                <div @click="routeTo(tr.id)">
+                                    <div  v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                         {{ $formatNumber(tr.tenant_bills[0].otherPrice) }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <div @click="routeTo(tr.user_sign_contract.id)">
-                                    <div v-if="tr.tenant_bills[0]">
+                                <div @click="routeTo(tr.id)">
+                                    <div  v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                         {{ $formatNumber(tr.tenant_bills[0].total) }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <div @click="routeTo(tr.user_sign_contract.id)">
-                                    <div v-if="tr.tenant_bills[0]">
+                                <div @click="routeTo(tr.id)">
+                                    <div  v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                         {{ $formatNumber(tr.tenant_bills[0].overDue) }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <div @click="routeTo(tr.user_sign_contract.id)">
-                                    <div v-if="tr.tenant_bills[0]">
+                                <div @click="routeTo(tr.id)">
+                                    <div  v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                         {{ $formatNumber(tr.tenant_bills[0].grandTotal) }}
                                     </div>
                                 </div>
                             </vs-td>
+                             
                             <vs-td>
                                 <div class="flex items-center justify-start">
                                     <!-- <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
                                         :class="tr.attributes.paymentStatus == 1 ? 'bg-[#CFFBDA] text-[#0B9A3C]' : tr.attributes.paymentStatus == 'ยังไม่ชำระ' ? 'bg-[#FFE1E8] text-[#EA2F5C]' : ' bg-[#FFF2BC] text-[#D48C00] '"> -->
                                     <div
                                         class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]">
-                                        <div v-if="tr.tenant_bills[0]">
+                                        <div  v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                             {{ tr.tenant_bills[0].paymentStatus }}
                                         </div>
                                     </div>
@@ -289,6 +295,10 @@
                                 <div v-else-if="tr.user_sign_contract === null && tr.tenant_bills[0]">
                                     <vs-button warn class="small">ผู้เช่าย้ายออก</vs-button>
                                 </div>
+                                <div  v-else-if="tr.user_sign_contract ">
+                                    <vs-button color="rgb(59,222,200)" class="small"
+                                        @click="generateInvoice(tr.id)">สร้างใบแจ้งหนี้</vs-button>
+                                </div>
                                 <div v-else-if="tr.tenant_bills[0] && tr.tenant_bills[0].paymentStatus === 'Partial Paid'">
                                     <!-- <vs-button  primary class="small">แก้ไขใบแจ้งหนี้</vs-button>   -->
                                         <!-- to: internal link -->
@@ -306,6 +316,11 @@
 
                                     <!--  Need to add option for select here -->
                                 </div>
+
+                                <div v-else-if="tr.user_sign_contract">
+                                    <vs-button color="rgb(59,222,200)" class="small"
+                                        @click="generateInvoice(tr.id)">สร้างใบแจ้งหนี้</vs-button>
+                                </div>
                                 <div v-else-if="tr.tenant_bills[0] && (tr.tenant_bills[0].paymentStatus === 'Paid' || tr.tenant_bills[0].paymentStatus === 'In Review Progress')">
                                     <vs-select placeholder="เมนู" v-model="tr.tenant_bills[0].lastEvent" @change="selectMenu(tr.tenant_bills[0].lastEvent,tr)">
                                             <vs-option label="เลือกเมนู" value="">
@@ -317,10 +332,6 @@
                                     </vs-select>
                                 </div>
 
-                                <div v-else-if="tr.user_sign_contract">
-                                    <vs-button color="rgb(59,222,200)" class="small"
-                                        @click="generateInvoice(tr.id)">สร้างใบแจ้งหนี้</vs-button>
-                                </div>
                                 <div v-else>
                                     <vs-button dark class="small">ยังไม่มีผู้เช่า</vs-button>
                                 </div>
@@ -649,9 +660,9 @@ export default {
             this.filter.selectedYear = a
             this.getRoomBill(this.filter.floor,0,this.filter.selectedMonth, this.filter.selectedYear);
         },
-        routeTo(profileID) {
+        routeTo(roomID) {
             this.$router.push({
-                path: `/payment-detail?profileId=${profileID}`,
+                path: `/payment-detail?roomID=${roomID}`,
             })
         },
         selectMenu(menu_option,roomdata){
@@ -677,7 +688,7 @@ export default {
                 this.createPartialPayment = true
             }
             else if(menu_option === 'View'){
-               this.routeTo(roomdata.user_sign_contract.id)
+               this.routeTo(roomdata.id)
             }
             else if(menu_option === 'Update'){
                 this.reGenerateInvoice(roomdata.tenant_bills[0].id)

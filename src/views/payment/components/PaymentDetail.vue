@@ -15,12 +15,51 @@
         <div class="flex mt-[14px]">
             <div class="bg-[#003765] h-[147px] w-[404px] rounded-[22px] p-[14px] text-[white]">
                 <div class="flex items-center">
-                    <div v-if="userProfileImage">
+                    <div v-if="userProfileImage && userProfileImage !== ''">
                         <img class="w-[114px] h-[114px] bg-slate-400 rounded-[22px]"
                                 :src="userProfileImage" />
                     </div>
                     <div v-else>
-                        <div class="w-[114px] h-[114px] bg-slate-400 rounded-[22px]"></div>
+                        <div class="w-[114px] h-[114px] rounded-[22px]">
+                            <svg width="100" height="100" viewBox="0 0 114 114" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <g clip-path="url(#clip0_721_16400)">
+                                    <rect x="0.332031" width="100%" height="100%" rx="16" fill="#003765" />
+                                    <path
+                                        d="M31.4771 106.798L29.2152 103.539H26.7175V106.798H24V95.1099H29.0769C32.2093 95.1099 34.1701 96.7309 34.1701 99.3489C34.1701 101.1 33.2833 102.388 31.7537 103.037L34.3817 106.798H31.4689H31.4771ZM28.9305 97.3145H26.7175V101.391H28.9305C30.5902 101.391 31.4283 100.621 31.4283 99.357C31.4283 98.0926 30.5902 97.3226 28.9305 97.3226V97.3145Z"
+                                        fill="white" />
+                                    <path
+                                        d="M45.4044 104.625V106.798H36.3164V95.1099H45.1847V97.2821H39.0176V99.819H44.4688V101.926H39.0176V104.634H45.4044V104.625Z"
+                                        fill="white" />
+                                    <path
+                                        d="M46.6527 105.647L47.572 103.612C48.5646 104.334 50.0373 104.828 51.4448 104.828C53.0558 104.828 53.7067 104.293 53.7067 103.572C53.7067 101.383 46.8805 102.891 46.8805 98.5465C46.8805 96.5607 48.4914 94.9072 51.8272 94.9072C53.2999 94.9072 54.8132 95.2558 55.9034 95.9447L55.0654 97.9953C53.9752 97.3793 52.8524 97.0794 51.811 97.0794C50.2 97.0794 49.5817 97.6792 49.5817 98.4168C49.5817 100.573 56.3997 99.0814 56.3997 103.377C56.3997 105.331 54.7725 107 51.4204 107C49.5573 107 47.686 106.449 46.6445 105.647H46.6527Z"
+                                        fill="white" />
+                                    <path
+                                        d="M70.9462 100.767H73.4277V105.509C72.1341 106.481 70.3604 106.992 68.6844 106.992C64.9987 106.992 62.2812 104.471 62.2812 100.945C62.2812 97.4197 64.9987 94.8989 68.7332 94.8989C70.7916 94.8989 72.5083 95.6041 73.6474 96.9171L71.9062 98.522C71.052 97.6223 70.0594 97.2008 68.8715 97.2008C66.5934 97.2008 65.0312 98.7165 65.0312 100.937C65.0312 103.158 66.5934 104.674 68.8389 104.674C69.5793 104.674 70.2628 104.544 70.9543 104.171V100.751L70.9462 100.767Z"
+                                        fill="white" />
+                                    <path
+                                        d="M75.8438 101.659V95.1099H78.5612V101.554C78.5612 103.774 79.5294 104.69 81.1729 104.69C82.8164 104.69 83.7846 103.774 83.7846 101.554V95.1099H86.4695V101.659C86.4695 105.096 84.4924 107 81.1566 107C77.8208 107 75.8438 105.096 75.8438 101.659Z"
+                                        fill="white" />
+                                    <path
+                                        d="M96.6294 106.798L94.3676 103.539H91.8698V106.798H89.1523V95.1099H94.2293C97.3617 95.1099 99.3225 96.7309 99.3225 99.3489C99.3225 101.1 98.4356 102.388 96.906 103.037L99.534 106.798H96.6213H96.6294ZM94.0828 97.3145H91.8698V101.391H94.0828C95.7426 101.391 96.5806 100.621 96.5806 99.357C96.5806 98.0926 95.7426 97.3226 94.0828 97.3226V97.3145Z"
+                                        fill="white" />
+                                    <path
+                                        d="M101.375 101.659V95.1099H104.092V101.554C104.092 103.774 105.061 104.69 106.704 104.69C108.348 104.69 109.316 103.774 109.316 101.554V95.1099H112.001V101.659C112.001 105.096 110.024 107 106.688 107C103.352 107 101.375 105.096 101.375 101.659Z"
+                                        fill="white" />
+                                    <path
+                                        d="M91.6191 79.9444L81.0503 64.8443C87.1768 62.2182 90.7485 57.0551 90.7485 50.0117C90.7485 39.4748 82.8647 32.9663 70.2618 32.9663H63.875C65.372 35.0169 66.2589 37.5377 66.2589 40.261C66.2589 40.7879 66.2263 41.3147 66.1531 41.8254H69.6516C76.3232 41.8254 79.6916 44.8486 79.6916 50.0117C79.6916 55.1747 76.3151 58.198 69.6516 58.198H65.1768V66.8625H70.7988L79.8868 79.9444L81.4978 82.2706H93.23L91.6028 79.9444H91.6191Z"
+                                        fill="white" />
+                                    <path
+                                        d="M63.3545 40.2613C63.3545 34.5957 58.7413 30 53.0542 30C47.3671 30 42.7539 34.5957 42.7539 40.2613C42.7539 44.6462 45.5283 48.3827 49.4174 49.8498V82.2627H62.2724V73.6063H56.6829V66.8546H62.2724V58.1982H56.6829V49.8498C60.572 48.3827 63.3464 44.6543 63.3464 40.2613H63.3545ZM53.0542 39.4832C51.5328 39.4832 50.3042 38.2593 50.3042 36.7436C50.3042 35.2279 51.5328 34.004 53.0542 34.004C54.5757 34.004 55.8042 35.2279 55.8042 36.7436C55.8042 38.2593 54.5757 39.4832 53.0542 39.4832Z"
+                                        fill="#F4D55E" />
+                                </g>
+                                <defs>
+                                    <clipPath id="clip0_721_16400">
+                                        <rect width="100%" height="100%" fill="white" transform="translate(0.332031)" />
+                                    </clipPath>
+                                </defs>
+                            </svg>
+                        </div>
                     </div>
                     <div class="ml-[8px] flex flex-col justify-between h-[100%]">
                         <div class="flex items-center">
@@ -42,17 +81,19 @@
                                 
                                 
                             </div>
-                            <div class="ml-[4px]">{{ userProfile.attributes.RoomNumber }}</div>
+                            <div class="ml-[4px]">{{ roomDetail.data.attributes.RoomNumber }}</div>
                         </div>
-                        <div class="text-[16px] mt-[4px]">{{ userProfile.attributes.users_permissions_user.data.attributes.firstName }} {{ userProfile.attributes.users_permissions_user.data.attributes.lastName }}</div>
-                        <div class="text-[12px] text-[#B9CCDC] mt-[4px]">เข้าพักเมื่อวันที่: {{ userProfile.attributes.checkInDate }}</div>
-                        <div class="text-[12px] text-[#B9CCDC]">ประเภทห้อง: ห้องพร้อมเฟอร์นิเจอร์</div>
+                        <div class="text-[16px] mt-[4px]">{{ userProfile.firstName ? userProfile.firstName : "ยังไม่มีผู้เข้าพัก" }} {{ userProfile.lastName }}</div>
+                        <div class="text-[12px] text-[#B9CCDC] mt-[4px]">เข้าพักเมื่อวันที่: {{ contractProfile.data ? contractProfile.data.attributes.checkInDate : "N/A" }}</div>
+                        <div class="text-[12px] text-[#B9CCDC]">ประเภทห้อง: {{ roomDetail.data.attributes.room_type.data.attributes.roomTypeName }}</div>
                     </div>
                 </div>
             </div>
             <div class="bg-[#D44769] h-[147px] w-[339px] rounded-[22px] p-[14px] text-[white] ml-[14px]">
                 <div class="flex flex-col justify-between h-[100%]">
                     <div class="font-bold text-[16px]">ยอดค้างชำระ</div>
+                   
+                  
                     <div>
                         <div class="text-[12px]">คงเหลือ</div>
                         <div class="flex justify-between">
@@ -764,7 +805,9 @@ export default {
             userUnpaidInvoice: [],
             userPayRemain: 0,
             userReceipt: [],
-            userProfileImage: [],
+            contractProfile: [],
+            roomDetail: [],
+            userProfileImage: '',
             userEvidencePayment: [],
             PartialPayment: [],
             fileFullPayment: [],
@@ -812,6 +855,14 @@ export default {
             this.$router.push({
                 path: path,
             })
+        },
+        sumRemainPaid(remainPaidArray){
+            let remainPaid = 0;
+            remainPaidArray.forEach(num => {
+                remainPaid += (num.attributes.remainPaid);
+            })
+
+            return remainPaid
         },
         updateRoomPriceInvoice(invoiceid,value){
             axios.put('https://api.resguru.app/api/tenant-bills/' + invoiceid, {
@@ -890,17 +941,27 @@ export default {
         },
         getUserProfile() {
             const loading = this.$vs.loading()
-            fetch(`https://api.resguru.app/api/user-sign-contracts/${this.$route.query.profileId}?populate=*`)
+            fetch(`https://api.resguru.app/api/rooms/${this.$route.query.roomID}?populate=*`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getUser()",resp.data);
-                    this.userProfile = resp.data
-                    fetch(`https://api.resguru.app/api/users/${resp.data.attributes.users_permissions_user.data.id}?populate=imageProfile`)
-                    .then(response => response.json())
-                    .then((res) =>{
-                        console.log("Return from getImage()",res);
-                        this.userProfileImage = res.filePath
-                    })
+
+                    this.roomDetail = resp
+                    if(resp.data.attributes.user_sign_contract.data){
+                        fetch(`https://api.resguru.app/api/user-sign-contracts/${resp.data.attributes.user_sign_contract.data.id}?populate=*`)         // get id from user sign contract user_sign_contract
+                            .then(response => response.json())
+                            .then((res) =>{
+
+                                this.contractProfile = res
+                                fetch(`https://api.resguru.app/api/users/${res.data.attributes.users_permissions_user.data.id}?populate=*`)         // get id from user sign contract user_sign_contract
+                                .then(response => response.json())
+                                .then((response) =>{
+                                    console.log("Return from getImage()",response);
+                                    this.userProfileImage = response.filePath
+                                    this.userProfile = response
+                                })
+                            })
+                    }
+                    
                     
                 })
                 
@@ -1027,9 +1088,9 @@ export default {
             // alert("Partial payment is created")
        
         },
-        getInvoice(){
+        getInvoice(){           //rewrite to get room id and return all of invoice of that room
             const loading = this.$vs.loading()
-            fetch(`https://api.resguru.app/api/tenant-bills?filters[user_sign_contract][id][$eq]=${this.$route.query.profileId}&populate=*&sort[0]=id:desc`)
+            fetch(`https://api.resguru.app/api/tenant-bills?filters[room][id][$eq]=${this.$route.query.roomID}&populate=*&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getInvoice()",resp.data);
@@ -1047,7 +1108,7 @@ export default {
         },
         getReceipt(){
             const loading = this.$vs.loading()
-            fetch(`https://api.resguru.app/api/tenant-receipts?filters[user_sign_contract][id][$eq]=${this.$route.query.profileId}&populate=*&sort[0]=id:desc`)
+            fetch(`https://api.resguru.app/api/tenant-receipts?filters[room][id][$eq]=${this.$route.query.roomID}&populate=*&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getReceipt()",resp.data);
@@ -1059,7 +1120,7 @@ export default {
         },
         getEvidence(){
             const loading = this.$vs.loading()
-            fetch(`https://api.resguru.app/api/tenant-evidence-payments?filters[user_sign_contract][id][$eq]=${this.$route.query.profileId}&populate=*&sort[0]=id:desc`)
+            fetch(`https://api.resguru.app/api/tenant-evidence-payments?filters[room][id][$eq]=${this.$route.query.roomID}&populate=*&sort[0]=id:desc`)
             // fetch(`https://api.resguru.app/api/tenant-evidence-payments`)
                .then(response => response.json())
                 .then((resp) => {
