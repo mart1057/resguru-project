@@ -21,7 +21,6 @@
                 </div>
             </div>
             <hr class="mt-[32px] mb-[32] h-[10px]">
-
             <div>
                 <div class="text-[24px] font-bold">Tansamai</div>
                 <div class="mt-[4px] mb-[15px]">กรุณาชำระทุกวันที่ 1-5 ของเดือนถัดไป ล่าช้าปรับวันละ 100 บาท </div>

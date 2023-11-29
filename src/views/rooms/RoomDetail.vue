@@ -14,30 +14,32 @@
             </div>
         </div>
         <div class="flex mt-[14px]">
-            <div class="text-[18px] font-bold text-[#141629] flex items-center justify-center">ห้อง {{ $route.query.number_room }}</div>
-            <div :class="$route.query.status == 'rent'?'bg-[#D7F1E3] text-[#39B974]':'bg-[#F0F8FF] text-[#003765]'"
+            <div class="text-[18px] font-bold text-[#141629] flex items-center justify-center">ห้อง {{
+                $route.query.number_room }}</div>
+            <div :class="$route.query.status == 'rent' ? 'bg-[#D7F1E3] text-[#39B974]' : 'bg-[#F0F8FF] text-[#003765]'"
                 class="ml-[14px] h-[36px] w-[auto] text-[12px] flex items-center justify-center p-[8px] rounded-[12px]">
-                {{$route.query.status == "rent"? 'ทำสัญญาแล้ว': $route.query.status == "reserved" ?'ยังไม่ทำสัญญา' :'ห้องว่าง'}} </div>
+                {{ $route.query.status == "rent" ? 'ทำสัญญาแล้ว' : $route.query.status == "reserved" ? 'ยังไม่ทำสัญญา'
+                    : 'ห้องว่าง' }} </div>
         </div>
         <div class="flex justify-start items-center rounded-[12px] mt-[14px]">
             <div class="bg-[#F3F7FA] rounded-[12px]">
                 <div class="flex justify-start items-center">
-                    <div @click="tab = 1" class="cursor-pointer "
+                    <div @click=" routTab(1)" class="cursor-pointer "
                         :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         ผู้เช่า</div>
-                    <div @click="tab = 2" class="cursor-pointer ml-[8px]" v-if=" $route.query.id_user"
+                    <div @click=" routTab(2)" class="cursor-pointer ml-[8px]" v-if="$route.query.id_user"
                         :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         สัญญาเช่า
                     </div>
-                    <div @click="tab = 3" class="cursor-pointer  ml-[8px]"
+                    <div @click=" routTab(3)" class="cursor-pointer  ml-[8px]"
                         :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         สิ่งอำนวยความสะดวก
                     </div>
-                    <div @click="tab = 4" class="cursor-pointer  ml-[8px]" v-if=" $route.query.id_user"
+                    <div @click=" routTab(4)" class="cursor-pointer  ml-[8px]" v-if="$route.query.id_user"
                         :class="tab == 4 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : ' text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         ย้ายออก
                     </div>
-                    <div @click="tab =  5" class="cursor-pointer  ml-[8px]"
+                    <div @click="routTab(5)" class="cursor-pointer  ml-[8px]"
                         :class="tab == 5 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : ' text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         ผู้เช่ารายเก่า
                     </div>
@@ -45,7 +47,8 @@
             </div>
         </div>
         <div v-if="tab == 1">
-            <CardMember :id_user="$route.query.id_user" :id_room="$route.query.id_room" :status="$route.query.status" :id_contract="$route.query.id_contract"/>
+            <CardMember :id_user="$route.query.id_user" :id_room="$route.query.id_room" :status="$route.query.status"
+                :id_contract="$route.query.id_contract" />
         </div>
         <div v-else-if="tab == 2">
             <Contract />
@@ -54,7 +57,7 @@
             <Facilites />
         </div>
         <div v-else-if="tab == 4">
-            <MoveOut/>
+            <MoveOut />
         </div>
         <div v-else-if="tab == 5">
             <CardMemberOld />
@@ -65,16 +68,17 @@
 import CardMember from './components/CardMember.vue'
 import CardMemberOld from './components/CardMemberOld.vue'
 import Contract from '@/views/rooms/components/Contract.vue'
-import  Facilites from '@/views/rooms/components/Facilities.vue'
+import Facilites from '@/views/rooms/components/Facilities.vue'
 import MoveOut from './components/MoveOut.vue'
 export default {
-    components: { CardMember, CardMemberOld, Contract, Facilites,MoveOut  },
+    components: { CardMember, CardMemberOld, Contract, Facilites, MoveOut },
     data() {
         return {
             tab: 1
         }
     },
     created() {
+        this.tab = this.$route.query.tab
         const loading = this.$vs.loading({
             opacity: 1,
         })
@@ -88,6 +92,20 @@ export default {
                 path: path,
             })
         },
+        routTab(tab) {
+            this.tab = tab
+            this.$router.push({
+                path: '/room-detail',
+                query: {
+                    id_user: this.$route.query.id_user,
+                    id_room: this.$route.query.id_room,
+                    number_room: this.$route.query.number_room,
+                    status: this.$route.query.status,
+                    id_contract: this.$route.query.id_contract,
+                    tab: tab
+                },
+            })
+        }
     }
 }
 </script>

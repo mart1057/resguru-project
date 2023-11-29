@@ -658,14 +658,14 @@
                 </div>
             </template>
         </vs-dialog>
-        <PDFgenerator ref="childComponentPDFMoveOut"/>
+        <PDFgenerator ref="childComponentPDFMoveOut" />
     </div>
 </template>
 <script>
 import axios from 'axios'
 import PDFgenerator from './PDFgenerator.vue'
 export default {
-    components:{
+    components: {
         PDFgenerator
     },
     data() {
@@ -754,7 +754,6 @@ export default {
             fetch('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract + '?populate=deep,4')
                 .then(response => response.json())
                 .then((resp) => {
-
                     this.list_debt.deposit = resp.data?.attributes.roomDeposit
                     this.list_debt.deposit2 = resp.data?.attributes.roomInsuranceDeposit
                     this.user_detail = resp.data?.attributes.users_permissions_user.data?.attributes
@@ -763,7 +762,8 @@ export default {
                         .then(response => response.json())
                         .then((resp) => {
                             if (resp.data.length == 0) {
-                                this.$showNotification('#3A89CB', 'กรูณากดสร้างบิล')
+                                this.generateInvoice()
+                                window.location.reload()
                             }
                             console.log('bill', resp.data[0]);
                             this.list_debt.total = resp.data[0]?.attributes.total
@@ -772,7 +772,7 @@ export default {
                             this.bill_detail.water = resp.data[0]?.attributes.waterPrice
                             this.bill_detail.communalPrice = resp.data[0]?.attributes.communalPrice
                             this.bill_detail.vat = 7
-                            this.bill_detail.invoiceNumber = resp.data[0]?.attributes.invoiceNumber 
+                            this.bill_detail.invoiceNumber = resp.data[0]?.attributes.invoiceNumber
                             this.bill_detail.room = resp.data[0]?.attributes.roomPrice
                             this.bill_detail.other = resp.data[0]?.attributes.otherPrice
                         }).finally(() => {
@@ -1025,9 +1025,22 @@ export default {
                     this.$showNotification('#3A89CB', 'สำเร็จ')
                 })
         },
-        PDFPrint(){
+        PDFPrint() {
             console.log('sdf');
-            this.$refs.childComponentPDFMoveOut.generatePDF(this.user_detail,this.bill_detail,this.items_other,this.list_debt )
+            this.$refs.childComponentPDFMoveOut.generatePDF(this.user_detail, this.bill_detail, this.items_other, this.list_debt)
+        },
+        generateInvoice() {
+            const currentdate = new Date()
+            const month = currentdate.getMonth()
+            const year = currentdate.getFullYear()
+            axios.get(`https://api.resguru.app/api/generateInvoice?buildingid=${this.$store.state.building}&roomid=${this.$route.query.id_room}&month=${month}&year=${year}`)
+                .then((response) => {
+                    this.$showNotification('#3A89CB', response.data.meta.message)
+                })
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
         },
     }
 }

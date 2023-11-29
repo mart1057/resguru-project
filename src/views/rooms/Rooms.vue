@@ -399,7 +399,7 @@ export default {
         routeTo2(path, id, id_room, number_room, status, id_contract) {
             this.$router.push({
                 path: path,
-                query: { id_user: id, id_room: id_room, number_room: number_room, status: status, id_contract: id_contract },
+                query: { id_user: id, id_room: id_room, number_room: number_room, status: status, id_contract: id_contract ,tab:1},
             })
         },
         getRoom(code) {
