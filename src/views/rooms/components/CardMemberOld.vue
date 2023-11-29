@@ -319,7 +319,8 @@
                 </div>
                 <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
                 <div class="mt-[24px]">
-                    <div class="text-[18px] text-[#141629] text-custom font-bold">รายการตรวจจับ</div>
+                    <div class="text-[18px] text-[#141629] text-custom font-bold" v-if="items_other.length > 0">
+                        รายการตรวจจับ</div>
                 </div>
                 <div class="mt-[14px]">
                     <div class="flex" v-for="item in items_other">
@@ -485,7 +486,7 @@
                                 </div>
                                 <div class="flex mt-[4px]">
                                     <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
-                                        v-model="item.price" type="input" disabled/>
+                                        v-model="item.price" type="input" disabled />
                                 </div>
                             </div>
                         </div>
@@ -536,7 +537,8 @@
                                     <select
                                         class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt"
                                         type="input" v-model="item.remark"
-                                        @change="item.remark == 'ไม่เสียหาย' ? item.price = 0 : item.price = item.price" disabled>
+                                        @change="item.remark == 'ไม่เสียหาย' ? item.price = 0 : item.price = item.price"
+                                        disabled>
                                         <option value="รอซ่อม">รอซ่อม</option>
                                         <option value="เสียหาย">เสียหาย</option>
                                         <option value="ไม่เสียหาย">ไม่เสียหาย</option>
@@ -546,18 +548,153 @@
                         </div>
                     </div>
                 </div>
-
+                <div class=" flex w-[100%] justify-between mt-[100px]">
+                    <div class="w-[48%] flex justify-center items-start text-custom">
+                        <div>
+                            <div class="flex justify-start items-start">คืนเงินประกัน</div>
+                            <div class="flex mt-[14px] justify-center items-center">
+                                <div>
+                                    <div
+                                        class="font-bold text-custom text-[#8396A6] text-[12px] flex justify-start items-start">
+                                        รายการ
+                                    </div>
+                                    <div>
+                                        <div
+                                            class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                            เงินประกัน
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ml-[8px]">
+                                    <div>
+                                        <div
+                                            class="font-bold text-custom text-[#8396A6] text-[12px] flex justify-start items-start">
+                                            จำนวนเงิน(บาท)
+                                        </div>
+                                        <div>
+                                            <input
+                                                class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]"
+                                                type="input" disabled v-model="list_debt.deposit2"/>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- <div class="flex mt-[24px]">
+                            <div>
+                                <div class="font-bold text-custom text-[12px] flex justify-start items-start">
+                                    รวมทั้งหมด
+                                </div>
+                            </div>
+                            <div class="ml-[168px]">
+                                <div>
+                                    <div class="font-bold text-custom text-[12px] flex justify-start items-start">
+                                        {{ list_debt.deposit2 }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        </div>
+                    </div>
+                    <div class="w-[2%] flex justify-center items-center ">
+                        <div class="w-[1px] h-[100%] bg-gray-200 border-0 dark:bg-gray-700"></div>
+                    </div>
+                    <div class="w-[48%] flex flex-col justify-center items-center pl-[100px] pr-[100px] ">
+                        <div class="text-custom text-[18px] font-bold text-[#003765]">สรุปการย้ายออก</div>
+                        <div class="w-[100%] mt-[14px]">
+                            <div class="flex justify-between w-[100%]">
+                                <div class="text-custom ">ค้างชำระ</div>
+                                <div class="text-custom ">
+                                    {{
+                                bill_detail.room + bill_detail.water + bill_detail.ele +
+                                bill_detail.other + bill_detail.communalPrice }} 
+                                    <span class="ml-[4px] text-custom ">บาท</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between w-[100%] mt-[4px]" v-for="item in items_other">
+                                <div class="text-custom ">
+                                    ค่าปรับทรัพย์สินเสียหาย
+                                    ({{ item.name }})
+                                </div>
+                                <div class="text-custom ">
+                                    {{ item.price }} 
+                                    <span class="ml-[4px] text-custom ">บาท</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between w-[100%] mt-[4px]">
+                                <div class="text-custom ">คืนค่ามัดจำ</div>
+                                <div class="text-custom ">
+                                    -{{ list_debt.deposit }} 
+                                    <span class="ml-[4px] text-custom ">บาท</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between w-[100%] mt-[4px]">
+                                <div class="text-custom ">คืนเงินประกัน</div>
+                                <div class="text-custom ">
+                                    -{{ list_debt.deposit2 }} 
+                                    <span class="ml-[4px] text-custom ">บาท</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between w-[100%] mt-[4px]">
+                                <div class="text-custom text-[16px] font-bold ">รวมทั้งสิ้น</div>
+                                <div class="text-custom text-[16px] font-bold">
+                                    {{
+                                    totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + parseInt(list_debt.total)
+                                }} 
+                                    <span class="ml-[4px] text-custom ">บาท</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between w-[100%] mt-[4px]" v-if="tab == true">
+                                <div class="text-custom text-[#D44769] font-bold text-[16px]">หนี้สูญ {{
+                                    (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) > 0
+                                    ? 0
+                                    : (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) }}
+                                    บาท</div>
+                            </div>
+                        </div>
+                        <div class="text-custom text-[12px] font-bold text-[#003765] mt-[24px]">วันที่ย้ายออก</div>
+                        <div>
+                            <input
+                                class="h-[28px] w-[180px] bg-[#F3F8FD] rounded-[12px] mt-[4px]  flex justify-start pl-[8px] pr-[8px]"
+                                type="date" v-model="date_moveout" disabled />
+                        </div>
+                        <div class="flex mt-[14px]">
+                            <button @click="PDFPrint()"
+                                class="bg-[#165D98] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
+                                <div class="flex">
+                                    <div class="flex justify-center items-center ">
+                                        <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <mask id="mask0_3285_9902" style="mask-type:alpha" maskUnits="userSpaceOnUse"
+                                                x="0" y="0" width="22" height="23">
+                                                <rect y="0.5" width="22" height="22" fill="#D9D9D9" />
+                                            </mask>
+                                            <g mask="url(#mask0_3285_9902)">
+                                                <path
+                                                    d="M14.6652 8.11546V5.36546H7.33187V8.11546H5.9569V4.81532C5.9569 4.58155 6.0363 4.38564 6.19511 4.22757C6.35391 4.06951 6.55068 3.99048 6.78543 3.99048H15.208C15.4466 3.99048 15.645 4.06954 15.8031 4.22767C15.9611 4.38579 16.0402 4.58173 16.0402 4.81548V8.11546H14.6652ZM16.3222 11.7821C16.582 11.7821 16.7997 11.6942 16.9754 11.5185C17.1511 11.3428 17.2389 11.1251 17.2389 10.8654C17.2389 10.6057 17.1511 10.388 16.9754 10.2123C16.7997 10.0366 16.582 9.94874 16.3222 9.94874C16.0625 9.94874 15.8448 10.0366 15.6691 10.2123C15.4934 10.388 15.4056 10.6057 15.4056 10.8654C15.4056 11.1251 15.4934 11.3428 15.6691 11.5185C15.8448 11.6942 16.0625 11.7821 16.3222 11.7821ZM7.61395 17.9167H14.3831C14.4654 17.9167 14.533 17.8903 14.5859 17.8374C14.6388 17.7845 14.6652 17.7169 14.6652 17.6346V14.0032H7.33187V17.6346C7.33187 17.7169 7.35832 17.7845 7.41121 17.8374C7.4641 17.8903 7.53168 17.9167 7.61395 17.9167ZM7.61395 19.2917C7.15826 19.2917 6.76817 19.1294 6.44367 18.8049C6.11915 18.4804 5.9569 18.0903 5.9569 17.6346V15.625H3.38319C3.14845 15.625 2.95168 15.5456 2.79288 15.3868C2.63409 15.228 2.55469 15.0312 2.55469 14.7965V10.4071C2.55469 9.75779 2.77651 9.21352 3.22014 8.77429C3.66378 8.33507 4.20583 8.11546 4.84631 8.11546H17.1508C17.8001 8.11546 18.3443 8.33507 18.7836 8.77429C19.2228 9.21352 19.4424 9.75779 19.4424 10.4071V14.7965C19.4424 15.0312 19.363 15.228 19.2042 15.3868C19.0454 15.5456 18.8486 15.625 18.6139 15.625H16.0402V17.6346C16.0402 18.0903 15.8779 18.4804 15.5534 18.8049C15.2289 19.1294 14.8388 19.2917 14.3831 19.2917H7.61395ZM18.0674 14.25V10.4071C18.0674 10.1474 17.9796 9.92965 17.8039 9.75395C17.6282 9.57826 17.4105 9.49041 17.1508 9.49041H4.84631C4.58659 9.49041 4.36888 9.57826 4.19318 9.75395C4.01749 9.92965 3.92964 10.1474 3.92964 10.4071V14.25H5.9569V12.6283H16.0402V14.25H18.0674Z"
+                                                    fill="white" />
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div class="text-[white] ml-[4px] text-custom flex justify-center items-center ">พิมพ์
+                                    </div>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </b-modal>
+        <!-- <PDFgenerator ref="childComponentPDFMoveOutHistory" /> -->
     </div>
 </template>
 <script>
 export default {
     data() {
         return {
-            create: true,
+            create: false,
             history: [],
             room_detail: {
+                id_contract: '',
                 id: '',
                 sex: null,
                 check_user: true,
@@ -586,6 +723,13 @@ export default {
                 vehicles: [],
 
             },
+            date_moveout:'',
+            list_debt: {
+                total: 0,
+                deposit: 0,
+                deposit2: 0
+            },
+            bill_detail: {},
             items_other: [],
         }
     },
@@ -605,6 +749,7 @@ export default {
                 })
         },
         getDetailRentalContract(id) {
+            this.items_other = []
             fetch('https://api.resguru.app/api' + '/users/' + id + '?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
                 .then(response => response.json())
                 .then((resp) => {
@@ -638,6 +783,9 @@ export default {
                             fetch('https://api.resguru.app/api' + '/room-histories?populate=*&filters[building][id][$eq]=' + this.$store.state.building + '&filters[room][id][$eq]=' + this.$route.query.id_room + '&filters[users_permissions_user][id][$eq]=' + id)
                                 .then(response => response.json())
                                 .then((resp) => {
+                                    console.log(resp.data[0]?.attributes.user_sign_contract.data?.id);
+                                    this.getDetailRoom(resp.data[0]?.attributes.user_sign_contract.data?.id)
+                                    this.date_moveout = resp.data[0]?.attributes.date_moveout
                                     resp.data[0]?.attributes.room_detect_histories.data?.forEach((item) => {
                                         this.items_other.push({
                                             id: item.id,
@@ -654,6 +802,42 @@ export default {
                         })
                 })
 
+        },
+        getDetailRoom(id) {
+            const loading = this.$vs.loading()
+            // fetch('https://api.resguru.app/api/getRoom?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor)
+            fetch('https://api.resguru.app/api' + '/user-sign-contracts/' + id + '?populate=deep,4')
+                .then(response => response.json())
+                .then((resp) => {
+                    this.list_debt.deposit = resp.data?.attributes.roomDeposit
+                    this.list_debt.deposit2 = resp.data?.attributes.roomInsuranceDeposit
+                    this.user_detail = resp.data?.attributes.users_permissions_user.data?.attributes
+                }).finally(() => {
+                    fetch('https://api.resguru.app/api' + '/tenant-bills' + '?populate=*&filters[user_sign_contract][id][$eq]=' + id)
+                        .then(response => response.json())
+                        .then((resp) => {
+                            console.log('bill', resp.data[0]);
+                            this.list_debt.total = resp.data[0]?.attributes.total
+                            this.bill_detail.id = resp.data[0]?.id
+                            this.bill_detail.ele = resp.data[0]?.attributes.electricPrice
+                            this.bill_detail.water = resp.data[0]?.attributes.waterPrice
+                            this.bill_detail.communalPrice = resp.data[0]?.attributes.communalPrice
+                            this.bill_detail.vat = 7
+                            this.bill_detail.invoiceNumber = resp.data[0]?.attributes.invoiceNumber
+                            this.bill_detail.room = resp.data[0]?.attributes.roomPrice
+                            this.bill_detail.other = resp.data[0]?.attributes.otherPrice
+                        }).finally(() => {
+                        })
+                })
+            loading.close()
+        },
+        totalBillItems() {
+            let totalPrice = 0;
+            // Loop through each item and add its price to totalPrice
+            this.items_other.forEach(item => {
+                totalPrice += item.price;
+            });
+            return totalPrice;
         },
 
     },

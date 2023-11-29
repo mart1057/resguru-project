@@ -678,7 +678,7 @@ export default {
             move_confirm: false,
             payment: false,
             move_done: false,
-            date_moveout: new Date(),
+            date_moveout: '',
             list_debt: {
                 total: 0,
                 deposit: 0,
@@ -831,9 +831,9 @@ export default {
             let totalPrice = 0;
             // Loop through each item and add its price to totalPrice
             this.items_other.forEach(item => {
-                totalPrice += item.price;
+                totalPrice += parseInt(item.price);
             });
-            return totalPrice;
+            return parseInt(totalPrice);
         },
         darftBill() {
             fetch('https://api.resguru.app/api' + '/room-histories?populate=*&filters[building][id][$eq]=' + this.$store.state.building + '&filters[room][id][$eq]=' + this.$route.query.id_room + '&filters[user_sign_contract][id][$eq]=' + this.$route.query.id_contract + '&filters[publishedAt][$null]=true&publicationState=preview')
@@ -931,7 +931,8 @@ export default {
                                 "room": this.$route.query.id_room,
                                 "users_permissions_user": this.$route.query.id_user,
                                 "ExitType": this.tab ? 'Missing' : 'Move',
-                                "date_moveout": this.date_moveout
+                                "date_moveout": this.date_moveout,
+                                "user_sign_contract" : this.$route.query.id_contract
                             }
                         }
                         ).then((resp) => {

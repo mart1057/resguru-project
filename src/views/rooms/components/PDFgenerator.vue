@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div hidden>
         <!-- Your HTML content to convert to PDF -->
         <div ref="pdfContent" class="p-[8px]">
             <img class="watermarked" :src="Res_Guru_Logo_create06" />
