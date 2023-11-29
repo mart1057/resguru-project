@@ -500,7 +500,7 @@
                             type="date" v-model="date_moveout" />
                     </div>
                     <div class="flex mt-[14px]">
-                        <button
+                        <button @click="PDFPrint()"
                             class="bg-[#165D98] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
                             <div class="flex">
                                 <div class="flex justify-center items-center ">
@@ -579,7 +579,6 @@
                 </div>
             </template>
         </vs-dialog>
-
         <vs-dialog width="300px" not-center v-model="payment" not-close>
             <template #header>
                 <div class="pl-[16px]  pr-[16px] pt-[16px]">
@@ -612,7 +611,6 @@
                 </div>
             </template>
         </vs-dialog>
-
         <vs-dialog width="300px" not-center v-model="move_done" not-close>
             <template #header>
                 <div class="pl-[16px]  pr-[16px] pt-[16px]">
@@ -660,11 +658,16 @@
                 </div>
             </template>
         </vs-dialog>
+        <PDFgenerator ref="childComponentPDFMoveOut"/>
     </div>
 </template>
 <script>
 import axios from 'axios'
+import PDFgenerator from './PDFgenerator.vue'
 export default {
+    components:{
+        PDFgenerator
+    },
     data() {
         return {
             add_item: false,
@@ -1020,7 +1023,11 @@ export default {
                 }).finally(() => {
                     this.$showNotification('#3A89CB', 'สำเร็จ')
                 })
-        }
+        },
+        PDFPrint(){
+            console.log('sdf');
+            this.$refs.childComponentPDFMoveOut.generatePDF(this.user_detail,this.bill_detail,this.items_other,this.list_debt )
+        },
     }
 }
 
