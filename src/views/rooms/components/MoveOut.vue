@@ -221,7 +221,7 @@
                         </div>
                         <div class="flex mt-[4px]">
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" v-model="item.price"
-                                type="input" />
+                            type="number" />
                         </div>
                     </div>
                 </div>
@@ -331,47 +331,58 @@
                                     ค่าไฟ
                                 </div>
                             </div>
+
+                            <div class="mt-[8px]">
+                                <div
+                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                    ค่าส่วนกลาง
+                                </div>
+                            </div>
                             <div class="mt-[8px]">
                                 <div
                                     class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
                                     ค่าอื่น ๆ
                                 </div>
                             </div>
+                            <div class="mt-[32px]">
+                                <div class="font-bold text-custom text-[14px] flex justify-start items-start ml-[16px]">
+                                    รวมทั้งหมด
+                                </div>
+                            </div>
+
                         </div>
                         <div>
                             <div class="text-[12px] text-[#8396A6]">จำนวนเงินบาท</div>
                             <div class="flex">
                                 <input
-                                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]"
-                                    type="input" v-model="bill_detail.room" />
+                                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center"
+                                    type="number" v-model="bill_detail.room" />
                             </div>
                             <div class="flex mt-[-8px]">
                                 <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" v-model="bill_detail.water" />
+                                type="number" v-model="bill_detail.water" />
                             </div>
                             <div class="flex mt-[-8px]">
                                 <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" v-model="bill_detail.ele" />
+                                type="number" v-model="bill_detail.ele" />
                             </div>
                             <div class="flex mt-[-8px]">
                                 <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" v-model="bill_detail.other" />
+                                    type="number" v-model="bill_detail.communalPrice" />
                             </div>
-                        </div>
-                    </div>
-                    <div class="flex mt-[24px]">
-                        <div>
-                            <div class="font-bold text-custom text-[14px] flex justify-start items-start">บันทึกหนี้สูญแล้ว
-                                รวมทั้งหมด
+                            <div class="flex mt-[-8px]">
+                                <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                type="number" v-model="bill_detail.other" />
                             </div>
-                        </div>
-                        <div class="ml-[188px]">
                             <div>
-                                <div class="font-bold text-custom text-[14px] flex justify-start items-start">
-                                    {{ parseInt(bill_detail.room + bill_detail.other + bill_detail.water + bill_detail.ele)
+                                <div
+                                    class="font-bold text-custom text-[14px] flex justify-start items-start pl-[16px] mt-[24px]">
+                                    {{ parseInt(bill_detail.room + bill_detail.other + bill_detail.water +
+                                        bill_detail.ele + bill_detail.communalPrice)
                                     }}
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -436,7 +447,9 @@
                     <div class="w-[100%] mt-[14px]">
                         <div class="flex justify-between w-[100%]">
                             <div class="text-custom ">ค้างชำระ</div>
-                            <div class="text-custom ">{{ list_debt.total }} <span class="ml-[4px] text-custom ">บาท</span>
+                            <div class="text-custom ">{{ bill_detail.room + bill_detail.water + bill_detail.ele +
+                                bill_detail.other + bill_detail.communalPrice }} <span
+                                    class="ml-[4px] text-custom ">บาท</span>
                             </div>
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]" v-for="item in items_other">
@@ -470,7 +483,7 @@
                     <div>
                         <input
                             class="h-[28px] w-[180px] bg-[#F3F8FD] rounded-[12px] mt-[4px]  flex justify-start pl-[8px] pr-[8px]"
-                            type="date" v-model="date_moveout"/>
+                            type="date" v-model="date_moveout" />
                     </div>
                     <div class="flex mt-[14px]">
                         <button
@@ -513,7 +526,7 @@
                                 <div class="text-[white] ml-[4px]  ">เคลียร์บิลและย้ายออก</div>
                             </div>
                         </button>
-                        <button
+                        <button @click="darftBill()"
                             class="bg-[#003765] ml-[8px] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
                             <div class="flex">
                                 <div class="flex justify-center items-center ">
@@ -648,13 +661,15 @@ export default {
             move_confirm: false,
             payment: false,
             move_done: false,
-            date_moveout:'',
+            date_moveout: new Date(),
             list_debt: {
                 total: 0,
                 deposit: 0,
                 deposit2: 0
             },
             list_items: [
+                { name: 'ค่าทำความสะอาด' },
+                { name: 'ค่าทาสีผนัง' },
                 { name: 'ลูกบิดห้องน้ำ' },
                 { name: 'ประตูห้องน้ำ' },
                 { name: 'ประตูหน้าห้อง' },
@@ -689,22 +704,7 @@ export default {
                 { name: 'ตะแกรงน้ำระเบียง' },
                 { name: 'ชักโครก' },
             ],
-            items_other: [
-                {
-                    name: 'ค่าทาสีผนัง',
-                    price: 500,
-                    img_bf: '',
-                    img_af: '',
-                    remark: 'เสียหาย'
-                },
-                {
-                    name: 'ค่าทำความสะอาด',
-                    price: 500,
-                    img_bf: '',
-                    img_af: '',
-                    remark: 'เสียหาย'
-                }
-            ],
+            items_other: [],
             bill_detail: {
 
             },
@@ -719,6 +719,12 @@ export default {
     },
     created() {
         const loading = this.$vs.loading({})
+        // const now = new Date();
+        // const month = now.getMonth() + 1;
+        // const day = now.getDate();
+        // const year = now.getFullYear();
+        // this.date_moveout= `${month}/${day}/${year}`;
+        // console.log(this.date_moveout);
         this.getDetailRoom()
         setTimeout(() => {
             loading.close()
@@ -735,28 +741,51 @@ export default {
                     this.list_debt.deposit2 = resp.data?.attributes.roomInsuranceDeposit
                     this.list_debt.total = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.total
                     this.user_detail = resp.data?.attributes.users_permissions_user.data?.attributes
+                    this.bill_detail.id = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.id
                     this.bill_detail.ele = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.electricPrice
                     this.bill_detail.water = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.waterPrice
+                    this.bill_detail.communalPrice = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.communalPrice
+                    this.bill_detail.vat = 7
                     this.bill_detail.room = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.roomPrice
                     this.bill_detail.other = resp.data?.attributes.room.data?.attributes.tenant_bills.data[0]?.attributes.otherPrice
-
-                    fetch('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room + '?populate=deep')
+                }).finally(() => {
+                    fetch('https://api.resguru.app/api' + '/room-histories?populate=*&filters[building][id][$eq]=' + this.$store.state.building + '&filters[room][id][$eq]=' + this.$route.query.id_room + '&filters[user_sign_contract][id][$eq]=' + this.$route.query.id_contract + '&filters[publishedAt][$null]=true&publicationState=preview')
                         .then(response => response.json())
                         .then((resp) => {
-                            console.log(resp.data?.attributes.other_of_buildings.data?.forEach((item) => {
-                                this.items_other.push({
-                                    name: item.attributes.title,
-                                    price: item.attributes.price,
-                                    img_bf: '',
-                                    img_af: '',
-                                    remark: 'เสียหาย'
-                                })
-                            }))
-                        }).finally(() => {
-                            console.log(this.items_other)
+                            console.log(resp?.data.length == 0);
+                            if (resp?.data.length == 0) {
+                                console.log('1');
+                                fetch('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room + '?populate=deep')
+                                    .then(response => response.json())
+                                    .then((resp) => {
+                                        resp.data?.attributes.other_of_buildings.data?.forEach((item) => {
+                                            this.items_other.push({
+                                                name: item.attributes.title,
+                                                price: item.attributes.price,
+                                                img_bf: '',
+                                                img_af: '',
+                                                remark: 'เสียหาย'
+                                            })
+                                        })
+                                    }).finally(() => {
+
+                                    })
+                            }
+                            else {
+                                this.tab = resp.data[0]?.attributes.ExitType == 'Missing' ? true : false,
+                                    resp.data[0]?.attributes.room_detect_histories.data?.forEach((item) => {
+                                        this.items_other.push({
+                                            id: item.id,
+                                            name: item.attributes.name,
+                                            price: item.attributes.charge,
+                                            img_bf: '',
+                                            img_af: '',
+                                            remark: item.attributes.remark
+                                        })
+                                    })
+                            }
 
                         })
-                }).finally(() => {
                     loading.close()
                 })
         },
@@ -778,34 +807,195 @@ export default {
             });
             return totalPrice;
         },
-        submitBill() {
-            axios.post('https://api.resguru.app/api' + '/room-histories', {
-                data: {
-                    "building": this.$store.state.building,
-                    "room": this.$route.query.id_room,
-                    "users_permissions_user": this.$route.query.id_user,
-                    "date_moveout" :this.date_moveout
-                }
-            }
-            ).then((resp) => {
-                this.items_other.forEach(element => {
-                    axios.post('https://api.resguru.app/api' + '/room-detect-histories', {
-                        data: {
-                            "remark": element.remark,
-                            "charge": element.price,
-                            "room_history": resp.data.data.id,
-                            "name": element.name
+        darftBill() {
+            fetch('https://api.resguru.app/api' + '/room-histories?populate=*&filters[building][id][$eq]=' + this.$store.state.building + '&filters[room][id][$eq]=' + this.$route.query.id_room + '&filters[user_sign_contract][id][$eq]=' + this.$route.query.id_contract + '&filters[publishedAt][$null]=true&publicationState=preview')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log(resp?.data.length == 0);
+                    if (resp?.data.length == 0) { //// draft ครั้งแรก
+                        axios.post('https://api.resguru.app/api' + '/room-histories', {
+                            data: {
+                                "building": this.$store.state.building,
+                                "room": this.$route.query.id_room,
+                                "users_permissions_user": this.$route.query.id_user,
+                                "date_moveout": this.date_moveout,
+                                "user_sign_contract": this.$route.query.id_contract,
+                                "ExitType": this.tab ? 'Missing' : 'Move',
+                                "publishedAt": null
+                            }
                         }
-                    })
-                });
-            }).finally(() => {
-                axios.delete('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract)
-                this.move_confirm = !this.move_confirm,
-                    this.move_done = true
-                this.$router.push({
-                    path: '/rooms',
+                        ).then((resp) => {
+                            this.items_other.forEach(element => {
+                                axios.post('https://api.resguru.app/api' + '/room-detect-histories', {
+                                    data: {
+                                        "remark": element.remark,
+                                        "charge": element.price,
+                                        "room_history": resp.data.data.id,
+                                        "name": element.name,
+                                    }
+                                })
+                            });
+                        }).finally(() => {
+                            axios.put('https://api.resguru.app/api' + '/tenant-bills/' + this.bill_detail.id, {
+                                data: {
+                                    "roomPrice": this.bill_detail.room,
+                                    "waterPrice": this.bill_detail.water,
+                                    "electricPrice": this.bill_detail.ele,
+                                    "otherPrice": this.bill_detail.other,
+                                    "communalPrice": this.bill_detail.communalPrice,
+                                    "subtotal": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other),
+                                    "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice )+ ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) +parseInt(this.bill_detail.communalPrice) ) * 0.07),
+                                    "publishedAt": null
+                                }
+                            }
+                            )
+                        })
+                    }
+                    else { ////แก้ไข draft และยังคง draft
+                        axios.put('https://api.resguru.app/api' + '/room-histories/' + resp?.data[0].id, {
+                            data: {
+                                "date_moveout": this.date_moveout,
+                                "ExitType": this.tab ? 'Missing' : 'Move',
+                                "publishedAt": null
+                            }
+                        }
+                        ).then((resp) => { //////////////// ไปแก้ไขตอนดึงมาแสดงด้วย
+                            this.items_other.forEach(element => {
+                                axios.put('https://api.resguru.app/api' + '/room-detect-histories/' + element.id, {
+                                    data: {
+                                        "remark": element.remark,
+                                        "charge": element.price,
+                                        "room_history": resp.data.data.id,
+                                        "name": element.name,
+                                    }
+                                })
+                            });
+                        }).finally(() => {
+                            axios.put('https://api.resguru.app/api' + '/tenant-bills/' + this.bill_detail.id, {
+                                data: {
+                                    "roomPrice": this.bill_detail.room,
+                                    "waterPrice": this.bill_detail.water,
+                                    "electricPrice": this.bill_detail.ele,
+                                    "otherPrice": this.bill_detail.other,
+                                    "communalPrice": this.bill_detail.communalPrice,
+                                    "subtotal": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other),
+                                    "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice )+ ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) +parseInt(this.bill_detail.communalPrice) ) * 0.07),
+                                    "publishedAt": null
+                                }
+                            }
+                            )
+                        })
+
+                    }
+                }).finally(() => {
+                    this.$showNotification('#3A89CB', 'บันทึกแบบร่างสำเร็จ')
                 })
-            })
+        },
+        submitBill() {
+            fetch('https://api.resguru.app/api' + '/room-histories?populate=*&filters[building][id][$eq]=' + this.$store.state.building + '&filters[room][id][$eq]=' + this.$route.query.id_room + '&filters[user_sign_contract][id][$eq]=' + this.$route.query.id_contract + '&filters[publishedAt][$null]=true&publicationState=preview')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log(resp?.data.length == 0);
+                    if (resp?.data.length == 0) { ///// ไม่มี draft สร้างแล้วจบ flow เลย
+                        axios.post('https://api.resguru.app/api' + '/room-histories', {
+                            data: {
+                                "building": this.$store.state.building,
+                                "room": this.$route.query.id_room,
+                                "users_permissions_user": this.$route.query.id_user,
+                                "ExitType": this.tab ? 'Missing' : 'Move',
+                                "date_moveout": this.date_moveout
+                            }
+                        }
+                        ).then((resp) => {
+                            this.items_other.forEach(element => {
+                                axios.post('https://api.resguru.app/api' + '/room-detect-histories', {
+                                    data: {
+                                        "remark": element.remark,
+                                        "charge": element.price,
+                                        "room_history": resp.data.data.id,
+                                        "name": element.name
+                                    }
+                                })
+                            });
+                        }).finally(() => {
+                            axios.put('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract, {
+                                data: {
+                                    "room": null
+                                }
+                            })
+                            axios.put('https://api.resguru.app/api' + '/tenant-bills/' + this.bill_detail.id, {
+                                data: {
+                                    "roomPrice": this.bill_detail.room,
+                                    "waterPrice": this.bill_detail.water,
+                                    "electricPrice": this.bill_detail.ele,
+                                    "otherPrice": this.bill_detail.other,
+                                    "communalPrice": this.bill_detail.communalPrice,
+                                    "subtotal": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other),
+                                    "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice )+ ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) +parseInt(this.bill_detail.communalPrice) ) * 0.07),
+                                    "publishedAt": Date.now()
+                                }
+                            }).then(() => {
+                                console.log(this.$route.query.id_contract);
+
+                            })
+                            this.move_confirm = !this.move_confirm,
+                                this.move_done = true
+                            this.$router.push({
+                                path: '/rooms',
+                            })
+                        })
+                    }
+                    else { ////// มี draft แล้วจบ flow
+                        axios.put('https://api.resguru.app/api' + '/room-histories/' + resp?.data[0].id, {
+                            data: {
+                                "date_moveout": this.date_moveout,
+                                "ExitType": this.tab ? 'Missing' : 'Move',
+                                "publishedAt": Date.now()
+                            }
+                        }
+                        ).then((resp) => { //////////////// ไปแก้ไขตอนดึงมาแสดงด้วย
+                            this.items_other.forEach(element => {
+                                axios.put('https://api.resguru.app/api' + '/room-detect-histories/' + element.id, {
+                                    data: {
+                                        "remark": element.remark,
+                                        "charge": element.price,
+                                        "room_history": resp.data.data.id,
+                                        "name": element.name,
+                                    }
+                                })
+                            });
+                        }).finally(() => {
+                            // axios.delete('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract)
+                            axios.put('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract, {
+                                data: {
+                                    "room": null
+                                }
+                            })
+                            axios.put('https://api.resguru.app/api' + '/tenant-bills/' + this.bill_detail.id, {
+                                data: {
+                                    "roomPrice": this.bill_detail.room,
+                                    "waterPrice": this.bill_detail.water,
+                                    "electricPrice": this.bill_detail.ele,
+                                    "otherPrice": this.bill_detail.other,
+                                    "communalPrice": this.bill_detail.communalPrice,
+                                    "subtotal": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other),
+                                    "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice )+ ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) +parseInt(this.bill_detail.communalPrice) ) * 0.07),
+                                    "publishedAt": Date.now()
+                                }
+                            }
+                            ).then(() => {
+                                this.move_confirm = !this.move_confirm,
+                                    this.move_done = true
+                                this.$router.push({
+                                    path: '/rooms',
+                                })
+                            })
+                        })
+
+                    }
+                }).finally(() => {
+                    this.$showNotification('#3A89CB', 'สำเร็จ')
+                })
         }
     }
 }
