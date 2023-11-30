@@ -637,6 +637,8 @@ export default {
                         this.price = resp.data.attributes.price,
                         this.discountAmount = resp.data.attributes.discountAmount
                 }).finally(() => {
+                    this.getUserBuilding();
+                    this.getOtherBuilding();
                     this.create_service = true,
                         loading.close()
                 })
@@ -651,6 +653,8 @@ export default {
                 }
             })
                 .finally(() => {
+                    this.getUserBuilding();
+                    this.getOtherBuilding();
                     this.create_service = false,
                         this.getOtherBuilding()
                     loading.close()
@@ -660,6 +664,8 @@ export default {
             const loading = this.$vs.loading()
             axios.delete('https://api.resguru.app/api' + '/other-of-buildings/' + id)
                 .finally(() => {
+                    this.getUserBuilding();
+                    this.getOtherBuilding();
                     this.create_service = false,
                         this.getOtherBuilding()
                     loading.close()
@@ -702,6 +708,7 @@ export default {
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
+                    this.getUserBuilding();
                     this.$showNotification('#3A89CB', 'Update Water Unit Success')
                 })
 
@@ -720,6 +727,7 @@ export default {
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
+                    this.getUserBuilding();
                     this.$showNotification('#3A89CB', 'Update Electric Unit Success')
                 })
 
@@ -738,6 +746,7 @@ export default {
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
+                    this.getUserBuilding();
                     this.$showNotification('#3A89CB', 'Update Building Communual Success')
                 })
 
@@ -756,6 +765,7 @@ export default {
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
+                    this.getOtherBuilding();
                     this.$showNotification('#3A89CB', 'Update Other Price Success')
                 })
         },
@@ -773,6 +783,7 @@ export default {
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
+                    this.getOtherBuilding();
                     this.$showNotification('#3A89CB', 'Update Success')
                 })
         },

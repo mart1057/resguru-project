@@ -261,6 +261,7 @@ export default {
                 this.$showNotification('danger', errorMessage); 
                 })
                 .finally(()=>{
+                    this.getPaymentBuilding();
                     this.$showNotification('#3A89CB', 'Create Payment Success')
                 }) 
         }, 
@@ -278,6 +279,7 @@ export default {
             this.$showNotification('danger', errorMessage); 
             })
             .finally(()=>{
+                this.getPaymentBuilding();
                 this.$showNotification('#3A89CB', 'Update Building Payment Success')
             }) 
               
@@ -318,6 +320,7 @@ export default {
                     this.$showNotification('danger', errorMessage); 
                     })
                     .finally(()=>{
+                        this.getPaymentBuilding();
                         this.$showNotification('#3A89CB', 'Delete Payment Method Success')
                     })  
             }

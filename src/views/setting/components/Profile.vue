@@ -391,6 +391,7 @@ export default {
             this.$showNotification('danger', errorMessage); 
             })
             .finally(()=>{
+                this.getUserDetail();
                 this.$showNotification('#3A89CB', 'Upload Profile Success')
             }) 
               
@@ -446,6 +447,8 @@ export default {
             this.$showNotification('danger', errorMessage); 
             })
             .finally(()=>{
+                this.getBuildingData();
+                this.queryTabSetting();
                 this.$showNotification('#3A89CB', 'Upload Building Success')
             }) 
                
@@ -508,6 +511,7 @@ export default {
                         this.$showNotification('danger', errorMessage); 
                         })
                         .finally(()=>{
+                            this.getBuildingData();
                             this.$showNotification('#3A89CB', 'Upload Profile Success')
                         }) 
             }
@@ -536,6 +540,7 @@ export default {
                         this.$showNotification('danger', errorMessage); 
                         })
                         .finally(()=>{
+                            this.getBuildingData();
                             this.$showNotification('#3A89CB', 'Upload Banner Success')
                         }) 
             }
