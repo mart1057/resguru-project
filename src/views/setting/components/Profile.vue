@@ -283,11 +283,11 @@
                             <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"  v-model="buildingData.attributes.vat_rate">
                         </div>
                         <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">วันครบกำหนดชำระ</div>
+                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">วันครบกำหนดชำระ (กรุณาใส่ตัวเลข 1-28)</div>
                             <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"  v-model="buildingData.attributes.dueDate">
                         </div>
 
-<form class="max-w-xs mx-auto">
+<!-- <form class="max-w-xs mx-auto">
     <label for="quantity-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Choose quantity:</label>
     <div class="relative flex items-center max-w-[8rem]">
         <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
@@ -303,14 +303,14 @@
         </button>
     </div>
     <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">Please select a 5 digit number from 0 to 9.</p>
-</form>
+</form> -->
 
                         <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">Lat</div>
+                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">Latitude (use for map marker)</div>
                             <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"  v-model="buildingData.attributes.lat">
                         </div>
                         <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">Long</div>
+                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">Longitude (use for map marker)</div>
                             <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"  v-model="buildingData.attributes.long">
                         </div>
 
