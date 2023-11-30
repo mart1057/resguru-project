@@ -760,7 +760,7 @@ export default {
                 })
         },
         getRoomType() {
-            fetch('https://api.resguru.app/api' + '/room-types?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=*')
+            fetch('https://api.resguru.app/api' + '/room-types?filters[roomType_building][id][$eq]='+this.$store.state.building+'&populate=*')
                 .then(response => response.json())
                 .then((resp) => {
                     this.room_type = resp.data;

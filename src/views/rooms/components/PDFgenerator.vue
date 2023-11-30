@@ -246,7 +246,7 @@ th,
 td {
     padding-top: 8px;
     padding-bottom: 8px;
-    width:100%
+   /* //width:100%// */
   
 }
 td{

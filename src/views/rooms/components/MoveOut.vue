@@ -763,7 +763,7 @@ export default {
                         .then((resp) => {
                             if (resp.data.length == 0) {
                                 this.generateInvoice()
-                                window.location.reload()
+                                //window.location.reload()
                             }
                             console.log('bill', resp.data[0]);
                             this.list_debt.total = resp.data[0]?.attributes.total
