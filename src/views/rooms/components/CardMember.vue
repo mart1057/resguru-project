@@ -197,9 +197,9 @@
                             <div class="grid grid-cols-6  text-custom w-[70%] ">
                                 <div class="col-span-3 mt-[6px]">
                                     <div>แนบรูปบัตรประชาชน</div>
-                                    <div class="flex mt-[4px]">
+                                    <div class="flex mt-[4px]" v-if="is_edit == false">
                                         <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
-                                            id="upload" hidden type="file" />
+                                            id="upload" @change="previewImage" type="file" accept="image/*" hidden />
                                         <label for="upload">
                                             <div
                                                 class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
@@ -208,6 +208,11 @@
                                         <div
                                             class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                             ยังไม่ได้เลือกไฟล์</div>
+                                    </div>
+                                    <div class="flex mt-[4px]" v-else>
+                                        <div @click="previewImg(room_detail.image_card)"
+                                            class="text-[#5C6B79] text-custom flex justify-center items-center text-[12px] cursor-pointer">
+                                            {{ room_detail.image_card_name }}</div>
                                     </div>
                                 </div>
                             </div>
@@ -540,6 +545,8 @@ export default {
                 last_name: '',
                 nick_name: '',
                 phone: '',
+                image_card: '',
+                image_card_name: '',
                 id_card: '',
                 birth: '',
                 address: '',
@@ -559,7 +566,8 @@ export default {
                 lineID: '',
                 vehicles: [],
             },
-            roomFloor: []
+            roomFloor: [],
+            img_arr_card: []
         }
     },
     created() {
@@ -573,6 +581,21 @@ export default {
         this.getFloorRoom()
     },
     methods: {
+        previewImage(event) {
+            const file = event.target.files[0];
+            this.img_arr_card = event.target.files[0];
+            if (file) {
+                // Read the file as a URL
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.room_detail.image_card = e.target.result; // Set the image URL for preview
+                };
+                reader.readAsDataURL(file);
+            }
+        },
+        previewImg(url) {
+            window.open(url, '_blank')
+        },
         getFloorRoom() {
             const loading = this.$vs.loading()
             fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3')
@@ -674,6 +697,8 @@ export default {
                 .then((resp) => {
                     console.log('ddd', resp.data[0]?.attributes.user_sign_contract.data);
                     this.room_detail.name = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.firstName
+
+                    // image_card_name: '',
                     this.room_detail.email = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.email
                     this.room_detail.last_name = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.lastName
                     this.room_detail.nick_name = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.nickName
@@ -695,12 +720,14 @@ export default {
                         this.room_detail.relation = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.relation,
                         this.room_detail.emergencyPhone = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.emergencyPhone,
                         this.room_detail.lineID = resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.lineID
-                    fetch('https://api.resguru.app/api' + '/users/' + resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.id + '?&populate=*')
-                        .then(response => response.json())
-                        .then((resp) => {
-                            console.log('fffff', resp);
-                            this.room_detail.vehicles = resp.tenant_vehicles;
-                        })
+                    this.room_detail.image_card = 'https://api.resguru.app' + resp.data[0]?.attributes.user_sign_contract.data?.attributes.imgCard.data?.attributes.formats.thumbnail.url,
+                        this.room_detail.image_card_name = resp.data[0]?.attributes.user_sign_contract.data?.attributes.imgCard.data?.attributes.name,
+                        fetch('https://api.resguru.app/api' + '/users/' + resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.id + '?&populate=*')
+                            .then(response => response.json())
+                            .then((resp) => {
+                                console.log('fffff', resp);
+                                this.room_detail.vehicles = resp.tenant_vehicles;
+                            })
                 }).finally(() => {
                     loading.close()
                     this.create = true
@@ -789,7 +816,7 @@ export default {
                         "firstName": this.room_detail.name,
                         "lastName": this.room_detail.last_name,
                         "nickName": this.room_detail.nick_name,
-                        "role": 4,
+                        "role": 2,
                         "phone": this.room_detail.phone,
                         "email": this.room_detail.email,
                         "idCard": this.room_detail.id_card,
@@ -817,7 +844,24 @@ export default {
                                 // roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
                                 // contractDuration: parseInt(this.room_detail_create.contract_duration)
                             }
-                        }).then(() => {
+                        }).then((resp) => {
+                            if (this.img_arr_card.length != 0) {
+                                let formData = new FormData();
+                                formData.append("files", this.img_arr_card);
+                                formData.append("refId", String(resp.data.data.id));
+                                formData.append("ref", "api::user-sign-contract.user-sign-contract");
+                                formData.append("field", "imgCard");
+                                axios.post("https://api.resguru.app/api/upload", formData, {
+                                    headers: {
+                                        "Content-Type": "multipart/form-data",
+                                    },
+                                }).then((result) => { console.log("Upload file", result) })
+                                    .catch((error) => {
+                                        console.log(error);
+                                    }).finally(() => {
+                                    })
+                            }
+                        }).finally(() => {
                             newVehicles.forEach((data) => {
                                 axios.post('https://api.resguru.app/api' + '/tenant-vehicles', {
                                     data: {
@@ -826,15 +870,17 @@ export default {
                                         licensePlate: data.licensePlat,
                                         users_permissions_user: this.id_user
                                     }
+                                }).then(() => {
+
                                 })
 
                             })
+
                         })
-                            .finally(() => {
-                                this.getUser()
-                                this.create = false
-                                loading.close()
-                            })
+                    }).finally(() => {
+                        this.getUser()
+                        this.create = false
+                        loading.close()
                     })
                 }
             }
