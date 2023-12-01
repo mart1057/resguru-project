@@ -155,14 +155,14 @@
                                 ค้างชำระ
                             </vs-th>
                             <vs-th>
-                                ที่ต้องชำระ
+                                ชำระแล้ว
                             </vs-th>
                             <vs-th>
                                 สถานะ
                             </vs-th>
 
                             <vs-th>
-                                Event on Action
+                                Select Action
                             </vs-th>
                             <vs-th>
 
@@ -239,14 +239,14 @@
                             <vs-td>
                                 <div @click="routeTo(tr.id)">
                                     <div  v-if="tr.user_sign_contract && tr.tenant_bills[0]">
-                                        {{ $formatNumber(tr.tenant_bills[0].overDue) }}
+                                        {{ $formatNumber(tr.tenant_bills[0].remainPaid) }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.id)">
                                     <div  v-if="tr.user_sign_contract && tr.tenant_bills[0]">
-                                        {{ $formatNumber(tr.tenant_bills[0].grandTotal) }}
+                                        {{ $formatNumber(tr.tenant_bills[0].paid) }}
                                     </div>
                                 </div>
                             </vs-td>
@@ -703,12 +703,16 @@ export default {
 
             axios.get(`https://api.resguru.app/api/regenerateinvoice?buildingid=${this.$store.state.building}&invoiceid=${invoiceID}&month=${month}&year=${year}`)
                 .then( (response) =>{
-                        this.$showNotification('#3A89CB', response.data.meta.message)
+                        // console.log("reGenerateInvoice",response.data.meta.message)
+                        // this.$showNotification('#3Axw89CB', response.data.meta.message)
                     })
                 .catch(error => {
                 const errorMessage = error.message ? error.message : 'Error updating information';
                 this.$showNotification('danger', errorMessage); 
                 console.log(error)
+                })
+                .finally(()=>{
+                    this.getfloor();
                 })
         },
         createFullPayment() {
@@ -859,6 +863,9 @@ export default {
                 .then( (response) =>{
                         this.$showNotification('#3A89CB', response.data.meta.message)
                     })
+                .finally(() =>{
+                        this.filterByDate()
+                })
                 .catch(error => {
                 const errorMessage = error.message ? error.message : 'Error updating information';
                 this.$showNotification('danger', errorMessage); 
