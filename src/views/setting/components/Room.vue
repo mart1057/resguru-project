@@ -942,6 +942,9 @@ export default {
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
             })
+            .finally(() => {
+                this.getUserRoom();
+            })
                 
         }, 
         updateRoomType(id,eachRoomType){
@@ -960,6 +963,9 @@ export default {
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
             })
+            .finally(() => {
+                this.getTypeRoom();
+            })
         },
         addNewRoomType() {
             axios.post(`https://api.resguru.app/api/room-types/`,{
@@ -976,6 +982,9 @@ export default {
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
             })
+            .finally(() => {
+                this.getTypeRoom();
+            })
                 
         },
         updateRoomPrice(id,roomPrice){
@@ -990,6 +999,9 @@ export default {
             .catch(error => {
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
+            })
+            .finally(() => {
+                this.getTypeRoom();
             })
         },
         create_floor() {
@@ -1006,6 +1018,9 @@ export default {
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
             })
+            .finally(() => {
+                this.getFloorRoom();
+            })
         },
         updateFloor(floorID,buildFloorName) {
             axios.put(`https://api.resguru.app/api/building-floors/${floorID}`,{
@@ -1020,6 +1035,9 @@ export default {
             const errorMessage = error.message ? error.message : 'Error updating information';
             this.$showNotification('danger', errorMessage); 
             })
+            .finally(() => {
+                this.getFloorRoom();
+            })
         },
         removeFloor(floorID){
             if(confirm("Do you really want to delete this Admin?")){
@@ -1030,8 +1048,11 @@ export default {
                             this.$showNotification('#3A89CB', 'Delete Floor Success')
                         })
                 .catch(error => {
-                const errorMessage = error.message ? error.message : 'Error updating information';
-                this.$showNotification('danger', errorMessage); 
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage); 
+                })
+                .finally(() => {
+                    this.getFloorRoom();
                 })
             }
         },
