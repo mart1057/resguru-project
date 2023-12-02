@@ -856,7 +856,7 @@ export default {
         },
         generateInvoice(roomid) {
             const currentdate = new Date()
-            const month = currentdate.getMonth()
+            const month = currentdate.getMonth() + 1
             const year = currentdate.getFullYear()
 
             axios.get(`https://api.resguru.app/api/generateInvoice?buildingid=${this.$store.state.building}&roomid=${roomid}&month=${month}&year=${year}`)

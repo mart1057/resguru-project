@@ -182,9 +182,6 @@ export default {
                 }
             })            
             .then( (resp) =>{
-                setTimeout(() => {
-                    this.getElectricityFee(this.id,this.month,this.year)
-                }, 1000)
             })
             .catch(error => {
             const errorMessage = error.message ? error.message : 'Error updating information';
@@ -192,6 +189,7 @@ export default {
             })
             .finally(()=>{
                     this.$showNotification('#3A89CB', 'Update Electric Fee Success')
+                    this.getElectricityFee(this.id,this.month,this.year)
             })
                 
         }, 
