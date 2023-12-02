@@ -366,7 +366,7 @@
                                         เลือกเมนู
                                     </vs-option>
                                     <vs-option label="อัพเดท" value="Update">
-                                        อัพเดท
+                                        อัพเดทใบแจ้งหนี้
                                     </vs-option>
                                     <vs-option label="ชำระเงิน" value="Full Payment">
                                         ชำระเงิน
@@ -555,9 +555,6 @@
                             <vs-td>
                                 <div v-if="!tr.attributes.tenant_receipt.data">
                                     <vs-button @click="createReceipt(tr)" small>ตรวจรับการชำระเงิน</vs-button>
-                                </div>
-                                <div>
-                                    <vs-button @click="test(tr)" small>ทดสอบ</vs-button>
                                 </div>
                             </vs-td>
                         </vs-tr>
@@ -857,7 +854,7 @@ export default {
                 bankName: '',
                 accountBankName: '',
                 amount: 0,
-                paymentDate: '01/01/2023',
+                paymentDate: '',
                 paymentTime: '',
                 building: ''
             },
@@ -869,7 +866,7 @@ export default {
                 bankName: '',
                 accountBankName: '',
                 amount: 0,
-                paymentDate: '01/01/2023',
+                paymentDate: '',
                 paymentTime: '',
                 building: ''
             },
@@ -1049,8 +1046,8 @@ export default {
                     bankName: this.fullPaymentForm.accountBankName,
                     accountBankName: this.fullPaymentForm.bankName,
                     amount: this.fullPaymentForm.amount,
-                    // paymentDate: this.fullPaymentForm.paymentDate,
-                    // paymentTime: this.fullPaymentForm.paymentTime,
+                    paymentDate: this.fullPaymentForm.paymentDate,
+                    paymentTime: this.fullPaymentForm.paymentTime,
                     building: this.fullPaymentForm.building,
                     room: this.$route.query.roomID
                 }
@@ -1079,10 +1076,7 @@ export default {
                             .catch((error) => {
                                 console.log(error);
                             })
-                            .finally(() => {
-                                this.getInvoice();
-                                this.getEvidence();
-                            })
+                            
                     }
 
                 }
@@ -1090,6 +1084,8 @@ export default {
                     const errorMessage = error.message ? error.message : 'Error updating information';
                     this.$showNotification('danger', errorMessage);
             }).finally(() => {
+                    this.getInvoice();
+                    this.getEvidence();
                     this.$showNotification('#3A89CB', 'Create Full Payment Success')
                 })
             this.createFullpayment = false
@@ -1097,6 +1093,9 @@ export default {
 
         },
         createPartial() {
+            console.log("dateeeee", this.partialPaymentForm.paymentDate)
+            console.log("timeeeee", this.partialPaymentForm.paymentTime)
+            let conTime = this.partialPaymentForm.paymentTime
             axios.post("https://api.resguru.app/api/tenant-evidence-payments", {
                 data: {
                     tenant_bill: this.partialPaymentForm.invoiceID,
@@ -1104,8 +1103,8 @@ export default {
                     bankName: this.partialPaymentForm.accountBankName,
                     accountBankName: this.partialPaymentForm.bankName,
                     amount: this.partialPaymentForm.amount,
-                    // paymentDate: this.partialPaymentForm.paymentDate,
-                    // paymentTime: this.partialPaymentForm.paymentTime,
+                    paymentDate: this.partialPaymentForm.paymentDate != ''? this.partialPaymentForm.paymentDate: new Date(),
+                    paymentTime: this.partialPaymentForm.paymentTime != ''? this.partialPaymentForm.paymentTime: new Date().toTimeString, 
                     building: this.partialPaymentForm.building,
                     room: this.$route.query.roomID
                 }
@@ -1134,14 +1133,12 @@ export default {
                             .catch((error) => {
                                 console.log(error);
                             })
-                            .finally(() => {
-                                this.getInvoice();
-                                this.getEvidence();
-                            })
                     }
                 }
             )
                 .finally(() => {
+                    this.getInvoice();
+                    this.getEvidence();
                     this.$showNotification('#3A89CB', 'Create Payment Success')
                 })
                 .catch(error => {
@@ -1151,9 +1148,6 @@ export default {
             this.createPartialPayment = false
             // alert("Partial payment is created")
 
-        },
-        test(tr) {
-            console.log("testtttt", tr.attributes)
         },
         getInvoice() {           //rewrite to get room id and return all of invoice of that room
             const loading = this.$vs.loading()
@@ -1200,138 +1194,135 @@ export default {
                 })
 
         },
-        generateReNumber() {
-            var result = this.userBuilding.attributes.receiptNumber
-            if (result != null || result != 0) {
-                result = "RE-" + new Date().getFullYear().toString().substr(-2) + (result + 1).toString().padStart(5, '0')
-            } else {
-                result = "RE-" + new Date().getFullYear().toString().substr(-2) + "00001"
-            }
-            // console.log("generateReNumber", result)
-            return result
-        },
+        // generateReNumber() {
+        //     var result = this.userBuilding.attributes.receiptNumber
+        //     if (result != null || result != 0) {
+        //         result = "RE-" + new Date().getFullYear().toString().substr(-2) + (result + 1).toString().padStart(5, '0')
+        //     } else {
+        //         result = "RE-" + new Date().getFullYear().toString().substr(-2) + "00001"
+        //     }
+        //     // console.log("generateReNumber", result)
+        //     return result
+        // },
         setUploadFilePayment() {
             this.filePartialPayment = this.$refs.PartialPayment.files[0]
         },
         setUploadFileFullPayment() {
             this.fileFullPayment = this.$refs.FullPayment.files[0]
         },
-        updateEvidence() {
-            axios.put('https://api.resguru.app/api/tenant-evidence-payments/' + this.userEvidencePayment[0].id, {
-                data: {
-                    evidenceStatus: "Approve"
+        // updateEvidence() {
+        //     axios.put('https://api.resguru.app/api/tenant-evidence-payments/' + this.userEvidencePayment[0].id, {
+        //         data: {
+        //             evidenceStatus: "Approve"
+        //         }
+        //     })
+        //         .then((res) => {
+        //             this.$showNotification('#3A89CB', 'Update Evidence Success')
+        //         }
+        //         )
+        //         .catch(error => {
+        //             const errorMessage = error.message ? error.message : 'Error updating information';
+        //             this.$showNotification('danger', errorMessage);
+        //         })
+
+        // },
+        // updateInvoice(remain) {
+        //     var invoiceData = {
+        //             paymentStatus: "Paid",
+        //             paid: this.userEvidencePayment[0].attributes.amount
+        //         }
+        //     if (remain) {
+        //         invoiceData.remainPaid = remain
+        //     }
+        //     axios.put('https://api.resguru.app/api/tenant-bills/' + this.userInvoice[0].id, {
+        //         data: invoiceData
+        //     })
+        //         .then((res) => {
+        //             this.$showNotification('#3A89CB', 'Update Invoice Success')
+        //         }
+        //         )
+        //         .catch(error => {
+        //             const errorMessage = error.message ? error.message : 'Error updating information';
+        //             this.$showNotification('danger', errorMessage);
+        //         })
+        //     // console.log(this.userInvoice[0])
+        //     // console.log(this.userEvidencePayment[0].attributes)
+        // },
+        // createReceipt(data) {
+        //     this.userUnpaidInvoice.slice().reverse().forEach(element => {   
+        //         if(data.attributes.amount >= element.remainPaid){
+        //             var finalRemain =  element.remainPaid - data.attributes.amount
+        //             axios.post('https://api.resguru.app/api' + '/tenant-receipts', {
+        //                 data: {
+        //                     // date_execute: this.date_execute,
+        //                     tenant_bill: data.attributes.tenant_bill.data.id,
+        //                     user_sign_contract: data.attributes.user_sign_contract.data.id,
+        //                     paidAmount: element.total,
+        //                     // receiptNumber: "RE_" + data.attributes.tenant_bill.data.attributes.invoiceNumber,
+        //                     //roomPrice: data.attributes.roomPrice,
+        //                     //waterPrice: data.attributes.waterPrice,
+        //                     //electricPrice: data.attributes.electricPrice,
+        //                     //communalPrice: data.attributes.communalPrice,
+        //                     //otherPrice: data.attributes.otherPrice,
+        //                     //subTotal: data.attributes.subtotal,
+        //                     //vat: data.attributes.vat,
+        //                     //total: data.attributes.total,
+        //                     building: data.attributes.building.data.id,
+        //                     tenant_evidence_payment: data.id,
+        //                     tenant_evidence_payment_receipt: data.id
+        //                 }
+        //             })
+        //             .then((res) => {
+        //                 this.$showNotification('#3A89CB', 'Create Receipt Success')
+        //                 updateEvidence()
+        //                 updateInvoice(finalRemain > 0 ? finalRemain : 0 )
+        //             }
+        //             )
+        //             .catch(error => {
+        //                 const errorMessage = error.message ? error.message : 'Error updating information';
+        //                 this.$showNotification('danger', errorMessage);
+        //             })
+        //             .finally(() => {
+        //                 this.getInvoice();
+        //                 this.getReceipt();
+        //                 this.getEvidence();
+        //             })
+        //         } else {
+        //             var finalRemain =  element.remainPaid - data.attributes.amount
+        //             updateInvoice(finalRemain > 0 ? finalRemain : 0 )
+        //             this.getInvoice();
+        //             this.getReceipt();
+        //             this.getEvidence();
+
+        //         }
+        //     });
+        // },
+        createReceipt(currentEvident) { //ส่งบอกว่า evident ถูก approve แล้ว หลังบ้านจะไป update invoice, current evident, และ สร้าง reciept ตามจำเป็น
+            let today = new Date()
+            axios.post('https://api.resguru.app/api' + '/approvePayment', {
+                data:{
+                    year: today.getFullYear(),
+                    month: today.getMonth()+1,
+                    evidenceid: currentEvident.id,
+                    paidAmount: currentEvident.attributes.amount,
+                    buildingid: currentEvident.attributes.building.data.id,
+                    roomid: parseInt(this.$route.query.roomID),
+                    paidDate: currentEvident.attributes.paymentDate? currentEvident.attributes.paymentDate : today
                 }
             })
-                .then((res) => {
-                    this.$showNotification('#3A89CB', 'Update Evidence Success')
-                }
-                )
-                .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage);
-                })
-
-        },
-        updateInvoice(remain) {
-            var invoiceData = {
-                    paymentStatus: "Paid",
-                    paid: this.userEvidencePayment[0].attributes.amount
-                }
-            if (remain) {
-                invoiceData.remainPaid = remain
+            .then((res) => {
+                this.$showNotification('#3A89CB', 'Approve Evident Success')
             }
-            axios.put('https://api.resguru.app/api/tenant-bills/' + this.userInvoice[0].id, {
-                data: invoiceData
+            )
+            .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage);
             })
-                .then((res) => {
-                    this.$showNotification('#3A89CB', 'Update Invoice Success')
-                }
-                )
-                .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage);
-                })
-            // console.log(this.userInvoice[0])
-            // console.log(this.userEvidencePayment[0].attributes)
-        },
-        createReceipt(data) {
-            this.userUnpaidInvoice.slice().reverse().forEach(element => {   
-                if(data.attributes.amount >= element.remainPaid){
-                    var finalRemain =  element.remainPaid - data.attributes.amount
-                    axios.post('https://api.resguru.app/api' + '/tenant-receipts', {
-                        data: {
-                            // date_execute: this.date_execute,
-                            tenant_bill: data.attributes.tenant_bill.data.id,
-                            user_sign_contract: data.attributes.user_sign_contract.data.id,
-                            paidAmount: element.total,
-                            // receiptNumber: "RE_" + data.attributes.tenant_bill.data.attributes.invoiceNumber,
-                            //roomPrice: data.attributes.roomPrice,
-                            //waterPrice: data.attributes.waterPrice,
-                            //electricPrice: data.attributes.electricPrice,
-                            //communalPrice: data.attributes.communalPrice,
-                            //otherPrice: data.attributes.otherPrice,
-                            //subTotal: data.attributes.subtotal,
-                            //vat: data.attributes.vat,
-                            //total: data.attributes.total,
-                            building: data.attributes.building.data.id,
-                            tenant_evidence_payment: data.id,
-                            tenant_evidence_payment_receipt: data.id
-                        }
-                    })
-                    .then((res) => {
-                        this.$showNotification('#3A89CB', 'Create Receipt Success')
-                        updateEvidence()
-                        updateInvoice(finalRemain > 0 ? finalRemain : 0 )
-                    }
-                    )
-                    .catch(error => {
-                        const errorMessage = error.message ? error.message : 'Error updating information';
-                        this.$showNotification('danger', errorMessage);
-                    })
-                    .finally(() => {
-                        this.getInvoice();
-                        this.getReceipt();
-                        this.getEvidence();
-                    })
-                } else {
-                    var finalRemain =  element.remainPaid - data.attributes.amount
-                    updateInvoice(finalRemain > 0 ? finalRemain : 0 )
-                    this.getInvoice();
-                    this.getReceipt();
-                    this.getEvidence();
-
-                }
-            });
-
-
-
-            // axios.post('https://api.resguru.app/api' + '/tenant-receipts', {
-            //     data: {
-            //         // date_execute: this.date_execute,
-            //         tenant_bill: data.attributes.tenant_bill.data.id,
-            //         user_sign_contract: data.attributes.user_sign_contract.data.id,
-            //         paidAmount: data.attributes.amount,
-            //         // receiptNumber: "RE_" + data.attributes.tenant_bill.data.attributes.invoiceNumber,
-            //         //roomPrice: data.attributes.roomPrice,
-            //         //waterPrice: data.attributes.waterPrice,
-            //         //electricPrice: data.attributes.electricPrice,
-            //         //communalPrice: data.attributes.communalPrice,
-            //         //otherPrice: data.attributes.otherPrice,
-            //         //subTotal: data.attributes.subtotal,
-            //         //vat: data.attributes.vat,
-            //         //total: data.attributes.total,
-            //         building: data.attributes.building.data.id,
-            //         tenant_evidence_payment: data.id,
-            //         tenant_evidence_payment_receipt: data.id
-            //     }
-            // }).then((res) => {
-            //         this.$showNotification('#3A89CB', 'Create Receipt Success')
-            //         updateEvidence()
-            //         updateInvoice()
-            //     }).catch(error => {
-            //         const errorMessage = error.message ? error.message : 'Error updating information';
-            //         this.$showNotification('danger', errorMessage);
-            //     })
+            .finally(() => {
+                this.getInvoice();
+                this.getReceipt();
+                this.getEvidence();
+            })
         },
         async PDFPrintReceipt(tr) {
             this.$refs.childComponentPDFReceipt.generatePDF(tr)
