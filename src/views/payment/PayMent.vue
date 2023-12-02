@@ -955,7 +955,7 @@ export default {
         },
         generateInvoice(roomid) {
             const currentdate = new Date()
-            const month = currentdate.getMonth()
+            const month = currentdate.getMonth() + 1
             const year = currentdate.getFullYear()
             // console.log("11111",this.$store.state.building)
             // console.log("22222", roomid)
