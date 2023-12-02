@@ -151,6 +151,13 @@
                             </div>
                         </div>
                         <div class="mt-[10px]">
+                            <div class="font-bold">Citicen ID</div>
+                            <div class="">
+                                <input type="CID" placeholder="CID"
+                                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="dataRegister.CID" />
+                            </div>
+                        </div>
+                        <div class="mt-[10px]">
                             <div class="font-bold">Email</div>
                             <div class="">
                                 <input type="email" placeholder="Email"
@@ -404,6 +411,7 @@ export default {
             dataRegister: {
                 name: '',
                 last: '',
+                CID:'',
                 phone: '',
                 birth: {
                     day: '',
@@ -484,7 +492,8 @@ export default {
                             "password": this.dataRegister.pass,
                             "lastName": this.dataRegister.last,
                             "firstName": this.dataRegister.name,
-                            "sex": this.dataRegister.sex
+                            "sex": this.dataRegister.sex,
+                            "idCard": this.dataRegister.CID
                             // "filePath": this.dataRegister.filePath,
                             // "googleToken": this.dataRegister.google,
                             // "lineToken": this.dataRegister.facebook
@@ -494,7 +503,8 @@ export default {
                                 this.dataRegister.last = '',
                                 this.dataRegister.name = '',
                                 this.dataRegister.sex = null,
-                                this.dataRegister.check = null
+                                this.dataRegister.check = null,
+                                this.dataRegister.CID = ''
                         })
                             .finally(() => {
                                 this.tab = 1

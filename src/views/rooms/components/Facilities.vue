@@ -136,7 +136,7 @@
                 class="p-[-20px] text-custom">
                 <div>
                     <div class="flex justify-between pl-[20px] pr-[20px]">
-                        <div class="text-custom flex justify-center items-center text-[18px] font-bold">แก้ไขข้อมูลทรัพย์สิน
+                        <div class="text-custom flex justify-center items-center text-[18px] font-bold">แก้ไขข้อมูลทรัพย์สิน 
                         </div>
                         <div @click="create = false" class="cursor-pointer">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -207,8 +207,7 @@
                                 <div class="text-custom text-[#5C6B79]">หมายเหตุ</div>
                             </div>
                             <div class="w-[80%] flex">
-                                <input class="h-[28px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="input" v-model="facilities.note" />
+                                <span class="text-[#5C6B79]">การแก้ไขนี้จะส่งผลต่อข้อมูลทรัพสินย์เดียวกันของห้องอื่นด้วย</span>
                             </div>
                         </div>
                         <!-- <div class="flex w-[100%] mt-[14px]">
@@ -426,7 +425,7 @@ export default {
                 data: {
                     title: this.facilities.title,
                     price: this.facilities.price,
-                    note: this.facilities.note,
+                    // note: this.facilities.note,
                 }
             })
                 .finally(() => {

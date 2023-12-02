@@ -4,107 +4,107 @@
         <div ref="pdfContent" class="p-[8px]">
             <img class="watermarked" :src="Res_Guru_Logo_create06" />
             <div class="flex justify-between">
-                <div>
+                <div class="flex">
+                    <div><img  :src="Res_Guru_Logo_create12" class="w-[70px] h-[70px]" /></div>
+                    <div class="ml-[8px]">
+                        <div class="font-bold">Tansamai</div>
+                        <div>บางนา ประเวศ กทม 1026</div>
+                        <div>Tel. 08889899988</div>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-between">
+                    <div>invoice# {{ data_bill.tenant_bills[0]?.invoiceNumber }}</div>
                     <div>
-                        <img :src="Res_Guru_Logo_create12" class="w-[100px] h-[100px] ml-[-18px] mb-[-14px]" />
+                        <div>Issue date</div>
+                        <div>10/10/2023</div>
                     </div>
-                    <div class="text-[16px]">ทันสมัย จำกัด</div>
-                    <div>241/41 หมู่ที่ 6 ถ.แจ้งวัฒนะ บางตลาด</div>
-                    <div>Tel : 0888888585</div>
-                </div>
-                <div>
-                    <div>invoice No. {{ data_bill.tenant_bills[0]?.invoiceNumber }}</div>
                 </div>
             </div>
-            <div class="flex justify-between mt-[18px]">
-                <div>
-                    <div class="text-[16px]">ชื่อผู้เช่า {{ data_bill.user_sign_contract?.users_permissions_user?.firstName
-                    }} {{ data_bill.user_sign_contract?.users_permissions_user?.lastName }} Tel. {{
-    data_bill.user_sign_contract?.users_permissions_user?.phone }}</div>
-                    <div>ที่อยู่ : {{ data_bill.user_sign_contract?.users_permissions_user?.contactAddress }}</div>
-                    <div>ห้อง : {{ data_bill.RoomNumber }}</div>
+            <hr class="mt-[32px] mb-[32] h-[10px]">
+
+            <div>
+                <div class="text-[24px] font-bold">Tansamai</div>
+                <div class="mt-[4px] mb-[15px]">Add a message here for your customer</div>
+            </div>
+
+            <div class="grid grid-cols-3">
+                <div class=" pr-[14px]">
+                    <hr class="h-[10px]">
+                    <div class="font-bold mb-[8px]">BILL To</div>
+                    <div>{{ data_bill.user_sign_contract?.users_permissions_user?.firstName
+                    }} {{ data_bill.user_sign_contract?.users_permissions_user?.lastName }}</div>
+                    <div>{{ data_bill.user_sign_contract?.users_permissions_user?.contactAddress }}</div>
+                    <div>Tel. {{
+                        data_bill.user_sign_contract?.users_permissions_user?.phone }}</div>
                 </div>
-                <div>
-                    <div>วันที่ออกบิล {{ convertDateNoTime(data_bill.tenant_bills[0]?.createdAt) }} / ประจำเดือน 11/2023
-                    </div>
-                    <div>กำหนดชำระ -</div>
+                <div class="pr-[14px]">
+                    <hr class="h-[10px]">
+                    <div class="font-bold mb-[8px]">DETAILS</div>
+                    <div>ลูกบ้านอยู่เดือนสุดท้าย</div>
+                </div>
+                <div class=" pr-[14px]">
+                    <hr class="h-[10px]">
+                    <div class="font-bold mb-[8px]">PAYMENT</div>
+                    <div>Due date 10/10/2023</div>
+                    <div>{{ data_bill.tenant_bills[0]?.total }} บาท</div>
                 </div>
             </div>
-            <div class="bill-table mt-[24px]">
-                <table class="custom-table">
-                    <thead>
-                        <tr>
-                            <th>ลำดับ</th>
-                            <th>รายการ</th>
-                            <th>จำนวน</th>
-                            <th>ราคา</th>
-                            <th>รวมเงิน</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>ค่าห้อง</td>
-                            <td>1</td>
-                            <td>{{ data_bill.tenant_bills[0]?.roomPrice }}</td>
-                            <td>{{ data_bill.tenant_bills[0]?.roomPrice }}</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>ค่าน้ำ</td>
-                            <td>{{ data_bill.tenant_bills[0]?.usageWater }}</td>
-                            <td>{{ data_bill.tenant_bills[0]?.waterPrice }}</td>
-                            <td>{{ data_bill.tenant_bills[0]?.waterPrice * data_bill.tenant_bills[0]?.usageWater }}</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>ค่าไฟ</td>
-                            <td>{{ data_bill.tenant_bills[0]?.usageElectric }} </td>
-                            <td>{{ data_bill.tenant_bills[0]?.electricPrice }}</td>
-                            <td>{{ data_bill.tenant_bills[0]?.electricPrice * data_bill.tenant_bills[0]?.usageElectric }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>ค่าส่วนกลาง</td>
-                            <td>1</td>
-                            <td>{{ data_bill.tenant_bills[0]?.communalPrice }}</td>
-                            <td>{{ data_bill.tenant_bills[0]?.communalPrice }}</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>ค่าอื่น ๆ</td>
-                            <td>1</td>
-                            <td>{{ data_bill.tenant_bills[0]?.otherPrice }}</td>
-                            <td>{{ data_bill.tenant_bills[0]?.otherPrice }}</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3" class="total-label">
-                                <div class="flex justify-center"></div>
-                            </td>
-                            <td class="total-amount">ภาษี</td>
-                            <td class="total-amount">{{ data_bill.tenant_bills[0]?.vat }}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="total-label">
-                                <div class="flex justify-center">{{ THBText(data_bill.tenant_bills[0]?.total) }}</div>
-                            </td>
-                            <td class="total-amount">รวม</td>
-                            <td class="total-amount">{{ data_bill.tenant_bills[0]?.total }}</td>
-                        </tr>
-                    </tfoot>
+            <div class="mt-[24px]">
+                <table>
+                    <tr class="border-b-[1px]">
+                        <th colspan="6">ITEM</th>
+                        <th>QTY</th>
+                        <th>PRICE</th>
+                        <th>AMOUNT</th>
+                    </tr>
+                    <tr class="border-b-[1px]">
+                        <td colspan="6">ค่าห้อง</td>
+                        <td>1</td>
+                        <td>{{ data_bill.tenant_bills[0]?.roomPrice }}</td>
+                        <td>{{ data_bill.tenant_bills[0]?.roomPrice }}</td>
+                    </tr>
+                    <tr class="border-b-[1px]">
+                        <td colspan="6">ค่าน้ำ</td>
+                        <td>{{ data_bill.tenant_bills[0]?.usageWater }}</td>
+                        <td>{{ data_bill.tenant_bills[0]?.waterPrice }}</td>
+                        <td>{{ data_bill.tenant_bills[0]?.waterPrice * data_bill.tenant_bills[0]?.usageWater }}</td>
+                    </tr>
+                    <tr class="border-b-[1px]">
+                        <td colspan="6">ค่าไฟ</td>
+                        <td>{{ data_bill.tenant_bills[0]?.usageElectric }} </td>
+                        <td>{{ data_bill.tenant_bills[0]?.electricPrice }}</td>
+                        <td>{{ data_bill.tenant_bills[0]?.electricPrice * data_bill.tenant_bills[0]?.usageElectric }}
+                        </td>
+                    </tr>
+                    <tr class="border-b-[1px]">
+                        <td colspan="6">ค่าส่วนกลาง</td>
+                        <td>1</td>
+                        <td>{{ data_bill.tenant_bills[0]?.communalPrice }}</td>
+                        <td>{{ data_bill.tenant_bills[0]?.communalPrice }}</td>
+                    </tr>
+                    <tr class="border-b-[1px]">
+                        <td colspan="6">ค่าอื่น ๆ</td>
+                        <td>1</td>
+                        <td>{{ data_bill.tenant_bills[0]?.otherPrice }}</td>
+                        <td>{{ data_bill.tenant_bills[0]?.otherPrice }}</td>
+                    </tr>
+                    <tr class="border-b-[1px]">
+                        <td colspan="8">SubTotal</td>
+                        <td>{{ data_bill.tenant_bills[0]?.total - data_bill.tenant_bills[0]?.vat }}</td>
+                    </tr>
+                    <tr class="border-b-[1px]">
+                        <td colspan="8">Tax</td>
+                        <td>{{ data_bill.tenant_bills[0]?.vat }}</td>
+                    </tr>
+                    <tr class="border-b-[1px]">
+                        <td colspan="8" class="font-bold">Total Due</td>
+                        <td class="font-bold">{{ data_bill.tenant_bills[0]?.total }}</td>
+                    </tr>
                 </table>
             </div>
-            <div class="mt-[14px]">กรุณาชำระ ทุกวันที่ 1-5 ของเดือนถัดไป ล่าช้าปรับวันละ 100 บาท</div>
-            <div class="flex justify-end mt-[50px]">
-                <div class="flex justify-center flex-col">
-                    <div>ลงชื่อ___________________________ผู้จัดทำ</div>
-                    <div class="flex justify-center mt-[4px]">ทันสมัย จำกัด</div>
-                </div>
-            </div>
+
         </div>
+        <!-- <button @click="generatePDF()">xcvxcv</button> -->
     </div>
 </template>
   
@@ -126,7 +126,7 @@ export default {
 
     },
     // mounted() {
-    //     this.sendFunction()
+    //     this.generatePDF()
     // },
     methods: {
         generatePDF(data) {
@@ -185,4 +185,23 @@ export default {
 .watermarked {
     position: absolute;
     opacity: 0.05;
-}</style>
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    text-align: left;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+}
+</style>

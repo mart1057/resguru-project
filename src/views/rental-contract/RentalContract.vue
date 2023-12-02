@@ -568,12 +568,12 @@
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
                                 <div class="col-span-4">
                                     <div>ค่าประกันห้อง</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail_create.roomInsuranceDeposit" required />
+                                    <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail_create.roomInsuranceDeposit" required  />
                                 </div>
                                 <div class="col-span-4 ml-[8px]">
                                     <div>วางเงินมัดจำ (บาท)</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                    <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="room_detail_create.room_deposit" required />
                                 </div>
                                 <!-- <div class="col-span-4  ml-[8px]">
@@ -760,7 +760,7 @@ export default {
                 })
         },
         getRoomType() {
-            fetch('https://api.resguru.app/api' + '/room-types?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=*')
+            fetch('https://api.resguru.app/api' + '/room-types?filters[roomType_building][id][$eq]='+this.$store.state.building+'&populate=*')
                 .then(response => response.json())
                 .then((resp) => {
                     this.room_type = resp.data;

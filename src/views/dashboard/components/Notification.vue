@@ -165,14 +165,10 @@ export default {
                         acc[Type].push(item);
                         return acc;
                     }, {});
-                    console.log('dfgdf', this.notiData['Emergency']);
-                    console.log('dfgdfss', this.notiData['Move out']);
-                    console.log('dfgdfss', this.notiData['Clean']);
-                    console.log('dfgdfss', this.notiData['Maintenace']);
                     this.data_emergency = this.notiData['Emergency'];
                     this.data_move = this.notiData['Move out']
                     this.data_clean = this.notiData['Clean']
-                    this.data_maintenace = this.notiData['Maintenace']
+                    this.data_maintenace = this.notiData['Maintenance']
                 })
         },
         timeDiff(timeCreate) {

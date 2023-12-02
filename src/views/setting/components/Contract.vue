@@ -210,6 +210,7 @@ export default {
             this.$showNotification('danger', errorMessage); 
             })
             .finally(()=>{
+                this.getContract()
                 this.$showNotification('#3A89CB', 'Set Default Success')
             })
                
@@ -257,6 +258,7 @@ export default {
                     this.$showNotification('danger', errorMessage); 
                     })
                     .finally(()=>{
+                        this.getContract()
                         this.$showNotification('#3A89CB', 'Delete Contract Success')
                     })
                 }
@@ -296,6 +298,7 @@ export default {
                 this.$showNotification('danger', errorMessage); 
                 })
                 .finally(()=>{
+                    this.getContract()
                     this.$showNotification('#3A89CB', 'Create Contract Template Success')
                 })
             this.create = false

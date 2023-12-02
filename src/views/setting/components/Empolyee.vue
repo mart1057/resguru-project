@@ -549,6 +549,7 @@ export default {
                     this.$showNotification('danger', errorMessage); 
                     })
                     .finally(()=>{
+                        this.getUser();
                         this.$showNotification('#3A89CB', 'Update Success')
                     })  
             }
@@ -565,6 +566,7 @@ export default {
                     this.$showNotification('danger', errorMessage); 
                     })
                     .finally(()=>{
+                        this.getEmployer();
                         this.$showNotification('warn', 'Delete Employee Success')
                     }) 
                 }
@@ -623,6 +625,7 @@ export default {
                 .finally(()=>{
                     this.$showNotification('#3A89CB', 'Create Employee Success')
                     this.profile_em = false
+                    this.getEmployer();
                 }) 
         },
         selectAddressAdmin(address) {
@@ -678,6 +681,7 @@ export default {
                     this.$showNotification('danger', errorMessage); 
                 })
                 .finally(()=>{
+                    this.getUser();
                     this.$showNotification('#3A89CB', 'Create Admin Success')
                     this.profile_em = false
                 }) 

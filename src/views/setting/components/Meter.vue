@@ -125,13 +125,12 @@
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 3">
             <div class="text-[16px] font-bold mt-[24px]">ค่าบริการ</div>
             <div class="grid grid-cols-6 gap-4 mt-[14px] w-[100%]">
-                <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]" v-for="data in otherOfBuilding"
-                    @click="getDetailFacilities(data.id)">
+                <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]" v-for="data in otherOfBuilding">
                     <div class="flex flex-col justify-between h-[100%]">
                         <div class="flex justify-between">
                             <div class="text-[16px]"> {{ data.attributes.title }}</div>
                             <div>
-                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                <!-- <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <ellipse cx="10.0013" cy="4.16667" rx="1.66667" ry="1.66667"
                                         transform="rotate(90 10.0013 4.16667)" fill="#5C6B79" />
@@ -139,7 +138,7 @@
                                         fill="#5C6B79" />
                                     <ellipse cx="10.0013" cy="15.8327" rx="1.66667" ry="1.66667"
                                         transform="rotate(90 10.0013 15.8327)" fill="#5C6B79" />
-                                </svg>
+                                </svg> -->
                             </div>
                         </div>
                         <div
@@ -638,6 +637,8 @@ export default {
                         this.price = resp.data.attributes.price,
                         this.discountAmount = resp.data.attributes.discountAmount
                 }).finally(() => {
+                    this.getUserBuilding();
+                    this.getOtherBuilding();
                     this.create_service = true,
                         loading.close()
                 })
@@ -652,6 +653,8 @@ export default {
                 }
             })
                 .finally(() => {
+                    this.getUserBuilding();
+                    this.getOtherBuilding();
                     this.create_service = false,
                         this.getOtherBuilding()
                     loading.close()
@@ -661,6 +664,8 @@ export default {
             const loading = this.$vs.loading()
             axios.delete('https://api.resguru.app/api' + '/other-of-buildings/' + id)
                 .finally(() => {
+                    this.getUserBuilding();
+                    this.getOtherBuilding();
                     this.create_service = false,
                         this.getOtherBuilding()
                     loading.close()
@@ -703,6 +708,7 @@ export default {
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
+                    this.getUserBuilding();
                     this.$showNotification('#3A89CB', 'Update Water Unit Success')
                 })
 
@@ -721,6 +727,7 @@ export default {
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
+                    this.getUserBuilding();
                     this.$showNotification('#3A89CB', 'Update Electric Unit Success')
                 })
 
@@ -739,6 +746,7 @@ export default {
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
+                    this.getUserBuilding();
                     this.$showNotification('#3A89CB', 'Update Building Communual Success')
                 })
 
@@ -757,6 +765,7 @@ export default {
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
+                    this.getOtherBuilding();
                     this.$showNotification('#3A89CB', 'Update Other Price Success')
                 })
         },
@@ -774,6 +783,7 @@ export default {
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
+                    this.getOtherBuilding();
                     this.$showNotification('#3A89CB', 'Update Success')
                 })
         },
