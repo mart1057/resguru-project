@@ -365,7 +365,6 @@ export default {
                 })
         },
         updateService(serviceId,empId,date) {
-
             axios.put(`https://api.resguru.app/api/services/${serviceId}`,{
                 data : {
                     responEmployee: empId,
@@ -382,6 +381,7 @@ export default {
             })
             .finally(()=>{
                 this.$showNotification('#3A89CB', 'Update Service Success')
+               
             }) 
                 
         },
@@ -401,6 +401,7 @@ export default {
             })
             .finally(()=>{
                 this.$showNotification('#3A89CB', 'Closed Job Service Success')
+                this.getService() 
             }) 
         }
     }
