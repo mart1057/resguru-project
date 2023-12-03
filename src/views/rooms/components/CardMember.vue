@@ -282,6 +282,9 @@
                                             <select placeholder="ชื่อ"
                                                 class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]"
                                                 v-model="data.Type">
+                                                <option label="เลือกประเภท" value="" disabled>
+                                                    เลือกประเภท
+                                                </option>
                                                 <option label="รถยนต์" value="Car">
                                                     รถยนต์
                                                 </option>
@@ -303,9 +306,9 @@
                                                 v-model="data.remark" />
                                         </div>
                                     </div>
-                                    <div class="grid grid-cols-8  text-custom w-[100%] mb-[18px]  ">
+                                    <!-- <div class="grid grid-cols-8  text-custom w-[100%] mb-[18px]  ">
                                         <div class="col-span-3 mt-[6px]">
-                                            <div>แนบรูปภาพยานพหนะคันที่ 1</div>
+                                            <div>แนบรูปภาพยานพหนะคันที่ {{ i + 1 }}</div>
                                             <div class="flex mt-[4px]">
                                                 <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
                                                     id="upload" hidden type="file" />
@@ -319,7 +322,7 @@
                                                     ยังไม่ได้เลือกไฟล์</div>
                                             </div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                 </div>
 
                             </div>
