@@ -29,9 +29,9 @@
                     <div @click="move_room = true"
                         class="bg-[#003765] text-[white] pl-[8px] pr-[8px] pt-[1px] pb-[1px] flex justify-center items-center text-[12px] rounded-[8px]">
                         ย้ายห้อง</div>
-                    <div @click="deleteContract()"
+                    <!-- <div @click="deleteContract()"
                         class="bg-[#D44769] text-[white] pl-[8px] pr-[8px] pt-[1px] pb-[1px] flex justify-center items-center text-[12px] rounded-[8px]">
-                        ลบผู้เช่า</div>
+                        ลบผู้เช่า</div> -->
                 </div>
             </div>
             <div class="h-[212px] border rounded-[12px] flex flex-col justify-center items-center p-[14px] cursor-pointer"
@@ -95,7 +95,7 @@
                                 <div class="grid grid-cols-2  text-custom mt-[14px]  "
                                     v-if="room_detail.check_user == true && is_edit == false">
                                     <div>
-                                        <div class="">เลือกข้อมูลผู้เช่า</div>
+                                        <div class=""> <span class="text-[red] mr-[2px]">*</span>เลือกข้อมูลผู้เช่า</div>
                                         <select placeholder="Select" v-model="id_user" @change="getUserDetail()"
                                             class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]">
                                             <option v-for="user in users" :value="user.id">
@@ -106,7 +106,7 @@
                                 </div>
                                 <div class="grid grid-cols-4 gap-2  text-custom mt-[14px] ">
                                     <div class="col-span-2">
-                                        <div>อีเมลล์</div>
+                                        <div><span class="text-[red] mr-[2px]">*</span>อีเมลล์</div>
                                         <input type="input" v-model="room_detail.email"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             :disabled="is_edit == true" />
@@ -138,12 +138,12 @@
                                         </select>
                                     </div>
                                     <div class="col-span-3 ml-[8px]">
-                                        <div>ชื่อ</div>
+                                        <div><span class="text-[red] mr-[2px]">*</span>ชื่อ</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             v-model="room_detail.name" :disabled="is_edit == true" />
                                     </div>
                                     <div class="col-span-3  ml-[8px]">
-                                        <div>สกุล</div>
+                                        <div><span class="text-[red] mr-[2px]">*</span>สกุล</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             v-model="room_detail.last_name" :disabled="is_edit == true" />
                                     </div>
@@ -159,13 +159,13 @@
                             <div class="w-[30%] text-custom flex items-start"></div>
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
                                 <div class="col-span-4">
-                                    <div>เบอร์โทรศัพท์ <span class="text-[#5C6B79]">(ไม่ต้องใส่ขีด ตัวอย่าง.
+                                    <div><span class="text-[red] mr-[2px]">*</span>เบอร์โทรศัพท์ <span class="text-[#5C6B79]">(ไม่ต้องใส่ขีด ตัวอย่าง.
                                             0815578945)</span></div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="room_detail.phone" :disabled="is_edit == true" />
                                 </div>
                                 <div class="col-span-4  ml-[8px]">
-                                    <div>หมายเลขบัตรประชาชน</div>
+                                    <div><span class="text-[red] mr-[2px]">*</span>หมายเลขบัตรประชาชน</div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="room_detail.id_card" :disabled="is_edit == true" />
                                 </div>
@@ -186,7 +186,7 @@
                             <div class="w-[30%] text-custom flex items-start"></div>
                             <div class="grid grid-cols-6  text-custom w-[70%] ">
                                 <div class="col-span-6">
-                                    <div>ที่อยู่</div>
+                                    <div><span class="text-[red] mr-[2px]">*</span>ที่อยู่</div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="room_detail.address" :disabled="is_edit == true" />
                                 </div>
@@ -196,7 +196,7 @@
                             <div class="w-[30%] text-custom flex items-start"></div>
                             <div class="grid grid-cols-6  text-custom w-[70%] ">
                                 <div class="col-span-3 mt-[6px]">
-                                    <div>แนบรูปบัตรประชาชน</div>
+                                    <div><span class="text-[red] mr-[2px]">*</span>แนบรูปบัตรประชาชน</div>
                                     <div class="flex mt-[4px]" v-if="is_edit == false">
                                         <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
                                             id="upload" @change="previewImage" type="file" accept="image/*" hidden />
@@ -658,6 +658,7 @@ export default {
                 })
         },
         getUserDetail(id_room) {
+            this.img_arr_card = []
             fetch('https://api.resguru.app/api' + '/users/' + this.id_user + '?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
                 .then(response => response.json())
                 .then((resp) => {
@@ -752,94 +753,15 @@ export default {
                 })
             }
             else {
+                console.log(this.room_detail, this.img_arr_card.length);
                 if (this.room_detail.check_user == true) {
-                    const loading = this.$vs.loading()
-                    axios.post('https://api.resguru.app/api' + '/user-sign-contracts', {
-                        data: {
-                            room: this.id_room,
-                            contractStatus: "reserved",
-                            users_permissions_user: this.room_detail.id,
-                            // roomDeposit: parseInt(this.room_detail_create.room_deposit),
-                            // roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
-                            // contractDuration: parseInt(this.room_detail_create.contract_duration)
-                        }
-                    }).then(() => {
-                        axios.put('https://api.resguru.app/api' + '/users/' + this.room_detail.id, {
-                            "username": this.room_detail.email,
-                            "email": this.room_detail.email,
-                            "firstName": this.room_detail.name,
-                            "lastName": this.room_detail.last_name,
-                            "nickName": this.room_detail.nick_name,
-                            "role": 4,
-                            "phone": this.room_detail.phone,
-                            "email": this.room_detail.email,
-                            "idCard": this.room_detail.id_card,
-                            "contactAddress": this.room_detail.address,
-                            "sex": this.room_detail.sex,
-                            "dateOfBirth": this.room_detail.birth,
-                            "workplace": this.room_detail.workplace,
-                            "faculty": this.room_detail.faculty,
-                            "rank": this.room_detail.rank,
-                            "idEmployee": this.room_detail.idEmployee,
-                            "emergencyPerson": this.room_detail.emergencyPerson,
-                            "relation": this.room_detail.relation,
-                            "emergencyPhone": this.room_detail.emergencyPhone,
-                            "lineID": this.room_detail.lineID
-                        })
-
-                    }).then(() => {
-                        newVehicles.forEach((data) => {
-                            axios.post('https://api.resguru.app/api' + '/tenant-vehicles', {
-                                data: {
-                                    Type: data.Type,
-                                    remark: data.remark,
-                                    licensePlate: data.licensePlate,
-                                    users_permissions_user: this.id_user
-                                }
-                            })
-
-                        })
-                    })
-                        .finally(() => {
-                            this.id_user = this.room_detail.id
-                            this.getUser()
-                            this.create = false
-                            loading.close()
-                        })
-
-                }
-                else {
-                    const loading = this.$vs.loading()
-                    axios.post('https://api.resguru.app/api' + '/users', {
-                        "username": this.room_detail.email,
-                        "email": this.room_detail.email,
-                        "firstName": this.room_detail.name,
-                        "lastName": this.room_detail.last_name,
-                        "nickName": this.room_detail.nick_name,
-                        "role": 2,
-                        "phone": this.room_detail.phone,
-                        "email": this.room_detail.email,
-                        "idCard": this.room_detail.id_card,
-                        "contactAddress": this.room_detail.address,
-                        "sex": this.room_detail.sex,
-                        // "dateOfBirth": this.room_detail.birth,
-                        "password": "mockpass",
-                        "building": this.$store.state.building,
-                        "workplace": this.room_detail.workplace,
-                        "faculty": this.room_detail.faculty,
-                        "rank": this.room_detail.rank,
-                        " idEmployee": this.room_detail.idEmployee,
-                        "emergencyPerson": this.room_detail.emergencyPerson,
-                        "relation": this.room_detail.relation,
-                        "emergencyPhone": this.room_detail.emergencyPhone,
-                        "lineID": this.room_detail.lineID
-                    }).then((resp) => {
-                        this.id_user = resp.data.id
+                    if (this.room_detail.email != '' && this.room_detail.name != '' && this.room_detail.last_name != '' && this.room_detail.phone != '' && this.room_detail.id_card != '' && this.room_detail.address != '' && this.img_arr_card != 0) {
+                        const loading = this.$vs.loading()
                         axios.post('https://api.resguru.app/api' + '/user-sign-contracts', {
                             data: {
                                 room: this.id_room,
                                 contractStatus: "reserved",
-                                users_permissions_user: resp.data.id,
+                                users_permissions_user: this.room_detail.id,
                                 // roomDeposit: parseInt(this.room_detail_create.room_deposit),
                                 // roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
                                 // contractDuration: parseInt(this.room_detail_create.contract_duration)
@@ -861,28 +783,132 @@ export default {
                                     }).finally(() => {
                                     })
                             }
-                        }).finally(() => {
+                            axios.put('https://api.resguru.app/api' + '/users/' + this.room_detail.id, {
+                                "username": this.room_detail.email,
+                                "email": this.room_detail.email,
+                                "firstName": this.room_detail.name,
+                                "lastName": this.room_detail.last_name,
+                                "nickName": this.room_detail.nick_name,
+                                "role": 4,
+                                "phone": this.room_detail.phone,
+                                "idCard": this.room_detail.id_card,
+                                "contactAddress": this.room_detail.address,
+                                "sex": this.room_detail.sex,
+                                "dateOfBirth": this.room_detail.birth,
+                                "workplace": this.room_detail.workplace,
+                                "faculty": this.room_detail.faculty,
+                                "rank": this.room_detail.rank,
+                                "idEmployee": this.room_detail.idEmployee,
+                                "emergencyPerson": this.room_detail.emergencyPerson,
+                                "relation": this.room_detail.relation,
+                                "emergencyPhone": this.room_detail.emergencyPhone,
+                                "lineID": this.room_detail.lineID
+                            })
+                        }).then(() => {
                             newVehicles.forEach((data) => {
                                 axios.post('https://api.resguru.app/api' + '/tenant-vehicles', {
                                     data: {
                                         Type: data.Type,
                                         remark: data.remark,
-                                        licensePlate: data.licensePlat,
+                                        licensePlate: data.licensePlate,
                                         users_permissions_user: this.id_user
                                     }
-                                }).then(() => {
+                                })
+
+                            })
+                        })
+                            .finally(() => {
+                                this.id_user = this.room_detail.id
+                                this.getUser()
+                                this.create = false
+                                loading.close()
+                            })
+                    }
+                    else {
+                        this.$showNotification('danger', 'กรุณากรอกข้อมูลให้ครบ');
+                    }
+                }
+                else {
+                    if (this.room_detail.email && this.room_detail.name && this.room_detail.last_name && this.room_detail.phone && this.room_detail.id_card && this.room_detail.address && this.img_arr_card.length != 0) {
+                        const loading = this.$vs.loading()
+                        axios.post('https://api.resguru.app/api' + '/users', {
+                            "username": this.room_detail.email,
+                            "email": this.room_detail.email,
+                            "firstName": this.room_detail.name,
+                            "lastName": this.room_detail.last_name,
+                            "nickName": this.room_detail.nick_name,
+                            "role": 2,
+                            "phone": this.room_detail.phone,
+                            "email": this.room_detail.email,
+                            "idCard": this.room_detail.id_card,
+                            "contactAddress": this.room_detail.address,
+                            "sex": this.room_detail.sex,
+                            // "dateOfBirth": this.room_detail.birth,
+                            "password": this.room_detail.id_card,
+                            "building": this.$store.state.building,
+                            "workplace": this.room_detail.workplace,
+                            "faculty": this.room_detail.faculty,
+                            "rank": this.room_detail.rank,
+                            " idEmployee": this.room_detail.idEmployee,
+                            "emergencyPerson": this.room_detail.emergencyPerson,
+                            "relation": this.room_detail.relation,
+                            "emergencyPhone": this.room_detail.emergencyPhone,
+                            "lineID": this.room_detail.lineID
+                        }).then((resp) => {
+                            this.id_user = resp.data.id
+                            axios.post('https://api.resguru.app/api' + '/user-sign-contracts', {
+                                data: {
+                                    room: this.id_room,
+                                    contractStatus: "reserved",
+                                    users_permissions_user: resp.data.id,
+                                    // roomDeposit: parseInt(this.room_detail_create.room_deposit),
+                                    // roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
+                                    // contractDuration: parseInt(this.room_detail_create.contract_duration)
+                                }
+                            }).then((resp) => {
+                                if (this.img_arr_card.length != 0) {
+                                    let formData = new FormData();
+                                    formData.append("files", this.img_arr_card);
+                                    formData.append("refId", String(resp.data.data.id));
+                                    formData.append("ref", "api::user-sign-contract.user-sign-contract");
+                                    formData.append("field", "imgCard");
+                                    axios.post("https://api.resguru.app/api/upload", formData, {
+                                        headers: {
+                                            "Content-Type": "multipart/form-data",
+                                        },
+                                    }).then((result) => { console.log("Upload file", result) })
+                                        .catch((error) => {
+                                            console.log(error);
+                                        }).finally(() => {
+                                        })
+                                }
+                            }).finally(() => {
+                                newVehicles.forEach((data) => {
+                                    axios.post('https://api.resguru.app/api' + '/tenant-vehicles', {
+                                        data: {
+                                            Type: data.Type,
+                                            remark: data.remark,
+                                            licensePlate: data.licensePlat,
+                                            users_permissions_user: this.id_user
+                                        }
+                                    }).then(() => {
+
+                                    })
 
                                 })
 
                             })
-
+                        }).finally(() => {
+                            this.getUser()
+                            this.create = false
+                            loading.close()
                         })
-                    }).finally(() => {
-                        this.getUser()
-                        this.create = false
-                        loading.close()
-                    })
+                    }
+                    else {
+                        this.$showNotification('danger', 'กรุณากรอกข้อมูลให้ครบ');
+                    }
                 }
+
             }
 
         },
