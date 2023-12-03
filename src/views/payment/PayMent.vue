@@ -24,11 +24,12 @@
                 </div>
                 <div class="flex justify-between">
                     <div class="flex">
-                        <input v-model="selectedDate" type="month" placeholder="ค้นหาตามหมายเลขห้อง" id="datepicker" @input="filterByDate()"
-                                v-bind:class="{ 'h-[36px] pl-[8px] text-[center] pr-[8px] bg-[#003765] flex cursor-pointer text-[white]  justify-center  rounded-[12px] mt-[12px]': true }" />
+                        <input v-model="selectedDate" type="month" placeholder="ค้นหาตามหมายเลขห้อง" id="datepicker"
+                            @input="filterByDate()"
+                            v-bind:class="{ 'h-[36px] pl-[8px] text-[center] pr-[8px] bg-[#003765] flex cursor-pointer text-[white]  justify-center  rounded-[12px] mt-[12px]': true }" />
                         <div class="flex justify-start items-center   mt-[5px] ml-[14px]">
                             <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาตามหมายเลขห้อง"
-                            v-model="filter.search" @input="filterData" type="input" @keydown="handleKeyDown" />
+                                v-model="filter.search" @input="filterData" type="input" @keydown="handleKeyDown" />
                         </div>
                         <vs-tooltip bottom shadow not-hover v-model="popup_filter">
                             <div @click="popup_filter = true"
@@ -112,7 +113,7 @@
                 <div v-for="(data, i) in floor">
                     <div class=" cursor-pointer mr-[8px]"
                         :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
-                        @click="tab_floor = i, filter.floor = data.id, getRoomBill(data.id,0,filter.selectedMonth, filter.selectedYear), name_floor = data.attributes.floorName">
+                        @click="tab_floor = i, filter.floor = data.id, getRoomBill(data.id, 0, filter.selectedMonth, filter.selectedYear), name_floor = data.attributes.floorName">
                         อาคาร
                         {{
                             data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }}
@@ -187,8 +188,8 @@
                                     </div>
                                     <div v-else>
                                         ยังไม่มีผู้เช่า
-                                        
-                                       
+
+
                                     </div>
                                 </div>
                             </vs-td>
@@ -204,12 +205,12 @@
                                     : "" }}
                                     </div>
                             </vs-td> -->
-                            
-                          
-                             
+
+
+
                             <vs-td>
                                 <div @click="routeTo(tr.id)">
-                                    <div  v-if="tr.user_sign_contract && tr.tenant_bills[0]">
+                                    <div v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                         {{ $formatNumber(tr.tenant_bills[0].roomPrice) }}
                                     </div>
                                 </div>
@@ -217,47 +218,47 @@
                             <vs-td>
                                 <div @click="routeTo(tr.id)">
 
-                                    <div  v-if="tr.user_sign_contract && tr.tenant_bills[0]">
+                                    <div v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                         {{ $formatNumber(tr.tenant_bills[0].communalPrice) }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.id)">
-                                    <div  v-if="tr.user_sign_contract && tr.tenant_bills[0]">
+                                    <div v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                         {{ $formatNumber(tr.tenant_bills[0].otherPrice) }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.id)">
-                                    <div  v-if="tr.user_sign_contract && tr.tenant_bills[0]">
+                                    <div v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                         {{ $formatNumber(tr.tenant_bills[0].total) }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.id)">
-                                    <div  v-if="tr.user_sign_contract && tr.tenant_bills[0]">
+                                    <div v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                         {{ $formatNumber(tr.tenant_bills[0].remainPaid) }}
                                     </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.id)">
-                                    <div  v-if="tr.user_sign_contract && tr.tenant_bills[0]">
+                                    <div v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                         {{ $formatNumber(tr.tenant_bills[0].paid) }}
                                     </div>
                                 </div>
                             </vs-td>
-                             
+
                             <vs-td>
                                 <div class="flex items-center justify-start">
                                     <!-- <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
                                         :class="tr.attributes.paymentStatus == 1 ? 'bg-[#CFFBDA] text-[#0B9A3C]' : tr.attributes.paymentStatus == 'ยังไม่ชำระ' ? 'bg-[#FFE1E8] text-[#EA2F5C]' : ' bg-[#FFF2BC] text-[#D48C00] '"> -->
                                     <div
                                         class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]">
-                                        <div  v-if="tr.user_sign_contract && tr.tenant_bills[0]">
+                                        <div v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                             {{ tr.tenant_bills[0].paymentStatus }}
                                         </div>
                                     </div>
@@ -271,21 +272,22 @@
                             <vs-td>
                                 <div v-if="tr.tenant_bills[0] && tr.tenant_bills[0].paymentStatus === 'Not Paid'">
                                     <!-- <vs-button  primary class="small">แก้ไขใบแจ้งหนี้</vs-button>   -->
-                                        <!-- to: internal link -->
-                                        <vs-select placeholder="เมนู" v-model="tr.tenant_bills[0].lastEvent" @change="selectMenu(tr.tenant_bills[0].lastEvent,tr)">
-                                            <vs-option label="เลือกเมนู" value="">
+                                    <!-- to: internal link -->
+                                    <vs-select placeholder="เมนู" v-model="tr.tenant_bills[0].lastEvent"
+                                        @change="selectMenu(tr.tenant_bills[0].lastEvent, tr)">
+                                        <vs-option label="เลือกเมนู" value="">
                                             เลือกเมนู
-                                            </vs-option>
-                                            <vs-option label="อัพเดทใบแจ้งหนี้" value="Update">
+                                        </vs-option>
+                                        <vs-option label="อัพเดทใบแจ้งหนี้" value="Update">
                                             อัพเดทใบแจ้งหนี้
-                                            </vs-option>
-                                            <vs-option label="ดูรายการใบแจ้งหนี้" value="View">
+                                        </vs-option>
+                                        <vs-option label="ดูรายการใบแจ้งหนี้" value="View">
                                             ดูรายการใบแจ้งหนี้
-                                            </vs-option>
-                                            <vs-option label="ชำระเงิน" value="Full Payment">
+                                        </vs-option>
+                                        <vs-option label="ชำระเงิน" value="Full Payment">
                                             ชำระเงิน
-                                            </vs-option>
-                                            <vs-option label="ชำระบางส่วน" value="Partial Payment">
+                                        </vs-option>
+                                        <vs-option label="ชำระบางส่วน" value="Partial Payment">
                                             ชำระบางส่วน
                                         </vs-option>
                                     </vs-select>
@@ -295,23 +297,24 @@
                                 <div v-else-if="tr.user_sign_contract === null && tr.tenant_bills[0]">
                                     <vs-button warn class="small">ผู้เช่าย้ายออก</vs-button>
                                 </div>
-                                <div  v-else-if="tr.user_sign_contract ">
+                                <div v-else-if="tr.user_sign_contract">
                                     <vs-button color="rgb(59,222,200)" class="small"
                                         @click="generateInvoice(tr.id)">สร้างใบแจ้งหนี้</vs-button>
                                 </div>
                                 <div v-else-if="tr.tenant_bills[0] && tr.tenant_bills[0].paymentStatus === 'Partial Paid'">
                                     <!-- <vs-button  primary class="small">แก้ไขใบแจ้งหนี้</vs-button>   -->
-                                        <!-- to: internal link -->
-                                    <vs-select placeholder="เมนู" v-model="tr.tenant_bills[0].lastEvent" @change="selectMenu(tr.tenant_bills[0].lastEvent,tr)">
-                                            <vs-option label="เลือกเมนู" value="">
+                                    <!-- to: internal link -->
+                                    <vs-select placeholder="เมนู" v-model="tr.tenant_bills[0].lastEvent"
+                                        @change="selectMenu(tr.tenant_bills[0].lastEvent, tr)">
+                                        <vs-option label="เลือกเมนู" value="">
                                             เลือกเมนู
-                                            </vs-option>
-                                            <vs-option label="ดูรายการใบแจ้งหนี้" value="View">
+                                        </vs-option>
+                                        <vs-option label="ดูรายการใบแจ้งหนี้" value="View">
                                             ดูรายการใบแจ้งหนี้
-                                            </vs-option>
-                                            <vs-option label="ชำระบางส่วน" value="Partial Payment">
+                                        </vs-option>
+                                        <vs-option label="ชำระบางส่วน" value="Partial Payment">
                                             ชำระบางส่วน
-                                            </vs-option>
+                                        </vs-option>
                                     </vs-select>
 
                                     <!--  Need to add option for select here -->
@@ -321,14 +324,16 @@
                                     <vs-button color="rgb(59,222,200)" class="small"
                                         @click="generateInvoice(tr.id)">สร้างใบแจ้งหนี้</vs-button>
                                 </div>
-                                <div v-else-if="tr.tenant_bills[0] && (tr.tenant_bills[0].paymentStatus === 'Paid' || tr.tenant_bills[0].paymentStatus === 'In Review Progress')">
-                                    <vs-select placeholder="เมนู" v-model="tr.tenant_bills[0].lastEvent" @change="selectMenu(tr.tenant_bills[0].lastEvent,tr)">
-                                            <vs-option label="เลือกเมนู" value="">
+                                <div
+                                    v-else-if="tr.tenant_bills[0] && (tr.tenant_bills[0].paymentStatus === 'Paid' || tr.tenant_bills[0].paymentStatus === 'In Review Progress')">
+                                    <vs-select placeholder="เมนู" v-model="tr.tenant_bills[0].lastEvent"
+                                        @change="selectMenu(tr.tenant_bills[0].lastEvent, tr)">
+                                        <vs-option label="เลือกเมนู" value="">
                                             เลือกเมนู
-                                            </vs-option>
-                                            <vs-option label="ดูรายการใบแจ้งหนี้" value="View">
+                                        </vs-option>
+                                        <vs-option label="ดูรายการใบแจ้งหนี้" value="View">
                                             ดูรายการใบแจ้งหนี้
-                                            </vs-option>
+                                        </vs-option>
                                     </vs-select>
                                 </div>
 
@@ -353,7 +358,10 @@
                         </vs-tr>
                     </template>
                 </vs-table>
-            </div>  <div><PDFgenerator ref="childComponentPDF"/></div>
+            </div>
+            <div>
+                <PDFgenerator ref="childComponentPDF" />
+            </div>
             <b-modal centered v-model="createFullpayment" size="l" hide-backdrop hide-header-close hide-header hide-footer
                 class="p-[-20px] text-custom">
                 <div>
@@ -397,9 +405,88 @@
                     <div class="mt-[14px]">
                         <div class="text-custom">ชื่อธนาคาร</div>
                         <div>
-                            <input
-                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
-                                v-model="fullPaymentForm.bankName" />
+                            <select placeholder="Select" v-model="fullPaymentForm.bankName"
+                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]">
+                                <option label="เลือก" value="0" disabled>
+                                    เลือก
+                                </option>
+                                <option label="ธนาคารกรุงเทพ" value="ธนาคารกรุงเทพ">
+                                    ธนาคารกรุงเทพ
+                                </option>
+                                <option label="ธนาคารกสิกรไทย" value="ธนาคารกสิกรไทย">
+                                    ธนาคารกสิกรไทย
+                                </option>
+                                <option label="ธนาคารกรุงไทย" value="ธนาคารกรุงไทย">
+                                    ธนาคารกรุงไทย
+                                </option>
+                                <option label="ธนาคารทหารไทย" value="ธนาคารทหารไทย">
+                                    ธนาคารทหารไทย
+                                </option>
+                                <option label="ธนาคารไทยพาณิชย์" value="ธนาคารไทยพาณิชย์">
+                                    ธนาคารไทยพาณิชย์
+                                </option>
+                                <option label="ธนาคารกรุงศรีอยุธยา" value="ธนาคารกรุงศรีอยุธยา">
+                                    ธนาคารกรุงศรีอยุธยา
+                                </option>
+                                <option label="ธนาคารเกียรตินาคิน" value="ธนาคารเกียรตินาคิน">
+                                    ธนาคารเกียรตินาคิน
+                                </option>
+                                <option label="ธนาคารซีไอเอ็มบีไทย" value="ธนาคารซีไอเอ็มบีไทย">
+                                    ธนาคารซีไอเอ็มบีไทย
+                                </option>
+                                <option label="ธนาคารทิสโก้" value="ธนาคารทิสโก้">
+                                    ธนาคารทิสโก้
+                                </option>
+                                <option label="ธนาคารธนชาต" value="ธนาคารธนชาต">
+                                    ธนาคารธนชาต
+                                </option>
+                                <option label="ธนาคารยูโอบี" value="ธนาคารยูโอบี">
+                                    ธนาคารยูโอบี
+                                </option>
+                                <option label="ธนาคารสแตนดาร์ดชาร์เตอร์ด" value="ธนาคารสแตนดาร์ดชาร์เตอร์ด">
+                                    ธนาคารสแตนดาร์ดชาร์เตอร์ด (ไทย)
+                                </option>
+                                <option label="ธนาคารไทยเครดิตเพื่อรายย่อย" value="ธนาคารไทยเครดิตเพื่อรายย่อย">
+                                    ธนาคารไทยเครดิตเพื่อรายย่อย
+                                </option>
+                                <option label="ธนาคารแลนด์แอนด์เฮาส์ " value="ธนาคารแลนด์แอนด์เฮาส์">
+                                    ธนาคารแลนด์ แอนด์ เฮาส์
+                                </option>
+                                <option label="ธนาคารไอซีบีซี" value="ธนาคารไอซีบีซี">
+                                    ธนาคารไอซีบีซี (ไทย)
+                                </option>
+                                <option label="ธนาคารพัฒนาวิสาหกิจขนาดกลางและขนาดย่อมแห่งประเทศไทย"
+                                    value="ธนาคารพัฒนาวิสาหกิจขนาดกลางและขนาดย่อมแห่งประเทศไทย">
+                                    ธนาคารพัฒนาวิสาหกิจขนาดกลางและขนาดย่อมแห่งประเทศไทย
+                                </option>
+                                <option label="ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร"
+                                    value="ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร">
+                                    ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร
+                                </option>
+                                <option label="ธนาคารเพื่อการส่งออกและนำเข้าแห่งประเทศไทย"
+                                    value="ธนาคารเพื่อการส่งออกและนำเข้าแห่งประเทศไทย">
+                                    ธนาคารเพื่อการส่งออกและนำเข้าแห่งประเทศไทย
+                                </option>
+                                <option label="ธนาคารออมสิน" value="ธนาคารออมสิน">
+                                    ธนาคารออมสิน
+                                </option>
+                                <option label="ธนาคารอาคารสงเคราะห์" value="ธนาคารอาคารสงเคราะห์">
+                                    ธนาคารอาคารสงเคราะห์
+                                </option>
+                                <option label="ธนาคารอิสลามแห่งประเทศไทย" value="ธนาคารอิสลามแห่งประเทศไทย">
+                                    ธนาคารอิสลามแห่งประเทศไทย
+                                </option>
+                                <option label="ธนาคารแห่งประเทศจีน" value="ธนาคารแห่งประเทศจีน">
+                                    ธนาคารแห่งประเทศจีน
+                                </option>
+                                <option label="ธนาคารซูมิโตโมมิตซุยทรัสต์" value="ธนาคารซูมิโตโมมิตซุยทรัสต์">
+                                    ธนาคารซูมิโตโม มิตซุย ทรัสต์ (ไทย)
+                                </option>
+                                <option label="ธนาคารฮ่องกงและเซี้ยงไฮ้แบงกิ้งคอร์ปอเรชั่น"
+                                    value="ธนาคารฮ่องกงและเซี้ยงไฮ้แบงกิ้งคอร์ปอเรชั่น">
+                                    ธนาคารฮ่องกงและเซี้ยงไฮ้แบงกิ้งคอร์ปอเรชั่น จำกัด
+                                </option>
+                            </select>
                         </div>
                     </div>
                     <div class="mt-[14px]">
@@ -447,9 +534,11 @@
                                     class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
                                     อัพโหลดรูปภาพ</div>
                             </label>
-                            <div v-if="this.fileFullPayment.name" class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                {{this.fileFullPayment.name}}</div>
-                            <div v-else class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            <div v-if="this.fileFullPayment.name"
+                                class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                                {{ this.fileFullPayment.name }}</div>
+                            <div v-else
+                                class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                 ยังไม่ได้เลือกไฟล์</div>
                         </div>
                     </div>
@@ -554,16 +643,19 @@
                     <div class="mt-[14px]">
                         <div class="text-custom">แนบหลักฐานการโอน</div>
                         <div class="mt-[4px] flex">
-                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="uploadPartialPayment"
-                                ref="PartialPayment" hidden @change="setUploadFilePayment()" type="file" />
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
+                                id="uploadPartialPayment" ref="PartialPayment" hidden @change="setUploadFilePayment()"
+                                type="file" />
                             <label for="uploadPartialPayment">
                                 <div
                                     class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
                                     อัพโหลดรูปภาพ</div>
                             </label>
-                            <div v-if="this.file.name" class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                {{this.file.name}}</div>
-                            <div v-else class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            <div v-if="this.file.name"
+                                class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                                {{ this.file.name }}</div>
+                            <div v-else
+                                class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                 ยังไม่ได้เลือกไฟล์</div>
                         </div>
                     </div>
@@ -582,7 +674,7 @@
                 </div>
             </b-modal>
         </div>
-      
+
     </div>
 </template>
 <script>
@@ -591,7 +683,7 @@ import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import download from 'downloadjs';
 import PDFgenerator from '@/views/payment/components/PDFgenerator'
 export default {
-    components:{PDFgenerator},
+    components: { PDFgenerator },
     data() {
         return {
             value: '',
@@ -643,34 +735,34 @@ export default {
     },
     created() {
         const loading = this.$vs.loading({})
-   
+
         setTimeout(() => {
             loading.close()
         }, 1000)
     },
-    mounted() {     
+    mounted() {
         this.selectedDate = new Date().toISOString().substr(0, 7), // Set the default to current month
         this.getfloor();
     },
     methods: {
         filterByDate() {
-            const dateStr =  this.selectedDate;
+            const dateStr = this.selectedDate;
             const [a, b] = dateStr.split('-');
             this.filter.selectedMonth = b
             this.filter.selectedYear = a
-            this.getRoomBill(this.filter.floor,0,this.filter.selectedMonth, this.filter.selectedYear);
+            this.getRoomBill(this.filter.floor, 0, this.filter.selectedMonth, this.filter.selectedYear);
         },
         routeTo(roomID) {
             this.$router.push({
                 path: `/payment-detail?roomID=${roomID}`,
             })
         },
-        selectMenu(menu_option,roomdata){
-            if(menu_option === 'Full Payment') {
+        selectMenu(menu_option, roomdata) {
+            if (menu_option === 'Full Payment') {
                 //make this.form = inputfrom function
                 // ex. this.invoiceName = roomdata.attributes.invoiceName
-                
-                console.log("Data from Select",roomdata )
+
+                console.log("Data from Select", roomdata)
                 this.fullPaymentForm.invoiceName = roomdata.tenant_bills[0].invoiceNumber
                 this.fullPaymentForm.invoiceID = roomdata.tenant_bills[0].id
                 this.fullPaymentForm.roomName = roomdata.RoomNumber
@@ -679,7 +771,7 @@ export default {
                 this.fullPaymentForm.building = roomdata.room_building.id
                 this.createFullpayment = true
             }
-            else if(menu_option === 'Partial Payment'){
+            else if (menu_option === 'Partial Payment') {
                 this.partialPaymentForm.invoiceName = roomdata.tenant_bills[0].invoiceNumber
                 this.partialPaymentForm.invoiceID = roomdata.tenant_bills[0].id
                 this.partialPaymentForm.roomName = roomdata.RoomNumber
@@ -687,31 +779,31 @@ export default {
                 this.partialPaymentForm.building = roomdata.room_building.id
                 this.createPartialPayment = true
             }
-            else if(menu_option === 'View'){
-               this.routeTo(roomdata.id)
+            else if (menu_option === 'View') {
+                this.routeTo(roomdata.id)
             }
-            else if(menu_option === 'Update'){
+            else if (menu_option === 'Update') {
                 this.reGenerateInvoice(roomdata.tenant_bills[0].id)
             }
         },
-        reGenerateInvoice(invoiceID){
-            console.log("Invoice",invoiceID)
-            console.log("building",this.$store.state.building)
+        reGenerateInvoice(invoiceID) {
+            console.log("Invoice", invoiceID)
+            console.log("building", this.$store.state.building)
             const currentdate = new Date()
             const month = currentdate.getMonth()
             const year = currentdate.getFullYear()
 
             axios.get(`https://api.resguru.app/api/regenerateinvoice?buildingid=${this.$store.state.building}&invoiceid=${invoiceID}&month=${month}&year=${year}`)
-                .then( (response) =>{
-                        // console.log("reGenerateInvoice",response.data.meta.message)
-                        // this.$showNotification('#3Axw89CB', response.data.meta.message)
-                    })
-                .catch(error => {
-                const errorMessage = error.message ? error.message : 'Error updating information';
-                this.$showNotification('danger', errorMessage); 
-                console.log(error)
+                .then((response) => {
+                    // console.log("reGenerateInvoice",response.data.meta.message)
+                    // this.$showNotification('#3Axw89CB', response.data.meta.message)
                 })
-                .finally(()=>{
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                    console.log(error)
+                })
+                .finally(() => {
                     this.getfloor();
                 })
         },
@@ -725,44 +817,46 @@ export default {
                     amount: this.fullPaymentForm.amount,
                     paymentDate: this.fullPaymentForm.paymentDate,
                     paymentTime: this.fullPaymentForm.paymentTime,
-                    building:  this.fullPaymentForm.building 
+                    building: this.fullPaymentForm.building,
+                    room: this.$route.query.roomID
                 }
             }).then(
-                    (resp) => {
-                        console.log("Response in create", resp)
-                        console.log("Response Evidence ID", resp.data.data.id)
-                        axios.put("https://api.resguru.app/api/tenant-bills/" + this.fullPaymentForm.invoiceID, {
-                            data: {
-                                paymentStatus: "Waiting Review"
-                            }
-                        }).then((res) => { console.log("Response in Edit Invoice", res) })
-
-                        if (this.fileFullPayment.length != 0) {
-                            let formData = new FormData();
-                            formData.append("files", this.fileFullPayment);
-                            formData.append("refId", String(resp.data.data.id));
-                            formData.append("ref", "api::tenant-evidence-payment.tenant-evidence-payment");
-                            formData.append("field", "evidence");
-
-                            axios.post("https://api.resguru.app/api/upload", formData, {
-                                headers: {
-                                    "Content-Type": "multipart/form-data",
-                                },
-                            }).then((result) => { console.log("Upload file", result) })
-                                .catch((error) => {
-                                    console.log(error);
-                                })
+                (resp) => {
+                    console.log("Response in create", resp)
+                    console.log("Response Evidence ID", resp.data.data.id)
+                    axios.put("https://api.resguru.app/api/tenant-bills/" + this.fullPaymentForm.invoiceID, {
+                        data: {
+                            paymentStatus: "Waiting Review"
                         }
-                       
+                    }).then((res) => { console.log("Response in Edit Invoice", res) })
+
+                    if (this.fileFullPayment.length != 0) {
+                        let formData = new FormData();
+                        formData.append("files", this.fileFullPayment);
+                        formData.append("refId", String(resp.data.data.id));
+                        formData.append("ref", "api::tenant-evidence-payment.tenant-evidence-payment");
+                        formData.append("field", "evidence");
+
+                        axios.post("https://api.resguru.app/api/upload", formData, {
+                            headers: {
+                                "Content-Type": "multipart/form-data",
+                            },
+                        }).then((result) => { console.log("Upload file", result) })
+                            .catch((error) => {
+                                console.log(error);
+                            })
                     }
-                )
+
+                }
+            )
                 .catch(error => {
-                const errorMessage = error.message ? error.message : 'Error updating information';
-                this.$showNotification('danger', errorMessage); 
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
                 })
-                .finally(()=>{
+                .finally(() => {
+                    this.getfloor();
                     this.$showNotification('#3A89CB', 'Update Service Success')
-                 })
+                })
             this.createFullpayment = false
 
         },
@@ -776,45 +870,50 @@ export default {
                     amount: this.partialPaymentForm.amount,
                     paymentDate: this.partialPaymentForm.paymentDate,
                     paymentTime: this.partialPaymentForm.paymentTime,
-                    building:  this.partialPaymentForm.building
+                    building: this.partialPaymentForm.building,
+                    room: this.$route.query.roomID
                 }
             }).then(
-                    (resp) => {
-                        console.log("Response in create", resp)
-                        console.log("Response Evidence ID", resp.data.data.id)
-                        axios.put("https://api.resguru.app/api/tenant-bills/" + this.partialPaymentForm.invoiceID, {
-                            data: {
-                                paymentStatus: "Waiting Review"
-                            }
-                        }).then((res) => { console.log("Response in Edit Invoice", res) })
-
-                        if (this.file.length != 0) {
-                            let formData = new FormData();
-                            formData.append("files", this.file);
-                            formData.append("refId", String(resp.data.data.id));
-                            formData.append("ref", "api::tenant-evidence-payment.tenant-evidence-payment");
-                            formData.append("field", "evidence");
-
-                            axios.post("https://api.resguru.app/api/upload", formData, {
-                                headers: {
-                                    "Content-Type": "multipart/form-data",
-                                },
-                            }).then((result) => { console.log("Upload file", result) })
-                                .catch((error) => {
-                                    console.log(error);
-                                })
+                (resp) => {
+                    console.log("Response in create", resp)
+                    console.log("Response Evidence ID", resp.data.data.id)
+                    axios.put("https://api.resguru.app/api/tenant-bills/" + this.partialPaymentForm.invoiceID, {
+                        data: {
+                            paymentStatus: "Waiting Review"
                         }
-                        this.$showNotification('#3A89CB', 'Update Service Success')
+                    }).then((res) => { console.log("Response in Edit Invoice", res) })
+
+                    if (this.file.length != 0) {
+                        let formData = new FormData();
+                        formData.append("files", this.file);
+                        formData.append("refId", String(resp.data.data.id));
+                        formData.append("ref", "api::tenant-evidence-payment.tenant-evidence-payment");
+                        formData.append("field", "evidence");
+
+                        axios.post("https://api.resguru.app/api/upload", formData, {
+                            headers: {
+                                "Content-Type": "multipart/form-data",
+                            },
+                        }).then((result) => { console.log("Upload file", result) })
+                            .catch((error) => {
+                                console.log(error);
+                            })
                     }
-                )
+                    this.$showNotification('#3A89CB', 'Update Service Success')
+                }
+            )
+                .finally(() => {
+                    this.getfloor();
+                    this.$showNotification('#3A89CB', 'Create Payment Success')
+                })
                 .catch(error => {
                     const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage); 
-                    })
+                    this.$showNotification('danger', errorMessage);
+                })
             this.createPartialPayment = false
-          
+
         },
-        getRoomBill(id,code,m,y) {
+        getRoomBill(id, code, m, y) {
             // console.log("this.filter.floor",this.filter.floor)
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
@@ -824,12 +923,12 @@ export default {
                     console.log("Return from getRoomBill()", resp.data);
                     if (code == 8) {
                         this.payments = resp.data.filter(item =>
-                                item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase()),
-                            );
-                        }
-                        else {
-                            this.payments = resp.data
-                        }
+                            item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase()),
+                        );
+                    }
+                    else {
+                        this.payments = resp.data
+                    }
                     // this.payments = resp.data
                 }).finally(() => {
                     loading.close()
@@ -858,17 +957,21 @@ export default {
             const currentdate = new Date()
             const month = currentdate.getMonth() + 1
             const year = currentdate.getFullYear()
-
+            // console.log("11111",this.$store.state.building)
+            // console.log("22222", roomid)
+            // console.log("22222", month)
+            // console.log("22222", year)
+            // console.log("22222", this.$store.state)
             axios.get(`https://api.resguru.app/api/generateInvoice?buildingid=${this.$store.state.building}&roomid=${roomid}&month=${month}&year=${year}`)
-                .then( (response) =>{
-                        this.$showNotification('#3A89CB', response.data.meta.message)
-                    })
-                .finally(() =>{
-                        this.filterByDate()
+                .then((response) => {
+                    this.$showNotification('#3A89CB', response.data.meta.message)
+                })
+                .finally(() => {
+                    this.filterByDate()
                 })
                 .catch(error => {
-                const errorMessage = error.message ? error.message : 'Error updating information';
-                this.$showNotification('danger', errorMessage); 
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
                 })
         },
         setUploadFilePayment() {
@@ -877,21 +980,21 @@ export default {
         setUploadFileFullPayment() {
             this.fileFullPayment = this.$refs.FullPayment.files[0]
         },
-        async PDFPrint(tr){
+        async PDFPrint(tr) {
             this.$refs.childComponentPDF.generatePDF(tr)
         },
         filterData() {
-            this.payments =this.payments.filter(item =>
+            this.payments = this.payments.filter(item =>
                 item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase()),
             );
             if (this.filter.search == '') {
-                this.getRoomBill(this.filter.floor,0,this.filter.selectedMonth, this.filter.selectedYear)
+                this.getRoomBill(this.filter.floor, 0, this.filter.selectedMonth, this.filter.selectedYear)
             }
         },
         handleKeyDown(event) {
             // Check if the pressed key is the backspace key
             if (event.keyCode === 8) {
-                this.getRoomBill(this.filter.floor,8,this.filter.selectedMonth, this.filter.selectedYear)
+                this.getRoomBill(this.filter.floor, 8, this.filter.selectedMonth, this.filter.selectedYear)
                 // Perform your desired action here when backspace is pressed
             }
         },
