@@ -51,7 +51,7 @@
                             </g>
                         </svg>
                     </div>
-                    <div class="flex justify-center mt-[4px]">เพิ่มผู้เช่า</div>
+                    <div class="flex justify-center mt-[4px]">เพิ่มผู้เช่า (จอง)</div>
                 </div>
             </div>
         </div>

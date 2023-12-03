@@ -96,10 +96,10 @@
                                                     </div>
                                                     <div
                                                         class="flex flex-col items-start justify-start ml-[8px] text-[#003765] text-custom">
-                                                        <div class="font-bold">{{ data.name }}</div>
+                                                        <div class="font-bold">{{ data.attributes.toUser.data.attributes.firstName }}</div>
                                                         <div class="">
                                                             <div></div>
-                                                            <div>{{ data.desc }}</div>
+                                                            <div>{{ data.attributes.message }}</div>
                                                         </div>
                                                         <!-- <div v-if="data.type == 'connect'" class="flex mt-[4px]">
                                                             <div
@@ -111,7 +111,7 @@
                                                         </div> -->
                                                     </div>
                                                 </div>
-                                                <div class="text-[#8396A6] text-[10px] text-custom">10 นาที</div>
+                                                <div class="text-[#8396A6] text-[10px] text-custom">{{ data.attributes.createdAt }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -440,26 +440,7 @@ export default {
             sidebar: false,
             profile: true,
             noti_popup: false,
-            data_noti: [
-                {
-                    img: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                    name: 'ชัชพล บุญพันธุ์',
-                    type: 'connect',
-                    desc: 'ได้ร้องขอเชื่อมต่อหอพัก ห้อง 101',
-                },
-                {
-                    img: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                    name: 'ชัชพล บุญพันธุ์',
-                    type: 'payment',
-                    desc: 'จ่ายค่าเช่าจำนวน 3,500 บาท',
-                },
-                {
-                    img: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500',
-                    name: 'ชัชพล บุญพันธุ์',
-                    type: 'connect',
-                    desc: 'ห้อง 205 แจ้งซ่อม service',
-                },
-            ]
+            data_noti: []
         }
 
     },
@@ -479,6 +460,14 @@ export default {
         },
         reload() {
             window.location.reload()
+        },
+        async getNoti(){
+            fetch(`https://api.resguru.app/api/notification-logs?filters[toUser][id][$eq]=${this.$store.state.userInfo.user.id}&populate=*&sort[0]=id:desc`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getNoti()", resp.data);
+                    this.data_noti = resp.data
+                })
         },
         async logoutTo() {
             await this.clearLocalDtorage()
