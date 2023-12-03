@@ -458,12 +458,18 @@
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             :disabled="room_detail_create.check_user == true"
                                             v-model="room_detail_create.name" required />
+                                            <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                            {{ errorFieldMessage }}
+                                            </div>
                                     </div>
                                     <div class="col-span-3  ml-[8px]">
                                         <div>สกุล</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             :disabled="room_detail_create.check_user == true"
                                             v-model="room_detail_create.last_name" required />
+                                            <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                            {{ errorFieldMessage }}
+                                            </div>
                                     </div>
                                     <div class="ml-[8px]">
                                         <div>ชื่อเล่น</div>
@@ -488,6 +494,9 @@
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="room_detail_create.id_card" required
                                         :disabled="room_detail_create.check_user == true" />
+                                        <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                            {{ errorFieldMessage }}
+                                        </div>
                                 </div>
                             </div>
                         </div>
@@ -500,6 +509,9 @@
                                         class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
                                         v-model="room_detail_create.email" required
                                         :disabled="room_detail_create.check_user == true" />
+                                        <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                            {{ errorFieldMessage }}
+                                        </div>
                                 </div>
                                 <div class="col-span-3 ml-[8px]">
                                     <div>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
@@ -530,12 +542,18 @@
                                     <input type="date"
                                         class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
                                         v-model="room_detail.date_sign" required />
+                                        <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                            {{ errorFieldMessage }}
+                                        </div>
                                 </div>
                                 <div class="col-span-4  ml-[8px]">
                                     <div>วันสิ้นสุดสัญญา</div>
                                     <input type="date"
                                         class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
                                         v-model="room_detail.exp_date" required />
+                                        <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                            {{ errorFieldMessage }}
+                                        </div>
                                 </div>
                                 <div class="col-span-4 mt-[16px]">
                                     <div>ประเภทห้องพัก</div>
@@ -545,6 +563,9 @@
                                             {{ type.attributes.roomTypeName }}
                                         </option>
                                     </select>
+                                    <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                            {{ errorFieldMessage }}
+                                    </div>
                                 </div>
                                 <div class="col-span-4  ml-[8px] mt-[16px]">
                                     <div>ระยะเวลาสัญญา (เดือน)</div>
@@ -560,6 +581,9 @@
                                             12
                                         </option>
                                     </select>
+                                    <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                            {{ errorFieldMessage }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -570,11 +594,17 @@
                                     <div>ค่าประกันห้อง</div>
                                     <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="room_detail_create.roomInsuranceDeposit" required  />
+                                        <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                            {{ errorFieldMessage }}
+                                        </div>
                                 </div>
                                 <div class="col-span-4 ml-[8px]">
                                     <div>วางเงินมัดจำ (บาท)</div>
                                     <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="room_detail_create.room_deposit" required />
+                                        <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                            {{ errorFieldMessage }}
+                                        </div>
                                 </div>
                                 <!-- <div class="col-span-4  ml-[8px]">
                                     <div>เลือกห้อง</div>
@@ -657,6 +687,7 @@ export default {
             },
             room_type: [],
             floorRoom: [],
+            errorFieldMessage: ''
         }
 
     },
@@ -688,6 +719,24 @@ export default {
             this.$router.push({
                 path: path,
             })
+        },
+        validateField(){
+            if(      
+                this.room_detail_create.name == '' || 
+                this.room_detail_create.last_name == '' || 
+                this.room_detail_create.email == '' || 
+                this.room_detail_create.id_card == '' || 
+                this.room_detail_create.date_sign == '' || 
+                this.room_detail_create.exp_date == '' || 
+                this.room_detail_create.roomInsurance_deposit == '' || 
+                this.room_detail_create.contract_duration == '' || 
+                this.room_detail_create.room_deposit == '' || 
+                this.room_detail_create.type_room == '' 
+              ){
+                this.errorFieldMessage = "Please fill this form"
+            } else {
+                this.errorFieldMessage = ''
+            }
         },
         getRentalContract(code) {
             this.contract = []
@@ -817,86 +866,91 @@ export default {
             this.room_detail.exp_date = ''
         },
         submitSign() {
-            if (this.room_detail_create.check_user == true) {
-                const loading = this.$vs.loading()
-                axios.post('https://api.resguru.app/api' + '/user-sign-contracts', {
-                    data: {
-                        room: this.room_detail_create.id_room,
-                        contractStatus: "rent",
-                        users_permissions_user: this.room_detail_create.id,
-                        checkInDate: this.room_detail.date_sign,
-                        contractEndDate: this.room_detail.exp_date,
-                        roomDeposit: parseInt(this.room_detail_create.room_deposit),
-                        roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
-                        contractDuration: parseInt(this.room_detail_create.contract_duration)
-                    }
-                }).then((resp) => {
-                    axios.put('https://api.resguru.app/api' + '/rooms/' + this.room_detail_create.id_room, {
-                        data: {
-                            // user_sign_contract: resp.data.id,
-                            room_type: this.room_detail_create.type_room,
-                        }
-                    })
-                }).catch((err) => {
-                    loading.close()
-                    if (err.response?.data?.error?.message) {
-                        this.openNotificationRenralPage('top-right', 'danger', err.response?.data?.error?.message, 6000)
-                    };
+            this.validateField()
+            if(this.errorFieldMessage == ''){
+                        
+                        if (this.room_detail_create.check_user == true) {
+                            const loading = this.$vs.loading()
+                            axios.post('https://api.resguru.app/api' + '/user-sign-contracts', {
+                                data: {
+                                    room: this.room_detail_create.id_room,
+                                    contractStatus: "rent",
+                                    users_permissions_user: this.room_detail_create.id,
+                                    checkInDate: this.room_detail.date_sign,
+                                    contractEndDate: this.room_detail.exp_date,
+                                    roomDeposit: parseInt(this.room_detail_create.room_deposit),
+                                    roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
+                                    contractDuration: parseInt(this.room_detail_create.contract_duration)
+                                }
+                            }).then((resp) => {
+                                axios.put('https://api.resguru.app/api' + '/rooms/' + this.room_detail_create.id_room, {
+                                    data: {
+                                        // user_sign_contract: resp.data.id,
+                                        room_type: this.room_detail_create.type_room,
+                                    }
+                                })
+                            }).catch((err) => {
+                                loading.close()
+                                if (err.response?.data?.error?.message) {
+                                    this.openNotificationRenralPage('top-right', 'danger', err.response?.data?.error?.message, 6000)
+                                };
 
-                }).finally(() => {
-                    loading.close()
-                    this.create = false
-                    this.getRentalContract()
-                })
-            }
-            else {
-                const loading = this.$vs.loading()
-                axios.post('https://api.resguru.app/api' + '/users', {
-                    "username": this.room_detail_create.email,
-                    "email": this.room_detail_create.email,
-                    "firstName": this.room_detail_create.name,
-                    "lastName": this.room_detail_create.last_name,
-                    "nickName": this.room_detail_create.nick_name,
-                    "role": 4,
-                    "phone": this.room_detail_create.phone,
-                    "email": this.room_detail_create.email,
-                    "idCard": this.room_detail_create.id_card,
-                    "contactAddress": this.room_detail_create.address,
-                    "sex": this.room_detail_create.sex,
-                    // "dateOfBirth": this.room_detail_create.birth,
-                    "password": this.room_detail_create.id_card,
-                    "building": this.$store.state.building
-                }).then((resp) => {
-                    axios.post('https://api.resguru.app/api' + '/user-sign-contracts', {
-                        data: {
-                            room: this.room_detail_create.id_room,
-                            contractStatus: "rent",
-                            users_permissions_user: resp.data.id,
-                            checkInDate: this.room_detail.date_sign,
-                            contractEndDate: this.room_detail.exp_date,
-                            roomDeposit: parseInt(this.room_detail_create.room_deposit),
-                            roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
-                            contractDuration: parseInt(this.room_detail_create.contract_duration)
+                            }).finally(() => {
+                                loading.close()
+                                this.create = false
+                                this.getRentalContract()
+                            })
                         }
-                    }).then((resp) => {
-                        axios.put('https://api.resguru.app/api' + '/rooms/' + this.room_detail_create.id_room, {
-                            data: {
-                                // user_sign_contract: resp.data.id,
-                                room_type: this.room_detail_create.type_room,
-                            }
-                        })
-                    }).finally(() => {
-                        loading.close()
-                        this.create = false
-                        this.getRentalContract()
-                    })
-                }).catch((err) => {
-                    loading.close()
-                    if (err.response?.data?.error?.message) {
-                        this.openNotificationRenralPage('top-right', 'danger', err.response?.data?.error?.message, 6000)
-                    };
+                        else {
+                            const loading = this.$vs.loading()
+                            axios.post('https://api.resguru.app/api' + '/users', {
+                                "username": this.room_detail_create.email,
+                                "email": this.room_detail_create.email,
+                                "firstName": this.room_detail_create.name,
+                                "lastName": this.room_detail_create.last_name,
+                                "nickName": this.room_detail_create.nick_name,
+                                "role": 4,
+                                "phone": this.room_detail_create.phone,
+                                "email": this.room_detail_create.email,
+                                "idCard": this.room_detail_create.id_card,
+                                "contactAddress": this.room_detail_create.address,
+                                "sex": this.room_detail_create.sex,
+                                // "dateOfBirth": this.room_detail_create.birth,
+                                "password": this.room_detail_create.id_card,
+                                "building": this.$store.state.building
+                            }).then((resp) => {
+                                axios.post('https://api.resguru.app/api' + '/user-sign-contracts', {
+                                    data: {
+                                        room: this.room_detail_create.id_room,
+                                        contractStatus: "rent",
+                                        users_permissions_user: resp.data.id,
+                                        checkInDate: this.room_detail.date_sign,
+                                        contractEndDate: this.room_detail.exp_date,
+                                        roomDeposit: parseInt(this.room_detail_create.room_deposit),
+                                        roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
+                                        contractDuration: parseInt(this.room_detail_create.contract_duration)
+                                    }
+                                }).then((resp) => {
+                                    axios.put('https://api.resguru.app/api' + '/rooms/' + this.room_detail_create.id_room, {
+                                        data: {
+                                            // user_sign_contract: resp.data.id,
+                                            room_type: this.room_detail_create.type_room,
+                                        }
+                                    })
+                                }).finally(() => {
+                                    loading.close()
+                                    this.create = false
+                                    this.getRentalContract()
+                                })
+                            }).catch((err) => {
+                                loading.close()
+                                if (err.response?.data?.error?.message) {
+                                    this.openNotificationRenralPage('top-right', 'danger', err.response?.data?.error?.message, 6000)
+                                };
 
-                })
+                            })
+                        }
+                            
             }
         },
         filterData() {
