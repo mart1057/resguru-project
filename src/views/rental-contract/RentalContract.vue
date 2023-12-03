@@ -148,7 +148,7 @@
                             <div class="flex">
                                 <div class="h-[32px] pr-[8px] pl-[8px]   cursor-pointer   rounded-[12px]"
                                     :class="data.user_sign_contract?.contractStatus == null ? 'bg-[#165D98]' : data.user_sign_contract?.contractStatus == 'rent' ? 'bg-[#003765]' : 'bg-[#165D98]'"
-                                    @click="data.user_sign_contract?.contractStatus == null ? create_sign(data.id, data.RoomNumber) : data.user_sign_contract?.contractStatus == 'reserved' ? create_sign(data.id) : getDetailRentalContract(data.user_sign_contract.id)">
+                                    @click="data.user_sign_contract?.contractStatus == null ? create_sign(data.id, data.RoomNumber) : data.user_sign_contract?.contractStatus == 'reserved' ? create_sign(data.id,data.RoomNumber,'reserved',data.user_sign_contract.users_permissions_user?.idCard) : getDetailRentalContract(data.user_sign_contract.id)">
                                     <div class="flex items-center h-[100%]">
                                         <div class="flex justify-center items-center">
                                             <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
@@ -421,7 +421,7 @@
                                         <vs-radio v-model="room_detail_create.check_user" color="#003765" :val="true">
                                             ผู้เช่าในระบบ
                                         </vs-radio>
-                                        <vs-radio v-model="room_detail_create.check_user" color="#003765" :val="false">
+                                        <vs-radio v-model="room_detail_create.check_user" color="#003765" :val="false" v-if="check_rent != 'reserved'">
                                             ผู้เช่าใหม่
                                         </vs-radio>
                                     </div>
@@ -635,6 +635,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
+            check_rent: '',
             create_room_number: '',
             detail: false,
             create: false,
@@ -841,12 +842,13 @@ export default {
 
                 })
         },
-        create_sign(id_room, number) {
+        create_sign(id_room, number,status,idCard) {
+            this.check_rent = status
             this.getRoomType()
             this.create = true
             this.create_room_number = number
             this.id_user = ''
-            this.filter.Id_card = ''
+            this.filter.Id_card = idCard
             this.room_detail_create.id = ''
             this.room_detail_create.name = ''
             this.room_detail_create.last_name = ''
@@ -864,6 +866,9 @@ export default {
             this.room_detail_create.type_room = ''
             this.room_detail.date_sign = ''
             this.room_detail.exp_date = ''
+            if(idCard){
+                this.getUserDetail(idCard)
+            }
         },
         submitSign() {
             this.validateField()
