@@ -126,7 +126,8 @@
         </div>
         <div class="mt-[14px] bg-[white] rounded-[12px] p-[24px]">
             <div class="font-bold text-[18px]">ประวัติการจ่ายค่าเช่า</div>
-            <div class="flex justify-start items-center rounded-[12px] mt-[14px]">
+            <div class="flex">
+            <div class="flex justify-start items-center rounded-[12px] mt-[14px] col-md-6">
                 <div class="bg-[#F3F7FA] rounded-[12px]">
                     <div class="flex justify-start items-center">
                         <div @click="tab = 1" class="cursor-pointer "
@@ -189,10 +190,24 @@
                                 <div class="ml-[4px] flex items-center">ใบเสร็จรับเงิน</div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
+            <div class="flex justify-end items-center rounded-[12px] mt-[14px] col-md-6">
+                <vs-button
+                    class ="!float-right"
+                    id="createPaymentButton"
+                    :active="active == 1"
+                    @click="selectMenu('Partial Payment',userInvoice[0])"
+                >
+                    Create New Payment
+                </vs-button>
+            </div>
+        </div>
+
+            
+
+                
             <div class="w-[100%] h-[1px]  mt-[24px] mb-[24px] bg-gray-200 border-0 dark:bg-gray-700"></div>
             <div v-if="selected.length > 0" @click="PDFPrint()"
                 class="h-[36px] flex rounded-[12px] mt-[12px] cursor-pointer">
@@ -215,10 +230,10 @@
                 <vs-table v-model="selected">
                     <template #thead>
                         <vs-tr>
-                            <vs-th>
+                            <!-- <vs-th>
                                 <vs-checkbox :indeterminate="selected.length == users.length" v-model="allCheck"
                                     @change="selected = $vs.checkAll(selected, users)" />
-                            </vs-th>
+                            </vs-th> -->
                             <vs-th>
                                 หมายเลขใบแจ้งหนี้
                             </vs-th>
@@ -238,6 +253,9 @@
                                 ค่าบริการอื่น ๆ
                             </vs-th>
                             <vs-th>
+                                Vat
+                            </vs-th>
+                            <vs-th>
                                 ยอดรวม
                             </vs-th>
                             <vs-th>
@@ -250,7 +268,7 @@
                                 สถานะ
                             </vs-th>
                             <vs-th>
-                                Event/Action
+                                Action
                             </vs-th>
                             <vs-th>
 
@@ -259,32 +277,30 @@
                     </template>
                     <template #tbody>
                         <vs-tr :key="i" v-for="(tr, i) in userInvoice" :data="tr" :is-selected="!!selected.includes(tr)">
-                            <vs-td checkbox>
+                            <!-- <vs-td checkbox>
                                 <vs-checkbox :val="tr" v-model="selected" />
-                            </vs-td>
+                            </vs-td> -->
                             <vs-td>
                                 {{ tr.attributes.invoiceNumber }}
                             </vs-td>
                             <vs-td>
                                 <div
                                     v-if="tr.attributes.paymentStatus === 'Paid' || tr.attributes.paymentStatus === 'Partial Paid' || tr.attributes.paymentStatus === 'Waiting Review'">
-                                    <vs-input disabled v-model="tr.attributes.roomPrice"
-                                        @change="updateRoomPriceInvoice(tr.id, tr.attributes.roomPrice)" />
+                                    <vs-input disabled v-model="tr.attributes.roomPrice" />
                                 </div>
                                 <div v-else>
                                     <vs-input v-model="tr.attributes.roomPrice"
-                                        @change="updateRoomPriceInvoice(tr.id, tr.attributes.roomPrice)" />
+                                        @change="activeSaveButton(tr.id)" />
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div
                                     v-if="tr.attributes.paymentStatus === 'Paid' || tr.attributes.paymentStatus === 'Partial Paid' || tr.attributes.paymentStatus === 'Waiting Review'">
-                                    <vs-input disabled v-model="tr.attributes.waterPrice"
-                                        @change="updateWaterPriceInvoice(tr.id, tr.attributes.waterPrice)" />
+                                    <vs-input disabled v-model="tr.attributes.waterPrice"/>
                                 </div>
                                 <div v-else>
                                     <vs-input v-model="tr.attributes.waterPrice"
-                                        @change="updateWaterPriceInvoice(tr.id, tr.attributes.waterPrice)" />
+                                        @change="activeSaveButton(tr.id)" />
                                 </div>
 
                             </vs-td>
@@ -292,13 +308,12 @@
                                 <div
                                     v-if="tr.attributes.paymentStatus === 'Paid' || tr.attributes.paymentStatus === 'Partial Paid' || tr.attributes.paymentStatus === 'Waiting Review'">
 
-                                    <vs-input disabled v-model="tr.attributes.electricPrice"
-                                        @change="updateElecPriceInvoice(tr.id, tr.attributes.electricPrice)" />
+                                    <vs-input disabled v-model="tr.attributes.electricPrice"/>
                                 </div>
                                 <div v-else>
 
                                     <vs-input v-model="tr.attributes.electricPrice"
-                                        @change="updateElecPriceInvoice(tr.id, tr.attributes.electricPrice)" />
+                                        @change="activeSaveButton(tr.id)" />
                                 </div>
 
                             </vs-td>
@@ -306,13 +321,12 @@
                                 <div
                                     v-if="tr.attributes.paymentStatus === 'Paid' || tr.attributes.paymentStatus === 'Partial Paid' || tr.attributes.paymentStatus === 'Waiting Review'">
 
-                                    <vs-input disabled v-model="tr.attributes.communalPrice"
-                                        @change="updateCommunualPriceInvoice(tr.id, tr.attributes.communalPrice)" />
+                                    <vs-input disabled v-model="tr.attributes.communalPrice"/>
                                 </div>
                                 <div v-else>
 
                                     <vs-input v-model="tr.attributes.communalPrice"
-                                        @change="updateCommunualPriceInvoice(tr.id, tr.attributes.communalPrice)" />
+                                        @change="activeSaveButton(tr.id)" />
                                 </div>
 
                             </vs-td>
@@ -320,13 +334,24 @@
                                 <div
                                     v-if="tr.attributes.paymentStatus === 'Paid' || tr.attributes.paymentStatus === 'Partial Paid' || tr.attributes.paymentStatus === 'Waiting Review'">
 
-                                    <vs-input disabled v-model="tr.attributes.otherPrice"
-                                        @change="updateOtherInvoice(tr.id, tr.attributes.otherPrice)" />
+                                    <vs-input disabled v-model="tr.attributes.otherPrice"/>
                                 </div>
                                 <div v-else>
 
                                     <vs-input v-model="tr.attributes.otherPrice"
-                                        @change="updateOtherInvoice(tr.id, tr.attributes.otherPrice)" />
+                                        @change="activeSaveButton(tr.id)" />
+                                </div>
+                            </vs-td>
+                            <vs-td>
+                                <div
+                                    v-if="tr.attributes.paymentStatus === 'Paid' || tr.attributes.paymentStatus === 'Partial Paid' || tr.attributes.paymentStatus === 'Waiting Review'">
+
+                                    <vs-input disabled v-model="tr.attributes.vat"/>
+                                </div>
+                                <div v-else>
+
+                                    <vs-input v-model="tr.attributes.vat"
+                                        @change="activeSaveButton(tr.id)" />
                                 </div>
                             </vs-td>
                             <vs-td>
@@ -348,18 +373,22 @@
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <vs-select
+                                <vs-button
+                                    :id="'saveButton' + tr.id"
+                                    disabled
+                                    :active="active == 1"
+                                    @click="updateRoomInvoice(tr)"
+                                >
+                                    Save
+                                </vs-button>
+                                <!-- <vs-select
                                     v-if="tr.attributes.paymentStatus === 'Paid' || tr.attributes.paymentStatus === 'Partial Paid' || tr.attributes.paymentStatus === 'Waiting Review'"
                                     placeholder="เมนู" v-model="tr.attributes.lastEvent"
                                     @change="selectMenu(tr.attributes.lastEvent, tr)">
                                     <vs-option label="เลือกเมนู" value="Select Menu">
                                         เลือกเมนู
                                     </vs-option>
-                                    <!-- <vs-option label="อัพเดท" value="Update">
-                                        อัพเดท
-                                    </vs-option>  -->
                                 </vs-select>
-                                <!-- <vs-button @click="createReceipt(tr)">สร้างใบเสร็จ</vs-button> -->
                                 <vs-select v-else placeholder="เมนู" v-model="tr.attributes.lastEvent"
                                     @change="selectMenu(tr.attributes.lastEvent, tr)">
                                     <vs-option label="เลือกเมนู" value="Select Menu">
@@ -374,7 +403,7 @@
                                     <vs-option label="ชำระบางส่วน" value="Partial Payment">
                                         ชำระบางส่วน
                                     </vs-option>
-                                </vs-select>
+                                </vs-select> -->
                             </vs-td>
                             <vs-td>
 
@@ -399,10 +428,10 @@
                 <vs-table v-model="selected">
                     <template #thead>
                         <vs-tr>
-                            <vs-th>
+                            <!-- <vs-th>
                                 <vs-checkbox :indeterminate="selected.length == users.length" v-model="allCheck"
                                     @change="selected = $vs.checkAll(selected, users)" />
-                            </vs-th>
+                            </vs-th> -->
                             <vs-th>
                                 หมายเลขใบเสร็จรับเงิน
                             </vs-th>
@@ -422,6 +451,9 @@
                                 ค่าบริการอื่น ๆ
                             </vs-th>
                             <vs-th>
+                                Vat
+                            </vs-th>
+                            <vs-th>
                                 ยอดรวม
                             </vs-th>
                             <vs-th>
@@ -437,9 +469,9 @@
                     </template>
                     <template #tbody>
                         <vs-tr :key="i" v-for="(tr, i) in userReceipt" :data="tr" :is-selected="!!selected.includes(tr)">
-                            <vs-td checkbox>
+                            <!-- <vs-td checkbox>
                                 <vs-checkbox :val="tr" v-model="selected" />
-                            </vs-td>
+                            </vs-td> -->
                             <vs-td>
                                 {{ tr.attributes.receiptNumber }}
                             </vs-td>
@@ -514,7 +546,7 @@
                                 Receipt
                             </vs-th>
                             <vs-th>
-                                Event Action
+                                Action
                             </vs-th>
                         </vs-tr>
                     </template>
@@ -689,14 +721,14 @@
                     </div>
                 </div>
                 <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
-                <div class="text-custom">เลขที่ใบแจ้งหนี้ (Invoice)</div>
+                <!-- <div class="text-custom">เลขที่ใบแจ้งหนี้ (Invoice)</div>
                 <div>
                     <input disabled
                         class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
                         v-model="partialPaymentForm.invoiceName" />
                     <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
                         v-model="partialPaymentForm.invoiceID" hidden />
-                </div>
+                </div> -->
                 <div class="mt-[14px]">
                     <div class="text-custom">ชื่อธนาคาร</div>
                     <div>
@@ -1010,10 +1042,7 @@ export default {
                 })
         },
         selectMenu(menu_option, tr) {
-            console.log("?????", tr)
-            console.log('why userSign', tr.attributes.user_sign_contract.data.id)
-            console.log('why bill', tr.id)
-            console.log('why building', tr.attributes.building.data.id)
+
             if (menu_option == "Full Payment") {
                 // this.fullPaymentForm.amount = tr.attributes.totaluserPayRemain
                 this.fullPaymentForm.amount = this.userPayRemain
@@ -1028,11 +1057,13 @@ export default {
             }
             else if (menu_option == "Partial Payment") {
                 this.partialPaymentForm.amount = this.userPayRemain
-                this.partialPaymentForm.invoiceName = tr.attributes.invoiceNumber
+                // this.partialPaymentForm.invoiceName = tr.attributes.invoiceNumber
                 // this.fullPaymentForm.invoiceName = generateReNumber()
+                
                 this.partialPaymentForm.building = tr.attributes.building.data.id
                 this.partialPaymentForm.userID = tr.attributes.user_sign_contract.data.id
-                this.partialPaymentForm.invoiceID = tr.id
+                
+                // this.partialPaymentForm.invoiceID = tr.id
                 this.partialPaymentForm.accountBankName = this.userProfile.firstName + " " + this.userProfile.lastName
                 // this.fullPaymentForm.accountBankName = "test"
                 this.createPartialPayment = true
@@ -1046,8 +1077,8 @@ export default {
                     bankName: this.fullPaymentForm.accountBankName,
                     accountBankName: this.fullPaymentForm.bankName,
                     amount: this.fullPaymentForm.amount,
-                    paymentDate: this.fullPaymentForm.paymentDate,
-                    paymentTime: this.fullPaymentForm.paymentTime,
+                    paymentDate: this.fullPaymentForm.paymentDate != ''? this.fullPaymentForm.paymentDate: new Date(),
+                    paymentTime: this.fullPaymentForm.paymentTime != ''? this.fullPaymentForm.paymentTime: new Date().toTimeString, 
                     building: this.fullPaymentForm.building,
                     room: this.$route.query.roomID
                 }
@@ -1092,6 +1123,50 @@ export default {
             // alert("Full payment is created")
 
         },
+        updateRoomInvoice(inData) {
+            console.log("upfateINvoice",inData)
+            let name = "saveButton" + inData.id
+            document.getElementById(name).setAttribute('disabled', '');
+
+            let tempRoom = parseInt(inData.attributes.roomPrice)
+            let tempWater = parseInt(inData.attributes.waterPrice)
+            let tempelEctric = parseInt(inData.attributes.electricPrice)
+            let tempCoomu = parseInt(inData.attributes.communalPrice)
+            let tempOther = parseInt(inData.attributes.otherPrice)
+            let tempVat = parseInt(inData.attributes.vat)
+
+
+            axios.put('https://api.resguru.app/api/tenant-bills/' + inData.id, {
+                data: {
+                    roomPrice: tempRoom,
+                    waterPrice: tempWater,
+                    electricPrice: tempelEctric,
+                    communalPrice: tempCoomu,
+                    otherPrice: tempOther,
+                    vat: tempVat,
+                    subtotal: tempRoom+tempWater+tempelEctric+tempCoomu+tempOther,
+                    total: tempRoom+tempWater+tempelEctric+tempCoomu+tempOther+tempVat,
+                    remainPaid: tempRoom+tempWater+tempelEctric+tempCoomu+tempOther+tempVat
+                }
+            })
+                .then((res) => {
+                    this.getInvoice();
+                    this.$showNotification('#3A89CB', 'Update Room Price Success')
+                }
+                )
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+        },
+        activeSaveButton(inID){
+            let name = "saveButton" + inID
+            let saveButton = document.getElementById(name)
+            saveButton.removeAttribute('disabled');
+                // .setAttribute('disabled', '');
+                // .removeAttribute('disabled');
+            
+        },
         createPartial() {
             console.log("dateeeee", this.partialPaymentForm.paymentDate)
             console.log("timeeeee", this.partialPaymentForm.paymentTime)
@@ -1111,12 +1186,18 @@ export default {
             }).then(
                 (resp) => {
                     console.log("Response in create", resp)
-                    console.log("Response Evidence ID", resp.data.data.id)
-                    axios.put("https://api.resguru.app/api/tenant-bills/" + this.partialPaymentForm.invoiceID, {
-                        data: {
-                            paymentStatus: "Waiting Review"
-                        }
-                    }).then((res) => { console.log("Response in Edit Invoice", res) })
+                    console.log("this.userUnpaidInvoice", this.userUnpaidInvoice)
+
+                    for(let j = 0; j < this.userUnpaidInvoice.length; j++){
+                        axios.put("https://api.resguru.app/api/tenant-bills/" + this.userUnpaidInvoice[j].id, {
+                            data: {
+                                paymentStatus: "Waiting Review"
+                            }
+                        }).then(
+                            (res) => { console.log("Response in Edit Invoice", res) 
+                        }).finally(() => {
+                            this.getInvoice();})
+                    }
 
                     if (this.filePartialPayment.length != 0) {
                         let formData = new FormData();
@@ -1154,6 +1235,7 @@ export default {
             fetch(`https://api.resguru.app/api/tenant-bills?filters[room][id][$eq]=${this.$route.query.roomID}&populate=*&sort[0]=id:desc&publicationState=preview`)
                 .then(response => response.json())
                 .then((resp) => {
+                    this.userUnpaidInvoice = []
                     console.log("Return from getInvoice()", resp.data);
                     this.userPayRemain = 0
                     this.userInvoice = resp.data
@@ -1161,7 +1243,7 @@ export default {
                         if (element.attributes.remainPaid != null && element.attributes.remainPaid > 0) {
                             this.userUnpaidInvoice.push(element)
                             this.userPayRemain = this.userPayRemain + element.attributes.remainPaid
-                            console.log("in if " + element.id, this.userPayRemain)
+                            // console.log("in if " + element.id, this.userPayRemain)
                         }
                     });
                 })
