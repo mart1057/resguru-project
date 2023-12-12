@@ -12,6 +12,7 @@ export default new Vuex.Store({
     errLogin: '',
     main:true,
     building: 0,
+    buildingInfo:{}
   },
   getters: {
   },
@@ -30,6 +31,9 @@ export default new Vuex.Store({
     },
     setBuilding(state,data){
       state.building = data
+    },
+    setBuildingInfo(state,data){
+      state.buildingInfo = data
     }
   },
   actions: {

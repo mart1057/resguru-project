@@ -1,15 +1,15 @@
 <template>
-    <div hidden>
+    <div >
         <!-- Your HTML content to convert to PDF -->
         <div ref="pdfContent" class="p-[8px]">
             <img class="watermarked" :src="Res_Guru_Logo_create06" />
             <div class="flex justify-between">
                 <div class="flex">
-                    <div><img  :src="Res_Guru_Logo_create12" class="w-[70px] h-[70px]" /></div>
+                    <div><img :src="'http://203.170.190.170:1337'+$store.state.buildingInfo[0].attributes.buildingLogo.data.attributes.formats.large.url" class="w-[70px] h-[70px]" /></div>
                     <div class="ml-[8px]">
-                        <div class="font-bold">Tansamai</div>
-                        <div>บางนา ประเวศ กทม 1026</div>
-                        <div>Tel. 08889899988</div>
+                        <div class="font-bold">{{ $store.state.buildingInfo[0].attributes.buildingName }}</div>
+                        <div>{{ $store.state.buildingInfo[0].attributes.buildingAddress }}</div>
+                        <div>Tel. {{ $store.state.buildingInfo[0].attributes.buildingPhone }}</div>
                     </div>
                 </div>
                 <div class="flex flex-col justify-between">
@@ -23,7 +23,7 @@
             <hr class="mt-[32px] mb-[32] h-[10px]">
 
             <div>
-                <div class="text-[24px] font-bold">Tansamai</div>
+                <div class="text-[24px] font-bold">{{ $store.state.buildingInfo[0].attributes.buildingName }}</div>
                 <div class="mt-[4px] mb-[15px]">#ใบแจ้งชำระประจำเดือน</div>
             </div>
 
