@@ -491,7 +491,7 @@
                                 {{ $formatNumber(tr.attributes.otherPrice) }}
                             </vs-td>
                             <vs-td>
-                                {{ $formatNumber(tr.attributes.paidAmount) }}
+                                {{ $formatNumber(tr.attributes.vat) }}
                             </vs-td>
                             <vs-td>
                                 {{ $formatNumber(tr.attributes.total) }}
@@ -1253,7 +1253,7 @@ export default {
         },
         getReceipt() {
             const loading = this.$vs.loading()
-            fetch(`https://api.resguru.app/api/tenant-receipts?filters[room][id][$eq]=${this.$route.query.roomID}&populate=*&sort[0]=id:desc`)
+            fetch(`https://api.resguru.app/api/tenant-receipts?filters[room][id][$eq]=${this.$route.query.roomID}&populate=deep,3&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getReceipt()", resp.data);

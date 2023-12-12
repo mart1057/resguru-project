@@ -1,110 +1,119 @@
 <template>
-    <div hidden>
+    <div >
         <!-- Your HTML content to convert to PDF -->
         <div ref="pdfContent" class="p-[8px]">
             <img class="watermarked" :src="Res_Guru_Logo_create06" />
             <div class="flex justify-between">
-                <div>
+                <div class="flex">
+                    <div><img :src="Res_Guru_Logo_create12" class="w-[70px] h-[70px]" /></div>
+                    <div class="ml-[8px]">
+                        <div class="font-bold">Tansamai</div>
+                        <div>บางนา ประเวศ กทม 1026</div>
+                        <div>Tel. 08889899988</div>
+                    </div>
+                </div>
+                <div class="flex flex-col justify-between">
+                    <div>invoice# {{ data_bill.attributes.tenant_bill.data?.attributes.invoiceNumber }}</div>
                     <div>
-                        <img :src="Res_Guru_Logo_create12" class="w-[100px] h-[100px] ml-[-18px] mb-[-14px]" />
+                        <div>Issue date</div>
+                        <div>10/10/2023</div>
                     </div>
-                    <div class="text-[16px]">ทันสมัย จำกัด</div>
-                    <div>241/41 หมู่ที่ 6 ถ.แจ้งวัฒนะ บางตลาด</div>
-                    <div>Tel : 0888888585</div>
-                </div>
-                <div>
-                    <div>Receipt No. {{ data_bill?.receiptNumber }}</div>
                 </div>
             </div>
-            <div class="flex justify-between mt-[18px]">
-                <div>
-                    <div class="text-[16px]">ชื่อผู้เช่า {{ data_bill.user_sign_contract?.users_permissions_user?.firstName
-                    }} {{ data_bill.user_sign_contract?.users_permissions_user?.lastName }} Tel. {{
-    data_bill.user_sign_contract?.users_permissions_user?.phone }}</div>
-                    <div>ที่อยู่ : {{ data_bill.user_sign_contract?.users_permissions_user?.contactAddress }}</div>
-                    <div>ห้อง : {{ data_bill.RoomNumber }}</div>
-                </div>
-                <div>
-                    <div>วันที่ออกบิล {{ convertDateNoTime(data_bill.createdAt) }} / ประจำเดือน 11/2023
+            <hr class="mt-[32px] mb-[32] h-[10px]">
+
+            <div>
+                <div class="text-[24px] font-bold">Tansamai</div>
+                <div class="mt-[4px] mb-[15px]">Add a message here for your customer</div>
+            </div>
+
+            <div class="grid grid-cols-3">
+                <div class=" pr-[14px]">
+                    <hr class="h-[10px]">
+                    <div class="font-bold mb-[8px]">BILL To</div>
+                    <div>
+                        {{ data_bill.attributes
+                            .user_sign_contract?.data.attributes.users_permissions_user?.data?.attributes.firstName
+                        }} {{ data_bill.attributes
+    .user_sign_contract?.data.attributes.users_permissions_user?.data?.attributes.lastName }}
                     </div>
-                    <div>กำหนดชำระ -</div>
+                    <div>
+                        {{ data_bill.attributes
+                            .user_sign_contract?.data.attributes.users_permissions_user?.data?.attributes.contactAddress }}
+                    </div>
+                    <div>
+                        Tel. {{
+                            data_bill.attributes
+                                .user_sign_contract?.data.attributes.users_permissions_user?.data?.attributes.phone }}
+                    </div>
+                </div>
+                <div class="pr-[14px]">
+                    <hr class="h-[10px]">
+                    <div class="font-bold mb-[8px]">DETAILS</div>
+                    <div>ลูกบ้านอยู่เดือนสุดท้าย</div>
+                </div>
+                <div class=" pr-[14px]">
+                    <hr class="h-[10px]">
+                    <div class="font-bold mb-[8px]">PAYMENT</div>
+                    <!-- <div>Due date 10/10/2023</div> -->
+                    <div>{{ data_bill.attributes.tenant_bill.data?.attributes.total  }} บาท</div>
                 </div>
             </div>
-            <div class="bill-table mt-[24px]">
-                <table class="custom-table">
-                    <thead>
-                        <tr>
-                            <th>ลำดับ</th>
-                            <th>รายการ</th>
-                            <th>จำนวน</th>
-                            <th>ราคา</th>
-                            <th>รวมเงิน</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>ค่าห้อง</td>
-                            <td>1</td>
-                            <td>{{ data_bill.roomPrice }}</td>
-                            <td>{{ data_bill.roomPrice }}</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>ค่าน้ำ</td>
-                            <td>{{ data_bill.usageWater }}</td>
-                            <td>{{ data_bill.waterPrice }}</td>
-                            <td>{{ data_bill.waterPrice * data_bill.usageWater }}</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>ค่าไฟ</td>
-                            <td>{{ data_bill.usageElectric }} </td>
-                            <td>{{ data_bill.electricPrice }}</td>
-                            <td>{{ data_bill.electricPrice * data_bill.usageElectric }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>ค่าส่วนกลาง</td>
-                            <td>1</td>
-                            <td>{{ data_bill.communalPrice }}</td>
-                            <td>{{ data_bill.communalPrice }}</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>ค่าอื่น ๆ</td>
-                            <td>1</td>
-                            <td>{{ data_bill.otherPrice }}</td>
-                            <td>{{ data_bill.otherPrice }}</td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <td colspan="3" class="total-label">
-                                <div class="flex justify-center"></div>
-                            </td>
-                            <td class="total-amount">ภาษี</td>
-                            <td class="total-amount">{{ data_bill.vat }}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="total-label">
-                                <div class="flex justify-center">{{ THBText(data_bill.total) }}</div>
-                            </td>
-                            <td class="total-amount">รวม</td>
-                            <td class="total-amount">{{ data_bill.total }}</td>
-                        </tr>
-                    </tfoot>
+            <div class="mt-[24px]">
+                <table>
+                    <tr class="border-b-[1px] flex justify-between ">
+                        <td class="w-[150px]">ITEM</td>
+                        <td class="w-[150px] flex justify-end">QTY</td>
+                        <td class="w-[150px] flex justify-end">PRICE</td>
+                        <td class="w-[150px] flex justify-end">AMOUNT</td>
+                    </tr>
+                    <tr class="border-b-[1px] flex justify-between">
+                        <td class="w-[150px]">ค่าห้อง</td>
+                        <td class="w-[150px] flex justify-end">1</td>
+                        <td class="w-[150px] flex justify-end">{{  data_bill.attributes.tenant_bill.data?.attributes.roomPrice }}</td>
+                        <td class="w-[150px] flex justify-end">{{ data_bill.attributes.tenant_bill.data?.attributes.roomPrice }}</td>
+                    </tr>
+                    <tr class="border-b-[1px] flex justify-between">
+                        <td class="w-[150px]">ค่าน้ำ</td>
+                        <td class="w-[150px] flex justify-end">{{  data_bill.attributes.tenant_bill.data?.attributes.waterPrice}}</td>
+                        <td class="w-[150px] flex justify-end">{{  data_bill.attributes.tenant_bill.data?.attributes.waterPrice}}</td>
+                        <td class="w-[150px] flex justify-end">{{  data_bill.attributes.tenant_bill.data?.attributes.waterPrice}}</td>
+                    </tr>
+                    <tr class="border-b-[1px] flex justify-between">
+                        <td class="w-[150px]">ค่าไฟ</td>
+                        <td class="w-[150px] flex justify-end">{{  data_bill.attributes.tenant_bill.data?.attributes.electricPrice}}</td>
+                        <td class="w-[150px] flex justify-end">{{  data_bill.attributes.tenant_bill.data?.attributes.electricPrice}}</td>
+                        <td class="w-[150px] flex justify-end">{{  data_bill.attributes.tenant_bill.data?.attributes.electricPrice}}</td>
+                    </tr>
+                    <tr class="border-b-[1px] flex justify-between">
+                        <td class="w-[150px]">ค่าส่วนกลาง</td>
+                        <td class="w-[150px] flex justify-end">1</td>
+                        <td class="w-[150px] flex justify-end">{{  data_bill.attributes.tenant_bill.data?.attributes.communalPrice}}</td>
+                        <td class="w-[150px] flex justify-end">{{  data_bill.attributes.tenant_bill.data?.attributes.communalPrice}}</td>
+                    </tr>
+                    <tr class="border-b-[1px] flex justify-between">
+                        <td class="w-[150px]">ค่าอื่น ๆ</td>
+                        <td class="w-[150px] flex justify-end">1</td>
+                        <td class="w-[150px] flex justify-end">{{  data_bill.attributes.tenant_bill.data?.attributes.otherPrice}}</td>
+                        <td class="w-[150px] flex justify-end">{{  data_bill.attributes.tenant_bill.data?.attributes.otherPrice}}</td>
+                    </tr>
+                    <tr class="border-b-[1px] flex justify-between">
+                        <td colspan="8">SubTotal</td>
+                        <td>{{  data_bill.attributes.tenant_bill.data?.attributes.total - data_bill.attributes.tenant_bill.data?.attributes.vat}}</td>
+                    </tr>
+                    <tr class="border-b-[1px] flex justify-between">
+                        <td colspan="8">Tax</td>
+                        <td>{{ data_bill.attributes.tenant_bill.data?.attributes.vat}}</td>
+                    </tr>
+                    <tr class="border-b-[1px] flex justify-between">
+                        <td colspan="8" class="font-bold">Total Due</td>
+                        <td class="font-bold">{{data_bill.attributes.tenant_bill.data?.attributes.total}}</td>
+                    </tr>
                 </table>
             </div>
-            <div class="mt-[14px]">กรุณาชำระ ทุกวันที่ 1-5 ของเดือนถัดไป ล่าช้าปรับวันละ 100 บาท</div>
-            <div class="flex justify-end mt-[50px]">
-                <div class="flex justify-center flex-col">
-                    <div>ลงชื่อ___________________________ผู้จัดทำ</div>
-                    <div class="flex justify-center mt-[4px]">ทันสมัย จำกัด</div>
-                </div>
-            </div>
+
         </div>
+        <!-- <button @click="generatePDF()">xcvxcv</button> -->
     </div>
 </template>
   
@@ -126,12 +135,12 @@ export default {
 
     },
     // mounted() {
-    //     this.sendFunction()
+    //     this.generatePDF()
     // },
     methods: {
         generatePDF(data) {
-            console.log(data);
-            this.data_bill = data.attributes
+            console.log('52', data);
+            this.data_bill = data
             const content = this.$refs.pdfContent;
             const opt = {
                 margin: 10,
@@ -143,7 +152,7 @@ export default {
             html2pdf()
                 .from(content)
                 .set(opt)
-                .save();
+                // .save();
         },
     },
 };
@@ -185,4 +194,23 @@ export default {
 .watermarked {
     position: absolute;
     opacity: 0.05;
-}</style>
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th,
+td {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    text-align: left;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ccc;
+}
+</style>
