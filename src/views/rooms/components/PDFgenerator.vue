@@ -28,7 +28,6 @@
                 <div class="text-[24px] font-bold">{{ $store.state.buildingInfo[0].attributes.buildingName }}</div>
                 <div class="mt-[4px] mb-[15px]">กรุณาชำระทุกวันที่ 1-5 ของเดือนถัดไป ล่าช้าปรับวันละ 100 บาท </div>
             </div>
-
             <div class="grid grid-cols-3">
                 <div class=" pr-[14px]">
                     <hr class="h-[10px]">
