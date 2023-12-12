@@ -323,7 +323,8 @@ export default {
                                     buildingLine: this.buildingLine,
                                     buildingFacebook: this.buildingFacebook,
                                     vat_rate: this.buildingTax,
-                                    BuildingDueDate: this.buildingDueDate
+                                    BuildingDueDate: this.buildingDueDate,
+                                    publishedAt: null
                                 }
                             })
                                 .then(
@@ -339,13 +340,12 @@ export default {
                                                 headers: {
                                                     "Content-Type": "multipart/form-data",
                                                 },
-                                            }).then((result) => { console.log("Upload file", result) })
-                                                .catch((error) => {
-                                                    console.log(error);
-                                                }).finally(() => {
-                                                    this.routeTo()
-                                                })
+                                            })
+                                            .then((result) => { console.log("Upload file", result) })
+
                                         }
+
+                                        this.routeToPlan(resp.data.data.id)
 
                                     }
                                 )
@@ -355,7 +355,7 @@ export default {
                                 })
                                 .finally(() => {
                                     this.$showNotification('#3A89CB', 'Created Building Success')
-                                    this.routeTo()
+                                   
                                 })
             }
       
@@ -367,6 +367,11 @@ export default {
         routeTo() {
             this.$router.push({
                 path: '/',
+            })
+        },
+        routeToPlan(buildingid) {
+            this.$router.push({
+                path: '/plan?building=' + buildingid ,
             })
         }
     },

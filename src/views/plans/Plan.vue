@@ -344,7 +344,7 @@
                     <div class="text-[24px] font-bold mt-[18px]">
                         0<span class="text-[14px] text-[#8396A6] ml-[4px]">/year</span>
                     </div>
-                    <div @click="redirectToCheckout"
+                    <div @click="redirectToCheckout('prod_PAnQphVzbbl0Vz')"
                         class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
                         ไม่จำกัดห้อง
                     </div>
@@ -625,7 +625,7 @@
                     <div class="text-[24px] font-bold mt-[18px]">
                         0<span class="text-[14px] text-[#8396A6] ml-[4px]">/year</span>
                     </div>
-                    <div @click="redirectToCheckout"
+                    <div @click="redirectToCheckout('prod_PAnQrNUVPqw5hW')"
                         class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
                         ไม่จำกัดห้อง
                     </div>
@@ -902,28 +902,31 @@ export default {
     };
   },
   methods: {
-    // Vue.js Component Method
-    async redirectToCheckout() {
-        try {
-            const userEmail = this.$store.state.userInfo.user.email; // Assume this is the logged-in user's email      
-            const response = await axios.post('https://api.resguru.app/api/create-checkout-session', { email: userEmail });
-            console.log(response.data)
-            window.location.href = response.data.session.url;
-  
-
-
-            // this code below is alternative code for making payment with sessionID instead of sessionURL
-            //  const sessionId = response.data.sessionId;
-            //  const stripe = Stripe('pk_live_51OIS4JD24IeZxpSXzAr7V8e4WXs6dsQrWEuq5dKdSLJYHttKS5LFImJOTi5I7uDI0cnYz3J2MZQUmPfGqtMVUgMJ00mqUKcPbT');
-            //  stripe.redirectToCheckout({ sessionId: sessionId });
-
-
-        } catch (error) {
-            console.error('Error:', error);
-        }
+    async redirectToCheckout(productKey) {
+            const userEmail = this.$store.state.userInfo.user.email; // Assume this is the logged-in user's email   
+            const buildingId = this.$route.query.building ;
+            const stripeProductId = productKey ;
+            if(userEmail){
+                await axios.post('https://api.resguru.app/api/create-checkout-session', { 
+                    productId: stripeProductId,
+                    email: userEmail,
+                    buildingId: buildingId
+                })
+                .then( (resp) => {
+                    console.log(resp)
+                    window.location.href = resp.data.session.url;
+                    }
+                )
+                .catch(error => {
+                    const errorMessage = error ? error : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.$showNotification('#3A89CB', 'Reloading to checkout form')
+                })
+            }
     },
-
-  },
+  }
 };
 
 // Step of payment [case logged in user]
