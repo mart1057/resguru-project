@@ -5,135 +5,100 @@
             <img class="watermarked" :src="Res_Guru_Logo_create06" />
             <div class="flex justify-between">
                 <div class="flex">
-                    <div><img :src="Res_Guru_Logo_create12" class="w-[70px] h-[70px]" /></div>
+                    <div><img  :src="Res_Guru_Logo_create12" class="w-[70px] h-[70px]" /></div>
                     <div class="ml-[8px]">
                         <div class="font-bold">Tansamai</div>
                         <div>บางนา ประเวศ กทม 1026</div>
                         <div>Tel. 08889899988</div>
                     </div>
                 </div>
-                <div class="">
-                    <div>invoice# {{  bill_detail.invoiceNumber }}</div>
-                    <div class="">
+                <div class="flex flex-col justify-between">
+                    <div>invoice# {{ data_bill.tenant_bills[0]?.invoiceNumber }}</div>
+                    <div>
                         <div>Issue date</div>
                         <div>10/10/2023</div>
                     </div>
                 </div>
             </div>
             <hr class="mt-[32px] mb-[32] h-[10px]">
+
             <div>
                 <div class="text-[24px] font-bold">Tansamai</div>
-                <div class="mt-[4px] mb-[15px]">กรุณาชำระทุกวันที่ 1-5 ของเดือนถัดไป ล่าช้าปรับวันละ 100 บาท </div>
+                <div class="mt-[4px] mb-[15px]">Add a message here for your customer</div>
             </div>
 
             <div class="grid grid-cols-3">
                 <div class=" pr-[14px]">
                     <hr class="h-[10px]">
                     <div class="font-bold mb-[8px]">BILL To</div>
-                    <div>{{user_detail.firstName
-                    }} {{ user_detail.lastName }}</div>
-                    <div>{{ user_detail.contactAddress }}</div>
+                    <div>{{ data_bill.user_sign_contract?.users_permissions_user?.firstName
+                    }} {{ data_bill.user_sign_contract?.users_permissions_user?.lastName }}</div>
+                    <div>{{ data_bill.user_sign_contract?.users_permissions_user?.contactAddress }}</div>
                     <div>Tel. {{
-                        user_detail.phone }}</div>
+                        data_bill.user_sign_contract?.users_permissions_user?.phone }}</div>
                 </div>
                 <div class="pr-[14px]">
                     <hr class="h-[10px]">
                     <div class="font-bold mb-[8px]">DETAILS</div>
-                    <div>ใบชำระค่าห้องประจำเดือน</div>
+                    <div>ลูกบ้านอยู่เดือนสุดท้าย</div>
                 </div>
                 <div class=" pr-[14px]">
                     <hr class="h-[10px]">
                     <div class="font-bold mb-[8px]">PAYMENT</div>
                     <div>Due date 10/10/2023</div>
-                    <!-- <div>{{ data_bill.tenant_bills[0]?.total }} บาท</div> -->
+                    <div>{{ data_bill.tenant_bills[0]?.total }} บาท</div>
                 </div>
             </div>
             <div class="mt-[24px]">
-                <table class="">
+                <table>
                     <tr class="border-b-[1px] flex justify-between ">
                         <td class="w-[150px]">ITEM</td>
                         <td class="w-[150px] flex justify-end">QTY</td>
                         <td class="w-[150px] flex justify-end">PRICE</td>
                         <td  class="w-[150px] flex justify-end">AMOUNT</td>
                     </tr>
-                    <tr class="border-b-[1px] flex justify-between ">
+                    <tr class="border-b-[1px] flex justify-between">
                         <td class="w-[150px]">ค่าห้อง</td>
                         <td class="w-[150px] flex justify-end">1</td>
-                        <td class="w-[150px] flex justify-end">{{ bill_detail.room }}</td>
-                        <td  class="w-[150px] flex justify-end">{{ bill_detail.room }}</td>
+                        <td class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.roomPrice }}</td>
+                        <td class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.roomPrice }}</td>
                     </tr>
-                    <tr class="border-b-[1px] flex justify-between ">
+                    <tr  class="border-b-[1px] flex justify-between">
                         <td class="w-[150px]">ค่าน้ำ</td>
-                        <td  class="w-[150px] flex justify-end">{{ '-'}}</td>
-                        <td  class="w-[150px] flex justify-end">{{ '-'}}</td>
-                        <td  class="w-[150px] flex justify-end">{{ bill_detail.water }}</td>
+                        <td  class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.usageWater }}</td>
+                        <td  class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.waterPrice }}</td>
+                        <td  class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.waterPrice * data_bill.tenant_bills[0]?.usageWater }}</td>
                     </tr>
-                    <tr class="border-b-[1px] flex justify-between ">
-                        <td  class="w-[150px]">ค่าไฟ</td>
-                        <td  class="w-[150px] flex justify-end">{{'-'}} </td>
-                        <td  class="w-[150px] flex justify-end">{{'-'}}</td>
-                        <td  class="w-[150px] flex justify-end">{{ bill_detail.ele }}
+                    <tr class="border-b-[1px] flex justify-between">
+                        <td class="w-[150px]">ค่าไฟ</td>
+                        <td  class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.usageElectric }} </td>
+                        <td  class="w-[150px] flex justify-end"> {{ data_bill.tenant_bills[0]?.electricPrice }}</td>
+                        <td  class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.electricPrice * data_bill.tenant_bills[0]?.usageElectric }}
                         </td>
                     </tr>
-                    <tr class="border-b-[1px] flex justify-between ">
-                        <td  class="w-[150px]">ค่าส่วนกลาง</td>
-                        <td  class="w-[150px] flex justify-end">-</td>
-                        <td  class="w-[150px] flex justify-end"><div class="flex justify-start">{{ bill_detail.communalPrice }}</div></td>
-                        <td  class="w-[150px] flex justify-end">{{ bill_detail.communalPrice }}</td>
+                    <tr  class="border-b-[1px] flex justify-between">
+                        <td class="w-[150px]">ค่าส่วนกลาง</td>
+                        <td  class="w-[150px] flex justify-end">1</td>
+                        <td  class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.communalPrice }}</td>
+                        <td  class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.communalPrice }}</td>
                     </tr>
-                    <tr class="border-b-[1px] flex justify-between ">
-                        <td  class="w-[150px]">ค่าอื่น ๆ</td>
-                        <td  class="w-[150px] flex justify-end">-</td>
-                        <td  class="w-[150px] flex justify-end">{{ bill_detail.other }}</td>
-                        <td  class="w-[150px] flex justify-end">{{ bill_detail.other }}</td>
+                    <tr class="border-b-[1px] flex justify-between">
+                        <td class="w-[150px]">ค่าอื่น ๆ</td>
+                        <td  class="w-[150px] flex justify-end">1</td>
+                        <td  class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.otherPrice }}</td>
+                        <td  class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.otherPrice }}</td>
                     </tr>
-                    <tr class="border-b-[1px] flex justify-between " v-for="item in items_other">
-                        <td  class="w-[150px]">ค่าปรับทรัพย์สินเสียหาย ({{ item.name }})</td>
-                        <td  class="w-[150px] flex justify-end">-</td>
-                        <td  class="w-[150px] flex justify-end">{{ item.price }}</td>
-                        <td  class="w-[150px] flex justify-end">{{ item.price }}</td>
-                    </tr>
-                    <tr class="border-b-[1px] flex justify-between ">
-                        <td  class="w-[150px]">คืนค่ามัดจำ</td>
-                        <td  class="w-[150px] flex justify-end">-</td>
-                        <td  class="w-[150px] flex justify-end">-{{ list_debt.deposit }}</td>
-                        <td  class="w-[150px] flex justify-end">-{{ list_debt.deposit }}</td>
-                    </tr>
-                    <tr class="border-b-[1px] flex justify-between ">
-                        <td  class="w-[150px]">คืนเงินประกันห้อง</td>
-                        <td  class="w-[150px] flex justify-end">-</td>
-                        <td  class="w-[150px] flex justify-end">-{{ list_debt.deposit2 }}</td>
-                        <td  class="w-[150px] flex justify-end">-{{ list_debt.deposit2 }}</td>
-                    </tr>
-                    <tr class="border-b-[1px] flex justify-between  ">
+                    <tr  class="border-b-[1px] flex justify-between">
                         <td colspan="8">SubTotal</td>
-                        <td colspan="8" class="font-bold"></td>
-                        <td colspan="8" class="font-bold"></td>
-                        <td>{{ (totalBillItems() - list_debt.deposit2 -list_debt.deposit +
-                            parseInt(bill_detail.ele) + parseInt(bill_detail.water) + parseInt(bill_detail.other) + parseInt(
-                                bill_detail.communalPrice) + parseInt(bill_detail.room)) }}
-                        </td>
+                        <td>{{ data_bill.tenant_bills[0]?.total - data_bill.tenant_bills[0]?.vat }}</td>
                     </tr>
-                    <tr class="border-b-[1px] flex justify-between  ">
+                    <tr class="border-b-[1px] flex justify-between">
                         <td colspan="8">Tax</td>
-                        <td colspan="8" class="font-bold"></td>
-                        <td colspan="8" class="font-bold"></td>
-                        <td>{{ ((totalBillItems() - list_debt.deposit2 -list_debt.deposit +
-                            parseInt(bill_detail.ele) + parseInt(bill_detail.water) + parseInt(bill_detail.other) + parseInt(
-                                bill_detail.communalPrice) + parseInt(bill_detail.room)) * 0.07) }}</td>
+                        <td>{{ data_bill.tenant_bills[0]?.vat }}</td>
                     </tr>
-                    <tr class="border-b-[1px] flex justify-between  ">
+                    <tr  class="border-b-[1px] flex justify-between">
                         <td colspan="8" class="font-bold">Total Due</td>
-                        <td colspan="8" class="font-bold"></td>
-                        <td colspan="8" class="font-bold"></td>
-                        <td class="font-bold"> {{
-                            (totalBillItems() - list_debt.deposit2 -list_debt.deposit +
-                                parseInt(bill_detail.ele) + parseInt(bill_detail.water) + parseInt(bill_detail.other) + parseInt(
-                                    bill_detail.communalPrice) + parseInt(bill_detail.room)) + ((totalBillItems()
-                                        - list_debt.deposit2 - list_debt.deposit +
-                                        parseInt(bill_detail.ele) + parseInt(bill_detail.water) + parseInt(bill_detail.other) + parseInt(
-                                            bill_detail.communalPrice) + parseInt(bill_detail.room)) * 0.07)
-                        }}</td>
+                        <td class="font-bold">{{ data_bill.tenant_bills[0]?.total }}</td>
                     </tr>
                 </table>
             </div>
@@ -156,11 +121,7 @@ export default {
             convertDateNoTime,
             Res_Guru_Logo_create12,
             Res_Guru_Logo_create06,
-            THBText,
-            items_other: [],
-            bill_detail: {},
-            user_detail: {},
-            list_debt: {}
+            THBText
         }
 
     },
@@ -168,12 +129,9 @@ export default {
     //     this.generatePDF()
     // },
     methods: {
-        generatePDF(user_detail, bill_detail, items_other, list_debt) {
-            console.log(user_detail);
-            this.list_debt = list_debt
-            this.user_detail = user_detail
-            this.bill_detail = bill_detail
-            this.items_other = items_other
+        generatePDF(data) {
+            console.log(data);
+            this.data_bill = data
             const content = this.$refs.pdfContent;
             const opt = {
                 margin: 10,
@@ -186,14 +144,6 @@ export default {
                 .from(content)
                 .set(opt)
                 .save();
-        },
-        totalBillItems() {
-            let totalPrice = 0;
-            // Loop through each item and add its price to totalPrice
-            this.items_other.forEach(item => {
-                totalPrice += item.price;
-            });
-            return totalPrice;
         },
     },
 };
@@ -246,15 +196,12 @@ th,
 td {
     padding-top: 8px;
     padding-bottom: 8px;
-   /* //width:100%// */
-  
-}
-td{
-    
+    text-align: left;
 }
 
 .custom-table {
     width: 100%;
     border-collapse: collapse;
     border: 1px solid #ccc;
-}</style>
+}
+</style>
