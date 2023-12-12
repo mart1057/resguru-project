@@ -102,11 +102,12 @@
                                         <div>
                                             <vs-checkbox :val="tr" v-model="selected" />
                                         </div>
-                                        <div class="text-custom ml-[24px]">{{ tr.attributes.createdAt }}</div>
+                                        <div class="text-custom ml-[24px]">{{ convertDateNoTime(tr.attributes.createdAt) }}
+                                        </div>
                                     </div>
                                 </vs-td>
                                 <vs-td>
-                                    <div class="text-custom"> {{ tr.attributes.date_execute }}</div>
+                                    <div class="text-custom"> {{ convertDateNoTime(tr.attributes.date_execute) }}</div>
                                 </vs-td>
                                 <vs-td>
                                     <div class="text-custom">{{ tr.attributes.topic }}</div>
@@ -165,21 +166,28 @@
                             v-model="description" />
                     </div>
                     <div class="mt-[14px]">
-                        
+
                         <div class="text-custom text-[14px] text-[#003765]">วันที่สิ้นสุด</div>
-                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[12px] pr-[12px] flex justify-start" type="date"
-                            v-model="date_execute" />
+                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[12px] pr-[12px] flex justify-start"
+                            type="date" v-model="date_execute" />
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">รูปภาพ</div>
-                        <div class="flex mt-[4px]">
-                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" ref="AnnounceForm" hidden
-                            type="file" />
-                            <div
-                                class="flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
-                                เลือกรูปภาพ</div>
-                            <div class="text-[#5C6B79] text-custom  flex justify-center items-center ml-[8px] text-[12px]">
+                        <div class="flex mt-[4px]" v-if="image == ''">
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
+                                @change="previewImage" type="file" accept="image/*" hidden />
+                            <label for="upload">
+                                <div
+                                    class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
+                                    อัพโหลดรูปภาพ</div>
+                            </label>
+                            <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                 ยังไม่ได้เลือกไฟล์</div>
+                        </div>
+                        <div class="flex mt-[4px]" v-else>
+                            <div @click="previewImg(image_e)"
+                                class="text-[#5C6B79] text-custom flex justify-center items-center text-[12px] cursor-pointer">
+                                {{ image_name }}</div>
                         </div>
                     </div>
 
@@ -243,7 +251,7 @@
                             <template #tbody>
                                 <vs-tr :key="i" v-for="(tr, i) in announcement" :data="tr">
                                     <vs-td>
-                                        <div class="text-custom">{{ tr.attributes.createdAt }}</div>
+                                        <div class="text-custom">{{ convertDateNoTime(tr.attributes.createdAt) }}</div>
                                     </vs-td>
                                     <vs-td>
                                         <div class="text-custom"> {{ tr.attributes.date_execute }}</div>
@@ -263,8 +271,8 @@
                                                 </vs-avatar>
                                             </div>
                                             <div class="flex justify-center items-center ml-[8px]">{{
-                                                tr.attributes.users_created.data.attributes.firstName }}   {{
-                                                tr.attributes.users_created.data.attributes.lastName }}</div>
+                                                tr.attributes.users_created.data.attributes.firstName }} {{
+        tr.attributes.users_created.data.attributes.lastName }}</div>
                                         </div>
                                     </vs-td>
                                 </vs-tr>
@@ -300,6 +308,7 @@
 <script>
 import axios from 'axios'
 import router from '@/router'
+import { convertDateNoTime } from '@/components/hook/hook'
 
 export default {
     data() {
@@ -312,9 +321,13 @@ export default {
             allCheck: false,
             selected: [],
             announcement: [],
+            image_name: '',
+            image: [],
+            image_e: [],
             create_ann: false,
             history_ann: false,
-            delete_popup: false
+            delete_popup: false,
+            convertDateNoTime
         }
     },
     created() {
@@ -331,6 +344,20 @@ export default {
         this.getAnnouncement();
     },
     methods: {
+        previewImage(event) {
+            const file = event.target.files[0];
+            this.image = event.target.files[0]
+            this.image_name = event.target.files[0].name
+            if (file) {
+
+                // Read the file as a URL
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.image_e = e.target.result; // Set the image URL for preview
+                };
+                reader.readAsDataURL(file);
+            }
+        },
         getAnnouncement() {
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
@@ -343,43 +370,52 @@ export default {
                     loading.close()
                 })
         },
-        tempUploadFileAnnouncement(){
+        tempUploadFileAnnouncement() {
             this.fileAnnounce = this.$refs.AnnounceForm.files[0]
         },
         createAnnouncement() {
-            axios.post('https://api.resguru.app/api' + '/announcements', {
-                data: {
-                    // date_execute: this.date_execute,
-                    topic: this.topic,
-                    description: this.description,
-                    date_execute: this.date_execute,
-                    users_created: this.$store.state.userInfo.user.id,
-                    building: this.$store.state.building
-                }
-            })
-            .then(  (resp) => {
-                        if(this.fileAnnounce.length != 0){
-                                let formData = new FormData();
-                                formData.append("files", this.fileAnnounce);
-                                formData.append("refId", String(resp.data.data.id));
-                                formData.append("ref", "api::announcements.announcementsd");
-                                formData.append("field", "image");
+            if (this.date_execute && this.topic && this.image.length != 0) {
+                axios.post('https://api.resguru.app/api' + '/announcements', {
+                    data: {
+                        // date_execute: this.date_execute,
+                        topic: this.topic,
+                        description: this.description,
+                        date_execute: this.date_execute,
+                        users_created: this.$store.state.userInfo.user.id,
+                        building: this.$store.state.building
+                    }
+                })
+                    .then((resp) => {
+                        if (this.image.length != 0) {
+                            let formData = new FormData();
+                            formData.append("files", this.image);
+                            formData.append("refId", String(resp.data.data.id));
+                            formData.append("ref", "api::announcement.announcement");
+                            formData.append("field", "image");
 
-                                axios.post("https://api.resguru.app/api/upload", formData, {
-                                    headers: {
+                            axios.post("https://api.resguru.app/api/upload", formData, {
+                                headers: {
                                     "Content-Type": "multipart/form-data",
-                                    },
-                                }).then( (result) => { console.log("Upload file",result)}) 
+                                },
+                            }).then((result) => { console.log("Upload file", result) })
                                 .catch((error) => {
-                                            console.log(error);
+                                    console.log(error);
                                 })
                         }
                         this.$showNotification('#3A89CB', 'Create Announcement Success')
-                    }    
-             ).catch(error => {
-                const errorMessage = error.response ? error.response.data.message : 'Error updating information';
-                this.$showNotification('danger', errorMessage); 
-             })
+                    }
+                    ).catch(error => {
+                        const errorMessage = error.response ? error.response.data.message : 'Error updating information';
+                        this.$showNotification('danger', errorMessage);
+                    }).finally(() => {
+                        this.getAnnouncement()
+                        this.create_ann = false
+                    })
+            }
+            else {
+                this.$showNotification('danger', 'กรุณากรอกข้อมูลให้ครบถ้วน');
+            }
+
         },
         // editAnnouncement(postID) {
         //     axios.put(`https://api.resguru.app/api/announcements/${postID}`, {
@@ -403,13 +439,12 @@ export default {
             this.selected.forEach(element => {
                 console.log(element.id);
                 axios.delete('https://api.resguru.app/api' + '/announcements/' + element.id)
-                .then( () =>
-                {this.$showNotification('warn', 'Delete Announcement Success')}
-                )
-                .catch(error => {
-                const errorMessage = error.response ? error.response.data.message : 'Error updating information';
-                this.$showNotification('danger', errorMessage); 
-                })
+                    .then(() => { this.$showNotification('warn', 'Delete Announcement Success') }
+                    )
+                    .catch(error => {
+                        const errorMessage = error.response ? error.response.data.message : 'Error updating information';
+                        this.$showNotification('danger', errorMessage);
+                    })
             });
             setTimeout(() => {
                 this.getAnnouncement()
