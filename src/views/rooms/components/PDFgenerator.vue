@@ -1,5 +1,5 @@
 <template>
-    <div hidden>
+    <div>
         <!-- Your HTML content to convert to PDF -->
         <div ref="pdfContent" class="p-[8px]">
             <img class="watermarked" :src="Res_Guru_Logo_create06" />
@@ -51,59 +51,59 @@
             <div class="mt-[24px]">
                 <table class="">
                     <tr class="border-b-[1px] flex justify-between ">
-                        <th colspan="6">ITEM</th>
-                        <th>QTY</th>
-                        <th>PRICE</th>
-                        <th>AMOUNT</th>
+                        <td class="w-[150px]">ITEM</td>
+                        <td class="w-[150px] flex justify-end">QTY</td>
+                        <td class="w-[150px] flex justify-end">PRICE</td>
+                        <td  class="w-[150px] flex justify-end">AMOUNT</td>
                     </tr>
                     <tr class="border-b-[1px] flex justify-between ">
-                        <td colspan="6">ค่าห้อง</td>
-                        <td>1</td>
-                        <td>{{ bill_detail.room }}</td>
-                        <td>{{ bill_detail.room }}</td>
+                        <td class="w-[150px]">ค่าห้อง</td>
+                        <td class="w-[150px] flex justify-end">1</td>
+                        <td class="w-[150px] flex justify-end">{{ bill_detail.room }}</td>
+                        <td  class="w-[150px] flex justify-end">{{ bill_detail.room }}</td>
                     </tr>
                     <tr class="border-b-[1px] flex justify-between ">
-                        <td colspan="6">ค่าน้ำ</td>
-                        <td>{{ '-'}}</td>
-                        <td>{{ '-'}}</td>
-                        <td>{{ bill_detail.water }}</td>
+                        <td class="w-[150px]">ค่าน้ำ</td>
+                        <td  class="w-[150px] flex justify-end">{{ '-'}}</td>
+                        <td  class="w-[150px] flex justify-end">{{ '-'}}</td>
+                        <td  class="w-[150px] flex justify-end">{{ bill_detail.water }}</td>
                     </tr>
                     <tr class="border-b-[1px] flex justify-between ">
-                        <td colspan="6">ค่าไฟ</td>
-                        <td>{{' -'}} </td>
-                        <td>{{' -'}}</td>
-                        <td>{{ bill_detail.ele }}
+                        <td  class="w-[150px]">ค่าไฟ</td>
+                        <td  class="w-[150px] flex justify-end">{{'-'}} </td>
+                        <td  class="w-[150px] flex justify-end">{{'-'}}</td>
+                        <td  class="w-[150px] flex justify-end">{{ bill_detail.ele }}
                         </td>
                     </tr>
                     <tr class="border-b-[1px] flex justify-between ">
-                        <td colspan="6">ค่าส่วนกลาง</td>
-                        <td>-</td>
-                        <td><div class="flex justify-start">{{ bill_detail.communalPrice }}</div></td>
-                        <td>{{ bill_detail.communalPrice }}</td>
+                        <td  class="w-[150px]">ค่าส่วนกลาง</td>
+                        <td  class="w-[150px] flex justify-end">-</td>
+                        <td  class="w-[150px] flex justify-end"><div class="flex justify-start">{{ bill_detail.communalPrice }}</div></td>
+                        <td  class="w-[150px] flex justify-end">{{ bill_detail.communalPrice }}</td>
                     </tr>
                     <tr class="border-b-[1px] flex justify-between ">
-                        <td colspan="6">ค่าอื่น ๆ</td>
-                        <td>-</td>
-                        <td>{{ bill_detail.other }}</td>
-                        <td>{{ bill_detail.other }}</td>
+                        <td  class="w-[150px]">ค่าอื่น ๆ</td>
+                        <td  class="w-[150px] flex justify-end">-</td>
+                        <td  class="w-[150px] flex justify-end">{{ bill_detail.other }}</td>
+                        <td  class="w-[150px] flex justify-end">{{ bill_detail.other }}</td>
                     </tr>
                     <tr class="border-b-[1px] flex justify-between " v-for="item in items_other">
-                        <td colspan="6">ค่าปรับทรัพย์สินเสียหาย ({{ item.name }})</td>
-                        <td>-</td>
-                        <td>{{ item.price }}</td>
-                        <td>{{ item.price }}</td>
+                        <td  class="w-[150px]">ค่าปรับทรัพย์สินเสียหาย ({{ item.name }})</td>
+                        <td  class="w-[150px] flex justify-end">-</td>
+                        <td  class="w-[150px] flex justify-end">{{ item.price }}</td>
+                        <td  class="w-[150px] flex justify-end">{{ item.price }}</td>
                     </tr>
                     <tr class="border-b-[1px] flex justify-between ">
-                        <td colspan="6">คืนค่ามัดจำ</td>
-                        <td>-</td>
-                        <td>-{{ list_debt.deposit }}</td>
-                        <td>-{{ list_debt.deposit }}</td>
+                        <td  class="w-[150px]">คืนค่ามัดจำ</td>
+                        <td  class="w-[150px] flex justify-end">-</td>
+                        <td  class="w-[150px] flex justify-end">-{{ list_debt.deposit }}</td>
+                        <td  class="w-[150px] flex justify-end">-{{ list_debt.deposit }}</td>
                     </tr>
                     <tr class="border-b-[1px] flex justify-between ">
-                        <td colspan="6">คืนค่ามัดจำ</td>
-                        <td>-</td>
-                        <td>-{{ list_debt.deposit2 }}</td>
-                        <td>-{{ list_debt.deposit2 }}</td>
+                        <td  class="w-[150px]">คืนค่ามัดจำ</td>
+                        <td  class="w-[150px] flex justify-end">-</td>
+                        <td  class="w-[150px] flex justify-end">-{{ list_debt.deposit2 }}</td>
+                        <td  class="w-[150px] flex justify-end">-{{ list_debt.deposit2 }}</td>
                     </tr>
                     <tr class="border-b-[1px] flex justify-between  ">
                         <td colspan="8">SubTotal</td>
