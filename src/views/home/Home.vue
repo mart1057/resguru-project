@@ -282,6 +282,7 @@ export default {
                 .then((resp) => {
                     console.log(resp.data);
                     this.building = resp.data
+                    this.$store.commit('setBuildingInfo',resp.data);
                 }).finally(() => {
                     loading.close()
                 })

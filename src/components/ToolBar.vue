@@ -1,8 +1,8 @@
 <template>
-    <div class="h-[100%]">
-        <div class="bg-[#E0ECE4] flex items-center justify-between h-[70px] w-[100%]" :style="{ height: toolbarHeight }" >
+    <div class="h-[100%]"  @mouseleave="sidebar = false">
+        <div class="bg-[#E0ECE4] flex items-center justify-between h-[70px] w-[100%]" :style="{ height: toolbarHeight }"  >
             <div class="flex justify-center items-center w-[100%]" >
-                <div class="flex justify-between  w-[100%] pl-[24px] pr-[24px]">
+                <div class="flex justify-between  w-[100%] pl-[24px] pr-[24px]" >
                     <div class="flex">
                         <div @click="sidebar = true"  
                             class="cursor-pointer bg-[#E8F0F8] w-[44px] h-[44px] justify-center items-center flex rounded-[9px]">

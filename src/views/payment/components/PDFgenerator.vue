@@ -5,26 +5,26 @@
             <img class="watermarked" :src="Res_Guru_Logo_create06" />
             <div class="flex justify-between">
                 <div class="flex">
-                    <div><img  :src="Res_Guru_Logo_create12" class="w-[70px] h-[70px]" /></div>
+                    <div><img :src="'http://203.170.190.170:1337'+$store.state.buildingInfo[0].attributes.buildingLogo.data.attributes.formats.large.url" class="w-[70px] h-[70px]" /></div>
                     <div class="ml-[8px]">
-                        <div class="font-bold">Tansamai</div>
-                        <div>บางนา ประเวศ กทม 1026</div>
-                        <div>Tel. 08889899988</div>
+                        <div class="font-bold">{{ $store.state.buildingInfo[0].attributes.buildingName }}</div>
+                        <div>{{ $store.state.buildingInfo[0].attributes.buildingAddress }}</div>
+                        <div>Tel. {{ $store.state.buildingInfo[0].attributes.buildingPhone }}</div>
                     </div>
                 </div>
                 <div class="flex flex-col justify-between">
                     <div>invoice# {{ data_bill.tenant_bills[0]?.invoiceNumber }}</div>
                     <div>
                         <div>Issue date</div>
-                        <div>10/10/2023</div>
+                        <div>{{ data_bill.tenant_bills[0]?.createdAt }}</div>
                     </div>
                 </div>
             </div>
             <hr class="mt-[32px] mb-[32] h-[10px]">
 
             <div>
-                <div class="text-[24px] font-bold">Tansamai</div>
-                <div class="mt-[4px] mb-[15px]">Add a message here for your customer</div>
+                <div class="text-[24px] font-bold">{{ $store.state.buildingInfo[0].attributes.buildingName }}</div>
+                <div class="mt-[4px] mb-[15px]">#ใบแจ้งชำระประจำเดือน</div>
             </div>
 
             <div class="grid grid-cols-3">
@@ -40,7 +40,7 @@
                 <div class="pr-[14px]">
                     <hr class="h-[10px]">
                     <div class="font-bold mb-[8px]">DETAILS</div>
-                    <div>ลูกบ้านอยู่เดือนสุดท้าย</div>
+                    <div>#ใบแจ้งชำระประจำเดือน</div>
                 </div>
                 <div class=" pr-[14px]">
                     <hr class="h-[10px]">
@@ -51,52 +51,52 @@
             </div>
             <div class="mt-[24px]">
                 <table>
-                    <tr class="border-b-[1px]">
-                        <th colspan="6">ITEM</th>
-                        <th>QTY</th>
-                        <th>PRICE</th>
-                        <th>AMOUNT</th>
+                    <tr class="border-b-[1px] flex justify-between ">
+                        <td class="w-[150px]">ITEM</td>
+                        <td class="w-[150px] flex justify-end">QTY</td>
+                        <td class="w-[150px] flex justify-end">PRICE</td>
+                        <td  class="w-[150px] flex justify-end">AMOUNT</td>
                     </tr>
-                    <tr class="border-b-[1px]">
-                        <td colspan="6">ค่าห้อง</td>
-                        <td>1</td>
-                        <td>{{ data_bill.tenant_bills[0]?.roomPrice }}</td>
-                        <td>{{ data_bill.tenant_bills[0]?.roomPrice }}</td>
+                    <tr class="border-b-[1px] flex justify-between">
+                        <td class="w-[150px]">ค่าห้อง</td>
+                        <td class="w-[150px] flex justify-end">1</td>
+                        <td class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.roomPrice }}</td>
+                        <td class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.roomPrice }}</td>
                     </tr>
-                    <tr class="border-b-[1px]">
-                        <td colspan="6">ค่าน้ำ</td>
-                        <td>{{ data_bill.tenant_bills[0]?.usageWater }}</td>
-                        <td>{{ data_bill.tenant_bills[0]?.waterPrice }}</td>
-                        <td>{{ data_bill.tenant_bills[0]?.waterPrice * data_bill.tenant_bills[0]?.usageWater }}</td>
+                    <tr  class="border-b-[1px] flex justify-between">
+                        <td class="w-[150px]">ค่าน้ำ</td>
+                        <td  class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.usageWater }}</td>
+                        <td  class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.waterPrice }}</td>
+                        <td  class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.waterPrice * data_bill.tenant_bills[0]?.usageWater }}</td>
                     </tr>
-                    <tr class="border-b-[1px]">
-                        <td colspan="6">ค่าไฟ</td>
-                        <td>{{ data_bill.tenant_bills[0]?.usageElectric }} </td>
-                        <td>{{ data_bill.tenant_bills[0]?.electricPrice }}</td>
-                        <td>{{ data_bill.tenant_bills[0]?.electricPrice * data_bill.tenant_bills[0]?.usageElectric }}
+                    <tr class="border-b-[1px] flex justify-between">
+                        <td class="w-[150px]">ค่าไฟ</td>
+                        <td  class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.usageElectric }} </td>
+                        <td  class="w-[150px] flex justify-end"> {{ data_bill.tenant_bills[0]?.electricPrice }}</td>
+                        <td  class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.electricPrice * data_bill.tenant_bills[0]?.usageElectric }}
                         </td>
                     </tr>
-                    <tr class="border-b-[1px]">
-                        <td colspan="6">ค่าส่วนกลาง</td>
-                        <td>1</td>
-                        <td>{{ data_bill.tenant_bills[0]?.communalPrice }}</td>
-                        <td>{{ data_bill.tenant_bills[0]?.communalPrice }}</td>
+                    <tr  class="border-b-[1px] flex justify-between">
+                        <td class="w-[150px]">ค่าส่วนกลาง</td>
+                        <td  class="w-[150px] flex justify-end">1</td>
+                        <td  class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.communalPrice }}</td>
+                        <td  class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.communalPrice }}</td>
                     </tr>
-                    <tr class="border-b-[1px]">
-                        <td colspan="6">ค่าอื่น ๆ</td>
-                        <td>1</td>
-                        <td>{{ data_bill.tenant_bills[0]?.otherPrice }}</td>
-                        <td>{{ data_bill.tenant_bills[0]?.otherPrice }}</td>
+                    <tr class="border-b-[1px] flex justify-between">
+                        <td class="w-[150px]">ค่าอื่น ๆ</td>
+                        <td  class="w-[150px] flex justify-end">1</td>
+                        <td  class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.otherPrice }}</td>
+                        <td  class="w-[150px] flex justify-end">{{ data_bill.tenant_bills[0]?.otherPrice }}</td>
                     </tr>
-                    <tr class="border-b-[1px]">
+                    <tr  class="border-b-[1px] flex justify-between">
                         <td colspan="8">SubTotal</td>
                         <td>{{ data_bill.tenant_bills[0]?.total - data_bill.tenant_bills[0]?.vat }}</td>
                     </tr>
-                    <tr class="border-b-[1px]">
+                    <tr class="border-b-[1px] flex justify-between">
                         <td colspan="8">Tax</td>
                         <td>{{ data_bill.tenant_bills[0]?.vat }}</td>
                     </tr>
-                    <tr class="border-b-[1px]">
+                    <tr  class="border-b-[1px] flex justify-between">
                         <td colspan="8" class="font-bold">Total Due</td>
                         <td class="font-bold">{{ data_bill.tenant_bills[0]?.total }}</td>
                     </tr>
