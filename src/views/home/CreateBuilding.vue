@@ -355,7 +355,7 @@ export default {
                                 })
                                 .finally(() => {
                                     this.$showNotification('#3A89CB', 'Created Building Success')
-
+                                    this.routeTo()
                                 })
             }
       
@@ -367,8 +367,6 @@ export default {
         routeTo() {
             this.$router.push({
                 path: '/',
-            }).then(() => {
-                // window.location.reload()
             })
         }
     },
