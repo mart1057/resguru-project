@@ -16,7 +16,7 @@
                     <div>invoice# {{ data_bill.tenant_bills[0]?.invoiceNumber }}</div>
                     <div>
                         <div>Issue date</div>
-                        <div>10/10/2023</div>
+                        <div>{{ data_bill.tenant_bills[0]?.createdAt }}</div>
                     </div>
                 </div>
             </div>
@@ -24,7 +24,7 @@
 
             <div>
                 <div class="text-[24px] font-bold">Tansamai</div>
-                <div class="mt-[4px] mb-[15px]">Add a message here for your customer</div>
+                <div class="mt-[4px] mb-[15px]">#ใบชำระการย้ายออก</div>
             </div>
 
             <div class="grid grid-cols-3">
@@ -40,7 +40,7 @@
                 <div class="pr-[14px]">
                     <hr class="h-[10px]">
                     <div class="font-bold mb-[8px]">DETAILS</div>
-                    <div>ลูกบ้านอยู่เดือนสุดท้าย</div>
+                    <div>>#ใบชำระการย้ายออก</div>
                 </div>
                 <div class=" pr-[14px]">
                     <hr class="h-[10px]">

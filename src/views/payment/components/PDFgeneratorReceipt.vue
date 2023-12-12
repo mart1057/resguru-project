@@ -1,5 +1,5 @@
 <template>
-    <div >
+    <div hidden>
         <!-- Your HTML content to convert to PDF -->
         <div ref="pdfContent" class="p-[8px]">
             <img class="watermarked" :src="Res_Guru_Logo_create06" />
@@ -16,7 +16,7 @@
                     <div>invoice# {{ data_bill.attributes.tenant_bill.data?.attributes.invoiceNumber }}</div>
                     <div>
                         <div>Issue date</div>
-                        <div>10/10/2023</div>
+                        <div>{{ data_bill.attributes.tenant_bill.data?.attributes.createdAt}}</div>
                     </div>
                 </div>
             </div>
@@ -24,7 +24,7 @@
 
             <div>
                 <div class="text-[24px] font-bold">Tansamai</div>
-                <div class="mt-[4px] mb-[15px]">Add a message here for your customer</div>
+                <div class="mt-[4px] mb-[15px]">#ใบเสร็จรับเงิน</div>
             </div>
 
             <div class="grid grid-cols-3">
@@ -50,7 +50,7 @@
                 <div class="pr-[14px]">
                     <hr class="h-[10px]">
                     <div class="font-bold mb-[8px]">DETAILS</div>
-                    <div>ลูกบ้านอยู่เดือนสุดท้าย</div>
+                    <div>#ใบเสร็จรับเงิน</div>
                 </div>
                 <div class=" pr-[14px]">
                     <hr class="h-[10px]">
@@ -152,7 +152,7 @@ export default {
             html2pdf()
                 .from(content)
                 .set(opt)
-                // .save();
+                .save();
         },
     },
 };
