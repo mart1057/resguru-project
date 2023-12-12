@@ -63,7 +63,7 @@
                     <div class="text-[24px] font-bold mt-[18px]">
                         0<span class="text-[14px] text-[#8396A6] ml-[4px]">/year</span>
                     </div>
-                    <div @click="submit"
+                    <div @click="redirectToCheckout"
                         class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
                         ทดลองใช้งานฟรี 30 วัน
                     </div>
@@ -344,7 +344,7 @@
                     <div class="text-[24px] font-bold mt-[18px]">
                         0<span class="text-[14px] text-[#8396A6] ml-[4px]">/year</span>
                     </div>
-                    <div @click="submit"
+                    <div @click="redirectToCheckout"
                         class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
                         ไม่จำกัดห้อง
                     </div>
@@ -625,7 +625,7 @@
                     <div class="text-[24px] font-bold mt-[18px]">
                         0<span class="text-[14px] text-[#8396A6] ml-[4px]">/year</span>
                     </div>
-                    <div @click="submit"
+                    <div @click="redirectToCheckout"
                         class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
                         ไม่จำกัดห้อง
                     </div>
@@ -874,7 +874,7 @@
 
 <script>
 import { StripeCheckout } from '@vue-stripe/vue-stripe';
-
+import axios from 'axios'
 
 export default {
   components: {
@@ -902,10 +902,36 @@ export default {
     };
   },
   methods: {
-    submit () {
-      // You will be redirected to Stripe's secure checkout page
-       this.$refs.checkoutRef.redirectToCheckout();
+    // Vue.js Component Method
+    async redirectToCheckout() {
+        try {
+            const userEmail = this.$store.state.userInfo.user.email; // Assume this is the logged-in user's email      
+            const response = await axios.post('https://api.resguru.app/api/create-checkout-session', { email: userEmail });
+            console.log(response.data)
+            window.location.href = response.data.session.url;
+  
+
+
+            // this code below is alternative code for making payment with sessionID instead of sessionURL
+            //  const sessionId = response.data.sessionId;
+            //  const stripe = Stripe('pk_live_51OIS4JD24IeZxpSXzAr7V8e4WXs6dsQrWEuq5dKdSLJYHttKS5LFImJOTi5I7uDI0cnYz3J2MZQUmPfGqtMVUgMJ00mqUKcPbT');
+            //  stripe.redirectToCheckout({ sessionId: sessionId });
+
+
+        } catch (error) {
+            console.error('Error:', error);
+        }
     },
+
   },
 };
+
+// Step of payment [case logged in user]
+// 1. Send email to backend with POST method
+// 2. Backend create session with email then return as URL
+// 3. Frontend Receive URL then redirect to URL [In case fail will no return URL and show fail case]
+// 4. URL will provide checkout form with autofill Email 
+// 5. Pay with that URL
+// 6. when pass then Stripe will send data in webhook
+// 7. Receive data via webhook then update information duedate or expire Date
 </script>
