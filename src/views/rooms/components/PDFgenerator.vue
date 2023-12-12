@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div hidden>
         <!-- Your HTML content to convert to PDF -->
         <div ref="pdfContent" class="p-[8px]">
             <img class="watermarked" :src="Res_Guru_Logo_create06" />
@@ -100,7 +100,7 @@
                         <td  class="w-[150px] flex justify-end">-{{ list_debt.deposit }}</td>
                     </tr>
                     <tr class="border-b-[1px] flex justify-between ">
-                        <td  class="w-[150px]">คืนค่ามัดจำ</td>
+                        <td  class="w-[150px]">คืนเงินประกันห้อง</td>
                         <td  class="w-[150px] flex justify-end">-</td>
                         <td  class="w-[150px] flex justify-end">-{{ list_debt.deposit2 }}</td>
                         <td  class="w-[150px] flex justify-end">-{{ list_debt.deposit2 }}</td>
@@ -109,7 +109,7 @@
                         <td colspan="8">SubTotal</td>
                         <td colspan="8" class="font-bold"></td>
                         <td colspan="8" class="font-bold"></td>
-                        <td>{{ (totalBillItems() - parseInt(list_debt.deposit2) - parseInt(list_debt.deposit) +
+                        <td>{{ (totalBillItems() - list_debt.deposit2 -list_debt.deposit +
                             parseInt(bill_detail.ele) + parseInt(bill_detail.water) + parseInt(bill_detail.other) + parseInt(
                                 bill_detail.communalPrice) + parseInt(bill_detail.room)) }}
                         </td>
@@ -118,7 +118,7 @@
                         <td colspan="8">Tax</td>
                         <td colspan="8" class="font-bold"></td>
                         <td colspan="8" class="font-bold"></td>
-                        <td>{{ ((totalBillItems() - parseInt(list_debt.deposit2) - parseInt(list_debt.deposit) +
+                        <td>{{ ((totalBillItems() - list_debt.deposit2 -list_debt.deposit +
                             parseInt(bill_detail.ele) + parseInt(bill_detail.water) + parseInt(bill_detail.other) + parseInt(
                                 bill_detail.communalPrice) + parseInt(bill_detail.room)) * 0.07) }}</td>
                     </tr>
@@ -127,10 +127,10 @@
                         <td colspan="8" class="font-bold"></td>
                         <td colspan="8" class="font-bold"></td>
                         <td class="font-bold"> {{
-                            (totalBillItems() - parseInt(list_debt.deposit2) - parseInt(list_debt.deposit) +
+                            (totalBillItems() - list_debt.deposit2 -list_debt.deposit +
                                 parseInt(bill_detail.ele) + parseInt(bill_detail.water) + parseInt(bill_detail.other) + parseInt(
                                     bill_detail.communalPrice) + parseInt(bill_detail.room)) + ((totalBillItems()
-                                        - parseInt(list_debt.deposit2) - parseInt(list_debt.deposit) +
+                                        - list_debt.deposit2 - list_debt.deposit +
                                         parseInt(bill_detail.ele) + parseInt(bill_detail.water) + parseInt(bill_detail.other) + parseInt(
                                             bill_detail.communalPrice) + parseInt(bill_detail.room)) * 0.07)
                         }}</td>
