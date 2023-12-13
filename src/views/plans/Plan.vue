@@ -61,7 +61,7 @@
                         Free Trial
                     </div>
                     <div class="text-[24px] font-bold mt-[18px]">
-                        0<span class="text-[14px] text-[#8396A6] ml-[4px]">/year</span>
+                        0<span class="text-[14px] text-[#8396A6] ml-[4px]">/Month</span>
                     </div>
                     <div @click="redirectToCheckout"
                         class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
@@ -339,12 +339,12 @@
                 </div>
                 <div class="pl-[15%]">
                     <div class="text-[18px] font-bold mt-[14px]">
-                        Free Trial
+                        Business
                     </div>
                     <div class="text-[24px] font-bold mt-[18px]">
-                        0<span class="text-[14px] text-[#8396A6] ml-[4px]">/year</span>
+                        500<span class="text-[14px] text-[#8396A6] ml-[4px]">/Month</span>
                     </div>
-                    <div @click="redirectToCheckout('prod_PAnQphVzbbl0Vz')"
+                    <div @click="redirectToCheckout('price_1OMRpVD24IeZxpSXWG79ni05')"
                         class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
                         ไม่จำกัดห้อง
                     </div>
@@ -620,12 +620,12 @@
                 </div>
                 <div class="pl-[15%]">
                     <div class="text-[18px] font-bold mt-[14px]">
-                        Free Trial
+                        Professional
                     </div>
                     <div class="text-[24px] font-bold mt-[18px]">
-                        0<span class="text-[14px] text-[#8396A6] ml-[4px]">/year</span>
+                        890<span class="text-[14px] text-[#8396A6] ml-[4px]">/Month</span>
                     </div>
-                    <div @click="redirectToCheckout('prod_PAnQrNUVPqw5hW')"
+                    <div @click="redirectToCheckout('price_1OMRpnD24IeZxpSXbaeOjlPO')"
                         class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
                         ไม่จำกัดห้อง
                     </div>
@@ -906,6 +906,7 @@ export default {
             const userEmail = this.$store.state.userInfo.user.email; // Assume this is the logged-in user's email   
             const buildingId = this.$route.query.building ;
             const stripeProductId = productKey ;
+            console.log("ProductKey",stripeProductId)
             if(userEmail){
                 await axios.post('https://api.resguru.app/api/create-checkout-session', { 
                     productId: stripeProductId,
