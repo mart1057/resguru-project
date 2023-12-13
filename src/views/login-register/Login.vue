@@ -506,11 +506,15 @@ export default {
                                 this.dataRegister.check = null,
                                 this.dataRegister.CID = ''
                         })
-                            .finally(() => {
-                                this.tab = 1
-                                loading.close()
-                                this.openNotificationRegister('top-right', '#3A89CB', 6000)
-                            })
+                        .catch(error => {
+                                    const errorMessage = error.error.message ? error.error.message : 'Error updating information';
+                                    this.$showNotification('danger', errorMessage);
+                        })
+                        .finally(() => {
+                            this.tab = 1
+                            loading.close()
+                            this.openNotificationRegister('top-right', '#3A89CB', 6000)
+                        })
                     }
                     else {
                         this.dataRegister.err = 'โปรดยอมรับเงื่อนไข';
