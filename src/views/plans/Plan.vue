@@ -344,7 +344,13 @@
                     <div class="text-[24px] font-bold mt-[18px]">
                         500<span class="text-[14px] text-[#8396A6] ml-[4px]">/Month</span>
                     </div>
-                    <div @click="redirectToCheckout('price_1OMRpVD24IeZxpSXWG79ni05')"
+                    <!-- Prod -->
+                    <!-- <div @click="redirectToCheckout('price_1OMRpVD24IeZxpSXWG79ni05')"
+                        class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
+                        ไม่จำกัดห้อง
+                    </div> -->
+                    <!-- Test Key -->
+                    <div @click="redirectToCheckout('price_1OMS8qD24IeZxpSX4afYIXOQ')"
                         class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
                         ไม่จำกัดห้อง
                     </div>
@@ -625,7 +631,13 @@
                     <div class="text-[24px] font-bold mt-[18px]">
                         890<span class="text-[14px] text-[#8396A6] ml-[4px]">/Month</span>
                     </div>
-                    <div @click="redirectToCheckout('price_1OMRpnD24IeZxpSXbaeOjlPO')"
+                    <!-- Here below is Prod Prod -->
+                    <!-- <div @click="redirectToCheckout('price_1OMRpnD24IeZxpSXbaeOjlPO')"
+                        class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
+                        ไม่จำกัดห้อง
+                    </div> -->
+                    <!-- Here below is Test Prod -->
+                    <div @click="redirectToCheckout('price_1OMS8qD24IeZxpSX4afYIXOQ')"
                         class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
                         ไม่จำกัดห้อง
                     </div>
@@ -882,7 +894,7 @@ export default {
 
   },
   data () {
-    this.publishableKey = 'pk_live_51MP3OfJUFs9Ue9lHg7rZSSAcncQ9OPAev8M1cE5voGYjOUD7UsRJN6z0ihSlWafs0BDGwJi9BfbaCSgMok0TneKB003we5Sen9';
+    this.publishableKey = 'pk_test_51OIS4JD24IeZxpSXYIzqDBBk9tYUPq8Q13LmjKWZsKqDdrtDpDsPxZgMWF812PxwGpGmQH372uiicnb4PJmdEPhx00tpDU28Q1';
     return {
       loading: false,
       products: [
