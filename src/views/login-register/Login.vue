@@ -498,7 +498,8 @@ export default {
                             // "googleToken": this.dataRegister.google,
                             // "lineToken": this.dataRegister.facebook
                         }).then((resp) => {
-                            this.dataRegister.email = '',
+                                this.dataLogin.user = resp.user.email,
+                                this.dataRegister.email = '',
                                 this.dataRegister.pass = '',
                                 this.dataRegister.last = '',
                                 this.dataRegister.name = '',
@@ -510,8 +511,9 @@ export default {
                         })
                         .catch(error => {
                             console.log(error)
-                                    const errorMessage = error.response ? error.response.data.error.message : 'Error updating information';
-                                    this.$showNotification('danger', errorMessage);
+                            const errorMessage = error.response ? error.response.data.error.message : 'Error updating information';
+                            this.$showNotification('danger', errorMessage);
+                            loading.close()
                         })
                     }
                     else {
