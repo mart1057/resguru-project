@@ -211,7 +211,7 @@
                             </div>
                         </div>
                         <div class="flex justify-end">
-                            <div @click="PDFPrint()">
+                            <div @click="PDFPrint(data)">
                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1318_22597" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5"
@@ -636,6 +636,7 @@ import axios from 'axios'
 import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import download from 'downloadjs';
 import fontkit from '@pdf-lib/fontkit'
+import { convertDateNoTime } from '@/components/hook/hook'
 export default {
     data() {
         return {
@@ -977,9 +978,10 @@ export default {
                 // Perform your desired action here when backspace is pressed
             }
         },
-        async PDFPrint() {
+        async PDFPrint(data) {
+            console.log(data);
             // Fetch an existing PDF document
-            const url = 'https://api.resguru.app/uploads/Res_Guru_Invoice_958f9f65e6.pdf'
+            const url = 'https://api.resguru.app/uploads/_aa6c4cb510.pdf'
             const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer())
             // Load a PDFDocument from the existing PDF bytes
             const pdfDoc = await PDFDocument.load(existingPdfBytes)
@@ -999,9 +1001,97 @@ export default {
             const { width, height } = firstPage.getSize()
 
             // Draw a string of text diagonally across the first page
-            firstPage.drawText('กกเ', {
-                x: 73,
-                y: 760 / 2 + 300,
+            firstPage.drawText(this.$store.state.buildingInfo[0].attributes.buildingName, {
+                x: 201,
+                y: 815 / 2 + 300,
+                size: 10,
+                font: font5,
+                color: rgb(0,0,0),
+                rotate: degrees(-0),
+            })
+            firstPage.drawText(convertDateNoTime(data.createdAt), {
+                x: 320,
+                y: 815 / 2 + 300,
+                size: 10,
+                font: font5,
+                color: rgb(0,0,0),
+                rotate: degrees(-0),
+            })
+            firstPage.drawText(this.$store.state.buildingInfo[0].attributes.buildingName+' '+'และ'+' '+data.user_sign_contract.users_permissions_user.firstName +' '+data.user_sign_contract.users_permissions_user.lastName, {
+                x: 95,
+                y: 771 / 2 + 300,
+                size: 10,
+                font: font5,
+                color: rgb(0,0,0),
+                rotate: degrees(-0),
+            })
+            firstPage.drawText(data.user_sign_contract.users_permissions_user.contactAddress, {
+                x: 306,
+                y: 771 / 2 + 300,
+                size: 10,
+                font: font5,
+                color: rgb(0,0,0),
+                rotate: degrees(-0),
+            })
+            firstPage.drawText(data.user_sign_contract.users_permissions_user.district, {
+                x: 95,
+                y: 727 / 2 + 300,
+                size: 10,
+                font: font5,
+                color: rgb(0,0,0),
+                rotate: degrees(-0),
+            })
+            firstPage.drawText(data.user_sign_contract.users_permissions_user.subDistrict, {
+                x: 250,
+                y: 727 / 2 + 300,
+                size: 10,
+                font: font5,
+                color: rgb(0,0,0),
+                rotate: degrees(-0),
+            })
+            firstPage.drawText(data.user_sign_contract.users_permissions_user.province, {
+                x: 380,
+                y: 727 / 2 + 300,
+                size: 10,
+                font: font5,
+                color: rgb(0,0,0),
+                rotate: degrees(-0),
+            })
+            firstPage.drawText(data.user_sign_contract.users_permissions_user.firstName +' '+data.user_sign_contract.users_permissions_user.lastName, {
+                x: 265,
+                y: 683 / 2 + 300,
+                size: 10,
+                font: font5,
+                color: rgb(0,0,0),
+                rotate: degrees(-0),
+            })
+            firstPage.drawText(data.user_sign_contract.users_permissions_user.contactAddress, {
+                x: 440,
+                y: 683 / 2 + 300,
+                size: 10,
+                font: font5,
+                color: rgb(0,0,0),
+                rotate: degrees(-0),
+            })
+            firstPage.drawText(data.user_sign_contract.users_permissions_user.district, {
+                x: 145,
+                y: 639 / 2 + 300,
+                size: 10,
+                font: font5,
+                color: rgb(0,0,0),
+                rotate: degrees(-0),
+            })
+            firstPage.drawText(data.user_sign_contract.users_permissions_user.subDistrict, {
+                x: 286,
+                y: 639 / 2 + 300,
+                size: 10,
+                font: font5,
+                color: rgb(0,0,0),
+                rotate: degrees(-0),
+            })
+            firstPage.drawText(data.user_sign_contract.users_permissions_user.province, {
+                x: 428,
+                y: 639 / 2 + 300,
                 size: 10,
                 font: font5,
                 color: rgb(0,0,0),

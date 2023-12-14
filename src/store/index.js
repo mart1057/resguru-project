@@ -11,7 +11,7 @@ export default new Vuex.Store({
     login:false,
     errLogin: '',
     main:true,
-    building: 0,
+    building: 1,
     buildingInfo:{}
   },
   getters: {
