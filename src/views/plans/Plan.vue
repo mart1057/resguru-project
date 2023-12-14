@@ -61,7 +61,7 @@
                         Free Trial
                     </div>
                     <div class="text-[24px] font-bold mt-[18px]">
-                        0<span class="text-[14px] text-[#8396A6] ml-[4px]">/year</span>
+                        0<span class="text-[14px] text-[#8396A6] ml-[4px]">/Month</span>
                     </div>
                     <div @click="redirectToCheckout"
                         class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
@@ -339,12 +339,18 @@
                 </div>
                 <div class="pl-[15%]">
                     <div class="text-[18px] font-bold mt-[14px]">
-                        Free Trial
+                        Business
                     </div>
                     <div class="text-[24px] font-bold mt-[18px]">
-                        0<span class="text-[14px] text-[#8396A6] ml-[4px]">/year</span>
+                        500<span class="text-[14px] text-[#8396A6] ml-[4px]">/Month</span>
                     </div>
-                    <div @click="redirectToCheckout"
+                    <!-- Prod -->
+                    <!-- <div @click="redirectToCheckout('price_1OMRpVD24IeZxpSXWG79ni05')"
+                        class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
+                        ไม่จำกัดห้อง
+                    </div> -->
+                    <!-- Test Key -->
+                    <div @click="redirectToCheckout('price_1OMS8qD24IeZxpSX4afYIXOQ')"
                         class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
                         ไม่จำกัดห้อง
                     </div>
@@ -620,12 +626,18 @@
                 </div>
                 <div class="pl-[15%]">
                     <div class="text-[18px] font-bold mt-[14px]">
-                        Free Trial
+                        Professional
                     </div>
                     <div class="text-[24px] font-bold mt-[18px]">
-                        0<span class="text-[14px] text-[#8396A6] ml-[4px]">/year</span>
+                        890<span class="text-[14px] text-[#8396A6] ml-[4px]">/Month</span>
                     </div>
-                    <div @click="redirectToCheckout"
+                    <!-- Here below is Prod Prod -->
+                    <!-- <div @click="redirectToCheckout('price_1OMRpnD24IeZxpSXbaeOjlPO')"
+                        class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
+                        ไม่จำกัดห้อง
+                    </div> -->
+                    <!-- Here below is Test Prod -->
+                    <div @click="redirectToCheckout('price_1OMS8qD24IeZxpSX4afYIXOQ')"
                         class="w-[340px] rounded-[22px] bg-[#003765] mt-[18px] text-[white] text-center pt-[10px] pb-[10px] cursor-pointer">
                         ไม่จำกัดห้อง
                     </div>
@@ -882,7 +894,7 @@ export default {
 
   },
   data () {
-    this.publishableKey = 'pk_live_51MP3OfJUFs9Ue9lHg7rZSSAcncQ9OPAev8M1cE5voGYjOUD7UsRJN6z0ihSlWafs0BDGwJi9BfbaCSgMok0TneKB003we5Sen9';
+    this.publishableKey = 'pk_test_51OIS4JD24IeZxpSXYIzqDBBk9tYUPq8Q13LmjKWZsKqDdrtDpDsPxZgMWF812PxwGpGmQH372uiicnb4PJmdEPhx00tpDU28Q1';
     return {
       loading: false,
       products: [
@@ -902,28 +914,32 @@ export default {
     };
   },
   methods: {
-    // Vue.js Component Method
-    async redirectToCheckout() {
-        try {
-            const userEmail = this.$store.state.userInfo.user.email; // Assume this is the logged-in user's email      
-            const response = await axios.post('https://api.resguru.app/api/create-checkout-session', { email: userEmail });
-            console.log(response.data)
-            window.location.href = response.data.session.url;
-  
-
-
-            // this code below is alternative code for making payment with sessionID instead of sessionURL
-            //  const sessionId = response.data.sessionId;
-            //  const stripe = Stripe('pk_live_51OIS4JD24IeZxpSXzAr7V8e4WXs6dsQrWEuq5dKdSLJYHttKS5LFImJOTi5I7uDI0cnYz3J2MZQUmPfGqtMVUgMJ00mqUKcPbT');
-            //  stripe.redirectToCheckout({ sessionId: sessionId });
-
-
-        } catch (error) {
-            console.error('Error:', error);
-        }
+    async redirectToCheckout(productKey) {
+            const userEmail = this.$store.state.userInfo.user.email; // Assume this is the logged-in user's email   
+            const buildingId = this.$route.query.building ;
+            const stripeProductId = productKey ;
+            console.log("ProductKey",stripeProductId)
+            if(userEmail){
+                await axios.post('https://api.resguru.app/api/create-checkout-session', { 
+                    productId: stripeProductId,
+                    email: userEmail,
+                    buildingId: buildingId
+                })
+                .then( (resp) => {
+                    console.log(resp)
+                    window.location.href = resp.data.session.url;
+                    }
+                )
+                .catch(error => {
+                    const errorMessage = error ? error : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.$showNotification('#3A89CB', 'Reloading to checkout form')
+                })
+            }
     },
-
-  },
+  }
 };
 
 // Step of payment [case logged in user]

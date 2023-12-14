@@ -470,7 +470,9 @@ export default {
                             // "googleToken": this.dataRegister.google,
                             // "lineToken": this.dataRegister.facebook
                         }).then((resp) => {
-                            this.dataRegister.email = '',
+                                this.$showNotification('#3A89CB', "Register Successfully");
+                                this.dataLogin.user = resp.data.user.email,
+                                this.dataRegister.email = '',
                                 this.dataRegister.pass = '',
                                 this.dataRegister.last = '',
                                 this.dataRegister.name = '',
@@ -482,8 +484,13 @@ export default {
                             .finally(() => {
                                 this.tab = 1
                                 loading.close()
-                                this.openNotificationRegister('top-right', '#3A89CB', 6000)
-                            })
+                        })
+                        .catch(error => {
+                            console.log(error)
+                            const errorMessage = error.response ? error.response.data.error.message : 'Error updating information';
+                            this.$showNotification('danger', errorMessage);
+                            loading.close()
+                        })
                     }
                     else {
                         this.dataRegister.err = 'โปรดยอมรับเงื่อนไข';
