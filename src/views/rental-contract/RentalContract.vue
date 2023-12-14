@@ -211,7 +211,7 @@
                             </div>
                         </div>
                         <div class="flex justify-end">
-                            <div @click="PDFPrintRental()">
+                            <div @click="PDFPrintRental(data)">
                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1318_22597" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5"
@@ -717,7 +717,7 @@ export default {
     },
     methods: {
         async PDFPrintRental(tr) {
-            this.$refs.childComponentPDFRental.generatePDF()
+            this.$refs.childComponentPDFRental.generatePDF(tr)
         },
         openNotificationRenralPage(position = null, color, title, desc) {
             const noti = this.$vs.notification({
@@ -984,6 +984,96 @@ export default {
                 // Perform your desired action here when backspace is pressed
             }
         },
+        // async PDFPrint(data) {
+        //     const url = 'https://api.resguru.app/uploads/_aa6c4cb510.pdf'
+        //     const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer())
+        //     const pdfDoc = await PDFDocument.load(existingPdfBytes)
+        //     pdfDoc.registerFontkit(fontkit)
+
+
+        //     const url2 = 'https://docu-api-dev.clicksbiz.com/uploads/Prompt_Black_9e15c3bdf5.ttf'
+        //     const ubuntuBytes = await fetch(url2).then(res => res.arrayBuffer())
+        //     const font5 = await pdfDoc.embedFont(ubuntuBytes)
+        //     const pages = pdfDoc.getPages()
+        //     const firstPage = pages[0]
+        //     const { width, height } = firstPage.getSize()
+        //     firstPage.drawText(this.$store.state.buildingInfo[0].attributes.buildingName, {
+        //         x: 201,
+        //         y: 815 / 2 + 300,
+        //         size: 10,
+        //         font: font5,
+        //         color: rgb(0,0,0),
+        //         rotate: degrees(-0),
+        //     })
+        //     firstPage.drawText(convertDateNoTime(data.createdAt), {
+        //         x: 320,
+        //         y: 815 / 2 + 300,
+        //         size: 10,
+        //         font: font5,
+        //         color: rgb(0,0,0),
+        //         rotate: degrees(-0),
+        //     })
+        //     firstPage.drawText(this.$store.state.buildingInfo[0].attributes.buildingName+' '+'และ'+' '+data.user_sign_contract.users_permissions_user.firstName +' '+data.user_sign_contract.users_permissions_user.lastName, {
+        //         x: 95,
+        //         y: 771 / 2 + 300,
+        //         size: 10,
+        //         font: font5,
+        //         color: rgb(0,0,0),
+        //         rotate: degrees(-0),
+        //     })
+        //     firstPage.drawText(data.user_sign_contract.users_permissions_user.contactAddress, {
+        //         x: 306,
+        //         y: 771 / 2 + 300,
+        //         size: 10,
+        //         font: font5,
+        //         color: rgb(0,0,0),
+        //         rotate: degrees(-0),
+        //     })
+        //     firstPage.drawText(data.user_sign_contract.users_permissions_user.district, {
+        //         x: 95,
+        //         y: 727 / 2 + 300,
+        //         size: 10,
+        //         font: font5,
+        //         color: rgb(0,0,0),
+        //         rotate: degrees(-0),
+        //     })
+        //     firstPage.drawText(data.user_sign_contract.users_permissions_user.subDistrict, {
+        //         x: 250,
+        //         y: 727 / 2 + 300,
+        //         size: 10,
+        //         font: font5,
+        //         color: rgb(0,0,0),
+        //         rotate: degrees(-0),
+        //     })
+        //     firstPage.drawText(data.user_sign_contract.users_permissions_user.province, {
+        //         x: 380,
+        //         y: 727 / 2 + 300,
+        //         size: 10,
+        //         font: font5,
+        //         color: rgb(0,0,0),
+        //         rotate: degrees(-0),
+        //     })
+        //     firstPage.drawText(data.user_sign_contract.users_permissions_user.firstName +' '+data.user_sign_contract.users_permissions_user.lastName, {
+        //         x: 265,
+        //         y: 683 / 2 + 300,
+        //         size: 10,
+        //         font: font5,
+        //         color: rgb(0,0,0),
+        //         rotate: degrees(-0),
+        //     })
+        //     firstPage.drawText(data.user_sign_contract.users_permissions_user.firstName +' '+data.user_sign_contract.users_permissions_user.lastName, {
+        //         x: 265,
+        //         y: 683 / 2 + 300,
+        //         size: 10,
+        //         font: font5,
+        //         color: rgb(0,0,0),
+        //         rotate: degrees(-0),
+        //     })
+        //     const pdfBytes = await pdfDoc.save()
+        //     const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+        //     const pdfUrl = URL.createObjectURL(pdfBlob);
+        //     window.open(pdfUrl, '_blank');
+        // },
     }
 }
 </script>
