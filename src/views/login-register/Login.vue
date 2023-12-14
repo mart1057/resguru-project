@@ -498,7 +498,8 @@ export default {
                             // "googleToken": this.dataRegister.google,
                             // "lineToken": this.dataRegister.facebook
                         }).then((resp) => {
-                                this.dataLogin.user = resp.user.email,
+                                this.$showNotification('#3A89CB', "Register Successfully");
+                                this.dataLogin.user = resp.data.user.email,
                                 this.dataRegister.email = '',
                                 this.dataRegister.pass = '',
                                 this.dataRegister.last = '',
