@@ -211,7 +211,7 @@
                             </div>
                         </div>
                         <div class="flex justify-end">
-                            <div>
+                            <div @click="PDFPrint()">
                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1318_22597" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5"
@@ -633,6 +633,9 @@
 </template>
 <script>
 import axios from 'axios'
+import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import download from 'downloadjs';
+import fontkit from '@pdf-lib/fontkit'
 export default {
     data() {
         return {
@@ -973,6 +976,47 @@ export default {
                 this.getRentalContract(8)
                 // Perform your desired action here when backspace is pressed
             }
+        },
+        async PDFPrint() {
+            // Fetch an existing PDF document
+            const url = 'https://api.resguru.app/uploads/Res_Guru_Invoice_958f9f65e6.pdf'
+            const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer())
+            // Load a PDFDocument from the existing PDF bytes
+            const pdfDoc = await PDFDocument.load(existingPdfBytes)
+            pdfDoc.registerFontkit(fontkit)
+
+            // Embed the Helvetica font
+            const url2 = 'https://docu-api-dev.clicksbiz.com/uploads/Prompt_Black_9e15c3bdf5.ttf'
+            const ubuntuBytes = await fetch(url2).then(res => res.arrayBuffer())
+            const font5 = await pdfDoc.embedFont(ubuntuBytes)
+            // const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
+
+            // Get the first page of the document
+            const pages = pdfDoc.getPages()
+            const firstPage = pages[0]
+
+            // Get the width and height of the first page
+            const { width, height } = firstPage.getSize()
+
+            // Draw a string of text diagonally across the first page
+            firstPage.drawText('กกเ', {
+                x: 73,
+                y: 760 / 2 + 300,
+                size: 10,
+                font: font5,
+                color: rgb(0,0,0),
+                rotate: degrees(-0),
+            })
+
+            // Serialize the PDFDocument to bytes (a Uint8Array)
+            const pdfBytes = await pdfDoc.save()
+            const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+            // Create a URL for the Blob
+            const pdfUrl = URL.createObjectURL(pdfBlob);
+            // Open a new tab with the PDF content
+            window.open(pdfUrl, '_blank');
+            // Trigger the browser to download the PDF document
+            // download(pdfBytes, "pdf-lib_modification_example.pdf", "application/pdf");
         },
     }
 }
