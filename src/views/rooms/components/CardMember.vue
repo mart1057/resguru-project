@@ -117,7 +117,7 @@
                                             :disabled="is_edit == true" />
                                     </div>
                                     <div class="col-span-1">
-                                        <div>เลขมิเตอร์ค่าน้ำไฟเริ่มต้น</div>
+                                        <div>เลขมิเตอร์ค่าไฟเริ่มต้น</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             :disabled="is_edit == true" />
                                     </div>
@@ -255,7 +255,7 @@
                                 </div>
                                 <div class="grid grid-cols-8 gap-2  text-custom w-[100%] mt-[6px] ">
                                     <div class="col-span-4 ">
-                                        <div>บุคลที่สามารถติดต่อได้กรณีฉุกเฉิน</div>
+                                        <div>บุคคลที่สามารถติดต่อได้กรณีฉุกเฉิน</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             v-model="room_detail.emergencyPerson" :disabled="is_edit == true" />
                                     </div>

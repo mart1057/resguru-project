@@ -33,7 +33,7 @@
                     </div>
                     <div @click=" routTab(3)" class="cursor-pointer  ml-[8px]"
                         :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
-                        สิ่งอำนวยความสะดวก
+                        บริการอื่น ๆ
                     </div>
                     <div @click=" routTab(4)" class="cursor-pointer  ml-[8px]" v-if="$route.query.id_user"
                         :class="tab == 4 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : ' text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
