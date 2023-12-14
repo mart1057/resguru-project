@@ -294,7 +294,7 @@
         </div>
         <div class="h-[100%] flex" v-if="tab == 4">
             <div class="flex flex-col justify-between w-[30%] h-[100vh!important] ">
-                <div>
+                <div @click="tab = 3">
                     <img :src="Logo01" />
                     <div class="text-[white] flex mt-[16px] cursor-pointer">
                         <div class="flex justify-center items-center mr-[8px]"><svg width="7" height="12" viewBox="0 0 7 12"
