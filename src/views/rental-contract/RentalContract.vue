@@ -211,7 +211,7 @@
                             </div>
                         </div>
                         <div class="flex justify-end">
-                            <div @click="PDFPrint(data)">
+                            <div @click="PDFPrintRental()">
                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1318_22597" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5"
@@ -560,8 +560,8 @@
                                     <div>ประเภทห้องพัก</div>
                                     <select placeholder="Select" v-model="room_detail_create.type_room"
                                         class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]">
-                                        <option v-for="type in room_type" :value="type.id">
-                                            {{ type.attributes.roomTypeName }}
+                                        <option v-for="type_room in room_type" :value="type_room.id">
+                                            {{ type_room.attributes.roomTypeName }}
                                         </option>
                                     </select>
                                     <div v-if="errorFieldMessage !== ''" class="text-danger">
@@ -629,6 +629,7 @@
                 </div>
             </div>
         </b-modal>
+        <PDFgeneratorRentalContract ref="childComponentPDFRental"/>
     </div>
 </template>
 <script>
@@ -637,7 +638,9 @@ import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
 import download from 'downloadjs';
 import fontkit from '@pdf-lib/fontkit'
 import { convertDateNoTime } from '@/components/hook/hook'
+import PDFgeneratorRentalContract from '@/views/rental-contract/component/PDFgeneratorRentalContract'
 export default {
+    components:{PDFgeneratorRentalContract},
     data() {
         return {
             check_rent: '',
@@ -713,6 +716,9 @@ export default {
         // }, 1000)
     },
     methods: {
+        async PDFPrintRental(tr) {
+            this.$refs.childComponentPDFRental.generatePDF()
+        },
         openNotificationRenralPage(position = null, color, title, desc) {
             const noti = this.$vs.notification({
                 sticky: true,
@@ -977,136 +983,6 @@ export default {
                 this.getRentalContract(8)
                 // Perform your desired action here when backspace is pressed
             }
-        },
-        async PDFPrint(data) {
-            console.log(data);
-            // Fetch an existing PDF document
-            const url = 'https://api.resguru.app/uploads/_aa6c4cb510.pdf'
-            const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer())
-            // Load a PDFDocument from the existing PDF bytes
-            const pdfDoc = await PDFDocument.load(existingPdfBytes)
-            pdfDoc.registerFontkit(fontkit)
-
-            // Embed the Helvetica font
-            const url2 = 'https://docu-api-dev.clicksbiz.com/uploads/Prompt_Black_9e15c3bdf5.ttf'
-            const ubuntuBytes = await fetch(url2).then(res => res.arrayBuffer())
-            const font5 = await pdfDoc.embedFont(ubuntuBytes)
-            // const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica)
-
-            // Get the first page of the document
-            const pages = pdfDoc.getPages()
-            const firstPage = pages[0]
-
-            // Get the width and height of the first page
-            const { width, height } = firstPage.getSize()
-
-            // Draw a string of text diagonally across the first page
-            firstPage.drawText(this.$store.state.buildingInfo[0].attributes.buildingName, {
-                x: 201,
-                y: 815 / 2 + 300,
-                size: 10,
-                font: font5,
-                color: rgb(0,0,0),
-                rotate: degrees(-0),
-            })
-            firstPage.drawText(convertDateNoTime(data.createdAt), {
-                x: 320,
-                y: 815 / 2 + 300,
-                size: 10,
-                font: font5,
-                color: rgb(0,0,0),
-                rotate: degrees(-0),
-            })
-            firstPage.drawText(this.$store.state.buildingInfo[0].attributes.buildingName+' '+'และ'+' '+data.user_sign_contract.users_permissions_user.firstName +' '+data.user_sign_contract.users_permissions_user.lastName, {
-                x: 95,
-                y: 771 / 2 + 300,
-                size: 10,
-                font: font5,
-                color: rgb(0,0,0),
-                rotate: degrees(-0),
-            })
-            firstPage.drawText(data.user_sign_contract.users_permissions_user.contactAddress, {
-                x: 306,
-                y: 771 / 2 + 300,
-                size: 10,
-                font: font5,
-                color: rgb(0,0,0),
-                rotate: degrees(-0),
-            })
-            firstPage.drawText(data.user_sign_contract.users_permissions_user.district, {
-                x: 95,
-                y: 727 / 2 + 300,
-                size: 10,
-                font: font5,
-                color: rgb(0,0,0),
-                rotate: degrees(-0),
-            })
-            firstPage.drawText(data.user_sign_contract.users_permissions_user.subDistrict, {
-                x: 250,
-                y: 727 / 2 + 300,
-                size: 10,
-                font: font5,
-                color: rgb(0,0,0),
-                rotate: degrees(-0),
-            })
-            firstPage.drawText(data.user_sign_contract.users_permissions_user.province, {
-                x: 380,
-                y: 727 / 2 + 300,
-                size: 10,
-                font: font5,
-                color: rgb(0,0,0),
-                rotate: degrees(-0),
-            })
-            firstPage.drawText(data.user_sign_contract.users_permissions_user.firstName +' '+data.user_sign_contract.users_permissions_user.lastName, {
-                x: 265,
-                y: 683 / 2 + 300,
-                size: 10,
-                font: font5,
-                color: rgb(0,0,0),
-                rotate: degrees(-0),
-            })
-            firstPage.drawText(data.user_sign_contract.users_permissions_user.contactAddress, {
-                x: 440,
-                y: 683 / 2 + 300,
-                size: 10,
-                font: font5,
-                color: rgb(0,0,0),
-                rotate: degrees(-0),
-            })
-            firstPage.drawText(data.user_sign_contract.users_permissions_user.district, {
-                x: 145,
-                y: 639 / 2 + 300,
-                size: 10,
-                font: font5,
-                color: rgb(0,0,0),
-                rotate: degrees(-0),
-            })
-            firstPage.drawText(data.user_sign_contract.users_permissions_user.subDistrict, {
-                x: 286,
-                y: 639 / 2 + 300,
-                size: 10,
-                font: font5,
-                color: rgb(0,0,0),
-                rotate: degrees(-0),
-            })
-            firstPage.drawText(data.user_sign_contract.users_permissions_user.province, {
-                x: 428,
-                y: 639 / 2 + 300,
-                size: 10,
-                font: font5,
-                color: rgb(0,0,0),
-                rotate: degrees(-0),
-            })
-
-            // Serialize the PDFDocument to bytes (a Uint8Array)
-            const pdfBytes = await pdfDoc.save()
-            const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
-            // Create a URL for the Blob
-            const pdfUrl = URL.createObjectURL(pdfBlob);
-            // Open a new tab with the PDF content
-            window.open(pdfUrl, '_blank');
-            // Trigger the browser to download the PDF document
-            // download(pdfBytes, "pdf-lib_modification_example.pdf", "application/pdf");
         },
     }
 }
