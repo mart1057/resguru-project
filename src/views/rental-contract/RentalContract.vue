@@ -211,7 +211,7 @@
                             </div>
                         </div>
                         <div class="flex justify-end">
-                            <div>
+                            <div @click="PDFPrintRental()">
                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1318_22597" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5"
@@ -560,8 +560,8 @@
                                     <div>ประเภทห้องพัก</div>
                                     <select placeholder="Select" v-model="room_detail_create.type_room"
                                         class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]">
-                                        <option v-for="type in room_type" :value="type.id">
-                                            {{ type.attributes.roomTypeName }}
+                                        <option v-for="type_room in room_type" :value="type_room.id">
+                                            {{ type_room.attributes.roomTypeName }}
                                         </option>
                                     </select>
                                     <div v-if="errorFieldMessage !== ''" class="text-danger">
@@ -629,11 +629,18 @@
                 </div>
             </div>
         </b-modal>
+        <PDFgeneratorRentalContract ref="childComponentPDFRental"/>
     </div>
 </template>
 <script>
 import axios from 'axios'
+import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import download from 'downloadjs';
+import fontkit from '@pdf-lib/fontkit'
+import { convertDateNoTime } from '@/components/hook/hook'
+import PDFgeneratorRentalContract from '@/views/rental-contract/component/PDFgeneratorRentalContract'
 export default {
+    components:{PDFgeneratorRentalContract},
     data() {
         return {
             check_rent: '',
@@ -709,6 +716,9 @@ export default {
         // }, 1000)
     },
     methods: {
+        async PDFPrintRental(tr) {
+            this.$refs.childComponentPDFRental.generatePDF()
+        },
         openNotificationRenralPage(position = null, color, title, desc) {
             const noti = this.$vs.notification({
                 sticky: true,

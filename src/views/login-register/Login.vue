@@ -54,7 +54,8 @@
                                     </vs-checkbox>
                                 </div>
                             </div>
-                            <div class="text-[#D44769] text-center flex justify-center items-center cursor-pointer" @click="tab = 3">Forgot
+                            <div class="text-[#D44769] text-center flex justify-center items-center cursor-pointer"
+                                @click="tab = 3">Forgot
                                 password</div>
                         </div>
                     </div>
@@ -121,40 +122,14 @@
 
                         </div>
                         <div class="font-bold mt-[10px]">วัน/เดือน/ปีเกิด (ค.ศ)</div>
-                        <div class="grid grid-cols-3 w-[100%] gap-4">
-                            <div>
-                                <div class="mt-[8px]">
-                                    <vs-select placeholder="วัน" v-model="dataRegister.birth.day" color="#003765">
-                                        <vs-option v-for="day in days" :label="day" :value="day">
-                                            {{ day }}
-                                        </vs-option>
-                                    </vs-select>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="mt-[8px]">
-                                    <vs-select placeholder="เดือน" v-model="dataRegister.birth.mouth" color="#003765">
-                                        <vs-option v-for="mouth in mouths" :label="mouth" :value="mouth">
-                                            {{ mouth }}
-                                        </vs-option>
-                                    </vs-select>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="mt-[8px]">
-                                    <vs-select placeholder="ปี" v-model="dataRegister.birth.year" color="#003765">
-                                        <vs-option v-for="year in years" :label="year" :value="year">
-                                            {{ year }}
-                                        </vs-option>
-                                    </vs-select>
-                                </div>
-                            </div>
-                        </div>
+                        <input type="date" placeholder="CID"
+                            class="h-[36px] w-[100%] pl-[18px] pr-[18px] rounded-[12px] bg-[#F3F7FA]"
+                            v-model="dataRegister.birth" />
                         <div class="mt-[10px]">
                             <div class="font-bold">Citicen ID</div>
                             <div class="">
-                                <input type="CID" placeholder="CID"
-                                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" v-model="dataRegister.CID" />
+                                <input type="input" placeholder="CID" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                    v-model="dataRegister.CID" />
                             </div>
                         </div>
                         <div class="mt-[10px]">
@@ -241,15 +216,15 @@
                         <button @click="registerSubmit()"
                             class="bg-[#003765] w-[100%] h-[38px] rounded-[12px] text-center text-[white]">สร้างบัญชี</button>
                         <button @click="tab = 1"
-                        class="bg-[#3A89CB] w-[100%] h-[38px] rounded-[12px] text-center text-[white] mt-[8px]">คุณมีบัญชีอยู่แล้ว
-                        ? เข้าสู่ระบบที่นี่</button>
+                            class="bg-[#3A89CB] w-[100%] h-[38px] rounded-[12px] text-center text-[white] mt-[8px]">คุณมีบัญชีอยู่แล้ว
+                            ? เข้าสู่ระบบที่นี่</button>
                     </div>
                 </div>
             </div>
         </div>
         <div class="h-[100%] flex" v-if="tab == 3">
             <div class="flex flex-col justify-between w-[30%] h-[100vh!important] ">
-                <div>
+                <div @click="tab = 1">
                     <img :src="Logo01" />
                     <div class="text-[white] flex mt-[16px] cursor-pointer">
                         <div class="flex justify-center items-center mr-[8px]"><svg width="7" height="12" viewBox="0 0 7 12"
@@ -304,8 +279,8 @@
                             <div class="text-[#D44769] text-center flex justify-center items-center">Forgot password</div>
                         </div> -->
                     </div>
-                    <div v-if="errorsForgotPass " class="flex justify-center text-[red]">
-                        <div>{{ errorsForgotPass  }}</div>
+                    <div v-if="errorsForgotPass" class="flex justify-center text-[red]">
+                        <div>{{ errorsForgotPass }}</div>
                     </div>
                     <div class="mt-[18px]">
                         <button @click="forgotPass()"
@@ -319,7 +294,7 @@
         </div>
         <div class="h-[100%] flex" v-if="tab == 4">
             <div class="flex flex-col justify-between w-[30%] h-[100vh!important] ">
-                <div>
+                <div @click="tab = 3">
                     <img :src="Logo01" />
                     <div class="text-[white] flex mt-[16px] cursor-pointer">
                         <div class="flex justify-center items-center mr-[8px]"><svg width="7" height="12" viewBox="0 0 7 12"
@@ -371,8 +346,8 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="errorsResrtPass " class="flex justify-center text-[red]">
-                        <div>{{ errorsResrtPass  }}</div>
+                    <div v-if="errorsResrtPass" class="flex justify-center text-[red]">
+                        <div>{{ errorsResrtPass }}</div>
                     </div>
                     <div class="mt-[18px]">
                         <button @click="resetPass()"
@@ -399,11 +374,11 @@ export default {
             mouths: [...Array(12).keys()].map((day) => day + 1),
             years: [],
             email_forgot: '',
-            errorsForgotPass :'',
-            reset_pass:'',
-            reset_pass_con:'',
-            code_reset:'',
-            errorsResrtPass :'',
+            errorsForgotPass: '',
+            reset_pass: '',
+            reset_pass_con: '',
+            code_reset: '',
+            errorsResrtPass: '',
             dataLogin: {
                 user: '',
                 pass: '',
@@ -411,13 +386,9 @@ export default {
             dataRegister: {
                 name: '',
                 last: '',
-                CID:'',
+                CID: '',
                 phone: '',
-                birth: {
-                    day: '',
-                    mouth: '',
-                    year: ''
-                },
+                birth: '',
                 email: '',
                 pass: '',
                 pass_con: '',
@@ -480,7 +451,7 @@ export default {
             loading.close()
         },
         registerSubmit() {
-            if (this.dataRegister.email != '' & this.dataRegister.name != '' & this.dataRegister.last != '' & this.dataRegister.phone != '' & this.dataRegister.pass != '' & this.dataRegister.pass_con != '' & this.dataRegister.sex != '' & this.dataRegister.birth.year != '' & this.dataRegister.birth.mouth != '' & this.dataRegister.birth.day != '') {
+            if (this.dataRegister.email != '' & this.dataRegister.name != '' & this.dataRegister.last != '' & this.dataRegister.phone != '' & this.dataRegister.pass != '' & this.dataRegister.pass_con != '' & this.dataRegister.sex != '' & this.dataRegister.birth!= '' & this.dataRegister.sex !=null) {
                 if (this.dataRegister.pass == this.dataRegister.pass_con) {
                     if (this.dataRegister.check) {
                         const loading = this.$vs.loading()
@@ -493,24 +464,33 @@ export default {
                             "lastName": this.dataRegister.last,
                             "firstName": this.dataRegister.name,
                             "sex": this.dataRegister.sex,
-                            "idCard": this.dataRegister.CID
+                            "idCard": this.dataRegister.CID,
+                            "dateOfBirth" : this.dataRegister.birth
                             // "filePath": this.dataRegister.filePath,
                             // "googleToken": this.dataRegister.google,
                             // "lineToken": this.dataRegister.facebook
                         }).then((resp) => {
-                            this.dataRegister.email = '',
+                                this.$showNotification('#3A89CB', "Register Successfully");
+                                this.dataLogin.user = resp.data.user.email,
+                                this.dataRegister.email = '',
                                 this.dataRegister.pass = '',
                                 this.dataRegister.last = '',
                                 this.dataRegister.name = '',
                                 this.dataRegister.sex = null,
                                 this.dataRegister.check = null,
                                 this.dataRegister.CID = ''
+                                this.dataRegister.birth = ''
                         })
                             .finally(() => {
                                 this.tab = 1
                                 loading.close()
-                                this.openNotificationRegister('top-right', '#3A89CB', 6000)
-                            })
+                        })
+                        .catch(error => {
+                            console.log(error)
+                            const errorMessage = error.response ? error.response.data.error.message : 'Error updating information';
+                            this.$showNotification('danger', errorMessage);
+                            loading.close()
+                        })
                     }
                     else {
                         this.dataRegister.err = 'โปรดยอมรับเงื่อนไข';
@@ -576,7 +556,7 @@ export default {
                 this.errorsForgotPass = 'The email format is invalid.';
             }
         },
-        resetPass(){
+        resetPass() {
             if (this.reset_pass != '' & this.reset_pass_con != '' & this.code_reset != '') {
                 if (this.reset_pass == this.reset_pass_con) {
                     const loading = this.$vs.loading()
@@ -588,8 +568,8 @@ export default {
                         .then((resp) => {
                             this.openNotification3('top-right', 'success', 6000)
                             this.reset_pass = '',
-                            this.reset_pass_con = '',
-                            this.code_reset = ''
+                                this.reset_pass_con = '',
+                                this.code_reset = ''
                             this.errorsResrtPass = ''
                             loading.close()
                             setTimeout(() => {
@@ -602,7 +582,7 @@ export default {
                         })
                 }
                 else {
-                    this.errorsResrtPass= 'Passwords do not match'
+                    this.errorsResrtPass = 'Passwords do not match'
                 }
 
             }
