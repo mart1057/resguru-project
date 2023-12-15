@@ -211,7 +211,7 @@
                             </div>
                         </div>
                         <div class="flex justify-end">
-                            <div @click="PDFPrintRental()">
+                            <div  @click="data.user_sign_contract?.contractStatus == 'reserved'? '':data.user_sign_contract ?PDFPrintRental(data,true):''">
                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1318_22597" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5"
@@ -221,11 +221,11 @@
                                     <g mask="url(#mask0_1318_22597)">
                                         <path
                                             d="M19.6652 12.6152V9.86521H12.3319V12.6152H10.9569V9.31507C10.9569 9.08131 11.0363 8.88539 11.1951 8.72733C11.3539 8.56927 11.5507 8.49023 11.7854 8.49023H20.208C20.4466 8.49023 20.645 8.5693 20.8031 8.72742C20.9611 8.88555 21.0402 9.08148 21.0402 9.31523V12.6152H19.6652ZM21.3222 16.2818C21.582 16.2818 21.7997 16.194 21.9754 16.0183C22.1511 15.8426 22.2389 15.6249 22.2389 15.3652C22.2389 15.1054 22.1511 14.8877 21.9754 14.712C21.7997 14.5363 21.582 14.4485 21.3222 14.4485C21.0625 14.4485 20.8448 14.5363 20.6691 14.712C20.4934 14.8877 20.4056 15.1054 20.4056 15.3652C20.4056 15.6249 20.4934 15.8426 20.6691 16.0183C20.8448 16.194 21.0625 16.2818 21.3222 16.2818ZM12.614 22.4165H19.3831C19.4654 22.4165 19.533 22.39 19.5859 22.3371C19.6388 22.2842 19.6652 22.2167 19.6652 22.1344V18.503H12.3319V22.1344C12.3319 22.2167 12.3583 22.2842 12.4112 22.3371C12.4641 22.39 12.5317 22.4165 12.614 22.4165ZM12.614 23.7914C12.1583 23.7914 11.7682 23.6292 11.4437 23.3047C11.1192 22.9802 10.9569 22.5901 10.9569 22.1344V20.1248H8.38319C8.14845 20.1248 7.95168 20.0454 7.79288 19.8866C7.63409 19.7278 7.55469 19.531 7.55469 19.2962V14.9068C7.55469 14.2575 7.77651 13.7133 8.22014 13.274C8.66378 12.8348 9.20583 12.6152 9.84631 12.6152H22.1508C22.8001 12.6152 23.3443 12.8348 23.7836 13.274C24.2228 13.7133 24.4424 14.2575 24.4424 14.9068V19.2962C24.4424 19.531 24.363 19.7278 24.2042 19.8866C24.0454 20.0454 23.8486 20.1248 23.6139 20.1248H21.0402V22.1344C21.0402 22.5901 20.8779 22.9802 20.5534 23.3047C20.2289 23.6292 19.8388 23.7914 19.3831 23.7914H12.614ZM23.0674 18.7498V14.9068C23.0674 14.6471 22.9796 14.4294 22.8039 14.2537C22.6282 14.078 22.4105 13.9902 22.1508 13.9902H9.84631C9.58659 13.9902 9.36888 14.078 9.19318 14.2537C9.01749 14.4294 8.92964 14.6471 8.92964 14.9068V18.7498H10.9569V17.128H21.0402V18.7498H23.0674Z"
-                                            :fill="data.user_sign_contract ? '#003765' : '#B9CCDC'" />
+                                            :fill="data.user_sign_contract?.contractStatus == 'reserved'? '#B9CCDC':data.user_sign_contract ? '#003765' : '#B9CCDC'" />
                                     </g>
                                 </svg>
                             </div>
-                            <div class="">
+                            <div class=""@click="data.user_sign_contract?.contractStatus == 'reserved'? '':data.user_sign_contract ?PDFPrintRental(data,false):''">
                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1318_22595" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5"
@@ -235,7 +235,7 @@
                                     <g mask="url(#mask0_1318_22595)">
                                         <path
                                             d="M13.9009 14.5724H14.9233C15.1531 14.5724 15.3457 14.4947 15.5011 14.3393C15.6565 14.1839 15.7342 13.9913 15.7342 13.7615V12.7391C15.7342 12.5093 15.6565 12.3167 15.5011 12.1613C15.3457 12.0059 15.1531 11.9282 14.9233 11.9282H13.4954C13.3873 11.9282 13.2927 11.9687 13.2116 12.0498C13.1305 12.1309 13.09 12.2255 13.09 12.3336V16.0003C13.09 16.1084 13.1305 16.203 13.2116 16.2841C13.2927 16.3652 13.3873 16.4057 13.4954 16.4057C13.6035 16.4057 13.6981 16.3652 13.7792 16.2841C13.8603 16.203 13.9009 16.1084 13.9009 16.0003V14.5724ZM13.9009 13.7615V12.7391H14.9233V13.7615H13.9009ZM18.4666 16.4057C18.6963 16.4057 18.8889 16.328 19.0443 16.1726C19.1998 16.0172 19.2775 15.8246 19.2775 15.5949V12.7391C19.2775 12.5093 19.1998 12.3167 19.0443 12.1613C18.8889 12.0059 18.6963 11.9282 18.4666 11.9282H17.0739C16.9658 11.9282 16.8712 11.9687 16.7901 12.0498C16.7091 12.1309 16.6685 12.2255 16.6685 12.3336V16.0003C16.6685 16.1084 16.7091 16.203 16.7901 16.2841C16.8712 16.3652 16.9658 16.4057 17.0739 16.4057H18.4666ZM17.4794 15.5949V12.7391H18.4666V15.5949H17.4794ZM21.1108 14.5724H21.7983C21.9064 14.5724 22.001 14.5319 22.0821 14.4508C22.1632 14.3697 22.2038 14.2751 22.2038 14.167C22.2038 14.0588 22.1632 13.9642 22.0821 13.8831C22.001 13.8021 21.9064 13.7615 21.7983 13.7615H21.1108V12.7391H21.7983C21.9064 12.7391 22.001 12.6985 22.0821 12.6175C22.1632 12.5364 22.2038 12.4418 22.2038 12.3336C22.2038 12.2255 22.1632 12.1309 22.0821 12.0498C22.001 11.9687 21.9064 11.9282 21.7983 11.9282H20.7054C20.5972 11.9282 20.5026 11.9687 20.4215 12.0498C20.3405 12.1309 20.2999 12.2255 20.2999 12.3336V16.0003C20.2999 16.1084 20.3405 16.203 20.4215 16.2841C20.5026 16.3652 20.5972 16.4057 20.7054 16.4057C20.8135 16.4057 20.9081 16.3652 20.9892 16.2841C21.0703 16.203 21.1108 16.1084 21.1108 16.0003V14.5724ZM12.3849 21.0419C11.9218 21.0419 11.5299 20.8815 11.2091 20.5607C10.8883 20.2399 10.7278 19.8479 10.7278 19.3849V8.94905C10.7278 8.48601 10.8883 8.09408 11.2091 7.77324C11.5299 7.45241 11.9218 7.29199 12.3849 7.29199H22.8207C23.2838 7.29199 23.6757 7.45241 23.9965 7.77324C24.3174 8.09408 24.4778 8.48601 24.4778 8.94905V19.3849C24.4778 19.8479 24.3174 20.2399 23.9965 20.5607C23.6757 20.8815 23.2838 21.0419 22.8207 21.0419H12.3849ZM12.3849 19.667H22.8207C22.8912 19.667 22.9559 19.6376 23.0147 19.5788C23.0734 19.5201 23.1028 19.4554 23.1028 19.3849V8.94905C23.1028 8.87853 23.0734 8.81388 23.0147 8.75511C22.9559 8.69635 22.8912 8.66697 22.8207 8.66697H12.3849C12.3144 8.66697 12.2497 8.69635 12.191 8.75511C12.1322 8.81388 12.1028 8.87853 12.1028 8.94905V19.3849C12.1028 19.4554 12.1322 19.5201 12.191 19.5788C12.2497 19.6376 12.3144 19.667 12.3849 19.667ZM9.17657 24.2502C8.71354 24.2502 8.32161 24.0898 8.00078 23.769C7.67995 23.4482 7.51953 23.0562 7.51953 22.5932V11.4699C7.51953 11.2751 7.58545 11.1118 7.71728 10.98C7.84911 10.8483 8.01246 10.7824 8.20733 10.7824C8.4022 10.7824 8.56545 10.8483 8.69708 10.98C8.8287 11.1118 8.89451 11.2751 8.89451 11.4699V22.5932C8.89451 22.6637 8.92389 22.7284 8.98265 22.7871C9.04142 22.8459 9.10606 22.8753 9.17657 22.8753H20.2999C20.4947 22.8753 20.658 22.9412 20.7897 23.073C20.9215 23.2048 20.9874 23.3682 20.9874 23.5631C20.9874 23.7579 20.9215 23.9212 20.7897 24.0528C20.658 24.1844 20.4947 24.2502 20.2999 24.2502H9.17657Z"
-                                            :fill="data.user_sign_contract ? '#003765' : '#B9CCDC'" />
+                                            :fill="data.user_sign_contract?.contractStatus == 'reserved'? '#B9CCDC':data.user_sign_contract ? '#003765' : '#B9CCDC'"/>
                                     </g>
                                 </svg>
 
@@ -716,8 +716,8 @@ export default {
         // }, 1000)
     },
     methods: {
-        async PDFPrintRental(tr) {
-            this.$refs.childComponentPDFRental.generatePDF()
+        async PDFPrintRental(tr,check) {
+            this.$refs.childComponentPDFRental.generatePDF(tr,check)
         },
         openNotificationRenralPage(position = null, color, title, desc) {
             const noti = this.$vs.notification({
@@ -984,6 +984,96 @@ export default {
                 // Perform your desired action here when backspace is pressed
             }
         },
+        // async PDFPrint(data) {
+        //     const url = 'https://api.resguru.app/uploads/_aa6c4cb510.pdf'
+        //     const existingPdfBytes = await fetch(url).then(res => res.arrayBuffer())
+        //     const pdfDoc = await PDFDocument.load(existingPdfBytes)
+        //     pdfDoc.registerFontkit(fontkit)
+
+
+        //     const url2 = 'https://docu-api-dev.clicksbiz.com/uploads/Prompt_Black_9e15c3bdf5.ttf'
+        //     const ubuntuBytes = await fetch(url2).then(res => res.arrayBuffer())
+        //     const font5 = await pdfDoc.embedFont(ubuntuBytes)
+        //     const pages = pdfDoc.getPages()
+        //     const firstPage = pages[0]
+        //     const { width, height } = firstPage.getSize()
+        //     firstPage.drawText(this.$store.state.buildingInfo[0].attributes.buildingName, {
+        //         x: 201,
+        //         y: 815 / 2 + 300,
+        //         size: 10,
+        //         font: font5,
+        //         color: rgb(0,0,0),
+        //         rotate: degrees(-0),
+        //     })
+        //     firstPage.drawText(convertDateNoTime(data.createdAt), {
+        //         x: 320,
+        //         y: 815 / 2 + 300,
+        //         size: 10,
+        //         font: font5,
+        //         color: rgb(0,0,0),
+        //         rotate: degrees(-0),
+        //     })
+        //     firstPage.drawText(this.$store.state.buildingInfo[0].attributes.buildingName+' '+'และ'+' '+data.user_sign_contract.users_permissions_user.firstName +' '+data.user_sign_contract.users_permissions_user.lastName, {
+        //         x: 95,
+        //         y: 771 / 2 + 300,
+        //         size: 10,
+        //         font: font5,
+        //         color: rgb(0,0,0),
+        //         rotate: degrees(-0),
+        //     })
+        //     firstPage.drawText(data.user_sign_contract.users_permissions_user.contactAddress, {
+        //         x: 306,
+        //         y: 771 / 2 + 300,
+        //         size: 10,
+        //         font: font5,
+        //         color: rgb(0,0,0),
+        //         rotate: degrees(-0),
+        //     })
+        //     firstPage.drawText(data.user_sign_contract.users_permissions_user.district, {
+        //         x: 95,
+        //         y: 727 / 2 + 300,
+        //         size: 10,
+        //         font: font5,
+        //         color: rgb(0,0,0),
+        //         rotate: degrees(-0),
+        //     })
+        //     firstPage.drawText(data.user_sign_contract.users_permissions_user.subDistrict, {
+        //         x: 250,
+        //         y: 727 / 2 + 300,
+        //         size: 10,
+        //         font: font5,
+        //         color: rgb(0,0,0),
+        //         rotate: degrees(-0),
+        //     })
+        //     firstPage.drawText(data.user_sign_contract.users_permissions_user.province, {
+        //         x: 380,
+        //         y: 727 / 2 + 300,
+        //         size: 10,
+        //         font: font5,
+        //         color: rgb(0,0,0),
+        //         rotate: degrees(-0),
+        //     })
+        //     firstPage.drawText(data.user_sign_contract.users_permissions_user.firstName +' '+data.user_sign_contract.users_permissions_user.lastName, {
+        //         x: 265,
+        //         y: 683 / 2 + 300,
+        //         size: 10,
+        //         font: font5,
+        //         color: rgb(0,0,0),
+        //         rotate: degrees(-0),
+        //     })
+        //     firstPage.drawText(data.user_sign_contract.users_permissions_user.firstName +' '+data.user_sign_contract.users_permissions_user.lastName, {
+        //         x: 265,
+        //         y: 683 / 2 + 300,
+        //         size: 10,
+        //         font: font5,
+        //         color: rgb(0,0,0),
+        //         rotate: degrees(-0),
+        //     })
+        //     const pdfBytes = await pdfDoc.save()
+        //     const pdfBlob = new Blob([pdfBytes], { type: 'application/pdf' });
+        //     const pdfUrl = URL.createObjectURL(pdfBlob);
+        //     window.open(pdfUrl, '_blank');
+        // },
     }
 }
 </script>

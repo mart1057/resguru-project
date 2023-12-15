@@ -1,10 +1,10 @@
 <template>
-    <div class="h-[100%]"  @mouseleave="sidebar = false">
-        <div class="bg-[#E0ECE4] flex items-center justify-between h-[70px] w-[100%]" :style="{ height: toolbarHeight }"  >
-            <div class="flex justify-center items-center w-[100%]" >
-                <div class="flex justify-between  w-[100%] pl-[24px] pr-[24px]" >
+    <div class="h-[100%]" @mouseleave="sidebar = false">
+        <div class="bg-[#E0ECE4] flex items-center justify-between h-[70px] w-[100%]" :style="{ height: toolbarHeight }">
+            <div class="flex justify-center items-center w-[100%]">
+                <div class="flex justify-between  w-[100%] pl-[24px] pr-[24px]">
                     <div class="flex">
-                        <div @click="sidebar = true"  
+                        <div @click="sidebar = true"
                             class="cursor-pointer bg-[#E8F0F8] w-[44px] h-[44px] justify-center items-center flex rounded-[9px]">
                             <div><svg width="19" height="14" viewBox="0 0 19 14" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -30,9 +30,9 @@
                             <div class="text-[12px] text-[#8396A6]">แดชบอร์ด</div>
                         </div>
                     </div>
-                    <div class="flex justify-center items-center" >
+                    <div class="flex justify-center items-center">
                         <vs-tooltip bottom shadow not-hover not-arrow v-model="noti_popup" @mouseleave="noti_popup = false">
-                            <div class="cursor-pointer" @click="noti_popup = true" ><svg width="28" height="28"
+                            <div class="cursor-pointer" @click="noti_popup = true"><svg width="28" height="28"
                                     viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1490_26602" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="28" height="28">
@@ -96,7 +96,8 @@
                                                     </div>
                                                     <div
                                                         class="flex flex-col items-start justify-start ml-[8px] text-[#003765] text-custom">
-                                                        <div class="font-bold">{{ data.attributes.toUser.data.attributes.firstName }}</div>
+                                                        <div class="font-bold">{{
+                                                            data.attributes.toUser.data.attributes.firstName }}</div>
                                                         <div class="">
                                                             <div></div>
                                                             <div>{{ data.attributes.message }}</div>
@@ -111,7 +112,8 @@
                                                         </div> -->
                                                     </div>
                                                 </div>
-                                                <div class="text-[#8396A6] text-[10px] text-custom">{{ data.attributes.createdAt }}</div>
+                                                <div class="text-[#8396A6] text-[10px] text-custom">{{
+                                                    data.attributes.createdAt }}</div>
                                             </div>
                                         </div>
                                     </div>
@@ -128,7 +130,7 @@
                             Professional
                         </div>
                         <div class="flex ml-[10px] items-center">
-                            <vs-tooltip bottom shadow interactivity  not-arrow>
+                            <vs-tooltip bottom shadow interactivity not-arrow>
                                 <div class="cursor-pointer">
                                     <vs-avatar size="40" primary>
                                         <!-- <img :src="$store.state.userInfo"/> -->
@@ -449,9 +451,19 @@ export default {
             await setTimeout(() => {
                 this.sidebar = false
             }, 1)
+            if (path == '/') {
+                this.$vs.loading({
+                    opacity: 1,
+                    color: 'dark'
+                })
+                setTimeout(() => {
+                    window.location.reload()
+                },100);
+            }
             await this.$router.push({
                 path: path,
             })
+
 
 
         },
@@ -461,7 +473,7 @@ export default {
         reload() {
             window.location.reload()
         },
-        async getNoti(){
+        async getNoti() {
             fetch(`https://api.resguru.app/api/notification-logs?filters[toUser][id][$eq]=${this.$store.state.userInfo.user.id}&populate=*&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
