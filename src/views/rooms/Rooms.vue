@@ -436,7 +436,6 @@ export default {
                 })
         },
         bookRoomContract() {
-
             axios.post('https://api.resguru.app/api/auth/local/register', {
                 firstName: this.firstName,
                 lastName: this.lastName,
