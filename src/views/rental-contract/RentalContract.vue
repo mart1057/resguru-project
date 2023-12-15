@@ -116,11 +116,9 @@
 
         <!-- //////////////////////////// card /////////////////////// -->
         <div class="mt-[24px]">
-            <div class="text-[24px] font-bold">ชั้น {{ name_floor }}</div>
+            <div class="text-[24px] font-bold">ชั้น {{ name_floor }} ({{ contract.length }})</div>
             <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px] ">
-
                 <!-- //////////////////////////// Loop Room Contract /////////////////////// -->
-
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer"
                     v-for="data in contract">
                     <div class="flex flex-col justify-between">
