@@ -38,15 +38,15 @@
                                 </div>
                                 <div v-if="selected.length > 0" @click="delete_popup = true"
                                     class="h-[36px] pl-[12px] pr-[12px] bg-[#D44769] flex cursor-pointer  justify-center rounded-[12px] mt-[12px] ml-[14px]">
-                                    <div class="flex justify-center items-center">
+                                    <!-- <div class="flex justify-center items-center">
                                         <svg width="14" height="13" viewBox="0 0 14 13" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path
                                                 d="M6.99968 12.6875C6.8048 12.6875 6.64155 12.6216 6.50993 12.4898C6.37831 12.3581 6.3125 12.1948 6.3125 12V7.18746H1.49998C1.30519 7.18746 1.14191 7.12155 1.01016 6.98973C0.878385 6.8579 0.8125 6.69455 0.8125 6.49968C0.8125 6.3048 0.878385 6.14155 1.01016 6.00993C1.14191 5.87831 1.30519 5.8125 1.49998 5.8125H6.3125V0.999977C6.3125 0.805185 6.37841 0.641904 6.51023 0.510133C6.64206 0.378378 6.80541 0.3125 7.00028 0.3125C7.19516 0.3125 7.35841 0.378378 7.49003 0.510133C7.62165 0.641904 7.68745 0.805185 7.68745 0.999977V5.8125H12.5C12.6948 5.8125 12.8581 5.87841 12.9898 6.01023C13.1216 6.14206 13.1875 6.30541 13.1875 6.50028C13.1875 6.69516 13.1216 6.85841 12.9898 6.99003C12.8581 7.12164 12.6948 7.18746 12.5 7.18746H7.68745V12C7.68745 12.1948 7.62155 12.3581 7.48973 12.4898C7.3579 12.6216 7.19455 12.6875 6.99968 12.6875Z"
                                                 fill="white" />
                                         </svg>
-                                    </div>
-                                    <div class="text-white font-bold ml-[8px]   flex justify-center items-center">ลบประกาศ
+                                    </div> -->
+                                    <div class="text-white font-bold flex justify-center items-center">ลบประกาศ
                                     </div>
                                 </div>
                             </div>
@@ -285,7 +285,7 @@
         <vs-dialog width="550px" not-center v-model="delete_popup">
             <div class="flex justify-center items-center text-[24px] h-[100%] mt-[5%]">
                 <p class="fle justify-center items-center">
-                    You want delete sure ?
+                    ต้องการลบประกาศหรือไม่?
                 </p>
             </div>
             <template #footer>

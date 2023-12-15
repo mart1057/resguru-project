@@ -14,7 +14,7 @@
                             </div>
                             <div @click="tab = 3" class="cursor-pointer ml-[8px]"
                                 :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
-                                กำหนดค่าบริการและส่วนลด
+                                ค่าบริการอื่น ๆ
                             </div>
                         </div>
                     </div>
@@ -123,7 +123,7 @@
         </div>
 
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 3">
-            <div class="text-[16px] font-bold mt-[24px]">ค่าบริการ</div>
+            <div class="text-[16px] font-bold mt-[24px]">ค่าบริการอื่น ๆ</div>
             <div class="grid grid-cols-6 gap-4 mt-[14px] w-[100%]">
                 <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]" v-for="data in otherOfBuilding">
                     <div class="flex flex-col justify-between h-[100%]">
@@ -175,7 +175,7 @@
                             </g>
                         </svg>
                     </div>
-                    <div class="text-[#5C6B79] font-bold mt-[4px] ">สร้างรายการบริการ</div>
+                    <div class="text-[#5C6B79] font-bold mt-[4px] ">สร้างบริการ</div>
                 </div>
             </div>
         </div>
@@ -500,7 +500,7 @@
             <div>
                 <div class="flex justify-between">
                     <div class="text-custom flex justify-center items-center text-[16px] font-bold">
-                        สร้างรายการบริการ</div>
+                        สร้างบริการอื่น ๆ</div>
                     <div @click="create_service = false" class="cursor-pointer">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"

@@ -808,6 +808,11 @@ export default {
                 })
         },
         createFullPayment() {
+            let valit = validateCreateForm("full")
+            if (valit == false){
+                this.$showNotification('danger', "Please filled out all necessary information")
+                return  false              
+            }
             axios.post("https://api.resguru.app/api/tenant-evidence-payments", {
                 data: {
                     tenant_bill: this.fullPaymentForm.invoiceID,
@@ -815,8 +820,8 @@ export default {
                     bankName: this.fullPaymentForm.accountBankName,
                     accountBankName: this.fullPaymentForm.bankName,
                     amount: this.fullPaymentForm.amount,
-                    paymentDate: this.fullPaymentForm.paymentDate,
-                    paymentTime: this.fullPaymentForm.paymentTime,
+                    paymentDate: this.fullPaymentForm.paymentDate != ''? this.fullPaymentForm.paymentDate: new Date(),
+                    paymentTime: this.fullPaymentForm.paymentTime != ''? this.fullPaymentForm.paymentTime: new Date().toTimeString, 
                     building: this.fullPaymentForm.building,
                     room: this.$route.query.roomID
                 }
@@ -861,6 +866,11 @@ export default {
 
         },
         createPartial() {
+            let valit = validateCreateForm("part")
+            if (valit == false){
+                this.$showNotification('danger', "Please filled out all necessary information")
+                return  false              
+            }
             axios.post("https://api.resguru.app/api/tenant-evidence-payments", {
                 data: {
                     tenant_bill: this.partialPaymentForm.invoiceID,
@@ -868,8 +878,8 @@ export default {
                     bankName: this.partialPaymentForm.accountBankName,
                     accountBankName: this.partialPaymentForm.bankName,
                     amount: this.partialPaymentForm.amount,
-                    paymentDate: this.partialPaymentForm.paymentDate,
-                    paymentTime: this.partialPaymentForm.paymentTime,
+                    paymentDate: this.partialPaymentForm.paymentDate != ''? this.partialPaymentForm.paymentDate: new Date(),
+                    paymentTime: this.partialPaymentForm.paymentTime != ''? this.partialPaymentForm.paymentTime: new Date().toTimeString, 
                     building: this.partialPaymentForm.building,
                     room: this.$route.query.roomID
                 }
@@ -912,6 +922,33 @@ export default {
                 })
             this.createPartialPayment = false
 
+        },
+        validateCreateForm(type){
+            if(type == "full"){
+                if( this.fullPaymentForm.invoiceID == ''||
+                    this.fullPaymentForm.userID == ''||
+                    this.fullPaymentForm.accountBankName == ''||
+                    this.fullPaymentForm.bankName == ''||
+                    this.fullPaymentForm.amount == ''||
+                    this.fullPaymentForm.building == ''||
+                    this.$route.query.roomID == ''){
+                        return false;
+                    } else {
+                        return true;
+                    }
+            } else if(type == "part"){
+                if( this.partialPaymentForm.invoiceID == ''||
+                    this.partialPaymentForm.userID == ''||
+                    this.partialPaymentForm.accountBankName == ''||
+                    this.partialPaymentForm.bankName == ''||
+                    this.partialPaymentForm.amount == ''||
+                    this.partialPaymentForm.building == ''||
+                    this.$route.query.roomID){
+                        return false;
+                    } else {
+                        return true;
+                    }
+            }
         },
         getRoomBill(id, code, m, y) {
             // console.log("this.filter.floor",this.filter.floor)

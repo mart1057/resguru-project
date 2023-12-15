@@ -5,7 +5,7 @@
                 <div class="flex justify-center items-center cursor-pointer"
                     :class="tab == 1 ? 'font-bold text-[16px]' : ''" @click="tab = 1">โปรไฟล์</div>
                 <div class="flex justify-center items-center ml-[24px] cursor-pointer"
-                    :class="tab == 2 ? 'font-bold text-[16px]' : ''" @click="tab = 2">การจัดการห้องพัก</div>
+                    :class="tab == 2 ? 'font-bold text-[16px]' : ''" @click="tab = 2">จัดการห้องพัก</div>
                 <div class="flex justify-center items-center ml-[24px] cursor-pointer"
                     :class="tab == 3 ? 'font-bold text-[16px]' : ''" @click="tab = 3">ค่าน้ำไฟและบริการ</div>
                 <div class="flex justify-center items-center ml-[24px] cursor-pointer"
