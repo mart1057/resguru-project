@@ -132,8 +132,8 @@
                         <div class="ml-[14px]">
                             <div class="flex">
                                 <div class="h-[32px] pr-[8px] pl-[8px]   cursor-pointer   rounded-[12px]"
-                                    :class="data.user_sign_contract?.contractStatus == null ? 'bg-[#165D98]' : data.user_sign_contract?.contractStatus == 'rent' ? 'bg-[#003765]' : 'bg-[#165D98]'"
-                                    @click="data.user_sign_contract?.contractStatus == null ? create_sign(data.id, data.RoomNumber) : data.user_sign_contract?.contractStatus == 'reserved' ? create_sign(data.id, data.RoomNumber, 'reserved', data.user_sign_contract.users_permissions_user?.idCard, data.room_type.id) : getDetailRentalContract(data.user_sign_contract.id)">
+                                    :class="data.roomStatus == 'Checked In'   ? 'bg-[#003765]' : 'bg-[#165D98]'"
+                                    @click="data.roomStatus == 'Checked In'  ? getDetailRentalContract(data.user_sign_contract.id):data.roomStatus == 'Reserved'?create_sign(data.id, data.RoomNumber, 'reserved', data.user_sign_contract.users_permissions_user?.idCard, data.room_type.id) : create_sign(data.id, data.RoomNumber)">
                                     <div class="flex items-center h-[100%]">
                                         <div class="flex justify-center items-center">
                                             <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
@@ -156,9 +156,7 @@
                                             </svg>
                                         </div>
                                         <div class="text-white font-bold ml-[4px]   flex justify-center items-center">
-                                            {{ data.user_sign_contract?.contractStatus == null ? 'สร้างสัญญาเช่า' :
-                                                data.user_sign_contract.contractStatus == 'reserved' ? "สร้างสัญญาเช่า"
-                                                    : "ดูสัญญาเช่า" }}
+                                            {{  data.roomStatus == 'Checked In'  ? 'ดูสัญญาเช่า' :"สร้างสัญญาเช่า" }}
                                         </div>
                                     </div>
                                 </div>
@@ -187,17 +185,17 @@
                                     </svg>
                                 </div> -->
                             </div>
-                            <div :class="data.user_sign_contract?.contractStatus == 'rent' ? 'text-[#0B9A3C] bg-[#CFFBDA]' : 'text-[#003765] bg-[#F0F8FF]'"
+                            <div :class="data.roomStatus == 'Checked In' ? 'text-[#0B9A3C] bg-[#CFFBDA]' : 'text-[#003765] bg-[#F0F8FF]'"
                                 class="h-[36px] ml-[8px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] ">
                                 <!-- {{ data.user_sign_contract ? "มีผู้เข้าพัก" : "ห้องว่าง" }} -->
-                                {{ data.user_sign_contract?.contractStatus == null ? 'ห้องว่าง' :
-                                    data.user_sign_contract.contractStatus == 'reserved' ? "ห้องจอง"
-                                        : "มีผู้เข้าพัก" }}
+                                {{ data.roomStatus == 'Reserved' ? 'ห้องจอง' :
+                                    data.roomStatus == 'Checked In' ? "มีผู้เข้าพัก "
+                                        : "ห้องว่าง" }}
                             </div>
                         </div>
                         <div class="flex justify-end">
                             <div
-                                @click="data.user_sign_contract?.contractStatus == 'reserved' ? '' : data.user_sign_contract ? PDFPrintRental(data, true) : ''">
+                                @click=" data.roomStatus == 'Checked In'  ? '' : data.user_sign_contract ? PDFPrintRental(data, true) : ''">
                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1318_22597" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5"
@@ -212,7 +210,7 @@
                                 </svg>
                             </div>
                             <div class=""
-                                @click="data.user_sign_contract?.contractStatus == 'reserved' ? '' : data.user_sign_contract ? PDFPrintRental(data, false) : ''">
+                                @click="data.roomStatus == 'Checked In'  ? '' : data.user_sign_contract ? PDFPrintRental(data, false) : ''">
                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1318_22595" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5"
@@ -743,7 +741,7 @@ export default {
         getRentalContract(code) {
             this.contract = []
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api/getRoomContract?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor)
+            fetch('https://api.resguru.app/api/getRoomContract?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor+'&roomStatus=Available,Reserved,Maintenance,Checked In')
                 .then(response => response.json())
                 .then((resp) => {
                     if (code == 8) {
@@ -892,6 +890,7 @@ export default {
                         data: {
                             // user_sign_contract: resp.data.id,
                             room_type: this.room_detail_create.type_room,
+                            roomStatus:'Checked In'
                         }
                     })
                 }).catch((err) => {
