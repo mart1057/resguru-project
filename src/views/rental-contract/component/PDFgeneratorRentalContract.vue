@@ -15,7 +15,7 @@
                         ตำบล {{ detail.user_sign_contract.users_permissions_user.district }}
                         อำเภอ/เขต {{ detail.user_sign_contract.users_permissions_user.subDistrict }}
                         จังหวัด {{ detail.user_sign_contract.users_permissions_user.province }}
-                        ซึ่งต่อไปในสัญญานี้จะเรียกว่า "ผู้เช่า"อีกฝ่ายหนึ่ง</div>
+                        ซึ่งต่อไปในสัญญานี้จะเรียกว่า "ผู้เช่า" อีกฝ่ายหนึ่ง</div>
                 </div>
                 <div class="ml-[42px]">
                     ทั้งสองฝ่ายตกลงทำสัญญากันโดยมีข้อความดังต่อไปนี้
