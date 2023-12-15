@@ -77,18 +77,23 @@
                         <template #tooltip>
                             <div class="w-[100%]">
                                 <div class="center">
-                                    <vs-checkbox v-model="option">
+                                    <vs-checkbox v-model="filter.select" val="Reserved" @input="getRentalContract()">
                                         <div class="text-custom">ห้องจอง</div>
                                     </vs-checkbox>
                                 </div>
                                 <div class="center">
-                                    <vs-checkbox v-model="option">
+                                    <vs-checkbox v-model="filter.select" val="Checked In"  @input="getRentalContract()">
                                         <div class="text-custom">ห้องมีผู้เข้าพัก</div>
                                     </vs-checkbox>
                                 </div>
                                 <div class="center">
-                                    <vs-checkbox v-model="option">
+                                    <vs-checkbox  v-model="filter.select" val="Available"  @input="getRentalContract()">
                                         <div class="text-custom">ห้องว่าง</div>
+                                    </vs-checkbox>
+                                </div>
+                                <div class="center">
+                                    <vs-checkbox  v-model="filter.select" val="Maintenance"  @input="getRentalContract()">
+                                        <div class="text-custom">ห้องรอซ่อม</div>
                                     </vs-checkbox>
                                 </div>
                             </div>
@@ -111,11 +116,9 @@
 
         <!-- //////////////////////////// card /////////////////////// -->
         <div class="mt-[24px]">
-            <div class="text-[24px] font-bold">ชั้น {{ name_floor }}</div>
+            <div class="text-[24px] font-bold">ชั้น {{ name_floor }} ({{ contract.length }})</div>
             <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px] ">
-
                 <!-- //////////////////////////// Loop Room Contract /////////////////////// -->
-
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer"
                     v-for="data in contract">
                     <div class="flex flex-col justify-between">
@@ -189,8 +192,8 @@
                                 class="h-[36px] ml-[8px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] ">
                                 <!-- {{ data.user_sign_contract ? "มีผู้เข้าพัก" : "ห้องว่าง" }} -->
                                 {{ data.roomStatus == 'Reserved' ? 'ห้องจอง' :
-                                    data.roomStatus == 'Checked In' ? "มีผู้เข้าพัก "
-                                        : "ห้องว่าง" }}
+                                    data.roomStatus == 'Checked In' ? "มีผู้เข้าพัก":
+                                    data.roomStatus =='Maintenance'?"รอซ่อม":"ห้องว่าง" }}
                             </div>
                         </div>
                         <div class="flex justify-end">
@@ -639,6 +642,8 @@ export default {
             tab_floor: '0',
             name_floor: '',
             filter: {
+                select:[],
+                checkSelect:[],
                 search: '',
                 floor: '',
                 Id_card: ''
@@ -686,6 +691,7 @@ export default {
 
     },
     mounted() {
+        this.filter.checkSelect = ['Checked In','Available','Reserved','Maintenance']
         console.log("State.Building", this.$store.state.building);
         this.getFloorRoom();
         // this.getUser()
@@ -741,7 +747,8 @@ export default {
         getRentalContract(code) {
             this.contract = []
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api/getRoomContract?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor+'&roomStatus=Available,Reserved,Maintenance,Checked In')
+            const output =  this.filter.select.length > 0? this.filter.select.join(','):this.filter.checkSelect.join(',');
+            fetch('https://api.resguru.app/api/getRoomContract?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor+'&roomStatus='+output)
                 .then(response => response.json())
                 .then((resp) => {
                     if (code == 8) {
