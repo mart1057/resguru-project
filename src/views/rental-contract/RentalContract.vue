@@ -78,32 +78,17 @@
                             <div class="w-[100%]">
                                 <div class="center">
                                     <vs-checkbox v-model="option">
-                                        <div class="text-custom">ห้องค้างชำระ</div>
+                                        <div class="text-custom">ห้องจอง</div>
                                     </vs-checkbox>
                                 </div>
                                 <div class="center">
                                     <vs-checkbox v-model="option">
-                                        <div class="text-custom">ห้องชำระเงินแล้ว</div>
+                                        <div class="text-custom">ห้องมีผู้เข้าพัก</div>
                                     </vs-checkbox>
                                 </div>
                                 <div class="center">
                                     <vs-checkbox v-model="option">
                                         <div class="text-custom">ห้องว่าง</div>
-                                    </vs-checkbox>
-                                </div>
-                                <div class="center">
-                                    <vs-checkbox v-model="option">
-                                        <div class="text-custom">ห้องติดจอง</div>
-                                    </vs-checkbox>
-                                </div>
-                                <div class="center">
-                                    <vs-checkbox v-model="option">
-                                        <div class="text-custom">ห้องไกล้หมดสัญญา</div>
-                                    </vs-checkbox>
-                                </div>
-                                <div class="center">
-                                    <vs-checkbox v-model="option">
-                                        <div class="text-custom">ห้องแจ้งย้ายออก</div>
                                     </vs-checkbox>
                                 </div>
                             </div>
