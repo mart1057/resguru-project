@@ -135,11 +135,13 @@
                     <div class="flex flex-col items-start">
                         <div class="flex justify-center flex-col items-center">
                             <div>ลงชื่อ...........................ผู้เช่า</div>
-                            <div class=" mt-[8px]">(...........................)</div>
+                            <div class=" mt-[8px]">( {{ detail.user_sign_contract.users_permissions_user.firstName + '
+                            '+detail.user_sign_contract.users_permissions_user.lastName }} )</div>
                         </div>
                         <div class="flex justify-center flex-col items-center mt-[8px]">
                             <div>ลงชื่อ...........................ผู้ให้เช่า</div>
-                            <div class=" mt-[8px] ml-[-18px]">(...........................)</div>
+                            <div class=" mt-[8px] ml-[-18px]">( {{ $store.state.buildingInfo[0].attributes.buildingName }} )
+                            </div>
                         </div>
                         <div class="flex justify-center flex-col items-center  mt-[8px]">
                             <div>ลงชื่อ...........................พยาน</div>
@@ -173,7 +175,7 @@ export default {
     //     this.generatePDF()
     // },
     methods: {
-        generatePDF(data) {
+        generatePDF(data, check) {
             console.log(data);
             this.detail = data
             const content = this.$refs.pdfContent;
@@ -184,11 +186,20 @@ export default {
                 html2canvas: { scale: 2 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
             };
-            html2pdf()
-                .from(content)
-                .set(opt)
-                // .save()
-                .output('dataurlnewwindow')
+            if (check) {
+                html2pdf()
+                    .from(content)
+                    .set(opt)
+                    // .save()
+                    .output('dataurlnewwindow')
+            }
+            else {
+                html2pdf()
+                    .from(content)
+                    .set(opt)
+                    .save()
+            }
+
         },
     },
 };
@@ -248,4 +259,5 @@ td {
     width: 100%;
     border-collapse: collapse;
     border: 1px solid #ccc;
-}</style>
+}
+</style>

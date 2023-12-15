@@ -211,7 +211,7 @@
                             </div>
                         </div>
                         <div class="flex justify-end">
-                            <div @click="PDFPrintRental(data)">
+                            <div  @click="data.user_sign_contract ?PDFPrintRental(data,true):''">
                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1318_22597" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5"
@@ -225,7 +225,7 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class="">
+                            <div class="" @click="data.user_sign_contract ?PDFPrintRental(data,false):''">
                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1318_22595" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5"
@@ -716,8 +716,8 @@ export default {
         // }, 1000)
     },
     methods: {
-        async PDFPrintRental(tr) {
-            this.$refs.childComponentPDFRental.generatePDF(tr)
+        async PDFPrintRental(tr,check) {
+            this.$refs.childComponentPDFRental.generatePDF(tr,check)
         },
         openNotificationRenralPage(position = null, color, title, desc) {
             const noti = this.$vs.notification({
