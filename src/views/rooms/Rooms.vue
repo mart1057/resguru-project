@@ -404,7 +404,7 @@ export default {
         },
         getRoom(code) {
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api/getRoom?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor+'&roomStatus=Available')
+            fetch('https://api.resguru.app/api/getRoom?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor+'&roomStatus=Checked In,Available,Reserved,Maintenance')
                 .then(response => response.json())
                 .then((resp) => {
                     if (code == 8) {
