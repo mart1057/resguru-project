@@ -82,17 +82,17 @@
                                     </vs-checkbox>
                                 </div>
                                 <div class="center">
-                                    <vs-checkbox v-model="filter.select" val="Checked In"  @input="getRentalContract()">
+                                    <vs-checkbox v-model="filter.select" val="Checked In" @input="getRentalContract()">
                                         <div class="text-custom">ห้องมีผู้เข้าพัก</div>
                                     </vs-checkbox>
                                 </div>
                                 <div class="center">
-                                    <vs-checkbox  v-model="filter.select" val="Available"  @input="getRentalContract()">
+                                    <vs-checkbox v-model="filter.select" val="Available" @input="getRentalContract()">
                                         <div class="text-custom">ห้องว่าง</div>
                                     </vs-checkbox>
                                 </div>
                                 <div class="center">
-                                    <vs-checkbox  v-model="filter.select" val="Maintenance"  @input="getRentalContract()">
+                                    <vs-checkbox v-model="filter.select" val="Maintenance" @input="getRentalContract()">
                                         <div class="text-custom">ห้องรอซ่อม</div>
                                     </vs-checkbox>
                                 </div>
@@ -135,8 +135,8 @@
                         <div class="ml-[14px]">
                             <div class="flex">
                                 <div class="h-[32px] pr-[8px] pl-[8px]   cursor-pointer   rounded-[12px]"
-                                    :class="data.roomStatus == 'Checked In'   ? 'bg-[#003765]' : 'bg-[#165D98]'"
-                                    @click="data.roomStatus == 'Checked In'  ? getDetailRentalContract(data.user_sign_contract.id):data.roomStatus == 'Reserved'?create_sign(data.id, data.RoomNumber, 'reserved', data.user_sign_contract.users_permissions_user?.idCard, data.room_type.id) : create_sign(data.id, data.RoomNumber)">
+                                    :class="data.roomStatus == 'Checked In' ? 'bg-[#003765]' : 'bg-[#165D98]'"
+                                    @click="data.roomStatus == 'Checked In' ? getDetailRentalContract(data.user_sign_contract.id) : data.roomStatus == 'Reserved' ? create_sign(data.id, data.RoomNumber, 'reserved', data.user_sign_contract.users_permissions_user?.idCard, data.room_type.id) : create_sign(data.id, data.RoomNumber)">
                                     <div class="flex items-center h-[100%]">
                                         <div class="flex justify-center items-center">
                                             <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
@@ -159,7 +159,7 @@
                                             </svg>
                                         </div>
                                         <div class="text-white font-bold ml-[4px]   flex justify-center items-center">
-                                            {{  data.roomStatus == 'Checked In'  ? 'ดูสัญญาเช่า' :"สร้างสัญญาเช่า" }}
+                                            {{ data.roomStatus == 'Checked In' ? 'ดูสัญญาเช่า' : "สร้างสัญญาเช่า" }}
                                         </div>
                                     </div>
                                 </div>
@@ -192,13 +192,12 @@
                                 class="h-[36px] ml-[8px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] ">
                                 <!-- {{ data.user_sign_contract ? "มีผู้เข้าพัก" : "ห้องว่าง" }} -->
                                 {{ data.roomStatus == 'Reserved' ? 'ห้องจอง' :
-                                    data.roomStatus == 'Checked In' ? "มีผู้เข้าพัก":
-                                    data.roomStatus =='Maintenance'?"รอซ่อม":"ห้องว่าง" }}
+                                    data.roomStatus == 'Checked In' ? "มีผู้เข้าพัก" :
+                                        data.roomStatus == 'Maintenance' ? "รอซ่อม" : "ห้องว่าง" }}
                             </div>
                         </div>
                         <div class="flex justify-end">
-                            <div
-                                @click=" data.roomStatus == 'Checked In'  ? '' : data.user_sign_contract ? PDFPrintRental(data, true) : ''">
+                            <div @click=" data.roomStatus == 'Checked In' ? PDFPrintRental(data, true) : ''">
                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1318_22597" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5"
@@ -212,8 +211,7 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class=""
-                                @click="data.roomStatus == 'Checked In'  ? '' : data.user_sign_contract ? PDFPrintRental(data, false) : ''">
+                            <div class="" @click=" data.roomStatus == 'Checked In' ? PDFPrintRental(data, false) : ''">
                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1318_22595" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5"
@@ -642,8 +640,8 @@ export default {
             tab_floor: '0',
             name_floor: '',
             filter: {
-                select:[],
-                checkSelect:[],
+                select: [],
+                checkSelect: [],
                 search: '',
                 floor: '',
                 Id_card: ''
@@ -691,7 +689,7 @@ export default {
 
     },
     mounted() {
-        this.filter.checkSelect = ['Checked In','Available','Reserved','Maintenance']
+        this.filter.checkSelect = ['Checked In', 'Available', 'Reserved', 'Maintenance']
         console.log("State.Building", this.$store.state.building);
         this.getFloorRoom();
         // this.getUser()
@@ -747,8 +745,8 @@ export default {
         getRentalContract(code) {
             this.contract = []
             const loading = this.$vs.loading()
-            const output =  this.filter.select.length > 0? this.filter.select.join(','):this.filter.checkSelect.join(',');
-            fetch('https://api.resguru.app/api/getRoomContract?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor+'&roomStatus='+output)
+            const output = this.filter.select.length > 0 ? this.filter.select.join(',') : this.filter.checkSelect.join(',');
+            fetch('https://api.resguru.app/api/getRoomContract?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor + '&roomStatus=' + output)
                 .then(response => response.json())
                 .then((resp) => {
                     if (code == 8) {
@@ -897,7 +895,7 @@ export default {
                         data: {
                             // user_sign_contract: resp.data.id,
                             room_type: this.room_detail_create.type_room,
-                            roomStatus:'Checked In'
+                            roomStatus: 'Checked In'
                         }
                     })
                 }).catch((err) => {
