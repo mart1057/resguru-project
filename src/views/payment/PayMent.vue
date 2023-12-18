@@ -74,7 +74,7 @@
                                     </div>
                                     <div class="center">
                                         <vs-checkbox v-model="option">
-                                            <div class="text-custom">ห้องไกล้หมดสัญญา</div>
+                                            <div class="text-custom">ห้องใกล้หมดสัญญา</div>
                                         </vs-checkbox>
                                     </div>
                                     <div class="center">
@@ -287,9 +287,7 @@
                                         <vs-option label="ชำระเงิน" value="Full Payment">
                                             ชำระเงิน
                                         </vs-option>
-                                        <vs-option label="ชำระบางส่วน" value="Partial Payment">
-                                            ชำระบางส่วน
-                                        </vs-option>
+        
                                     </vs-select>
 
                                     <!--  Need to add option for select here -->
@@ -297,10 +295,10 @@
                                 <div v-else-if="tr.user_sign_contract === null && tr.tenant_bills[0]">
                                     <vs-button warn class="small">ผู้เช่าย้ายออก</vs-button>
                                 </div>
-                                <div v-else-if="tr.user_sign_contract">
+                                <!-- <div v-else-if="tr.user_sign_contract">
                                     <vs-button color="rgb(59,222,200)" class="small"
                                         @click="generateInvoice(tr.id)">สร้างใบแจ้งหนี้</vs-button>
-                                </div>
+                                </div> -->
                                 <div v-else-if="tr.tenant_bills[0] && tr.tenant_bills[0].paymentStatus === 'Partial Paid'">
                                     <!-- <vs-button  primary class="small">แก้ไขใบแจ้งหนี้</vs-button>   -->
                                     <!-- to: internal link -->
@@ -312,17 +310,12 @@
                                         <vs-option label="ดูรายการใบแจ้งหนี้" value="View">
                                             ดูรายการใบแจ้งหนี้
                                         </vs-option>
-                                        <vs-option label="ชำระบางส่วน" value="Partial Payment">
+                                        <vs-option label="ชำระเงิน" value="Partial Payment">
                                             ชำระบางส่วน
                                         </vs-option>
                                     </vs-select>
 
                                     <!--  Need to add option for select here -->
-                                </div>
-
-                                <div v-else-if="tr.user_sign_contract">
-                                    <vs-button color="rgb(59,222,200)" class="small"
-                                        @click="generateInvoice(tr.id)">สร้างใบแจ้งหนี้</vs-button>
                                 </div>
                                 <div
                                     v-else-if="tr.tenant_bills[0] && (tr.tenant_bills[0].paymentStatus === 'Paid' || tr.tenant_bills[0].paymentStatus === 'In Review Progress')">
@@ -336,7 +329,10 @@
                                         </vs-option>
                                     </vs-select>
                                 </div>
-
+                                <div v-else-if="tr.user_sign_contract">
+                                    <vs-button color="rgb(59,222,200)" class="small"
+                                        @click="generateInvoice(tr.id)">สร้างใบแจ้งหนี้</vs-button>
+                                </div>
                                 <div v-else>
                                     <vs-button dark class="small">ยังไม่มีผู้เช่า</vs-button>
                                 </div>
@@ -367,7 +363,7 @@
                 <div>
                     <div class="flex justify-between">
                         <div class="text-custom flex justify-center items-center text-[16px] font-bold">
-                            แนบหลักฐานการชำระแบบเต็มจำนวน</div>
+                            แนบหลักฐานการชำระเงิน</div>
                         <div @click="createFullpayment = false" class="cursor-pointer">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -383,7 +379,7 @@
                         </div>
                     </div>
                     <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
-                    <div class="mt-[14px]">
+                    <!-- <div class="mt-[14px]">
                         <div class="text-custom">เลขที่ใบแจ้งหนี้ (Invoice)</div>
                         <div>
                             <input disabled
@@ -393,7 +389,7 @@
                                 class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
                                 v-model="fullPaymentForm.invoiceID" hidden />
                         </div>
-                    </div>
+                    </div> -->
                     <div class="mt-[14px]">
                         <div class="text-custom">เลขห้อง</div>
                         <div>
@@ -761,14 +757,29 @@ export default {
             if (menu_option === 'Full Payment') {
                 //make this.form = inputfrom function
                 // ex. this.invoiceName = roomdata.attributes.invoiceName
-
+                let sumAmount
+                 for (let k=0; k < roomdata.tenant_bills.length(); k++ ){
+                    sumAmount = sumAmount+k.total
+                 }
                 console.log("Data from Select", roomdata)
-                this.fullPaymentForm.invoiceName = roomdata.tenant_bills[0].invoiceNumber
-                this.fullPaymentForm.invoiceID = roomdata.tenant_bills[0].id
+                // this.fullPaymentForm.invoiceName = roomdata.tenant_bills[0].invoiceNumber
+                // this.fullPaymentForm.invoiceID = roomdata.tenant_bills[0].id
                 this.fullPaymentForm.roomName = roomdata.RoomNumber
-                this.fullPaymentForm.amount = roomdata.tenant_bills[0].total
+                this.fullPaymentForm.amount = sumAmount
                 this.fullPaymentForm.userID = roomdata.user_sign_contract.id
                 this.fullPaymentForm.building = roomdata.room_building.id
+                this.fullPaymentForm.accountBankName = this.userProfile.firstName + " " + this.userProfile.lastName
+                this.createFullpayment = true
+
+    
+                this.fullPaymentForm.amount = this.userPayRemain
+                this.fullPaymentForm.invoiceName = tr.attributes.invoiceNumber
+                // this.fullPaymentForm.invoiceName = generateReNumber()
+                this.fullPaymentForm.building = tr.attributes.building.data.id
+                this.fullPaymentForm.userID = tr.attributes.user_sign_contract.data.id
+                this.fullPaymentForm.invoiceID = tr.id
+                this.fullPaymentForm.accountBankName = this.userProfile.firstName + " " + this.userProfile.lastName
+                // this.fullPaymentForm.accountBankName = "test"
                 this.createFullpayment = true
             }
             else if (menu_option === 'Partial Payment') {

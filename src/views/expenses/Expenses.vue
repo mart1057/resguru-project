@@ -371,7 +371,7 @@
                                 </div>
                                 <div class="center">
                                     <vs-checkbox v-model="option">
-                                        <div class="text-custom">ห้องไกล้หมดสัญญา</div>
+                                        <div class="text-custom">ห้องใกล้หมดสัญญา</div>
                                     </vs-checkbox>
                                 </div>
                                 <div class="center">
