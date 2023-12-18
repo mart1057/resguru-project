@@ -1052,7 +1052,7 @@ export default {
                     const errorMessage = error.message ? error.message : 'Error updating information';
                     this.$showNotification('danger', errorMessage);
                 }).finally(() => {
-                    window.location.reload()
+                    // window.location.reload()
                 })
         },
     }
