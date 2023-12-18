@@ -16,10 +16,10 @@
         <div class="flex mt-[14px]">
             <div class="text-[18px] font-bold text-[#141629] flex items-center justify-center">ห้อง {{
                 $route.query.number_room }}</div>
-            <div :class="$route.query.status == 'rent' ? 'bg-[#D7F1E3] text-[#39B974]' : 'bg-[#F0F8FF] text-[#003765]'"
+            <div :class="$route.query.status == 'Checked In' ? 'bg-[#D7F1E3] text-[#39B974]' : 'bg-[#F0F8FF] text-[#003765]'"
                 class="ml-[14px] h-[36px] w-[auto] text-[12px] flex items-center justify-center p-[8px] rounded-[12px]">
-                {{ $route.query.status == "rent" ? 'ทำสัญญาแล้ว' : $route.query.status == "reserved" ? 'ยังไม่ทำสัญญา'
-                    : 'ห้องว่าง' }} </div>
+                {{ $route.query.status == "Checked In" ? 'ทำสัญญาแล้ว' : $route.query.status == "Reserved" ? 'ห้องจอง'
+                    :  $route.query.status == "Maintenance"?'รอซ่อม':'ห้องว่าง' }} </div>
         </div>
         <div class="flex justify-start items-center rounded-[12px] mt-[14px]">
             <div class="bg-[#F3F7FA] rounded-[12px]">
@@ -27,7 +27,7 @@
                     <div @click=" routTab(1)" class="cursor-pointer "
                         :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         ผู้เช่า</div>
-                    <div @click=" routTab(2)" class="cursor-pointer ml-[8px]" v-if="$route.query.id_user"
+                    <div @click=" routTab(2)" class="cursor-pointer ml-[8px]" v-if=" $route.query.status == 'Checked In'"
                         :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         สัญญาเช่า
                     </div>
@@ -35,7 +35,7 @@
                         :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         บริการอื่น ๆ
                     </div>
-                    <div @click=" routTab(4)" class="cursor-pointer  ml-[8px]" v-if="$route.query.id_user"
+                    <div @click=" routTab(4)" class="cursor-pointer  ml-[8px]"  v-if=" $route.query.status == 'Checked In'"
                         :class="tab == 4 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : ' text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         ย้ายออก
                     </div>

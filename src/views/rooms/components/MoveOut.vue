@@ -488,7 +488,7 @@
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]" v-if="tab == true">
                             <div class="text-custom text-[#D44769] font-bold text-[16px]">หนี้สูญ {{
-                                (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) > 0 ? 0
+                                (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) < 0 ? 0
                                 : (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) }}
                                 บาท</div>
                         </div>
@@ -678,7 +678,7 @@ export default {
             move_confirm: false,
             payment: false,
             move_done: false,
-            date_moveout: '',
+            date_moveout: null,
             list_debt: {
                 total: 0,
                 deposit: 0,
@@ -766,15 +766,15 @@ export default {
                                 //window.location.reload()
                             }
                             console.log('bill', resp.data[0]);
-                            this.list_debt.total = resp.data[0]?.attributes.total
+                            this.list_debt.total = resp.data[0]?.attributes.total ? resp.data[0]?.attributes.total : 0
                             this.bill_detail.id = resp.data[0]?.id
-                            this.bill_detail.ele = resp.data[0]?.attributes.electricPrice
-                            this.bill_detail.water = resp.data[0]?.attributes.waterPrice
-                            this.bill_detail.communalPrice = resp.data[0]?.attributes.communalPrice
+                            this.bill_detail.ele = resp.data[0]?.attributes.electricPrice ? resp.data[0]?.attributes.electricPrice : 0
+                            this.bill_detail.water = resp.data[0]?.attributes.waterPrice ? resp.data[0]?.attributes.waterPrice : 0
+                            this.bill_detail.communalPrice = resp.data[0]?.attributes.communalPrice ? resp.data[0]?.attributes.communalPrice : 0
                             this.bill_detail.vat = 7
                             this.bill_detail.invoiceNumber = resp.data[0]?.attributes.invoiceNumber
-                            this.bill_detail.room = resp.data[0]?.attributes.roomPrice
-                            this.bill_detail.other = resp.data[0]?.attributes.otherPrice
+                            this.bill_detail.room = resp.data[0]?.attributes.roomPrice ? resp.data[0]?.attributes.roomPrice : 0
+                            this.bill_detail.other = resp.data[0]?.attributes.otherPrice ? resp.data[0]?.attributes.roomPrice : 0
                         }).finally(() => {
                             fetch('https://api.resguru.app/api' + '/room-histories?populate=*&filters[building][id][$eq]=' + this.$store.state.building + '&filters[room][id][$eq]=' + this.$route.query.id_room + '&filters[user_sign_contract][id][$eq]=' + this.$route.query.id_contract + '&filters[publishedAt][$null]=true&publicationState=preview')
                                 .then(response => response.json())
@@ -849,7 +849,7 @@ export default {
                                 "date_moveout": this.date_moveout,
                                 "user_sign_contract": this.$route.query.id_contract,
                                 "ExitType": this.tab ? 'Missing' : 'Move',
-                                "publishedAt": null
+                                // "publishedAt": null
                             }
                         }
                         ).then((resp) => {
@@ -873,7 +873,7 @@ export default {
                                     "communalPrice": this.bill_detail.communalPrice,
                                     "subtotal": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other),
                                     "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice) + ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice)) * 0.07),
-                                    "publishedAt": null
+                                    // "publishedAt": null
                                 }
                             }
                             )
@@ -884,7 +884,7 @@ export default {
                             data: {
                                 "date_moveout": this.date_moveout,
                                 "ExitType": this.tab ? 'Missing' : 'Move',
-                                "publishedAt": null
+                                // "publishedAt": null
                             }
                         }
                         ).then((resp) => { //////////////// ไปแก้ไขตอนดึงมาแสดงด้วย
@@ -908,7 +908,7 @@ export default {
                                     "communalPrice": this.bill_detail.communalPrice,
                                     "subtotal": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other),
                                     "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice) + ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice)) * 0.07),
-                                    "publishedAt": null
+                                    // "publishedAt": null
                                 }
                             }
                             )
@@ -932,7 +932,7 @@ export default {
                                 "users_permissions_user": this.$route.query.id_user,
                                 "ExitType": this.tab ? 'Missing' : 'Move',
                                 "date_moveout": this.date_moveout,
-                                "user_sign_contract" : this.$route.query.id_contract
+                                "user_sign_contract": this.$route.query.id_contract
                             }
                         }
                         ).then((resp) => {
@@ -966,6 +966,11 @@ export default {
                             }).then(() => {
                                 console.log(this.$route.query.id_contract);
 
+                            })
+                            axios.put('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room, {
+                                data: {
+                                    roomStatus: 'Maintenance'
+                                }
                             })
                             this.move_confirm = !this.move_confirm,
                                 this.move_done = true
@@ -1013,6 +1018,11 @@ export default {
                                 }
                             }
                             ).then(() => {
+                                axios.put('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room, {
+                                    data: {
+                                        roomStatus: 'Maintenance'
+                                    }
+                                })
                                 this.move_confirm = !this.move_confirm,
                                     this.move_done = true
                                 this.$router.push({
@@ -1041,6 +1051,8 @@ export default {
                 .catch(error => {
                     const errorMessage = error.message ? error.message : 'Error updating information';
                     this.$showNotification('danger', errorMessage);
+                }).finally(() => {
+                    // window.location.reload()
                 })
         },
     }
