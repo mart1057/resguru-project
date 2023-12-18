@@ -92,9 +92,9 @@
                                         </vs-radio>
                                     </div>
                                 </div>
-                                <div class="grid grid-cols-2  text-custom mt-[14px]  "
+                                <div class="grid grid-cols-4  text-custom mt-[14px]  "
                                     v-if="room_detail.check_user == true && is_edit == false">
-                                    <div>
+                                    <div  class="col-span-2">
                                         <div class=""> <span class="text-[red] mr-[2px]">*</span>เลือกข้อมูลผู้เช่า</div>
                                         <select placeholder="Select" v-model="id_user" @change="getUserDetail()"
                                             class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]">
@@ -103,15 +103,21 @@
                                             </option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="grid grid-cols-4 gap-2  text-custom mt-[14px] ">
-                                    <div class="col-span-2">
+                                    <div class="col-span-2  ml-[8px]">
                                         <div><span class="text-[red] mr-[2px]">*</span>อีเมลล์</div>
                                         <input type="input" v-model="room_detail.email"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             :disabled="is_edit == true" />
                                     </div>
-                                    <div class="col-span-1">
+                                </div>
+                                <div class="grid grid-cols-4 gap-2  text-custom mt-[14px] ">
+                                    <!-- <div class="col-span-2">
+                                        <div><span class="text-[red] mr-[2px]">*</span>อีเมลล์</div>
+                                        <input type="input" v-model="room_detail.email"
+                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            :disabled="is_edit == true" />
+                                    </div> -->
+                                    <!-- <div class="col-span-1">
                                         <div>เลขมิเตอร์ค่าน้ำเริ่มต้น</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             :disabled="is_edit == true" />
@@ -120,7 +126,7 @@
                                         <div>เลขมิเตอร์ค่าไฟเริ่มต้น</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             :disabled="is_edit == true" />
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="grid grid-cols-8  text-custom mt-[14px]  ">
                                     <div>
