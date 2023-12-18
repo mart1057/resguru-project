@@ -954,7 +954,7 @@ export default {
             // console.log("this.filter.floor",this.filter.floor)
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}&floor=${id}&month=${m}&year=${y}`)
+            fetch(`https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}&floor=${id}&month=${m}&year=${y}&paymentStatus=Paid,Not%20Paid`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoomBill()", resp.data);
