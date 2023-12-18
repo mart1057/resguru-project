@@ -159,7 +159,8 @@
                             <div class="w-[30%] text-custom flex items-start"></div>
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
                                 <div class="col-span-4">
-                                    <div><span class="text-[red] mr-[2px]">*</span>เบอร์โทรศัพท์ <span class="text-[#5C6B79]">(ไม่ต้องใส่ขีด ตัวอย่าง.
+                                    <div><span class="text-[red] mr-[2px]">*</span>เบอร์โทรศัพท์ <span
+                                            class="text-[#5C6B79]">(ไม่ต้องใส่ขีด ตัวอย่าง.
                                             0815578945)</span></div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="room_detail.phone" :disabled="is_edit == true" />
@@ -197,7 +198,7 @@
                             <div class="grid grid-cols-6  text-custom w-[70%] ">
                                 <div class="col-span-3 mt-[6px]">
                                     <div><span class="text-[red] mr-[2px]">*</span>แนบรูปบัตรประชาชน</div>
-                                    <div class="flex mt-[4px]" v-if=" room_detail.image_card_name == ''">
+                                    <div class="flex mt-[4px]" v-if="room_detail.image_card_name == ''">
                                         <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
                                             id="upload" @change="previewImage" type="file" accept="image/*" hidden />
                                         <label for="upload">
@@ -586,13 +587,13 @@ export default {
     methods: {
         previewImage(event) {
             const file = event.target.files[0];
-            this.room_detail.image_card_name= event.target.files[0].name
+            this.room_detail.image_card_name = event.target.files[0].name
             this.img_arr_card = event.target.files[0];
             if (file) {
-               
+
                 // Read the file as a URL
                 const reader = new FileReader();
-                reader.onload = (e) => { 
+                reader.onload = (e) => {
                     this.room_detail.image_card = e.target.result; // Set the image URL for preview
                 };
                 reader.readAsDataURL(file);
@@ -820,9 +821,15 @@ export default {
                                     }
                                 })
 
+
                             })
                         })
                             .finally(() => {
+                                axios.put('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room, {
+                                    data: {
+                                        roomStatus: 'Reserved'
+                                    }
+                                })
                                 this.id_user = this.room_detail.id
                                 this.getUser()
                                 this.create = false

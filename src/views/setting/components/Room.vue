@@ -10,7 +10,7 @@
                                 ผังห้อง</div>
                             <div @click="tab = 2" class="cursor-pointer ml-[8px]"
                                 :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
-                                รายการประเภทห้องพัก 
+                                รายการประเภทห้องพัก
                             </div>
                             <div @click="tab = 3" class="cursor-pointer ml-[8px]"
                                 :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
@@ -60,8 +60,8 @@
                                 </div>
                                 <div class=" font-bold ml-[8px] flex justify-center items-center">กำหนดประเภทห้องและค่าเช่า
                                 </div>
-                            
-                                
+
+
                             </div>
                             <!-- <vs-tooltip bottom shadow not-hover v-model="popup_filter">
                                 <div @click="popup_filter = true"
@@ -131,8 +131,10 @@
                             </vs-select>
                         </div> -->
                         <div v-for="data in roomFloor">
-                        <div class="text-[#8396A6] cursor-pointer mr-[8px]"> อาคาร {{ data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }} </div>
-                        
+                            <div class="text-[#8396A6] cursor-pointer mr-[8px]"> อาคาร {{
+                                data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName
+    }} </div>
+
                         </div>
                         <!-- <div class="text-[#8396A6] cursor-pointer">อาคาร A ชั้น 2</div> -->
                     </div>
@@ -155,11 +157,12 @@
                             <div class="mt-[]">
                                 <select placeholder="Select" v-model="data.attributes.room_type.data.id"
                                     class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]"
-                                    :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''" @change="updateRoomType(data.id,data.attributes.room_type.data.id)">
-                                    <option  v-for="TypeData in roomType" :value=TypeData.id>
-                                        {{TypeData.attributes.roomTypeName}} 
+                                    :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''"
+                                    @change="updateRoomType(data.id, data.attributes.room_type.data.id)">
+                                    <option v-for="TypeData in roomType" :value=TypeData.id>
+                                        {{ TypeData.attributes.roomTypeName }}
                                     </option>
-                                    
+
                                     <!-- <option label="เลือก" value="0" disabled>
                                         เลือก
                                     </option>
@@ -181,77 +184,77 @@
                         <div class="grid grid-cols-2 w-[100%] gap-4 mt-[14px] ">
                             <div class="w-[100%]">
                                 <div v-if="data.attributes.water_fees.data[0]">
-                                <vs-input v-model="data.attributes.water_fees.data[0].attributes.meterUnit" disabled>
-                                    <template #icon>
-                                        <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <mask id="mask0_3458_19558" style="mask-type:alpha" maskUnits="userSpaceOnUse"
-                                                x="0" y="0" width="24" height="25">
-                                                <rect y="0.457031" width="24" height="24" fill="#D9D9D9" />
-                                            </mask>
-                                            <g mask="url(#mask0_3458_19558)">
-                                                <path
-                                                    d="M12 21.9568C10.0156 21.9568 8.26953 21.2642 6.76172 19.8791C5.25391 18.494 4.5 16.6197 4.5 14.2564C4.5 12.7695 5.06635 11.1524 6.19905 9.40494C7.33173 7.65751 9.04392 5.75508 11.3356 3.69767C11.4298 3.61792 11.5339 3.55625 11.648 3.51267C11.7621 3.46907 11.8795 3.44727 12 3.44727C12.1205 3.44727 12.2378 3.46907 12.3519 3.51267C12.466 3.55625 12.5701 3.61792 12.6643 3.69767C14.956 5.75508 16.6682 7.65751 17.8009 9.40494C18.9336 11.1524 19.5 12.7695 19.5 14.2564C19.5 16.6197 18.746 18.494 17.2382 19.8791C15.7304 21.2642 13.9843 21.9568 12 21.9568ZM12 20.4568C13.6769 20.4568 15.0961 19.8802 16.2577 18.727C17.4192 17.5738 18 16.0838 18 14.2568C18 13.0735 17.5083 11.7193 16.525 10.1943C15.5416 8.66934 14.0333 6.97351 12 5.10684C9.96664 6.97351 8.45831 8.66934 7.47497 10.1943C6.49164 11.7193 5.99997 13.0735 5.99997 14.2568C5.99997 16.0838 6.58074 17.5738 7.74227 18.727C8.90382 19.8802 10.3231 20.4568 12 20.4568ZM12.2461 19.303C12.4205 19.2863 12.5641 19.2211 12.6769 19.1073C12.7897 18.9935 12.8461 18.8563 12.8461 18.6957C12.8461 18.5082 12.7846 18.3597 12.6617 18.2501C12.5387 18.1405 12.3816 18.094 12.1903 18.1107C11.507 18.1607 10.7628 17.9604 9.95765 17.5097C9.15253 17.0591 8.64997 16.2754 8.44997 15.1588C8.41664 14.9882 8.34517 14.8543 8.23555 14.7568C8.12593 14.6594 7.99548 14.6107 7.8442 14.6107C7.66215 14.6107 7.51055 14.679 7.3894 14.8155C7.26825 14.952 7.22948 15.1274 7.27308 15.3415C7.54358 16.794 8.19742 17.8325 9.2346 18.4568C10.2718 19.0812 11.2756 19.3632 12.2461 19.303Z"
-                                                    fill="#003765" />
-                                            </g>
-                                        </svg>
-                                    </template>
-                                </vs-input>
+                                    <vs-input v-model="data.attributes.water_fees.data[0].attributes.meterUnit" disabled>
+                                        <template #icon>
+                                            <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <mask id="mask0_3458_19558" style="mask-type:alpha"
+                                                    maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="25">
+                                                    <rect y="0.457031" width="24" height="24" fill="#D9D9D9" />
+                                                </mask>
+                                                <g mask="url(#mask0_3458_19558)">
+                                                    <path
+                                                        d="M12 21.9568C10.0156 21.9568 8.26953 21.2642 6.76172 19.8791C5.25391 18.494 4.5 16.6197 4.5 14.2564C4.5 12.7695 5.06635 11.1524 6.19905 9.40494C7.33173 7.65751 9.04392 5.75508 11.3356 3.69767C11.4298 3.61792 11.5339 3.55625 11.648 3.51267C11.7621 3.46907 11.8795 3.44727 12 3.44727C12.1205 3.44727 12.2378 3.46907 12.3519 3.51267C12.466 3.55625 12.5701 3.61792 12.6643 3.69767C14.956 5.75508 16.6682 7.65751 17.8009 9.40494C18.9336 11.1524 19.5 12.7695 19.5 14.2564C19.5 16.6197 18.746 18.494 17.2382 19.8791C15.7304 21.2642 13.9843 21.9568 12 21.9568ZM12 20.4568C13.6769 20.4568 15.0961 19.8802 16.2577 18.727C17.4192 17.5738 18 16.0838 18 14.2568C18 13.0735 17.5083 11.7193 16.525 10.1943C15.5416 8.66934 14.0333 6.97351 12 5.10684C9.96664 6.97351 8.45831 8.66934 7.47497 10.1943C6.49164 11.7193 5.99997 13.0735 5.99997 14.2568C5.99997 16.0838 6.58074 17.5738 7.74227 18.727C8.90382 19.8802 10.3231 20.4568 12 20.4568ZM12.2461 19.303C12.4205 19.2863 12.5641 19.2211 12.6769 19.1073C12.7897 18.9935 12.8461 18.8563 12.8461 18.6957C12.8461 18.5082 12.7846 18.3597 12.6617 18.2501C12.5387 18.1405 12.3816 18.094 12.1903 18.1107C11.507 18.1607 10.7628 17.9604 9.95765 17.5097C9.15253 17.0591 8.64997 16.2754 8.44997 15.1588C8.41664 14.9882 8.34517 14.8543 8.23555 14.7568C8.12593 14.6594 7.99548 14.6107 7.8442 14.6107C7.66215 14.6107 7.51055 14.679 7.3894 14.8155C7.26825 14.952 7.22948 15.1274 7.27308 15.3415C7.54358 16.794 8.19742 17.8325 9.2346 18.4568C10.2718 19.0812 11.2756 19.3632 12.2461 19.303Z"
+                                                        fill="#003765" />
+                                                </g>
+                                            </svg>
+                                        </template>
+                                    </vs-input>
                                 </div>
                                 <div v-else>
                                     <vs-input disabled>
-                                    <template #icon>
-                                        <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <mask id="mask0_3458_19558" style="mask-type:alpha" maskUnits="userSpaceOnUse"
-                                                x="0" y="0" width="24" height="25">
-                                                <rect y="0.457031" width="24" height="24" fill="#D9D9D9" />
-                                            </mask>
-                                            <g mask="url(#mask0_3458_19558)">
-                                                <path
-                                                    d="M12 21.9568C10.0156 21.9568 8.26953 21.2642 6.76172 19.8791C5.25391 18.494 4.5 16.6197 4.5 14.2564C4.5 12.7695 5.06635 11.1524 6.19905 9.40494C7.33173 7.65751 9.04392 5.75508 11.3356 3.69767C11.4298 3.61792 11.5339 3.55625 11.648 3.51267C11.7621 3.46907 11.8795 3.44727 12 3.44727C12.1205 3.44727 12.2378 3.46907 12.3519 3.51267C12.466 3.55625 12.5701 3.61792 12.6643 3.69767C14.956 5.75508 16.6682 7.65751 17.8009 9.40494C18.9336 11.1524 19.5 12.7695 19.5 14.2564C19.5 16.6197 18.746 18.494 17.2382 19.8791C15.7304 21.2642 13.9843 21.9568 12 21.9568ZM12 20.4568C13.6769 20.4568 15.0961 19.8802 16.2577 18.727C17.4192 17.5738 18 16.0838 18 14.2568C18 13.0735 17.5083 11.7193 16.525 10.1943C15.5416 8.66934 14.0333 6.97351 12 5.10684C9.96664 6.97351 8.45831 8.66934 7.47497 10.1943C6.49164 11.7193 5.99997 13.0735 5.99997 14.2568C5.99997 16.0838 6.58074 17.5738 7.74227 18.727C8.90382 19.8802 10.3231 20.4568 12 20.4568ZM12.2461 19.303C12.4205 19.2863 12.5641 19.2211 12.6769 19.1073C12.7897 18.9935 12.8461 18.8563 12.8461 18.6957C12.8461 18.5082 12.7846 18.3597 12.6617 18.2501C12.5387 18.1405 12.3816 18.094 12.1903 18.1107C11.507 18.1607 10.7628 17.9604 9.95765 17.5097C9.15253 17.0591 8.64997 16.2754 8.44997 15.1588C8.41664 14.9882 8.34517 14.8543 8.23555 14.7568C8.12593 14.6594 7.99548 14.6107 7.8442 14.6107C7.66215 14.6107 7.51055 14.679 7.3894 14.8155C7.26825 14.952 7.22948 15.1274 7.27308 15.3415C7.54358 16.794 8.19742 17.8325 9.2346 18.4568C10.2718 19.0812 11.2756 19.3632 12.2461 19.303Z"
-                                                    fill="#003765" />
-                                            </g>
-                                        </svg>
-                                    </template>
-                                </vs-input>
+                                        <template #icon>
+                                            <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <mask id="mask0_3458_19558" style="mask-type:alpha"
+                                                    maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="25">
+                                                    <rect y="0.457031" width="24" height="24" fill="#D9D9D9" />
+                                                </mask>
+                                                <g mask="url(#mask0_3458_19558)">
+                                                    <path
+                                                        d="M12 21.9568C10.0156 21.9568 8.26953 21.2642 6.76172 19.8791C5.25391 18.494 4.5 16.6197 4.5 14.2564C4.5 12.7695 5.06635 11.1524 6.19905 9.40494C7.33173 7.65751 9.04392 5.75508 11.3356 3.69767C11.4298 3.61792 11.5339 3.55625 11.648 3.51267C11.7621 3.46907 11.8795 3.44727 12 3.44727C12.1205 3.44727 12.2378 3.46907 12.3519 3.51267C12.466 3.55625 12.5701 3.61792 12.6643 3.69767C14.956 5.75508 16.6682 7.65751 17.8009 9.40494C18.9336 11.1524 19.5 12.7695 19.5 14.2564C19.5 16.6197 18.746 18.494 17.2382 19.8791C15.7304 21.2642 13.9843 21.9568 12 21.9568ZM12 20.4568C13.6769 20.4568 15.0961 19.8802 16.2577 18.727C17.4192 17.5738 18 16.0838 18 14.2568C18 13.0735 17.5083 11.7193 16.525 10.1943C15.5416 8.66934 14.0333 6.97351 12 5.10684C9.96664 6.97351 8.45831 8.66934 7.47497 10.1943C6.49164 11.7193 5.99997 13.0735 5.99997 14.2568C5.99997 16.0838 6.58074 17.5738 7.74227 18.727C8.90382 19.8802 10.3231 20.4568 12 20.4568ZM12.2461 19.303C12.4205 19.2863 12.5641 19.2211 12.6769 19.1073C12.7897 18.9935 12.8461 18.8563 12.8461 18.6957C12.8461 18.5082 12.7846 18.3597 12.6617 18.2501C12.5387 18.1405 12.3816 18.094 12.1903 18.1107C11.507 18.1607 10.7628 17.9604 9.95765 17.5097C9.15253 17.0591 8.64997 16.2754 8.44997 15.1588C8.41664 14.9882 8.34517 14.8543 8.23555 14.7568C8.12593 14.6594 7.99548 14.6107 7.8442 14.6107C7.66215 14.6107 7.51055 14.679 7.3894 14.8155C7.26825 14.952 7.22948 15.1274 7.27308 15.3415C7.54358 16.794 8.19742 17.8325 9.2346 18.4568C10.2718 19.0812 11.2756 19.3632 12.2461 19.303Z"
+                                                        fill="#003765" />
+                                                </g>
+                                            </svg>
+                                        </template>
+                                    </vs-input>
                                 </div>
                             </div>
                             <div class="w-[100%]">
                                 <div v-if=data.attributes.electric_fees.data[0]>
-                                <vs-input v-model=data.attributes.electric_fees.data[0].attributes.electicUnit disabled >
-                                    <template #icon>
-                                        <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <mask id="mask0_3458_17710" style="mask-type:alpha" maskUnits="userSpaceOnUse"
-                                                x="0" y="0" width="24" height="25">
-                                                <rect y="0.457031" width="24" height="24" fill="#D9D9D9" />
-                                            </mask>
-                                            <g mask="url(#mask0_3458_17710)">
-                                                <path
-                                                    d="M11.6643 17.557L14.5908 12.5916C14.6181 12.5403 14.6208 12.4874 14.599 12.4329C14.5772 12.3784 14.539 12.3512 14.4845 12.3512H12.1011L13.5897 6.27433C13.6115 6.19741 13.6006 6.1253 13.557 6.05798C13.5133 5.99066 13.4588 5.95701 13.3934 5.95701H9.53769C9.46134 5.95701 9.39863 5.98586 9.34957 6.04356C9.30048 6.10126 9.27594 6.17498 9.27594 6.26473V13.6493C9.27594 13.739 9.30048 13.8128 9.34957 13.8705C9.39863 13.9282 9.46134 13.957 9.53769 13.957H11.6643V17.557ZM15.9093 12.9704L11.4434 20.5877C11.3638 20.7248 11.2649 20.8152 11.1465 20.8588C11.0282 20.9024 10.9107 20.9024 10.794 20.8588C10.6773 20.8152 10.5806 20.7357 10.5037 20.6204C10.4268 20.505 10.3883 20.3652 10.3883 20.2011V15.457H9.53769C9.11347 15.457 8.75113 15.2804 8.45067 14.9272C8.15022 14.574 8 14.148 8 13.6493V6.26473C8 5.76601 8.15022 5.34006 8.45067 4.98686C8.75113 4.63364 9.11347 4.45703 9.53769 4.45703H13.6551C14.076 4.45703 14.4179 4.64453 14.6807 5.01953C14.9436 5.39453 15.021 5.8096 14.913 6.26473L13.7909 10.8512H14.9523C15.4136 10.8512 15.7547 11.0906 15.9755 11.5695C16.1964 12.0483 16.1743 12.5153 15.9093 12.9704Z"
-                                                    fill="#003765" />
-                                            </g>
-                                        </svg>
-                                    </template>
-                                </vs-input>
+                                    <vs-input v-model=data.attributes.electric_fees.data[0].attributes.electicUnit disabled>
+                                        <template #icon>
+                                            <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <mask id="mask0_3458_17710" style="mask-type:alpha"
+                                                    maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="25">
+                                                    <rect y="0.457031" width="24" height="24" fill="#D9D9D9" />
+                                                </mask>
+                                                <g mask="url(#mask0_3458_17710)">
+                                                    <path
+                                                        d="M11.6643 17.557L14.5908 12.5916C14.6181 12.5403 14.6208 12.4874 14.599 12.4329C14.5772 12.3784 14.539 12.3512 14.4845 12.3512H12.1011L13.5897 6.27433C13.6115 6.19741 13.6006 6.1253 13.557 6.05798C13.5133 5.99066 13.4588 5.95701 13.3934 5.95701H9.53769C9.46134 5.95701 9.39863 5.98586 9.34957 6.04356C9.30048 6.10126 9.27594 6.17498 9.27594 6.26473V13.6493C9.27594 13.739 9.30048 13.8128 9.34957 13.8705C9.39863 13.9282 9.46134 13.957 9.53769 13.957H11.6643V17.557ZM15.9093 12.9704L11.4434 20.5877C11.3638 20.7248 11.2649 20.8152 11.1465 20.8588C11.0282 20.9024 10.9107 20.9024 10.794 20.8588C10.6773 20.8152 10.5806 20.7357 10.5037 20.6204C10.4268 20.505 10.3883 20.3652 10.3883 20.2011V15.457H9.53769C9.11347 15.457 8.75113 15.2804 8.45067 14.9272C8.15022 14.574 8 14.148 8 13.6493V6.26473C8 5.76601 8.15022 5.34006 8.45067 4.98686C8.75113 4.63364 9.11347 4.45703 9.53769 4.45703H13.6551C14.076 4.45703 14.4179 4.64453 14.6807 5.01953C14.9436 5.39453 15.021 5.8096 14.913 6.26473L13.7909 10.8512H14.9523C15.4136 10.8512 15.7547 11.0906 15.9755 11.5695C16.1964 12.0483 16.1743 12.5153 15.9093 12.9704Z"
+                                                        fill="#003765" />
+                                                </g>
+                                            </svg>
+                                        </template>
+                                    </vs-input>
                                 </div>
                                 <div v-else>
-                                    <vs-input  disabled >
-                                    <template #icon>
-                                        <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <mask id="mask0_3458_17710" style="mask-type:alpha" maskUnits="userSpaceOnUse"
-                                                x="0" y="0" width="24" height="25">
-                                                <rect y="0.457031" width="24" height="24" fill="#D9D9D9" />
-                                            </mask>
-                                            <g mask="url(#mask0_3458_17710)">
-                                                <path
-                                                    d="M11.6643 17.557L14.5908 12.5916C14.6181 12.5403 14.6208 12.4874 14.599 12.4329C14.5772 12.3784 14.539 12.3512 14.4845 12.3512H12.1011L13.5897 6.27433C13.6115 6.19741 13.6006 6.1253 13.557 6.05798C13.5133 5.99066 13.4588 5.95701 13.3934 5.95701H9.53769C9.46134 5.95701 9.39863 5.98586 9.34957 6.04356C9.30048 6.10126 9.27594 6.17498 9.27594 6.26473V13.6493C9.27594 13.739 9.30048 13.8128 9.34957 13.8705C9.39863 13.9282 9.46134 13.957 9.53769 13.957H11.6643V17.557ZM15.9093 12.9704L11.4434 20.5877C11.3638 20.7248 11.2649 20.8152 11.1465 20.8588C11.0282 20.9024 10.9107 20.9024 10.794 20.8588C10.6773 20.8152 10.5806 20.7357 10.5037 20.6204C10.4268 20.505 10.3883 20.3652 10.3883 20.2011V15.457H9.53769C9.11347 15.457 8.75113 15.2804 8.45067 14.9272C8.15022 14.574 8 14.148 8 13.6493V6.26473C8 5.76601 8.15022 5.34006 8.45067 4.98686C8.75113 4.63364 9.11347 4.45703 9.53769 4.45703H13.6551C14.076 4.45703 14.4179 4.64453 14.6807 5.01953C14.9436 5.39453 15.021 5.8096 14.913 6.26473L13.7909 10.8512H14.9523C15.4136 10.8512 15.7547 11.0906 15.9755 11.5695C16.1964 12.0483 16.1743 12.5153 15.9093 12.9704Z"
-                                                    fill="#003765" />
-                                            </g>
-                                        </svg>
-                                    </template>
+                                    <vs-input disabled>
+                                        <template #icon>
+                                            <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <mask id="mask0_3458_17710" style="mask-type:alpha"
+                                                    maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="25">
+                                                    <rect y="0.457031" width="24" height="24" fill="#D9D9D9" />
+                                                </mask>
+                                                <g mask="url(#mask0_3458_17710)">
+                                                    <path
+                                                        d="M11.6643 17.557L14.5908 12.5916C14.6181 12.5403 14.6208 12.4874 14.599 12.4329C14.5772 12.3784 14.539 12.3512 14.4845 12.3512H12.1011L13.5897 6.27433C13.6115 6.19741 13.6006 6.1253 13.557 6.05798C13.5133 5.99066 13.4588 5.95701 13.3934 5.95701H9.53769C9.46134 5.95701 9.39863 5.98586 9.34957 6.04356C9.30048 6.10126 9.27594 6.17498 9.27594 6.26473V13.6493C9.27594 13.739 9.30048 13.8128 9.34957 13.8705C9.39863 13.9282 9.46134 13.957 9.53769 13.957H11.6643V17.557ZM15.9093 12.9704L11.4434 20.5877C11.3638 20.7248 11.2649 20.8152 11.1465 20.8588C11.0282 20.9024 10.9107 20.9024 10.794 20.8588C10.6773 20.8152 10.5806 20.7357 10.5037 20.6204C10.4268 20.505 10.3883 20.3652 10.3883 20.2011V15.457H9.53769C9.11347 15.457 8.75113 15.2804 8.45067 14.9272C8.15022 14.574 8 14.148 8 13.6493V6.26473C8 5.76601 8.15022 5.34006 8.45067 4.98686C8.75113 4.63364 9.11347 4.45703 9.53769 4.45703H13.6551C14.076 4.45703 14.4179 4.64453 14.6807 5.01953C14.9436 5.39453 15.021 5.8096 14.913 6.26473L13.7909 10.8512H14.9523C15.4136 10.8512 15.7547 11.0906 15.9755 11.5695C16.1964 12.0483 16.1743 12.5153 15.9093 12.9704Z"
+                                                        fill="#003765" />
+                                                </g>
+                                            </svg>
+                                        </template>
                                     </vs-input>
                                 </div>
                             </div>
@@ -303,18 +306,20 @@
                             </div>
                         </div>
                         <div
-                            class="flex justify-between border rounded-[12px]  pl-[14px] pr-[14px] pt-[4px] pb-[4px] text-[#0B9A3C]">
+                            class="flex justify-between border rounded-[12px]  pl-[14px] pr-[14px] pt-[4px] pb-[4px] text-[#0B9A3C] mt-[8px]">
                             <div class="w-[50%] ">ราคา</div>
                             <div>
-                                <input type="number" v-model="data.attributes.roomPrice" class=" flex justify-center h-[24px] w-[100%] bg-[#F3F8FD] rounded-[12px]">
+                                <input type="number" v-model="data.attributes.roomPrice"
+                                    class=" flex justify-center h-[24px] w-[100%] bg-[#F3F8FD] rounded-[12px]">
                             </div>
-                            
+
                         </div>
-                        <vs-button @click="updateRoomPrice(data.id,data.attributes.roomPrice)" color="#003765" >แก้ไขราคาห้อง</vs-button>
+                        <vs-button @click="updateRoomPrice(data.id, data.attributes.roomPrice)"
+                            color="#003765">แก้ไขราคาห้อง</vs-button>
                     </div>
                 </div>
                 <div class="border h-[97px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
-                    @click="create_type = true,roomTypePrice='',roomTypeName=''">
+                    @click="create_type = true, roomTypePrice = '', roomTypeName = ''">
                     <div>
                         <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
@@ -337,35 +342,38 @@
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 3">
             <div class="text-[16px] font-bold mt-[24px]">รายการจำนวนชั้นของตึก</div>
             <div class="grid grid-cols-5 gap-4 mt-[14px] w-[100%]">
-                <div class="border h-[130px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]" v-for="data in roomFloor">
+                <div class="border h-[130px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]"
+                    v-for="data in roomFloor">
                     <div class="flex flex-col justify-between h-[100%]">
                         <div class="flex justify-between">
                             <div class="text-[16px]">ชื่อชั้น : {{ data.attributes.floorName }}</div>
                             <div class="cursor-pointer">
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                @click="removeFloor(data.id)">
-                                                <mask id="mask0_967_25233" style="mask-type:alpha"
-                                                    maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
-                                                    <rect width="20" height="20" fill="#D9D9D9" />
-                                                </mask>
-                                                
-                                                <g mask="url(#mask0_967_25233)">
-                                                    <path
-                                                        d="M6.08975 17.0822C5.66881 17.0822 5.3125 16.9363 5.02083 16.6447C4.72917 16.353 4.58333 15.9967 4.58333 15.5758V4.99886H4.375C4.19765 4.99886 4.04915 4.93904 3.9295 4.81939C3.80983 4.69973 3.75 4.55123 3.75 4.37389C3.75 4.19654 3.80983 4.04804 3.9295 3.92839C4.04915 3.80872 4.19765 3.74889 4.375 3.74889H7.49998C7.49998 3.5395 7.57316 3.36429 7.71952 3.22326C7.8659 3.08223 8.04378 3.01172 8.25319 3.01172H11.7468C11.9562 3.01172 12.1341 3.08223 12.2804 3.22326C12.4268 3.36429 12.5 3.5395 12.5 3.74889H15.625C15.8023 3.74889 15.9508 3.80872 16.0705 3.92839C16.1901 4.04804 16.25 4.19654 16.25 4.37389C16.25 4.55123 16.1901 4.69973 16.0705 4.81939C15.9508 4.93904 15.8023 4.99886 15.625 4.99886H15.4166V15.5758C15.4166 15.9967 15.2708 16.353 14.9791 16.6447C14.6875 16.9363 14.3312 17.0822 13.9102 17.0822H6.08975ZM5.83331 4.99886V15.5758C5.83331 15.6506 5.85735 15.712 5.90544 15.7601C5.95352 15.8082 6.01496 15.8322 6.08975 15.8322H13.9102C13.985 15.8322 14.0464 15.8082 14.0945 15.7601C14.1426 15.712 14.1666 15.6506 14.1666 15.5758V4.99886H5.83331ZM7.83654 13.5406C7.83654 13.7179 7.89637 13.8664 8.01602 13.9861C8.13567 14.1057 8.28417 14.1655 8.46152 14.1655C8.63887 14.1655 8.78737 14.1057 8.90702 13.9861C9.02669 13.8664 9.08652 13.7179 9.08652 13.5406V7.29051C9.08652 7.11316 9.02669 6.96466 8.90702 6.84501C8.78737 6.72536 8.63887 6.66553 8.46152 6.66553C8.28417 6.66553 8.13567 6.72536 8.01602 6.84501C7.89637 6.96466 7.83654 7.11316 7.83654 7.29051V13.5406ZM10.9134 13.5406C10.9134 13.7179 10.9733 13.8664 11.0929 13.9861C11.2126 14.1057 11.3611 14.1655 11.5384 14.1655C11.7158 14.1655 11.8643 14.1057 11.9839 13.9861C12.1036 13.8664 12.1634 13.7179 12.1634 13.5406V7.29051C12.1634 7.11316 12.1036 6.96466 11.9839 6.84501C11.8643 6.72536 11.7158 6.66553 11.5384 6.66553C11.3611 6.66553 11.2126 6.72536 11.0929 6.84501C10.9733 6.96466 10.9134 7.11316 10.9134 7.29051V13.5406ZM5.83331 4.99886V15.5758C5.83331 15.6506 5.85735 15.712 5.90544 15.7601C5.95352 15.8082 6.01496 15.8322 6.08975 15.8322H5.83331V4.99886Z"
-                                                        fill="#5C6B79" />
-                                                </g>
+                                    xmlns="http://www.w3.org/2000/svg" @click="removeFloor(data.id)">
+                                    <mask id="mask0_967_25233" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
+                                        y="0" width="20" height="20">
+                                        <rect width="20" height="20" fill="#D9D9D9" />
+                                    </mask>
+
+                                    <g mask="url(#mask0_967_25233)">
+                                        <path
+                                            d="M6.08975 17.0822C5.66881 17.0822 5.3125 16.9363 5.02083 16.6447C4.72917 16.353 4.58333 15.9967 4.58333 15.5758V4.99886H4.375C4.19765 4.99886 4.04915 4.93904 3.9295 4.81939C3.80983 4.69973 3.75 4.55123 3.75 4.37389C3.75 4.19654 3.80983 4.04804 3.9295 3.92839C4.04915 3.80872 4.19765 3.74889 4.375 3.74889H7.49998C7.49998 3.5395 7.57316 3.36429 7.71952 3.22326C7.8659 3.08223 8.04378 3.01172 8.25319 3.01172H11.7468C11.9562 3.01172 12.1341 3.08223 12.2804 3.22326C12.4268 3.36429 12.5 3.5395 12.5 3.74889H15.625C15.8023 3.74889 15.9508 3.80872 16.0705 3.92839C16.1901 4.04804 16.25 4.19654 16.25 4.37389C16.25 4.55123 16.1901 4.69973 16.0705 4.81939C15.9508 4.93904 15.8023 4.99886 15.625 4.99886H15.4166V15.5758C15.4166 15.9967 15.2708 16.353 14.9791 16.6447C14.6875 16.9363 14.3312 17.0822 13.9102 17.0822H6.08975ZM5.83331 4.99886V15.5758C5.83331 15.6506 5.85735 15.712 5.90544 15.7601C5.95352 15.8082 6.01496 15.8322 6.08975 15.8322H13.9102C13.985 15.8322 14.0464 15.8082 14.0945 15.7601C14.1426 15.712 14.1666 15.6506 14.1666 15.5758V4.99886H5.83331ZM7.83654 13.5406C7.83654 13.7179 7.89637 13.8664 8.01602 13.9861C8.13567 14.1057 8.28417 14.1655 8.46152 14.1655C8.63887 14.1655 8.78737 14.1057 8.90702 13.9861C9.02669 13.8664 9.08652 13.7179 9.08652 13.5406V7.29051C9.08652 7.11316 9.02669 6.96466 8.90702 6.84501C8.78737 6.72536 8.63887 6.66553 8.46152 6.66553C8.28417 6.66553 8.13567 6.72536 8.01602 6.84501C7.89637 6.96466 7.83654 7.11316 7.83654 7.29051V13.5406ZM10.9134 13.5406C10.9134 13.7179 10.9733 13.8664 11.0929 13.9861C11.2126 14.1057 11.3611 14.1655 11.5384 14.1655C11.7158 14.1655 11.8643 14.1057 11.9839 13.9861C12.1036 13.8664 12.1634 13.7179 12.1634 13.5406V7.29051C12.1634 7.11316 12.1036 6.96466 11.9839 6.84501C11.8643 6.72536 11.7158 6.66553 11.5384 6.66553C11.3611 6.66553 11.2126 6.72536 11.0929 6.84501C10.9733 6.96466 10.9134 7.11316 10.9134 7.29051V13.5406ZM5.83331 4.99886V15.5758C5.83331 15.6506 5.85735 15.712 5.90544 15.7601C5.95352 15.8082 6.01496 15.8322 6.08975 15.8322H5.83331V4.99886Z"
+                                            fill="#5C6B79" />
+                                    </g>
                                 </svg>
                             </div>
                         </div>
-                        <input type="input" placeholder="แก้ไขชื่อชั้น" class=" flex justify-center h-[24px] w-[100%] bg-[#F3F8FD] rounded-[12px]"  v-model="data.attributes.floorName">
-                        <vs-button @click="updateFloor(data.id,data.attributes.floorName)" color="#003765">แก้ไขชื่อชั้น</vs-button>
+                        <input type="input" placeholder="แก้ไขชื่อชั้น"
+                            class=" flex justify-center h-[24px] w-[100%] bg-[#F3F8FD] rounded-[12px]"
+                            v-model="data.attributes.floorName">
+                        <vs-button @click="updateFloor(data.id, data.attributes.floorName)"
+                            color="#003765">แก้ไขชื่อชั้น</vs-button>
                     </div>
-                    
+
                 </div>
-                
+
                 <div class="border h-[97px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
-                     @click="createFloor = true">
+                    @click="createFloor = true">
                     <div>
                         <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
@@ -574,7 +582,7 @@
                         </svg>
                     </div>
                 </div>
-                
+
                 <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
                 <div class="text-custom  text-[14px]">รายการห้องที่กำหนด</div>
                 <div class="grid grid-cols-4 w-[100%] gap-2 mt-[14px] ">
@@ -620,8 +628,8 @@
                     <div>
                         <select placeholder="Select" v-model="value"
                             class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]">
-                            <option  v-for="data in roomType">
-                                        {{data.attributes.roomTypeName}}
+                            <option v-for="data in roomType">
+                                {{ data.attributes.roomTypeName }}
                             </option>
                         </select>
                     </div>
@@ -672,15 +680,15 @@
                 <div class="mt-[14px]">
                     <div class="text-custom">ประเภทห้องพัก</div>
                     <div>
-                        <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="roomTypeName" />
+                        <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                            v-model="roomTypeName" />
                     </div>
                 </div>
                 <div class="mt-[14px]">
                     <div class="text-custom">ค่าเช่าห้อง/เดือน</div>
                     <div>
-                        <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="roomTypePrice" />
+                        <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                            v-model="roomTypePrice" />
                     </div>
                 </div>
                 <div class="flex justify-end mt-[30px]">
@@ -725,19 +733,20 @@
                             <div class="text-custom">เลขห้อง</div>
                             <div>
                                 <input
-                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="roomName" />
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                                    v-model="roomName" />
 
                             </div>
                         </div>
                         <div>
                             <div class="text-custom">ชั้น</div>
                             <div>
-                                        <select placeholder="Select" v-model="roomFloor"
-                                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]">
-                                            <option  v-for="data in roomFloor" :value="data.id">
-                                                        {{data.attributes.floorName}}
-                                            </option>
-                                        </select>
+                                <select placeholder="Select" v-model="roomFloor"
+                                    class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]">
+                                    <option v-for="data in roomFloor" :value="data.id">
+                                        {{ data.attributes.floorName }}
+                                    </option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -745,8 +754,8 @@
                     <div>
                         <select placeholder="Select" v-model="roomType"
                             class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]">
-                            <option  v-for="data in roomType" :value="data.id">
-                                        {{data.attributes.roomTypeName}}
+                            <option v-for="data in roomType" :value="data.id">
+                                {{ data.attributes.roomTypeName }}
                             </option>
                         </select>
                     </div>
@@ -835,8 +844,8 @@
                 <div class="mt-[14px]">
                     <div class="text-custom">ชื่อชั้น</div>
                     <div>
-                        <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="buildingfloorName"/>
+                        <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                            v-model="buildingfloorName" />
                     </div>
                 </div>
                 <div class="flex justify-end mt-[30px]">
@@ -878,7 +887,7 @@ export default {
             roomTypeName: "",
             roomTypePrice: 0,
             buildingfloorName: "",
-            
+
         }
     },
     created() {
@@ -895,10 +904,10 @@ export default {
     methods: {
         getUserRoom() {
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]='+this.$store.state.building+'&populate=deep,3')
+            fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3')
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getRoom()",resp.data);
+                    console.log("Return from getRoom()", resp.data);
                     this.room = resp.data
                 }).finally(() => {
                     loading.close()
@@ -906,162 +915,164 @@ export default {
         },
         getTypeRoom() {
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/room-types?filters[roomType_building][id][$eq]='+this.$store.state.building+'&populate=*')
+            fetch('https://api.resguru.app/api' + '/room-types?filters[roomType_building][id][$eq]=' + this.$store.state.building + '&populate=*')
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getRoomType()",resp.data);
+                    console.log("Return from getRoomType()", resp.data);
                     this.roomType = resp.data
                 }).finally(() => {
                     loading.close()
                 })
         },
         getFloorRoom() {
+            this.roomFloor = []
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/building-floors?filters[building][id][$eq]='+this.$store.state.building+'&populate=deep,2')
+            fetch('https://api.resguru.app/api' + '/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=deep,2')
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getRoomFloor()",resp.data);
+                    console.log("Return from getRoomFloor()", resp.data);
                     this.roomFloor = resp.data
                 }).finally(() => {
                     loading.close()
                 })
         },
-        addNewRoom(){
-            axios.post(`https://api.resguru.app/api/rooms/`,{
-                data : {
+        addNewRoom() {
+            axios.post(`https://api.resguru.app/api/rooms/`, {
+                data: {
                     RoomNumber: this.roomName,
                     room_building: this.$store.state.building,
                     room_type: this.roomType,
                     building_floor: this.roomFloor,
                 }
             })
-            .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Add Room Success')
-                        })
-            .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
-            this.$showNotification('danger', errorMessage); 
-            })
-            .finally(() => {
-                this.getUserRoom();
-            })
-                
-        }, 
-        updateRoomType(id,eachRoomType){
+                .then((resp) => {
+                    this.$showNotification('#3A89CB', 'Add Room Success')
+                })
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.getUserRoom();
+                })
 
-            console.log("ID:",id)
-            console.log("RoomType",eachRoomType)
-            axios.put(`https://api.resguru.app/api/rooms/${id}`,{
-                data : {
+        },
+        updateRoomType(id, eachRoomType) {
+
+            console.log("ID:", id)
+            console.log("RoomType", eachRoomType)
+            axios.put(`https://api.resguru.app/api/rooms/${id}`, {
+                data: {
                     room_type: eachRoomType,
                 }
             })
-            .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Edit Room Success')
-                        })
-            .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
-            this.$showNotification('danger', errorMessage); 
-            })
-            .finally(() => {
-                this.getTypeRoom();
-            })
+                .then((resp) => {
+                    this.$showNotification('#3A89CB', 'Edit Room Success')
+                })
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.getTypeRoom();
+                })
         },
         addNewRoomType() {
-            axios.post(`https://api.resguru.app/api/room-types/`,{
-                data : {
+            axios.post(`https://api.resguru.app/api/room-types/`, {
+                data: {
                     roomTypeName: this.roomTypeName,
                     roomPrice: this.roomTypePrice,
                     roomType_building: this.$store.state.building
                 }
             })
-            .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Add Room Type Success')
-                        })
-            .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
-            this.$showNotification('danger', errorMessage); 
-            })
-            .finally(() => {
-                this.getTypeRoom();
-            })
-                
+                .then((resp) => {
+                    this.$showNotification('#3A89CB', 'Add Room Type Success')
+                })
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.create_type = false
+                    this.getTypeRoom();
+                })
+
         },
-        updateRoomPrice(id,roomPrice){
-            axios.put(`https://api.resguru.app/api/room-types/${id}`,{
-                data : {
+        updateRoomPrice(id, roomPrice) {
+            axios.put(`https://api.resguru.app/api/room-types/${id}`, {
+                data: {
                     roomPrice: roomPrice,
                 }
             })
-            .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Edit Room Success')
-                        })
-            .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
-            this.$showNotification('danger', errorMessage); 
-            })
-            .finally(() => {
-                this.getTypeRoom();
-            })
+                .then((resp) => {
+                    this.$showNotification('#3A89CB', 'Edit Room Success')
+                })
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.getTypeRoom();
+                })
         },
         create_floor() {
-            axios.post(`https://api.resguru.app/api/building-floors/`,{
-                data : {
+            axios.post(`https://api.resguru.app/api/building-floors/`, {
+                data: {
                     floorName: this.buildingfloorName,
                     building: this.$store.state.building,
                 }
             })
-            .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Create Floor Success')
-                        })
-            .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
-            this.$showNotification('danger', errorMessage); 
-            })
-            .finally(() => {
-                this.getFloorRoom();
-            })
+                .then((resp) => {
+                    this.$showNotification('#3A89CB', 'Create Floor Success')
+                })
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.createFloor = false
+                    this.getFloorRoom();
+                })
         },
-        updateFloor(floorID,buildFloorName) {
-            axios.put(`https://api.resguru.app/api/building-floors/${floorID}`,{
-                data : {
+        updateFloor(floorID, buildFloorName) {
+            axios.put(`https://api.resguru.app/api/building-floors/${floorID}`, {
+                data: {
                     floorName: buildFloorName,
                 }
             })
-            .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Update Floor Success')
-                        })
-            .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
-            this.$showNotification('danger', errorMessage); 
-            })
-            .finally(() => {
-                this.getFloorRoom();
-            })
-        },
-        removeFloor(floorID){
-            if(confirm("Do you really want to delete this Admin?")){
-            axios.delete(`https://api.resguru.app/api/building-floors/${floorID}`).then( 
-                    this.openNotificationDeleteFloor('top-right', '#3A89CB', 6000)
-                )
-                .then( (resp) =>{
-                            this.$showNotification('#3A89CB', 'Delete Floor Success')
-                        })
+                .then((resp) => {
+                    this.$showNotification('#3A89CB', 'Update Floor Success')
+                })
                 .catch(error => {
                     const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage); 
+                    this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
                     this.getFloorRoom();
                 })
+        },
+        removeFloor(floorID) {
+            if (confirm("Do you really want to delete this Admin?")) {
+                axios.delete(`https://api.resguru.app/api/building-floors/${floorID}`).then(
+                    this.openNotificationDeleteFloor('top-right', '#3A89CB', 6000)
+                )
+                    .then((resp) => {
+                        this.$showNotification('#3A89CB', 'Delete Floor Success')
+                    })
+                    .catch(error => {
+                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        this.$showNotification('danger', errorMessage);
+                    })
+                    .finally(() => {
+                        this.getFloorRoom();
+                    })
             }
         },
-        
+
     },
 }
 
 </script>
-<style  >
-.vs-input {
+<style  >.vs-input {
     width: 100% !important;
 }</style>

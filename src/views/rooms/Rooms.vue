@@ -180,15 +180,14 @@
                                 : "" }} {{ data.user_sign_contract && data.user_sign_contract.users_permissions_user ?
         data.user_sign_contract.users_permissions_user.lastName
         : "" }}</div>
-
-
                         </div>
                     </div>
-                    <div :class="data.user_sign_contract?.contractStatus == 'rent' ? 'text-[#0B9A3C] bg-[#CFFBDA]' : 'text-[#003765] bg-[#F0F8FF]'"
+                    <div :class="data.roomStatus == 'Checked In' ? 'text-[#0B9A3C] bg-[#CFFBDA]' : 'text-[#003765] bg-[#F0F8FF]'"
                         class="h-[36px] ml-[8px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] ">
-                        {{ data.user_sign_contract?.contractStatus == null ? 'ห้องว่าง' :
-                            data.user_sign_contract.contractStatus == 'reserved' ? "ห้องจอง"
-                                : "มีผู้เข้าพัก" }}
+                        <!-- {{ data.user_sign_contract ? "มีผู้เข้าพัก" : "ห้องว่าง" }} -->
+                        {{ data.roomStatus == 'Reserved' ? 'ห้องจอง' :
+                            data.roomStatus == 'Checked In' ? "มีผู้เข้าพัก" :
+                                data.roomStatus == 'Maintenance' ? "รอซ่อม" : "ห้องว่าง" }}
                     </div>
                 </div>
             </div>
@@ -399,22 +398,22 @@ export default {
         routeTo2(path, id, id_room, number_room, status, id_contract) {
             this.$router.push({
                 path: path,
-                query: { id_user: id, id_room: id_room, number_room: number_room, status: status, id_contract: id_contract ,tab:1},
+                query: { id_user: id, id_room: id_room, number_room: number_room, status: status, id_contract: id_contract, tab: 1 },
             })
         },
         getRoom(code) {
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api/getRoom?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor)
+            fetch('https://api.resguru.app/api/getRoom?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor + '&roomStatus=Checked In,Available,Reserved,Maintenance')
                 .then(response => response.json())
                 .then((resp) => {
                     if (code == 8) {
-                            this.room = resp.data.filter(item =>
-                                item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase()),
-                            );
-                        }
-                        else {
-                            this.room = resp.data
-                        }
+                        this.room = resp.data.filter(item =>
+                            item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase()),
+                        );
+                    }
+                    else {
+                        this.room = resp.data
+                    }
                 }).finally(() => {
                     loading.close()
                 })
@@ -436,7 +435,6 @@ export default {
                 })
         },
         bookRoomContract() {
-
             axios.post('https://api.resguru.app/api/auth/local/register', {
                 firstName: this.firstName,
                 lastName: this.lastName,
