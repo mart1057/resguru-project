@@ -69,33 +69,23 @@
                         <template #tooltip>
                             <div class="w-[100%]">
                                 <div class="center">
-                                    <vs-checkbox v-model="option">
-                                        <div class="text-custom">ห้องค้างชำระ</div>
+                                    <vs-checkbox v-model="filter.select" val="Reserved" @input="getRoom()">
+                                        <div class="text-custom">ห้องจอง</div>
                                     </vs-checkbox>
                                 </div>
                                 <div class="center">
-                                    <vs-checkbox v-model="option">
-                                        <div class="text-custom">ห้องชำระเงินแล้ว</div>
+                                    <vs-checkbox v-model="filter.select" val="Checked In" @input="getRoom()">
+                                        <div class="text-custom">ห้องมีผู้เข้าพัก</div>
                                     </vs-checkbox>
                                 </div>
                                 <div class="center">
-                                    <vs-checkbox v-model="option">
+                                    <vs-checkbox v-model="filter.select" val="Available" @input="getRoom()">
                                         <div class="text-custom">ห้องว่าง</div>
                                     </vs-checkbox>
                                 </div>
                                 <div class="center">
-                                    <vs-checkbox v-model="option">
-                                        <div class="text-custom">ห้องติดจอง</div>
-                                    </vs-checkbox>
-                                </div>
-                                <div class="center">
-                                    <vs-checkbox v-model="option">
-                                        <div class="text-custom">ห้องใกล้หมดสัญญา</div>
-                                    </vs-checkbox>
-                                </div>
-                                <div class="center">
-                                    <vs-checkbox v-model="option">
-                                        <div class="text-custom">ห้องแจ้งย้ายออก</div>
+                                    <vs-checkbox v-model="filter.select" val="Maintenance" @input="getRoom()">
+                                        <div class="text-custom">ห้องรอซ่อม</div>
                                     </vs-checkbox>
                                 </div>
                             </div>
@@ -370,13 +360,16 @@ export default {
             earnest: 0,
             floorRoom: [],
             filter: {
+                select: [],
+                checkSelect: [],
+                floor: '',
                 search: '',
-                floor: ''
             },
         }
 
     },
     mounted() {
+        this.filter.checkSelect = ['Checked In', 'Available', 'Reserved', 'Maintenance']
         console.log("State.Building", this.$store.state.building)
         // 
         this.getFloorRoom();
@@ -402,8 +395,10 @@ export default {
             })
         },
         getRoom(code) {
+            this.room = []
+            const output = this.filter.select.length > 0 ? this.filter.select.join(',') : this.filter.checkSelect.join(',');
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api/getRoom?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor + '&roomStatus=Checked In,Available,Reserved,Maintenance')
+            fetch('https://api.resguru.app/api/getRoom?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor  + '&roomStatus=' + output)
                 .then(response => response.json())
                 .then((resp) => {
                     if (code == 8) {
