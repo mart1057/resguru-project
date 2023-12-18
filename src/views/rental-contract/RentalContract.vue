@@ -82,17 +82,17 @@
                                     </vs-checkbox>
                                 </div>
                                 <div class="center">
-                                    <vs-checkbox v-model="filter.select" val="Checked In"  @input="getRentalContract()">
+                                    <vs-checkbox v-model="filter.select" val="Checked In" @input="getRentalContract()">
                                         <div class="text-custom">ห้องมีผู้เข้าพัก</div>
                                     </vs-checkbox>
                                 </div>
                                 <div class="center">
-                                    <vs-checkbox  v-model="filter.select" val="Available"  @input="getRentalContract()">
+                                    <vs-checkbox v-model="filter.select" val="Available" @input="getRentalContract()">
                                         <div class="text-custom">ห้องว่าง</div>
                                     </vs-checkbox>
                                 </div>
                                 <div class="center">
-                                    <vs-checkbox  v-model="filter.select" val="Maintenance"  @input="getRentalContract()">
+                                    <vs-checkbox v-model="filter.select" val="Maintenance" @input="getRentalContract()">
                                         <div class="text-custom">ห้องรอซ่อม</div>
                                     </vs-checkbox>
                                 </div>
@@ -192,8 +192,8 @@
                                 class="h-[36px] ml-[8px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] ">
                                 <!-- {{ data.user_sign_contract ? "มีผู้เข้าพัก" : "ห้องว่าง" }} -->
                                 {{ data.roomStatus == 'Reserved' ? 'ห้องจอง' :
-                                    data.roomStatus == 'Checked In' ? "มีผู้เข้าพัก":
-                                    data.roomStatus =='Maintenance'?"รอซ่อม":"ห้องว่าง" }}
+                                    data.roomStatus == 'Checked In' ? "มีผู้เข้าพัก" :
+                                        data.roomStatus == 'Maintenance' ? "รอซ่อม" : "ห้องว่าง" }}
                             </div>
                         </div>
                         <div class="flex justify-end">
@@ -543,6 +543,22 @@
                                     </div> -->
                                 </div>
                                 <div class="col-span-4 mt-[16px]">
+                                    <div>เลขมิเตอร์ค่าน้ำเริ่มต้น</div>
+                                    <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail_create.water" required />
+                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                        {{ errorFieldMessage }}
+                                    </div> -->
+                                </div>
+                                <div class="col-span-4 mt-[16px]  ml-[8px]">
+                                    <div>เลขมิเตอร์ค่าไฟเริ่มต้น</div>
+                                    <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail_create.ele" required />
+                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                        {{ errorFieldMessage }}
+                                    </div> -->
+                                </div>
+                                <div class="col-span-4 mt-[16px]">
                                     <div>ประเภทห้องพัก</div>
                                     <select placeholder="Select" v-model="room_detail_create.type_room"
                                         class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]">
@@ -640,8 +656,8 @@ export default {
             tab_floor: '0',
             name_floor: '',
             filter: {
-                select:[],
-                checkSelect:[],
+                select: [],
+                checkSelect: [],
                 search: '',
                 floor: '',
                 Id_card: ''
@@ -664,6 +680,8 @@ export default {
             },
             room_detail_create: {
                 check_user: true,
+                water: 0,
+                ele: 0,
                 id: '',
                 id_room: '',
                 sex: null,
@@ -689,7 +707,7 @@ export default {
 
     },
     mounted() {
-        this.filter.checkSelect = ['Checked In','Available','Reserved','Maintenance']
+        this.filter.checkSelect = ['Checked In', 'Available', 'Reserved', 'Maintenance']
         console.log("State.Building", this.$store.state.building);
         this.getFloorRoom();
         // this.getUser()
@@ -724,6 +742,8 @@ export default {
         validateField() {
             if (
                 this.room_detail_create.name == '' ||
+                this.room_detail_create.water == '' ||
+                this.room_detail_create.ele == '' ||
                 this.room_detail_create.last_name == '' ||
                 this.room_detail_create.email == '' ||
                 this.room_detail_create.id_card == '' ||
@@ -745,8 +765,8 @@ export default {
         getRentalContract(code) {
             this.contract = []
             const loading = this.$vs.loading()
-            const output =  this.filter.select.length > 0? this.filter.select.join(','):this.filter.checkSelect.join(',');
-            fetch('https://api.resguru.app/api/getRoomContract?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor+'&roomStatus='+output)
+            const output = this.filter.select.length > 0 ? this.filter.select.join(',') : this.filter.checkSelect.join(',');
+            fetch('https://api.resguru.app/api/getRoomContract?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor + '&roomStatus=' + output)
                 .then(response => response.json())
                 .then((resp) => {
                     if (code == 8) {
@@ -864,6 +884,8 @@ export default {
             this.room_detail_create.birth = ''
             this.room_detail_create.email = ''
             this.room_detail_create.id_room = id_room
+            this.room_detail_create.water = 0
+            this.room_detail_create.ele = 0
             this.room_detail_create.room_deposit = ''
             this.room_detail_create.roomInsuranceDeposit = ''
             this.room_detail_create.contract_duration = ''
@@ -898,6 +920,22 @@ export default {
                             roomStatus: 'Checked In'
                         }
                     })
+                    axios.post('https://api.resguru.app/api' + '/water-fees', {
+                        data: {
+                            // "meterDate": "2023-12-18T09:44:25.621Z",
+                            "meterUnit": this.room_detail_create.water,
+                            "user_sign_contract": resp.data.data.id,
+                            "room": this.room_detail_create.id_room,
+                        }
+                    })
+                    axios.post('https://api.resguru.app/api' + '/electric-fees', {
+                        data: {
+                            "electicUnit": this.room_detail_create.ele,
+                            "user_sign_contract": resp.data.data.id,
+                            "room": this.room_detail_create.id_room,
+                        }
+                    })
+                }).finally(() => {
                 }).catch((err) => {
                     loading.close()
                     if (err.response?.data?.error?.message) {
