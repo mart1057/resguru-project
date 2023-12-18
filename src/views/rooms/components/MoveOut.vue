@@ -488,7 +488,7 @@
                         </div>
                         <div class="flex justify-between w-[100%] mt-[4px]" v-if="tab == true">
                             <div class="text-custom text-[#D44769] font-bold text-[16px]">หนี้สูญ {{
-                                (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) > 0 ? 0
+                                (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) < 0 ? 0
                                 : (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) }}
                                 บาท</div>
                         </div>
