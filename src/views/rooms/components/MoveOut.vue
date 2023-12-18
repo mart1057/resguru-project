@@ -766,15 +766,15 @@ export default {
                                 //window.location.reload()
                             }
                             console.log('bill', resp.data[0]);
-                            this.list_debt.total = resp.data[0]?.attributes.total
+                            this.list_debt.total = resp.data[0]?.attributes.total?resp.data[0]?.attributes.total:0
                             this.bill_detail.id = resp.data[0]?.id
-                            this.bill_detail.ele = resp.data[0]?.attributes.electricPrice
-                            this.bill_detail.water = resp.data[0]?.attributes.waterPrice
-                            this.bill_detail.communalPrice = resp.data[0]?.attributes.communalPrice
+                            this.bill_detail.ele = resp.data[0]?.attributes.electricPrice?resp.data[0]?.attributes.electricPrice:0
+                            this.bill_detail.water = resp.data[0]?.attributes.waterPrice?resp.data[0]?.attributes.waterPrice:0
+                            this.bill_detail.communalPrice = resp.data[0]?.attributes.communalPrice?resp.data[0]?.attributes.communalPrice:0
                             this.bill_detail.vat = 7
                             this.bill_detail.invoiceNumber = resp.data[0]?.attributes.invoiceNumber
-                            this.bill_detail.room = resp.data[0]?.attributes.roomPrice
-                            this.bill_detail.other = resp.data[0]?.attributes.otherPrice
+                            this.bill_detail.room = resp.data[0]?.attributes.roomPrice?resp.data[0]?.attributes.roomPrice:0
+                            this.bill_detail.other = resp.data[0]?.attributes.otherPrice?resp.data[0]?.attributes.roomPrice:0
                         }).finally(() => {
                             fetch('https://api.resguru.app/api' + '/room-histories?populate=*&filters[building][id][$eq]=' + this.$store.state.building + '&filters[room][id][$eq]=' + this.$route.query.id_room + '&filters[user_sign_contract][id][$eq]=' + this.$route.query.id_contract + '&filters[publishedAt][$null]=true&publicationState=preview')
                                 .then(response => response.json())
@@ -846,10 +846,10 @@ export default {
                                 "building": this.$store.state.building,
                                 "room": this.$route.query.id_room,
                                 "users_permissions_user": this.$route.query.id_user,
-                                "date_moveout": this.date_moveout,
+                                // "date_moveout": this.date_moveout,
                                 "user_sign_contract": this.$route.query.id_contract,
                                 "ExitType": this.tab ? 'Missing' : 'Move',
-                                "publishedAt": null
+                                // "publishedAt": null
                             }
                         }
                         ).then((resp) => {
@@ -873,7 +873,7 @@ export default {
                                     "communalPrice": this.bill_detail.communalPrice,
                                     "subtotal": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other),
                                     "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice) + ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice)) * 0.07),
-                                    "publishedAt": null
+                                    // "publishedAt": null
                                 }
                             }
                             )
@@ -882,9 +882,9 @@ export default {
                     else { ////แก้ไข draft และยังคง draft
                         axios.put('https://api.resguru.app/api' + '/room-histories/' + resp?.data[0].id, {
                             data: {
-                                "date_moveout": this.date_moveout,
+                                // "date_moveout": this.date_moveout,
                                 "ExitType": this.tab ? 'Missing' : 'Move',
-                                "publishedAt": null
+                                // "publishedAt": null
                             }
                         }
                         ).then((resp) => { //////////////// ไปแก้ไขตอนดึงมาแสดงด้วย
@@ -908,7 +908,7 @@ export default {
                                     "communalPrice": this.bill_detail.communalPrice,
                                     "subtotal": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other),
                                     "total": parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice) + ((parseInt(this.bill_detail.room) + parseInt(this.bill_detail.water) + parseInt(this.bill_detail.ele) + parseInt(this.bill_detail.other) + parseInt(this.bill_detail.communalPrice)) * 0.07),
-                                    "publishedAt": null
+                                    // "publishedAt": null
                                 }
                             }
                             )
@@ -931,7 +931,7 @@ export default {
                                 "room": this.$route.query.id_room,
                                 "users_permissions_user": this.$route.query.id_user,
                                 "ExitType": this.tab ? 'Missing' : 'Move',
-                                "date_moveout": this.date_moveout,
+                                // "date_moveout": this.date_moveout,
                                 "user_sign_contract" : this.$route.query.id_contract
                             }
                         }
