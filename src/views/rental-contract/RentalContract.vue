@@ -32,7 +32,7 @@
                     </div> -->
                 </div>
                 <div class="flex">
-                    <div class="h-[36px] pr-[10px] pl-[8px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]"
+                    <!-- <div class="h-[36px] pr-[10px] pl-[8px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]"
                         @click="detail = true">
                         <div class="flex justify-center items-center">
                             <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,7 +50,7 @@
                         <div @click="detail = true"
                             class="text-white font-bold ml-[8px]   flex justify-center items-center">ดาวน์โหลดสัญญาเช่า
                         </div>
-                    </div>
+                    </div> -->
                     <div class="flex justify-start items-center   mt-[5px] ml-[14px]">
                         <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาตามหมายเลขห้อง"
                             v-model="filter.search" @input="filterData" type="input" @keydown="handleKeyDown" />
@@ -725,6 +725,9 @@ export default {
     methods: {
         async PDFPrintRental(tr, check,id) {
             this.$refs.childComponentPDFRental.generatePDF(tr, check,id)
+            setTimeout(() => {
+                this.$refs.childComponentPDFRental.generatePDF(tr, check,id)
+            }, 100);
         },
         openNotificationRenralPage(position = null, color, title, desc) {
             const noti = this.$vs.notification({
