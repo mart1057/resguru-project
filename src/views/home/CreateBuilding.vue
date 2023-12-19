@@ -324,7 +324,8 @@ export default {
                         buildingFacebook: this.buildingFacebook,
                         vat_rate: this.buildingTax,
                         BuildingDueDate: this.buildingDueDate,
-                        publishedAt: null
+                        publishedAt: null,
+                        colorCode:'#E0ECE4'
                     }
                 })
                     .then(

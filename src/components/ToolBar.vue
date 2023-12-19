@@ -1,6 +1,6 @@
 <template>
     <div class="h-[100%]" @mouseleave="sidebar = false">
-        <div class="bg-[#E0ECE4] flex items-center justify-between h-[70px] w-[100%]" :style="{ height: toolbarHeight }">
+        <div class="bg-[#E0ECE4] flex items-center justify-between h-[70px] w-[100%]" :style="{ height: toolbarHeight,background:$store.state.buildingInfo[0].attributes.colorCode }" >
             <div class="flex justify-center items-center w-[100%]">
                 <div class="flex justify-between  w-[100%] pl-[24px] pr-[24px]">
                     <div class="flex">
@@ -127,13 +127,13 @@
                         </div>
                         <div @click="routerTo('/plan')"
                             class=" ml-[10px] h-[15px] bg-[#E7E2F7] pl-[12px] pr-[12px] pt-[12px] pb-[12px] rounded-[13px] text-[#9A77FF] text-center cursor-pointer flex items-center">
-                            Professional
+                            {{ $store.state.buildingInfo[0].attributes.package.data.attributes.title }}
                         </div>
                         <div class="flex ml-[10px] items-center">
                             <vs-tooltip bottom shadow interactivity not-arrow>
                                 <div class="cursor-pointer">
-                                    <vs-avatar size="40" primary>
-                                        <!-- <img :src="$store.state.userInfo"/> -->
+                                    <vs-avatar size="40" >
+                                        <img :src="'http://203.170.190.170:1337'+$store.state.buildingInfo[0].attributes.buildingLogo.data.attributes.formats.large.url"/>
                                     </vs-avatar>
 
                                 </div>
@@ -141,21 +141,21 @@
                                     <div class="content-tooltip p-[8px]">
                                         <div class="flex">
                                             <div>
-                                                <vs-avatar size="40" primary>
-                                                    <template #text>
-                                                        BU
+                                                <vs-avatar size="40" v-if="$store.state.buildingInfo[0].attributes.buildingLogo">
+                                                    <template >
+                                                        <img :src="'http://203.170.190.170:1337'+$store.state.buildingInfo[0].attributes.buildingLogo.data.attributes.formats.large.url"/>
                                                     </template>
                                                 </vs-avatar>
                                             </div>
-                                            <div class="flex items-center text-[16px] font-bold ml-[8px] text-custom">Avenue
-                                                Apartment</div>
+                                            <div class="flex items-center text-[16px] font-bold ml-[8px] text-custom w-[150px]">
+                                                {{$store.state.buildingInfo[0].attributes.buildingName}}</div>
                                         </div>
                                         <div
                                             class="w-[100%] h-[1px]  mt-[12px] mb-[12px] bg-gray-200 border-0 dark:bg-gray-700">
                                         </div>
                                         <div @click="routerTo('/plan')"
                                             class="h-[29px] flex items-center justify-center rounded-[12px] bg-[#E7E2F7] pl-[8px] pr-[8px] pb-[7px] pt-[7px] text-custom text-[#9A77FF] font-bold">
-                                            Professional</div>
+                                            {{ $store.state.buildingInfo[0].attributes.package.data.attributes.title }}</div>
                                         <div class="flex mt-[12px] cursor-pointer" @click="routerTo('/setting')">
                                             <div>
                                                 <svg width="20" height="20" viewBox="0 0 18 18" fill="none"
