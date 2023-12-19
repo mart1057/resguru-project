@@ -111,7 +111,7 @@
             <div class="text-[24px] font-bold">ชั้น {{ name_floor }} ({{ room.length }})</div>
             <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px] ">
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer"
-                    @click="routeTo2('/room-detail', data.user_sign_contract?.users_permissions_user?.id, data.id, data.RoomNumber, data.roomStatus, data.user_sign_contract?.id)"
+                    @click="routeTo2('/room-detail', data.user_sign_contract?.users_permissions_user?.id, data.id, data.RoomNumber, data.roomStatus, data.user_sign_contract?.id),$route.meta.desc = 'ห้องพัก - ห้อง '+ $route.query.number_room ,$route.meta.title = 'ห้อง '+ $route.query.number_room "
                     v-for="data in room">
                     <div class="flex">
 

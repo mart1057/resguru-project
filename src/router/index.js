@@ -22,7 +22,11 @@ const routes = [
   {
     path: '/dashboard',
     name: 'dashboard',
-    component: DashBoard 
+    component: DashBoard,
+    meta: {
+      title:'แดชบอร์ด',
+      desc:'แดชบอร์ด'
+    }
   },
 
   {
@@ -43,52 +47,92 @@ const routes = [
   {
     path: '/rooms',
     name: 'rooms',
-    component:Rooms
+    component:Rooms,
+    meta: {
+      title:'ผังห้องพัก',
+      desc:'ห้องพัก'
+    }
   },
   {
     path: '/room-detail',
     name: 'room-detail',
-    component:RoomDetail
+    component:RoomDetail,
+    meta: {
+      title:'ห้อง',
+      desc:'ห้องพัก - ห้อง'
+    }
   },
   {
     path: '/fee',
     name: 'fee',
-    component:MainMeter
+    component:MainMeter,
+    meta: {
+      title:'มิเตอร์',
+      desc:'มิเตอร์'
+    }
   },
   {
     path: '/announcement',
     name: 'announcement',
-    component:Announcement
+    component:Announcement,
+    meta: {
+      title:'ประกาศ',
+      desc:'ประกาศ'
+    }
   },
   {
     path: '/rental-contract',
     name: 'rental-contract',
-    component:RentalContract
+    component:RentalContract,
+    meta: {
+      title:'การจัดการสัญญาเช่า',
+      desc:'การจัดการสัญญาเช่า'
+    }
   },
   {
     path: '/staff',
     name: 'staff',
-    component:MainStaff
+    component:MainStaff,
+    meta: {
+      title:'บริการและการจัดการพนักงาน',
+      desc:'บริการและการจัดการพนักงาน'
+    }
   },
   {
     path: '/expenses',
     name: 'expenses',
-    component:Expenses
+    component:Expenses,
+    meta: {
+      title:'รายรับ-รายจ่าย',
+      desc:'รายรับ-รายจ่าย'
+    }
   },
   {
     path: '/payment',
     name: 'payment',
-    component:Payment
+    component:Payment,
+    meta: {
+      title:'การจ่ายเงิน',
+      desc:'การจ่ายเงิน'
+    }
   },
   {
     path: '/payment-detail',
     name: 'payment-detail',
-    component:PaymentDetail
+    component:PaymentDetail,
+    meta: {
+      title:'การจ่ายเงิน',
+      desc:'การจ่ายเงิน'
+    }
   },
   {
     path: '/setting',
     name: 'setting',
-    component:Setting
+    component:Setting,
+    meta: {
+      title:'ตั้งค่า',
+      desc:'ตั้งค่า'
+    }
   },
   {
     path: '/plan',

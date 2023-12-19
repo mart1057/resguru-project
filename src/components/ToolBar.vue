@@ -26,8 +26,8 @@
                             </svg>
                         </div>
                         <div class="ml-[16px] flex flex-col justify-between">
-                            <div class="text-[22px] font-bold">แดชบอร์ด</div>
-                            <div class="text-[12px] text-[#8396A6]">แดชบอร์ด</div>
+                            <div class="text-[22px] font-bold">{{ $route.meta.title }}</div>
+                            <div class="text-[12px] text-[#8396A6]">{{$route.meta.desc}}</div>
                         </div>
                     </div>
                     <div class="flex justify-center items-center">

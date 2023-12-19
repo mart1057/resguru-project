@@ -176,7 +176,7 @@
                                 <vs-checkbox :val="tr" v-model="selected" />
                             </vs-td> -->
                             <vs-td>
-                                <div @click="routeTo(tr.id)">
+                                <div @click="routeTo(tr.id),$route.meta.desc = 'การจ่ายเงิน - การจ่ายเงินห้อง '+tr.RoomNumber,$route.meta.title = 'การจ่ายเงินห้อง '+tr.RoomNumber">
                                     {{ tr.RoomNumber }}
                                 </div>
                             </vs-td>
