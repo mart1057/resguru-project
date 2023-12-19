@@ -122,7 +122,7 @@
             </div>
         </div>
         <div class="mt-[14px] bg-[white] rounded-[12px] p-[24px]">
-            <div class="font-bold text-[18px]">อาคาร A ชั้น 1</div>
+            <div class="font-bold text-[18px]">ชั้น {{ name_floor }}</div>
             <div class="mt-[14px]">
                 <vs-table v-model="selected">
                     <template #thead>
