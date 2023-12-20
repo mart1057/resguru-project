@@ -336,7 +336,7 @@ export default {
         getService() {
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`https://api.resguru.app/api/services?populate=deep,3&sort[0]=id:desc&filters[serviceStatus][$ne]=completed`)
+            fetch(`https://api.resguru.app/api/services?populate=deep,3&sort[0]=id:desc&filters[serviceStatus][$ne]=completed&filters[building][id][$eq]=${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getService()",resp.data);
@@ -388,7 +388,6 @@ export default {
                 
         },
         closeService(serviceId){
-
             axios.put(`https://api.resguru.app/api/services/${serviceId}`,{
                 data : {
                     serviceStatus: "Completed",

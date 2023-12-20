@@ -3,8 +3,6 @@
         <div class="mt-[24px]">
             <div class="text-[24px] font-bold">รายละเอียดประวัติการแจ้ง</div>
             <div class="grid grid-cols-2 w-[100%] gap-2 mt-[14px] ">
-
-
                 <div class="h-[auto] bg-[#ffffff] rounded-[22px] w-[100%] p-[8px]" v-for="data in History">
                     <div class="flex  h-[100%]">
                         <div class="w-[140px] bg-[#F5D65E] h-[100%] flex justify-center items-center rounded-[19px]">
@@ -288,7 +286,7 @@ export default {
         getHistory() {
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`https://api.resguru.app/api/services?populate=*&sort[0]=id:desc&filters[building][id][$eq]=${this.$store.state.building}`)
+            fetch(`https://api.resguru.app/api/services?populate=*&sort[0]=id:desc&filters[serviceStatus][$eq]=completed&filters[building][id][$eq]=${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getHistory()",resp.data);
