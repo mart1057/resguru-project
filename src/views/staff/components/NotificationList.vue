@@ -82,7 +82,7 @@
                                     <div>
                                         <div class="text-[12px] text-[#8396A6]">รายละเอียด</div>
                                     </div>
-                                    <div> {{ data.attributes.description }}</div>
+                                    <div class="truncate w-[400px]"> {{ data.attributes.description }}</div>
                                 </div>
                                 <div class="flex flex-col justify-between items-center">
                                     <div class="text-[12px] text-[#8396A6]"> {{ data.attributes.createdAt }}</div>
