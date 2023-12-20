@@ -163,6 +163,7 @@
 <script>
 import html2pdf from 'html2pdf.js';
 import { convertDateNoTime } from '@/components/hook/hook'
+import axios from 'axios';
 export default {
     data() {
         return {
@@ -175,7 +176,7 @@ export default {
     //     this.generatePDF()
     // },
     methods: {
-        generatePDF(data, check,id) {
+        generatePDF(data, check, id) {
             console.log(data);
             this.detail = data
             const content = this.$refs.pdfContent;
@@ -187,11 +188,27 @@ export default {
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
             };
             if (check) {
+                let formData = new FormData();
+                let data2 = null
                 html2pdf()
                     .from(content)
                     .set(opt)
                     // .save()
                     .output('dataurlnewwindow')
+                    // .output('blob').then((dataPDF) => {
+                    //     console.log(dataPDF);
+                    //     formData.append("files", dataPDF);
+                    //     formData.append("refId", String(id));
+                    //     formData.append("ref", "plugin::user-sign-contract.user-sign-contract");
+                    //     formData.append("field", "PDFfile");
+                    //     axios.post("https://api.resguru.app/api/upload", formData, {
+                    //         headers: {
+                    //             "Content-Type": "multipart/form-data",
+                    //         },
+                    //     })
+                    // }).finally(() => {
+
+                    // })
             }
             else {
                 html2pdf()

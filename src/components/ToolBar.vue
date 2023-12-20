@@ -1,6 +1,7 @@
 <template>
     <div class="h-[100%]" @mouseleave="sidebar = false">
-        <div class="bg-[#E0ECE4] flex items-center justify-between h-[70px] w-[100%]" :style="{ height: toolbarHeight,background:$store.state.buildingInfo[0].attributes.colorCode }" >
+        <div class="bg-[#E0ECE4] flex items-center justify-between h-[70px] w-[100%]"
+            :style="{ height: toolbarHeight, background: $store.state.buildingInfo[0]?.attributes.colorCode }">
             <div class="flex justify-center items-center w-[100%]">
                 <div class="flex justify-between  w-[100%] pl-[24px] pr-[24px]">
                     <div class="flex">
@@ -27,7 +28,7 @@
                         </div>
                         <div class="ml-[16px] flex flex-col justify-between">
                             <div class="text-[22px] font-bold">{{ $route.meta.title }}</div>
-                            <div class="text-[12px] text-[#8396A6]">{{$route.meta.desc}}</div>
+                            <div class="text-[12px] text-[#8396A6]">{{ $route.meta.desc }}</div>
                         </div>
                     </div>
                     <div class="flex justify-center items-center">
@@ -97,7 +98,7 @@
                                                     <div
                                                         class="flex flex-col items-start justify-start ml-[8px] text-[#003765] text-custom">
                                                         <div class="font-bold">{{
-                                                            data.attributes.toUser.data.attributes.firstName }}</div>
+                                                            data.attributes.toUser.data?.attributes.firstName }}</div>
                                                         <div class="">
                                                             <div></div>
                                                             <div>{{ data.attributes.message }}</div>
@@ -127,13 +128,13 @@
                         </div>
                         <div @click="routerTo('/plan')"
                             class=" ml-[10px] h-[15px] bg-[#E7E2F7] pl-[12px] pr-[12px] pt-[12px] pb-[12px] rounded-[13px] text-[#9A77FF] text-center cursor-pointer flex items-center">
-                            {{ $store.state.buildingInfo[0].attributes.package.data.attributes.title }}
+                            {{ $store.state.buildingInfo[0].attributes.package.data?.attributes.title }}
                         </div>
                         <div class="flex ml-[10px] items-center">
                             <vs-tooltip bottom shadow interactivity not-arrow>
                                 <div class="cursor-pointer">
-                                    <vs-avatar size="40" >
-                                        <img :src="'http://203.170.190.170:1337'+$store.state.buildingInfo[0].attributes.buildingLogo.data.attributes.formats.large.url"/>
+                                    <vs-avatar size="40">
+                                        <img :src="'https://api.resguru.app'+$store.state.buildingInfo[0].attributes.buildingLogo.data?.attributes.formats.large.url" />
                                     </vs-avatar>
 
                                 </div>
@@ -141,21 +142,24 @@
                                     <div class="content-tooltip p-[8px]">
                                         <div class="flex">
                                             <div>
-                                                <vs-avatar size="40" v-if="$store.state.buildingInfo[0].attributes.buildingLogo">
-                                                    <template >
-                                                        <img :src="'http://203.170.190.170:1337'+$store.state.buildingInfo[0].attributes.buildingLogo.data.attributes.formats.large.url"/>
+                                                <vs-avatar size="40"
+                                                    v-if="$store.state.buildingInfo[0].attributes.buildingLogo">
+                                                    <template>
+                                                        <img :src="'https://api.resguru.app'+$store.state.buildingInfo[0].attributes.buildingLogo.data?.attributes.formats.large.url" />
                                                     </template>
                                                 </vs-avatar>
                                             </div>
-                                            <div class="flex items-center text-[16px] font-bold ml-[8px] text-custom w-[150px]">
-                                                {{$store.state.buildingInfo[0].attributes.buildingName}}</div>
+                                            <div
+                                                class="flex items-center text-[16px] font-bold ml-[8px] text-custom w-[150px]">
+                                                {{ $store.state.buildingInfo[0].attributes.buildingName }}</div>
                                         </div>
                                         <div
                                             class="w-[100%] h-[1px]  mt-[12px] mb-[12px] bg-gray-200 border-0 dark:bg-gray-700">
                                         </div>
                                         <div @click="routerTo('/plan')"
                                             class="h-[29px] flex items-center justify-center rounded-[12px] bg-[#E7E2F7] pl-[8px] pr-[8px] pb-[7px] pt-[7px] text-custom text-[#9A77FF] font-bold">
-                                            {{ $store.state.buildingInfo[0].attributes.package.data.attributes.title }}</div>
+                                            {{ $store.state.buildingInfo[0].attributes.package.data?.attributes.title }}
+                                        </div>
                                         <div class="flex mt-[12px] cursor-pointer" @click="routerTo('/setting')">
                                             <div>
                                                 <svg width="20" height="20" viewBox="0 0 18 18" fill="none"
@@ -458,7 +462,7 @@ export default {
                 })
                 setTimeout(() => {
                     window.location.reload()
-                },100);
+                }, 100);
             }
             await this.$router.push({
                 path: path,
