@@ -102,7 +102,7 @@
                                             </vs-select> -->
                                             <select placeholder="Select"
                                                 class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]"
-                                                :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''" v-model="data.attributes.responEmployee">
+                                                :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''" v-model="data.attributes.responID">
                                                 <option  v-for="selectEmployee in employee" :value="selectEmployee.id">
                                                     {{selectEmployee.attributes.name}}
                                                 </option>
@@ -121,7 +121,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <vs-button @click="updateService(data.id,data.attributes.responEmployee,date_time)" color="#003765" class="w-[100%] h-[36px] rounded-[12px] mt-[30px]  text-[white] flex items-center justify-center">
+                            <vs-button @click="updateService(data.id,data.attributes.responID,date_time)" color="#003765" class="w-[100%] h-[36px] rounded-[12px] mt-[30px]  text-[white] flex items-center justify-center">
                                 กำหนดผู้ดูแล
                             </vs-button>
                             <vs-button @click="closeService(data.id)" color="#003765" class="w-[100%] h-[36px] rounded-[12px] mt-[30px]  text-[white] flex items-center justify-center">
@@ -364,12 +364,14 @@ export default {
                     loading.close()
                 })
         },
-        updateService(serviceId,empId,date) {
+        updateService(serviceId,empId,date,id) {
+            console.log(date);
             axios.put(`https://api.resguru.app/api/services/${serviceId}`,{
                 data : {
                     responEmployee: empId,
                     serviceStatus: "In Progress",
-                    appointmentDate: date
+                    appointmentDate: date,
+                    responID:empId
                 }
             })
             .then( (resp) =>{
