@@ -268,7 +268,7 @@
                             </div>
                         </div>
                         <div
-                            class="flex pl-[8px] pr-[8px] pt-[4px] pb-[4px] rounded-[12px] border justify-between mt-[14px] text-[#0B9A3C]">
+                            class="flex pl-[8px] pr-[8px] pt-[4px] pb-[4px] rounded-[12px] border justify-between items-center mt-[14px] text-[#0B9A3C]">
                             <div>ราคา</div>
                             <div>{{ data.attributes.room_type.data.attributes.roomPrice }}</div>
                         </div>
@@ -279,7 +279,8 @@
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 2">
             <div class="text-[16px] font-bold mt-[24px]">รายการประเภทห้องพัก</div>
             <div class="grid grid-cols-5 gap-4 mt-[14px] w-[100%]">
-                <div class="border h-[130px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]" v-for="data in roomType">
+                <div class="border h-[130px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] cursor-pointer"
+                    v-for="data in roomType" @click="create_type = true, is_edit_type = true, getTypeRoomDetail(data.id)">
                     <div class="flex flex-col justify-between h-[100%] ">
                         <div class="flex justify-between">
                             <div class="text-[16px]">{{ data.attributes.roomTypeName }}</div>
@@ -296,20 +297,20 @@
                             </div>
                         </div>
                         <div
-                            class="flex justify-between border rounded-[12px]  pl-[14px] pr-[14px] pt-[4px] pb-[4px] text-[#0B9A3C] mt-[8px]">
+                            class="flex justify-between border rounded-[12px] items-center  pl-[14px] pr-[14px] pt-[4px] pb-[4px] text-[#0B9A3C] mt-[8px]">
                             <div class="w-[50%] ">ราคา</div>
                             <div>
-                                <input type="number" v-model="data.attributes.roomPrice"
+                                <input type="number" v-model="data.attributes.roomPrice" disabled
                                     class=" flex justify-center h-[24px] w-[100%] bg-[#F3F8FD] rounded-[12px]">
                             </div>
 
                         </div>
-                        <vs-button @click="updateRoomPrice(data.id, data.attributes.roomPrice)"
-                            color="#003765">แก้ไขราคาห้อง</vs-button>
+                        <!-- <vs-button @click="updateRoomPrice(data.id, data.attributes.roomPrice)"
+                            color="#003765">แก้ไขราคาห้อง</vs-button> -->
                     </div>
                 </div>
-                <div class="border h-[97px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
-                    @click="create_type = true, roomTypePrice = '', roomTypeName = ''">
+                <div class="border h-[100%] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
+                    @click="create_type = true, roomTypePrice = '', roomTypeName = '', is_edit_type = false">
                     <div>
                         <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
@@ -863,7 +864,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            tab: 1,
+            tab: 2,
             tab_floor: '0',
             name_floor: '',
             value: 0,
@@ -885,7 +886,9 @@ export default {
             filter: {
                 floor: 0
             },
-            is_edit: false
+            is_edit: false,
+            is_edit_type: false,
+            roomTypeId: ''
         }
     },
     created() {
@@ -915,7 +918,6 @@ export default {
                 })
         },
         getUserRoomDetail(id) {
-
             const loading = this.$vs.loading()
             fetch('https://api.resguru.app/api' + '/rooms/' + id + '?populate=deep,3')
                 .then(response => response.json())
@@ -938,6 +940,18 @@ export default {
                 .then((resp) => {
                     console.log("Return from getRoomType()", resp.data);
                     this.roomType = resp.data
+                }).finally(() => {
+                    loading.close()
+                })
+        },
+        getTypeRoomDetail(id) {
+            const loading = this.$vs.loading()
+            fetch('https://api.resguru.app/api' + '/room-types/' + id)
+                .then(response => response.json())
+                .then((resp) => {
+                    this.roomTypeId = resp.data.id
+                    this.roomTypeName = resp.data.attributes.roomTypeName
+                    this.roomTypePrice = resp.data.attributes.roomPrice
                 }).finally(() => {
                     loading.close()
                 })
@@ -1026,24 +1040,48 @@ export default {
                 })
         },
         addNewRoomType() {
-            axios.post(`https://api.resguru.app/api/room-types/`, {
-                data: {
-                    roomTypeName: this.roomTypeName,
-                    roomPrice: this.roomTypePrice,
-                    roomType_building: this.$store.state.building
-                }
-            })
-                .then((resp) => {
-                    this.$showNotification('#3A89CB', 'Add Room Type Success')
+            if (this.is_edit_type == true) {
+                axios.put(`https://api.resguru.app/api/room-types/` + this.roomTypeId, {
+                    data: {
+                        roomTypeName: this.roomTypeName,
+                        roomPrice: this.roomTypePrice,
+                        roomType_building: this.$store.state.building
+                    }
                 })
-                .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage);
+                    .then((resp) => {
+                        this.$showNotification('#3A89CB', 'Add Room Type Success')
+                    })
+                    .catch(error => {
+                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        this.$showNotification('danger', errorMessage);
+                    })
+                    .finally(() => {
+                        this.create_type = false
+                        this.getTypeRoom();
+                    })
+
+            }
+            else {
+                axios.post(`https://api.resguru.app/api/room-types/`, {
+                    data: {
+                        roomTypeName: this.roomTypeName,
+                        roomPrice: this.roomTypePrice,
+                        roomType_building: this.$store.state.building
+                    }
                 })
-                .finally(() => {
-                    this.create_type = false
-                    this.getTypeRoom();
-                })
+                    .then((resp) => {
+                        this.$showNotification('#3A89CB', 'Add Room Type Success')
+                    })
+                    .catch(error => {
+                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        this.$showNotification('danger', errorMessage);
+                    })
+                    .finally(() => {
+                        this.create_type = false
+                        this.getTypeRoom();
+                    })
+
+            }
 
         },
         updateRoomPrice(id, roomPrice) {
