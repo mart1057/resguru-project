@@ -1,8 +1,27 @@
 <template>
     <div class="bg-[white] pt-[14px] pl-[24px] pr-[24px] ">
         <div class="grid grid-cols-5 gap-4 mt-[14px] w-[100%]">
-            <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] mb-[24px]" v-for="data in buildingPayment">
-                <div class="flex flex-col justify-between h-[100%]">
+            <div class="rounded-[16px]  p-[14px] h-[auto] mb-[24px] border cursor-pointer flex flex-col items-center justify-center"
+                @click="create = true, accountBankName = '', bankName = '', accountNumber = '',filepaymentForm=[]">
+                <div>
+                    <svg width="68" height="69" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
+                        <mask id="mask0_1373_22044" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="6" y="7"
+                            width="56" height="55">
+                            <rect x="6.80078" y="7.25586" width="54.4" height="54.4" fill="#D9D9D9" />
+                        </mask>
+                        <g mask="url(#mask0_1373_22044)">
+                            <path
+                                d="M33.9984 49.7561C33.5165 49.7561 33.1129 49.5932 32.7874 49.2674C32.4619 48.9416 32.2992 48.5379 32.2992 48.0562V36.1561H20.3992C19.9175 36.1561 19.5138 35.9932 19.188 35.6672C18.8621 35.3412 18.6992 34.9373 18.6992 34.4555C18.6992 33.9736 18.8621 33.5699 19.188 33.2444C19.5138 32.919 19.9175 32.7562 20.3992 32.7562H32.2992V20.8562C32.2992 20.3745 32.4622 19.9708 32.7881 19.6449C33.1141 19.3191 33.518 19.1562 33.9999 19.1562C34.4818 19.1562 34.8855 19.3191 35.2109 19.6449C35.5364 19.9708 35.6991 20.3745 35.6991 20.8562V32.7562H47.5992C48.0808 32.7562 48.4846 32.9192 48.8104 33.2452C49.1362 33.5712 49.2991 33.9751 49.2991 34.4569C49.2991 34.9388 49.1362 35.3425 48.8104 35.668C48.4846 35.9934 48.0808 36.1561 47.5992 36.1561H35.6991V48.0562C35.6991 48.5379 35.5361 48.9416 35.2102 49.2674C34.8842 49.5932 34.4803 49.7561 33.9984 49.7561Z"
+                                fill="#B9CCDC" />
+                        </g>
+                    </svg>
+                </div>
+                <div class="text-[#5C6B79] mt-[8px] font-bold">เพิ่มบัญชีธนาคาร</div>
+            </div>
+            <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] mb-[24px]"
+                v-for="data in buildingPayment">
+                <div class="flex flex-col h-[100%]">
                     <div class="flex justify-between">
                         <div class="flex">
                             <div><svg width="20" height="21" viewBox="0 0 20 21" fill="none"
@@ -19,9 +38,8 @@
                                 </svg>
                             </div>
                             <div class="text-[16px] ml-[4px]">{{ data.attributes.bankName }} </div>
-                            
+
                         </div>
-                        
                         <div>
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <ellipse cx="10.0013" cy="4.16667" rx="1.66667" ry="1.66667"
@@ -32,7 +50,6 @@
                                     transform="rotate(90 10.0013 15.8327)" fill="#5C6B79" />
                             </svg>
                         </div>
-                        
                     </div>
                     (Bank Number: {{ data.attributes.bankNumber }})
                     <div
@@ -46,31 +63,31 @@
                         <div class="font-bold">{{ data.attributes.accountNumber }}</div>
                     </div>
 
-                    <div v-if=data.attributes.QRCode.data class="flex items-center justify-center w-[100%] mt-[14px]">
-                        <img :src='"https://api.resguru.app" + data.attributes.QRCode.data.attributes.url'>
+                    <div v-if=data.attributes.QRCode.data class="flex  justify-center w-[100%] mt-[14px]  h-[100%]">
+                        <img class=" w-[150px] h-[150px] items-center" :src='"https://api.resguru.app" + data.attributes.QRCode.data.attributes.url'>
                     </div>
-                    <div v-else class="flex items-center justify-center w-[100%] mt-[14px]">
-                        <div class="flex justify-center mt-[14px]">Please Upload Your Building QR Payment</div>
+                    <div v-else class="flex items-center justify-center  w-[100%]  mt-[14px] h-[100%]">
+                        <div class="flex justify-center items-center mt-[14px] w-[150px] h-[150px] text-center">Please Upload Your Building QR Payment </div>
                     </div>
                     <div class="flex justify-center mt-[14px] ">
-                        <div class="flex bg-[#003765]  rounded-[12px] pl-[12px] pr-[12px] pt-[4px] pb-[4px] ">
-                            <div class="flex items-center justify-center"  @click="removePayment(data.id)">
-                                <svg width="20" height="20" viewBox="0 0 20 20"  fill="none" 
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    @click="removePayment(data.id)">
-                                    <mask id="mask0_967_25233" style="mask-type:alpha"
-                                        maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
+                        <div class="flex bg-[#D44769]  rounded-[12px] pl-[12px] pr-[12px] pt-[4px] pb-[4px] ">
+                            <div class="flex items-center justify-center" @click="removePayment(data.id)">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg" @click="removePayment(data.id)">
+                                    <mask id="mask0_967_25233" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
+                                        y="0" width="20" height="20">
                                         <rect width="20" height="20" fill="#D9D9D9" />
                                     </mask>
-                                    
+
                                     <g mask="url(#mask0_967_25233)">
                                         <path
                                             d="M6.08975 17.0822C5.66881 17.0822 5.3125 16.9363 5.02083 16.6447C4.72917 16.353 4.58333 15.9967 4.58333 15.5758V4.99886H4.375C4.19765 4.99886 4.04915 4.93904 3.9295 4.81939C3.80983 4.69973 3.75 4.55123 3.75 4.37389C3.75 4.19654 3.80983 4.04804 3.9295 3.92839C4.04915 3.80872 4.19765 3.74889 4.375 3.74889H7.49998C7.49998 3.5395 7.57316 3.36429 7.71952 3.22326C7.8659 3.08223 8.04378 3.01172 8.25319 3.01172H11.7468C11.9562 3.01172 12.1341 3.08223 12.2804 3.22326C12.4268 3.36429 12.5 3.5395 12.5 3.74889H15.625C15.8023 3.74889 15.9508 3.80872 16.0705 3.92839C16.1901 4.04804 16.25 4.19654 16.25 4.37389C16.25 4.55123 16.1901 4.69973 16.0705 4.81939C15.9508 4.93904 15.8023 4.99886 15.625 4.99886H15.4166V15.5758C15.4166 15.9967 15.2708 16.353 14.9791 16.6447C14.6875 16.9363 14.3312 17.0822 13.9102 17.0822H6.08975ZM5.83331 4.99886V15.5758C5.83331 15.6506 5.85735 15.712 5.90544 15.7601C5.95352 15.8082 6.01496 15.8322 6.08975 15.8322H13.9102C13.985 15.8322 14.0464 15.8082 14.0945 15.7601C14.1426 15.712 14.1666 15.6506 14.1666 15.5758V4.99886H5.83331ZM7.83654 13.5406C7.83654 13.7179 7.89637 13.8664 8.01602 13.9861C8.13567 14.1057 8.28417 14.1655 8.46152 14.1655C8.63887 14.1655 8.78737 14.1057 8.90702 13.9861C9.02669 13.8664 9.08652 13.7179 9.08652 13.5406V7.29051C9.08652 7.11316 9.02669 6.96466 8.90702 6.84501C8.78737 6.72536 8.63887 6.66553 8.46152 6.66553C8.28417 6.66553 8.13567 6.72536 8.01602 6.84501C7.89637 6.96466 7.83654 7.11316 7.83654 7.29051V13.5406ZM10.9134 13.5406C10.9134 13.7179 10.9733 13.8664 11.0929 13.9861C11.2126 14.1057 11.3611 14.1655 11.5384 14.1655C11.7158 14.1655 11.8643 14.1057 11.9839 13.9861C12.1036 13.8664 12.1634 13.7179 12.1634 13.5406V7.29051C12.1634 7.11316 12.1036 6.96466 11.9839 6.84501C11.8643 6.72536 11.7158 6.66553 11.5384 6.66553C11.3611 6.66553 11.2126 6.72536 11.0929 6.84501C10.9733 6.96466 10.9134 7.11316 10.9134 7.29051V13.5406ZM5.83331 4.99886V15.5758C5.83331 15.6506 5.85735 15.712 5.90544 15.7601C5.95352 15.8082 6.01496 15.8322 6.08975 15.8322H5.83331V4.99886Z"
-                                            fill="#5C6B79" />
+                                            fill="#ffffff" />
                                     </g>
                                 </svg>
                             </div>
-                            <div class="text-white flex items-center justify-center ml-[4px]"  @click="removePayment(data.id)">Delete</div>
+                            <div class="text-white flex items-center justify-center ml-[4px] cursor-pointer"
+                                @click="removePayment(data.id)">Delete</div>
                         </div>
                         <!-- <div class="flex bg-[#3A89CB]  rounded-[12px] pl-[12px] pr-[12px] pt-[4px] pb-[4px] ml-[14px] ">
                             <div class="flex items-center justify-center">
@@ -89,23 +106,6 @@
                         </div> -->
                     </div>
                 </div>
-            </div>
-            <div class="rounded-[16px]  p-[14px] h-[145px] border cursor-pointer flex flex-col items-center justify-center" @click="create = true">
-                <div>
-                    <svg width="68" height="69" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
-                        <mask id="mask0_1373_22044" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="6" y="7"
-                            width="56" height="55">
-                            <rect x="6.80078" y="7.25586" width="54.4" height="54.4" fill="#D9D9D9" />
-                        </mask>
-                        <g mask="url(#mask0_1373_22044)">
-                            <path
-                                d="M33.9984 49.7561C33.5165 49.7561 33.1129 49.5932 32.7874 49.2674C32.4619 48.9416 32.2992 48.5379 32.2992 48.0562V36.1561H20.3992C19.9175 36.1561 19.5138 35.9932 19.188 35.6672C18.8621 35.3412 18.6992 34.9373 18.6992 34.4555C18.6992 33.9736 18.8621 33.5699 19.188 33.2444C19.5138 32.919 19.9175 32.7562 20.3992 32.7562H32.2992V20.8562C32.2992 20.3745 32.4622 19.9708 32.7881 19.6449C33.1141 19.3191 33.518 19.1562 33.9999 19.1562C34.4818 19.1562 34.8855 19.3191 35.2109 19.6449C35.5364 19.9708 35.6991 20.3745 35.6991 20.8562V32.7562H47.5992C48.0808 32.7562 48.4846 32.9192 48.8104 33.2452C49.1362 33.5712 49.2991 33.9751 49.2991 34.4569C49.2991 34.9388 49.1362 35.3425 48.8104 35.668C48.4846 35.9934 48.0808 36.1561 47.5992 36.1561H35.6991V48.0562C35.6991 48.5379 35.5361 48.9416 35.2102 49.2674C34.8842 49.5932 34.4803 49.7561 33.9984 49.7561Z"
-                                fill="#B9CCDC" />
-                        </g>
-                    </svg>
-                </div>
-                <div class="text-[#5C6B79] mt-[8px]">เพิ่มบัญชีธนาคาร</div>
             </div>
         </div>
         <b-modal centered v-model="create" size="l" hide-backdrop hide-header-close hide-header hide-footer
@@ -177,18 +177,21 @@
                                 ธนาคารไทยเครดิตเพื่อรายย่อย
                             </option>
                             <option label="ธนาคารแลนด์แอนด์เฮาส์ " value="ธนาคารแลนด์แอนด์เฮาส์">
-                                ธนาคารแลนด์ แอนด์ เฮาส์ 
+                                ธนาคารแลนด์ แอนด์ เฮาส์
                             </option>
                             <option label="ธนาคารไอซีบีซี" value="ธนาคารไอซีบีซี">
                                 ธนาคารไอซีบีซี (ไทย)
                             </option>
-                            <option label="ธนาคารพัฒนาวิสาหกิจขนาดกลางและขนาดย่อมแห่งประเทศไทย" value="ธนาคารพัฒนาวิสาหกิจขนาดกลางและขนาดย่อมแห่งประเทศไทย">
+                            <option label="ธนาคารพัฒนาวิสาหกิจขนาดกลางและขนาดย่อมแห่งประเทศไทย"
+                                value="ธนาคารพัฒนาวิสาหกิจขนาดกลางและขนาดย่อมแห่งประเทศไทย">
                                 ธนาคารพัฒนาวิสาหกิจขนาดกลางและขนาดย่อมแห่งประเทศไทย
                             </option>
-                            <option label="ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร" value="ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร">
+                            <option label="ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร"
+                                value="ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร">
                                 ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร
                             </option>
-                            <option label="ธนาคารเพื่อการส่งออกและนำเข้าแห่งประเทศไทย" value="ธนาคารเพื่อการส่งออกและนำเข้าแห่งประเทศไทย">
+                            <option label="ธนาคารเพื่อการส่งออกและนำเข้าแห่งประเทศไทย"
+                                value="ธนาคารเพื่อการส่งออกและนำเข้าแห่งประเทศไทย">
                                 ธนาคารเพื่อการส่งออกและนำเข้าแห่งประเทศไทย
                             </option>
                             <option label="ธนาคารออมสิน" value="ธนาคารออมสิน">
@@ -206,7 +209,8 @@
                             <option label="ธนาคารซูมิโตโมมิตซุยทรัสต์" value="ธนาคารซูมิโตโมมิตซุยทรัสต์">
                                 ธนาคารซูมิโตโม มิตซุย ทรัสต์ (ไทย)
                             </option>
-                            <option label="ธนาคารฮ่องกงและเซี้ยงไฮ้แบงกิ้งคอร์ปอเรชั่น" value="ธนาคารฮ่องกงและเซี้ยงไฮ้แบงกิ้งคอร์ปอเรชั่น">
+                            <option label="ธนาคารฮ่องกงและเซี้ยงไฮ้แบงกิ้งคอร์ปอเรชั่น"
+                                value="ธนาคารฮ่องกงและเซี้ยงไฮ้แบงกิ้งคอร์ปอเรชั่น">
                                 ธนาคารฮ่องกงและเซี้ยงไฮ้แบงกิ้งคอร์ปอเรชั่น จำกัด
                             </option>
                         </select>
@@ -215,29 +219,29 @@
                 <div class="mt-[14px]">
                     <div class="text-custom">ชื่อบัญชีธนาคาร</div>
                     <div>
-                        <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="accountBankName" />
+                        <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                            v-model="accountBankName" />
                     </div>
                 </div>
                 <div class="mt-[14px]">
                     <div class="text-custom">เลขบัญชี</div>
                     <div>
-                        <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="accountNumber" />
+                        <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                            v-model="accountNumber" />
                     </div>
                 </div>
                 <div class="mt-[14px]">
                     <div class="text-custom">QR Code</div>
                     <div class="mt-[4px] flex">
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" ref="fileForm" hidden
-                            type="file" />
+                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload" @input="tempUploadFilePayment()"
+                            ref="fileForm" hidden type="file" />
                         <label for="upload">
                             <div
                                 class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px]">
-                                อัพโหลดรูปภาพ</div>
+                                 อัพโหลดรูปภาพ</div>
                         </label>
                         <div class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                            ยังไม่ได้เลือกไฟล์</div>
+                             {{ filepaymentForm.length == 0?'ยังไม่ได้เลือกไฟล์':'อัพโหลดรูปแล้ว' }}</div>
                     </div>
                 </div>
                 <div class="flex justify-end mt-[30px]">
@@ -284,79 +288,85 @@ export default {
     methods: {
         getPaymentBuilding() {
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/building-pay-methods?populate=*&filters[building][id][$eq]='+this.$store.state.building)
+            fetch('https://api.resguru.app/api' + '/building-pay-methods?populate=*&filters[building][id][$eq]=' + this.$store.state.building)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getOther()",resp.data);
+                    console.log("Return from getOther()", resp.data);
                     this.buildingPayment = resp.data
                 }).finally(() => {
                     loading.close()
                 })
         },
-        tempUploadFilePayment(){
+        tempUploadFilePayment() {
             this.filepaymentForm = this.$refs.fileForm.files[0]
         },
-        createPaymentOfBuilding(){
-            axios.post(`https://api.resguru.app/api/building-pay-methods/`,{
-                data : {
-                    bankName: this.bankName,
-                    accountName: this.accountBankName,
-                    accountNumber: this.accountNumber,
-                    building: this.$store.state.building
-                }
-            }).then(  (resp) => {
+        createPaymentOfBuilding() {
+            if (this.bankName != '' && this.accountBankName != '' && this.accountNumber != '' && this.filepaymentForm.length != 0) {
+                axios.post(`https://api.resguru.app/api/building-pay-methods/`, {
+                    data: {
+                        bankName: this.bankName,
+                        accountName: this.accountBankName,
+                        accountNumber: this.accountNumber,
+                        building: this.$store.state.building
+                    }
+                }).then((resp) => {
+                    if (this.filepaymentForm.length != 0) {
+                        let formData = new FormData();
+                        formData.append("files", this.filepaymentForm);
+                        formData.append("refId", String(resp.data.data.id));
+                        formData.append("ref", "api::building-pay-method.building-pay-method");
+                        formData.append("field", "QRCode");
 
-                        if(this.filepaymentForm.length != 0){
-                                let formData = new FormData();
-                                formData.append("files", this.filepaymentForm);
-                                formData.append("refId", String(resp.data.data.id));
-                                formData.append("ref", "api::building-pay-method.building-pay-method");
-                                formData.append("field", "QRCode");
-
-                                axios.post("https://api.resguru.app/api/upload", formData, {
-                                    headers: {
-                                    "Content-Type": "multipart/form-data",
-                                    },
-                                }).then( (result) => { console.log("Upload file",result)}) 
-                                .catch((error) => {
-                                            console.log(error);
-                                })
-                        }
-                      
-                    }    
-                )
-                .catch(error => {
-                const errorMessage = error.message ? error.message : 'Error updating information';
-                this.$showNotification('danger', errorMessage); 
-                })
-                .finally(()=>{
+                        axios.post("https://api.resguru.app/api/upload", formData, {
+                            headers: {
+                                "Content-Type": "multipart/form-data",
+                            },
+                        }).then((result) => { console.log("Upload file", result) })
+                            .catch((error) => {
+                                console.log(error);
+                            })
+                    }
                     this.getPaymentBuilding();
-                    this.$showNotification('#3A89CB', 'Create Payment Success')
-                }) 
-        }, 
-        updateUserBuildingPayment(buildingID){
-            axios.put(`https://api.resguru.app/api/building-pay-methods/${buildingID}`,{
-                data : {
+                }
+                )
+                    .catch(error => {
+                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        this.$showNotification('danger', errorMessage);
+                    })
+                    .finally(() => {
+                        this.create = false
+                        this.$showNotification('#3A89CB', 'Create Payment Success')
+                    })
+
+            }
+            else{
+                this.$showNotification('danger','Please fill this form');
+            }
+
+        },
+        updateUserBuildingPayment(buildingID) {
+            axios.put(`https://api.resguru.app/api/building-pay-methods/${buildingID}`, {
+                data: {
                     waterUnitPrice: this.waterUnitPrice
                 }
-            })            
-            .then( (resp) =>{
-                console.log(resp)
             })
-            .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
-            this.$showNotification('danger', errorMessage); 
-            })
-            .finally(()=>{
-                this.getPaymentBuilding();
-                this.$showNotification('#3A89CB', 'Update Building Payment Success')
-            }) 
-              
-        }, 
-        editPaymentImagewithUpload(Editid){
+                .then((resp) => {
+                    console.log(resp)
+                })
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.getPaymentBuilding();
+                    this.$showNotification('#3A89CB', 'Update Building Payment Success')
+                })
 
-            console.log("payment Image",this.$refs.paymentImage)
-            console.log("ID",Editid)
+        },
+        editPaymentImagewithUpload(Editid) {
+
+            console.log("payment Image", this.$refs.paymentImage)
+            console.log("ID", Editid)
             // this.filePayment = this.$refs.paymentImage.files[0]
             // if(this.filePayment.length != 0){
             //             let formData = new FormData();
@@ -376,22 +386,22 @@ export default {
             // }
             // alert("QRCode is uploaded")
         },
-        removePayment(adminID){
-            if(confirm("Do you really want to delete this payment method?")){
-                    axios.delete(`https://api.resguru.app/api/building-pay-methods/${adminID}`,{
-                        
+        removePayment(adminID) {
+            if (confirm("Do you really want to delete this payment method?")) {
+                axios.delete(`https://api.resguru.app/api/building-pay-methods/${adminID}`, {
+
+                })
+                    .then((resp) => {
+                        console.log(resp)
                     })
-                    .then( (resp) =>{
-                            console.log(resp)
-                        })
                     .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage); 
+                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        this.$showNotification('danger', errorMessage);
                     })
-                    .finally(()=>{
+                    .finally(() => {
                         this.getPaymentBuilding();
                         this.$showNotification('#3A89CB', 'Delete Payment Method Success')
-                    })  
+                    })
             }
 
         },
