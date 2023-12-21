@@ -279,6 +279,24 @@
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 2">
             <div class="text-[16px] font-bold mt-[24px]">รายการประเภทห้องพัก</div>
             <div class="grid grid-cols-5 gap-4 mt-[14px] w-[100%]">
+                <div class="border h-[100%] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
+                    @click="create_type = true, roomTypePrice = '', roomTypeName = '', is_edit_type = false">
+                    <div>
+                        <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
+                            <mask id="mask0_1373_22044" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="6" y="7"
+                                width="56" height="55">
+                                <rect x="6.80078" y="7.25586" width="54.4" height="54.4" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_1373_22044)">
+                                <path
+                                    d="M33.9984 49.7561C33.5165 49.7561 33.1129 49.5932 32.7874 49.2674C32.4619 48.9416 32.2992 48.5379 32.2992 48.0562V36.1561H20.3992C19.9175 36.1561 19.5138 35.9932 19.188 35.6672C18.8621 35.3412 18.6992 34.9373 18.6992 34.4555C18.6992 33.9736 18.8621 33.5699 19.188 33.2444C19.5138 32.919 19.9175 32.7562 20.3992 32.7562H32.2992V20.8562C32.2992 20.3745 32.4622 19.9708 32.7881 19.6449C33.1141 19.3191 33.518 19.1562 33.9999 19.1562C34.4818 19.1562 34.8855 19.3191 35.2109 19.6449C35.5364 19.9708 35.6991 20.3745 35.6991 20.8562V32.7562H47.5992C48.0808 32.7562 48.4846 32.9192 48.8104 33.2452C49.1362 33.5712 49.2991 33.9751 49.2991 34.4569C49.2991 34.9388 49.1362 35.3425 48.8104 35.668C48.4846 35.9934 48.0808 36.1561 47.5992 36.1561H35.6991V48.0562C35.6991 48.5379 35.5361 48.9416 35.2102 49.2674C34.8842 49.5932 34.4803 49.7561 33.9984 49.7561Z"
+                                    fill="#B9CCDC" />
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="text-[#5C6B79] font-bold mt-[4px]">สร้างประเภทห้องพักและห้องเช่า</div>
+                </div>
                 <div class="border h-[130px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] cursor-pointer"
                     v-for="data in roomType" @click="create_type = true, is_edit_type = true, getTypeRoomDetail(data.id)">
                     <div class="flex flex-col justify-between h-[100%] ">
@@ -309,8 +327,14 @@
                             color="#003765">แก้ไขราคาห้อง</vs-button> -->
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 3">
+            <div class="text-[16px] font-bold mt-[24px]">รายการจำนวนชั้นของตึก</div>
+            <div class="grid grid-cols-5 gap-4 mt-[14px] w-[100%]">
                 <div class="border h-[100%] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
-                    @click="create_type = true, roomTypePrice = '', roomTypeName = '', is_edit_type = false">
+                    @click="createFloor = true">
                     <div>
                         <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
@@ -325,14 +349,8 @@
                             </g>
                         </svg>
                     </div>
-                    <div class="text-[#5C6B79] font-bold mt-[4px]">สร้างประเภทห้องพักและห้องเช่า</div>
+                    <div class="text-[#5C6B79] font-bold mt-[4px]">สร้างชั้น</div>
                 </div>
-            </div>
-        </div>
-
-        <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 3">
-            <div class="text-[16px] font-bold mt-[24px]">รายการจำนวนชั้นของตึก</div>
-            <div class="grid grid-cols-5 gap-4 mt-[14px] w-[100%]">
                 <div class="border h-[130px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]"
                     v-for="data in roomFloor">
                     <div class="flex flex-col justify-between h-[100%]">
@@ -363,24 +381,7 @@
 
                 </div>
 
-                <div class="border h-[97px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
-                    @click="createFloor = true">
-                    <div>
-                        <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
-                            <mask id="mask0_1373_22044" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="6" y="7"
-                                width="56" height="55">
-                                <rect x="6.80078" y="7.25586" width="54.4" height="54.4" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_1373_22044)">
-                                <path
-                                    d="M33.9984 49.7561C33.5165 49.7561 33.1129 49.5932 32.7874 49.2674C32.4619 48.9416 32.2992 48.5379 32.2992 48.0562V36.1561H20.3992C19.9175 36.1561 19.5138 35.9932 19.188 35.6672C18.8621 35.3412 18.6992 34.9373 18.6992 34.4555C18.6992 33.9736 18.8621 33.5699 19.188 33.2444C19.5138 32.919 19.9175 32.7562 20.3992 32.7562H32.2992V20.8562C32.2992 20.3745 32.4622 19.9708 32.7881 19.6449C33.1141 19.3191 33.518 19.1562 33.9999 19.1562C34.4818 19.1562 34.8855 19.3191 35.2109 19.6449C35.5364 19.9708 35.6991 20.3745 35.6991 20.8562V32.7562H47.5992C48.0808 32.7562 48.4846 32.9192 48.8104 33.2452C49.1362 33.5712 49.2991 33.9751 49.2991 34.4569C49.2991 34.9388 49.1362 35.3425 48.8104 35.668C48.4846 35.9934 48.0808 36.1561 47.5992 36.1561H35.6991V48.0562C35.6991 48.5379 35.5361 48.9416 35.2102 49.2674C34.8842 49.5932 34.4803 49.7561 33.9984 49.7561Z"
-                                    fill="#B9CCDC" />
-                            </g>
-                        </svg>
-                    </div>
-                    <div class="text-[#5C6B79] font-bold mt-[4px]">สร้างชั้น</div>
-                </div>
+
             </div>
         </div>
 
@@ -1117,7 +1118,10 @@ export default {
                 })
                 .finally(() => {
                     this.createFloor = false
-                    this.getFloorRoom();
+                    setTimeout(() => {
+                        this.getFloorRoom();
+                    }, 4000)
+
                 })
         },
         updateFloor(floorID, buildFloorName) {
@@ -1134,7 +1138,10 @@ export default {
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
-                    this.getFloorRoom();
+                    setTimeout(() => {
+                        this.getFloorRoom();
+                    }, 1000)
+
                 })
         },
         removeFloor(floorID) {
