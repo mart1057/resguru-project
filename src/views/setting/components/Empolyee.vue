@@ -38,7 +38,7 @@
                                     <div class="flex flex-col justify-between h-[100%]">
                                         <div class="">
                                             <div
-                                                class="h-[24px] rounded-[12px] font-bold text-[#003765] pl-[12px] pr-[12px] flex items-center bg-[#F0F8FF]">
+                                                class="h-[24px] rounded-[12px] justify-center font-bold text-[#003765] pl-[12px] pr-[12px] flex items-center bg-[#F0F8FF]">
                                                 {{ data.role.name }}
                                             </div>
                                             <div class="mt-[14px] text-[18px] font-bold">{{ data.firstName }} {{
@@ -132,7 +132,7 @@
                                     <div class="flex flex-col justify-between h-[100%]">
                                         <div class="">
                                             <div
-                                                class="h-[24px] rounded-[12px] font-bold text-[#D48C00] pl-[12px] pr-[12px] flex items-center bg-[#FFF2BC]">
+                                                class="h-[24px] rounded-[12px] text-center font-bold text-[#D48C00] pl-[12px] pr-[12px] flex items-center justify-center bg-[#FFF2BC]">
                                                 {{ data.attributes.position }}
                                             </div>
 
@@ -603,7 +603,7 @@ export default {
                         // phone: this.NewProfileEm.phone,
                         // email:  this.NewProfileAdmin.email,
                         line: this.NewProfileAdmin.line,
-                        // position: this.NewProfileEm.position,
+                        position: 'Technician',
                         building: this.$store.state.building,
                         // facebook: this.NewProfileEm.facebook
                     }
@@ -652,7 +652,7 @@ export default {
                         this.$showNotification('danger', errorMessage);
                     })
                     .finally(() => {
-                        this.getUser();
+                        this.getEmployer();
                         this.profile_admin = false
                     })
             }
