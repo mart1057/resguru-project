@@ -53,33 +53,18 @@
                             <template #tooltip>
                                 <div class="w-[100%]">
                                     <div class="center">
-                                        <vs-checkbox v-model="option">
+                                        <vs-checkbox v-model="filter.select" val="Not Paid" @input="getRoomBill(filter.floor,0,filter.selectedMonth,filter.selectedYear)">
                                             <div class="text-custom">ห้องค้างชำระ</div>
                                         </vs-checkbox>
                                     </div>
                                     <div class="center">
-                                        <vs-checkbox v-model="option">
+                                        <vs-checkbox v-model="filter.select" val="Paid" @input="getRoomBill(filter.floor,0,filter.selectedMonth,filter.selectedYear)">
                                             <div class="text-custom">ห้องชำระเงินแล้ว</div>
                                         </vs-checkbox>
                                     </div>
                                     <div class="center">
-                                        <vs-checkbox v-model="option">
-                                            <div class="text-custom">ห้องว่าง</div>
-                                        </vs-checkbox>
-                                    </div>
-                                    <div class="center">
-                                        <vs-checkbox v-model="option">
-                                            <div class="text-custom">ห้องติดจอง</div>
-                                        </vs-checkbox>
-                                    </div>
-                                    <div class="center">
-                                        <vs-checkbox v-model="option">
-                                            <div class="text-custom">ห้องใกล้หมดสัญญา</div>
-                                        </vs-checkbox>
-                                    </div>
-                                    <div class="center">
-                                        <vs-checkbox v-model="option">
-                                            <div class="text-custom">ห้องแจ้งย้ายออก</div>
+                                        <vs-checkbox v-model="filter.select" val="Partial Paid" @input="getRoomBill(filter.floor,0,filter.selectedMonth,filter.selectedYear)">
+                                            <div class="text-custom">ห้องชำระบางส่วน</div>
                                         </vs-checkbox>
                                     </div>
                                 </div>
@@ -720,6 +705,8 @@ export default {
             tab_floor: '0',
             filter: {
                 search: '',
+                select:[],
+                checkSelect: [],
                 floor: '',
                 selectedMonth: '',
                 selectedYear: '',
@@ -731,7 +718,7 @@ export default {
     },
     created() {
         const loading = this.$vs.loading({})
-
+        this.filter.checkSelect = ['Not Paid', 'Partial Paid', 'Paid']
         setTimeout(() => {
             loading.close()
         }, 1000)
@@ -803,7 +790,6 @@ export default {
             const currentdate = new Date()
             const month = currentdate.getMonth()
             const year = currentdate.getFullYear()
-
             axios.get(`https://api.resguru.app/api/regenerateinvoice?buildingid=${this.$store.state.building}&invoiceid=${invoiceID}&month=${month}&year=${year}`)
                 .then((response) => {
                     // console.log("reGenerateInvoice",response.data.meta.message)
@@ -964,8 +950,9 @@ export default {
         getRoomBill(id, code, m, y) {
             // console.log("this.filter.floor",this.filter.floor)
             const loading = this.$vs.loading()
+            const output = this.filter.select.length > 0 ? this.filter.select.join(',') : this.filter.checkSelect.join(',');
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}&floor=${id}&month=${m}&year=${y}&paymentStatus=Paid,Not%20Paid`)
+            fetch(`https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}&floor=${id}&month=${m}&year=${y}&paymentStatus=`+output )
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoomBill()", resp.data);

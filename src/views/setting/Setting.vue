@@ -10,8 +10,8 @@
                     :class="tab == 3 ? 'font-bold text-[16px]' : ''" @click="tab = 3">ค่าน้ำไฟและบริการ</div>
                 <div class="flex justify-center items-center ml-[24px] cursor-pointer"
                     :class="tab == 4 ? 'font-bold text-[16px]' : ''" @click="tab = 4">การจ่ายเงิน</div>
-                <div class="flex justify-center items-center ml-[24px] cursor-pointer"
-                    :class="tab == 5 ? 'font-bold text-[16px]' : ''" @click="tab = 5">การจัดการสัญญา</div>
+                <!-- <div class="flex justify-center items-center ml-[24px] cursor-pointer"
+                    :class="tab == 5 ? 'font-bold text-[16px]' : ''" @click="tab = 5">การจัดการสัญญา</div> -->
                 <div class="flex justify-center items-center ml-[24px] cursor-pointer"
                     :class="tab == 6 ? 'font-bold text-[16px]' : ''" @click="tab = 6">บุคลากร</div>
             </div>
