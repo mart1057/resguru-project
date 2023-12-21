@@ -12,7 +12,7 @@
                                 :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                                 รายการประเภทห้องพัก
                             </div>
-                            <div @click="tab = 3" class="cursor-pointer ml-[8px]"
+                            <div @click="tab = 3, getFloorRoom()" class="cursor-pointer ml-[8px]"
                                 :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                                 รายการจำนวนชั้นของตึก
                             </div>
@@ -878,6 +878,7 @@ export default {
             roomType: [],
             room_type_id: '',
             floorRoom: [],
+            roomFloor: [],
             roomName: "",
             roomTypeName: "",
             roomTypePrice: 0,
@@ -1118,10 +1119,7 @@ export default {
                 })
                 .finally(() => {
                     this.createFloor = false
-                    setTimeout(() => {
-                        this.getFloorRoom();
-                    }, 4000)
-
+                    this.getFloorRoom();
                 })
         },
         updateFloor(floorID, buildFloorName) {
@@ -1138,16 +1136,13 @@ export default {
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
-                    setTimeout(() => {
-                        this.getFloorRoom();
-                    }, 1000)
-
+                    this.getFloorRoom();
                 })
         },
         removeFloor(floorID) {
             if (confirm("Do you really want to delete this Admin?")) {
                 axios.delete(`https://api.resguru.app/api/building-floors/${floorID}`).then(
-                    this.openNotificationDeleteFloor('top-right', '#3A89CB', 6000)
+                    // this.openNotificationDeleteFloor('top-right', '#3A89CB', 6000)
                 )
                     .then((resp) => {
                         this.$showNotification('#3A89CB', 'Delete Floor Success')
