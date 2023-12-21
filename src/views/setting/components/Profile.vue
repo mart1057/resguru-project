@@ -47,7 +47,7 @@
                         <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile" ref="buildingProfile"  hidden
                                     type="file" @change="editProfilewithUpload()" />
                         <label for="uploadProfile">
-                        <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">เปลี่ยนรูปภาพโปรไฟล์</div>
+                        <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer mt-[4px]">เปลี่ยนรูปภาพโปรไฟล์</div>
                         </label>
                         <div class="text-[18px] font-bold mt-[8px]">{{ userData.firstName }} {{userData.lastName}}</div>
                         <div class="w-[100%]" v-if="tabSetting == 2">
