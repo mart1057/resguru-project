@@ -653,7 +653,7 @@
             <div>
                 <div class="flex justify-between">
                     <div class="text-custom flex justify-center items-center text-[16px] font-bold">
-                        สร้างประเภทห้องและค่าเช่า</div>
+                         {{ is_edit_type == true?'แก้ไขประเภทห้องและค่าเช่า':'สร้างประเภทห้องและค่าเช่า' }}</div>
                     <div @click="create_type = false" class="cursor-pointer">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -703,7 +703,7 @@
             <div>
                 <div class="flex justify-between">
                     <div class="text-custom flex justify-center items-center text-[16px] font-bold">
-                        เพิ่มห้อง</div>
+                         {{ is_edit == true?'แก้ไขห้อง':'เพิ่มห้อง' }}</div>
                     <div @click="create_room = false" class="cursor-pointer">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -865,7 +865,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            tab: 2,
+            tab: 1,
             tab_floor: '0',
             name_floor: '',
             value: 0,

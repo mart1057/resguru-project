@@ -584,9 +584,11 @@ export default {
                         const errorMessage = error.message ? error.message : 'Error updating information';
                         this.$showNotification('danger', errorMessage);
                     })
-                    .finally(() => {
-                        this.getBuildingData();
+                    .finally(() => { 
                         this.$showNotification('#3A89CB', 'Upload Profile Success')
+                        this.getBuildingData();
+                        window.location.reload()
+                       
                     })
             }
         },
