@@ -94,14 +94,16 @@
                                 </div>
                                 <div class="grid grid-cols-4  text-custom mt-[14px]  "
                                     v-if="room_detail.check_user == true && is_edit == false">
-                                    <div  class="col-span-2">
-                                        <div class=""> <span class="text-[red] mr-[2px]">*</span>เลือกข้อมูลผู้เช่า</div>
-                                        <select placeholder="Select" v-model="id_user" @change="getUserDetail()"
-                                            class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]">
-                                            <option v-for="user in users" :value="user.id">
-                                                {{ user.firstName }} {{ user.lastName }}
-                                            </option>
-                                        </select>
+                                    <div class="col-span-2">
+                                        <div class=""> <span class="text-[red] mr-[2px]">*</span>ค้นหาผู้เช่าด้วยรหัสบัตรประชาชน</div>
+                                        <div>
+                                            <div>
+                                                <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                                    v-model="id_card">
+                                                <vs-button primary @click="getUserDetail(id_card)">ค้นหา</vs-button>
+                                            </div>
+
+                                        </div>
                                     </div>
                                     <div class="col-span-2  ml-[8px]">
                                         <div><span class="text-[red] mr-[2px]">*</span>อีเมลล์</div>
@@ -546,6 +548,7 @@ export default {
                 number: ''
 
             },
+            id_card:'',
             room_detail: {
                 id: '',
                 sex: null,
@@ -671,29 +674,30 @@ export default {
         },
         getUserDetail(id_room) {
             this.img_arr_card = []
-            fetch('https://api.resguru.app/api' + '/users/' + this.id_user + '?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep')
+            fetch('https://api.resguru.app/api' + '/users/?filters[idCard][$eq]=' +this.id_card + '&populate=deep')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log('detail', resp);
-                    this.room_detail.id = resp.id
-                    this.room_detail.name = resp.firstName
-                    this.room_detail.last_name = resp.lastName
-                    this.room_detail.nick_name = resp.nickName
-                    this.room_detail.phone = resp.phone
-                    this.room_detail.email = resp.email
-                    this.room_detail.id_card = resp.idCard
-                    this.room_detail.address = resp.contactAddress
-                    this.room_detail.sex = resp.sex
-                    this.room_detail.birth = resp.dateOfBirth
-                    this.room_detail.date_sign = resp.checkInDate
-                    this.room_detail.workplace = resp.workplace,
-                        this.room_detail.faculty = resp.faculty,
-                        this.room_detail.rank = resp.rank,
-                        this.room_detail.idEmployee = resp.idEmployee,
-                        this.room_detail.emergencyPerson = resp.emergencyPerson,
-                        this.room_detail.relation = resp.relation,
-                        this.room_detail.emergencyPhone = resp.emergencyPhone,
-                        this.room_detail.lineID = resp.lineID
+                    this.id_user = resp[0].id
+                    this.room_detail.id = resp[0].id
+                    this.room_detail.name = resp[0].firstName
+                    this.room_detail.last_name = resp[0].lastName
+                    this.room_detail.nick_name = resp[0].nickName
+                    this.room_detail.phone = resp[0].phone
+                    this.room_detail.email = resp[0].email
+                    this.room_detail.id_card = resp[0].idCard
+                    this.room_detail.address = resp[0].contactAddress
+                    this.room_detail.sex = resp[0].sex
+                    this.room_detail.birth = resp[0].dateOfBirth
+                    this.room_detail.date_sign = resp[0].checkInDate
+                    this.room_detail.workplace = resp[0].workplace,
+                        this.room_detail.faculty = resp[0].faculty,
+                        this.room_detail.rank = resp[0].rank,
+                        this.room_detail.idEmployee = resp[0].idEmployee,
+                        this.room_detail.emergencyPerson = resp[0].emergencyPerson,
+                        this.room_detail.relation = resp[0].relation,
+                        this.room_detail.emergencyPhone = resp[0].emergencyPhone,
+                        this.room_detail.lineID = resp[0].lineID
                 }).finally(() => {
                     fetch('https://api.resguru.app/api' + '/users/' + this.id_user + '?&populate=*')
                         .then(response => response.json())
