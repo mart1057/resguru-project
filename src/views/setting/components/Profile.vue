@@ -14,13 +14,13 @@
             </div>
         </div>
         <div class="mt-[14px]">
-            <div  v-if="tabSetting == 2">
+            <div v-if="tabSetting == 2">
                 <div v-if="buildingData.attributes.buildingBanner">
                     <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]"
                         v-bind:style="{ backgroundImage: 'url(https://api.resguru.app' + buildingData.attributes.buildingBanner.data?.attributes.url + ')' }">
                         <!-- <img :src="`https://api.resguru.app${buildingData.attributes.buildingBanner.data.attributes.url}`" > -->
                         <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload"
-                            ref="buildingBanner" hidden type="file" @change="editBannerwithUpload()" />
+                            ref="buildingBanner" hidden type="file" @change=" editBannerwithUpload(2)" />
                         <label for="upload">
                             <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">
                                 เปลี่ยนรูปภาพปก</div>
@@ -31,7 +31,7 @@
                     <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]">
 
                         <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload"
-                            ref="buildingBanner" hidden type="file" @change="editBannerwithUpload()" />
+                            ref="buildingBanner" hidden type="file" @change="editBannerwithUpload(2)" />
                         <label for="upload">
                             <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">
                                 เปลี่ยนรูปภาพปก</div>
@@ -42,10 +42,10 @@
             <div v-else>
                 <div v-if="userData.imageBanner">
                     <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]"
-                        v-bind:style="{ backgroundImage: 'url(https://api.resguru.app' +userData.imageBanner.url + ')' }">
+                        v-bind:style="{ backgroundImage: 'url(https://api.resguru.app' + userData.imageBanner.url + ')' }">
                         <!-- <img :src="`https://api.resguru.app${buildingData.attributes.buildingBanner.data.attributes.url}`" > -->
                         <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload"
-                            ref="buildingBanner" hidden type="file" @change="editBannerwithUpload()" />
+                            ref="buildingBannerUser" hidden type="file" @change="editBannerwithUpload2()" />
                         <label for="upload">
                             <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">
                                 เปลี่ยนรูปภาพปก</div>
@@ -56,7 +56,7 @@
                     <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]">
 
                         <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload"
-                            ref="buildingBanner" hidden type="file" @change="editBannerwithUpload()" />
+                            ref="buildingBannerUser" hidden type="file" @change="editBannerwithUpload2()" />
                         <label for="upload">
                             <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">
                                 เปลี่ยนรูปภาพปก</div>
@@ -85,11 +85,11 @@
                         <div v-else>
                             <img v-if="$store.state.buildingInfo[0].attributes.buildingLogo.data"
                                 class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
-                                :src="'https://api.resguru.app' + $store.state.buildingInfo[0].attributes.buildingLogo.data?.attributes.formats.large.url" />
+                                :src="'https://api.resguru.app' + buildingData.attributes.buildingLogo.data?.attributes.url" />
                             <img v-else class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
                                 src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile"
-                                ref="buildingProfile" hidden type="file" @change="editProfilewithUpload()" />
+                                ref="buildingProfileCom" hidden type="file" @change=" editBannerwithUpload(1)" />
                             <label for="uploadProfile">
                                 <div
                                     class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer mt-[4px]">
@@ -390,8 +390,6 @@
                             <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
                                 v-model="buildingData.attributes.long">
                         </div>
-
-
                     </div>
                     <div class="mt-[44px] mb-[50px]">
                         <vs-button @click="updateBuildingData()">
@@ -567,7 +565,6 @@ export default {
         },
         editProfilewithUpload() {
             this.fileProfile = this.$refs.buildingProfile.files[0]
-
             if (this.fileProfile.length != 0) {
                 let formData = new FormData();
                 formData.append("files", this.fileProfile);
@@ -593,16 +590,52 @@ export default {
                     })
             }
         },
-        editBannerwithUpload() {
-
-            this.fileBanner = this.$refs.buildingBanner.files[0]
+        editProfileCompanywithUpload() {
+            this.fileProfile = this.$refs.buildingProfile.files[0]
+            if (this.fileProfile.length != 0) {
+                let formData = new FormData();
+                formData.append("files", this.fileProfile);
+                formData.append("refId", String(this.$store.state.building));
+                formData.append("ref", "plugin::building.building");
+                formData.append("field", "buildingLogo");
+                axios.post("https://api.resguru.app/api/upload", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                    .then((resp) => {
+                        console.log(resp)
+                    })
+                    .catch(error => {
+                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        this.$showNotification('danger', errorMessage);
+                    })
+                    .finally(() => {
+                        this.getBuildingData();
+                        this.$showNotification('#3A89CB', 'Upload Profile Success')
+                    })
+            }
+        },
+        editBannerwithUpload(check) {
+            if (check == '1') {
+                this.fileBanner = this.$refs.buildingProfileCom.files[0]
+            }
+            else {
+                this.fileBanner = this.$refs.buildingBanner.files[0]
+            }
 
             if (this.fileBanner.length != 0) {
                 let formData = new FormData();
                 formData.append("files", this.fileBanner);
                 formData.append("refId", String(this.$store.state.building));
                 formData.append("ref", "api::building.building");
-                formData.append("field", "buildingBanner");
+                if (check == '1') {
+                    formData.append("field", "buildingLogo");
+                }
+                else {
+                    formData.append("field", "buildingBanner");
+                }
+
 
                 axios.post("https://api.resguru.app/api/upload", formData, {
                     headers: {
@@ -619,6 +652,33 @@ export default {
                     .finally(() => {
                         this.getBuildingData();
                         this.$showNotification('#3A89CB', 'Upload Banner Success')
+                    })
+            }
+        },
+        editBannerwithUpload2(check) {
+            const img = this.$refs.buildingBannerUser.files[0]
+            if (img.length != 0) {
+                let formData = new FormData();
+                formData.append("files", img);
+                formData.append("refId", String(this.$store.state.userInfo.user.id));
+                formData.append("ref", "api::users-permissions.user");
+                formData.append("field", "imageBanner");
+                axios.post("https://api.resguru.app/api/upload", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                    .then((resp) => { 
+                        this.$showNotification('#3A89CB', 'Upload Banner Success')
+                        console.log(resp)
+                    })
+                    .catch(error => {
+                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        this.$showNotification('danger', errorMessage);
+                    })
+                    .finally(() => {
+                        this.getBuildingData();
+                       
                     })
             }
         },
