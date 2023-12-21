@@ -224,7 +224,7 @@
             <div class="mt-[14px]">
                 <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]">
                     <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" hidden
-                        type="file" />
+                        type="file"  @change="tempImageCoverUploadAdmin()"  ref="fileUploadAdminCoverForm"/>
                     <label for="upload">
                         <div
                             class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px]  text-custom cursor-pointer">
@@ -244,11 +244,11 @@
                                     class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] mt-[4px]  text-custom cursor-pointer">
                                     เปลี่ยนรูปภาพโปรไฟล์</div>
                             </label>
-                            <div class="text-[18px] font-bold mt-[8px] text-custom">{{ NewProfileAdmin.name }}
+                            <div class="text-[18px] font-bold mt-[8px] text-custom">{{ NewProfileAdmin.firstName }}
                                 {{ NewProfileAdmin.lastname }}</div>
                             <div
                                 class="h-[24px] mt-[8px] text-custom rounded-[12px] font-bold text-[#003765] pl-[12px] pr-[12px] flex items-center bg-[#F0F8FF]">
-                                {{ NewProfileAdmin.postion }}
+                                {{ NewProfileAdmin.lastName }}
                             </div>
                         </div>
                     </div>
@@ -332,6 +332,7 @@ export default {
             UserBuilding: [],
             fileProfileForm: [],
             fileAdminProfileForm: [],
+            fileAdminCoverForm:[],
             NewProfileEm: {
                 name: '',
                 lastname: '',
@@ -502,9 +503,12 @@ export default {
             this.NewProfileAdmin.zipcode = address.zipcode
         },
         tempImageUploadAdmin() {
-           
-            this.fileAdminProfileForm = this.$refs.fileUploadAdminProfileForm.files[0] 
+            this.fileAdminProfileForm = this.$refs.fileUploadAdminProfileForm.files[0]
             console.log(this.fileAdminProfileForm);
+        },
+        tempImageCoverUploadAdmin() {
+             this.fileAdminCoverForm = this.$refs.fileUploadAdminCoverForm.files[0]
+             console.log(this.fileAdminCoverForm);
         },
         addAdmin() {
             axios.post(`https://api.resguru.app/api/users/`, {
@@ -533,6 +537,23 @@ export default {
                     formData.append("refId", String(resp.data.id));
                     formData.append("ref", "plugin::users-permissions.user");
                     formData.append("field", "imageProfile");
+
+                    axios.post("https://api.resguru.app/api/upload", formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }).then((result) => { console.log("Upload file", result) })
+                        .catch((error) => {
+                            console.log(error);
+                        })
+                }
+                if (this.fileAdminCoverForm) {
+                    console.log('object');
+                    let formData = new FormData();
+                    formData.append("files", this.fileAdminCoverForm);
+                    formData.append("refId", String(resp.data.id));
+                    formData.append("ref", "plugin::users-permissions.user");
+                    formData.append("field", "imageBanner");
 
                     axios.post("https://api.resguru.app/api/upload", formData, {
                         headers: {
