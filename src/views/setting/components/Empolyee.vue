@@ -26,9 +26,8 @@
                             <div class="flex">
                                 <div v-if=data.imageProfile>
                                     <img class="w-[125px] h-[125px] rounded-[12px]"
-                                        :src="'https://api.resguru.app' + data.imageProfile.formats.large.url" />
+                                        :src="'https://api.resguru.app' + data.imageProfile.url" />
                                 </div>
-
                                 <div v-else>
                                     <img class="w-[125px] h-[125px] rounded-[12px]"
                                         src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
@@ -206,128 +205,6 @@
                 </div>
             </div>
         </div>
-        <b-modal centered v-model="profile_em" size="xl" hide-backdrop hide-header-close hide-header hide-footer
-            class="p-[-20px] text-custom">
-            <div class="flex justify-end cursor-pointer" @click="profile_em = false">
-
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <mask id="mask0_902_19192" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24"
-                        height="24">
-                        <rect width="24" height="24" fill="#D9D9D9" />
-                    </mask>
-                    <g mask="url(#mask0_902_19192)">
-                        <path
-                            d="M12.0005 13.0543L6.92737 18.1274C6.78892 18.2658 6.61489 18.3367 6.40527 18.3399C6.19567 18.3431 6.01844 18.2723 5.87357 18.1274C5.72869 17.9825 5.65625 17.8069 5.65625 17.6005C5.65625 17.3941 5.72869 17.2184 5.87357 17.0736L10.9466 12.0005L5.87357 6.92738C5.73511 6.78893 5.66427 6.61489 5.66107 6.40527C5.65786 6.19568 5.72869 6.01844 5.87357 5.87358C6.01844 5.72869 6.19407 5.65625 6.40047 5.65625C6.60687 5.65625 6.78251 5.72869 6.92737 5.87358L12.0005 10.9467L17.0736 5.87358C17.212 5.73511 17.3861 5.66428 17.5957 5.66108C17.8053 5.65786 17.9825 5.72869 18.1274 5.87358C18.2723 6.01844 18.3447 6.19408 18.3447 6.40048C18.3447 6.60688 18.2723 6.78251 18.1274 6.92738L13.0543 12.0005L18.1274 17.0736C18.2658 17.212 18.3367 17.3861 18.3399 17.5957C18.3431 17.8053 18.2723 17.9825 18.1274 18.1274C17.9825 18.2723 17.8069 18.3447 17.6005 18.3447C17.3941 18.3447 17.2184 18.2723 17.0736 18.1274L12.0005 13.0543Z"
-                            fill="#003765" />
-                    </g>
-                </svg>
-            </div>
-            <div class="mt-[14px]">
-                <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]">
-                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" hidden
-                        type="file" />
-                    <label for="upload">
-                        <div
-                            class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px]  text-custom cursor-pointer">
-                            เปลี่ยนรูปภาพปก
-                        </div>
-                    </label>
-                </div>
-                <div class="flex w-[100%]">
-                    <div class="w-[20%] ml-[18px] mt-[-70px]">
-                        <div class="bg-[white] rounded-[22px] w-[246px] border p-[14px] flex flex-col items-center">
-                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile"
-                                ref="fileUploadProfileForm" hidden type="file" @change="tempImageUploadEmployee()" />
-                            <label for="uploadProfile">
-                                <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
-                                    src="https://www.befunky.com/images/wp/wp-2021-01-linkedin-profile-picture-after.jpg?auto=avif,webp&format=jpg&width=944" />
-                                <div
-                                    class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px]  text-custom cursor-pointer">
-                                    เปลี่ยนรูปภาพโปรไฟล์</div>
-                            </label>
-                            <div class="text-[18px] font-bold mt-[8px] text-custom">{{ NewProfileEm.name }}
-                                {{ NewProfileEm.lastname }}</div>
-                            <div
-                                class="h-[24px] mt-[8px] text-custom rounded-[12px] font-bold text-[#003765] pl-[12px] pr-[12px] flex items-center bg-[#F0F8FF]">
-                                {{ NewProfileEm.position }}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-[100%] ml-[24px] mt-[8px] pl-[18px] pr-[18px]">
-                        <div class="grid grid-cols-4 w-[100%] gap-2 ">
-                            <div class="mt-[8px] col-span-2">
-                                <div class="text-custom text-[14px] text-[#003765]">ชื่อ</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    v-model="NewProfileEm.name" type="input" />
-                            </div>
-                            <div class="mt-[8px] col-span-2">
-                                <div class="text-custom text-[14px] text-[#003765]">นามสกุล</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    v-model="NewProfileEm.lastname" type="input" />
-                            </div>
-                            <div class="mt-[8px] col-span-4">
-                                <div class="text-custom text-[14px] text-[#003765]">ที่อยู่</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    v-model="NewProfileEm.address" type="input" />
-                            </div>
-                            <!-- <div class="">
-                                <ThailandAutoComplete v-model="NewProfileEm.district" type="district"
-                                    @select="selectAddressEmployee" label="ตำบล" size="small" placeholder="ตำบล..." />
-                            </div>
-                            <div class="">
-                                <ThailandAutoComplete v-model="NewProfileEm.amphoe" type="amphoe"
-                                    @select="selectAddressEmployee" label="อำเภอ" size="small" placeholder="อำเภอ..." />
-                            </div>
-                            <div class="">
-                                <ThailandAutoComplete v-model="NewProfileEm.province" type="province"
-                                    @select="selectAddressEmployee" label="จังหวัด" size="small" placeholder="จังหวัด..." />
-                            </div>
-                            <div class="">
-                                <ThailandAutoComplete v-model="NewProfileEm.zipcode" type="zipcode"
-                                    @select="selectAddressEmployee" label="รหัสไปรษณีย์" size="small"
-                                    placeholder="รหัสไปรษณีย์..." />
-                            </div> -->
-                            <div class="mt-[8px] col-span-2">
-                                <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    v-model="NewProfileEm.phone" type="input" />
-                            </div>
-                            <div class="mt-[8px] col-span-2">
-                                <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">ตำแหน่ง</div>
-                                <vs-select state="primary" v-model="NewProfileEm.position">
-                                    <vs-option label="Technician" value="Technician">
-                                        Technician
-                                    </vs-option>
-                                    <vs-option label="Cleaner" value="Cleaner">
-                                        Cleaner
-                                    </vs-option>
-                                </vs-select>
-                            </div>
-                            <div class="mt-[8px] col-span-2">
-                                <div class="text-custom text-[14px] text-[#003765]">อีเมลติดต่อ</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    v-model="NewProfileEm.email" type="input" />
-                            </div>
-                            <div class="mt-[8px] col-span-2">
-                                <div class="text-custom text-[14px] text-[#003765]">ไลน์ติดต่อ</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    v-model="NewProfileEm.line" type="input" />
-                            </div>
-                            <div class="mt-[8px] col-span-2">
-                                <div class="text-custom text-[14px] text-[#003765]">เฟสบุ๊ค</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    v-model="NewProfileEm.facebook" type="input" />
-                            </div>
-                        </div>
-                        <div class="mt-[44px] mb-[50px]">
-                            <vs-button success>
-                                <div class="font-bold  text-custom" @click="addEmployee()">บันทึก</div>
-                            </vs-button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </b-modal>
 
         <b-modal centered v-model="profile_admin" size="xl" hide-backdrop hide-header-close hide-header hide-footer
             class="p-[-20px] text-custom">
@@ -431,7 +308,7 @@
                             </div>
                         </div>
                         <div class="mt-[44px] mb-[50px]">
-                            <vs-button dark shadow @click="profile_em = false">
+                            <vs-button dark shadow @click="addAdmin()">
                                 <div class="font-bold  text-custom">บันทึก</div>
                             </vs-button>
                         </div>
@@ -590,7 +467,6 @@ export default {
                     facebook: this.NewProfileEm.facebook
                 }
             }).then((resp) => {
-
                 if (this.fileProfileForm.length != 0) {
                     let formData = new FormData();
                     formData.append("files", this.fileProfileForm);
@@ -607,7 +483,6 @@ export default {
                             console.log(error);
                         })
                 }
-
             }
             )
                 .catch(error => {
@@ -627,32 +502,35 @@ export default {
             this.NewProfileAdmin.zipcode = address.zipcode
         },
         tempImageUploadAdmin() {
-            this.fileAdminProfileForm = this.$refs.fileUploadAdminProfileForm.files[0]
+           
+            this.fileAdminProfileForm = this.$refs.fileUploadAdminProfileForm.files[0] 
+            console.log(this.fileAdminProfileForm);
         },
         addAdmin() {
             axios.post(`https://api.resguru.app/api/users/`, {
-
+                role: 1,
                 firstName: this.NewProfileAdmin.firstName,
                 lastName: this.NewProfileAdmin.lastName,
                 contactAddress: this.NewProfileAdmin.contactAddress,
-                province: this.NewProfileAdmin.province,
-                district: this.NewProfileAdmin.district,
-                amphoe: this.NewProfileAdmin.amphoe,
-                zipcode: this.NewProfileAdmin.zipcode,
+                // province: this.NewProfileAdmin.province,
+                // district: this.NewProfileAdmin.district,
+                // amphoe: this.NewProfileAdmin.amphoe,
+                // zipcode: this.NewProfileAdmin.zipcode,
                 phone: this.NewProfileAdmin.phone,
                 email: this.NewProfileAdmin.email,
                 line: this.NewProfileAdmin.line,
-                position: 6,
-                building: '',
+                // position: 6,
+                building: this.$store.state.building,
                 username: this.NewProfileAdmin.email,
                 password: this.NewProfileAdmin.password
 
             }).then((resp) => {
-
-                if (this.fileAdminProfileForm.length != 0) {
+                console.log(resp);
+                if (this.fileAdminProfileForm) {
+                    console.log('object');
                     let formData = new FormData();
                     formData.append("files", this.fileAdminProfileForm);
-                    formData.append("refId", String(resp.data.data.id));
+                    formData.append("refId", String(resp.data.id));
                     formData.append("ref", "plugin::users-permissions.user");
                     formData.append("field", "imageProfile");
 
@@ -665,7 +543,7 @@ export default {
                             console.log(error);
                         })
                 }
-
+                this.$showNotification('#3A89CB', 'Create Admin Success')
             }
             )
                 .catch(error => {
@@ -674,7 +552,7 @@ export default {
                 })
                 .finally(() => {
                     this.getUser();
-                    this.$showNotification('#3A89CB', 'Create Admin Success')
+
                     this.profile_em = false
                 })
         },
