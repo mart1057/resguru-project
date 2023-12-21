@@ -130,10 +130,11 @@
                                 </vs-option>
                             </vs-select>
                         </div> -->
-                        <div v-for="data in roomFloor">
-                            <div class="text-[#8396A6] cursor-pointer mr-[8px]"> อาคาร {{
-                                data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName
-    }} </div>
+                        <div v-for="(data, i) in roomFloor">
+                            <div class="cursor-pointer mr-[8px]"
+                                :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
+                                @click="tab_floor = i, filter.floor = data.id, name_floor = data.attributes.floorName, getUserRoom()">
+                                ชั้น {{ data.attributes.floorName }} </div>
 
                         </div>
                         <!-- <div class="text-[#8396A6] cursor-pointer">อาคาร A ชั้น 2</div> -->
@@ -142,7 +143,7 @@
             </div>
         </div>
         <div class="mt-[24px] bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px] rounded-[12px]" v-if="tab == 1">
-            <div class="text-[24px] font-bold mt-[14px]">อาคาร A ชั้น 1</div>
+            <div class="text-[24px] font-bold mt-[14px]">ชั้น {{ name_floor }}</div>
             <div class="grid grid-cols-4 w-[100%] gap-4 mt-[14px] ">
                 <div class="rounded-[16px]  p-[14px] h-[240px] border cursor-pointer" v-for="data in room">
                     <div class="flex justify-between">
@@ -874,6 +875,8 @@ export default {
     data() {
         return {
             tab: 1,
+            tab_floor: '0',
+            name_floor: '',
             value: 0,
             create: false,
             type: false,
@@ -887,6 +890,9 @@ export default {
             roomTypeName: "",
             roomTypePrice: 0,
             buildingfloorName: "",
+            filter: {
+                floor: 0
+            }
 
         }
     },
@@ -897,14 +903,19 @@ export default {
         }, 1000)
     },
     mounted() {
-        this.getUserRoom();
-        this.getTypeRoom();
         this.getFloorRoom();
+        this.getTypeRoom();
+        setTimeout(() => {
+            this.getUserRoom();
+        }, 1000);
+
+
     },
     methods: {
         getUserRoom() {
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&populate=deep,3')
+            this.room = []
+            fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building + '&filters[building_floor][id][$eq]=' + this.filter.floor + '&populate=deep,3')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoom()", resp.data);
@@ -932,7 +943,12 @@ export default {
                 .then((resp) => {
                     console.log("Return from getRoomFloor()", resp.data);
                     this.roomFloor = resp.data
+                    if (resp.data[0]) {
+                        this.filter.floor = resp.data[0].id
+                        this.name_floor = resp.data[0].attributes.floorName
+                    }
                 }).finally(() => {
+                    console.log(this.filter.floor)
                     loading.close()
                 })
         },
@@ -1073,6 +1089,8 @@ export default {
 }
 
 </script>
-<style  >.vs-input {
+<style  >
+.vs-input {
     width: 100% !important;
-}</style>
+}
+</style>
