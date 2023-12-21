@@ -91,7 +91,7 @@
                     </div>
                 </div>
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer items-center justify-center "
-                    @click="profile_admin = true">
+                    @click="profile_admin = true, NewProfileAdmin.firstName = '', NewProfileAdmin.lastName = '', NewProfileAdmin.contactAddress = '', NewProfileAdmin.phone = '', NewProfileAdmin.email = '', NewProfileAdmin.line = '', NewProfileAdmin.password = '', this.fileAdminProfileForm = [], fileAdminCoverForm = []">
                     <div class="flex flex-col items-center justify-center">
                         <div>
                             <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -182,7 +182,7 @@
                     </div>
                 </div>
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer items-center justify-center "
-                    @click="profile_admin = true">
+                    @click="profile_admin = trueNewProfileAdmin.firstName = '', NewProfileAdmin.lastName = '', NewProfileAdmin.contactAddress = '', NewProfileAdmin.phone = '', NewProfileAdmin.email = '', NewProfileAdmin.line = '', NewProfileAdmin.password = '', this.fileAdminProfileForm = [], fileAdminCoverForm = []">
                     <div class="flex flex-col items-center justify-center">
                         <div>
 
@@ -232,7 +232,7 @@
                     </label>
                 </div>
                 <div class="flex w-[100%]">
-                    <div class="w-[20%] ml-[18px] " :class="tab==1?'mt-[-70px]':''">
+                    <div class="w-[20%] ml-[18px] " :class="tab == 1 ? 'mt-[-70px]' : ''">
                         <div class="bg-[white] rounded-[22px] w-[246px] border p-[14px] flex flex-col items-center">
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile"
                                 ref="fileUploadAdminProfileForm" hidden type="file" @change="tempImageUploadAdmin()" />
@@ -247,7 +247,7 @@
                                 {{ NewProfileAdmin.lastName }}</div>
                             <div
                                 class="h-[24px] mt-[8px] text-custom rounded-[12px] font-bold text-[#003765] pl-[12px] pr-[12px] flex items-center bg-[#F0F8FF]">
-                                {{tab == 1?'Admin':'พนักงาน'}}
+                                {{ tab == 1 ? 'Admin' : 'พนักงาน' }}
                             </div>
                         </div>
                     </div>
