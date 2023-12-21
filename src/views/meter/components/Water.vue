@@ -131,6 +131,7 @@ export default {
             text: '',
             month:'',
             year:'',
+            importExcel: []
         }
     },
     created() {
@@ -202,7 +203,31 @@ export default {
                 this.code = 8
                 this.getWaterFee(this.id,this.month,this.year)
             }
-        }
+        },
+        // importWater(){
+        //             this.importExcel = this.$refs.importExcel.files[0]
+        //             if(this.importExcel.length != 0){
+        //                         let formData = new FormData();
+        //                         formData.append("file", this.fileBanner);
+        //                         formData.append("building", String(this.$store.state.building));
+        //                         axios.put("https://api.resguru.app/api/importWater", formData, {
+        //                             headers: {
+        //                             "Content-Type": "multipart/form-data",
+        //                             },
+        //                         })                
+        //                         .then( (resp) =>{
+        //                             console.log(resp)
+        //                         })
+        //                         .catch(error => {
+        //                         const errorMessage = error.message ? error.message : 'Error updating information';
+        //                         this.$showNotification('danger', errorMessage); 
+        //                         })
+        //                         .finally(()=>{
+        //                             this.getBuildingData();
+        //                             this.$showNotification('#3A89CB', 'Import Excel Success')
+        //                         }) 
+        //             }
+        // }
 
     },
 }
