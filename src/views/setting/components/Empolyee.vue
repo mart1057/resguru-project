@@ -28,7 +28,7 @@
                                     <img class="w-[125px] h-[125px] rounded-[12px]"
                                         :src="'https://api.resguru.app' + data.imageProfile.formats.large.url" />
                                 </div>
-                               
+
                                 <div v-else>
                                     <img class="w-[125px] h-[125px] rounded-[12px]"
                                         src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
@@ -92,7 +92,7 @@
                     </div>
                 </div>
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer items-center justify-center "
-                    @click="profile_em = true">
+                    @click="profile_admin = true">
                     <div class="flex flex-col items-center justify-center">
                         <div>
                             <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -184,7 +184,7 @@
                     </div>
                 </div>
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer items-center justify-center "
-                    @click="profile_em = true">
+                    @click="profile_admin = true">
                     <div class="flex flex-col items-center justify-center">
                         <div>
 
@@ -270,36 +270,23 @@
                                 <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
                                     v-model="NewProfileEm.address" type="input" />
                             </div>
-                            <div class="">
-                                <!-- <div class="text-custom text-[14px] text-[#003765] mb-[6px]">เขต</div> -->
+                            <!-- <div class="">
                                 <ThailandAutoComplete v-model="NewProfileEm.district" type="district"
                                     @select="selectAddressEmployee" label="ตำบล" size="small" placeholder="ตำบล..." />
-
-                                <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="district" v-model="NewProfileEm.district"> -->
                             </div>
                             <div class="">
-                                <!-- <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">แขวง</div> -->
                                 <ThailandAutoComplete v-model="NewProfileEm.amphoe" type="amphoe"
                                     @select="selectAddressEmployee" label="อำเภอ" size="small" placeholder="อำเภอ..." />
-                                <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="amphoe" v-model="NewProfileEm.subdistrict"> -->
-
                             </div>
                             <div class="">
-                                <!-- <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">จังหวัด</div> -->
                                 <ThailandAutoComplete v-model="NewProfileEm.province" type="province"
                                     @select="selectAddressEmployee" label="จังหวัด" size="small" placeholder="จังหวัด..." />
-
-                                <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="province" v-model="NewProfileEm.province"> -->
-
                             </div>
                             <div class="">
-                                <!-- <div class="text-custom text-[14px] text-[#003765]  mb-[6px]" >รหัสไปรษณีย์</div> -->
                                 <ThailandAutoComplete v-model="NewProfileEm.zipcode" type="zipcode"
                                     @select="selectAddressEmployee" label="รหัสไปรษณีย์" size="small"
                                     placeholder="รหัสไปรษณีย์..." />
-                                <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="zipcode" v-model="NewProfileEm.postcode"> -->
-
-                            </div>
+                            </div> -->
                             <div class="mt-[8px] col-span-2">
                                 <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
                                 <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
@@ -344,7 +331,7 @@
 
         <b-modal centered v-model="profile_admin" size="xl" hide-backdrop hide-header-close hide-header hide-footer
             class="p-[-20px] text-custom">
-            <div class="flex justify-end cursor-pointer" @click="profile_em = false">
+            <div class="flex justify-end cursor-pointer" @click="profile_admin = false">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <mask id="mask0_902_19192" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24"
                         height="24">
@@ -375,9 +362,9 @@
                                 ref="fileUploadAdminProfileForm" hidden type="file" @change="tempImageUploadAdmin()" />
                             <label for="uploadProfile">
                                 <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
-                                    src="https://www.befunky.com/images/wp/wp-2021-01-linkedin-profile-picture-after.jpg?auto=avif,webp&format=jpg&width=944" />
+                                    src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
                                 <div
-                                    class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px]  text-custom cursor-pointer">
+                                    class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] mt-[4px]  text-custom cursor-pointer">
                                     เปลี่ยนรูปภาพโปรไฟล์</div>
                             </label>
                             <div class="text-[18px] font-bold mt-[8px] text-custom">{{ NewProfileAdmin.name }}
@@ -415,37 +402,23 @@
                                 <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
                                     v-model="NewProfileAdmin.contactAddress" type="input" />
                             </div>
-                            <div class="">
-                                <!-- <div class="text-custom text-[14px] text-[#003765] mb-[6px]">เขต</div> -->
+                            <!-- <div class="">
                                 <ThailandAutoCompleteAdmin v-model="NewProfileAdmin.district" type="district"
                                     @select="selectAddressAdmin" label="ตำบล" size="small" placeholder="ตำบล..." />
-
-                                <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="district" v-model="NewProfileEm.district"> -->
                             </div>
                             <div class="">
-                                <!-- <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">แขวง</div> -->
                                 <ThailandAutoCompleteAdmin v-model="NewProfileAdmin.amphoe" type="amphoe"
                                     @select="selectAddressAdmin" label="อำเภอ" size="small" placeholder="อำเภอ..." />
-
-                                <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="amphoe" v-model="NewProfileEm.subdistrict"> -->
-
                             </div>
                             <div class="">
-                                <!-- <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">จังหวัด</div> -->
                                 <ThailandAutoCompleteAdmin v-model="NewProfileAdmin.province" type="province"
                                     @select="selectAddressAdmin" label="จังหวัด" size="small" placeholder="จังหวัด..." />
-
-                                <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="province" v-model="NewProfileEm.province"> -->
-
                             </div>
                             <div class="">
-                                <!-- <div class="text-custom text-[14px] text-[#003765]  mb-[6px]" >รหัสไปรษณีย์</div> -->
                                 <ThailandAutoCompleteAdmin v-model="NewProfileAdmin.zipcode" type="zipcode"
                                     @select="selectAddressAdmin" label="รหัสไปรษณีย์" size="small"
                                     placeholder="รหัสไปรษณีย์..." />
-                                <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="zipcode" v-model="NewProfileEm.postcode"> -->
-
-                            </div>
+                            </div> -->
                             <div class="mt-[8px] col-span-2">
                                 <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
                                 <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
@@ -477,7 +450,7 @@ export default {
         return {
             tab: 1,
             profile_em: false,
-            profile_admin: false,
+            profile_admin: true,
             employee: [],
             UserBuilding: [],
             fileProfileForm: [],
