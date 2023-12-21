@@ -14,29 +14,57 @@
             </div>
         </div>
         <div class="mt-[14px]">
-            <div v-if="buildingData.attributes.buildingBanner">
-                <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]"
-                    v-bind:style="{ backgroundImage: 'url(https://api.resguru.app' + buildingData.attributes.buildingBanner.data?.attributes.url + ')' }">
-                    <!-- <img :src="`https://api.resguru.app${buildingData.attributes.buildingBanner.data.attributes.url}`" > -->
-                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload"
-                        ref="buildingBanner" hidden type="file" @change="editBannerwithUpload()" />
-                    <label for="upload">
-                        <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">
-                            เปลี่ยนรูปภาพปก</div>
-                    </label>
+            <div  v-if="tabSetting == 2">
+                <div v-if="buildingData.attributes.buildingBanner">
+                    <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]"
+                        v-bind:style="{ backgroundImage: 'url(https://api.resguru.app' + buildingData.attributes.buildingBanner.data?.attributes.url + ')' }">
+                        <!-- <img :src="`https://api.resguru.app${buildingData.attributes.buildingBanner.data.attributes.url}`" > -->
+                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload"
+                            ref="buildingBanner" hidden type="file" @change="editBannerwithUpload()" />
+                        <label for="upload">
+                            <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">
+                                เปลี่ยนรูปภาพปก</div>
+                        </label>
+                    </div>
+                </div>
+                <div v-else>
+                    <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]">
+
+                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload"
+                            ref="buildingBanner" hidden type="file" @change="editBannerwithUpload()" />
+                        <label for="upload">
+                            <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">
+                                เปลี่ยนรูปภาพปก</div>
+                        </label>
+                    </div>
                 </div>
             </div>
             <div v-else>
-                <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]">
+                <div v-if="userData.imageBanner">
+                    <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]"
+                        v-bind:style="{ backgroundImage: 'url(https://api.resguru.app' +userData.imageBanner.url + ')' }">
+                        <!-- <img :src="`https://api.resguru.app${buildingData.attributes.buildingBanner.data.attributes.url}`" > -->
+                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload"
+                            ref="buildingBanner" hidden type="file" @change="editBannerwithUpload()" />
+                        <label for="upload">
+                            <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">
+                                เปลี่ยนรูปภาพปก</div>
+                        </label>
+                    </div>
+                </div>
+                <div v-else>
+                    <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]">
 
-                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload"
-                        ref="buildingBanner" hidden type="file" @change="editBannerwithUpload()" />
-                    <label for="upload">
-                        <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">
-                            เปลี่ยนรูปภาพปก</div>
-                    </label>
+                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload"
+                            ref="buildingBanner" hidden type="file" @change="editBannerwithUpload()" />
+                        <label for="upload">
+                            <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">
+                                เปลี่ยนรูปภาพปก</div>
+                        </label>
+                    </div>
                 </div>
             </div>
+
 
             <div class="flex w-[100%]">
                 <div class="w-[20%] ml-[18px] mt-[-70px]">
@@ -55,8 +83,9 @@
                             </label>
                         </div>
                         <div v-else>
-                            <img v-if="$store.state.buildingInfo[0].attributes.buildingLogo.data" class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
-                                :src="'https://api.resguru.app'+$store.state.buildingInfo[0].attributes.buildingLogo.data?.attributes.formats.large.url" />
+                            <img v-if="$store.state.buildingInfo[0].attributes.buildingLogo.data"
+                                class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
+                                :src="'https://api.resguru.app' + $store.state.buildingInfo[0].attributes.buildingLogo.data?.attributes.formats.large.url" />
                             <img v-else class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
                                 src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile"
