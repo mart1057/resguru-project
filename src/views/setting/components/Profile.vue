@@ -166,7 +166,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="h-[107px]  rounded-[22px] mt-[14px] p-[14px]" @click="routerTo('/plan')"
+                    <div class="h-[107px]  rounded-[22px] mt-[14px] p-[14px]"
                         v-if="tabSetting == 1"
                         :class="$store.state.buildingInfo[0].attributes.package.data?.attributes.title == 'Professional' ? 'bg-[#9A77FF] ' : 'bg-[#187EE7]'">
 
