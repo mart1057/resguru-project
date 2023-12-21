@@ -1,6 +1,6 @@
 <template>
     <div class="mt-[14px]">
-        <div class="font-bold">รายการทรัพย์สินทั้งหมด</div>
+        <!-- <div class="font-bold">บริการอื่น ๆ</div> -->
         <button
             class="bg-[#003765] w-[129px] rounded-[12px] flex justify-center items-center pt-[8px] pb-[8px] pl-[12px] pr-[12px] mt-[14px]">
             <div class="flex">
@@ -11,7 +11,7 @@
                             fill="white" />
                     </svg>
                 </div>
-                <div class="text-[white] ml-[4px]" @click="add_on = true, is_edit = false">เพิ่มทรัพย์สิน</div>
+                <div class="text-[white] ml-[4px]" @click="add_on = true, is_edit = false">เพิ่มบริการ</div>
             </div>
         </button>
         <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px]">

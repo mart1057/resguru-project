@@ -192,7 +192,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="font-bold">อีเมลล์ติดต่อ</div>
+                                    <div class="font-bold">อีเมล</div>
                                     <div class="">
                                         <input type="input" v-model="buildingEmail"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />

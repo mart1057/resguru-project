@@ -274,7 +274,6 @@
                             <div class="">
                                 <!-- <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">แขวง</div> -->
                                 <ThailandAutoComplete v-model="NewProfileEm.amphoe" type="amphoe" @select="selectAddressEmployee" label="อำเภอ" size="small" placeholder="อำเภอ..."/>
-amphoe
                                 <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="amphoe" v-model="NewProfileEm.subdistrict"> -->
                                    
                             </div>
@@ -308,7 +307,7 @@ amphoe
                                 </vs-select>
                             </div>
                             <div class="mt-[8px] col-span-2">
-                                <div class="text-custom text-[14px] text-[#003765]">อีเมลล์ติดต่อ</div>
+                                <div class="text-custom text-[14px] text-[#003765]">อีเมลติดต่อ</div>
                                 <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" v-model="NewProfileEm.email"
                                     type="input" />
                             </div>

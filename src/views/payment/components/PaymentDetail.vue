@@ -167,7 +167,7 @@
                                         </g>
                                     </svg>
                                 </div>
-                                <div class="ml-[4px] flex items-center">หลักฐานการชำระและประวัติการจ่าย</div>
+                                <div class="ml-[4px] flex items-center">หลักฐานและประวัติการชำระเงิน</div>
                             </div>
                         </div>
                         <div @click="tab = 2" class="cursor-pointer "
@@ -200,7 +200,7 @@
                     :active="active == 1"
                     @click="selectMenu('Partial Payment',userInvoice[0])"
                 >
-                    Create New Payment
+                    เพิ่มหลักฐานการชำระเงิน
                 </vs-button>
             </div>
         </div>
@@ -586,7 +586,10 @@
                             </vs-td>
                             <vs-td>
                                 <div v-if="!tr.attributes.tenant_receipt.data">
-                                    <vs-button @click="createReceipt(tr)" small>ตรวจรับการชำระเงิน</vs-button>
+                                    <vs-button @click="createReceipt(tr)" small>รับชำระ</vs-button>
+                                </div>
+                                <div v-if="!tr.attributes.tenant_receipt.data">
+                                    <vs-button small>ไม่รับชำระ</vs-button>
                                 </div>
                             </vs-td>
                         </vs-tr>

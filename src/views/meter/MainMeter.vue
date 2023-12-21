@@ -30,7 +30,7 @@
                                 :fill="tab == 2 ? 'white' : '#003765'" />
                         </svg>
                     </div>
-                    <div class=" text-[18px] font-bold">มิเตอร์ไฟฟ้า</div>
+                    <div class=" text-[18px] font-bold">มิเตอร์ไฟ</div>
                 </div>
                 <div class=" h-[136px] rounded-[32px] flex justify-between items-center pl-[24px] pr-[24px] cursor-pointer"
                     @click="tab = 3, filter.search = ''"
@@ -124,7 +124,7 @@
                             </div>
                             <div class="text-[24px] font-bold ml-[8px] flex justify-center items-center">
                                 {{
-                                    tab == 1 ? 'มิเตอร์น้ำ' : tab == 2 ? 'มิเตอร์ไฟฟ้า' : tab == 3 ? 'ค่าส่วนกลาง' :
+                                    tab == 1 ? 'มิเตอร์น้ำ' : tab == 2 ? 'มิเตอร์ไฟ' : tab == 3 ? 'ค่าส่วนกลาง' :
                                         'บริการอื่นๆ'
                                 }}
                             </div>
