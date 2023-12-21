@@ -43,7 +43,7 @@
                         <img v-if="userData.imageProfile" class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
                             :src="`https://api.resguru.app${userData.imageProfile.url}`" />
                         <img v-else class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
-                        src="https://media.wired.com/photos/63b89b5b995aa119ba7ba7be/1:1/w_1800,h_1800,c_limit/Profile-Photos-Gear-1411545652.jpg" />
+                        src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
                         <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile" ref="buildingProfile"  hidden
                                     type="file" @change="editProfilewithUpload()" />
                         <label for="uploadProfile">

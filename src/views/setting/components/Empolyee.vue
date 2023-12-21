@@ -20,29 +20,30 @@
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 1">
             <div class="grid grid-cols-4 w-[100%] gap-4 mt-[14px]">
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer "
-                     v-for="data in UserBuilding">
+                    v-for="data in UserBuilding">
                     <div class="flex justify-between">
                         <div class="flex">
                             <div class="flex">
                                 <div v-if=data.imageProfile>
-                                <img class="w-[125px] h-[125px] rounded-[12px]"
-                                :src="'https://api.resguru.app' + data.imageProfile?.url"
-                                />
+                                    <img class="w-[125px] h-[125px] rounded-[12px]"
+                                        :src="'https://api.resguru.app' + data.imageProfile.formats.large.url" />
                                 </div>
+                               
                                 <div v-else>
-                                <img class="w-[125px] h-[125px] rounded-[12px]"
-                                    src="https://media.wired.com/photos/63b89b5b995aa119ba7ba7be/1:1/w_1800,h_1800,c_limit/Profile-Photos-Gear-1411545652.jpg" />
+                                    <img class="w-[125px] h-[125px] rounded-[12px]"
+                                        src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
                                 </div>
                                 <!-- <img class="w-[125px] h-[125px] rounded-[12px] bg-[red]"
                                     src="https://media.wired.com/photos/63b89b5b995aa119ba7ba7be/1:1/w_1800,h_1800,c_limit/Profile-Photos-Gear-1411545652.jpg" /> -->
                                 <div class="ml-[12px]">
-                                    <div  class="flex flex-col justify-between h-[100%]">
+                                    <div class="flex flex-col justify-between h-[100%]">
                                         <div class="">
                                             <div
                                                 class="h-[24px] rounded-[12px] font-bold text-[#003765] pl-[12px] pr-[12px] flex items-center bg-[#F0F8FF]">
                                                 {{ data.role.name }}
                                             </div>
-                                            <div class="mt-[14px] text-[18px] font-bold">{{ data.firstName }} {{ data.lastName }}</div>
+                                            <div class="mt-[14px] text-[18px] font-bold">{{ data.firstName }} {{
+                                                data.lastName }}</div>
                                         </div>
                                         <!-- <div  class="ml-[-130px] mb-[-40px]">
                                             <svg width="35" height="35" viewBox="0 0 35 35" fill="none"
@@ -60,22 +61,21 @@
                                             </svg>
                                         </div> -->
                                         <div class="">
-                                            
+
                                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
-                                                xmlns="http://www.w3.org/2000/svg"
-                                                @click="removeAdmin(data.id)">
+                                                xmlns="http://www.w3.org/2000/svg" @click="removeAdmin(data.id)">
                                                 <mask id="mask0_967_25233" style="mask-type:alpha"
                                                     maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
                                                     <rect width="20" height="20" fill="#D9D9D9" />
                                                 </mask>
-                                                
+
                                                 <g mask="url(#mask0_967_25233)">
                                                     <path
                                                         d="M6.08975 17.0822C5.66881 17.0822 5.3125 16.9363 5.02083 16.6447C4.72917 16.353 4.58333 15.9967 4.58333 15.5758V4.99886H4.375C4.19765 4.99886 4.04915 4.93904 3.9295 4.81939C3.80983 4.69973 3.75 4.55123 3.75 4.37389C3.75 4.19654 3.80983 4.04804 3.9295 3.92839C4.04915 3.80872 4.19765 3.74889 4.375 3.74889H7.49998C7.49998 3.5395 7.57316 3.36429 7.71952 3.22326C7.8659 3.08223 8.04378 3.01172 8.25319 3.01172H11.7468C11.9562 3.01172 12.1341 3.08223 12.2804 3.22326C12.4268 3.36429 12.5 3.5395 12.5 3.74889H15.625C15.8023 3.74889 15.9508 3.80872 16.0705 3.92839C16.1901 4.04804 16.25 4.19654 16.25 4.37389C16.25 4.55123 16.1901 4.69973 16.0705 4.81939C15.9508 4.93904 15.8023 4.99886 15.625 4.99886H15.4166V15.5758C15.4166 15.9967 15.2708 16.353 14.9791 16.6447C14.6875 16.9363 14.3312 17.0822 13.9102 17.0822H6.08975ZM5.83331 4.99886V15.5758C5.83331 15.6506 5.85735 15.712 5.90544 15.7601C5.95352 15.8082 6.01496 15.8322 6.08975 15.8322H13.9102C13.985 15.8322 14.0464 15.8082 14.0945 15.7601C14.1426 15.712 14.1666 15.6506 14.1666 15.5758V4.99886H5.83331ZM7.83654 13.5406C7.83654 13.7179 7.89637 13.8664 8.01602 13.9861C8.13567 14.1057 8.28417 14.1655 8.46152 14.1655C8.63887 14.1655 8.78737 14.1057 8.90702 13.9861C9.02669 13.8664 9.08652 13.7179 9.08652 13.5406V7.29051C9.08652 7.11316 9.02669 6.96466 8.90702 6.84501C8.78737 6.72536 8.63887 6.66553 8.46152 6.66553C8.28417 6.66553 8.13567 6.72536 8.01602 6.84501C7.89637 6.96466 7.83654 7.11316 7.83654 7.29051V13.5406ZM10.9134 13.5406C10.9134 13.7179 10.9733 13.8664 11.0929 13.9861C11.2126 14.1057 11.3611 14.1655 11.5384 14.1655C11.7158 14.1655 11.8643 14.1057 11.9839 13.9861C12.1036 13.8664 12.1634 13.7179 12.1634 13.5406V7.29051C12.1634 7.11316 12.1036 6.96466 11.9839 6.84501C11.8643 6.72536 11.7158 6.66553 11.5384 6.66553C11.3611 6.66553 11.2126 6.72536 11.0929 6.84501C10.9733 6.96466 10.9134 7.11316 10.9134 7.29051V13.5406ZM5.83331 4.99886V15.5758C5.83331 15.6506 5.85735 15.712 5.90544 15.7601C5.95352 15.8082 6.01496 15.8322 6.08975 15.8322H5.83331V4.99886Z"
                                                         fill="#5C6B79" />
                                                 </g>
                                             </svg>
-                                            
+
                                         </div>
                                     </div>
                                 </div>
@@ -116,32 +116,32 @@
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 2">
             <div class="grid grid-cols-4 w-[100%] gap-4 mt-[14px]">
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer "
-                     v-for="data in employee">
-                    
+                    v-for="data in employee">
+
                     <div class="flex justify-between">
                         <div class="flex">
                             <div class="flex">
                                 <div v-if=data.attributes.employeeImage.data>
-                                <img class="w-[125px] h-[125px] rounded-[12px]"
-                                :src="'https://api.resguru.app' + data.attributes.employeeImage?.data?.attributes.url"
-                                />
+                                    <img class="w-[125px] h-[125px] rounded-[12px]"
+                                        :src="'https://api.resguru.app' + data.attributes.employeeImage?.data?.attributes.url" />
                                 </div>
                                 <div v-else>
-                                <img class="w-[125px] h-[125px] rounded-[12px]"
-                                    src="https://media.wired.com/photos/63b89b5b995aa119ba7ba7be/1:1/w_1800,h_1800,c_limit/Profile-Photos-Gear-1411545652.jpg" />
+                                    <img class="w-[125px] h-[125px] rounded-[12px]"
+                                        src="https://media.wired.com/photos/63b89b5b995aa119ba7ba7be/1:1/w_1800,h_1800,c_limit/Profile-Photos-Gear-1411545652.jpg" />
                                 </div>
 
                                 <div class="ml-[12px]">
                                     <div class="flex flex-col justify-between h-[100%]">
-                                        <div   class="">
+                                        <div class="">
                                             <div
                                                 class="h-[24px] rounded-[12px] font-bold text-[#D48C00] pl-[12px] pr-[12px] flex items-center bg-[#FFF2BC]">
-                                               {{ data.attributes.position }}
+                                                {{ data.attributes.position }}
                                             </div>
-                                            
-                                            <div class="mt-[14px] text-[18px] font-bold">{{ data.attributes.name }} {{ data.attributes.lastname }}</div>
+
+                                            <div class="mt-[14px] text-[18px] font-bold">{{ data.attributes.name }} {{
+                                                data.attributes.lastname }}</div>
                                         </div>
-                                       <!-- <div  class="ml-[-130px] mb-[-40px]">
+                                        <!-- <div  class="ml-[-130px] mb-[-40px]">
                                             <svg width="35" height="35" viewBox="0 0 35 35" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <rect width="35" height="35" rx="12" fill="#003765" />
@@ -187,7 +187,7 @@
                     @click="profile_em = true">
                     <div class="flex flex-col items-center justify-center">
                         <div>
-                            
+
                             <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
                                 <mask id="mask0_1373_22044" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="6" y="7"
@@ -209,7 +209,7 @@
         <b-modal centered v-model="profile_em" size="xl" hide-backdrop hide-header-close hide-header hide-footer
             class="p-[-20px] text-custom">
             <div class="flex justify-end cursor-pointer" @click="profile_em = false">
-                
+
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <mask id="mask0_902_19192" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24"
                         height="24">
@@ -225,23 +225,28 @@
             <div class="mt-[14px]">
                 <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]">
                     <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" hidden
-                                    type="file" />
+                        type="file" />
                     <label for="upload">
-                    <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px]  text-custom cursor-pointer">เปลี่ยนรูปภาพปก
-                    </div>
+                        <div
+                            class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px]  text-custom cursor-pointer">
+                            เปลี่ยนรูปภาพปก
+                        </div>
                     </label>
                 </div>
                 <div class="flex w-[100%]">
                     <div class="w-[20%] ml-[18px] mt-[-70px]">
                         <div class="bg-[white] rounded-[22px] w-[246px] border p-[14px] flex flex-col items-center">
-                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile" ref="fileUploadProfileForm" hidden
-                                    type="file" @change="tempImageUploadEmployee()" />
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile"
+                                ref="fileUploadProfileForm" hidden type="file" @change="tempImageUploadEmployee()" />
                             <label for="uploadProfile">
-                            <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
-                                src="https://www.befunky.com/images/wp/wp-2021-01-linkedin-profile-picture-after.jpg?auto=avif,webp&format=jpg&width=944" />
-                            <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px]  text-custom cursor-pointer">เปลี่ยนรูปภาพโปรไฟล์</div>
+                                <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
+                                    src="https://www.befunky.com/images/wp/wp-2021-01-linkedin-profile-picture-after.jpg?auto=avif,webp&format=jpg&width=944" />
+                                <div
+                                    class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px]  text-custom cursor-pointer">
+                                    เปลี่ยนรูปภาพโปรไฟล์</div>
                             </label>
-                            <div class="text-[18px] font-bold mt-[8px] text-custom">{{ NewProfileEm.name }} {{NewProfileEm.lastname}}</div>
+                            <div class="text-[18px] font-bold mt-[8px] text-custom">{{ NewProfileEm.name }}
+                                {{ NewProfileEm.lastname }}</div>
                             <div
                                 class="h-[24px] mt-[8px] text-custom rounded-[12px] font-bold text-[#003765] pl-[12px] pr-[12px] flex items-center bg-[#F0F8FF]">
                                 {{ NewProfileEm.position }}
@@ -252,48 +257,53 @@
                         <div class="grid grid-cols-4 w-[100%] gap-2 ">
                             <div class="mt-[8px] col-span-2">
                                 <div class="text-custom text-[14px] text-[#003765]">ชื่อ</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" v-model="NewProfileEm.name"
-                                    type="input" />
+                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    v-model="NewProfileEm.name" type="input" />
                             </div>
                             <div class="mt-[8px] col-span-2">
                                 <div class="text-custom text-[14px] text-[#003765]">นามสกุล</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" v-model="NewProfileEm.lastname"
-                                    type="input" />
+                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    v-model="NewProfileEm.lastname" type="input" />
                             </div>
                             <div class="mt-[8px] col-span-4">
                                 <div class="text-custom text-[14px] text-[#003765]">ที่อยู่</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" v-model="NewProfileEm.address"
-                                    type="input" />
+                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    v-model="NewProfileEm.address" type="input" />
                             </div>
                             <div class="">
                                 <!-- <div class="text-custom text-[14px] text-[#003765] mb-[6px]">เขต</div> -->
-                                <ThailandAutoComplete v-model="NewProfileEm.district" type="district" @select="selectAddressEmployee" label="ตำบล" size="small" placeholder="ตำบล..."/>
-                                 
+                                <ThailandAutoComplete v-model="NewProfileEm.district" type="district"
+                                    @select="selectAddressEmployee" label="ตำบล" size="small" placeholder="ตำบล..." />
+
                                 <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="district" v-model="NewProfileEm.district"> -->
                             </div>
                             <div class="">
                                 <!-- <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">แขวง</div> -->
-                                <ThailandAutoComplete v-model="NewProfileEm.amphoe" type="amphoe" @select="selectAddressEmployee" label="อำเภอ" size="small" placeholder="อำเภอ..."/>
+                                <ThailandAutoComplete v-model="NewProfileEm.amphoe" type="amphoe"
+                                    @select="selectAddressEmployee" label="อำเภอ" size="small" placeholder="อำเภอ..." />
                                 <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="amphoe" v-model="NewProfileEm.subdistrict"> -->
-                                   
+
                             </div>
                             <div class="">
                                 <!-- <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">จังหวัด</div> -->
-                                <ThailandAutoComplete v-model="NewProfileEm.province" type="province" @select="selectAddressEmployee" label="จังหวัด" size="small" placeholder="จังหวัด..."/>
-                              
+                                <ThailandAutoComplete v-model="NewProfileEm.province" type="province"
+                                    @select="selectAddressEmployee" label="จังหวัด" size="small" placeholder="จังหวัด..." />
+
                                 <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="province" v-model="NewProfileEm.province"> -->
-                                  
+
                             </div>
                             <div class="">
                                 <!-- <div class="text-custom text-[14px] text-[#003765]  mb-[6px]" >รหัสไปรษณีย์</div> -->
-                                <ThailandAutoComplete v-model="NewProfileEm.zipcode" type="zipcode" @select="selectAddressEmployee" label="รหัสไปรษณีย์" size="small" placeholder="รหัสไปรษณีย์..."/>
-                            <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="zipcode" v-model="NewProfileEm.postcode"> -->
-                                    
+                                <ThailandAutoComplete v-model="NewProfileEm.zipcode" type="zipcode"
+                                    @select="selectAddressEmployee" label="รหัสไปรษณีย์" size="small"
+                                    placeholder="รหัสไปรษณีย์..." />
+                                <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="zipcode" v-model="NewProfileEm.postcode"> -->
+
                             </div>
                             <div class="mt-[8px] col-span-2">
                                 <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" v-model="NewProfileEm.phone"
-                                    type="input" />
+                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    v-model="NewProfileEm.phone" type="input" />
                             </div>
                             <div class="mt-[8px] col-span-2">
                                 <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">ตำแหน่ง</div>
@@ -308,18 +318,18 @@
                             </div>
                             <div class="mt-[8px] col-span-2">
                                 <div class="text-custom text-[14px] text-[#003765]">อีเมลติดต่อ</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" v-model="NewProfileEm.email"
-                                    type="input" />
+                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    v-model="NewProfileEm.email" type="input" />
                             </div>
                             <div class="mt-[8px] col-span-2">
                                 <div class="text-custom text-[14px] text-[#003765]">ไลน์ติดต่อ</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" v-model="NewProfileEm.line"
-                                    type="input" />
+                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    v-model="NewProfileEm.line" type="input" />
                             </div>
                             <div class="mt-[8px] col-span-2">
                                 <div class="text-custom text-[14px] text-[#003765]">เฟสบุ๊ค</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" v-model="NewProfileEm.facebook"
-                                    type="input" />
+                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    v-model="NewProfileEm.facebook" type="input" />
                             </div>
                         </div>
                         <div class="mt-[44px] mb-[50px]">
@@ -349,27 +359,32 @@
             </div>
             <div class="mt-[14px]">
                 <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]">
-                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" hidden 
-                                    type="file" />
+                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" hidden
+                        type="file" />
                     <label for="upload">
-                    <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px]  text-custom cursor-pointer">เปลี่ยนรูปภาพปก
-                    </div>
+                        <div
+                            class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px]  text-custom cursor-pointer">
+                            เปลี่ยนรูปภาพปก
+                        </div>
                     </label>
                 </div>
                 <div class="flex w-[100%]">
                     <div class="w-[20%] ml-[18px] mt-[-70px]">
                         <div class="bg-[white] rounded-[22px] w-[246px] border p-[14px] flex flex-col items-center">
-                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile" ref="fileUploadAdminProfileForm" hidden
-                                    type="file" @change="tempImageUploadAdmin()" />
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile"
+                                ref="fileUploadAdminProfileForm" hidden type="file" @change="tempImageUploadAdmin()" />
                             <label for="uploadProfile">
-                            <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
-                                src="https://www.befunky.com/images/wp/wp-2021-01-linkedin-profile-picture-after.jpg?auto=avif,webp&format=jpg&width=944" />
-                            <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px]  text-custom cursor-pointer">เปลี่ยนรูปภาพโปรไฟล์</div>
+                                <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
+                                    src="https://www.befunky.com/images/wp/wp-2021-01-linkedin-profile-picture-after.jpg?auto=avif,webp&format=jpg&width=944" />
+                                <div
+                                    class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px]  text-custom cursor-pointer">
+                                    เปลี่ยนรูปภาพโปรไฟล์</div>
                             </label>
-                            <div class="text-[18px] font-bold mt-[8px] text-custom">{{ NewProfileAdmin.name }} {{NewProfileAdmin.lastname}}</div>
+                            <div class="text-[18px] font-bold mt-[8px] text-custom">{{ NewProfileAdmin.name }}
+                                {{ NewProfileAdmin.lastname }}</div>
                             <div
                                 class="h-[24px] mt-[8px] text-custom rounded-[12px] font-bold text-[#003765] pl-[12px] pr-[12px] flex items-center bg-[#F0F8FF]">
-                                {{NewProfileAdmin.postion}}
+                                {{ NewProfileAdmin.postion }}
                             </div>
                         </div>
                     </div>
@@ -377,64 +392,69 @@
                         <div class="grid grid-cols-4 w-[100%] gap-2 ">
                             <div class="mt-[8px] col-span-2" v-if="tab == 1">
                                 <div class="text-custom text-[14px] text-[#003765]">อีเมลล์</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" v-model="NewProfileAdmin.email"
-                                    type="input" />
+                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    v-model="NewProfileAdmin.email" type="input" />
                             </div>
                             <div class="mt-[8px] col-span-2" v-if="tab == 1">
                                 <div class="text-custom text-[14px] text-[#003765]">รหัสผ่าน</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" v-model="NewProfileAdmin.password"
-                                    type="password" />
+                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    v-model="NewProfileAdmin.password" type="password" />
                             </div>
                             <div class="mt-[8px] col-span-2">
                                 <div class="text-custom text-[14px] text-[#003765]">ชื่อ</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" v-model="NewProfileAdmin.firstName"
-                                    type="input" />
+                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    v-model="NewProfileAdmin.firstName" type="input" />
                             </div>
                             <div class="mt-[8px] col-span-2">
                                 <div class="text-custom text-[14px] text-[#003765]">นามสกุล</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" v-model="NewProfileAdmin.lastName"
-                                    type="input" />
+                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    v-model="NewProfileAdmin.lastName" type="input" />
                             </div>
                             <div class="mt-[8px] col-span-4">
                                 <div class="text-custom text-[14px] text-[#003765]">ที่อยู่</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" v-model="NewProfileAdmin.contactAddress"
-                                    type="input" />
+                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    v-model="NewProfileAdmin.contactAddress" type="input" />
                             </div>
                             <div class="">
                                 <!-- <div class="text-custom text-[14px] text-[#003765] mb-[6px]">เขต</div> -->
-                                <ThailandAutoCompleteAdmin v-model="NewProfileAdmin.district" type="district" @select="selectAddressAdmin" label="ตำบล" size="small" placeholder="ตำบล..."/>
-                                 
+                                <ThailandAutoCompleteAdmin v-model="NewProfileAdmin.district" type="district"
+                                    @select="selectAddressAdmin" label="ตำบล" size="small" placeholder="ตำบล..." />
+
                                 <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="district" v-model="NewProfileEm.district"> -->
                             </div>
                             <div class="">
                                 <!-- <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">แขวง</div> -->
-                                <ThailandAutoCompleteAdmin v-model="NewProfileAdmin.amphoe" type="amphoe" @select="selectAddressAdmin" label="อำเภอ" size="small" placeholder="อำเภอ..."/>
-                               
+                                <ThailandAutoCompleteAdmin v-model="NewProfileAdmin.amphoe" type="amphoe"
+                                    @select="selectAddressAdmin" label="อำเภอ" size="small" placeholder="อำเภอ..." />
+
                                 <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="amphoe" v-model="NewProfileEm.subdistrict"> -->
-                                   
+
                             </div>
                             <div class="">
                                 <!-- <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">จังหวัด</div> -->
-                                <ThailandAutoCompleteAdmin v-model="NewProfileAdmin.province" type="province" @select="selectAddressAdmin" label="จังหวัด" size="small" placeholder="จังหวัด..."/>
-                              
+                                <ThailandAutoCompleteAdmin v-model="NewProfileAdmin.province" type="province"
+                                    @select="selectAddressAdmin" label="จังหวัด" size="small" placeholder="จังหวัด..." />
+
                                 <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="province" v-model="NewProfileEm.province"> -->
-                                  
+
                             </div>
                             <div class="">
                                 <!-- <div class="text-custom text-[14px] text-[#003765]  mb-[6px]" >รหัสไปรษณีย์</div> -->
-                                <ThailandAutoCompleteAdmin v-model="NewProfileAdmin.zipcode" type="zipcode" @select="selectAddressAdmin" label="รหัสไปรษณีย์" size="small" placeholder="รหัสไปรษณีย์..."/>
-                            <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="zipcode" v-model="NewProfileEm.postcode"> -->
-                                    
+                                <ThailandAutoCompleteAdmin v-model="NewProfileAdmin.zipcode" type="zipcode"
+                                    @select="selectAddressAdmin" label="รหัสไปรษณีย์" size="small"
+                                    placeholder="รหัสไปรษณีย์..." />
+                                <!-- <ThailandAutoComplete @select="selectAddressEmployee" type="zipcode" v-model="NewProfileEm.postcode"> -->
+
                             </div>
                             <div class="mt-[8px] col-span-2">
                                 <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" v-model="NewProfileAdmin.phone"
-                                    type="input" />
+                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    v-model="NewProfileAdmin.phone" type="input" />
                             </div>
                             <div class="mt-[8px] col-span-2">
                                 <div class="text-custom text-[14px] text-[#003765]">ไลน์ติดต่อ</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" v-model="NewProfileAdmin.lineID"
-                                    type="input" />
+                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                    v-model="NewProfileAdmin.lineID" type="input" />
                             </div>
                         </div>
                         <div class="mt-[44px] mb-[50px]">
@@ -462,7 +482,7 @@ export default {
             UserBuilding: [],
             fileProfileForm: [],
             fileAdminProfileForm: [],
-            NewProfileEm:{
+            NewProfileEm: {
                 name: '',
                 lastname: '',
                 address: '',
@@ -477,7 +497,7 @@ export default {
                 building: '',
                 facebook: ''
             },
-            NewProfileAdmin:{
+            NewProfileAdmin: {
                 firstName: '',
                 lastName: '',
                 contactAddress: '',
@@ -515,7 +535,7 @@ export default {
             fetch(`https://api.resguru.app/api/building-employees?populate=*&filters[building][id][$eq]=${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getEmployer()",resp.data);
+                    console.log("Return from getEmployer()", resp.data);
                     this.employee = resp.data
                 }).finally(() => {
                     loading.close()
@@ -527,61 +547,61 @@ export default {
             fetch(`https://api.resguru.app/api/users?populate=*&filters[building][id][$eq]=${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getUser()",resp);
+                    console.log("Return from getUser()", resp);
                     this.UserBuilding = resp
                 }).finally(() => {
                     loading.close()
                 })
         },
-        removeAdmin(adminID){
-            if(confirm("Do you really want to delete this Admin?")){
-                    axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`,{
-                        data:{
-                                users: {disconnect:[adminID]}
-                        }
+        removeAdmin(adminID) {
+            if (confirm("Do you really want to delete this Admin?")) {
+                axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`, {
+                    data: {
+                        users: { disconnect: [adminID] }
+                    }
+                })
+                    .then((resp) => {
+                        console.log(resp)
                     })
-                    .then( (resp) =>{
-                            console.log(resp)
-                        })
                     .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage); 
+                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        this.$showNotification('danger', errorMessage);
                     })
-                    .finally(()=>{
+                    .finally(() => {
                         this.getUser();
                         this.$showNotification('#3A89CB', 'Update Success')
-                    })  
+                    })
             }
 
         },
-        deleteEmployee(employeeID){
-                if(confirm("Do you really want to delete this employee?")){
-                    axios.delete(`https://api.resguru.app/api/building-employees/${employeeID}`)
-                    .then( (resp) =>{
-                           console.log(resp)
-                        })
-                    .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage); 
+        deleteEmployee(employeeID) {
+            if (confirm("Do you really want to delete this employee?")) {
+                axios.delete(`https://api.resguru.app/api/building-employees/${employeeID}`)
+                    .then((resp) => {
+                        console.log(resp)
                     })
-                    .finally(()=>{
+                    .catch(error => {
+                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        this.$showNotification('danger', errorMessage);
+                    })
+                    .finally(() => {
                         this.getEmployer();
                         this.$showNotification('warn', 'Delete Employee Success')
-                    }) 
-                }
+                    })
+            }
         },
         selectAddressEmployee(address) {
-          this.NewProfileEm.district = address.district
-          this.NewProfileEm.amphoe = address.amphoe
-          this.NewProfileEm.province = address.province
-          this.NewProfileEm.zipcode = address.zipcode
+            this.NewProfileEm.district = address.district
+            this.NewProfileEm.amphoe = address.amphoe
+            this.NewProfileEm.province = address.province
+            this.NewProfileEm.zipcode = address.zipcode
         },
-        tempImageUploadEmployee(){
+        tempImageUploadEmployee() {
             this.fileProfileForm = this.$refs.fileUploadProfileForm.files[0]
         },
-        addEmployee(){
-            axios.post(`https://api.resguru.app/api/building-employees/`,{
-                data : {
+        addEmployee() {
+            axios.post(`https://api.resguru.app/api/building-employees/`, {
+                data: {
                     name: this.NewProfileEm.name,
                     lastname: this.NewProfileEm.lastname,
                     address: this.NewProfileEm.address,
@@ -596,94 +616,94 @@ export default {
                     building: this.$store.state.building,
                     facebook: this.NewProfileEm.facebook
                 }
-                }).then(  (resp) => {
+            }).then((resp) => {
 
-                        if(this.fileProfileForm.length != 0){
-                                let formData = new FormData();
-                                formData.append("files", this.fileProfileForm);
-                                formData.append("refId", String(resp.data.data.id));
-                                formData.append("ref", "api::building-employee.building-employee");
-                                formData.append("field", "employeeImage");
+                if (this.fileProfileForm.length != 0) {
+                    let formData = new FormData();
+                    formData.append("files", this.fileProfileForm);
+                    formData.append("refId", String(resp.data.data.id));
+                    formData.append("ref", "api::building-employee.building-employee");
+                    formData.append("field", "employeeImage");
 
-                                axios.post("https://api.resguru.app/api/upload", formData, {
-                                    headers: {
-                                    "Content-Type": "multipart/form-data",
-                                    },
-                                }).then( (result) => { console.log("Upload file",result)}) 
-                                .catch((error) => {
-                                            console.log(error);
-                                })
-                        }
-                      
-                    }    
-                )
+                    axios.post("https://api.resguru.app/api/upload", formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }).then((result) => { console.log("Upload file", result) })
+                        .catch((error) => {
+                            console.log(error);
+                        })
+                }
+
+            }
+            )
                 .catch(error => {
                     const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage); 
+                    this.$showNotification('danger', errorMessage);
                 })
-                .finally(()=>{
+                .finally(() => {
                     this.$showNotification('#3A89CB', 'Create Employee Success')
                     this.profile_em = false
                     this.getEmployer();
-                }) 
+                })
         },
         selectAddressAdmin(address) {
-          this.NewProfileAdmin.district = address.district
-          this.NewProfileAdmin.amphoe = address.amphoe
-          this.NewProfileAdmin.province = address.province
-          this.NewProfileAdmin.zipcode = address.zipcode
+            this.NewProfileAdmin.district = address.district
+            this.NewProfileAdmin.amphoe = address.amphoe
+            this.NewProfileAdmin.province = address.province
+            this.NewProfileAdmin.zipcode = address.zipcode
         },
-        tempImageUploadAdmin(){
+        tempImageUploadAdmin() {
             this.fileAdminProfileForm = this.$refs.fileUploadAdminProfileForm.files[0]
         },
-        addAdmin(){
-            axios.post(`https://api.resguru.app/api/users/`,{
-               
-                    firstName: this.NewProfileAdmin.firstName,
-                    lastName: this.NewProfileAdmin.lastName,
-                    contactAddress: this.NewProfileAdmin.contactAddress,
-                    province: this.NewProfileAdmin.province,
-                    district: this.NewProfileAdmin.district,
-                    amphoe: this.NewProfileAdmin.amphoe,
-                    zipcode: this.NewProfileAdmin.zipcode,
-                    phone: this.NewProfileAdmin.phone,
-                    email: this.NewProfileAdmin.email,
-                    line: this.NewProfileAdmin.line,
-                    position: 6,
-                    building: '',
-                    username: this.NewProfileAdmin.email,
-                    password: this.NewProfileAdmin.password
+        addAdmin() {
+            axios.post(`https://api.resguru.app/api/users/`, {
 
-                }).then(  (resp) => {
+                firstName: this.NewProfileAdmin.firstName,
+                lastName: this.NewProfileAdmin.lastName,
+                contactAddress: this.NewProfileAdmin.contactAddress,
+                province: this.NewProfileAdmin.province,
+                district: this.NewProfileAdmin.district,
+                amphoe: this.NewProfileAdmin.amphoe,
+                zipcode: this.NewProfileAdmin.zipcode,
+                phone: this.NewProfileAdmin.phone,
+                email: this.NewProfileAdmin.email,
+                line: this.NewProfileAdmin.line,
+                position: 6,
+                building: '',
+                username: this.NewProfileAdmin.email,
+                password: this.NewProfileAdmin.password
 
-                        if(this.fileAdminProfileForm.length != 0){
-                                let formData = new FormData();
-                                formData.append("files", this.fileAdminProfileForm);
-                                formData.append("refId", String(resp.data.data.id));
-                                formData.append("ref", "plugin::users-permissions.user");
-                                formData.append("field", "imageProfile");
+            }).then((resp) => {
 
-                                axios.post("https://api.resguru.app/api/upload", formData, {
-                                    headers: {
-                                    "Content-Type": "multipart/form-data",
-                                    },
-                                }).then( (result) => { console.log("Upload file",result)}) 
-                                .catch((error) => {
-                                            console.log(error);
-                                })
-                        }
-                      
-                    }    
-                )
+                if (this.fileAdminProfileForm.length != 0) {
+                    let formData = new FormData();
+                    formData.append("files", this.fileAdminProfileForm);
+                    formData.append("refId", String(resp.data.data.id));
+                    formData.append("ref", "plugin::users-permissions.user");
+                    formData.append("field", "imageProfile");
+
+                    axios.post("https://api.resguru.app/api/upload", formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }).then((result) => { console.log("Upload file", result) })
+                        .catch((error) => {
+                            console.log(error);
+                        })
+                }
+
+            }
+            )
                 .catch(error => {
                     const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage); 
+                    this.$showNotification('danger', errorMessage);
                 })
-                .finally(()=>{
+                .finally(() => {
                     this.getUser();
                     this.$showNotification('#3A89CB', 'Create Admin Success')
                     this.profile_em = false
-                }) 
+                })
         },
     }
 }
