@@ -145,7 +145,8 @@
         <div class="mt-[24px] bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px] rounded-[12px]" v-if="tab == 1">
             <div class="text-[24px] font-bold mt-[14px]">ชั้น {{ name_floor }}</div>
             <div class="grid grid-cols-4 w-[100%] gap-4 mt-[14px] ">
-                <div class="rounded-[16px]  p-[14px] h-[240px] border cursor-pointer" v-for="data in room">
+                <div class="rounded-[16px]  p-[14px] h-[240px] border cursor-pointer" v-for="data in room"
+                    @click="getUserRoomDetail(data.id), is_edit = true">
                     <div class="flex justify-between">
                         <div class="text-[18px] font-bold text-[#003765]">ห้อง {{ data.attributes.RoomNumber }}</div>
                         <!-- <div class="flex">
@@ -156,27 +157,15 @@
                         <div class="flex justify-between  h-[100%]">
                             <div class="text-[12px] text-[#5C6B79] flex items-center">ประเภทห้อง</div>
                             <div class="mt-[]">
-                                <select placeholder="Select" v-model="data.attributes.room_type.data.id"
+                                {{ data.attributes.room_type.data.attributes.roomTypeName }}
+                                <!-- <select placeholder="Select" v-model="data.attributes.room_type.data.id" disabled
                                     class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]"
                                     :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''"
                                     @change="updateRoomType(data.id, data.attributes.room_type.data.id)">
                                     <option v-for="TypeData in roomType" :value=TypeData.id>
                                         {{ TypeData.attributes.roomTypeName }}
                                     </option>
-
-                                    <!-- <option label="เลือก" value="0" disabled>
-                                        เลือก
-                                    </option>
-                                    <option label="ห้องพร้อมเฟอร์นิเจอร์" value="1">
-                                        ห้องพร้อมเฟอร์นิเจอร์
-                                    </option>
-                                    <option label="ห้อง Building Room" value="1">
-                                        ห้อง Building Room
-                                    </option>
-                                    <option label="ห้อง Delux Room" value="1">
-                                        ห้อง Delux Room
-                                    </option> -->
-                                </select>
+                                </select> -->
                             </div>
                         </div>
                         <div class="grid w-[100%] gap-4 mt-[14px] ">
@@ -263,11 +252,13 @@
                         <div
                             class="flex pl-[8px] pr-[8px] pt-[4px] pb-[4px] rounded-[12px] border justify-between mt-[8px] text-[#0B9A3C]">
                             <div>ราคา</div>
-                            <div>3500</div>
+                            <div>{{ data.attributes.room_type.data.attributes.roomPrice }}</div>
                         </div>
                     </div>
                 </div>
-                <div @click="create_room = true"
+                <div @click="create_room = true, is_edit = false, roomName = '',
+                    room_type_id = '',
+                    roomFloor_id = ''"
                     class="rounded-[16px]  p-[14px] h-[202px] border cursor-pointer flex flex-col items-center justify-center">
                     <div>
                         <svg width="68" height="69" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -742,7 +733,7 @@
                         <div>
                             <div class="text-custom">ชั้น</div>
                             <div>
-                                <select placeholder="Select" v-model="roomFloor"
+                                <select placeholder="Select" v-model="roomFloor_id"
                                     class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]">
                                     <option v-for="data in roomFloor" :value="data.id">
                                         {{ data.attributes.floorName }}
@@ -753,7 +744,7 @@
                     </div>
                     <div class="text-custom mt-[14px]">ประเภทห้องพัก</div>
                     <div>
-                        <select placeholder="Select" v-model="roomType"
+                        <select placeholder="Select" v-model="room_type_id"
                             class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]">
                             <option v-for="data in roomType" :value="data.id">
                                 {{ data.attributes.roomTypeName }}
@@ -885,15 +876,18 @@ export default {
             createFloor: false,
             room: [],
             roomType: [],
+            room_type_id: '',
             floorRoom: [],
             roomName: "",
             roomTypeName: "",
             roomTypePrice: 0,
             buildingfloorName: "",
+            roomFloor_id: '',
+            room_id: '',
             filter: {
                 floor: 0
-            }
-
+            },
+            is_edit: false
         }
     },
     created() {
@@ -908,8 +902,6 @@ export default {
         setTimeout(() => {
             this.getUserRoom();
         }, 1000);
-
-
     },
     methods: {
         getUserRoom() {
@@ -921,6 +913,23 @@ export default {
                     console.log("Return from getRoom()", resp.data);
                     this.room = resp.data
                 }).finally(() => {
+                    loading.close()
+                })
+        },
+        getUserRoomDetail(id) {
+
+            const loading = this.$vs.loading()
+            fetch('https://api.resguru.app/api' + '/rooms/' + id + '?populate=deep,3')
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log(resp);
+                    this.room_id = resp.data.id
+                    this.roomName = resp.data.attributes.RoomNumber
+                    this.room_type_id = resp.data.attributes.room_type.data.id
+                    this.roomFloor_id = resp.data.attributes.building_floor.data.id
+                }).finally(() => {
+                    this.create_room = true
+                    console.log(this.room_type);
                     loading.close()
                 })
         },
@@ -953,24 +962,49 @@ export default {
                 })
         },
         addNewRoom() {
-            axios.post(`https://api.resguru.app/api/rooms/`, {
-                data: {
-                    RoomNumber: this.roomName,
-                    room_building: this.$store.state.building,
-                    room_type: this.roomType,
-                    building_floor: this.roomFloor,
-                }
-            })
-                .then((resp) => {
-                    this.$showNotification('#3A89CB', 'Add Room Success')
+            if (this.is_edit == true) {
+                axios.put(`https://api.resguru.app/api/rooms/` + this.room_id, {
+                    data: {
+                        RoomNumber: this.roomName,
+                        room_type: this.room_type_id,
+                        building_floor: this.roomFloor_id,
+                    }
                 })
-                .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage);
+                    .then((resp) => {
+                        this.$showNotification('#3A89CB', 'Add Room Success')
+                    })
+                    .catch(error => {
+                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        this.$showNotification('danger', errorMessage);
+                    })
+                    .finally(() => {
+                        this.getUserRoom();
+                        this.create_room = false
+                    })
+
+            }
+            else {
+                axios.post(`https://api.resguru.app/api/rooms/`, {
+                    data: {
+                        RoomNumber: this.roomName,
+                        room_building: this.$store.state.building,
+                        room_type: this.room_type_id,
+                        building_floor: this.roomFloor_id,
+                    }
                 })
-                .finally(() => {
-                    this.getUserRoom();
-                })
+                    .then((resp) => {
+                        this.$showNotification('#3A89CB', 'Add Room Success')
+                    })
+                    .catch(error => {
+                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        this.$showNotification('danger', errorMessage);
+                    })
+                    .finally(() => {
+                        this.getUserRoom();
+                        this.create_room = false
+                    })
+            }
+
 
         },
         updateRoomType(id, eachRoomType) {
