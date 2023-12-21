@@ -175,7 +175,7 @@ export default {
     //     this.generatePDF()
     // },
     methods: {
-        generatePDF(data, check) {
+        generatePDF(data, check,id) {
             console.log(data);
             this.detail = data
             const content = this.$refs.pdfContent;

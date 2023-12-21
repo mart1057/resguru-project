@@ -32,7 +32,7 @@
             <div class="mt-[4px] w-[100%]">
                 <div class="flex w-[100%]">
                     <input v-model="selectedDate" type="month" placeholder="ค้นหาตามหมายเลขห้อง" id="datepicker"
-                        @input="filterByDate()"
+                        @input="getDashboard(selectedDate)"
                         v-bind:class="{ 'h-[36px] pl-[8px] text-[center] pr-[8px] bg-[#003765] flex cursor-pointer text-[white]  justify-center  rounded-[12px] mt-[12px]': true }" />
                 </div>
             </div>
@@ -254,6 +254,7 @@ export default {
     data() {
         return {
             tab: 1,
+            selectedDate: '',
             years: [],
             mouths: [...Array(12).keys()].map((day) => day + 1),
             data1: [],
@@ -265,7 +266,8 @@ export default {
     },
     created() {
         this.runYears
-        this.getDashboard()
+        this.selectedDate = '2023-12'
+        this.getDashboard('2023-12')
     },
 
     methods: {
@@ -274,8 +276,15 @@ export default {
                 this.years.push(year);
             }
         },
-        getDashboard() {
-            fetch(`https://api.resguru.app/api/getdashboard?buildingid=${this.$store.state.building}&month=10&year=2023`)
+        getDashboard(date_data) {
+            console.log(date_data);
+            let parts = date_data.split('-');
+            let year = parts[0]; // Extracting the year
+            let month = parts[1]; // Extracting the month
+
+            console.log('Year:', year); // Output: 2023
+            console.log('Month:', month); // Output: 11
+            fetch('https://api.resguru.app/api/getdashboard?buildingid=${this.$store.state.building}&month='+month+'&year='+year)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoom()", resp);

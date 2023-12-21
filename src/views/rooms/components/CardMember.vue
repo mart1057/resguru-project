@@ -92,9 +92,9 @@
                                         </vs-radio>
                                     </div>
                                 </div>
-                                <div class="grid grid-cols-2  text-custom mt-[14px]  "
+                                <div class="grid grid-cols-4  text-custom mt-[14px]  "
                                     v-if="room_detail.check_user == true && is_edit == false">
-                                    <div>
+                                    <div  class="col-span-2">
                                         <div class=""> <span class="text-[red] mr-[2px]">*</span>เลือกข้อมูลผู้เช่า</div>
                                         <select placeholder="Select" v-model="id_user" @change="getUserDetail()"
                                             class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]">
@@ -103,15 +103,21 @@
                                             </option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="grid grid-cols-4 gap-2  text-custom mt-[14px] ">
-                                    <div class="col-span-2">
+                                    <div class="col-span-2  ml-[8px]">
                                         <div><span class="text-[red] mr-[2px]">*</span>อีเมลล์</div>
                                         <input type="input" v-model="room_detail.email"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             :disabled="is_edit == true" />
                                     </div>
-                                    <div class="col-span-1">
+                                </div>
+                                <div class="grid grid-cols-4 gap-2  text-custom mt-[14px] ">
+                                    <!-- <div class="col-span-2">
+                                        <div><span class="text-[red] mr-[2px]">*</span>อีเมลล์</div>
+                                        <input type="input" v-model="room_detail.email"
+                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            :disabled="is_edit == true" />
+                                    </div> -->
+                                    <!-- <div class="col-span-1">
                                         <div>เลขมิเตอร์ค่าน้ำเริ่มต้น</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             :disabled="is_edit == true" />
@@ -120,7 +126,7 @@
                                         <div>เลขมิเตอร์ค่าไฟเริ่มต้น</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             :disabled="is_edit == true" />
-                                    </div>
+                                    </div> -->
                                 </div>
                                 <div class="grid grid-cols-8  text-custom mt-[14px]  ">
                                     <div>
@@ -159,7 +165,8 @@
                             <div class="w-[30%] text-custom flex items-start"></div>
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
                                 <div class="col-span-4">
-                                    <div><span class="text-[red] mr-[2px]">*</span>เบอร์โทรศัพท์ <span class="text-[#5C6B79]">(ไม่ต้องใส่ขีด ตัวอย่าง.
+                                    <div><span class="text-[red] mr-[2px]">*</span>เบอร์โทรศัพท์ <span
+                                            class="text-[#5C6B79]">(ไม่ต้องใส่ขีด ตัวอย่าง.
                                             0815578945)</span></div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="room_detail.phone" :disabled="is_edit == true" />
@@ -197,7 +204,7 @@
                             <div class="grid grid-cols-6  text-custom w-[70%] ">
                                 <div class="col-span-3 mt-[6px]">
                                     <div><span class="text-[red] mr-[2px]">*</span>แนบรูปบัตรประชาชน</div>
-                                    <div class="flex mt-[4px]" v-if=" room_detail.image_card_name == ''">
+                                    <div class="flex mt-[4px]" v-if="room_detail.image_card_name == ''">
                                         <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
                                             id="upload" @change="previewImage" type="file" accept="image/*" hidden />
                                         <label for="upload">
@@ -586,13 +593,13 @@ export default {
     methods: {
         previewImage(event) {
             const file = event.target.files[0];
-            this.room_detail.image_card_name= event.target.files[0].name
+            this.room_detail.image_card_name = event.target.files[0].name
             this.img_arr_card = event.target.files[0];
             if (file) {
-               
+
                 // Read the file as a URL
                 const reader = new FileReader();
-                reader.onload = (e) => { 
+                reader.onload = (e) => {
                     this.room_detail.image_card = e.target.result; // Set the image URL for preview
                 };
                 reader.readAsDataURL(file);
@@ -820,9 +827,15 @@ export default {
                                     }
                                 })
 
+
                             })
                         })
                             .finally(() => {
+                                axios.put('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room, {
+                                    data: {
+                                        roomStatus: 'Reserved'
+                                    }
+                                })
                                 this.id_user = this.room_detail.id
                                 this.getUser()
                                 this.create = false

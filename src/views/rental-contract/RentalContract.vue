@@ -32,7 +32,7 @@
                     </div> -->
                 </div>
                 <div class="flex">
-                    <div class="h-[36px] pr-[10px] pl-[8px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]"
+                    <!-- <div class="h-[36px] pr-[10px] pl-[8px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]"
                         @click="detail = true">
                         <div class="flex justify-center items-center">
                             <svg width="22" height="23" viewBox="0 0 22 23" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -50,7 +50,7 @@
                         <div @click="detail = true"
                             class="text-white font-bold ml-[8px]   flex justify-center items-center">ดาวน์โหลดสัญญาเช่า
                         </div>
-                    </div>
+                    </div> -->
                     <div class="flex justify-start items-center   mt-[5px] ml-[14px]">
                         <input class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาตามหมายเลขห้อง"
                             v-model="filter.search" @input="filterData" type="input" @keydown="handleKeyDown" />
@@ -77,33 +77,23 @@
                         <template #tooltip>
                             <div class="w-[100%]">
                                 <div class="center">
-                                    <vs-checkbox v-model="option">
-                                        <div class="text-custom">ห้องค้างชำระ</div>
+                                    <vs-checkbox v-model="filter.select" val="Reserved" @input="getRentalContract()">
+                                        <div class="text-custom">ห้องจอง</div>
                                     </vs-checkbox>
                                 </div>
                                 <div class="center">
-                                    <vs-checkbox v-model="option">
-                                        <div class="text-custom">ห้องชำระเงินแล้ว</div>
+                                    <vs-checkbox v-model="filter.select" val="Checked In" @input="getRentalContract()">
+                                        <div class="text-custom">ห้องมีผู้เข้าพัก</div>
                                     </vs-checkbox>
                                 </div>
                                 <div class="center">
-                                    <vs-checkbox v-model="option">
+                                    <vs-checkbox v-model="filter.select" val="Available" @input="getRentalContract()">
                                         <div class="text-custom">ห้องว่าง</div>
                                     </vs-checkbox>
                                 </div>
                                 <div class="center">
-                                    <vs-checkbox v-model="option">
-                                        <div class="text-custom">ห้องติดจอง</div>
-                                    </vs-checkbox>
-                                </div>
-                                <div class="center">
-                                    <vs-checkbox v-model="option">
-                                        <div class="text-custom">ห้องไกล้หมดสัญญา</div>
-                                    </vs-checkbox>
-                                </div>
-                                <div class="center">
-                                    <vs-checkbox v-model="option">
-                                        <div class="text-custom">ห้องแจ้งย้ายออก</div>
+                                    <vs-checkbox v-model="filter.select" val="Maintenance" @input="getRentalContract()">
+                                        <div class="text-custom">ห้องรอซ่อม</div>
                                     </vs-checkbox>
                                 </div>
                             </div>
@@ -126,11 +116,9 @@
 
         <!-- //////////////////////////// card /////////////////////// -->
         <div class="mt-[24px]">
-            <div class="text-[24px] font-bold">ชั้น {{ name_floor }}</div>
+            <div class="text-[24px] font-bold">ชั้น {{ name_floor }} ({{ contract.length }})</div>
             <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px] ">
-
                 <!-- //////////////////////////// Loop Room Contract /////////////////////// -->
-
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer"
                     v-for="data in contract">
                     <div class="flex flex-col justify-between">
@@ -147,8 +135,8 @@
                         <div class="ml-[14px]">
                             <div class="flex">
                                 <div class="h-[32px] pr-[8px] pl-[8px]   cursor-pointer   rounded-[12px]"
-                                    :class="data.user_sign_contract?.contractStatus == null ? 'bg-[#165D98]' : data.user_sign_contract?.contractStatus == 'rent' ? 'bg-[#003765]' : 'bg-[#165D98]'"
-                                    @click="data.user_sign_contract?.contractStatus == null ? create_sign(data.id, data.RoomNumber) : data.user_sign_contract?.contractStatus == 'reserved' ? create_sign(data.id, data.RoomNumber, 'reserved', data.user_sign_contract.users_permissions_user?.idCard, data.room_type.id) : getDetailRentalContract(data.user_sign_contract.id)">
+                                    :class="data.roomStatus == 'Checked In' ? 'bg-[#003765]' : 'bg-[#165D98]'"
+                                    @click="data.roomStatus == 'Checked In' ? getDetailRentalContract(data.user_sign_contract.id) : data.roomStatus == 'Reserved' ? create_sign(data.id, data.RoomNumber, 'reserved', data.user_sign_contract.users_permissions_user?.idCard, data.room_type.id) : create_sign(data.id, data.RoomNumber)">
                                     <div class="flex items-center h-[100%]">
                                         <div class="flex justify-center items-center">
                                             <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
@@ -171,9 +159,7 @@
                                             </svg>
                                         </div>
                                         <div class="text-white font-bold ml-[4px]   flex justify-center items-center">
-                                            {{ data.user_sign_contract?.contractStatus == null ? 'สร้างสัญญาเช่า' :
-                                                data.user_sign_contract.contractStatus == 'reserved' ? "สร้างสัญญาเช่า"
-                                                    : "ดูสัญญาเช่า" }}
+                                            {{ data.roomStatus == 'Checked In' ? 'ดูสัญญาเช่า' : "สร้างสัญญาเช่า" }}
                                         </div>
                                     </div>
                                 </div>
@@ -202,17 +188,16 @@
                                     </svg>
                                 </div> -->
                             </div>
-                            <div :class="data.user_sign_contract?.contractStatus == 'rent' ? 'text-[#0B9A3C] bg-[#CFFBDA]' : 'text-[#003765] bg-[#F0F8FF]'"
+                            <div :class="data.roomStatus == 'Checked In' ? 'text-[#0B9A3C] bg-[#CFFBDA]' : 'text-[#003765] bg-[#F0F8FF]'"
                                 class="h-[36px] ml-[8px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] ">
                                 <!-- {{ data.user_sign_contract ? "มีผู้เข้าพัก" : "ห้องว่าง" }} -->
-                                {{ data.user_sign_contract?.contractStatus == null ? 'ห้องว่าง' :
-                                    data.user_sign_contract.contractStatus == 'reserved' ? "ห้องจอง"
-                                        : "มีผู้เข้าพัก" }}
+                                {{ data.roomStatus == 'Reserved' ? 'ห้องจอง' :
+                                    data.roomStatus == 'Checked In' ? "มีผู้เข้าพัก" :
+                                        data.roomStatus == 'Maintenance' ? "รอซ่อม" : "ห้องว่าง" }}
                             </div>
                         </div>
                         <div class="flex justify-end">
-                            <div
-                                @click="data.user_sign_contract?.contractStatus == 'reserved' ? '' : data.user_sign_contract ? PDFPrintRental(data, true) : ''">
+                            <div @click=" data.roomStatus == 'Checked In' ? PDFPrintRental(data, true,data.user_sign_contract.id) : ''">
                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1318_22597" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5"
@@ -226,8 +211,7 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class=""
-                                @click="data.user_sign_contract?.contractStatus == 'reserved' ? '' : data.user_sign_contract ? PDFPrintRental(data, false) : ''">
+                            <div class="" @click=" data.roomStatus == 'Checked In' ? PDFPrintRental(data, false,data.user_sign_contract.id) : ''">
                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1318_22595" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5"
@@ -559,6 +543,22 @@
                                     </div> -->
                                 </div>
                                 <div class="col-span-4 mt-[16px]">
+                                    <div>เลขมิเตอร์ค่าน้ำเริ่มต้น</div>
+                                    <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail_create.water" required />
+                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                        {{ errorFieldMessage }}
+                                    </div> -->
+                                </div>
+                                <div class="col-span-4 mt-[16px]  ml-[8px]">
+                                    <div>เลขมิเตอร์ค่าไฟเริ่มต้น</div>
+                                    <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail_create.ele" required />
+                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                        {{ errorFieldMessage }}
+                                    </div> -->
+                                </div>
+                                <div class="col-span-4 mt-[16px]">
                                     <div>ประเภทห้องพัก</div>
                                     <select placeholder="Select" v-model="room_detail_create.type_room"
                                         class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]">
@@ -656,6 +656,8 @@ export default {
             tab_floor: '0',
             name_floor: '',
             filter: {
+                select: [],
+                checkSelect: [],
                 search: '',
                 floor: '',
                 Id_card: ''
@@ -678,6 +680,8 @@ export default {
             },
             room_detail_create: {
                 check_user: true,
+                water: 0,
+                ele: 0,
                 id: '',
                 id_room: '',
                 sex: null,
@@ -703,6 +707,7 @@ export default {
 
     },
     mounted() {
+        this.filter.checkSelect = ['Checked In', 'Available', 'Reserved', 'Maintenance']
         console.log("State.Building", this.$store.state.building);
         this.getFloorRoom();
         // this.getUser()
@@ -718,8 +723,11 @@ export default {
         // }, 1000)
     },
     methods: {
-        async PDFPrintRental(tr, check) {
-            this.$refs.childComponentPDFRental.generatePDF(tr, check)
+        async PDFPrintRental(tr, check,id) {
+            this.$refs.childComponentPDFRental.generatePDF(tr, check,id)
+            setTimeout(() => {
+                this.$refs.childComponentPDFRental.generatePDF(tr, check,id)
+            }, 100);
         },
         openNotificationRenralPage(position = null, color, title, desc) {
             const noti = this.$vs.notification({
@@ -737,6 +745,8 @@ export default {
         validateField() {
             if (
                 this.room_detail_create.name == '' ||
+                this.room_detail_create.water == '' ||
+                this.room_detail_create.ele == '' ||
                 this.room_detail_create.last_name == '' ||
                 this.room_detail_create.email == '' ||
                 this.room_detail_create.id_card == '' ||
@@ -758,7 +768,8 @@ export default {
         getRentalContract(code) {
             this.contract = []
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api/getRoomContract?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor)
+            const output = this.filter.select.length > 0 ? this.filter.select.join(',') : this.filter.checkSelect.join(',');
+            fetch('https://api.resguru.app/api/getRoomContract?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor + '&roomStatus=' + output)
                 .then(response => response.json())
                 .then((resp) => {
                     if (code == 8) {
@@ -876,6 +887,8 @@ export default {
             this.room_detail_create.birth = ''
             this.room_detail_create.email = ''
             this.room_detail_create.id_room = id_room
+            this.room_detail_create.water = 0
+            this.room_detail_create.ele = 0
             this.room_detail_create.room_deposit = ''
             this.room_detail_create.roomInsuranceDeposit = ''
             this.room_detail_create.contract_duration = ''
@@ -907,8 +920,25 @@ export default {
                         data: {
                             // user_sign_contract: resp.data.id,
                             room_type: this.room_detail_create.type_room,
+                            roomStatus: 'Checked In'
                         }
                     })
+                    axios.post('https://api.resguru.app/api' + '/water-fees', {
+                        data: {
+                            // "meterDate": "2023-12-18T09:44:25.621Z",
+                            "meterUnit": this.room_detail_create.water,
+                            "user_sign_contract": resp.data.data.id,
+                            "room": this.room_detail_create.id_room,
+                        }
+                    })
+                    axios.post('https://api.resguru.app/api' + '/electric-fees', {
+                        data: {
+                            "electicUnit": this.room_detail_create.ele,
+                            "user_sign_contract": resp.data.data.id,
+                            "room": this.room_detail_create.id_room,
+                        }
+                    })
+                }).finally(() => {
                 }).catch((err) => {
                     loading.close()
                     if (err.response?.data?.error?.message) {

@@ -67,7 +67,7 @@
                                 </div>
                             </div>
                         </vs-td>
-                        <vs-td>
+                        <vs-td v-if="tr.water_fees[0]">
                             <vs-input v-model=tr.water_fees[0].meterUnit>
                                 <template #icon>
                                     <svg width="24" height="25" viewBox="0 0 24 25" fill="none"
@@ -85,6 +85,7 @@
                                 </template>
                             </vs-input>
                         </vs-td>
+                        <vs-td v-else>ยังไม่ได้ระบุ</vs-td>
                         <vs-td>
                             <div v-if="tr.water_fees[1]">
                                 {{ tr.water_fees[0] ? (tr.water_fees[0].meterUnit - tr.water_fees[1].meterUnit) :
@@ -102,7 +103,7 @@
                                     @click="updateWaterfee(tr.water_fees[0].id, tr.water_fees[0].meterUnit, (tr.water_fees[0].meterUnit - tr.water_fees[1].meterUnit))">บันทึก</vs-button>
                                 </div>
                                 <div v-else>
-                                    <vs-button
+                                    <vs-button :disabled="!tr.water_fees[0]"
                                     @click="updateWaterfee(tr.water_fees[0].id, tr.water_fees[0].meterUnit, tr.water_fees[0].meterUnit)">บันทึก</vs-button>
                                 </div>
                             </div>

@@ -557,6 +557,7 @@ export default {
             }
         },
         resetPass() {
+            console.log('te');
             if (this.reset_pass != '' & this.reset_pass_con != '' & this.code_reset != '') {
                 if (this.reset_pass == this.reset_pass_con) {
                     const loading = this.$vs.loading()
@@ -578,16 +579,15 @@ export default {
                         })
                         .catch(() => {
                             loading.close()
-                            this.errorsResrtPass = 'Incorrect code provided'
+                            this.$showNotification('danger', 'Incorrect code provided');
                         })
                 }
                 else {
-                    this.errorsResrtPass = 'Passwords do not match'
+                    this.$showNotification('danger',  'Passwords do not match');
                 }
-
             }
             else {
-                this.errorsResetPass = 'Please fill out the information completely.'
+                this.$showNotification('danger', 'Please fill out the information completely.');
             }
         }
     },

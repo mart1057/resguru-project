@@ -135,7 +135,7 @@
                                     </div>
                                 </div>
                                 <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                            {{ errorFieldMessage }}
+                                    {{ errorFieldMessage }}
                                 </div>
                             </div>
                             <div class="grid grid-cols-4 w-[100%]  gap-4 mt-[10px] ">
@@ -188,7 +188,7 @@
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                     <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                            {{ errorFieldMessage }}
+                                        {{ errorFieldMessage }}
                                     </div>
                                 </div>
                                 <div>
@@ -210,7 +210,7 @@
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                     <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                            {{ errorFieldMessage }}
+                                        {{ errorFieldMessage }}
                                     </div>
                                 </div>
                                 <div>
@@ -226,23 +226,23 @@
                                 <div>
                                     <div class="font-bold">อัตราภาษีหอพัก</div>
                                     <div class="mt-[5px]">
-                                        <vs-input v-model="buildingTax"/>
+                                        <vs-input v-model="buildingTax" />
                                     </div>
                                     <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                            {{ errorFieldMessage }}
+                                        {{ errorFieldMessage }}
                                     </div>
                                 </div>
                                 <div>
                                     <div class="font-bold">DueDate</div>
                                     <div class="mt-[5px]">
-                                        <vs-input v-model="buildingDueDate"/>
+                                        <vs-input v-model="buildingDueDate" />
                                     </div>
                                     <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                            {{ errorFieldMessage }}
+                                        {{ errorFieldMessage }}
                                     </div>
                                 </div>
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -297,68 +297,72 @@ export default {
                 reader.readAsDataURL(file);
             }
         },
-        validateField(){
-            if( this.buildingName == '' || this.buildingAddress == '' ||  this.buildingPhone =='' || this.buildingEmail =='' ||  this.buildingLine =='' ||  this.buildingTax == '' || this.buildingDueDate ==''){
-                this.errorFieldMessage = "Please fill this form"
-            } else {
-                this.errorFieldMessage = ''
-            }
+        validateField() {
+          
+            //     this.$showNotification('danger', "Please fill this form");
+            // } else {
+            //     this.errorFieldMessage = ''
+            // }
         },
         createBuilding() {
             this.validateField()
-            console.log("errorFieldMessage",this.errorFieldMessage)
-            if(this.errorFieldMessage == ''){
-                    // console.log("test v model", this.buildingName)
-                    axios.post('https://api.resguru.app/api' + '/buildings', {
-                                data: {
-                                    buildingName: this.buildingName,
-                                    buildingAddress: this.buildingAddress,
-                                    user_owner: this.$store.state.userInfo.user.id,
-                                    buildingProvince: "",
-                                    buildingDistrict: "",
-                                    buildingSubDistrict: "",
-                                    buildingPostcode: "",
-                                    buildingPhone: this.buildingPhone,
-                                    buildingEmail: this.buildingEmail,
-                                    buildingLine: this.buildingLine,
-                                    buildingFacebook: this.buildingFacebook,
-                                    vat_rate: this.buildingTax,
-                                    BuildingDueDate: this.buildingDueDate,
-                                    publishedAt: null
-                                }
-                            })
-                                .then(
-                                    (resp) => {
-                                        if (this.tempBuilding.length != 0) {
-                                            let formData = new FormData();
-                                            formData.append("files", this.tempBuilding);
-                                            formData.append("refId", String(resp.data.data.id));
-                                            formData.append("ref", "api::building.building");
-                                            formData.append("field", "buildingLogo");
+            console.log("errorFieldMessage", this.errorFieldMessage)
+            if (this.buildingName != '' && this.buildingAddress != '' && this.buildingPhone != '' && this.buildingEmail != '' && this.buildingLine !='' && this.buildingTax !='' && this.buildingDueDate != '') {
+                // console.log("test v model", this.buildingName)
+                axios.post('https://api.resguru.app/api' + '/buildings', {
+                    data: {
+                        buildingName: this.buildingName,
+                        buildingAddress: this.buildingAddress,
+                        user_owner: this.$store.state.userInfo.user.id,
+                        buildingProvince: "",
+                        buildingDistrict: "",
+                        buildingSubDistrict: "",
+                        buildingPostcode: "",
+                        buildingPhone: this.buildingPhone,
+                        buildingEmail: this.buildingEmail,
+                        buildingLine: this.buildingLine,
+                        buildingFacebook: this.buildingFacebook,
+                        vat_rate: this.buildingTax,
+                        BuildingDueDate: this.buildingDueDate,
+                        publishedAt: null,
+                        colorCode:'#E0ECE4'
+                    }
+                })
+                    .then(
+                        (resp) => {
+                            if (this.tempBuilding.length != 0) {
+                                let formData = new FormData();
+                                formData.append("files", this.tempBuilding);
+                                formData.append("refId", String(resp.data.data.id));
+                                formData.append("ref", "api::building.building");
+                                formData.append("field", "buildingLogo");
 
-                                            axios.post("https://api.resguru.app/api/upload", formData, {
-                                                headers: {
-                                                    "Content-Type": "multipart/form-data",
-                                                },
-                                            })
-                                            .then((result) => { console.log("Upload file", result) })
-
-                                        }
-
-                                        this.routeToPlan(resp.data.data.id)
-
-                                    }
-                                )
-                                .catch(error => {
-                                    const errorMessage = error.message ? error.message : 'Error updating information';
-                                    this.$showNotification('danger', errorMessage);
+                                axios.post("https://api.resguru.app/api/upload", formData, {
+                                    headers: {
+                                        "Content-Type": "multipart/form-data",
+                                    },
                                 })
-                                .finally(() => {
-                                    this.$showNotification('#3A89CB', 'Created Building Success')
-                                   
-                                })
+                                    .then((result) => { console.log("Upload file", result) })
+
+                            }
+
+                            this.routeToPlan(resp.data.data.id)
+
+                        }
+                    )
+                    .catch(error => {
+                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        this.$showNotification('danger', errorMessage);
+                    })
+                    .finally(() => {
+                        this.$showNotification('#3A89CB', 'Created Building Success')
+
+                    })
             }
-      
+            else{
+                this.$showNotification('danger', "Please fill this form");
+            }
+
 
         },
         setTempUploadbuildingProfile() {
@@ -371,7 +375,7 @@ export default {
         },
         routeToPlan(buildingid) {
             this.$router.push({
-                path: '/plan?building=' + buildingid ,
+                path: '/plan?building=' + buildingid,
             })
         }
     },

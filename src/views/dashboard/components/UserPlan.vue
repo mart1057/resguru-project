@@ -17,7 +17,7 @@
                             </g>
                         </svg>
                     </div>
-                    <div class="text-[22px] text-white ml-[10px]">Professional Plan</div>
+                    <div class="text-[22px] text-white ml-[10px]">{{ $store.state.buildingInfo[0].attributes.package.data.attributes.title }} Plan</div>
                 </div>
                 <div
                     class="flex justify-center items-center border pl-[8px] pr-[8px] pb-[4px] pt-[4px] rounded-[22px] border-[#F5D65E]">
