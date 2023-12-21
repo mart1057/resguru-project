@@ -114,7 +114,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="h-[107px] bg-[#9A77FF] rounded-[22px] mt-[14px] p-[14px]" @click="routerTo('/plan')" v-if="tabSetting == 1">
+                    <div class="h-[107px]  rounded-[22px] mt-[14px] p-[14px]" @click="routerTo('/plan')" v-if="tabSetting == 1" :class="$store.state.buildingInfo[0].attributes.package.data?.attributes.title == 'Professional'?'bg-[#9A77FF] ':'bg-[#187EE7]'">
 
                         <div>
                             <svg width="21" height="24" viewBox="0 0 21 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -124,7 +124,7 @@
                             </svg>
                         </div>
                         <div class="text-white mt-[4px]">แพ็กเกจปัจจุบัน</div>
-                        <div class="text-[18px] font-bold mt-[4px] text-white">Professional</div>
+                        <div class="text-[18px] font-bold mt-[4px] text-white"> {{ $store.state.buildingInfo[0].attributes.package.data?.attributes.title }}</div>
                     </div>
                 </div>
                 <div class="w-[100%] ml-[24px] mt-[8px]" v-if="tabSetting == 1">
