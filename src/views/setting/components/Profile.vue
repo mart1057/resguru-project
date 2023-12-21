@@ -16,42 +16,63 @@
         <div class="mt-[14px]">
             <div v-if="buildingData.attributes.buildingBanner">
                 <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]"
-                v-bind:style="{ backgroundImage: 'url(https://api.resguru.app' + buildingData.attributes.buildingBanner.data?.attributes.url + ')' }">
+                    v-bind:style="{ backgroundImage: 'url(https://api.resguru.app' + buildingData.attributes.buildingBanner.data?.attributes.url + ')' }">
                     <!-- <img :src="`https://api.resguru.app${buildingData.attributes.buildingBanner.data.attributes.url}`" > -->
-                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" ref="buildingBanner"  hidden
-                                    type="file" @change="editBannerwithUpload()" />
+                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload"
+                        ref="buildingBanner" hidden type="file" @change="editBannerwithUpload()" />
                     <label for="upload">
-                    <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">เปลี่ยนรูปภาพปก</div>
+                        <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">
+                            เปลี่ยนรูปภาพปก</div>
                     </label>
                 </div>
             </div>
             <div v-else>
                 <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]">
-                    
-                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" ref="buildingBanner"  hidden
-                                        type="file" @change="editBannerwithUpload()" />
+
+                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload"
+                        ref="buildingBanner" hidden type="file" @change="editBannerwithUpload()" />
                     <label for="upload">
-                    <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">เปลี่ยนรูปภาพปก</div>
+                        <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer">
+                            เปลี่ยนรูปภาพปก</div>
                     </label>
                 </div>
             </div>
-            
+
             <div class="flex w-[100%]">
                 <div class="w-[20%] ml-[18px] mt-[-70px]">
                     <div class="bg-[white] rounded-[22px] w-[246px] border p-[14px] flex flex-col items-center">
-                        
-                        <img v-if="userData.imageProfile" class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
-                            :src="`https://api.resguru.app${userData.imageProfile.url}`" />
-                        <img v-else class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
-                        src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
-                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile" ref="buildingProfile"  hidden
-                                    type="file" @change="editProfilewithUpload()" />
-                        <label for="uploadProfile">
-                        <div class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer mt-[4px]">เปลี่ยนรูปภาพโปรไฟล์</div>
-                        </label>
-                        <div class="text-[18px] font-bold mt-[8px]">{{ userData.firstName }} {{userData.lastName}}</div>
+                        <div v-if="tabSetting == 1">
+                            <img v-if="userData.imageProfile" class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
+                                :src="`https://api.resguru.app${userData.imageProfile.url}`" />
+                            <img v-else class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
+                                src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile"
+                                ref="buildingProfile" hidden type="file" @change="editProfilewithUpload()" />
+                            <label for="uploadProfile">
+                                <div
+                                    class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer mt-[4px]">
+                                    เปลี่ยนรูปภาพโปรไฟล์</div>
+                            </label>
+                        </div>
+                        <div v-else>
+                            <img v-if="$store.state.buildingInfo[0].attributes.buildingLogo.data" class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
+                                :src="'https://api.resguru.app'+$store.state.buildingInfo[0].attributes.buildingLogo.data?.attributes.formats.large.url" />
+                            <img v-else class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
+                                src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile"
+                                ref="buildingProfile" hidden type="file" @change="editProfilewithUpload()" />
+                            <label for="uploadProfile">
+                                <div
+                                    class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer mt-[4px]">
+                                    เปลี่ยนรูปภาพโปรไฟล์</div>
+                            </label>
+                        </div>
+                        <div class="text-[18px] font-bold mt-[8px]" v-if="tabSetting == 1">{{ userData.firstName }}
+                            {{ userData.lastName }}</div>
+                        <div class="text-[18px] font-bold mt-[8px]" v-else>
+                            {{ $store.state.buildingInfo[0].attributes.buildingName }}</div>
                         <div class="w-[100%]" v-if="tabSetting == 2">
-                            <div class="w-[100%] mt-[8px]">
+                            <!-- <div class="w-[100%] mt-[8px]">
                                 <div class="pt-[4px] w-[100%] rounded-[12px] flex justify-center bg-[#003765]">
                                     <div>
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -69,52 +90,56 @@
                                     </div>
                                     <div class="text-white ml-[4px] cursor-pointer">ดูคิวอาร์โค้ด</div>
                                 </div>
-                            </div>
+                            </div> -->
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ชั้น/ห้อง</div>
-                                    <div class="text-[12px]">{{buildingStat.buildingStat.allFloor}}/{{buildingStat.buildingStat.allRoom}}</div>
+                                    <div class="text-[12px]">
+                                        {{ buildingStat.buildingStat.allFloor }}/{{ buildingStat.buildingStat.allRoom }}
+                                    </div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ห้องว่าง</div>
-                                    <div class="text-[12px]">{{buildingStat.buildingStat.availableRoom}}</div>
+                                    <div class="text-[12px]">{{ buildingStat.buildingStat.availableRoom }}</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ห้องที่มีผู้เช่า</div>
-                                    <div class="text-[12px]">{{buildingStat.buildingStat.rentRoom}}</div>
+                                    <div class="text-[12px]">{{ buildingStat.buildingStat.rentRoom }}</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ห้องจอง</div>
-                                    <div class="text-[12px]">{{buildingStat.buildingStat.reservedRoom}}</div>
+                                    <div class="text-[12px]">{{ buildingStat.buildingStat.reservedRoom }}</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ยังไม่พร้อมปล่อยเช่า</div>
-                                    <div class="text-[12px]">{{buildingStat.buildingStat.maintenanceRoom}}</div>
+                                    <div class="text-[12px]">{{ buildingStat.buildingStat.maintenanceRoom }}</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">จำนวนผู้พักอาศัยทั้งหมด</div>
-                                    <div class="text-[12px]">{{buildingStat.buildingStat.allTenant}}</div>
+                                    <div class="text-[12px]">{{ buildingStat.buildingStat.allTenant }}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="h-[107px]  rounded-[22px] mt-[14px] p-[14px]" @click="routerTo('/plan')" v-if="tabSetting == 1" :class="$store.state.buildingInfo[0].attributes.package.data?.attributes.title == 'Professional'?'bg-[#9A77FF] ':'bg-[#187EE7]'">
+                    <div class="h-[107px]  rounded-[22px] mt-[14px] p-[14px]" @click="routerTo('/plan')"
+                        v-if="tabSetting == 1"
+                        :class="$store.state.buildingInfo[0].attributes.package.data?.attributes.title == 'Professional' ? 'bg-[#9A77FF] ' : 'bg-[#187EE7]'">
 
                         <div>
                             <svg width="21" height="24" viewBox="0 0 21 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -124,22 +149,26 @@
                             </svg>
                         </div>
                         <div class="text-white mt-[4px]">แพ็กเกจปัจจุบัน</div>
-                        <div class="text-[18px] font-bold mt-[4px] text-white"> {{ $store.state.buildingInfo[0].attributes.package.data?.attributes.title }}</div>
+                        <div class="text-[18px] font-bold mt-[4px] text-white"> {{
+                            $store.state.buildingInfo[0].attributes.package.data?.attributes.title }}</div>
                     </div>
                 </div>
                 <div class="w-[100%] ml-[24px] mt-[8px]" v-if="tabSetting == 1">
                     <div class="grid grid-cols-4 w-[100%] gap-2 ">
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">ชื่อ</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.firstName" />
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                                v-model="userData.firstName" />
                         </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">นามสกุล</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.lastName"/>
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                                v-model="userData.lastName" />
                         </div>
                         <div class="mt-[8px] col-span-4">
                             <div class="text-custom text-[14px] text-[#003765]">ที่อยู่</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.contactAddress" />
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                                v-model="userData.contactAddress" />
                         </div>
                         <!-- <div class="">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">เขต</div>
@@ -186,18 +215,20 @@
                                 </vs-option>
                             </vs-select>
                         </div> -->
-                        
+
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.phone"/>
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                                v-model="userData.phone" />
                         </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">Email</div>
-                            <input disabled class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="userData.email" />
+                            <input disabled class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                type="input" v-model="userData.email" />
                         </div>
                     </div>
                     <div class="mt-[44px] mb-[50px]">
-                        <vs-button @click="updateUserDetail()" >
+                        <vs-button @click="updateUserDetail()">
                             <div class="font-bold">บันทึก</div>
                         </vs-button>
                     </div>
@@ -206,11 +237,13 @@
                     <div class="grid grid-cols-4 w-[100%] gap-2 ">
                         <div class="mt-[8px] col-span-4">
                             <div class="text-custom text-[14px] text-[#003765]">ชื่ออพาร์ทเม้นท์</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="buildingData.attributes.buildingName" />
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                                v-model="buildingData.attributes.buildingName" />
                         </div>
                         <div class="mt-[8px] col-span-4">
                             <div class="text-custom text-[14px] text-[#003765]">ที่อยู่</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="buildingData.attributes.buildingAddress" />
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                                v-model="buildingData.attributes.buildingAddress" />
                         </div>
                         <!-- <div class="">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">เขต</div>
@@ -257,37 +290,48 @@
                             </vs-select>
                         </div> -->
 
-                        <ThailandAutoComplete v-model="buildingData.attributes.buildingDistrict" type="district" @select="selectBuild" label="ตำบล" size="small" placeholder="ตำบล..."/>
-                        <ThailandAutoComplete v-model="buildingData.attributes.buildingSubDistrict" type="amphoe" @select="selectBuild" label="อำเภอ" size="small" placeholder="อำเภอ..."/>
-                        <ThailandAutoComplete v-model="buildingData.attributes.buildingProvince" type="province" @select="selectBuild" label="จังหวัด" size="small" placeholder="จังหวัด..."/>
-                        <ThailandAutoComplete v-model="buildingData.attributes.buildingPostcode" type="zipcode" @select="selectBuild" label="รหัสไปรษณีย์" size="small" placeholder="รหัสไปรษณีย์..."/>
-                      
+                        <!-- <ThailandAutoComplete v-model="buildingData.attributes.buildingDistrict" type="district"
+                            @select="selectBuild" label="ตำบล" size="small" placeholder="ตำบล..." />
+                        <ThailandAutoComplete v-model="buildingData.attributes.buildingSubDistrict" type="amphoe"
+                            @select="selectBuild" label="อำเภอ" size="small" placeholder="อำเภอ..." />
+                        <ThailandAutoComplete v-model="buildingData.attributes.buildingProvince" type="province"
+                            @select="selectBuild" label="จังหวัด" size="small" placeholder="จังหวัด..." />
+                        <ThailandAutoComplete v-model="buildingData.attributes.buildingPostcode" type="zipcode"
+                            @select="selectBuild" label="รหัสไปรษณีย์" size="small" placeholder="รหัสไปรษณีย์..." /> -->
+
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="buildingData.attributes.buildingPhone"/>
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                                v-model="buildingData.attributes.buildingPhone" />
                         </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">Email</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="buildingData.attributes.buildingEmail" />
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                                v-model="buildingData.attributes.buildingEmail" />
                         </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">ไลน์ติดต่อ</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="buildingData.attributes.buildingLine"/>
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                                v-model="buildingData.attributes.buildingLine" />
                         </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">เฟสบุ๊ค</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input" v-model="buildingData.attributes.buildingFacebook"/>
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                                v-model="buildingData.attributes.buildingFacebook" />
                         </div>
                         <div class="">
                             <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">อัตราภาษี</div>
-                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"  v-model="buildingData.attributes.vat_rate">
+                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                v-model="buildingData.attributes.vat_rate">
                         </div>
                         <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">วันครบกำหนดชำระ (กรุณาใส่ตัวเลข 1-28)</div>
-                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"  v-model="buildingData.attributes.dueDate">
+                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">วันครบกำหนดชำระ (กรุณาใส่ตัวเลข
+                                1-28)</div>
+                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                v-model="buildingData.attributes.dueDate">
                         </div>
 
-<!-- <form class="max-w-xs mx-auto">
+                        <!-- <form class="max-w-xs mx-auto">
     <label for="quantity-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Choose quantity:</label>
     <div class="relative flex items-center max-w-[8rem]">
         <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
@@ -306,18 +350,22 @@
 </form> -->
 
                         <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">Latitude (use for map marker)</div>
-                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"  v-model="buildingData.attributes.lat">
+                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">Latitude (use for map marker)
+                            </div>
+                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                v-model="buildingData.attributes.lat">
                         </div>
                         <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">Longitude (use for map marker)</div>
-                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"  v-model="buildingData.attributes.long">
+                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">Longitude (use for map marker)
+                            </div>
+                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                v-model="buildingData.attributes.long">
                         </div>
 
 
                     </div>
                     <div class="mt-[44px] mb-[50px]">
-                        <vs-button  @click="updateBuildingData()">
+                        <vs-button @click="updateBuildingData()">
                             <div class="font-bold">บันทึก</div>
                         </vs-button>
                     </div>
@@ -334,7 +382,7 @@ export default {
     data() {
         return {
             tabSetting: 1,
-            userData: [] ,
+            userData: [],
             buildingData: [],
             buildingStat: [],
             district: '',
@@ -363,45 +411,45 @@ export default {
     methods: {
         getUserDetail() {
             const loading = this.$vs.loading()
-            console.log("ID :",this.$store.state.userInfo.user.id)
+            console.log("ID :", this.$store.state.userInfo.user.id)
             fetch(`https://api.resguru.app/api/users/${this.$store.state.userInfo.user.id}?populate=*`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getUser()",resp);
+                    console.log("Return from getUser()", resp);
                     this.userData = resp
                 }).finally(() => {
                     loading.close()
                 })
         },
-        updateUserDetail(){
-            axios.put(`https://api.resguru.app/api/users/${this.$store.state.userInfo.user.id}`,{
-                
-                    firstName: this.userData.firstName,
-                    lastName: this.userData.lastName,
-                    contactAddress: this.userData.contactAddress,
-                    phone: this.userData.phone,
-                    currentAddress: this.buildingData.attributes.currentAddress,
-                
+        updateUserDetail() {
+            axios.put(`https://api.resguru.app/api/users/${this.$store.state.userInfo.user.id}`, {
+
+                firstName: this.userData.firstName,
+                lastName: this.userData.lastName,
+                contactAddress: this.userData.contactAddress,
+                phone: this.userData.phone,
+                currentAddress: this.buildingData.attributes.currentAddress,
+
             })
-            .then( (resp) =>{
-                           console.log(resp)
-                        })
-            .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
-            this.$showNotification('danger', errorMessage); 
-            })
-            .finally(()=>{
-                this.getUserDetail();
-                this.$showNotification('#3A89CB', 'Upload Profile Success')
-            }) 
-              
-        }, 
+                .then((resp) => {
+                    console.log(resp)
+                })
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.getUserDetail();
+                    this.$showNotification('#3A89CB', 'Upload Profile Success')
+                })
+
+        },
         getBuildingData() {
             const loading = this.$vs.loading()
             fetch(`https://api.resguru.app/api/buildings/${this.$store.state.building}?populate=*`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getBuilding()",resp);
+                    console.log("Return from getBuilding()", resp);
                     this.buildingData = resp.data
                 }).finally(() => {
                     loading.close()
@@ -412,15 +460,15 @@ export default {
             fetch(`https://api.resguru.app/api/getbuildingstat?buildingid=${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getBuildingStat()",resp);
+                    console.log("Return from getBuildingStat()", resp);
                     this.buildingStat = resp
                 }).finally(() => {
                     loading.close()
                 })
         },
-        updateBuildingData(){
-            axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`,{
-                data : {
+        updateBuildingData() {
+            axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`, {
+                data: {
                     buildingName: this.buildingData.attributes.buildingName,
                     buildingAddress: this.buildingData.attributes.buildingAddress,
                     buildingProvince: this.buildingData.attributes.buildingProvince,
@@ -437,22 +485,22 @@ export default {
                     BuildingDueDate: this.buildingData.attributes.dueDate
                 }
             })
-            .then( (resp) =>{
-                            console.log("Result from",resp)
-                            
-                        })
-            .catch(error => {
-                console.log("Err",error)
-            const errorMessage = error.message ? error.message : 'Error updating information';
-            this.$showNotification('danger', errorMessage); 
-            })
-            .finally(()=>{
-                this.getBuildingData();
-                this.queryTabSetting();
-                this.$showNotification('#3A89CB', 'Upload Building Success')
-            }) 
-               
-        }, 
+                .then((resp) => {
+                    console.log("Result from", resp)
+
+                })
+                .catch(error => {
+                    console.log("Err", error)
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.getBuildingData();
+                    this.queryTabSetting();
+                    this.$showNotification('#3A89CB', 'Upload Building Success')
+                })
+
+        },
         openNotificationBuilding(position = null, color) {
             const noti = this.$vs.notification({
                 sticky: true,
@@ -461,17 +509,17 @@ export default {
                 title: 'Update Building Information Success',
             })
         },
-        select (address) {
-          this.district = address.district
-          this.amphoe = address.amphoe
-          this.province = address.province
-          this.zipcode = address.zipcode
+        select(address) {
+            this.district = address.district
+            this.amphoe = address.amphoe
+            this.province = address.province
+            this.zipcode = address.zipcode
         },
-        selectBuild (address) {
-          this.buildingData.attributes.buildingDistrict = address.district
-          this.buildingData.attributes.buildingSubDistrict = address.amphoe
-          this.buildingData.attributes.buildingProvince = address.province
-          this.buildingData.attributes.buildingPostcode = address.zipcode
+        selectBuild(address) {
+            this.buildingData.attributes.buildingDistrict = address.district
+            this.buildingData.attributes.buildingSubDistrict = address.amphoe
+            this.buildingData.attributes.buildingProvince = address.province
+            this.buildingData.attributes.buildingPostcode = address.zipcode
         },
         routerTo(path) {
             this.$router.push({
@@ -482,71 +530,71 @@ export default {
             }, 200);
 
         },
-        queryTabSetting(){
+        queryTabSetting() {
             this.tabSetting = 1
-            if(this.$route.query.tab !== undefined){
+            if (this.$route.query.tab !== undefined) {
                 this.tabSetting = this.$route.query.tabsetting
             }
         },
-        editProfilewithUpload(){
+        editProfilewithUpload() {
             this.fileProfile = this.$refs.buildingProfile.files[0]
 
-            if(this.fileProfile.length != 0){
-                        let formData = new FormData();
-                        formData.append("files", this.fileProfile);
-                        formData.append("refId", String(this.$store.state.userInfo.user.id));
-                        formData.append("ref", "plugin::users-permissions.user");
-                        formData.append("field", "imageProfile");
+            if (this.fileProfile.length != 0) {
+                let formData = new FormData();
+                formData.append("files", this.fileProfile);
+                formData.append("refId", String(this.$store.state.userInfo.user.id));
+                formData.append("ref", "plugin::users-permissions.user");
+                formData.append("field", "imageProfile");
 
-                        axios.post("https://api.resguru.app/api/upload", formData, {
-                            headers: {
-                            "Content-Type": "multipart/form-data",
-                            },
-                        })
-                        .then( (resp) =>{
-                                console.log(resp)
-                        })
-                        .catch(error => {
+                axios.post("https://api.resguru.app/api/upload", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                    .then((resp) => {
+                        console.log(resp)
+                    })
+                    .catch(error => {
                         const errorMessage = error.message ? error.message : 'Error updating information';
-                        this.$showNotification('danger', errorMessage); 
-                        })
-                        .finally(()=>{
-                            this.getBuildingData();
-                            this.$showNotification('#3A89CB', 'Upload Profile Success')
-                        }) 
+                        this.$showNotification('danger', errorMessage);
+                    })
+                    .finally(() => {
+                        this.getBuildingData();
+                        this.$showNotification('#3A89CB', 'Upload Profile Success')
+                    })
             }
         },
-        editBannerwithUpload(){
+        editBannerwithUpload() {
 
             this.fileBanner = this.$refs.buildingBanner.files[0]
 
-            if(this.fileBanner.length != 0){
-                        let formData = new FormData();
-                        formData.append("files", this.fileBanner);
-                        formData.append("refId", String(this.$store.state.building));
-                        formData.append("ref", "api::building.building");
-                        formData.append("field", "buildingBanner");
+            if (this.fileBanner.length != 0) {
+                let formData = new FormData();
+                formData.append("files", this.fileBanner);
+                formData.append("refId", String(this.$store.state.building));
+                formData.append("ref", "api::building.building");
+                formData.append("field", "buildingBanner");
 
-                        axios.post("https://api.resguru.app/api/upload", formData, {
-                            headers: {
-                            "Content-Type": "multipart/form-data",
-                            },
-                        })                
-                        .then( (resp) =>{
-                            console.log(resp)
-                        })
-                        .catch(error => {
+                axios.post("https://api.resguru.app/api/upload", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                })
+                    .then((resp) => {
+                        console.log(resp)
+                    })
+                    .catch(error => {
                         const errorMessage = error.message ? error.message : 'Error updating information';
-                        this.$showNotification('danger', errorMessage); 
-                        })
-                        .finally(()=>{
-                            this.getBuildingData();
-                            this.$showNotification('#3A89CB', 'Upload Banner Success')
-                        }) 
+                        this.$showNotification('danger', errorMessage);
+                    })
+                    .finally(() => {
+                        this.getBuildingData();
+                        this.$showNotification('#3A89CB', 'Upload Banner Success')
+                    })
             }
         },
-        
-        
+
+
     },
 }
 
