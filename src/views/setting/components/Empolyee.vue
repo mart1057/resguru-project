@@ -39,7 +39,7 @@
                                         <div class="">
                                             <div
                                                 class="h-[24px] rounded-[12px] justify-center font-bold text-[#003765] pl-[12px] pr-[12px] flex items-center bg-[#F0F8FF]">
-                                                {{ data.role.name }}
+                                                Admin
                                             </div>
                                             <div class="mt-[14px] text-[18px] font-bold">{{ data.firstName }} {{
                                                 data.lastName }}</div>

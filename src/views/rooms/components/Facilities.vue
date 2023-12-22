@@ -261,7 +261,7 @@
                             <div class="ml-[4px]">ห้อง</div>
                             <div class="font-bold ml-[4px]">{{ $route.query.number_room }} </div>
                         </div>
-                        <div @click="add_on = false" class="cursor-pointer">
+                        <div @click="add_on = false,items=[]" class="cursor-pointer">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
                                     width="24" height="24">
