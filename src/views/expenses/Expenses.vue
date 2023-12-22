@@ -186,7 +186,7 @@
                                 </div>
                                 <div class="flex flex-col justify-around">
                                     <div class="text-[12px] text-[#B9CCDC]">60%</div>
-                                    <div class="text-[#F5D65E] font-bold text-[16px]">{{ data2[0] }}</div>
+                                    <div class="text-[#F5D65E] font-bold text-[16px]">{{ $formatNumber(data2[0]) }}</div>
                                 </div>
                             </div>
                         </div>
@@ -208,7 +208,7 @@
                                 </div>
                                 <div class="flex flex-col justify-around">
                                     <div class="text-[12px] text-[#B9CCDC]">60%</div>
-                                    <div class="text-[#008EF4] text-[16px] font-bold">{{ data2[1] }}</div>
+                                    <div class="text-[#008EF4] text-[16px] font-bold">{{$formatNumber(data2[1])  }}</div>
                                 </div>
                             </div>
                         </div>
@@ -230,7 +230,7 @@
                                 </div>
                                 <div class="flex flex-col justify-around">
                                     <div class="text-[12px] text-[#B9CCDC]">60%</div>
-                                    <div class="text-[#D44769] font-bold text-[16px]">{{ data2[2] }}</div>
+                                    <div class="text-[#D44769] font-bold text-[16px]">{{ $formatNumber(data2[2] )}}</div>
                                 </div>
                             </div>
                         </div>
@@ -252,7 +252,7 @@
                                 </div>
                                 <div class="flex flex-col justify-around">
                                     <div class="text-[12px] text-[#B9CCDC]">60%</div>
-                                    <div class="text-[#CC00FF  ] font-bold text-[16px]">{{ data2[3] }}</div>
+                                    <div class="text-[#CC00FF  ] font-bold text-[16px]">{{ $formatNumber(data2[3]) }}</div>
                                 </div>
                             </div>
                         </div>
@@ -428,13 +428,14 @@
                                 {{ tr.attributes.remark }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.evidence.data ? tr.attributes.evidence.data.attributes.url : "" }}
+                                <img :scr="tr.attributes.evidence.data ? 'https://api.resguru.app'+tr.attributes.evidence.data.attributes.url : ''"/>
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.receipt.data ? tr.attributes.receipt.data.attributes.url : "" }}
+                                <!-- {{ tr.attributes.receipt.data ? tr.attributes.receipt.data.attributes.url : "" }} -->
+                                <img :scr=" tr.attributes.receipt.data ? 'https://api.resguru.app'+ tr.attributes.receipt.data.attributes.url : ''"/>
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.amount }}
+                                {{ $formatNumber(tr.attributes.amount) }}
                             </vs-td>
                         </vs-tr>
                     </template>
@@ -477,7 +478,7 @@
                                 Image.png
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.total }}
+                                {{ $formatNumber(tr.attributes.total) }}
                             </vs-td>
                         </vs-tr>
                     </template>
