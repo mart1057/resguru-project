@@ -95,7 +95,8 @@
                                 <div class="grid grid-cols-4  text-custom mt-[14px]  "
                                     v-if="room_detail.check_user == true && is_edit == false">
                                     <div class="col-span-2">
-                                        <div class=""> <span class="text-[red] mr-[2px]">*</span>ค้นหาผู้เช่าด้วยรหัสบัตรประชาชน</div>
+                                        <div class=""> <span
+                                                class="text-[red] mr-[2px]">*</span>ค้นหาผู้เช่าด้วยรหัสบัตรประชาชน</div>
                                         <div>
                                             <div>
                                                 <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
@@ -548,7 +549,7 @@ export default {
                 number: ''
 
             },
-            id_card:'',
+            id_card: '',
             room_detail: {
                 id: '',
                 sex: null,
@@ -674,37 +675,67 @@ export default {
         },
         getUserDetail(id_room) {
             this.img_arr_card = []
-            fetch('https://api.resguru.app/api' + '/users/?filters[idCard][$eq]=' +this.id_card + '&populate=deep')
+            fetch('https://api.resguru.app/api' + '/users/?filters[idCard][$eq]=' + this.id_card + '&populate=deep')
                 .then(response => response.json())
                 .then((resp) => {
                     console.log('detail', resp);
-                    this.id_user = resp[0].id
-                    this.room_detail.id = resp[0].id
-                    this.room_detail.name = resp[0].firstName
-                    this.room_detail.last_name = resp[0].lastName
-                    this.room_detail.nick_name = resp[0].nickName
-                    this.room_detail.phone = resp[0].phone
-                    this.room_detail.email = resp[0].email
-                    this.room_detail.id_card = resp[0].idCard
-                    this.room_detail.address = resp[0].contactAddress
-                    this.room_detail.sex = resp[0].sex
-                    this.room_detail.birth = resp[0].dateOfBirth
-                    this.room_detail.date_sign = resp[0].checkInDate
-                    this.room_detail.workplace = resp[0].workplace,
-                        this.room_detail.faculty = resp[0].faculty,
-                        this.room_detail.rank = resp[0].rank,
-                        this.room_detail.idEmployee = resp[0].idEmployee,
-                        this.room_detail.emergencyPerson = resp[0].emergencyPerson,
-                        this.room_detail.relation = resp[0].relation,
-                        this.room_detail.emergencyPhone = resp[0].emergencyPhone,
-                        this.room_detail.lineID = resp[0].lineID
+                    if (resp.length>0) {
+                        this.id_user = resp[0].id
+                        this.room_detail.id = resp[0].id
+                        this.room_detail.name = resp[0].firstName
+                        this.room_detail.last_name = resp[0].lastName
+                        this.room_detail.nick_name = resp[0].nickName
+                        this.room_detail.phone = resp[0].phone
+                        this.room_detail.email = resp[0].email
+                        this.room_detail.id_card = resp[0].idCard
+                        this.room_detail.address = resp[0].contactAddress
+                        this.room_detail.sex = resp[0].sex
+                        this.room_detail.birth = resp[0].dateOfBirth
+                        this.room_detail.date_sign = resp[0].checkInDate
+                        this.room_detail.workplace = resp[0].workplace,
+                            this.room_detail.faculty = resp[0].faculty,
+                            this.room_detail.rank = resp[0].rank,
+                            this.room_detail.idEmployee = resp[0].idEmployee,
+                            this.room_detail.emergencyPerson = resp[0].emergencyPerson,
+                            this.room_detail.relation = resp[0].relation,
+                            this.room_detail.emergencyPhone = resp[0].emergencyPhone,
+                            this.room_detail.lineID = resp[0].lineID
+                    }
+                    else{
+                        this.$showNotification('danger', 'ไม่พบผู้ใช้');
+                        this.id_user = ''
+                        this.room_detail.id = ''
+                        this.room_detail.name = ''
+                        this.room_detail.last_name = ''
+                        this.room_detail.nick_name = ''
+                        this.room_detail.phone = ''
+                        this.room_detail.email = ''
+                        this.room_detail.id_card = ''
+                        this.room_detail.address = ''
+                        this.room_detail.sex = ''
+                        this.room_detail.birth =''
+                        this.room_detail.date_sign = ''
+                        this.room_detail.workplace = '',
+                        this.room_detail.faculty = '',
+                        this.room_detail.rank = ''
+                        this.room_detail.idEmployee = ''
+                        this.room_detail.emergencyPerson = ''
+                        this.room_detail.relation = ''
+                        this.room_detail.emergencyPhone = '',
+                        this.room_detail.lineID = ''
+                        this.room_detail.vehicles = []
+                    }
+
                 }).finally(() => {
-                    fetch('https://api.resguru.app/api' + '/users/' + this.id_user + '?&populate=*')
-                        .then(response => response.json())
-                        .then((resp) => {
-                            console.log('fffff', resp);
-                            this.room_detail.vehicles = resp.tenant_vehicles;
-                        })
+                    if (this.id_user) {
+                        fetch('https://api.resguru.app/api' + '/users/' + this.id_user+ '?&populate=*')
+                            .then(response => response.json())
+                            .then((resp) => {
+                                console.log('fffff', resp);
+                                this.room_detail.vehicles = resp.tenant_vehicles;
+                            })
+                    }
+
                 })
         },
         getDetailRentalContract(id) {
