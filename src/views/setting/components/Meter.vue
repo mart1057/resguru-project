@@ -24,7 +24,7 @@
 
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 1">
             <div class="grid grid-cols-6 gap-4 mt-[14px] w-[100%]">
-                <div class="border h-[97px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]">
+                <div class="border h-[auto] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]">
                     <div class="flex flex-col justify-between h-[100%]">
                         <div class="flex">
                             <div>
@@ -44,7 +44,7 @@
                             <div class="text-[16px] ml-[4px] font-bold">ค่าน้ำ</div>
                         </div>
                         <div
-                            class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] text-[#2875E9]">
+                            class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] text-[#2875E9] mt-[8px]">
                             <div>ราคา</div>
                             <input type="number" @change="updateUserBuildingWater()"
                                 class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="border h-[97px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]">
+                <div class="border h-[auto] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]">
                     <div class="flex flex-col justify-between h-[100%]">
                         <div class="flex">
                             <div>
@@ -73,7 +73,7 @@
                             <div class="text-[16px] ml-[4px] font-bold">ค่าไฟ</div>
                         </div>
                         <div
-                            class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] text-[#EEA10B]">
+                            class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] text-[#EEA10B] mt-[8px]">
                             <div>ราคา</div>
                             <input type="number" @change="updateUserBuildingElectric()"
                                 class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
@@ -89,7 +89,7 @@
 
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 2">
             <div class="grid grid-cols-6 gap-4 mt-[14px] w-[100%]">
-                <div class="border h-[97px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]">
+                <div class="border h-[auto] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]">
                     <div class="flex flex-col justify-between h-[100%]">
                         <div class="flex">
                             <div>
@@ -108,7 +108,8 @@
                             </div>
                             <div class="text-[16px] ml-[4px] font-bold">ค่าส่วนกลาง</div>
                         </div>
-                        <div class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] ">
+                        <div
+                            class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] mt-[8px] ">
                             <div>ราคา</div>
                             <input type="number" @change="updateUserBuildingCommunual()"
                                 class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
@@ -125,6 +126,24 @@
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 3">
             <div class="text-[16px] font-bold mt-[24px]">ค่าบริการอื่น ๆ</div>
             <div class="grid grid-cols-6 gap-4 mt-[14px] w-[100%]">
+                <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
+                    @click="is_edit = false, discountAmount = '', price = '', title = '', create_service = true">
+                    <div>
+                        <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
+                            <mask id="mask0_1373_22044" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="6" y="7"
+                                width="56" height="55">
+                                <rect x="6.80078" y="7.25586" width="54.4" height="54.4" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_1373_22044)">
+                                <path
+                                    d="M33.9984 49.7561C33.5165 49.7561 33.1129 49.5932 32.7874 49.2674C32.4619 48.9416 32.2992 48.5379 32.2992 48.0562V36.1561H20.3992C19.9175 36.1561 19.5138 35.9932 19.188 35.6672C18.8621 35.3412 18.6992 34.9373 18.6992 34.4555C18.6992 33.9736 18.8621 33.5699 19.188 33.2444C19.5138 32.919 19.9175 32.7562 20.3992 32.7562H32.2992V20.8562C32.2992 20.3745 32.4622 19.9708 32.7881 19.6449C33.1141 19.3191 33.518 19.1562 33.9999 19.1562C34.4818 19.1562 34.8855 19.3191 35.2109 19.6449C35.5364 19.9708 35.6991 20.3745 35.6991 20.8562V32.7562H47.5992C48.0808 32.7562 48.4846 32.9192 48.8104 33.2452C49.1362 33.5712 49.2991 33.9751 49.2991 34.4569C49.2991 34.9388 49.1362 35.3425 48.8104 35.668C48.4846 35.9934 48.0808 36.1561 47.5992 36.1561H35.6991V48.0562C35.6991 48.5379 35.5361 48.9416 35.2102 49.2674C34.8842 49.5932 34.4803 49.7561 33.9984 49.7561Z"
+                                    fill="#B9CCDC" />
+                            </g>
+                        </svg>
+                    </div>
+                    <div class="text-[#5C6B79] font-bold mt-[4px] ">สร้างบริการ</div>
+                </div>
                 <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]" v-for="data in otherOfBuilding">
                     <div class="flex flex-col justify-between h-[100%]">
                         <div class="flex justify-between">
@@ -158,24 +177,6 @@
                                 class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]">
                         </div>
                     </div>
-                </div>
-                <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
-                    @click="is_edit = false, discountAmount = '', price = '', title = '', create_service = true">
-                    <div>
-                        <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
-                            <mask id="mask0_1373_22044" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="6" y="7"
-                                width="56" height="55">
-                                <rect x="6.80078" y="7.25586" width="54.4" height="54.4" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_1373_22044)">
-                                <path
-                                    d="M33.9984 49.7561C33.5165 49.7561 33.1129 49.5932 32.7874 49.2674C32.4619 48.9416 32.2992 48.5379 32.2992 48.0562V36.1561H20.3992C19.9175 36.1561 19.5138 35.9932 19.188 35.6672C18.8621 35.3412 18.6992 34.9373 18.6992 34.4555C18.6992 33.9736 18.8621 33.5699 19.188 33.2444C19.5138 32.919 19.9175 32.7562 20.3992 32.7562H32.2992V20.8562C32.2992 20.3745 32.4622 19.9708 32.7881 19.6449C33.1141 19.3191 33.518 19.1562 33.9999 19.1562C34.4818 19.1562 34.8855 19.3191 35.2109 19.6449C35.5364 19.9708 35.6991 20.3745 35.6991 20.8562V32.7562H47.5992C48.0808 32.7562 48.4846 32.9192 48.8104 33.2452C49.1362 33.5712 49.2991 33.9751 49.2991 34.4569C49.2991 34.9388 49.1362 35.3425 48.8104 35.668C48.4846 35.9934 48.0808 36.1561 47.5992 36.1561H35.6991V48.0562C35.6991 48.5379 35.5361 48.9416 35.2102 49.2674C34.8842 49.5932 34.4803 49.7561 33.9984 49.7561Z"
-                                    fill="#B9CCDC" />
-                            </g>
-                        </svg>
-                    </div>
-                    <div class="text-[#5C6B79] font-bold mt-[4px] ">สร้างบริการ</div>
                 </div>
             </div>
         </div>
@@ -544,14 +545,14 @@
                             v-model="discountAmount" />
                     </div>
                 </div>
-                <div class=" flex justify-between mt-[30px]">
-                    <div>
+                <div class=" flex justify-end mt-[30px]">
+                    <!-- <div>
                         <div>
                             <vs-button @click="delectFacilities(id_Facilities)" color="#D44769">
                                 <div class="text-custom">ลบรายการนี้</div>
                             </vs-button>
                         </div>
-                    </div>
+                    </div> -->
                     <div class="flex justify-end">
                         <div>
                             <vs-button dark shadow @click="create_service = false">
