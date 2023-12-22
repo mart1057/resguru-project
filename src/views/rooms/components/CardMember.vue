@@ -3,11 +3,11 @@
         <div class="grid grid-cols-7 w-[100%] gap-4 mt-[14px]">
             <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[14px] cursor-pointer "
                 v-for="data in user">
-                <div :class="status == 'rent' ? 'bg-[#D7F1E3] text-[#39B974]' : 'bg-[#F0F8FF] text-[#003765]'"
+                <!-- <div :class="status == 'rent' ? 'bg-[#D7F1E3] text-[#39B974]' : 'bg-[#F0F8FF] text-[#003765]'"
                     @click="getDetailRentalContract()"
                     class="h-[24px] w-[auto] mt-[-22px] text-[12px] flex items-center justify-center p-[8px] rounded-[8px]">
                     {{ status == "rent" ? 'ทำสัญญาแล้ว' : status == "reserved" ? 'ยังไม่ทำสัญญา' : 'ห้องว่าง' }}
-                </div>
+                </div> -->
                 <img class="w-[78px] h-[78px] rounded-[22px]" :src="data.filePath" @click="getDetailRentalContract()" />
                 <div @click="getDetailRentalContract()">{{ data.firstName }} {{ data.lastName }}</div>
                 <div class="flex" @click="getDetailRentalContract()">
