@@ -560,7 +560,7 @@
                                 </div>
                                 <div class="col-span-4 mt-[16px]">
                                     <div>ประเภทห้องพัก</div>
-                                    <select placeholder="Select" v-model="room_detail_create.type_room"
+                                    <select placeholder="Select" v-model="room_detail_create.type_room" disabled
                                         class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]">
                                         <option v-for="type_room in room_type" :value="type_room.id">
                                             {{ type_room.attributes.roomTypeName }}
@@ -848,7 +848,8 @@ export default {
             fetch(`https://api.resguru.app/api/users?filters[idCard][$eq]=${id_room}`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log('detail from get user', resp);
+                    if(resp.length > 0 ){
+                         console.log('detail from get user', resp);
                     this.room_detail_create.id = resp[0].id
                     this.room_detail_create.name = resp[0].firstName
                     this.room_detail_create.last_name = resp[0].lastName
@@ -859,6 +860,21 @@ export default {
                     this.room_detail_create.address = resp[0].contactAddress
                     this.room_detail_create.sex = resp[0].sex
                     this.room_detail_create.birth = resp[0].dateOfBirth
+                    }
+                    else{
+                        this.$showNotification('danger', 'ไม่พบผู้ใช้');
+                    this.room_detail_create.id = ''
+                    this.room_detail_create.name = ''
+                    this.room_detail_create.last_name = ''
+                    this.room_detail_create.nick_name = ''
+                    this.room_detail_create.phone = ''
+                    this.room_detail_create.email = ''
+                    this.room_detail_create.id_card = ''
+                    this.room_detail_create.address = ''
+                    this.room_detail_create.sex = ''
+                    this.room_detail_create.birth = ''
+                    }
+                   
 
                 }).catch(() => {
                     loading.close()
