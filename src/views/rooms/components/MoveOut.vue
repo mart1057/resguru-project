@@ -66,7 +66,7 @@
         </div>
         <div class="mt-[14px]">
             <!-- /////////////////////////////////// items ///////////////////////////////// -->
-            <div class="flex" v-for="item in items_other">
+            <div class="flex" v-for="(item, i) in items_other">
                 <div class="">
                     <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg"
                         v-if="item.name == 'ค่าทาสีผนัง'">
@@ -276,6 +276,14 @@
                             </select>
                         </div>
                     </div>
+                </div>
+                <div class="flex flex-col justify-center items-center ml-[50px] mt-[16px]">
+                    <div class="flex flex-col justify-between item-end h-[100%]">
+                        <div @click="deleteItem(i)"
+                            class="h-[28px] mt-[24px] cursor-pointer w-[120px] flex justify-center text-custom items-center bg-[#D44769] text-[14px] text-[white] rounded-[12px]">
+                            ลบรายการ</div>
+                    </div>
+
                 </div>
             </div>
             <div class="mt-[12px]">
@@ -490,176 +498,177 @@
                             <div class="text-custom text-[#D44769] font-bold text-[16px]">หนี้สูญ {{
                                 (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) < 0 ? 0
                                 : (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) }}
-                                บาท</div>
+                                    บาท</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="text-custom text-[12px] font-bold text-[#003765] mt-[24px]">วันที่ย้ายออก</div>
-                    <div>
-                        <input
-                            class="h-[28px] w-[180px] bg-[#F3F8FD] rounded-[12px] mt-[4px]  flex justify-start pl-[8px] pr-[8px]"
-                            type="date" v-model="date_moveout" />
-                    </div>
-                    <div class="flex mt-[14px]">
-                        <button @click="PDFPrint()"
-                            class="bg-[#165D98] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
-                            <div class="flex">
-                                <div class="flex justify-center items-center ">
-                                    <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_3285_9902" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="22" height="23">
-                                            <rect y="0.5" width="22" height="22" fill="#D9D9D9" />
-                                        </mask>
-                                        <g mask="url(#mask0_3285_9902)">
-                                            <path
-                                                d="M14.6652 8.11546V5.36546H7.33187V8.11546H5.9569V4.81532C5.9569 4.58155 6.0363 4.38564 6.19511 4.22757C6.35391 4.06951 6.55068 3.99048 6.78543 3.99048H15.208C15.4466 3.99048 15.645 4.06954 15.8031 4.22767C15.9611 4.38579 16.0402 4.58173 16.0402 4.81548V8.11546H14.6652ZM16.3222 11.7821C16.582 11.7821 16.7997 11.6942 16.9754 11.5185C17.1511 11.3428 17.2389 11.1251 17.2389 10.8654C17.2389 10.6057 17.1511 10.388 16.9754 10.2123C16.7997 10.0366 16.582 9.94874 16.3222 9.94874C16.0625 9.94874 15.8448 10.0366 15.6691 10.2123C15.4934 10.388 15.4056 10.6057 15.4056 10.8654C15.4056 11.1251 15.4934 11.3428 15.6691 11.5185C15.8448 11.6942 16.0625 11.7821 16.3222 11.7821ZM7.61395 17.9167H14.3831C14.4654 17.9167 14.533 17.8903 14.5859 17.8374C14.6388 17.7845 14.6652 17.7169 14.6652 17.6346V14.0032H7.33187V17.6346C7.33187 17.7169 7.35832 17.7845 7.41121 17.8374C7.4641 17.8903 7.53168 17.9167 7.61395 17.9167ZM7.61395 19.2917C7.15826 19.2917 6.76817 19.1294 6.44367 18.8049C6.11915 18.4804 5.9569 18.0903 5.9569 17.6346V15.625H3.38319C3.14845 15.625 2.95168 15.5456 2.79288 15.3868C2.63409 15.228 2.55469 15.0312 2.55469 14.7965V10.4071C2.55469 9.75779 2.77651 9.21352 3.22014 8.77429C3.66378 8.33507 4.20583 8.11546 4.84631 8.11546H17.1508C17.8001 8.11546 18.3443 8.33507 18.7836 8.77429C19.2228 9.21352 19.4424 9.75779 19.4424 10.4071V14.7965C19.4424 15.0312 19.363 15.228 19.2042 15.3868C19.0454 15.5456 18.8486 15.625 18.6139 15.625H16.0402V17.6346C16.0402 18.0903 15.8779 18.4804 15.5534 18.8049C15.2289 19.1294 14.8388 19.2917 14.3831 19.2917H7.61395ZM18.0674 14.25V10.4071C18.0674 10.1474 17.9796 9.92965 17.8039 9.75395C17.6282 9.57826 17.4105 9.49041 17.1508 9.49041H4.84631C4.58659 9.49041 4.36888 9.57826 4.19318 9.75395C4.01749 9.92965 3.92964 10.1474 3.92964 10.4071V14.25H5.9569V12.6283H16.0402V14.25H18.0674Z"
-                                                fill="white" />
-                                        </g>
-                                    </svg>
+                        <div class="text-custom text-[12px] font-bold text-[#003765] mt-[24px]">วันที่ย้ายออก</div>
+                        <div>
+                            <input
+                                class="h-[28px] w-[180px] bg-[#F3F8FD] rounded-[12px] mt-[4px]  flex justify-start pl-[8px] pr-[8px]"
+                                type="date" v-model="date_moveout" />
+                        </div>
+                        <div class="flex mt-[14px]">
+                            <button @click="PDFPrint()"
+                                class="bg-[#165D98] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
+                                <div class="flex">
+                                    <div class="flex justify-center items-center ">
+                                        <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <mask id="mask0_3285_9902" style="mask-type:alpha" maskUnits="userSpaceOnUse"
+                                                x="0" y="0" width="22" height="23">
+                                                <rect y="0.5" width="22" height="22" fill="#D9D9D9" />
+                                            </mask>
+                                            <g mask="url(#mask0_3285_9902)">
+                                                <path
+                                                    d="M14.6652 8.11546V5.36546H7.33187V8.11546H5.9569V4.81532C5.9569 4.58155 6.0363 4.38564 6.19511 4.22757C6.35391 4.06951 6.55068 3.99048 6.78543 3.99048H15.208C15.4466 3.99048 15.645 4.06954 15.8031 4.22767C15.9611 4.38579 16.0402 4.58173 16.0402 4.81548V8.11546H14.6652ZM16.3222 11.7821C16.582 11.7821 16.7997 11.6942 16.9754 11.5185C17.1511 11.3428 17.2389 11.1251 17.2389 10.8654C17.2389 10.6057 17.1511 10.388 16.9754 10.2123C16.7997 10.0366 16.582 9.94874 16.3222 9.94874C16.0625 9.94874 15.8448 10.0366 15.6691 10.2123C15.4934 10.388 15.4056 10.6057 15.4056 10.8654C15.4056 11.1251 15.4934 11.3428 15.6691 11.5185C15.8448 11.6942 16.0625 11.7821 16.3222 11.7821ZM7.61395 17.9167H14.3831C14.4654 17.9167 14.533 17.8903 14.5859 17.8374C14.6388 17.7845 14.6652 17.7169 14.6652 17.6346V14.0032H7.33187V17.6346C7.33187 17.7169 7.35832 17.7845 7.41121 17.8374C7.4641 17.8903 7.53168 17.9167 7.61395 17.9167ZM7.61395 19.2917C7.15826 19.2917 6.76817 19.1294 6.44367 18.8049C6.11915 18.4804 5.9569 18.0903 5.9569 17.6346V15.625H3.38319C3.14845 15.625 2.95168 15.5456 2.79288 15.3868C2.63409 15.228 2.55469 15.0312 2.55469 14.7965V10.4071C2.55469 9.75779 2.77651 9.21352 3.22014 8.77429C3.66378 8.33507 4.20583 8.11546 4.84631 8.11546H17.1508C17.8001 8.11546 18.3443 8.33507 18.7836 8.77429C19.2228 9.21352 19.4424 9.75779 19.4424 10.4071V14.7965C19.4424 15.0312 19.363 15.228 19.2042 15.3868C19.0454 15.5456 18.8486 15.625 18.6139 15.625H16.0402V17.6346C16.0402 18.0903 15.8779 18.4804 15.5534 18.8049C15.2289 19.1294 14.8388 19.2917 14.3831 19.2917H7.61395ZM18.0674 14.25V10.4071C18.0674 10.1474 17.9796 9.92965 17.8039 9.75395C17.6282 9.57826 17.4105 9.49041 17.1508 9.49041H4.84631C4.58659 9.49041 4.36888 9.57826 4.19318 9.75395C4.01749 9.92965 3.92964 10.1474 3.92964 10.4071V14.25H5.9569V12.6283H16.0402V14.25H18.0674Z"
+                                                    fill="white" />
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div class="text-[white] ml-[4px] ">พิมพ์</div>
                                 </div>
-                                <div class="text-[white] ml-[4px] ">พิมพ์</div>
-                            </div>
-                        </button>
-                        <button @click="move_confirm = true"
-                            class="bg-[#D44769] ml-[8px] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
-                            <div class="flex">
-                                <div class="flex justify-center items-center ">
-                                    <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_3339_790" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="22" height="23">
-                                            <rect y="0.5" width="22" height="22" fill="#D9D9D9" />
-                                        </mask>
-                                        <g mask="url(#mask0_3339_790)">
-                                            <path
-                                                d="M2.20351 19.2915C1.96876 19.2915 1.77199 19.2121 1.61317 19.0533C1.45439 18.8945 1.375 18.6978 1.375 18.463V4.53678C1.375 4.30204 1.4544 4.10527 1.6132 3.94647C1.77199 3.78766 1.96876 3.70825 2.20351 3.70825H12.4983C12.7331 3.70825 12.9299 3.78766 13.0886 3.94647C13.2474 4.10527 13.3268 4.30204 13.3268 4.53678V18.463C13.3268 18.6978 13.2474 18.8945 13.0886 19.0533C12.9299 19.2121 12.7331 19.2915 12.4983 19.2915H8.56728V15.6601H6.13454V19.2915H2.20351ZM2.74995 17.9166H4.75959V14.2852H9.94226V17.9166H11.9519V5.08323H2.74995V17.9166ZM4.75959 12.2755H6.34611V10.689H4.75959V12.2755ZM4.75959 8.67938H6.34611V7.09286H4.75959V8.67938ZM8.35574 12.2755H9.94226V10.689H8.35574V12.2755ZM8.35574 8.67938H9.94226V7.09286H8.35574V8.67938ZM14.7724 11.4996C14.7724 11.3047 14.8383 11.1415 14.97 11.0098C15.1018 10.8782 15.2651 10.8124 15.4599 10.8124H18.009L17.2544 10.0579C17.1275 9.93098 17.0626 9.77233 17.0596 9.58195C17.0567 9.39156 17.1255 9.2277 17.2659 9.09037C17.3946 8.96447 17.5555 8.90151 17.7486 8.90151C17.9417 8.90151 18.1008 8.96498 18.2257 9.09191L20.0538 10.9199C20.2195 11.0856 20.3023 11.279 20.3023 11.4999C20.3023 11.7208 20.2195 11.9141 20.0538 12.0798L18.2257 13.9079C18.1003 14.0329 17.9435 14.0982 17.7553 14.1039C17.5671 14.1095 17.4049 14.0442 17.2686 13.9079C17.1357 13.781 17.0685 13.6223 17.0667 13.432C17.065 13.2416 17.1275 13.0782 17.2544 12.9419L18.009 12.1874H15.4599C15.2651 12.1874 15.1018 12.1215 14.97 11.9896C14.8383 11.8578 14.7724 11.6945 14.7724 11.4996Z"
-                                                fill="white" />
-                                        </g>
-                                    </svg>
+                            </button>
+                            <button @click="move_confirm = true"
+                                class="bg-[#D44769] ml-[8px] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
+                                <div class="flex">
+                                    <div class="flex justify-center items-center ">
+                                        <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <mask id="mask0_3339_790" style="mask-type:alpha" maskUnits="userSpaceOnUse"
+                                                x="0" y="0" width="22" height="23">
+                                                <rect y="0.5" width="22" height="22" fill="#D9D9D9" />
+                                            </mask>
+                                            <g mask="url(#mask0_3339_790)">
+                                                <path
+                                                    d="M2.20351 19.2915C1.96876 19.2915 1.77199 19.2121 1.61317 19.0533C1.45439 18.8945 1.375 18.6978 1.375 18.463V4.53678C1.375 4.30204 1.4544 4.10527 1.6132 3.94647C1.77199 3.78766 1.96876 3.70825 2.20351 3.70825H12.4983C12.7331 3.70825 12.9299 3.78766 13.0886 3.94647C13.2474 4.10527 13.3268 4.30204 13.3268 4.53678V18.463C13.3268 18.6978 13.2474 18.8945 13.0886 19.0533C12.9299 19.2121 12.7331 19.2915 12.4983 19.2915H8.56728V15.6601H6.13454V19.2915H2.20351ZM2.74995 17.9166H4.75959V14.2852H9.94226V17.9166H11.9519V5.08323H2.74995V17.9166ZM4.75959 12.2755H6.34611V10.689H4.75959V12.2755ZM4.75959 8.67938H6.34611V7.09286H4.75959V8.67938ZM8.35574 12.2755H9.94226V10.689H8.35574V12.2755ZM8.35574 8.67938H9.94226V7.09286H8.35574V8.67938ZM14.7724 11.4996C14.7724 11.3047 14.8383 11.1415 14.97 11.0098C15.1018 10.8782 15.2651 10.8124 15.4599 10.8124H18.009L17.2544 10.0579C17.1275 9.93098 17.0626 9.77233 17.0596 9.58195C17.0567 9.39156 17.1255 9.2277 17.2659 9.09037C17.3946 8.96447 17.5555 8.90151 17.7486 8.90151C17.9417 8.90151 18.1008 8.96498 18.2257 9.09191L20.0538 10.9199C20.2195 11.0856 20.3023 11.279 20.3023 11.4999C20.3023 11.7208 20.2195 11.9141 20.0538 12.0798L18.2257 13.9079C18.1003 14.0329 17.9435 14.0982 17.7553 14.1039C17.5671 14.1095 17.4049 14.0442 17.2686 13.9079C17.1357 13.781 17.0685 13.6223 17.0667 13.432C17.065 13.2416 17.1275 13.0782 17.2544 12.9419L18.009 12.1874H15.4599C15.2651 12.1874 15.1018 12.1215 14.97 11.9896C14.8383 11.8578 14.7724 11.6945 14.7724 11.4996Z"
+                                                    fill="white" />
+                                            </g>
+                                        </svg>
+                                    </div>
+                                    <div class="text-[white] ml-[4px]  ">เคลียร์บิลและย้ายออก</div>
                                 </div>
-                                <div class="text-[white] ml-[4px]  ">เคลียร์บิลและย้ายออก</div>
-                            </div>
-                        </button>
-                        <button @click="darftBill()"
-                            class="bg-[#003765] ml-[8px] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
-                            <div class="flex">
-                                <div class="flex justify-center items-center ">
+                            </button>
+                            <button @click="darftBill()"
+                                class="bg-[#003765] ml-[8px] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
+                                <div class="flex">
+                                    <div class="flex justify-center items-center ">
+                                    </div>
+                                    <div class="text-[white] ml-[4px]  ">บันทึกแบบร่าง</div>
                                 </div>
-                                <div class="text-[white] ml-[4px]  ">บันทึกแบบร่าง</div>
-                            </div>
-                        </button>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
+            <vs-dialog width="550px" not-center v-model="move_confirm" not-close>
+                <template #header>
+                    <div class="pl-[16px]  pr-[16px] pt-[16px]">
+                        <div class="font-bold">ยืนยันการย้ายออก</div>
+                    </div>
+                </template>
+                <div class="con-content pl-[16px]  pr-[16px]">
+                    <div class="text-[#D44769]">
+                        คุณได้ตรวจสอบความถูกต้องของผู้เช่าห้อง {{ $route.query.number_room }} ก่อนจะย้ายออกแล้วหรือไม่ ?
+                    </div>
+                    <div class="center mt-[4px]">
+                        <vs-checkbox v-model="check_final" color="#003765">
+                            ตรวจสอบแล้ว
+                        </vs-checkbox>
+                    </div>
+                </div>
+                <template #footer>
+                    <div class="con-footer flex justify-end">
+                        <vs-button @click="move_confirm = false" transparent>
+                            <div class="text-[#5C6B79] text-[14px]">ยกเลิก</div>
+                        </vs-button>
+                        <vs-button @click="submitBill()" color="#003765" :disabled="check_final == false">
+                            <div class="text-[white] text-[14px]">ยืนยันการย้ายออก</div>
+                        </vs-button>
+                    </div>
+                </template>
+            </vs-dialog>
+            <vs-dialog width="300px" not-center v-model="payment" not-close>
+                <template #header>
+                    <div class="pl-[16px]  pr-[16px] pt-[16px]">
+                        <div class="font-bold">การชำระเงิน</div>
+                    </div>
+                </template>
+                <div class="con-content pl-[16px]  pr-[16px]">
+                    <div class="text-[#141629]">
+                        ห้อง {{ $route.query.number_room }} ได้ทำการชำระเงินแล้ว ?
+                    </div>
+                    <div class="center mt-[12px] flex justify-center ">
+                        <vs-select placeholder="เลือก">
+                            <vs-option label="อาคาร A" value="1">
+                                อาคาร A
+                            </vs-option>
+                            <vs-option label="อาคาร B" value="2">
+                                อาคาร B
+                            </vs-option>
+                        </vs-select>
+                    </div>
+                </div>
+                <template #footer>
+                    <div class="con-footer flex justify-around  mt-[4px]">
+                        <vs-button @click="payment = false" transparent>
+                            <div class="text-[#5C6B79] text-[14px]">ยกเลิก</div>
+                        </vs-button>
+                        <vs-button @click="payment = !payment" color="#39B974">
+                            <div class="text-[white] text-[14px]">ยืนยัน</div>
+                        </vs-button>
+                    </div>
+                </template>
+            </vs-dialog>
+            <vs-dialog width="300px" not-center v-model="move_done" not-close>
+                <template #header>
+                    <div class="pl-[16px]  pr-[16px] pt-[16px]">
+                        <div class="flex">
+                            <div class="font-bold text-[#39B974]">ย้ายออกเสร็จสิ้น</div>
+                            <div class="ml-[8px]">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <mask id="mask0_1413_28277" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
+                                        y="0" width="20" height="20">
+                                        <rect width="20" height="20" fill="#D9D9D9" />
+                                    </mask>
+                                    <g mask="url(#mask0_1413_28277)">
+                                        <path
+                                            d="M10.0001 17.9166C8.90513 17.9166 7.87593 17.7089 6.91249 17.2933C5.94903 16.8777 5.11096 16.3138 4.39828 15.6014C3.68559 14.8891 3.12137 14.0514 2.70564 13.0883C2.2899 12.1253 2.08203 11.0963 2.08203 10.0014C2.08203 8.90644 2.28984 7.87725 2.70547 6.9138C3.12109 5.95034 3.68516 5.11227 4.39766 4.39959C5.11016 3.6869 5.948 3.12268 6.9112 2.70695C7.87438 2.29121 8.90354 2.08334 9.99868 2.08334C10.6921 2.08334 11.3641 2.17175 12.0147 2.34857C12.6654 2.52539 13.2877 2.781 13.8817 3.11541C14.0419 3.20516 14.1467 3.33443 14.1958 3.50322C14.2449 3.67202 14.2161 3.82961 14.1093 3.97597C14.0024 4.12233 13.8611 4.21394 13.6854 4.2508C13.5097 4.28766 13.3401 4.26122 13.1766 4.17147C12.6894 3.89904 12.1769 3.69124 11.6389 3.54807C11.101 3.40491 10.5542 3.33332 9.99868 3.33332C8.15145 3.33332 6.57854 3.98263 5.27993 5.28124C3.98132 6.57985 3.33201 8.15277 3.33201 9.99999C3.33201 11.8472 3.98132 13.4201 5.27993 14.7187C6.57854 16.0174 8.15145 16.6667 9.99868 16.6667C11.8459 16.6667 13.4188 16.0174 14.7174 14.7187C16.016 13.4201 16.6653 11.8472 16.6653 9.99999C16.6653 9.83871 16.6592 9.68247 16.6469 9.53126C16.6346 9.38007 16.6135 9.22487 16.5836 9.06568C16.5558 8.88822 16.5863 8.71859 16.6749 8.55678C16.7636 8.39499 16.8971 8.29005 17.0754 8.24197C17.2433 8.1939 17.399 8.21473 17.5427 8.30447C17.6864 8.39422 17.7722 8.52349 17.7999 8.69228C17.8384 8.90275 17.8672 9.11565 17.8865 9.33097C17.9057 9.54629 17.9153 9.76929 17.9153 9.99999C17.9153 11.0951 17.7075 12.1243 17.292 13.0875C16.8764 14.0507 16.3125 14.8885 15.6001 15.601C14.8877 16.3135 14.05 16.8776 13.087 17.2932C12.124 17.7088 11.095 17.9166 10.0001 17.9166ZM8.81599 11.7885L16.598 3.99359C16.7134 3.87822 16.8563 3.81706 17.0267 3.81011C17.1971 3.80317 17.3475 3.86491 17.478 3.99534C17.5975 4.1149 17.6573 4.26068 17.6573 4.4327C17.6573 4.6047 17.5969 4.75106 17.4762 4.87178L9.34322 13.0176C9.19258 13.1682 9.01684 13.2436 8.81599 13.2436C8.61513 13.2436 8.43938 13.1682 8.28874 13.0176L6.00189 10.7307C5.88651 10.6154 5.82748 10.4703 5.8248 10.2957C5.82214 10.121 5.88116 9.9733 6.00189 9.85257C6.12261 9.73184 6.26898 9.67147 6.44099 9.67147C6.61299 9.67147 6.75935 9.73184 6.88007 9.85257L8.81599 11.7885Z"
+                                            fill="#39B974" />
+                                    </g>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                <div class="con-content pl-[16px]  pr-[16px]">
+                    <div class="text-[#141629]">
+                        กรุณากำหนดสถานะของห้อง 101
+                    </div>
+                    <div class="center mt-[12px] flex justify-center ">
+                        <vs-select placeholder="เลือก">
+                            <vs-option label="อาคาร A" value="1">
+                                อาคาร A
+                            </vs-option>
+                            <vs-option label="อาคาร B" value="2">
+                                อาคาร B
+                            </vs-option>
+                        </vs-select>
+                    </div>
+                </div>
+                <template #footer>
+                    <div class="con-footer flex justify-around  mt-[4px]">
+                        <vs-button @click="move_done = false" transparent>
+                            <div class="text-[#5C6B79] text-[14px]">ยกเลิก</div>
+                        </vs-button>
+                        <vs-button @click="move_done = !move_done" color="#39B974">
+                            <div class="text-[white] text-[14px]">ยืนยัน</div>
+                        </vs-button>
+                    </div>
+                </template>
+            </vs-dialog>
+            <PDFgenerator ref="childComponentPDFMoveOut" />
         </div>
-        <vs-dialog width="550px" not-center v-model="move_confirm" not-close>
-            <template #header>
-                <div class="pl-[16px]  pr-[16px] pt-[16px]">
-                    <div class="font-bold">ยืนยันการย้ายออก</div>
-                </div>
-            </template>
-            <div class="con-content pl-[16px]  pr-[16px]">
-                <div class="text-[#D44769]">
-                    คุณได้ตรวจสอบความถูกต้องของผู้เช่าห้อง {{ $route.query.number_room }} ก่อนจะย้ายออกแล้วหรือไม่ ?
-                </div>
-                <div class="center mt-[4px]">
-                    <vs-checkbox v-model="check_final" color="#003765">
-                        ตรวจสอบแล้ว
-                    </vs-checkbox>
-                </div>
-            </div>
-            <template #footer>
-                <div class="con-footer flex justify-end">
-                    <vs-button @click="move_confirm = false" transparent>
-                        <div class="text-[#5C6B79] text-[14px]">ยกเลิก</div>
-                    </vs-button>
-                    <vs-button @click="submitBill()" color="#003765" :disabled="check_final == false">
-                        <div class="text-[white] text-[14px]">ยืนยันการย้ายออก</div>
-                    </vs-button>
-                </div>
-            </template>
-        </vs-dialog>
-        <vs-dialog width="300px" not-center v-model="payment" not-close>
-            <template #header>
-                <div class="pl-[16px]  pr-[16px] pt-[16px]">
-                    <div class="font-bold">การชำระเงิน</div>
-                </div>
-            </template>
-            <div class="con-content pl-[16px]  pr-[16px]">
-                <div class="text-[#141629]">
-                    ห้อง {{ $route.query.number_room }} ได้ทำการชำระเงินแล้ว ?
-                </div>
-                <div class="center mt-[12px] flex justify-center ">
-                    <vs-select placeholder="เลือก">
-                        <vs-option label="อาคาร A" value="1">
-                            อาคาร A
-                        </vs-option>
-                        <vs-option label="อาคาร B" value="2">
-                            อาคาร B
-                        </vs-option>
-                    </vs-select>
-                </div>
-            </div>
-            <template #footer>
-                <div class="con-footer flex justify-around  mt-[4px]">
-                    <vs-button @click="payment = false" transparent>
-                        <div class="text-[#5C6B79] text-[14px]">ยกเลิก</div>
-                    </vs-button>
-                    <vs-button @click="payment = !payment" color="#39B974">
-                        <div class="text-[white] text-[14px]">ยืนยัน</div>
-                    </vs-button>
-                </div>
-            </template>
-        </vs-dialog>
-        <vs-dialog width="300px" not-center v-model="move_done" not-close>
-            <template #header>
-                <div class="pl-[16px]  pr-[16px] pt-[16px]">
-                    <div class="flex">
-                        <div class="font-bold text-[#39B974]">ย้ายออกเสร็จสิ้น</div>
-                        <div class="ml-[8px]">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                <mask id="mask0_1413_28277" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-                                    width="20" height="20">
-                                    <rect width="20" height="20" fill="#D9D9D9" />
-                                </mask>
-                                <g mask="url(#mask0_1413_28277)">
-                                    <path
-                                        d="M10.0001 17.9166C8.90513 17.9166 7.87593 17.7089 6.91249 17.2933C5.94903 16.8777 5.11096 16.3138 4.39828 15.6014C3.68559 14.8891 3.12137 14.0514 2.70564 13.0883C2.2899 12.1253 2.08203 11.0963 2.08203 10.0014C2.08203 8.90644 2.28984 7.87725 2.70547 6.9138C3.12109 5.95034 3.68516 5.11227 4.39766 4.39959C5.11016 3.6869 5.948 3.12268 6.9112 2.70695C7.87438 2.29121 8.90354 2.08334 9.99868 2.08334C10.6921 2.08334 11.3641 2.17175 12.0147 2.34857C12.6654 2.52539 13.2877 2.781 13.8817 3.11541C14.0419 3.20516 14.1467 3.33443 14.1958 3.50322C14.2449 3.67202 14.2161 3.82961 14.1093 3.97597C14.0024 4.12233 13.8611 4.21394 13.6854 4.2508C13.5097 4.28766 13.3401 4.26122 13.1766 4.17147C12.6894 3.89904 12.1769 3.69124 11.6389 3.54807C11.101 3.40491 10.5542 3.33332 9.99868 3.33332C8.15145 3.33332 6.57854 3.98263 5.27993 5.28124C3.98132 6.57985 3.33201 8.15277 3.33201 9.99999C3.33201 11.8472 3.98132 13.4201 5.27993 14.7187C6.57854 16.0174 8.15145 16.6667 9.99868 16.6667C11.8459 16.6667 13.4188 16.0174 14.7174 14.7187C16.016 13.4201 16.6653 11.8472 16.6653 9.99999C16.6653 9.83871 16.6592 9.68247 16.6469 9.53126C16.6346 9.38007 16.6135 9.22487 16.5836 9.06568C16.5558 8.88822 16.5863 8.71859 16.6749 8.55678C16.7636 8.39499 16.8971 8.29005 17.0754 8.24197C17.2433 8.1939 17.399 8.21473 17.5427 8.30447C17.6864 8.39422 17.7722 8.52349 17.7999 8.69228C17.8384 8.90275 17.8672 9.11565 17.8865 9.33097C17.9057 9.54629 17.9153 9.76929 17.9153 9.99999C17.9153 11.0951 17.7075 12.1243 17.292 13.0875C16.8764 14.0507 16.3125 14.8885 15.6001 15.601C14.8877 16.3135 14.05 16.8776 13.087 17.2932C12.124 17.7088 11.095 17.9166 10.0001 17.9166ZM8.81599 11.7885L16.598 3.99359C16.7134 3.87822 16.8563 3.81706 17.0267 3.81011C17.1971 3.80317 17.3475 3.86491 17.478 3.99534C17.5975 4.1149 17.6573 4.26068 17.6573 4.4327C17.6573 4.6047 17.5969 4.75106 17.4762 4.87178L9.34322 13.0176C9.19258 13.1682 9.01684 13.2436 8.81599 13.2436C8.61513 13.2436 8.43938 13.1682 8.28874 13.0176L6.00189 10.7307C5.88651 10.6154 5.82748 10.4703 5.8248 10.2957C5.82214 10.121 5.88116 9.9733 6.00189 9.85257C6.12261 9.73184 6.26898 9.67147 6.44099 9.67147C6.61299 9.67147 6.75935 9.73184 6.88007 9.85257L8.81599 11.7885Z"
-                                        fill="#39B974" />
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-            </template>
-            <div class="con-content pl-[16px]  pr-[16px]">
-                <div class="text-[#141629]">
-                    กรุณากำหนดสถานะของห้อง 101
-                </div>
-                <div class="center mt-[12px] flex justify-center ">
-                    <vs-select placeholder="เลือก">
-                        <vs-option label="อาคาร A" value="1">
-                            อาคาร A
-                        </vs-option>
-                        <vs-option label="อาคาร B" value="2">
-                            อาคาร B
-                        </vs-option>
-                    </vs-select>
-                </div>
-            </div>
-            <template #footer>
-                <div class="con-footer flex justify-around  mt-[4px]">
-                    <vs-button @click="move_done = false" transparent>
-                        <div class="text-[#5C6B79] text-[14px]">ยกเลิก</div>
-                    </vs-button>
-                    <vs-button @click="move_done = !move_done" color="#39B974">
-                        <div class="text-[white] text-[14px]">ยืนยัน</div>
-                    </vs-button>
-                </div>
-            </template>
-        </vs-dialog>
-        <PDFgenerator ref="childComponentPDFMoveOut" />
-    </div>
 </template>
 <script>
 import axios from 'axios'
@@ -826,6 +835,9 @@ export default {
                 remark: 'เสียหาย'
             })
             this.value_item = ''
+        },
+        deleteItem(i){
+            this.items_other.splice(i,1)
         },
         totalBillItems() {
             let totalPrice = 0;
