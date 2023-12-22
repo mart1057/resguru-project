@@ -334,7 +334,7 @@
             <div class="text-[16px] font-bold mt-[24px]">รายการจำนวนชั้นของตึก</div>
             <div class="grid grid-cols-5 gap-4 mt-[14px] w-[100%]">
                 <div class="border h-[100%] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
-                    @click="createFloor = true">
+                    @click="createFloor = true,buildingfloorName=''">
                     <div>
                         <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
