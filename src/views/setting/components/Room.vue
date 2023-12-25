@@ -301,7 +301,7 @@
                     v-for="data in roomType" @click="create_type = true, is_edit_type = true, getTypeRoomDetail(data.id)">
                     <div class="flex flex-col justify-between h-[100%] ">
                         <div class="flex justify-between">
-                            <div class="text-[16px]">{{ data.attributes.roomTypeName }}</div>
+                            <div class="text-[16px] truncate">{{ data.attributes.roomTypeName }}</div>
                             <div>
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
