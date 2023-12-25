@@ -316,7 +316,62 @@
                         <!-- <div>วันที่ 07/06/2023</div> -->
                     </div>
                 </div>
-                <div class="w-[50%] flex flex-col justify-end mt-[150px]">
+
+
+                <!-- <div class="w-[10%]">
+                    <div @click="payment = true"
+                        class="bg-[#CFFBDA] text-[#0B9A3C] rounded-[12px] pt-[7px] pb-[7px] pl-[12px] pr-[12px] text-center cursor-pointer">
+                        บันทึกหนี้สูญแล้ว</div>
+                </div> -->
+            </div >
+            <div class="flex items-start mt-[50px]">
+                <div class="w-[48%] flex justify-center items-start text-custom">
+                    <div>
+                        <div class="flex justify-start items-start">คืนเงินประกัน</div>
+                        <div class="flex mt-[14px] justify-center items-center">
+                            <div>
+                                <div
+                                    class="font-bold text-custom text-[#8396A6] text-[12px] flex justify-start items-start">
+                                    รายการ
+                                </div>
+                                <div>
+                                    <div
+                                        class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                        เงินประกัน
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ml-[8px]">
+                                <div>
+                                    <div
+                                        class="font-bold text-custom text-[#8396A6] text-[12px] flex justify-start items-start">
+                                        จำนวนเงิน(บาท)
+                                    </div>
+                                    <div>
+                                        <input
+                                            class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]"
+                                            type="input" v-model="list_debt.deposit2" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="flex mt-[24px]">
+                            <div>
+                                <div class="font-bold text-custom text-[12px] flex justify-start items-start">
+                                    รวมทั้งหมด
+                                </div>
+                            </div>
+                            <div class="ml-[168px]">
+                                <div>
+                                    <div class="font-bold text-custom text-[12px] flex justify-start items-start">
+                                        {{ list_debt.deposit2 }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                    </div>
+                </div>
+                <div class="w-[50%] flex flex-col justify-end">
                     รายการชำระเงิน
                     <div class="w-[50%] flex justify-between mt-[8px]">
                         <div>
@@ -398,61 +453,10 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="w-[10%]">
-                    <div @click="payment = true"
-                        class="bg-[#CFFBDA] text-[#0B9A3C] rounded-[12px] pt-[7px] pb-[7px] pl-[12px] pr-[12px] text-center cursor-pointer">
-                        บันทึกหนี้สูญแล้ว</div>
-                </div> -->
             </div>
-            <div class=" flex w-[100%] justify-between mt-[100px]">
-                <div class="w-[48%] flex justify-center items-start text-custom">
-                    <div>
-                        <div class="flex justify-start items-start">คืนเงินประกัน</div>
-                        <div class="flex mt-[14px] justify-center items-center">
-                            <div>
-                                <div
-                                    class="font-bold text-custom text-[#8396A6] text-[12px] flex justify-start items-start">
-                                    รายการ
-                                </div>
-                                <div>
-                                    <div
-                                        class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
-                                        เงินประกัน
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ml-[8px]">
-                                <div>
-                                    <div
-                                        class="font-bold text-custom text-[#8396A6] text-[12px] flex justify-start items-start">
-                                        จำนวนเงิน(บาท)
-                                    </div>
-                                    <div>
-                                        <input
-                                            class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]"
-                                            type="input" v-model="list_debt.deposit2" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- <div class="flex mt-[24px]">
-                            <div>
-                                <div class="font-bold text-custom text-[12px] flex justify-start items-start">
-                                    รวมทั้งหมด
-                                </div>
-                            </div>
-                            <div class="ml-[168px]">
-                                <div>
-                                    <div class="font-bold text-custom text-[12px] flex justify-start items-start">
-                                        {{ list_debt.deposit2 }}
-                                    </div>
-                                </div>
-                            </div>
-                        </div> -->
-                    </div>
-                </div>
+            <div class=" flex w-[100%] justify-center mt-[100px]">
                 <div class="w-[2%] flex justify-center items-center ">
-                    <div class="w-[1px] h-[100%] bg-gray-200 border-0 dark:bg-gray-700"></div>
+                    <!-- <div class="w-[1px] h-[100%] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
                 </div>
                 <div class="w-[48%] flex flex-col justify-center items-center pl-[100px] pr-[100px] ">
                     <div class="text-custom text-[18px] font-bold text-[#003765]">สรุปการย้ายออก</div>
@@ -836,8 +840,8 @@ export default {
             })
             this.value_item = ''
         },
-        deleteItem(i){
-            this.items_other.splice(i,1)
+        deleteItem(i) {
+            this.items_other.splice(i, 1)
         },
         totalBillItems() {
             let totalPrice = 0;
