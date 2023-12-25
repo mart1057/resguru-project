@@ -325,6 +325,13 @@
                     class=" mt-[60px] h-[363px] text-[12px] w-[423px] rounded-[20px] bg-[white] pt-[40px] pl-[30px] pr-[30px] pb-[10px]">
                     <div>
                         <div class="">
+                            <div class="font-bold">Code</div>
+                            <div class="">
+                                <input type="password" placeholder="*********" v-model="code_reset"
+                                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                            </div>
+                        </div>
+                        <div class="mt-[10px]">
                             <div class="font-bold">Password</div>
                             <div class="">
                                 <input type="password" placeholder="*********" v-model="reset_pass"
@@ -335,13 +342,6 @@
                             <div class="font-bold">Comfirm password</div>
                             <div class="">
                                 <input type="password" placeholder="*********" v-model="reset_pass_con"
-                                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
-                            </div>
-                        </div>
-                        <div class="mt-[10px]">
-                            <div class="font-bold">Code</div>
-                            <div class="">
-                                <input type="password" placeholder="*********" v-model="code_reset"
                                     class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                             </div>
                         </div>
