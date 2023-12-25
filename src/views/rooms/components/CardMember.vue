@@ -61,7 +61,7 @@
             <div>
                 <div class="flex justify-between pl-[20px] pr-[20px]">
                     <div class="text-custom flex justify-center items-center text-[18px] font-bold">{{
-                        is_edit == true ? room_detail.name + ' ' + room_detail.last_name : 'เพิ่มผู้เช่า' }}</div>
+                        is_edit == true || room_detail.check_user ? room_detail.name + ' ' + room_detail.last_name : 'เพิ่มผู้เช่า' }}</div>
                     <div @click="create = false" class="cursor-pointer">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -111,7 +111,7 @@
                                         <div><span class="text-[red] mr-[2px]">*</span>อีเมลล์</div>
                                         <input type="input" v-model="room_detail.email"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            :disabled="is_edit == true" />
+                                            :disabled="is_edit == true || room_detail.check_user" />
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-4 gap-2  text-custom mt-[14px] ">
@@ -119,17 +119,17 @@
                                         <div><span class="text-[red] mr-[2px]">*</span>อีเมลล์</div>
                                         <input type="input" v-model="room_detail.email"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            :disabled="is_edit == true" />
+                                            :disabled="is_edit == true || room_detail.check_user" />
                                     </div> -->
                                     <!-- <div class="col-span-1">
                                         <div>เลขมิเตอร์ค่าน้ำเริ่มต้น</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            :disabled="is_edit == true" />
+                                            :disabled="is_edit == true || room_detail.check_user" />
                                     </div>
                                     <div class="col-span-1">
                                         <div>เลขมิเตอร์ค่าไฟเริ่มต้น</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            :disabled="is_edit == true" />
+                                            :disabled="is_edit == true || room_detail.check_user" />
                                     </div> -->
                                 </div>
                                 <div class="grid grid-cols-8  text-custom mt-[14px]  ">
@@ -138,7 +138,7 @@
                                         <select placeholder="ชื่อ" id="mr"
                                             class="mt-[6px] pl-[4px] pr-[4px] h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             v-model="room_detail.sex"
-                                            :disabled="is_edit == true || room_detail.check_user == true">
+                                            :disabled="is_edit == true || room_detail.check_user || room_detail.check_user == true">
                                             <option label="นาย" :value="true">
                                                 นาย
                                             </option>
@@ -150,17 +150,17 @@
                                     <div class="col-span-3 ml-[8px]">
                                         <div><span class="text-[red] mr-[2px]">*</span>ชื่อ</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.name" :disabled="is_edit == true" />
+                                            v-model="room_detail.name" :disabled="is_edit == true || room_detail.check_user" />
                                     </div>
                                     <div class="col-span-3  ml-[8px]">
                                         <div><span class="text-[red] mr-[2px]">*</span>สกุล</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.last_name" :disabled="is_edit == true" />
+                                            v-model="room_detail.last_name" :disabled="is_edit == true || room_detail.check_user" />
                                     </div>
                                     <div class="ml-[8px]">
                                         <div>ชื่อเล่น</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.nick_name" :disabled="is_edit == true" />
+                                            v-model="room_detail.nick_name" :disabled="is_edit == true || room_detail.check_user" />
                                     </div>
                                 </div>
                             </dvi>
@@ -173,12 +173,12 @@
                                             class="text-[#5C6B79]">(ไม่ต้องใส่ขีด ตัวอย่าง.
                                             0815578945)</span></div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail.phone" :disabled="is_edit == true" />
+                                        v-model="room_detail.phone" :disabled="is_edit == true || room_detail.check_user" />
                                 </div>
                                 <div class="col-span-4  ml-[8px]">
                                     <div><span class="text-[red] mr-[2px]">*</span>หมายเลขบัตรประชาชน</div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail.id_card" :disabled="is_edit == true" />
+                                        v-model="room_detail.id_card" :disabled="is_edit == true || room_detail.check_user" />
                                 </div>
                             </div>
                         </div>
@@ -189,7 +189,7 @@
                                     <div>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
                                     <input type="date"
                                         class="h-[36px] mt-[6px] pl-[8px] pr-[8px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail.birth" :disabled="is_edit == true" />
+                                        v-model="room_detail.birth" :disabled="is_edit == true || room_detail.check_user" />
                                 </div>
                             </div>
                         </div>
@@ -199,7 +199,7 @@
                                 <div class="col-span-6">
                                     <div><span class="text-[red] mr-[2px]">*</span>ที่อยู่</div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail.address" :disabled="is_edit == true" />
+                                        v-model="room_detail.address" :disabled="is_edit == true || room_detail.check_user" />
                                 </div>
                             </div>
                         </div>
@@ -235,50 +235,50 @@
                                     <div class="col-span-4">
                                         <div>Line ID</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.lineID" :disabled="is_edit == true" />
+                                            v-model="room_detail.lineID" :disabled="is_edit == true || room_detail.check_user" />
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8  text-custom w-[100%] mt-[6px] ">
                                     <div class="col-span-8 ">
                                         <div>สถาบันการศึกษา / สถานที่ทำงานปัจจุบัน</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.workplace" :disabled="is_edit == true" />
+                                            v-model="room_detail.workplace" :disabled="is_edit == true || room_detail.check_user" />
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8 gap-2  text-custom w-[100%] mt-[6px] ">
                                     <div class="col-span-4 ">
                                         <div>คณะ / แผนก</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.faculty" :disabled="is_edit == true" />
+                                            v-model="room_detail.faculty" :disabled="is_edit == true || room_detail.check_user" />
                                     </div>
                                     <div class="col-span-4 ">
                                         <div>ชั้นปี / ตำแหน่ง</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.rank" :disabled="is_edit == true" />
+                                            v-model="room_detail.rank" :disabled="is_edit == true || room_detail.check_user" />
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8  text-custom w-[100%] ">
                                     <div class="col-span-4 mt-[6px]">
                                         <div>รหัสนักศึกษา / รหัสพนักงาน</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.idEmployee" :disabled="is_edit == true" />
+                                            v-model="room_detail.idEmployee" :disabled="is_edit == true || room_detail.check_user" />
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8 gap-2  text-custom w-[100%] mt-[6px] ">
                                     <div class="col-span-4 ">
                                         <div>บุคคลที่สามารถติดต่อได้กรณีฉุกเฉิน</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.emergencyPerson" :disabled="is_edit == true" />
+                                            v-model="room_detail.emergencyPerson" :disabled="is_edit == true || room_detail.check_user" />
                                     </div>
                                     <div class="col-span-2">
                                         <div>ความสัมพันธ์</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.relation" :disabled="is_edit == true" />
+                                            v-model="room_detail.relation" :disabled="is_edit == true || room_detail.check_user" />
                                     </div>
                                     <div class="col-span-2">
                                         <div>เบอร์โทรศัพท์ผู้ติดต่อฉุกเฉิน</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.emergencyPhone" :disabled="is_edit == true" />
+                                            v-model="room_detail.emergencyPhone" :disabled="is_edit == true || room_detail.check_user" />
                                     </div>
                                 </div>
                             </div>
@@ -799,7 +799,7 @@ export default {
         },
         createOrEdit() {
             const newVehicles = this.room_detail.vehicles.filter(item => !item.hasOwnProperty('id'));
-            if (this.is_edit == true) {
+            if (this.is_edit == true || room_detail.check_user) {
                 const loading = this.$vs.loading()
                 newVehicles.forEach((data) => {
                     axios.post('https://api.resguru.app/api' + '/tenant-vehicles', {
