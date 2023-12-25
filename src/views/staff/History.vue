@@ -57,7 +57,7 @@
                         </div>
                         <div class=" w-[100%] pt-[8px] p-[12px]">
                             <div class="flex justify-between items-center">
-                                <div class="font-bold text-[18px] ">ห้อง  {{ data.attributes.user_sign_contract.data?.attributes.room.data?.attributes.RoomNumber  }} | {{ data.attributes.Type }} <span
+                                <div class="font-bold text-[18px] truncate w-[450px] ">ห้อง  {{ data.attributes.user_sign_contract.data?.attributes.room.data?.attributes.RoomNumber  }} | {{ data.attributes.title }} <span
                                         class="text-[10px] font-normal text-[#8396A6]">{{  convertDateNoTime(data.attributes.createdAt) }}</span></div>
                                 <div
                                     class="bg-[#CFFBDA] text-[#0B9A3C] pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[12px]">
@@ -74,12 +74,12 @@
                                     <div class="text-[12px] text-[#8396A6]">7 วันที่แล้ว</div>
                                 </div> -->
                             </div>
-                            <div class="flex justify-between mt-[4px]">
-                                <div class="flex flex-col">
-                                    <div>
-                                        <div class="text-[12px] text-[#8396A6]">รายละเอียด</div>
+                            <div class="flex justify-between mt-[4px] w-[100%]">
+                                <div class="flex flex-col w-[100%]">
+                                    <div class="w-[100%]">
+                                        <div class="text-[12px] text-[#8396A6] ]">รายละเอียด</div>
                                     </div>
-                                    <div>{{ data.attributes.description }}</div>
+                                    <div class="truncate w-[550px]">{{ data.attributes.description }}</div>
                                 </div>
                                 <!-- <div class="flex flex-col justify-between items-center">
                                     <div class="text-[12px] text-[#8396A6]">7 วันที่แล้ว</div>
