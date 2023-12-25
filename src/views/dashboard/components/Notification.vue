@@ -38,10 +38,10 @@
                 :class="tab == 5 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
                 ฉุกเฉิน</div>
         </div>
-        <div class="mt-[18px]">
+        <div class="mt-[18px]" >
             <div class="grid grid-cols-2 w-[100%] gap-2 ">
                 <div class="h-[78px] bg-[#F3F7FA] rounded-[22px] w-[100%] p-[4px]"
-                    v-for="item in tab == 1 ? data : tab == 2 ? data_maintenace : tab == 3 ? data_clean : tab == 4 ? data_move : data_emergency">
+                    v-for="item in tab == 1 ? data : tab == 2 ? data_maintenacec : tab == 3 ? data_clean : tab == 4 ? data_move : data_emergency">
                     <div class="flex items-center h-[100%]">
                         
                         <div class="w-[54px]  h-[100%] flex justify-center items-center rounded-[19px]"
@@ -97,7 +97,7 @@
                         <div class="flex justify-between w-[100%] p-[8px]">
                             <div class="flex flex-col justify-between">
                                 <div>
-                                    <div class="font-bold">ห้อง {{ item.user_sign_contract?.room?.RoomNumber }} {{ item.title }}</div>
+                                    <div class="font-bold truncate w-[230px]">ห้อง {{ item.user_sign_contract?.room?.RoomNumber }} {{ item.title }}</div>
                                     <div class="text-[12px] text-[#8396A6]">รายละเอียด</div>
                                 </div>
                                 <div>{{ item.description }}</div>
@@ -199,4 +199,37 @@ export default {
 </script>
 <style scoped>#payment {
     background-color: rgb(255, 255, 255);
-}</style>
+
+}
+.table-container {
+    height: 250px;
+    /* Set a fixed height to enable scrolling */
+    overflow-y: scroll;
+    /* Enable vertical scrolling */
+    padding: 10px;
+    /* Optional: Add padding for spacing */
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px #ffff;
+    border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #E9EEF6;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #E9EEF6;
+}
+</style>

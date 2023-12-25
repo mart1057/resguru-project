@@ -254,7 +254,7 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class="mt-[4px]">สร้างห้องพัก</div>
+                            <div class="mt-[4px]">สร้างตึกหอพัก</div>
                         </div>
                     </div>
                 </div>

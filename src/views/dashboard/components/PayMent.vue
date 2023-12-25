@@ -32,7 +32,7 @@
 
             </div>
         </div>
-        <div class="mt-[14px]">
+        <div class="mt-[14px]"  :class="data.length > 5 ? 'table-container' : ''">
             <vs-table>
                 <template #thead>
                     <vs-tr>
@@ -106,5 +106,36 @@ export default {
 input[type=input] {
     padding-left: 32px;
     margin: 8px 0;
+}
+.table-container {
+    height: 250px;
+    /* Set a fixed height to enable scrolling */
+    overflow-y: scroll;
+    /* Enable vertical scrolling */
+    padding: 10px;
+    /* Optional: Add padding for spacing */
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px #ffff;
+    border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #E9EEF6;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #E9EEF6;
 }
 </style>

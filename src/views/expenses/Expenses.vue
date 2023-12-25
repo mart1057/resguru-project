@@ -514,10 +514,10 @@
                             <select placeholder="Select"  class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]" v-model="expenseTypeValue">
                                 <option v-for="expenseType in expenseType"
                                     :value="expenseType.id">
-                                    {{ expenseType.attributes.expenseTypeName }}
+                                    {{ expenseType.attributes.expenseTypeName }} {{ expenseType.id }}
                                 </option>
                             </select>
-                            <div class="ml-[8px]">
+                            <div class="ml-[8px]" v-if="expenseTypeValue == 4">
                                 <input class="h-[36px] w-[100%] ml-[8px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
                                     type="input" v-model="title" />
                             </div>
