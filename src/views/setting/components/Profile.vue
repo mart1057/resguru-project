@@ -274,6 +274,26 @@
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingAddress" />
                         </div>
+                        <div class="mt-[8px] col-span-1">
+                            <div class="text-custom text-[14px] text-[#003765]">เขต</div>
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                                v-model="buildingData.attributes.buildingSubDistrict" />
+                        </div>
+                        <div class="mt-[8px] col-span-1">
+                            <div class="text-custom text-[14px] text-[#003765]">แขวง/อำเภอ</div>
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                                v-model="buildingData.attributes.buildingDistrict" />
+                        </div>
+                        <div class="mt-[8px] col-span-1">
+                            <div class="text-custom text-[14px] text-[#003765]">จังหวัด</div>
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                                v-model="buildingData.attributes.buildingProvince" />
+                        </div>
+                        <div class="mt-[8px] col-span-1">
+                            <div class="text-custom text-[14px] text-[#003765]">รหัสไปรษณี</div>
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                                v-model="buildingData.attributes.buildingPostcode" />
+                        </div>
                         <!-- <div class="">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">เขต</div>
                             <vs-select state="primary">

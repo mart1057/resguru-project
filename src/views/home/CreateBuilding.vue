@@ -142,41 +142,29 @@
                                 <div>
                                     <div class="font-bold">เขต</div>
                                     <div class="mt-[5px]">
-                                        <vs-select color="#003765">
-                                            <vs-option>
-                                                555
-                                            </vs-option>
-                                        </vs-select>
+                                        <input type="input" v-model="buildingSubDistrict"
+                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="font-bold">แขวง</div>
+                                    <div class="font-bold">แขวง/อำเภอ</div>
                                     <div class="mt-[5px]">
-                                        <vs-select color="#003765">
-                                            <vs-option>
-                                                555
-                                            </vs-option>
-                                        </vs-select>
+                                        <input type="input" v-model="buildingDistrict"
+                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                 </div>
                                 <div>
                                     <div class="font-bold">จังหวัด</div>
                                     <div class="mt-[5px]">
-                                        <vs-select color="#003765">
-                                            <vs-option>
-                                                555
-                                            </vs-option>
-                                        </vs-select>
+                                        <input type="input" v-model=" buildingProvince"
+                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                 </div>
                                 <div>
                                     <div class="font-bold">รหัสไปรษณี</div>
                                     <div class="mt-[5px]">
-                                        <vs-select color="#003765">
-                                            <vs-option>
-                                                555
-                                            </vs-option>
-                                        </vs-select>
+                                         <input type="input" v-model="buildingPostcode"
+                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                 </div>
                             </div>
@@ -314,10 +302,10 @@ export default {
                         buildingName: this.buildingName,
                         buildingAddress: this.buildingAddress,
                         user_owner: this.$store.state.userInfo.id,
-                        buildingProvince: "",
-                        buildingDistrict: "",
-                        buildingSubDistrict: "",
-                        buildingPostcode: "",
+                        buildingProvince:  this.buildingProvince,
+                        buildingDistrict: this.buildingDistrict,
+                        buildingSubDistrict: this.buildingSubDistrict,
+                        buildingPostcode: this.buildingPostcode,
                         waterUnitPrice:0,
                         electricUnitPrice:0,
                         communalUnitPrice:0,
