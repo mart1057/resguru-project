@@ -15,10 +15,10 @@
                             ชื่อผู้เช่า
                         </vs-th>
                         <vs-th>
-                            เลขมิเตอร์เดือน ตุลาคม/2023
+                            เลขมิเตอร์เดือนก่อนหน้า
                         </vs-th>
                         <vs-th>
-                            เลขมิเตอร์เดือน พฤษภาคม/2023
+                            เลขมิเตอร์เดือนล่าสุด
                         </vs-th>
                         <vs-th>
                             หน่วยที่ใช้
@@ -43,7 +43,7 @@
 
                         </vs-td>
                         <vs-td>
-                            {{ tr.user_sign_contract && tr.user_sign_contract.users_permissions_user && tr.user_sign_contract.users_permissions_user.firstName ? tr.user_sign_contract.users_permissions_user.firstName : "" }} 
+                            {{ tr.user_sign_contract? tr.user_sign_contract.users_permissions_user.firstName +' '+ tr.user_sign_contract.users_permissions_user.lastName: "" }} 
                        </vs-td>
                         <vs-td>
                             <div>

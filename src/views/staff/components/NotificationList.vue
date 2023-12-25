@@ -3,7 +3,6 @@
         <div class="mt-[24px]">
             <div class="text-[24px] font-bold">รายละเอียดการแจ้งทั้งหมด</div>
             <div class="grid grid-cols-2 w-[100%] gap-2 mt-[14px] ">
-
                 <div class="h-[auto] bg-[#ffffff] rounded-[22px] w-[100%] p-[8px]" v-for="data in service" >
                     <div class="flex  h-[100%]">
                         <!-- <div class="w-[140px] bg-[#F5D65E] h-[100%] flex justify-center items-center rounded-[19px]">
@@ -71,8 +70,8 @@
                         </div>
                         <div class=" w-[100%] pt-[8px] p-[12px]">
                             <div class="flex justify-between items-center">
-                                <div class="font-bold text-[18px] ">ห้อง {{ data.attributes.user_sign_contract.data.attributes.room.data.attributes.RoomNumber }} | {{ data.attributes.Type }} <span
-                                        class="text-[10px] font-normal text-[#8396A6]"> {{ data.attributes.createdAt }}</span></div>
+                                <div class="font-bold text-[18px] truncate w-[450px] ">ห้อง {{ data.attributes.user_sign_contract.data.attributes.room.data.attributes.RoomNumber }} | {{ data.attributes.title }} <span
+                                        class="text-[10px] font-normal text-[#8396A6]"> {{ convertDateNoTime(data.attributes.createdAt) }}</span></div>
                                 <div
                                     class="bg-[#FFF2BC] text-[#D48C00] pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[12px]">
                                     {{ data.attributes.serviceStatus }}</div>
@@ -82,10 +81,10 @@
                                     <div>
                                         <div class="text-[12px] text-[#8396A6]">รายละเอียด</div>
                                     </div>
-                                    <div class="truncate w-[400px]"> {{ data.attributes.description }}</div>
+                                    <div class="truncate w-[550px]"> {{ data.attributes.description }}</div>
                                 </div>
                                 <div class="flex flex-col justify-between items-center">
-                                    <div class="text-[12px] text-[#8396A6]"> {{ data.attributes.createdAt }}</div>
+                                    <div class="text-[12px] text-[#8396A6]"> {{ convertDateNoTime(data.attributes.createdAt) }}</div>
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 w-[100%] gap-2">
@@ -103,6 +102,9 @@
                                             <select placeholder="Select"
                                                 class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]"
                                                 :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''" v-model="data.attributes.responID">
+                                                <option disabled value="">
+                                                    เลือก..
+                                                </option>
                                                 <option  v-for="selectEmployee in employee" :value="selectEmployee.id">
                                                     {{selectEmployee.attributes.name}}
                                                 </option>
@@ -115,7 +117,6 @@
                                     <div class="text-[12px] text-[#8396A6] mt-[8px]">วันเวลา</div>
                                     <div class="w-[100%]">
                                         <div class="mt-[5px] w-[100%]  con-selects">
-                                           
                                             <vs-input type="date" v-model="data.attributes.appointmentDate" />
                                         </div>
                                     </div>
@@ -124,7 +125,7 @@
                             <vs-button @click="updateService(data.id,data.attributes.responID,date_time)" color="#003765" class="w-[100%] h-[36px] rounded-[12px] mt-[30px]  text-[white] flex items-center justify-center">
                                 กำหนดผู้ดูแล
                             </vs-button>
-                            <vs-button @click="closeService(data.id)" color="#003765" class="w-[100%] h-[36px] rounded-[12px] mt-[30px]  text-[white] flex items-center justify-center">
+                            <vs-button v-if="data.attributes.responID != null" @click="closeService(data.id)" color="#003765" class="w-[100%] h-[36px] rounded-[12px] mt-[30px]  text-[white] flex items-center justify-center">
                                 จบงาน
                             </vs-button>
                         </div>
@@ -296,6 +297,7 @@
 </template>
 <script>
 import axios from 'axios'
+import { convertDateNoTime} from '@/components/hook/hook'
 
 export default {
     data() {
@@ -305,7 +307,8 @@ export default {
             service: [],
             employee: [],
             code: 0,
-            text: ''
+            text: '',
+            convertDateNoTime
         }
     },
     created() {

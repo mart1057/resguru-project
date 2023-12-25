@@ -301,7 +301,7 @@
                     v-for="data in roomType" @click="create_type = true, is_edit_type = true, getTypeRoomDetail(data.id)">
                     <div class="flex flex-col justify-between h-[100%] ">
                         <div class="flex justify-between">
-                            <div class="text-[16px]">{{ data.attributes.roomTypeName }}</div>
+                            <div class="text-[16px] truncate">{{ data.attributes.roomTypeName }}</div>
                             <div>
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -334,7 +334,7 @@
             <div class="text-[16px] font-bold mt-[24px]">รายการจำนวนชั้นของตึก</div>
             <div class="grid grid-cols-5 gap-4 mt-[14px] w-[100%]">
                 <div class="border h-[100%] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
-                    @click="createFloor = true">
+                    @click="createFloor = true, buildingfloorName = ''">
                     <div>
                         <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
@@ -653,7 +653,7 @@
             <div>
                 <div class="flex justify-between">
                     <div class="text-custom flex justify-center items-center text-[16px] font-bold">
-                         {{ is_edit_type == true?'แก้ไขประเภทห้องและค่าเช่า':'สร้างประเภทห้องและค่าเช่า' }}</div>
+                        {{ is_edit_type == true ? 'แก้ไขประเภทห้องและค่าเช่า' : 'สร้างประเภทห้องและค่าเช่า' }}</div>
                     <div @click="create_type = false" class="cursor-pointer">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -703,7 +703,7 @@
             <div>
                 <div class="flex justify-between">
                     <div class="text-custom flex justify-center items-center text-[16px] font-bold">
-                         {{ is_edit == true?'แก้ไขห้อง':'เพิ่มห้อง' }}</div>
+                        {{ is_edit == true ? 'แก้ไขห้อง' : 'เพิ่มห้อง' }}</div>
                     <div @click="create_room = false" class="cursor-pointer">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -976,48 +976,71 @@ export default {
                 })
         },
         addNewRoom() {
-            if (this.is_edit == true) {
-                axios.put(`https://api.resguru.app/api/rooms/` + this.room_id, {
-                    data: {
-                        RoomNumber: this.roomName,
-                        room_type: this.room_type_id,
-                        building_floor: this.roomFloor_id,
-                    }
-                })
+            if (this.roomName != '' && this.room_type_id != '' && this.roomFloor_id != '') {
+                const loading = this.$vs.loading()
+                fetch('https://api.resguru.app/api' + '/rooms?filters[room_building][id][$eq]=' + this.$store.state.building)
+                    .then(response => response.json())
                     .then((resp) => {
-                        this.$showNotification('#3A89CB', 'Add Room Success')
-                    })
-                    .catch(error => {
-                        const errorMessage = error.message ? error.message : 'Error updating information';
-                        this.$showNotification('danger', errorMessage);
-                    })
-                    .finally(() => {
-                        this.getUserRoom();
-                        this.create_room = false
-                    })
+                        console.log("numberRoom", resp.data);
+                        const found = resp.data.some(item => item.attributes.RoomNumber === this.roomName);
+                        console.log(found);
+                        if (found == false) {
+                            if (this.is_edit == true) {
+                                axios.put(`https://api.resguru.app/api/rooms/` + this.room_id, {
+                                    data: {
+                                        RoomNumber: this.roomName,
+                                        room_type: this.room_type_id,
+                                        building_floor: this.roomFloor_id,
+                                    }
+                                })
+                                    .then((resp) => {
+                                        this.$showNotification('#3A89CB', 'Add Room Success')
+                                    })
+                                    .catch(error => {
+                                        const errorMessage = error.message ? error.message : 'Error updating information';
+                                        this.$showNotification('danger', errorMessage);
+                                    })
+                                    .finally(() => {
+                                        this.getUserRoom();
+                                        this.create_room = false
+                                    })
 
+                            }
+                            else {
+                                axios.post(`https://api.resguru.app/api/rooms/`, {
+                                    data: {
+                                        RoomNumber: this.roomName,
+                                        room_building: this.$store.state.building,
+                                        room_type: this.room_type_id,
+                                        building_floor: this.roomFloor_id,
+                                    }
+                                })
+                                    .then((resp) => {
+                                        this.$showNotification('#3A89CB', 'Add Room Success')
+                                    })
+                                    .catch(error => {
+                                        const errorMessage = error.message ? error.message : 'Error updating information';
+                                        this.$showNotification('danger', errorMessage);
+                                    })
+                                    .finally(() => {
+                                        this.getUserRoom();
+                                        this.create_room = false
+                                    })
+                            }
+                        }
+                        else {
+                            this.$showNotification('danger', 'หมายเลขห้องซ้ำ');
+                        }
+                    }).finally(() => {
+                        loading.close()
+                    })
             }
             else {
-                axios.post(`https://api.resguru.app/api/rooms/`, {
-                    data: {
-                        RoomNumber: this.roomName,
-                        room_building: this.$store.state.building,
-                        room_type: this.room_type_id,
-                        building_floor: this.roomFloor_id,
-                    }
-                })
-                    .then((resp) => {
-                        this.$showNotification('#3A89CB', 'Add Room Success')
-                    })
-                    .catch(error => {
-                        const errorMessage = error.message ? error.message : 'Error updating information';
-                        this.$showNotification('danger', errorMessage);
-                    })
-                    .finally(() => {
-                        this.getUserRoom();
-                        this.create_room = false
-                    })
+                this.$showNotification('danger', 'กรุณากรอกข้อมูลให้ครบ');
             }
+
+
+
 
 
         },

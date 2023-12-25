@@ -364,9 +364,7 @@
                         <div class=" cursor-pointer mr-[8px]"
                             :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
                             @click="tab_floor = i, filter.floor = data.id, callChildFunction(data.id), name_floor = data.attributes.floorName">
-                            อาคาร
-                            {{
-                                data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }}
+                            ชั้น {{ data.attributes.floorName }}
                         </div>
                     </div>
                 </div>

@@ -915,7 +915,7 @@ export default {
   },
   methods: {
     async redirectToCheckout(productKey) {
-            const userEmail = this.$store.state.userInfo.user.email; // Assume this is the logged-in user's email   
+            const userEmail = this.$store.state.userInfo.email; // Assume this is the logged-in user's email   
             const buildingId = this.$route.query.building ;
             const stripeProductId = productKey ;
             console.log("ProductKey",stripeProductId)

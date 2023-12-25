@@ -381,7 +381,7 @@ export default {
                         topic: this.topic,
                         description: this.description,
                         date_execute: this.date_execute,
-                        users_created: this.$store.state.userInfo.user.id,
+                        users_created: this.$store.state.userInfo.id,
                         building: this.$store.state.building
                     }
                 })
@@ -423,7 +423,7 @@ export default {
         //             topic: this.topic,
         //             description: this.description,
         //             date_execute: this.date_execute,
-        //             users_created: this.$store.state.userInfo.user.id
+        //             users_created: this.$store.state.userInfo.id
         //         }
         //     })
         //         .then(this.$showNotification('#3A89CB', 'Edit Announcement Success'))

@@ -106,9 +106,7 @@
                     <div class=" cursor-pointer mr-[8px]"
                         :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
                         @click="tab_floor = i, filter.floor = data.id, getRentalContract(), name_floor = data.attributes.floorName">
-                        อาคาร
-                        {{
-                            data.attributes.building.data.attributes.buildingName }} - ชั้น {{ data.attributes.floorName }}
+                        ชั้น {{ data.attributes.floorName }}
                     </div>
                 </div>
             </div>
@@ -416,7 +414,7 @@
                                 <div class="grid grid-cols-2  text-custom mt-[14px]  "
                                     v-if="room_detail_create.check_user == true">
                                     <div>
-                                        <div class="">ค้นหาผู้เช่าด้วยรหัสบัตรประชาชน</div>
+                                        <div class=""><span class="text-[red] mr-[2px]">*</span>ค้นหาผู้เช่าด้วยรหัสบัตรประชาชน</div>
                                         <div>
                                             <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                                 v-model="filter.Id_card">
@@ -428,7 +426,7 @@
                                 </div>
                                 <div class="grid grid-cols-8  text-custom mt-[14px]  ">
                                     <div>
-                                        <div>คำนำหน้า</div>
+                                        <div><span class="text-[red] mr-[2px]">*</span>คำนำหน้า</div>
                                         <select :disabled="room_detail_create.check_user == true" placeholder="ชื่อ" id="mr"
                                             class="mt-[6px] pl-[4px] pr-[4px] h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             v-model="room_detail_create.sex">
@@ -441,7 +439,7 @@
                                         </select>
                                     </div>
                                     <div class="col-span-3 ml-[8px]">
-                                        <div>ชื่อ</div>
+                                        <div><span class="text-[red] mr-[2px]">*</span>ชื่อ</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             :disabled="room_detail_create.check_user == true"
                                             v-model="room_detail_create.name" required />
@@ -450,7 +448,7 @@
                                         </div> -->
                                     </div>
                                     <div class="col-span-3  ml-[8px]">
-                                        <div>สกุล</div>
+                                        <div><span class="text-[red] mr-[2px]">*</span>สกุล</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             :disabled="room_detail_create.check_user == true"
                                             v-model="room_detail_create.last_name" required />
@@ -471,13 +469,13 @@
                             <div class="w-[30%] text-custom flex items-start"></div>
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
                                 <div class="col-span-4">
-                                    <div>เบอร์โทรศัพท์</div>
+                                    <div><span class="text-[red] mr-[2px]">*</span>เบอร์โทรศัพท์</div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="room_detail_create.phone" required
                                         :disabled="room_detail_create.check_user == true" />
                                 </div>
                                 <div class="col-span-4  ml-[8px]">
-                                    <div>หมายเลขบัตรประชาชน <span class="text-[#5C6B79]"></span></div>
+                                    <div><span class="text-[red] mr-[2px]">*</span>หมายเลขบัตรประชาชน <span class="text-[#5C6B79]"></span></div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="room_detail_create.id_card" required
                                         :disabled="room_detail_create.check_user == true" />
@@ -491,7 +489,7 @@
                             <div class="w-[30%] text-custom flex items-start"></div>
                             <div class="grid grid-cols-6  text-custom w-[70%] ">
                                 <div class="col-span-3">
-                                    <div>Email <span class="text-[#5C6B79]">สำหรับล็อกอินเข้าใช้แอปพลิเคชัน</span></div>
+                                    <div><span class="text-[red] mr-[2px]">*</span>Email <span class="text-[#5C6B79]">สำหรับล็อกอินเข้าใช้แอปพลิเคชัน</span></div>
                                     <input type="email"
                                         class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
                                         v-model="room_detail_create.email" required
@@ -501,7 +499,7 @@
                                     </div> -->
                                 </div>
                                 <div class="col-span-3 ml-[8px]">
-                                    <div>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
+                                    <div><span class="text-[red] mr-[2px]">*</span>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
                                     <input type="date"
                                         class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
                                         v-model="room_detail_create.birth" required
@@ -513,7 +511,7 @@
                             <div class="w-[30%] text-custom flex items-start"></div>
                             <div class="grid grid-cols-6  text-custom w-[70%] ">
                                 <div class="col-span-6">
-                                    <div>ที่อยู่</div>
+                                    <div><span class="text-[red] mr-[2px]">*</span>ที่อยู่</div>
                                     <input type="input"
                                         class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
                                         v-model="room_detail_create.address" required
@@ -525,7 +523,7 @@
                             <div class="w-[30%] text-custom flex items-start text-white">.</div>
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
                                 <div class="col-span-4">
-                                    <div>วันที่ทำสัญญา</div>
+                                    <div><span class="text-[red] mr-[2px]">*</span>วันที่ทำสัญญา</div>
                                     <input type="date"
                                         class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
                                         v-model="room_detail_create.date_sign" required />
@@ -534,7 +532,7 @@
                                     </div> -->
                                 </div>
                                 <div class="col-span-4  ml-[8px]">
-                                    <div>วันสิ้นสุดสัญญา</div>
+                                    <div><span class="text-[red] mr-[2px]">*</span>วันสิ้นสุดสัญญา</div>
                                     <input type="date"
                                         class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
                                         v-model="room_detail_create.exp_date" required />
@@ -543,7 +541,7 @@
                                     </div> -->
                                 </div>
                                 <div class="col-span-4 mt-[16px]">
-                                    <div>เลขมิเตอร์ค่าน้ำเริ่มต้น</div>
+                                    <div><span class="text-[red] mr-[2px]">*</span>เลขมิเตอร์ค่าน้ำเริ่มต้น</div>
                                     <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="room_detail_create.water" required />
                                     <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
@@ -551,7 +549,7 @@
                                     </div> -->
                                 </div>
                                 <div class="col-span-4 mt-[16px]  ml-[8px]">
-                                    <div>เลขมิเตอร์ค่าไฟเริ่มต้น</div>
+                                    <div><span class="text-[red] mr-[2px]">*</span>เลขมิเตอร์ค่าไฟเริ่มต้น</div>
                                     <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="room_detail_create.ele" required />
                                     <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
@@ -559,8 +557,8 @@
                                     </div> -->
                                 </div>
                                 <div class="col-span-4 mt-[16px]">
-                                    <div>ประเภทห้องพัก</div>
-                                    <select placeholder="Select" v-model="room_detail_create.type_room"
+                                    <div><span class="text-[red] mr-[2px]">*</span>ประเภทห้องพัก</div>
+                                    <select placeholder="Select" v-model="room_detail_create.type_room" disabled
                                         class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]">
                                         <option v-for="type_room in room_type" :value="type_room.id">
                                             {{ type_room.attributes.roomTypeName }}
@@ -571,7 +569,7 @@
                                     </div> -->
                                 </div>
                                 <div class="col-span-4  ml-[8px] mt-[16px]">
-                                    <div>ระยะเวลาสัญญา (เดือน)</div>
+                                    <div><span class="text-[red] mr-[2px]">*</span>ระยะเวลาสัญญา (เดือน)</div>
                                     <select placeholder="Select" v-model="room_detail_create.contract_duration"
                                         class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]">
                                         <option>
@@ -594,7 +592,7 @@
                             <div class="w-[30%] text-custom flex items-start text-white">.</div>
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
                                 <div class="col-span-4">
-                                    <div>ค่าประกันห้อง</div>
+                                    <div><span class="text-[red] mr-[2px]">*</span>ค่าประกันห้อง</div>
                                     <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="room_detail_create.roomInsuranceDeposit" required />
                                     <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
@@ -602,7 +600,7 @@
                                     </div> -->
                                 </div>
                                 <div class="col-span-4 ml-[8px]">
-                                    <div>วางเงินมัดจำ (บาท)</div>
+                                    <div><span class="text-[red] mr-[2px]">*</span>วางเงินมัดจำ (บาท)</div>
                                     <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="room_detail_create.room_deposit" required />
                                     <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
@@ -848,7 +846,8 @@ export default {
             fetch(`https://api.resguru.app/api/users?filters[idCard][$eq]=${id_room}`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log('detail from get user', resp);
+                    if(resp.length > 0 ){
+                         console.log('detail from get user', resp);
                     this.room_detail_create.id = resp[0].id
                     this.room_detail_create.name = resp[0].firstName
                     this.room_detail_create.last_name = resp[0].lastName
@@ -859,6 +858,21 @@ export default {
                     this.room_detail_create.address = resp[0].contactAddress
                     this.room_detail_create.sex = resp[0].sex
                     this.room_detail_create.birth = resp[0].dateOfBirth
+                    }
+                    else{
+                        this.$showNotification('danger', 'ไม่พบผู้ใช้');
+                    this.room_detail_create.id = ''
+                    this.room_detail_create.name = ''
+                    this.room_detail_create.last_name = ''
+                    this.room_detail_create.nick_name = ''
+                    this.room_detail_create.phone = ''
+                    this.room_detail_create.email = ''
+                    this.room_detail_create.id_card = ''
+                    this.room_detail_create.address = ''
+                    this.room_detail_create.sex = ''
+                    this.room_detail_create.birth = ''
+                    }
+                   
 
                 }).catch(() => {
                     loading.close()
