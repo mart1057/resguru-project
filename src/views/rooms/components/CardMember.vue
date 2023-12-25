@@ -3,10 +3,11 @@
         <div class="grid grid-cols-7 w-[100%] gap-4 mt-[14px]">
             <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[14px] cursor-pointer "
                 v-for="data in user">
-                <div :class=" $route.query.status == 'Checked In' ? 'bg-[#D7F1E3] text-[#39B974]' : 'bg-[#F0F8FF] text-[#003765]'"
+                <div :class="$route.query.status == 'Checked In' ? 'bg-[#D7F1E3] text-[#39B974]' : 'bg-[#F0F8FF] text-[#003765]'"
                     @click="getDetailRentalContract()"
                     class="h-[24px] w-[auto] mt-[-22px] text-[12px] flex items-center justify-center p-[8px] rounded-[8px]">
-                    {{ $route.query.status == "Checked In" ? 'ทำสัญญาแล้ว' : $route.query.status == "Reserved" ? 'ยังไม่ทำสัญญา' : 'ห้องว่าง' }}
+                    {{ $route.query.status == "Checked In" ? 'ทำสัญญาแล้ว' : $route.query.status == "Reserved" ?
+                        'ยังไม่ทำสัญญา' : 'ห้องว่าง' }}
                 </div>
                 <img class="w-[78px] h-[78px] rounded-[22px]" :src="data.filePath" @click="getDetailRentalContract()" />
                 <div @click="getDetailRentalContract()">{{ data.firstName }} {{ data.lastName }}</div>
@@ -288,7 +289,22 @@
                                 <div v-for="(data, i) in  room_detail.vehicles">
                                     <div class="grid grid-cols-8  text-custom w-[100%]">
                                         <div class="col-span-2">
-                                            <div>คันที่ {{ i + 1 }}</div>
+                                            <div class="flex">
+                                                <div class="flex items-center">คันที่ {{ i + 1 }}</div>
+                                                <div class="ml-[8px] cursor-pointer" @click="removeVehicles(i,data.id)"><svg width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                        <mask id="mask0_417_4814" style="mask-type:alpha"
+                                                            maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                                            <rect width="24" height="24" fill="#D9D9D9" />
+                                                        </mask>
+                                                        <g mask="url(#mask0_417_4814)">
+                                                            <path
+                                                                d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                                                                fill="#5C6B79" />
+                                                        </g>
+                                                    </svg>
+                                                </div>
+                                            </div>
                                             <select placeholder="ชื่อ"
                                                 class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]"
                                                 v-model="data.Type">
@@ -679,7 +695,7 @@ export default {
                 .then(response => response.json())
                 .then((resp) => {
                     console.log('detail', resp);
-                    if (resp.length>0) {
+                    if (resp.length > 0) {
                         this.id_user = resp[0].id
                         this.room_detail.id = resp[0].id
                         this.room_detail.name = resp[0].firstName
@@ -701,7 +717,7 @@ export default {
                             this.room_detail.emergencyPhone = resp[0].emergencyPhone,
                             this.room_detail.lineID = resp[0].lineID
                     }
-                    else{
+                    else {
                         this.$showNotification('danger', 'ไม่พบผู้ใช้');
                         this.id_user = ''
                         this.room_detail.id = ''
@@ -713,22 +729,22 @@ export default {
                         this.room_detail.id_card = ''
                         this.room_detail.address = ''
                         this.room_detail.sex = ''
-                        this.room_detail.birth =''
+                        this.room_detail.birth = ''
                         this.room_detail.date_sign = ''
                         this.room_detail.workplace = '',
-                        this.room_detail.faculty = '',
-                        this.room_detail.rank = ''
+                            this.room_detail.faculty = '',
+                            this.room_detail.rank = ''
                         this.room_detail.idEmployee = ''
                         this.room_detail.emergencyPerson = ''
                         this.room_detail.relation = ''
                         this.room_detail.emergencyPhone = '',
-                        this.room_detail.lineID = ''
+                            this.room_detail.lineID = ''
                         this.room_detail.vehicles = []
                     }
 
                 }).finally(() => {
                     if (this.id_user) {
-                        fetch('https://api.resguru.app/api' + '/users/' + this.id_user+ '?&populate=*')
+                        fetch('https://api.resguru.app/api' + '/users/' + this.id_user + '?&populate=*')
                             .then(response => response.json())
                             .then((resp) => {
                                 console.log('fffff', resp);
@@ -971,6 +987,10 @@ export default {
                 licensePlat: '',
                 Type: ''
             })
+        },
+        removeVehicles(i,id){
+            this.room_detail.vehicles.splice(i,1)
+            console.log(this.room_detail.vehicles);
         },
         moveRoom() {
             const loading = this.$vs.loading({})
