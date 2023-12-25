@@ -313,7 +313,7 @@ export default {
                     data: {
                         buildingName: this.buildingName,
                         buildingAddress: this.buildingAddress,
-                        user_owner: this.$store.state.userInfo.user.id,
+                        user_owner: this.$store.state.userInfo.id,
                         buildingProvince: "",
                         buildingDistrict: "",
                         buildingSubDistrict: "",

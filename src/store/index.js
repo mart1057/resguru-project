@@ -46,7 +46,7 @@ export default new Vuex.Store({
         fetch('https://api.resguru.app/api/users/' + resp.data.user.id + '?populate=*')
         .then(response => response.json())
         .then((resp2) => {
-          commit('setUser', resp.data)
+          commit('setUser', resp2)
           commit('setLogin', true)
           localStorage.setItem("is_login", true)
         })

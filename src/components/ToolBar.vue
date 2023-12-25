@@ -262,8 +262,8 @@
                             </vs-tooltip>
                             <div class="ml-[8px]">
                                 <!-- <vs-avatar> -->
-                                {{ this.$store.state.userInfo.user.firstName }} {{ }}
-                                {{ this.$store.state.userInfo.user.lastName }}
+                                {{ this.$store.state.userInfo.firstName }} {{ }}
+                                {{ this.$store.state.userInfo.lastName }}
 
                                 <!-- </vs-avatar> -->
                             </div>
@@ -478,7 +478,7 @@ export default {
             window.location.reload()
         },
         async getNoti() {
-            fetch(`https://api.resguru.app/api/notification-logs?filters[toUser][id][$eq]=${this.$store.state.userInfo.user.id}&populate=*&sort[0]=id:desc`)
+            fetch(`https://api.resguru.app/api/notification-logs?filters[toUser][id][$eq]=${this.$store.state.userInfo.id}&populate=*&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getNoti()", resp.data);

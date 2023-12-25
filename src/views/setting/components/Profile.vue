@@ -438,8 +438,8 @@ export default {
     methods: {
         getUserDetail() {
             const loading = this.$vs.loading()
-            console.log("ID :", this.$store.state.userInfo.user.id)
-            fetch(`https://api.resguru.app/api/users/${this.$store.state.userInfo.user.id}?populate=*`)
+            console.log("ID :", this.$store.state.userInfo)
+            fetch(`https://api.resguru.app/api/users/${this.$store.state.userInfo.id}?populate=*`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getUser()", resp);
@@ -449,17 +449,16 @@ export default {
                 })
         },
         updateUserDetail() {
-            axios.put(`https://api.resguru.app/api/users/${this.$store.state.userInfo.user.id}`, {
-
+            axios.put(`https://api.resguru.app/api/users/${this.$store.state.userInfo.id}`, {
                 firstName: this.userData.firstName,
                 lastName: this.userData.lastName,
                 contactAddress: this.userData.contactAddress,
                 phone: this.userData.phone,
                 currentAddress: this.buildingData.attributes.currentAddress,
-
             })
                 .then((resp) => {
                     console.log(resp)
+                    this.$store.commit('setUser', resp.data);
                 })
                 .catch(error => {
                     const errorMessage = error.message ? error.message : 'Error updating information';
@@ -568,7 +567,7 @@ export default {
             if (this.fileProfile.length != 0) {
                 let formData = new FormData();
                 formData.append("files", this.fileProfile);
-                formData.append("refId", String(this.$store.state.userInfo.user.id));
+                formData.append("refId", String(this.$store.state.userInfo.id));
                 formData.append("ref", "plugin::users-permissions.user");
                 formData.append("field", "imageProfile");
 
@@ -662,7 +661,7 @@ export default {
             if (img.length != 0) {
                 let formData = new FormData();
                 formData.append("files", img);
-                formData.append("refId", String(this.$store.state.userInfo.user.id));
+                formData.append("refId", String(this.$store.state.userInfo.id));
                 formData.append("ref", "api::users-permissions.user");
                 formData.append("field", "imageBanner");
                 axios.post("https://api.resguru.app/api/upload", formData, {
