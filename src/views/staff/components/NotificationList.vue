@@ -3,7 +3,7 @@
         <div class="mt-[24px]">
             <div class="text-[24px] font-bold">รายละเอียดการแจ้งทั้งหมด</div>
             <div class="grid grid-cols-2 w-[100%] gap-2 mt-[14px] ">
-                <div class="h-[auto] bg-[#ffffff] rounded-[22px] w-[100%] p-[8px]" v-for="data in service" >
+                <div class="h-[auto] bg-[#ffffff] rounded-[22px] w-[100%] p-[8px]" v-for="data in service">
                     <div class="flex  h-[100%]">
                         <!-- <div class="w-[140px] bg-[#F5D65E] h-[100%] flex justify-center items-center rounded-[19px]">
                             <svg width="90" height="92" viewBox="0 0 90 92" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -56,7 +56,8 @@
                                         fill="white" />
                                 </g>
                             </svg>
-                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" v-else>
+                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"
+                                v-else>
                                 <mask id="mask0_1510_23443" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
                                     width="32" height="32">
                                     <rect width="32" height="32" fill="#D9D9D9" />
@@ -70,8 +71,10 @@
                         </div>
                         <div class=" w-[100%] pt-[8px] p-[12px]">
                             <div class="flex justify-between items-center">
-                                <div class="font-bold text-[18px] truncate w-[450px] ">ห้อง {{ data.attributes.user_sign_contract.data.attributes.room.data.attributes.RoomNumber }} | {{ data.attributes.title }} <span
-                                        class="text-[10px] font-normal text-[#8396A6]"> {{ convertDateNoTime(data.attributes.createdAt) }}</span></div>
+                                <div class="font-bold text-[18px] truncate w-[450px] ">ห้อง {{
+                                    data.attributes.user_sign_contract.data.attributes.room.data.attributes.RoomNumber }} |
+                                    {{ data.attributes.title }} <span class="text-[10px] font-normal text-[#8396A6]"> {{
+                                        convertDateNoTime(data.attributes.createdAt) }}</span></div>
                                 <div
                                     class="bg-[#FFF2BC] text-[#D48C00] pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[12px]">
                                     {{ data.attributes.serviceStatus }}</div>
@@ -84,7 +87,8 @@
                                     <div class="truncate w-[550px]"> {{ data.attributes.description }}</div>
                                 </div>
                                 <div class="flex flex-col justify-between items-center">
-                                    <div class="text-[12px] text-[#8396A6]"> {{ convertDateNoTime(data.attributes.createdAt) }}</div>
+                                    <div class="text-[12px] text-[#8396A6]"> {{ convertDateNoTime(data.attributes.createdAt)
+                                    }}</div>
                                 </div>
                             </div>
                             <div class="grid grid-cols-2 w-[100%] gap-2">
@@ -101,14 +105,15 @@
                                             </vs-select> -->
                                             <select placeholder="Select"
                                                 class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]"
-                                                :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''" v-model="data.attributes.responID">
+                                                :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''"
+                                                v-model="data.attributes.responID">
                                                 <option disabled value="">
                                                     เลือก..
                                                 </option>
-                                                <option  v-for="selectEmployee in employee" :value="selectEmployee.id">
-                                                    {{selectEmployee.attributes.name}}
+                                                <option v-for="selectEmployee in employee" :value="selectEmployee.id">
+                                                    {{ selectEmployee.attributes.name }}
                                                 </option>
-                                                
+
                                             </select>
                                         </div>
                                     </div>
@@ -117,15 +122,18 @@
                                     <div class="text-[12px] text-[#8396A6] mt-[8px]">วันเวลา</div>
                                     <div class="w-[100%]">
                                         <div class="mt-[5px] w-[100%]  con-selects">
-                                            <vs-input type="date" v-model="data.attributes.appointmentDate" />
+                                            <vs-input type="datetime-local" v-model="data.attributes.timely" />
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <vs-button @click="updateService(data.id,data.attributes.responID,date_time)" color="#003765" class="w-[100%] h-[36px] rounded-[12px] mt-[30px]  text-[white] flex items-center justify-center">
+                            <vs-button @click="updateService(data.id, data.attributes.responID, data.attributes.timely)" color="#003765"
+                                class="w-[100%] h-[36px] rounded-[12px] mt-[30px]  text-[white] flex items-center justify-center">
                                 กำหนดผู้ดูแล
                             </vs-button>
-                            <vs-button v-if="data.attributes.responID != null" @click="closeService(data.id)" color="#003765" class="w-[100%] h-[36px] rounded-[12px] mt-[30px]  text-[white] flex items-center justify-center">
+                            <vs-button v-if="data.attributes.responID != null" @click="closeService(data.id)"
+                                color="#003765"
+                                class="w-[100%] h-[36px] rounded-[12px] mt-[30px]  text-[white] flex items-center justify-center">
                                 จบงาน
                             </vs-button>
                         </div>
@@ -297,7 +305,7 @@
 </template>
 <script>
 import axios from 'axios'
-import { convertDateNoTime} from '@/components/hook/hook'
+import { convertDateNoTime } from '@/components/hook/hook'
 
 export default {
     data() {
@@ -342,14 +350,18 @@ export default {
             fetch(`https://api.resguru.app/api/services?populate=deep,3&sort[0]=id:desc&filters[serviceStatus][$ne]=completed&filters[building][id][$eq]=${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getService()",resp.data);
+                    console.log("Return from getService()", resp.data);
                     if (this.code == 8) {
-                        this.service = resp.data .filter(item =>
+                        this.service = resp.data.filter(item =>
                             item.attributes.user_sign_contract.data.attributes.room.data.attributes.RoomNumber.toLowerCase().includes(this.text.toLowerCase()),
                         );
                     }
-                    else{
-                        this.service = resp.data   
+                    else {
+                        resp.data.forEach(item => {
+                            // Add the 'lastname' property to the 'attributes' object of each item
+                            item.attributes.timely = this.convertDateFormat(item.attributes.appointmentDate); // You can set a value for 'lastname' here if needed
+                        });
+                        this.service = resp.data
                     }
                 }).finally(() => {
                     loading.close()
@@ -361,52 +373,66 @@ export default {
             fetch(`https://api.resguru.app/api/building-employees?populate=*&sort[0]=id:desc&filters[building][id][$eq]=${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getEmployee()",resp.data);
+                    console.log("Return from getEmployee()", resp.data);
                     this.employee = resp.data
                 }).finally(() => {
                     loading.close()
                 })
         },
-        updateService(serviceId,empId,date,id) {
+        updateService(serviceId, empId, date, id) {
             console.log(date);
-            axios.put(`https://api.resguru.app/api/services/${serviceId}`,{
-                data : {
+            axios.put(`https://api.resguru.app/api/services/${serviceId}`, {
+                data: {
                     responEmployee: empId,
                     serviceStatus: "In Progress",
                     appointmentDate: date,
-                    responID:empId
+                    responID: empId
                 }
             })
-            .then( (resp) =>{
-                console.log(resp)
-            })
-            .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
-            this.$showNotification('danger', errorMessage); 
-            })
-            .finally(()=>{
-                this.$showNotification('#3A89CB', 'Update Service Success')
-               
-            }) 
-                
+                .then((resp) => {
+                    console.log(resp)
+                })
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.$showNotification('#3A89CB', 'Update Service Success')
+
+                })
+
         },
-        closeService(serviceId){
-            axios.put(`https://api.resguru.app/api/services/${serviceId}`,{
-                data : {
+        closeService(serviceId) {
+            axios.put(`https://api.resguru.app/api/services/${serviceId}`, {
+                data: {
                     serviceStatus: "Completed",
                 }
-            }) 
-            .then( (resp) =>{
-                console.log(resp)
             })
-            .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
-            this.$showNotification('danger', errorMessage); 
-            })
-            .finally(()=>{
-                this.$showNotification('#3A89CB', 'Closed Job Service Success')
-                this.getService() 
-            }) 
+                .then((resp) => {
+                    console.log(resp)
+                })
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.$showNotification('#3A89CB', 'Closed Job Service Success')
+                    this.getService()
+                })
+        },
+        convertDateFormat(inputDate) {
+            const date = new Date(inputDate); // Parse the input date string
+
+            const year = date.getFullYear(); // Get the year (e.g., 2023)
+            const month = `0${date.getMonth() + 1}`.slice(-2); // Get the month (January is 0, so adding 1)
+            const day = `0${date.getDate()}`.slice(-2); // Get the day
+            const hours = `0${date.getHours()}`.slice(-2); // Get the hours
+            const minutes = `0${date.getMinutes()}`.slice(-2); // Get the minutes
+
+            // Concatenate the formatted date string in the desired format: YYYY-MM-DDTHH:MM
+            const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
+
+            return formattedDate;
         }
     }
 }
