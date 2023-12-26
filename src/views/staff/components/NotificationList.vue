@@ -127,7 +127,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <vs-button @click="updateService(data.id, data.attributes.responID, data.attributes.timely)" color="#003765"
+                            <vs-button @click="updateService(data.id, data.attributes.responID, data.attributes.timely)"
+                                color="#003765"
                                 class="w-[100%] h-[36px] rounded-[12px] mt-[30px]  text-[white] flex items-center justify-center">
                                 กำหนดผู้ดูแล
                             </vs-button>
@@ -362,6 +363,7 @@ export default {
                             item.attributes.timely = this.convertDateFormat(item.attributes.appointmentDate); // You can set a value for 'lastname' here if needed
                         });
                         this.service = resp.data
+
                     }
                 }).finally(() => {
                     loading.close()
@@ -379,13 +381,13 @@ export default {
                     loading.close()
                 })
         },
-        updateService(serviceId, empId, date, id) {
-            console.log(date);
+        updateService(serviceId, empId, date) {
+            console.log();
             axios.put(`https://api.resguru.app/api/services/${serviceId}`, {
                 data: {
                     responEmployee: empId,
                     serviceStatus: "In Progress",
-                    appointmentDate: date,
+                    appointmentDate: this.convertDateFormat2(date),
                     responID: empId
                 }
             })
@@ -422,18 +424,30 @@ export default {
         },
         convertDateFormat(inputDate) {
             const date = new Date(inputDate); // Parse the input date string
-
             const year = date.getFullYear(); // Get the year (e.g., 2023)
             const month = `0${date.getMonth() + 1}`.slice(-2); // Get the month (January is 0, so adding 1)
             const day = `0${date.getDate()}`.slice(-2); // Get the day
             const hours = `0${date.getHours()}`.slice(-2); // Get the hours
             const minutes = `0${date.getMinutes()}`.slice(-2); // Get the minutes
-
             // Concatenate the formatted date string in the desired format: YYYY-MM-DDTHH:MM
             const formattedDate = `${year}-${month}-${day}T${hours}:${minutes}`;
+            return formattedDate;
+        },
+        convertDateFormat2(inputDate) {
+            // Parse the input date string
+            const date = new Date(inputDate);
+
+            // Check if the date is valid
+            if (isNaN(date.getTime())) {
+                return "Invalid date"; // Return an error message if the input date is invalid
+            }
+
+            // Format the date to the desired output format (YYYY-MM-DDTHH:MM:SS.SSSZ)
+            const formattedDate = date.toISOString();
 
             return formattedDate;
         }
+
     }
 }
 </script>
