@@ -821,7 +821,7 @@ export default {
                 if (this.room_detail.check_user == true) {
                     if (this.room_detail.email != '' && this.room_detail.name != '' && this.room_detail.last_name != '' && this.room_detail.phone != '' && this.room_detail.id_card != '' && this.room_detail.address != '' && this.img_arr_card != 0) {
                         const loading = this.$vs.loading()
-                        fetch('https://api.resguru.app/api/user-sign-contracts?filters[users_permissions_user][id][$eq]=' + this.id_user + '&populate=*')
+                        fetch('https://api.resguru.app/api/user-sign-contracts?filters[users_permissions_user][id][$eq]=' + this.id_user + '&populate=*&filters[room][id][$notNull]=true')
                             .then(response => response.json())
                             .then((resp) => {
                                 if (resp.data.length == 0) {
@@ -897,6 +897,7 @@ export default {
                                             this.create = false
                                             
                                         })
+                                        loading.close()
                                 }
                                 else {
                                     loading.close()
