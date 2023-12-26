@@ -110,7 +110,7 @@
                         </div>
                         <div>
                             <div class="text-[18px] font-bold">{{ item.attributes.title }}</div>
-                            <div class="text-[#141629] mt-[8px]">กรณีเสียหายค่าปรับ {{ item.attributes.price }} บาท</div>
+                            <div class="text-[#141629] mt-[8px]">ราคา {{ item.attributes.price }} บาท/เดือน</div>
                         </div>
                     </div>
 
