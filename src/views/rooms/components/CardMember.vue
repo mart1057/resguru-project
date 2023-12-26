@@ -9,7 +9,7 @@
                     {{ $route.query.status == "Checked In" ? 'ทำสัญญาแล้ว' : $route.query.status == "Reserved" ?
                         'ยังไม่ทำสัญญา' : 'ห้องว่าง' }}
                 </div>
-                <img class="w-[78px] h-[78px] rounded-[22px]" :src="data.filePath" @click="getDetailRentalContract()" />
+                <img class="w-[78px] h-[78px] rounded-[22px]" :src="'https://api.resguru.app'+data.imageProfile?.url" @click="getDetailRentalContract()" />
                 <div @click="getDetailRentalContract()">{{ data.firstName }} {{ data.lastName }}</div>
                 <div class="flex" @click="getDetailRentalContract()">
                     <div><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -663,7 +663,7 @@ export default {
         },
         getUser() {
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/users?filters[id][$eq]=' + this.id_user)
+            fetch('https://api.resguru.app/api' + '/users?filters[id][$eq]=' + this.id_user+'&populate=*')
                 .then(response => response.json())
                 .then((resp) => {
                     this.user = resp

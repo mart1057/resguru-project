@@ -114,9 +114,9 @@
                     <div class="flex">
 
                         <div
-                            v-if="data.user_sign_contract && data.user_sign_contract.users_permissions_user && data.user_sign_contract.users_permissions_user.filePath">
-                            <img class="w-[136px] h-[100%] rounded-[22px]"
-                                :src="data.user_sign_contract.users_permissions_user.filePath" />
+                            v-if="data.user_sign_contract && data.user_sign_contract.users_permissions_user && data.user_sign_contract.users_permissions_user.imageProfile">
+                            <img class="w-[136px] max-h-[100%] rounded-[22px]"
+                                :src="'https://api.resguru.app'+data.user_sign_contract.users_permissions_user.imageProfile.url" />
                         </div>
                         <div class="w-[136px] h-[100%] rounded-[22px]" v-else>
                             <svg width="137" height="136" viewBox="0 0 137 136" fill="none"
