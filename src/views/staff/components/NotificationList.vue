@@ -351,6 +351,9 @@ export default {
             fetch(`https://api.resguru.app/api/services?populate=deep,3&sort[0]=id:desc&filters[serviceStatus][$ne]=completed&filters[building][id][$eq]=${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
+                    resp.data.forEach(item => {
+                        item.attributes.timely = this.convertDateFormat(item.attributes.appointmentDate);
+                    });
                     console.log("Return from getService()", resp.data);
                     if (this.code == 8) {
                         this.service = resp.data.filter(item =>
@@ -358,10 +361,7 @@ export default {
                         );
                     }
                     else {
-                        resp.data.forEach(item => {
-                            // Add the 'lastname' property to the 'attributes' object of each item
-                            item.attributes.timely = this.convertDateFormat(item.attributes.appointmentDate); // You can set a value for 'lastname' here if needed
-                        });
+
                         this.service = resp.data
 
                     }
