@@ -47,7 +47,7 @@
                     </div>
                     <div
                         class="text-[white] text-[32px]  w-[100%] text-center mt-[60px] flex flex-col justify-center items-center">
-                        สร้างห้องพัก</div>
+                        สร้างตึกหอพัก</div>
                 </div>
                 <div class="ml-[-20px]">
                     <svg width="307" height="323" viewBox="0 0 307 323" fill="none" xmlns="http://www.w3.org/2000/svg">
