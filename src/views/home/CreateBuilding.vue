@@ -47,7 +47,7 @@
                     </div>
                     <div
                         class="text-[white] text-[32px]  w-[100%] text-center mt-[60px] flex flex-col justify-center items-center">
-                        สร้างตึกหอพัก</div>
+                        สร้างหอพักหอพัก</div>
                 </div>
                 <div class="ml-[-20px]">
                     <svg width="307" height="323" viewBox="0 0 307 323" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -116,7 +116,7 @@
                         <div class="flex flex-col justify-center items-center w-[100%]">
                             <div class="grid grid-cols-1 w-[100%]  gap-4 mt-[10px] ">
                                 <div>
-                                    <div class="font-bold">ชื่ออพาร์ทเม้นท์</div>
+                                    <div class="font-bold">ชื่อหอพัก</div>
                                     <div class="">
                                         <input type="input" v-model="buildingName"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />

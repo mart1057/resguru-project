@@ -81,7 +81,7 @@
                                 <div class="mt-[8px]">Number of Admin</div>
                             </div>
                             <div class="flex justify-end flex-col items-end">
-                                <div>1 ตึก / 5 ห้อง</div>
+                                <div>1 หอพัก / 5 ห้อง</div>
                                 <div class="mt-[8px]">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -368,7 +368,7 @@
                                 <div class="mt-[8px]">Number of Admin</div>
                             </div>
                             <div class="flex justify-end flex-col items-end">
-                                <div>1 ตึก / 5 ห้อง</div>
+                                <div>1 หอพัก / 5 ห้อง</div>
                                 <div class="mt-[8px]">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -655,7 +655,7 @@
                                 <div class="mt-[8px]">Number of Admin</div>
                             </div>
                             <div class="flex justify-end flex-col items-end">
-                                <div>1 ตึก / 5 ห้อง</div>
+                                <div>1 หอพัก / 5 ห้อง</div>
                                 <div class="mt-[8px]">
                                     <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">

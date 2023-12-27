@@ -196,7 +196,7 @@
                                             </div>
                                             <div class="flex items-center text-[16px]  ml-[8px] text-custom text-[#003765] cursor-pointer"
                                                 @click="routerTo('/')">
-                                                เปลี่ยนตึกที่ดูแล</div>
+                                                เปลี่ยนหอพักที่ดูแล</div>
                                         </div>
                                         <div
                                             class="w-[100%] h-[1px]  mt-[12px] mb-[12px] bg-gray-200 border-0 dark:bg-gray-700">

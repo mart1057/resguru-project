@@ -66,7 +66,7 @@
             </div>
         </div>
         <div class="w-[55%] pt-[50px]">
-            <div class="text-center text-[24px] font-bold">เลือกตึกหอพักของคุณ</div>
+            <div class="text-center text-[24px] font-bold">เลือกหอพักหอพักของคุณ</div>
             <div class="flex flex-col justify-between">
                 <div class=" text-[18px]  mt-[50px] grid grid-cols-2 gap-5">
 
@@ -148,7 +148,7 @@
                             </div>
                         </div>
 
-                        <div disabled class="w-[70%] p-[8px] flex flex-col cursor-not-allowed" title="โปรดชำระค่าต่ออายุประจำเดือนของตึก หรือติดต่อแอดมิน" v-if="data.attributes.buildingPaymentStatus =='Inactive'">
+                        <div disabled class="w-[70%] p-[8px] flex flex-col cursor-not-allowed" title="โปรดชำระค่าต่ออายุประจำเดือนของหอพัก หรือติดต่อแอดมิน" v-if="data.attributes.buildingPaymentStatus =='Inactive'">
                             <div >
                                 <div class="flex justify-between">
                                     <div class="text-[14px] font-bold">{{ data.attributes.buildingName }}</div>
@@ -256,7 +256,7 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class="mt-[4px]">สร้างตึกหอพัก</div>
+                            <div class="mt-[4px]">สร้างหอพักหอพัก</div>
                         </div>
                     </div>
                 </div>

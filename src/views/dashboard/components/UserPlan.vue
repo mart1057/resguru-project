@@ -21,7 +21,7 @@
                 </div>
                 <div
                     class="flex justify-center items-center border pl-[8px] pr-[8px] pb-[4px] pt-[4px] rounded-[22px] border-[#F5D65E]">
-                    <div class="text-[12px] text-white">เรียกดูข้อมูลของทุกตึก</div>
+                    <div class="text-[12px] text-white">เรียกดูข้อมูลของทุกหอพัก</div>
                     <div class="ml-[10px]">
                         <vs-switch success>
                             <template #off>

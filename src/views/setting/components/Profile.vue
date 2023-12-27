@@ -265,7 +265,7 @@
                 <div class="w-[100%] ml-[24px] mt-[8px]" v-if="tabSetting == 2">
                     <div class="grid grid-cols-4 w-[100%] gap-2 ">
                         <div class="mt-[8px] col-span-4">
-                            <div class="text-custom text-[14px] text-[#003765]">ชื่ออพาร์ทเม้นท์</div>
+                            <div class="text-custom text-[14px] text-[#003765]">ชื่อหอพัก</div>
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingName" />
                         </div>

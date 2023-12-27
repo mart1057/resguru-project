@@ -14,7 +14,7 @@
                             </div>
                             <div @click="tab = 3, getFloorRoom()" class="cursor-pointer ml-[8px]"
                                 :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
-                                รายการจำนวนชั้นของตึก
+                                รายการจำนวนชั้นของหอพัก
                             </div>
                         </div>
                     </div>
@@ -331,7 +331,7 @@
         </div>
 
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 3">
-            <div class="text-[16px] font-bold mt-[24px]">รายการจำนวนชั้นของตึก</div>
+            <div class="text-[16px] font-bold mt-[24px]">รายการจำนวนชั้นของหอพัก</div>
             <div class="grid grid-cols-5 gap-4 mt-[14px] w-[100%]">
                 <div class="border h-[100%] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
                     @click="createFloor = true, buildingfloorName = ''">

@@ -9,7 +9,7 @@
                             fill="#003765" />
                     </svg>
                 </div>
-                <div class="text-[18px] font-bold flex items-center ml-[4px]">ข่าวสารประจำตึก</div>
+                <div class="text-[18px] font-bold flex items-center ml-[4px]">ข่าวสารประจำหอพัก</div>
             </div>
             <div class="flex justify-center items-center">
                 <div class="flex justify-center items-center cursor-pointer" @click=" routerTo('/announcement')">ดูทั้งหมด</div>
