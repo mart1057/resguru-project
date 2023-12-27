@@ -323,39 +323,40 @@
                         class="bg-[#CFFBDA] text-[#0B9A3C] rounded-[12px] pt-[7px] pb-[7px] pl-[12px] pr-[12px] text-center cursor-pointer">
                         บันทึกหนี้สูญแล้ว</div>
                 </div> -->
-            </div >
-            <div class="flex items-start mt-[50px]">
-                <div class="w-[48%] flex justify-center items-start text-custom">
-                    <div>
-                        <div class="flex justify-start items-start">คืนเงินประกัน</div>
-                        <div class="flex mt-[14px] justify-center items-center">
-                            <div>
-                                <div
-                                    class="font-bold text-custom text-[#8396A6] text-[12px] flex justify-start items-start">
-                                    รายการ
-                                </div>
-                                <div>
-                                    <div
-                                        class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
-                                        เงินประกัน
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="ml-[8px]">
+            </div>
+            <div class="flex">
+                <div class="mt-[50px]">
+                    <div class="w-[48%]  text-custom">
+                        <div>
+                            <div class="flex justify-start items-start">คืนเงินประกัน</div>
+                            <div class=" mt-[14px] flex">
                                 <div>
                                     <div
                                         class="font-bold text-custom text-[#8396A6] text-[12px] flex justify-start items-start">
-                                        จำนวนเงิน(บาท)
+                                        รายการ
                                     </div>
                                     <div>
-                                        <input
-                                            class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]"
-                                            type="input" v-model="list_debt.deposit2" />
+                                        <div
+                                            class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                            เงินประกัน
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="ml-[8px] mt-[-8px]">
+                                    <div>
+                                        <div
+                                            class="font-bold text-custom text-[#8396A6] text-[12px] flex justify-start items-start">
+                                            จำนวนเงิน(บาท)
+                                        </div>
+                                        <div>
+                                            <input
+                                                class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]"
+                                                type="input" v-model="list_debt.deposit2" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- <div class="flex mt-[24px]">
+                            <!-- <div class="flex mt-[24px]">
                             <div>
                                 <div class="font-bold text-custom text-[12px] flex justify-start items-start">
                                     รวมทั้งหมด
@@ -369,200 +370,205 @@
                                 </div>
                             </div>
                         </div> -->
-                    </div>
-                </div>
-                <div class="w-[50%] flex flex-col justify-end">
-                    รายการชำระเงิน
-                    <div class="w-[50%] flex justify-between mt-[8px]">
-                        <div>
-                            <div class="text-[12px] text-[#8396A6]">รายการ</div>
-                            <div class="mt-[8px]">
-                                <div
-                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
-                                    ค่าหอพัก
-                                </div>
-                            </div>
-                            <div class="mt-[8px]">
-                                <div
-                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
-                                    ค่าน้ำ
-                                </div>
-                            </div>
-                            <div class="mt-[8px]">
-                                <div
-                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
-                                    ค่าไฟ
-                                </div>
-                            </div>
-
-                            <div class="mt-[8px]">
-                                <div
-                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
-                                    ค่าส่วนกลาง
-                                </div>
-                            </div>
-                            <div class="mt-[8px]">
-                                <div
-                                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
-                                    ค่าอื่น ๆ
-                                </div>
-                            </div>
-                            <div class="mt-[32px]">
-                                <div class="font-bold text-custom text-[14px] flex justify-start items-start ml-[16px]">
-                                    รวมทั้งหมด
-                                </div>
-                            </div>
-
                         </div>
-                        <div>
-                            <div class="text-[12px] text-[#8396A6]">จำนวนเงินบาท</div>
-                            <div class="flex">
-                                <input
-                                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center"
-                                    type="number" v-model="bill_detail.room" />
-                            </div>
-                            <div class="flex mt-[-8px]">
-                                <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="number" v-model="bill_detail.water" />
-                            </div>
-                            <div class="flex mt-[-8px]">
-                                <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="number" v-model="bill_detail.ele" />
-                            </div>
-                            <div class="flex mt-[-8px]">
-                                <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="number" v-model="bill_detail.communalPrice" />
-                            </div>
-                            <div class="flex mt-[-8px]">
-                                <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    type="number" v-model="bill_detail.other" />
+                    </div>
+                    <div class="w-[50%] flex flex-col justify-end mt-[14px]">
+                        รายการชำระเงิน
+                        <div class="w-[50%] flex justify-between mt-[8px]">
+                            <div>
+                                <div class="text-[12px] text-[#8396A6]">รายการ</div>
+                                <div class="mt-[8px]">
+                                    <div
+                                        class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                        ค่าหอพัก
+                                    </div>
+                                </div>
+                                <div class="mt-[8px]">
+                                    <div
+                                        class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                        ค่าน้ำ
+                                    </div>
+                                </div>
+                                <div class="mt-[8px]">
+                                    <div
+                                        class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                        ค่าไฟ
+                                    </div>
+                                </div>
+
+                                <div class="mt-[8px]">
+                                    <div
+                                        class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                        ค่าส่วนกลาง
+                                    </div>
+                                </div>
+                                <div class="mt-[8px]">
+                                    <div
+                                        class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]">
+                                        ค่าอื่น ๆ
+                                    </div>
+                                </div>
+                                <div class="mt-[32px]">
+                                    <div class="font-bold text-custom text-[14px] flex justify-start items-start ml-[16px]">
+                                        รวมทั้งหมด
+                                    </div>
+                                </div>
+
                             </div>
                             <div>
-                                <div v-if="bill_detail.room"
-                                    class="font-bold text-custom text-[14px] flex justify-start items-start pl-[16px] mt-[24px]">
-                                    {{ parseInt(bill_detail.room + bill_detail.other + bill_detail.water +
-                                        bill_detail.ele + bill_detail.communalPrice)
-                                    }}
+                                <div class="text-[12px] text-[#8396A6]">จำนวนเงินบาท</div>
+                                <div class="flex">
+                                    <input
+                                        class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center"
+                                        type="number" v-model="bill_detail.room" />
                                 </div>
-                                <div v-else
-                                    class="font-bold text-custom text-[14px] flex justify-start items-start pl-[16px] mt-[24px]">
-                                    -
+                                <div class="flex mt-[-8px]">
+                                    <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                        type="number" v-model="bill_detail.water" />
                                 </div>
-                            </div>
+                                <div class="flex mt-[-8px]">
+                                    <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                        type="number" v-model="bill_detail.ele" />
+                                </div>
+                                <div class="flex mt-[-8px]">
+                                    <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                        type="number" v-model="bill_detail.communalPrice" />
+                                </div>
+                                <div class="flex mt-[-8px]">
+                                    <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                        type="number" v-model="bill_detail.other" />
+                                </div>
+                                <div>
+                                    <div v-if="bill_detail.room"
+                                        class="font-bold text-custom text-[14px] flex justify-start items-start pl-[16px] mt-[24px]">
+                                        {{ parseInt(bill_detail.room + bill_detail.other + bill_detail.water +
+                                            bill_detail.ele + bill_detail.communalPrice)
+                                        }}
+                                    </div>
+                                    <div v-else
+                                        class="font-bold text-custom text-[14px] flex justify-start items-start pl-[16px] mt-[24px]">
+                                        -
+                                    </div>
+                                </div>
 
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class=" flex w-[100%] justify-center mt-[100px]">
-                <div class="w-[2%] flex justify-center items-center ">
-                    <!-- <div class="w-[1px] h-[100%] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
-                </div>
-                <div class="w-[48%] flex flex-col justify-center items-center pl-[100px] pr-[100px] ">
-                    <div class="text-custom text-[18px] font-bold text-[#003765]">สรุปการย้ายออก</div>
-                    <div class="w-[100%] mt-[14px]">
-                        <div class="flex justify-between w-[100%]">
-                            <div class="text-custom ">ค้างชำระ</div>
-                            <div class="text-custom " v-if="bill_detail.water || bill_detail.room || bill_detail.other">{{
-                                bill_detail.room + bill_detail.water + bill_detail.ele +
-                                bill_detail.other + bill_detail.communalPrice }} <span
-                                    class="ml-[4px] text-custom ">บาท</span>
-                            </div>
-                            <div class="text-custom " v-else>-<span class="ml-[4px] text-custom ">บาท</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between w-[100%] mt-[4px]" v-for="item in items_other">
-                            <div class="text-custom ">ค่าปรับทรัพย์สินเสียหาย ({{ item.name }})</div>
-                            <div class="text-custom ">{{ item.price }} <span class="ml-[4px] text-custom ">บาท</span></div>
-                        </div>
-                        <div class="flex justify-between w-[100%] mt-[4px]">
-                            <div class="text-custom ">คืนค่ามัดจำ</div>
-                            <div class="text-custom ">-{{ list_debt.deposit }} <span
-                                    class="ml-[4px] text-custom ">บาท</span></div>
-                        </div>
-                        <div class="flex justify-between w-[100%] mt-[4px]">
-                            <div class="text-custom ">คืนเงินประกัน</div>
-                            <div class="text-custom ">-{{ list_debt.deposit2 }} <span
-                                    class="ml-[4px] text-custom ">บาท</span></div>
-                        </div>
-                        <div class="flex justify-between w-[100%] mt-[4px]">
-                            <div class="text-custom text-[16px] font-bold ">รวมทั้งสิ้น</div>
-                            <div class="text-custom text-[16px] font-bold" v-if="list_debt.total">
-                                {{
-                                    totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + parseInt(list_debt.total)
-                                }} <span class="ml-[4px] text-custom ">บาท</span>
-                            </div>
-                            <div class="text-custom text-[16px] font-bold" v-else>
-                                {{
-                                    totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) }} <span
-                                    class="ml-[4px] text-custom ">บาท</span>
-                            </div>
-                        </div>
-                        <div class="flex justify-between w-[100%] mt-[4px]" v-if="tab == true">
-                            <div class="text-custom text-[#D44769] font-bold text-[16px]">หนี้สูญ {{
-                                (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) < 0 ? 0
-                                : (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) }}
-                                    บาท</div>
-                            </div>
-                        </div>
-                        <div class="text-custom text-[12px] font-bold text-[#003765] mt-[24px]">วันที่ย้ายออก</div>
-                        <div>
-                            <input
-                                class="h-[28px] w-[180px] bg-[#F3F8FD] rounded-[12px] mt-[4px]  flex justify-start pl-[8px] pr-[8px]"
-                                type="date" v-model="date_moveout" />
-                        </div>
-                        <div class="flex mt-[14px]">
-                            <button @click="PDFPrint()"
-                                class="bg-[#165D98] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
-                                <div class="flex">
-                                    <div class="flex justify-center items-center ">
-                                        <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <mask id="mask0_3285_9902" style="mask-type:alpha" maskUnits="userSpaceOnUse"
-                                                x="0" y="0" width="22" height="23">
-                                                <rect y="0.5" width="22" height="22" fill="#D9D9D9" />
-                                            </mask>
-                                            <g mask="url(#mask0_3285_9902)">
-                                                <path
-                                                    d="M14.6652 8.11546V5.36546H7.33187V8.11546H5.9569V4.81532C5.9569 4.58155 6.0363 4.38564 6.19511 4.22757C6.35391 4.06951 6.55068 3.99048 6.78543 3.99048H15.208C15.4466 3.99048 15.645 4.06954 15.8031 4.22767C15.9611 4.38579 16.0402 4.58173 16.0402 4.81548V8.11546H14.6652ZM16.3222 11.7821C16.582 11.7821 16.7997 11.6942 16.9754 11.5185C17.1511 11.3428 17.2389 11.1251 17.2389 10.8654C17.2389 10.6057 17.1511 10.388 16.9754 10.2123C16.7997 10.0366 16.582 9.94874 16.3222 9.94874C16.0625 9.94874 15.8448 10.0366 15.6691 10.2123C15.4934 10.388 15.4056 10.6057 15.4056 10.8654C15.4056 11.1251 15.4934 11.3428 15.6691 11.5185C15.8448 11.6942 16.0625 11.7821 16.3222 11.7821ZM7.61395 17.9167H14.3831C14.4654 17.9167 14.533 17.8903 14.5859 17.8374C14.6388 17.7845 14.6652 17.7169 14.6652 17.6346V14.0032H7.33187V17.6346C7.33187 17.7169 7.35832 17.7845 7.41121 17.8374C7.4641 17.8903 7.53168 17.9167 7.61395 17.9167ZM7.61395 19.2917C7.15826 19.2917 6.76817 19.1294 6.44367 18.8049C6.11915 18.4804 5.9569 18.0903 5.9569 17.6346V15.625H3.38319C3.14845 15.625 2.95168 15.5456 2.79288 15.3868C2.63409 15.228 2.55469 15.0312 2.55469 14.7965V10.4071C2.55469 9.75779 2.77651 9.21352 3.22014 8.77429C3.66378 8.33507 4.20583 8.11546 4.84631 8.11546H17.1508C17.8001 8.11546 18.3443 8.33507 18.7836 8.77429C19.2228 9.21352 19.4424 9.75779 19.4424 10.4071V14.7965C19.4424 15.0312 19.363 15.228 19.2042 15.3868C19.0454 15.5456 18.8486 15.625 18.6139 15.625H16.0402V17.6346C16.0402 18.0903 15.8779 18.4804 15.5534 18.8049C15.2289 19.1294 14.8388 19.2917 14.3831 19.2917H7.61395ZM18.0674 14.25V10.4071C18.0674 10.1474 17.9796 9.92965 17.8039 9.75395C17.6282 9.57826 17.4105 9.49041 17.1508 9.49041H4.84631C4.58659 9.49041 4.36888 9.57826 4.19318 9.75395C4.01749 9.92965 3.92964 10.1474 3.92964 10.4071V14.25H5.9569V12.6283H16.0402V14.25H18.0674Z"
-                                                    fill="white" />
-                                            </g>
-                                        </svg>
-                                    </div>
-                                    <div class="text-[white] ml-[4px] ">พิมพ์</div>
+                <div class=" flex w-[100%] justify-end mt-[50px]">
+                    <div class="w-[2%] flex justify-center items-center ">
+                        <!-- <div class="w-[1px] h-[100%] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
+                    </div>
+                    <div class="w-[80%] flex flex-col  items-center pl-[100px] pr-[100px] ">
+                        <div class="text-custom text-[18px] font-bold text-[#003765]">สรุปการย้ายออก</div>
+                        <div class="w-[100%] mt-[14px]">
+                            <div class="flex justify-between w-[100%]">
+                                <div class="text-custom ">ค้างชำระ</div>
+                                <div class="text-custom " v-if="bill_detail.water || bill_detail.room || bill_detail.other">
+                                    {{
+                                        bill_detail.room + bill_detail.water + bill_detail.ele +
+                                        bill_detail.other + bill_detail.communalPrice }} <span
+                                        class="ml-[4px] text-custom ">บาท</span>
                                 </div>
-                            </button>
-                            <button @click="move_confirm = true"
-                                class="bg-[#D44769] ml-[8px] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
-                                <div class="flex">
-                                    <div class="flex justify-center items-center ">
-                                        <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <mask id="mask0_3339_790" style="mask-type:alpha" maskUnits="userSpaceOnUse"
-                                                x="0" y="0" width="22" height="23">
-                                                <rect y="0.5" width="22" height="22" fill="#D9D9D9" />
-                                            </mask>
-                                            <g mask="url(#mask0_3339_790)">
-                                                <path
-                                                    d="M2.20351 19.2915C1.96876 19.2915 1.77199 19.2121 1.61317 19.0533C1.45439 18.8945 1.375 18.6978 1.375 18.463V4.53678C1.375 4.30204 1.4544 4.10527 1.6132 3.94647C1.77199 3.78766 1.96876 3.70825 2.20351 3.70825H12.4983C12.7331 3.70825 12.9299 3.78766 13.0886 3.94647C13.2474 4.10527 13.3268 4.30204 13.3268 4.53678V18.463C13.3268 18.6978 13.2474 18.8945 13.0886 19.0533C12.9299 19.2121 12.7331 19.2915 12.4983 19.2915H8.56728V15.6601H6.13454V19.2915H2.20351ZM2.74995 17.9166H4.75959V14.2852H9.94226V17.9166H11.9519V5.08323H2.74995V17.9166ZM4.75959 12.2755H6.34611V10.689H4.75959V12.2755ZM4.75959 8.67938H6.34611V7.09286H4.75959V8.67938ZM8.35574 12.2755H9.94226V10.689H8.35574V12.2755ZM8.35574 8.67938H9.94226V7.09286H8.35574V8.67938ZM14.7724 11.4996C14.7724 11.3047 14.8383 11.1415 14.97 11.0098C15.1018 10.8782 15.2651 10.8124 15.4599 10.8124H18.009L17.2544 10.0579C17.1275 9.93098 17.0626 9.77233 17.0596 9.58195C17.0567 9.39156 17.1255 9.2277 17.2659 9.09037C17.3946 8.96447 17.5555 8.90151 17.7486 8.90151C17.9417 8.90151 18.1008 8.96498 18.2257 9.09191L20.0538 10.9199C20.2195 11.0856 20.3023 11.279 20.3023 11.4999C20.3023 11.7208 20.2195 11.9141 20.0538 12.0798L18.2257 13.9079C18.1003 14.0329 17.9435 14.0982 17.7553 14.1039C17.5671 14.1095 17.4049 14.0442 17.2686 13.9079C17.1357 13.781 17.0685 13.6223 17.0667 13.432C17.065 13.2416 17.1275 13.0782 17.2544 12.9419L18.009 12.1874H15.4599C15.2651 12.1874 15.1018 12.1215 14.97 11.9896C14.8383 11.8578 14.7724 11.6945 14.7724 11.4996Z"
-                                                    fill="white" />
-                                            </g>
-                                        </svg>
-                                    </div>
-                                    <div class="text-[white] ml-[4px]  ">เคลียร์บิลและย้ายออก</div>
+                                <div class="text-custom " v-else>-<span class="ml-[4px] text-custom ">บาท</span>
                                 </div>
-                            </button>
-                            <button @click="darftBill()"
-                                class="bg-[#003765] ml-[8px] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
-                                <div class="flex">
-                                    <div class="flex justify-center items-center ">
-                                    </div>
-                                    <div class="text-[white] ml-[4px]  ">บันทึกแบบร่าง</div>
+                            </div>
+                            <div class="flex justify-between w-[100%] mt-[4px]" v-for="item in items_other">
+                                <div class="text-custom ">ค่าปรับทรัพย์สินเสียหาย ({{ item.name }})</div>
+                                <div class="text-custom ">{{ item.price }} <span class="ml-[4px] text-custom ">บาท</span>
                                 </div>
-                            </button>
+                            </div>
+                            <div class="flex justify-between w-[100%] mt-[4px]">
+                                <div class="text-custom ">คืนค่ามัดจำ</div>
+                                <div class="text-custom ">-{{ list_debt.deposit }} <span
+                                        class="ml-[4px] text-custom ">บาท</span></div>
+                            </div>
+                            <div class="flex justify-between w-[100%] mt-[4px]">
+                                <div class="text-custom ">คืนเงินประกัน</div>
+                                <div class="text-custom ">-{{ list_debt.deposit2 }} <span
+                                        class="ml-[4px] text-custom ">บาท</span></div>
+                            </div>
+                            <div class="flex justify-between w-[100%] mt-[4px]">
+                                <div class="text-custom text-[16px] font-bold ">รวมทั้งสิ้น</div>
+                                <div class="text-custom text-[16px] font-bold" v-if="list_debt.total">
+                                    {{
+                                        totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) +
+                                        parseInt(list_debt.total)
+                                    }} <span class="ml-[4px] text-custom ">บาท</span>
+                                </div>
+                                <div class="text-custom text-[16px] font-bold" v-else>
+                                    {{
+                                        totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) }} <span
+                                        class="ml-[4px] text-custom ">บาท</span>
+                                </div>
+                            </div>
+                            <div class="flex justify-between w-[100%] mt-[4px]" v-if="tab == true">
+                                <div class="text-custom text-[#D44769] font-bold text-[16px]">หนี้สูญ {{
+                                    (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) < 0
+                                    ? 0 : (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) +
+                                        list_debt.total) }} บาท</div>
+                                </div>
+                            </div>
+                            <div class="text-custom text-[12px] font-bold text-[#003765] mt-[24px]">วันที่ย้ายออก</div>
+                            <div>
+                                <input
+                                    class="h-[28px] w-[180px] bg-[#F3F8FD] rounded-[12px] mt-[4px]  flex justify-start pl-[8px] pr-[8px]"
+                                    type="date" v-model="date_moveout" />
+                            </div>
+                            <div class="flex mt-[14px]">
+                                <button @click="PDFPrint()"
+                                    class="bg-[#165D98] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
+                                    <div class="flex">
+                                        <div class="flex justify-center items-center ">
+                                            <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <mask id="mask0_3285_9902" style="mask-type:alpha"
+                                                    maskUnits="userSpaceOnUse" x="0" y="0" width="22" height="23">
+                                                    <rect y="0.5" width="22" height="22" fill="#D9D9D9" />
+                                                </mask>
+                                                <g mask="url(#mask0_3285_9902)">
+                                                    <path
+                                                        d="M14.6652 8.11546V5.36546H7.33187V8.11546H5.9569V4.81532C5.9569 4.58155 6.0363 4.38564 6.19511 4.22757C6.35391 4.06951 6.55068 3.99048 6.78543 3.99048H15.208C15.4466 3.99048 15.645 4.06954 15.8031 4.22767C15.9611 4.38579 16.0402 4.58173 16.0402 4.81548V8.11546H14.6652ZM16.3222 11.7821C16.582 11.7821 16.7997 11.6942 16.9754 11.5185C17.1511 11.3428 17.2389 11.1251 17.2389 10.8654C17.2389 10.6057 17.1511 10.388 16.9754 10.2123C16.7997 10.0366 16.582 9.94874 16.3222 9.94874C16.0625 9.94874 15.8448 10.0366 15.6691 10.2123C15.4934 10.388 15.4056 10.6057 15.4056 10.8654C15.4056 11.1251 15.4934 11.3428 15.6691 11.5185C15.8448 11.6942 16.0625 11.7821 16.3222 11.7821ZM7.61395 17.9167H14.3831C14.4654 17.9167 14.533 17.8903 14.5859 17.8374C14.6388 17.7845 14.6652 17.7169 14.6652 17.6346V14.0032H7.33187V17.6346C7.33187 17.7169 7.35832 17.7845 7.41121 17.8374C7.4641 17.8903 7.53168 17.9167 7.61395 17.9167ZM7.61395 19.2917C7.15826 19.2917 6.76817 19.1294 6.44367 18.8049C6.11915 18.4804 5.9569 18.0903 5.9569 17.6346V15.625H3.38319C3.14845 15.625 2.95168 15.5456 2.79288 15.3868C2.63409 15.228 2.55469 15.0312 2.55469 14.7965V10.4071C2.55469 9.75779 2.77651 9.21352 3.22014 8.77429C3.66378 8.33507 4.20583 8.11546 4.84631 8.11546H17.1508C17.8001 8.11546 18.3443 8.33507 18.7836 8.77429C19.2228 9.21352 19.4424 9.75779 19.4424 10.4071V14.7965C19.4424 15.0312 19.363 15.228 19.2042 15.3868C19.0454 15.5456 18.8486 15.625 18.6139 15.625H16.0402V17.6346C16.0402 18.0903 15.8779 18.4804 15.5534 18.8049C15.2289 19.1294 14.8388 19.2917 14.3831 19.2917H7.61395ZM18.0674 14.25V10.4071C18.0674 10.1474 17.9796 9.92965 17.8039 9.75395C17.6282 9.57826 17.4105 9.49041 17.1508 9.49041H4.84631C4.58659 9.49041 4.36888 9.57826 4.19318 9.75395C4.01749 9.92965 3.92964 10.1474 3.92964 10.4071V14.25H5.9569V12.6283H16.0402V14.25H18.0674Z"
+                                                        fill="white" />
+                                                </g>
+                                            </svg>
+                                        </div>
+                                        <div class="text-[white] ml-[4px] ">พิมพ์</div>
+                                    </div>
+                                </button>
+                                <button @click="move_confirm = true"
+                                    class="bg-[#D44769] ml-[8px] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
+                                    <div class="flex">
+                                        <div class="flex justify-center items-center ">
+                                            <svg width="22" height="23" viewBox="0 0 22 23" fill="none"
+                                                xmlns="http://www.w3.org/2000/svg">
+                                                <mask id="mask0_3339_790" style="mask-type:alpha" maskUnits="userSpaceOnUse"
+                                                    x="0" y="0" width="22" height="23">
+                                                    <rect y="0.5" width="22" height="22" fill="#D9D9D9" />
+                                                </mask>
+                                                <g mask="url(#mask0_3339_790)">
+                                                    <path
+                                                        d="M2.20351 19.2915C1.96876 19.2915 1.77199 19.2121 1.61317 19.0533C1.45439 18.8945 1.375 18.6978 1.375 18.463V4.53678C1.375 4.30204 1.4544 4.10527 1.6132 3.94647C1.77199 3.78766 1.96876 3.70825 2.20351 3.70825H12.4983C12.7331 3.70825 12.9299 3.78766 13.0886 3.94647C13.2474 4.10527 13.3268 4.30204 13.3268 4.53678V18.463C13.3268 18.6978 13.2474 18.8945 13.0886 19.0533C12.9299 19.2121 12.7331 19.2915 12.4983 19.2915H8.56728V15.6601H6.13454V19.2915H2.20351ZM2.74995 17.9166H4.75959V14.2852H9.94226V17.9166H11.9519V5.08323H2.74995V17.9166ZM4.75959 12.2755H6.34611V10.689H4.75959V12.2755ZM4.75959 8.67938H6.34611V7.09286H4.75959V8.67938ZM8.35574 12.2755H9.94226V10.689H8.35574V12.2755ZM8.35574 8.67938H9.94226V7.09286H8.35574V8.67938ZM14.7724 11.4996C14.7724 11.3047 14.8383 11.1415 14.97 11.0098C15.1018 10.8782 15.2651 10.8124 15.4599 10.8124H18.009L17.2544 10.0579C17.1275 9.93098 17.0626 9.77233 17.0596 9.58195C17.0567 9.39156 17.1255 9.2277 17.2659 9.09037C17.3946 8.96447 17.5555 8.90151 17.7486 8.90151C17.9417 8.90151 18.1008 8.96498 18.2257 9.09191L20.0538 10.9199C20.2195 11.0856 20.3023 11.279 20.3023 11.4999C20.3023 11.7208 20.2195 11.9141 20.0538 12.0798L18.2257 13.9079C18.1003 14.0329 17.9435 14.0982 17.7553 14.1039C17.5671 14.1095 17.4049 14.0442 17.2686 13.9079C17.1357 13.781 17.0685 13.6223 17.0667 13.432C17.065 13.2416 17.1275 13.0782 17.2544 12.9419L18.009 12.1874H15.4599C15.2651 12.1874 15.1018 12.1215 14.97 11.9896C14.8383 11.8578 14.7724 11.6945 14.7724 11.4996Z"
+                                                        fill="white" />
+                                                </g>
+                                            </svg>
+                                        </div>
+                                        <div class="text-[white] ml-[4px]  ">เคลียร์บิลและย้ายออก</div>
+                                    </div>
+                                </button>
+                                <button @click="darftBill()"
+                                    class="bg-[#003765] ml-[8px] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
+                                    <div class="flex">
+                                        <div class="flex justify-center items-center ">
+                                        </div>
+                                        <div class="text-[white] ml-[4px]  ">บันทึกแบบร่าง</div>
+                                    </div>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
+
             </div>
             <vs-dialog width="550px" not-center v-model="move_confirm" not-close>
                 <template #header>
