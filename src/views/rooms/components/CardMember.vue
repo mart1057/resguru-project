@@ -9,7 +9,7 @@
                     {{ $route.query.status == "Checked In" ? 'ทำสัญญาแล้ว' : $route.query.status == "Reserved" ?
                         'ยังไม่ทำสัญญา' : 'ห้องว่าง' }}
                 </div>
-                <img class="w-[78px] h-[78px] rounded-[22px]" :src="'https://api.resguru.app'+data.imageProfile?.url" @click="getDetailRentalContract()" />
+                <img class="w-[78px] h-[78px] rounded-[22px]" v-if="data.imageProfile" :src="'https://api.resguru.app'+data.imageProfile?.url" @click="getDetailRentalContract()" />
                 <div @click="getDetailRentalContract()">{{ data.firstName }} {{ data.lastName }}</div>
                 <div class="flex" @click="getDetailRentalContract()">
                     <div><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
