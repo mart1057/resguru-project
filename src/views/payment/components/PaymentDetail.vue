@@ -362,7 +362,7 @@
                                 <vs-input v-model="tr.attributes.paid" />
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.createdAt }}
+                                {{ convertDateNoTime(tr.attributes.createdAt) }}
                             </vs-td>
                             <vs-td>
                                 <div class="flex items-center justify-start">
@@ -500,7 +500,7 @@
                                 {{ $formatNumber(tr.attributes.total) }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.createdAt }}
+                                {{ convertDateNoTime(tr.attributes.createdAt) }}
                             </vs-td>
                             <vs-td>
                                 <svg @click="PDFPrintReceipt(tr)" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -553,7 +553,7 @@
                     <template #tbody>
                         <vs-tr :key="i" v-for="(tr, i) in userEvidencePayment" :data="tr">
                             <vs-td>
-                                {{ tr.attributes.createdAt }}
+                                {{ convertDateNoTime(tr.attributes.createdAt) }}
                             </vs-td>
                             <vs-td>
                                 <!-- {{ tr.attributes.tenant_bills.data[0].attributes.invoiceNumber }} -->
@@ -585,11 +585,14 @@
                                 </div>
                             </vs-td>
                             <vs-td>
-                                <div v-if="!tr.attributes.tenant_receipt.data">
+                                <div v-if="!tr.attributes.tenant_receipt.data && tr.attributes.evidenceStatus=='Waiting Review'">
                                     <vs-button @click="createReceipt(tr)" small>รับชำระ</vs-button>
                                 </div>
-                                <div v-if="!tr.attributes.tenant_receipt.data">
-                                    <vs-button small>ไม่รับชำระ</vs-button>
+                                <div v-if="!tr.attributes.tenant_receipt.data && tr.attributes.evidenceStatus=='Waiting Review'">
+                                    <vs-button @click="cancelPayment(tr)" small>ไม่รับชำระ</vs-button>
+                                </div>
+                                <div v-else>
+                                    -
                                 </div>
                             </vs-td>
                         </vs-tr>
@@ -809,8 +812,10 @@
 
 import axios from 'axios'
 import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
+import { convertDateNoTime } from '@/components/hook/hook';
 import download from 'downloadjs';
 import PDFgenerator from '@/views/payment/components/PDFgeneratorReceipt'
+
 
 export default {
     components: { PDFgenerator },
@@ -905,6 +910,7 @@ export default {
                 paymentTime: '',
                 building: ''
             },
+            convertDateNoTime
         }
     },
     created() {
@@ -1409,6 +1415,61 @@ export default {
                 this.getEvidence();
             })
         },
+
+        createReceipt(currentEvident) { //ส่งบอกว่า evident ถูก approve แล้ว หลังบ้านจะไป update invoice, current evident, และ สร้าง reciept ตามจำเป็น
+            let today = new Date()
+            axios.post('https://api.resguru.app/api' + '/approvePayment', {
+                data:{
+                    year: today.getFullYear(),
+                    month: today.getMonth()+1,
+                    evidenceid: currentEvident.id,
+                    paidAmount: currentEvident.attributes.amount,
+                    buildingid: currentEvident.attributes.building.data.id,
+                    roomid: parseInt(this.$route.query.roomID),
+                    paidDate: currentEvident.attributes.paymentDate? currentEvident.attributes.paymentDate : today
+                }
+            })
+            .then((res) => {
+                this.$showNotification('#3A89CB', 'Approve Evident Success')
+            }
+            )
+            .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage);
+            })
+            .finally(() => {
+                this.getInvoice();
+                this.getReceipt();
+                this.getEvidence();
+            })
+        },
+        cancelPayment(currentEvident) { //ส่งบอกว่า evident ถูก approve แล้ว หลังบ้านจะไป update invoice, current evident, และ สร้าง reciept ตามจำเป็น
+            let today = new Date()
+
+
+            axios.put("https://api.resguru.app/api/tenant-evidence-payments/" + currentEvident.id, {
+                            data: {
+                                evidenceStatus: "Reject"
+                            }
+                        })
+            .then((res) => {
+                this.$showNotification('#3A89CB', 'Reject Evident Success')
+            }
+            )
+            .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage);
+            })
+            .finally(() => {
+                this.getInvoice();
+                this.getReceipt();
+                this.getEvidence();
+            })
+        },
+
+
+
+
         async PDFPrintReceipt(tr) {
             this.$refs.childComponentPDFReceipt.generatePDF(tr)
         },
