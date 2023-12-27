@@ -530,7 +530,7 @@ export default {
                         });
                         if (checkEmail) {
                             console.log('sfd')
-                            axios.post('https://api.resguru.app/api' + '/auth/forgot-password', {
+                            axios.post('https://api.resguru.app/api' + '/auth/forgot-password-mobile', {
                                 "email": this.email_forgot
                             })
                                 .then((resp) => {
