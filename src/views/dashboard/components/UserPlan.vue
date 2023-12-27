@@ -2,7 +2,7 @@
     <div>
         <div>
             <div class="w-[100%] h-[56px] rounded-[22px] bg-card flex justify-between items-center pl-[10px] pr-[10px]">
-                <div class="flex justify-center items-center">
+                <div class="flex justify-center items-center" v-if="$store.state.buildingInfo[0].attributes.package.data?.attributes.title == 'Professional'">
                     <div>
                         <svg width="27" height="28" viewBox="0 0 27 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_1413_29806" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
