@@ -94,7 +94,7 @@
                 </template>
             </vs-table>
         </div>
-        <div class="mt-[18px]" v-else-if="tab == 4">
+        <div class="mt-[18px]" v-else-if="tab == 4" :class="data.length > 5 ? 'table-container' : ''">
             <vs-table>
                 <template #thead>
                     <vs-tr>
