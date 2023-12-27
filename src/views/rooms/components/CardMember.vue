@@ -9,7 +9,7 @@
                     {{ $route.query.status == "Checked In" ? 'ทำสัญญาแล้ว' : $route.query.status == "Reserved" ?
                         'ยังไม่ทำสัญญา' : 'ห้องว่าง' }}
                 </div>
-                <img class="w-[78px] h-[78px] rounded-[22px]" :src="data.filePath" @click="getDetailRentalContract()" />
+                <img class="w-[78px] h-[78px] rounded-[22px]" v-if="data.imageProfile" :src="'https://api.resguru.app'+data.imageProfile?.url" @click="getDetailRentalContract()" />
                 <div @click="getDetailRentalContract()">{{ data.firstName }} {{ data.lastName }}</div>
                 <div class="flex" @click="getDetailRentalContract()">
                     <div><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -291,8 +291,9 @@
                                         <div class="col-span-2">
                                             <div class="flex">
                                                 <div class="flex items-center">คันที่ {{ i + 1 }}</div>
-                                                <div class="ml-[8px] cursor-pointer" @click="removeVehicles(i,data.id)"><svg width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <div class="ml-[8px] cursor-pointer" @click="removeVehicles(i, data.id)">
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
                                                         <mask id="mask0_417_4814" style="mask-type:alpha"
                                                             maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
                                                             <rect width="24" height="24" fill="#D9D9D9" />
@@ -662,7 +663,7 @@ export default {
         },
         getUser() {
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/users?filters[id][$eq]=' + this.id_user)
+            fetch('https://api.resguru.app/api' + '/users?filters[id][$eq]=' + this.id_user+'&populate=*')
                 .then(response => response.json())
                 .then((resp) => {
                     this.user = resp
@@ -820,77 +821,89 @@ export default {
                 if (this.room_detail.check_user == true) {
                     if (this.room_detail.email != '' && this.room_detail.name != '' && this.room_detail.last_name != '' && this.room_detail.phone != '' && this.room_detail.id_card != '' && this.room_detail.address != '' && this.img_arr_card != 0) {
                         const loading = this.$vs.loading()
-                        axios.post('https://api.resguru.app/api' + '/user-sign-contracts', {
-                            data: {
-                                room: this.id_room,
-                                contractStatus: "reserved",
-                                users_permissions_user: this.room_detail.id,
-                                // roomDeposit: parseInt(this.room_detail_create.room_deposit),
-                                // roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
-                                // contractDuration: parseInt(this.room_detail_create.contract_duration)
-                            }
-                        }).then((resp) => {
-                            if (this.img_arr_card.length != 0) {
-                                let formData = new FormData();
-                                formData.append("files", this.img_arr_card);
-                                formData.append("refId", String(resp.data.data.id));
-                                formData.append("ref", "api::user-sign-contract.user-sign-contract");
-                                formData.append("field", "imgCard");
-                                axios.post("https://api.resguru.app/api/upload", formData, {
-                                    headers: {
-                                        "Content-Type": "multipart/form-data",
-                                    },
-                                }).then((result) => { console.log("Upload file", result) })
-                                    .catch((error) => {
-                                        console.log(error);
-                                    }).finally(() => {
+                        fetch('https://api.resguru.app/api/user-sign-contracts?filters[users_permissions_user][id][$eq]=' + this.id_user + '&populate=*&filters[room][id][$notNull]=true')
+                            .then(response => response.json())
+                            .then((resp) => {
+                                if (resp.data.length == 0) {
+                                    axios.post('https://api.resguru.app/api' + '/user-sign-contracts', {
+                                        data: {
+                                            room: this.id_room,
+                                            contractStatus: "reserved",
+                                            users_permissions_user: this.room_detail.id,
+                                            // roomDeposit: parseInt(this.room_detail_create.room_deposit),
+                                            // roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
+                                            // contractDuration: parseInt(this.room_detail_create.contract_duration)
+                                        }
+                                    }).then((resp) => {
+                                        if (this.img_arr_card.length != 0) {
+                                            let formData = new FormData();
+                                            formData.append("files", this.img_arr_card);
+                                            formData.append("refId", String(resp.data.data.id));
+                                            formData.append("ref", "api::user-sign-contract.user-sign-contract");
+                                            formData.append("field", "imgCard");
+                                            axios.post("https://api.resguru.app/api/upload", formData, {
+                                                headers: {
+                                                    "Content-Type": "multipart/form-data",
+                                                },
+                                            }).then((result) => { console.log("Upload file", result) })
+                                                .catch((error) => {
+                                                    console.log(error);
+                                                }).finally(() => {
+                                                })
+                                        }
+                                        axios.put('https://api.resguru.app/api' + '/users/' + this.room_detail.id, {
+                                            "username": this.room_detail.email,
+                                            "email": this.room_detail.email,
+                                            "firstName": this.room_detail.name,
+                                            "lastName": this.room_detail.last_name,
+                                            "nickName": this.room_detail.nick_name,
+                                            "role": 4,
+                                            "phone": this.room_detail.phone,
+                                            "idCard": this.room_detail.id_card,
+                                            "contactAddress": this.room_detail.address,
+                                            "sex": this.room_detail.sex,
+                                            "dateOfBirth": this.room_detail.birth,
+                                            "workplace": this.room_detail.workplace,
+                                            "faculty": this.room_detail.faculty,
+                                            "rank": this.room_detail.rank,
+                                            "idEmployee": this.room_detail.idEmployee,
+                                            "emergencyPerson": this.room_detail.emergencyPerson,
+                                            "relation": this.room_detail.relation,
+                                            "emergencyPhone": this.room_detail.emergencyPhone,
+                                            "lineID": this.room_detail.lineID
+                                        })
+                                    }).then(() => {
+                                        newVehicles.forEach((data) => {
+                                            axios.post('https://api.resguru.app/api' + '/tenant-vehicles', {
+                                                data: {
+                                                    Type: data.Type,
+                                                    remark: data.remark,
+                                                    licensePlate: data.licensePlate,
+                                                    users_permissions_user: this.id_user
+                                                }
+                                            })
+
+
+                                        })
                                     })
-                            }
-                            axios.put('https://api.resguru.app/api' + '/users/' + this.room_detail.id, {
-                                "username": this.room_detail.email,
-                                "email": this.room_detail.email,
-                                "firstName": this.room_detail.name,
-                                "lastName": this.room_detail.last_name,
-                                "nickName": this.room_detail.nick_name,
-                                "role": 4,
-                                "phone": this.room_detail.phone,
-                                "idCard": this.room_detail.id_card,
-                                "contactAddress": this.room_detail.address,
-                                "sex": this.room_detail.sex,
-                                "dateOfBirth": this.room_detail.birth,
-                                "workplace": this.room_detail.workplace,
-                                "faculty": this.room_detail.faculty,
-                                "rank": this.room_detail.rank,
-                                "idEmployee": this.room_detail.idEmployee,
-                                "emergencyPerson": this.room_detail.emergencyPerson,
-                                "relation": this.room_detail.relation,
-                                "emergencyPhone": this.room_detail.emergencyPhone,
-                                "lineID": this.room_detail.lineID
-                            })
-                        }).then(() => {
-                            newVehicles.forEach((data) => {
-                                axios.post('https://api.resguru.app/api' + '/tenant-vehicles', {
-                                    data: {
-                                        Type: data.Type,
-                                        remark: data.remark,
-                                        licensePlate: data.licensePlate,
-                                        users_permissions_user: this.id_user
-                                    }
-                                })
+                                        .finally(() => {
+                                            axios.put('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room, {
+                                                data: {
+                                                    roomStatus: 'Reserved'
+                                                }
+                                            })
+                                            this.id_user = this.room_detail.id
+                                            this.getUser()
+                                            this.create = false
+                                            
+                                        })
+                                        loading.close()
+                                }
+                                else {
+                                    loading.close()
+                                    this.$showNotification('danger', 'ผู้เช่ามีห้องอยู่แล้ว');
 
-
-                            })
-                        })
-                            .finally(() => {
-                                axios.put('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room, {
-                                    data: {
-                                        roomStatus: 'Reserved'
-                                    }
-                                })
-                                this.id_user = this.room_detail.id
-                                this.getUser()
-                                this.create = false
-                                loading.close()
+                                }
                             })
                     }
                     else {
@@ -988,8 +1001,8 @@ export default {
                 Type: ''
             })
         },
-        removeVehicles(i,id){
-            this.room_detail.vehicles.splice(i,1)
+        removeVehicles(i, id) {
+            this.room_detail.vehicles.splice(i, 1)
             console.log(this.room_detail.vehicles);
         },
         moveRoom() {

@@ -162,20 +162,19 @@
                         </div>
                         <div
                             class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]  mt-[14px]">
-                            <div>ราคา</div>
+                            <div>ราคา/เดือน</div>
                             <!-- <div class="font-bold">{{ data.attributes.price }}</div> -->
                             <input type="number" @change="changeotherPrice(data.id, data.attributes.price)"
                                 v-model="data.attributes.price"
                                 class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]">
                         </div>
-                        <div
+                        <!-- <div
                             class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]  mt-[4px]">
                             <div>ส่วนลด</div>
-                            <!-- <div class="font-bold">{{ data.attributes.discountAmount }}</div> -->
                             <input type="number" @change="changeotherDiscountPrice(data.id, data.attributes.discountAmount)"
                                 v-model="data.attributes.discountAmount"
                                 class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]">
-                        </div>
+                        </div> -->
                     </div>
                 </div>
             </div>
@@ -532,19 +531,19 @@
                     </div>
                 </div> -->
                 <div class="mt-[14px]">
-                    <div class="text-custom">ค่าปรับ (กรณีเสียหาย)</div>
+                    <div class="text-custom">ราคา/เดือน</div>
                     <div>
                         <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
                             v-model="price" />
                     </div>
                 </div>
-                <div class="mt-[14px]">
+                <!-- <div class="mt-[14px]">
                     <div class="text-custom">ส่วนลด</div>
                     <div>
                         <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
                             v-model="discountAmount" />
                     </div>
-                </div>
+                </div> -->
                 <div class=" flex justify-end mt-[30px]">
                     <!-- <div>
                         <div>

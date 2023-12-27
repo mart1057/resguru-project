@@ -9,9 +9,13 @@
                     .users_permissions_user
                     .data.attributes.
                     imageProfile" /> -->
-                <div class="w-[78px] h-[78px] rounded-[22px] bg-[#8396A6]">
+                <div v-if="user.attributes
+                    .users_permissions_user
+                    .data?.attributes.imageProfile.data">
+                    <img class="w-[78px] h-[78px] rounded-[22px] " :src="'https://api.resguru.app' + user.attributes
+                        .users_permissions_user
+                        .data?.attributes.imageProfile?.data.attributes.url" />
                 </div>
-
                 <div>{{ user.attributes
                     .users_permissions_user
                     .data?.attributes.firstName }} {{ user.attributes
@@ -574,7 +578,7 @@
                                         <div>
                                             <input
                                                 class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]"
-                                                type="input" disabled v-model="list_debt.deposit2"/>
+                                                type="input" disabled v-model="list_debt.deposit2" />
                                         </div>
                                     </div>
                                 </div>
@@ -605,8 +609,8 @@
                                 <div class="text-custom ">ค้างชำระ</div>
                                 <div class="text-custom ">
                                     {{
-                                bill_detail.room + bill_detail.water + bill_detail.ele +
-                                bill_detail.other + bill_detail.communalPrice }} 
+                                        bill_detail.room + bill_detail.water + bill_detail.ele +
+                                        bill_detail.other + bill_detail.communalPrice }}
                                     <span class="ml-[4px] text-custom ">บาท</span>
                                 </div>
                             </div>
@@ -616,21 +620,21 @@
                                     ({{ item.name }})
                                 </div>
                                 <div class="text-custom ">
-                                    {{ item.price }} 
+                                    {{ item.price }}
                                     <span class="ml-[4px] text-custom ">บาท</span>
                                 </div>
                             </div>
                             <div class="flex justify-between w-[100%] mt-[4px]">
                                 <div class="text-custom ">คืนค่ามัดจำ</div>
                                 <div class="text-custom ">
-                                    -{{ list_debt.deposit }} 
+                                    -{{ list_debt.deposit }}
                                     <span class="ml-[4px] text-custom ">บาท</span>
                                 </div>
                             </div>
                             <div class="flex justify-between w-[100%] mt-[4px]">
                                 <div class="text-custom ">คืนเงินประกัน</div>
                                 <div class="text-custom ">
-                                    -{{ list_debt.deposit2 }} 
+                                    -{{ list_debt.deposit2 }}
                                     <span class="ml-[4px] text-custom ">บาท</span>
                                 </div>
                             </div>
@@ -638,8 +642,9 @@
                                 <div class="text-custom text-[16px] font-bold ">รวมทั้งสิ้น</div>
                                 <div class="text-custom text-[16px] font-bold">
                                     {{
-                                    totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + parseInt(list_debt.total)
-                                }} 
+                                        totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) +
+                                        parseInt(list_debt.total)
+                                    }}
                                     <span class="ml-[4px] text-custom ">บาท</span>
                                 </div>
                             </div>
@@ -723,7 +728,7 @@ export default {
                 vehicles: [],
 
             },
-            date_moveout:'',
+            date_moveout: '',
             list_debt: {
                 total: 0,
                 deposit: 0,
