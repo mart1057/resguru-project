@@ -252,8 +252,12 @@
                                         </vs-button>
                                 </div> -->
                             </vs-td>
+                            
                             <vs-td>
-                                <div v-if="tr.tenant_bills[0] && tr.tenant_bills[0].paymentStatus === 'Not Paid'">
+                                <div v-if="!tr.user_sign_contract">
+                                            <vs-button warn class="small">ผู้เช่าย้ายออก</vs-button>
+                                </div>
+                                <div v-else-if="tr.tenant_bills[0] && tr.tenant_bills[0].paymentStatus === 'Not Paid'">
                                     <!-- <vs-button  primary class="small">แก้ไขใบแจ้งหนี้</vs-button>   -->
                                     <!-- to: internal link -->
                                     <vs-select placeholder="เมนู" v-model="tr.tenant_bills[0].lastEvent"
@@ -267,7 +271,7 @@
                                         <vs-option label="ดูรายการใบแจ้งหนี้" value="View">
                                             ดูรายการใบแจ้งหนี้
                                         </vs-option>
-                                        <vs-option label="ชำระเงิน" value="Full Payment">
+                                        <vs-option label="ชำระเงิน" value="Partial Payment">
                                             ชำระเงิน
                                         </vs-option>
         
@@ -535,8 +539,107 @@
                     </div>
                 </div>
             </b-modal>
-
-            <b-modal centered v-model="createPartialPayment" size="l" hide-backdrop hide-header-close hide-header
+            <b-modal centered v-model="createPartialPayment" size="l" hide-backdrop hide-header-close hide-header hide-footer
+            class="p-[-20px] text-custom">
+            <div>
+                <div class="flex justify-between">
+                    <div class="text-custom flex justify-center items-center text-[16px] font-bold">
+                        แนบหลักฐานการชำระ</div>
+                    <div @click="createPartialPayment = false" class="cursor-pointer">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
+                                width="24" height="24">
+                                <rect width="24" height="24" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_417_4814)">
+                                <path
+                                    d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                                    fill="#5C6B79" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
+                <!-- <div class="text-custom">เลขที่ใบแจ้งหนี้ (Invoice)</div>
+                <div>
+                    <input disabled
+                        class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                        v-model="partialPaymentForm.invoiceName" />
+                    <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                        v-model="partialPaymentForm.invoiceID" hidden />
+                </div> -->
+                <div class="mt-[14px]">
+                    <div class="text-custom">ชื่อธนาคาร</div>
+                    <div>
+                        <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                            v-model="partialPaymentForm.bankName" />
+                    </div>
+                </div>
+                <div class="mt-[14px]">
+                    <div class="text-custom">ชื่อผู้โอน</div>
+                    <div>
+                        <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                            v-model="partialPaymentForm.accountBankName" />
+                        <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                            v-model="partialPaymentForm.userID" hidden />
+                    </div>
+                </div>
+                <div class="mt-[14px]">
+                    <div class="text-custom">ยอดโอน</div>
+                    <div>
+                        <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                            v-model="partialPaymentForm.amount" />
+                    </div>
+                </div>
+                <div class="mt-[14px]">
+                    <div class="text-custom">วันที่</div>
+                    <div>
+                        <input type="date"
+                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                            v-model="partialPaymentForm.paymentDate" />
+                    </div>
+                </div>
+                <div class="mt-[14px]">
+                    <div class="text-custom">เวลา</div>
+                    <div>
+                        <input type="time"
+                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                            v-model="partialPaymentForm.paymentTime" />
+                    </div>
+                </div>
+                <div class="mt-[14px]">
+                    <div class="text-custom">แนบหลักฐานการโอน</div>
+                    <div class="mt-[4px] flex">
+                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
+                            ref="PartialPayment" hidden @change="setUploadFilePayment()" type="file" />
+                        <label for="upload">
+                            <div
+                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
+                                อัพโหลดรูปภาพ</div>
+                        </label>
+                        <div v-if="this.file.name"
+                            class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            {{ this.file.name }}</div>
+                        <div v-else
+                            class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            ยังไม่ได้เลือกไฟล์</div>
+                    </div>
+                </div>
+                <div class="flex justify-end mt-[30px]">
+                    <div>
+                        <vs-button dark shadow @click="createPartialPayment = false">
+                            <div class="text-custom">ยกเลิก</div>
+                        </vs-button>
+                    </div>
+                    <div>
+                        <vs-button @click="createPartial()" color="#003765">
+                            <div class="text-custom">บันทึก</div>
+                        </vs-button>
+                    </div>
+                </div>
+            </div>
+        </b-modal>
+            <!-- <b-modal centered v-model="createPartialPayment" size="l" hide-backdrop hide-header-close hide-header
                 hide-footer class="p-[-20px] text-custom">
                 <div>
                     <div class="flex justify-between">
@@ -651,7 +754,7 @@
                         </div>
                     </div>
                 </div>
-            </b-modal>
+            </b-modal> -->
         </div>
 
     </div>
