@@ -182,7 +182,7 @@
                     </div>
                 </div>
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer items-center justify-center "
-                    @click="profile_admin = trueNewProfileAdmin.firstName = '', NewProfileAdmin.lastName = '', NewProfileAdmin.contactAddress = '', NewProfileAdmin.phone = '', NewProfileAdmin.email = '', NewProfileAdmin.line = '', NewProfileAdmin.password = '', this.fileAdminProfileForm = [], fileAdminCoverForm = []">
+                    @click="profile_em = trueNewProfileEm.firstName = '', NewProfileEm.lastName = '', NewProfileEm.contactAddress = '', NewProfileEm.phone = '', NewProfileEm.email = '', NewProfileEm.line = '', NewProfileEm.password = '', this.fileProfileForm = [], fileCoverForm = []">
                     <div class="flex flex-col items-center justify-center">
                         <div>
 

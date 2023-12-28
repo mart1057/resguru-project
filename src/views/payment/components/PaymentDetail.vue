@@ -527,9 +527,9 @@
                             <vs-th>
                                 วันเวลาที่โอน
                             </vs-th>
-                            <vs-th>
+                            <!-- <vs-th>
                                 Ref: Invoice Number
-                            </vs-th>
+                            </vs-th> -->
                             <vs-th>
                                 ธนาคาร
                             </vs-th>
@@ -555,9 +555,9 @@
                             <vs-td>
                                 {{ convertDateNoTime(tr.attributes.createdAt) }}
                             </vs-td>
-                            <vs-td>
-                                <!-- {{ tr.attributes.tenant_bills.data[0].attributes.invoiceNumber }} -->
-                            </vs-td>
+                            <!-- <vs-td>
+                                {{ tr.attributes.tenant_bills.data[0].attributes.invoiceNumber }}
+                            </vs-td> -->
                             <vs-td>
                                 {{ tr.attributes.bankName }}
                             </vs-td>
