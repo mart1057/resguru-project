@@ -1,7 +1,7 @@
 <template>
     <div class="flex mt-[10px] justify-between tt">
         <div class="w-[55%]">
-            <UserPlan :data="count_user" />
+            <UserPlan :data="count_user" :childFunction="getDashboard"/>
             <PayMent :data="db_payment"/>
             <Notification :data="db_services"/>
         </div>
@@ -43,11 +43,12 @@ export default {
         }, 1000)
     },
     mounted() {
-        this.getDashboard();
+        this.getDashboard(false);
     },
     methods:{
-        getDashboard(){
-            fetch(`https://api.resguru.app/api/getdashboard?buildingid=${this.$store.state.building}&month=10&year=2023`)
+        getDashboard(check){
+            console.log(check)
+            fetch(`https://api.resguru.app/api/getdashboard?buildingid=${this.$store.state.building}&month=10&year=2023&allBuilding=${check==true?'1':'0'}&user_id=${this.$store.state.userInfo.id}`)
             .then(response => response.json())
                 .then((resp) => { 
                     console.log("Return from getRoom()", resp);

@@ -39,6 +39,9 @@
             <vs-table>
                 <template #thead>
                     <vs-tr>
+                        <vs-th v-if="(tab == 1 || tab == 2) && data[0].room_building">
+                            ชื่อหอพัก
+                        </vs-th>
                         <vs-th v-if="tab == 1 || tab == 2">
                             เลขห้อง
                         </vs-th>
@@ -62,6 +65,9 @@
                 <template #tbody>
                     <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
                         <!-- {{ tr }} -->
+                        <vs-td v-if="(tab == 1 || tab == 2) && tr.room_building ">
+                            {{ tr.room_building?.buildingName }}
+                        </vs-td>
                         <vs-td v-if="tab == 1 || tab == 2">
                             {{ tr.RoomNumber }}
                         </vs-td>
@@ -94,10 +100,13 @@
                 </template>
             </vs-table>
         </div>
-        <div class="mt-[18px]" v-else-if="tab == 4">
+        <div class="mt-[18px]" v-else-if="tab == 4" :class="data.length > 5 ? 'table-container' : ''">
             <vs-table>
                 <template #thead>
                     <vs-tr>
+                        <vs-th v-if=" data[0].room_building">
+                            ชื่อหอพัก
+                        </vs-th>
                         <vs-th>
                             เลขห้อง
                         </vs-th>
@@ -114,6 +123,9 @@
                 </template>
                 <template #tbody>
                     <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
+                         <vs-td v-if="tr.room_building ">
+                            {{ tr.room_building.buildingName }}
+                        </vs-td>
                         <vs-td>
                             {{ tr.RoomNumber }}
                         </vs-td>
@@ -143,7 +155,7 @@ export default {
     },
     data() {
         return {
-            tab: 2,
+            tab: 1,
         }
     },
     computed: {

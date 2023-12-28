@@ -36,9 +36,9 @@
             <vs-table>
                 <template #thead>
                     <vs-tr>
-                        <!-- <vs-th>
+                        <vs-th v-if="data[0].room_building">
                             ชื่อหอพัก
-                        </vs-th> -->
+                        </vs-th>
                         <vs-th>
                             เลขห้อง
                         </vs-th>
@@ -55,6 +55,9 @@
                 </template>
                 <template #tbody>
                     <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
+                        <vs-td v-if="tr.room_building">
+                            {{ tr.room_building?.buildingName }}
+                        </vs-td>
                         <vs-td>
                             {{ tr.RoomNumber }}
                         </vs-td>
@@ -68,7 +71,7 @@
                         </vs-td>
                         <vs-td>
                             <div class="flex items-center justify-start">
-                                <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
+                                <div class=" w-[auto] pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
                                     :class="tr.tenant_bills[0]?.paymentStatus == 'Paid' ? 'bg-[#CFFBDA] text-[#0B9A3C]' : tr.website == 2 ? 'bg-[#FFE1E8] text-[#EA2F5C]' : ' bg-[#FFF2BC] text-[#D48C00] '">
                                     {{ tr.tenant_bills[0]?.paymentStatus== 'Paid' ?'ชำระแล้ว' :'ยังไม่ชำระ'}} </div>
                             </div>

@@ -1,9 +1,8 @@
 <template>
-   
     <div>
         <div>
             <div class="w-[100%] h-[56px] rounded-[22px] bg-card flex justify-between items-center pl-[10px] pr-[10px]">
-                <div class="flex justify-center items-center">
+                <div class="flex justify-center items-center" v-if="$store.state.buildingInfo[0].attributes.package.data?.attributes.title == 'Professional'">
                     <div>
                         <svg width="27" height="28" viewBox="0 0 27 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_1413_29806" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -17,13 +16,14 @@
                             </g>
                         </svg>
                     </div>
-                    <div class="text-[22px] text-white ml-[10px]">{{ $store.state.buildingInfo[0].attributes.package.data?.attributes.title }} Plan</div>
+                    <div class="text-[22px] text-white ml-[10px]">{{
+                        $store.state.buildingInfo[0].attributes.package.data?.attributes.title }} Plan</div>
                 </div>
                 <div
                     class="flex justify-center items-center border pl-[8px] pr-[8px] pb-[4px] pt-[4px] rounded-[22px] border-[#F5D65E]">
                     <div class="text-[12px] text-white">เรียกดูข้อมูลของทุกหอพัก</div>
                     <div class="ml-[10px]">
-                        <vs-switch success>
+                        <vs-switch success v-model="check" @input="callParentFunction(check)">
                             <template #off>
                                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -96,9 +96,8 @@
                     </div>
                     <div class="flex justify-between">
                         <div class="flex justify-start items-center">จองแล้ว</div>
-                        <div> 
-                            <svg width="24" height="23" viewBox="0 0 24 23" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
+                        <div>
+                            <svg width="24" height="23" viewBox="0 0 24 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <mask id="mask0_119_1460" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="1" y="0"
                                     width="22" height="22">
                                     <rect x="1.71484" y="0.856934" width="20.5714" height="20.5714" fill="#D9D9D9" />
@@ -115,7 +114,7 @@
                 <div class="h-[110px] p-[18px] flex flex-col justify-between bg-[#D44769] rounded-[22px] text-[white]">
                     <div class="flex justify-between">
                         <div class="text-[24px] flex justify-center items-center">{{ data.latePayment }}</div>
-                       
+
                         <div>
                             <svg width="34" height="30" viewBox="0 0 34 30" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
@@ -149,10 +148,27 @@
 
 export default {
     props: {
-        data: {type:Object},
+        childFunction: {
+            type: Function,
+        },
+        data: { type: Object },
+
+    },
+    data() {
+        return {
+            check: false
+        }
+    },
+    methods: {
+        callParentFunction(check) {
+            // Call the function passed from the parent component
+            this.childFunction(check);
+        },
     },
 }
 </script>
-<style scoped>.bg-card {
+<style scoped>
+.bg-card {
     background: linear-gradient(180deg, #D1C0FF 100%, #9747FF 100%, #9747FF 100%);
-}</style>
+}
+</style>
