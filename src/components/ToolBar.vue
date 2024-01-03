@@ -134,7 +134,8 @@
                             <vs-tooltip bottom shadow interactivity not-arrow>
                                 <div class="cursor-pointer">
                                     <vs-avatar size="40">
-                                        <img :src="'https://api.resguru.app'+$store.state.buildingInfo[0].attributes.buildingLogo.data?.attributes.formats.large.url" />
+                                        <img
+                                            :src="'https://api.resguru.app' + $store.state.buildingInfo[0].attributes.buildingLogo.data?.attributes.formats.large.url" />
                                     </vs-avatar>
 
                                 </div>
@@ -145,13 +146,15 @@
                                                 <vs-avatar size="40"
                                                     v-if="$store.state.buildingInfo[0].attributes.buildingLogo">
                                                     <template>
-                                                        <img :src="'https://api.resguru.app'+$store.state.buildingInfo[0].attributes.buildingLogo.data?.attributes.formats.large.url" />
+                                                        <img
+                                                            :src="'https://api.resguru.app' + $store.state.buildingInfo[0].attributes.buildingLogo.data?.attributes.formats.large.url" />
                                                     </template>
                                                 </vs-avatar>
                                             </div>
                                             <div
                                                 class="flex items-center text-[16px] font-bold ml-[8px] text-custom w-[150px]">
-                                                {{ $store.state.buildingInfo[0].attributes.buildingName }}</div>
+                                                {{ $store.state.userInfo.firstName }} {{ }}
+                                                {{ $store.state.userInfo.lastName }}</div>
                                         </div>
                                         <div
                                             class="w-[100%] h-[1px]  mt-[12px] mb-[12px] bg-gray-200 border-0 dark:bg-gray-700">
@@ -262,8 +265,7 @@
                             </vs-tooltip>
                             <div class="ml-[8px]">
                                 <!-- <vs-avatar> -->
-                                {{ this.$store.state.userInfo.firstName }} {{ }}
-                                {{ this.$store.state.userInfo.lastName }}
+                                {{ $store.state.buildingInfo[0].attributes.buildingName }}
 
                                 <!-- </vs-avatar> -->
                             </div>
