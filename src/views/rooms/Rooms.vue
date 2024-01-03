@@ -109,14 +109,13 @@
             <div class="text-[24px] font-bold">ชั้น {{ name_floor }} ({{ room.length }})</div>
             <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px] ">
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer"
-                    @click="routeTo2('/room-detail', data.user_sign_contract?.users_permissions_user?.id, data.id, data.RoomNumber, data.roomStatus, data.user_sign_contract?.id),$route.meta.desc = 'ห้องพัก - ห้อง '+ $route.query.number_room ,$route.meta.title = 'ห้อง '+ $route.query.number_room "
                     v-for="data in room">
-                    <div class="flex">
-
+                    <div class="flex"
+                        @click="routeTo2('/room-detail', data.user_sign_contract?.users_permissions_user?.id, data.id, data.RoomNumber, data.roomStatus, data.user_sign_contract?.id), $route.meta.desc = 'ห้องพัก - ห้อง ' + $route.query.number_room, $route.meta.title = 'ห้อง ' + $route.query.number_room">
                         <div
                             v-if="data.user_sign_contract && data.user_sign_contract.users_permissions_user && data.user_sign_contract.users_permissions_user.imageProfile">
                             <img class="w-[136px] max-h-[100%] rounded-[22px]"
-                                :src="'https://api.resguru.app'+data.user_sign_contract.users_permissions_user.imageProfile.url" />
+                                :src="'https://api.resguru.app' + data.user_sign_contract.users_permissions_user.imageProfile.url" />
                         </div>
                         <div class="w-[136px] h-[100%] rounded-[22px]" v-else>
                             <svg width="137" height="136" viewBox="0 0 137 136" fill="none"
@@ -170,12 +169,26 @@
         : "" }}</div>
                         </div>
                     </div>
-                    <div :class="data.roomStatus == 'Checked In' ? 'text-[#0B9A3C] bg-[#CFFBDA]' : 'text-[#003765] bg-[#F0F8FF]'"
+                    <div @click="data.roomStatus == 'Maintenance' ? (edit_room = true, roomID = data.id) : ''"
+                        :class="data.roomStatus == 'Checked In' ? 'text-[#0B9A3C] bg-[#CFFBDA]' : 'text-[#003765] bg-[#F0F8FF]'"
                         class="h-[36px] ml-[8px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] ">
                         <!-- {{ data.user_sign_contract ? "มีผู้เข้าพัก" : "ห้องว่าง" }} -->
                         {{ data.roomStatus == 'Reserved' ? 'ห้องจอง' :
                             data.roomStatus == 'Checked In' ? "มีผู้เข้าพัก" :
-                                data.roomStatus == 'Maintenance' ? "รอซ่อม" : "ห้องว่าง" }}
+                                data.roomStatus == 'Maintenance' ? "รอซ่อม" : "ห้องว่าง" }}<span
+                            v-if="data.roomStatus == 'Maintenance'" class="ml-[4px]">
+                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <mask id="mask0_2584_33960" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
+                                    width="20" height="20">
+                                    <rect width="20" height="20" fill="#D9D9D9" />
+                                </mask>
+                                <g mask="url(#mask0_2584_33960)">
+                                    <path
+                                        d="M6.73271 16.3611L7.59405 16.1303L12.3143 7.94582L11.2219 7.31445L6.5017 15.4989L6.73271 16.3611ZM14.346 6.5909L11.3703 4.88915L12.0398 3.72821C12.1862 3.47438 12.4059 3.30823 12.6988 3.22974C12.9917 3.15125 13.265 3.18532 13.5187 3.33195L14.6111 3.9633C14.8647 4.10992 15.0335 4.3253 15.1173 4.60942C15.2011 4.89355 15.1698 5.16253 15.0234 5.41635L14.346 6.5909ZM6.59769 17.5182C6.41819 17.5663 6.25228 17.5463 6.09995 17.4583C5.94762 17.3702 5.84738 17.2364 5.79924 17.0567L5.408 15.5966C5.38549 15.5125 5.37923 15.4285 5.38923 15.3443C5.39923 15.2602 5.42809 15.1768 5.4758 15.0941L10.8145 5.83707L13.796 7.56028L8.45723 16.8173C8.40953 16.9 8.3518 16.9667 8.28404 17.0175C8.21627 17.0682 8.14041 17.1048 8.05646 17.1273L6.59769 17.5182Z"
+                                        fill="#5C6B79" />
+                                </g>
+                            </svg>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -332,6 +345,33 @@
                 </div>
             </div>
         </b-modal>
+        <vs-dialog width="550px" not-center v-model="edit_room" not-close>
+            <template #header>
+                <div class="pl-[16px]  pr-[16px] pt-[16px]">
+                    <div class="font-bold">แก้ไขสถานะห้อง</div>
+                </div>
+            </template>
+            <div class="con-content pl-[16px]  pr-[16px]">
+                <!-- <div class="text-[#D44769]">
+                        คุณได้ตรวจสอบความถูกต้องของผู้เช่าห้อง {{ $route.query.number_room }} ก่อนจะย้ายออกแล้วหรือไม่ ?
+                    </div> -->
+                <div class="center mt-[4px]">
+                    <vs-checkbox v-model="check_final" color="#003765">
+                        แก้ไขสถานะห้องเป็นห้องว่าง
+                    </vs-checkbox>
+                </div>
+            </div>
+            <template #footer>
+                <div class="con-footer flex justify-end">
+                    <vs-button @click="edit_room = false,check_final=false" transparent>
+                        <div class="text-[#5C6B79] text-[14px]">ยกเลิก</div>
+                    </vs-button>
+                    <vs-button @click="editRoom()" color="#003765" :disabled="check_final == false">
+                        <div class="text-[white] text-[14px]">ยืนยัน</div>
+                    </vs-button>
+                </div>
+            </template>
+        </vs-dialog>
     </div>
 </template>
 <script>
@@ -340,7 +380,9 @@ import axios from 'axios'
 export default {
     data() {
         return {
+            check_final:false,
             create: false,
+            edit_room: false,
             popup_filter: false,
             room: [],
             firstName: "",
@@ -357,6 +399,7 @@ export default {
             bookRoom: "",
             earnest: 0,
             floorRoom: [],
+            roomID:'',
             filter: {
                 select: [],
                 checkSelect: [],
@@ -396,7 +439,7 @@ export default {
             this.room = []
             const output = this.filter.select.length > 0 ? this.filter.select.join(',') : this.filter.checkSelect.join(',');
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api/getRoom?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor  + '&roomStatus=' + output)
+            fetch('https://api.resguru.app/api/getRoom?buildingid=' + this.$store.state.building + '&buildingFloor=' + this.filter.floor + '&roomStatus=' + output)
                 .then(response => response.json())
                 .then((resp) => {
                     if (code == 8) {
@@ -482,6 +525,17 @@ export default {
                 // Perform your desired action here when backspace is pressed
             }
         },
+        editRoom() {
+            axios.put('https://api.resguru.app/api' + '/rooms/' + this.roomID, {
+                data: {
+                    roomStatus: 'Available'
+                }
+            }).finally(()=>{
+                this.edit_room = false,
+                this.check_final=false
+                this.getRoom(0)
+            })
+        }
     }
 
 
