@@ -10,8 +10,10 @@
                                 <img class="w-[125px] h-[125px] rounded-[12px] bg-[red]" :src="'https://api.resguru.app' + data.attributes.employeeImage.data.attributes.url">
                             </div>
                             <div v-else>
-                                <img class="w-[125px] h-[125px] rounded-[12px] bg-[red]"
-                                src="https://media.wired.com/photos/63b89b5b995aa119ba7ba7be/1:1/w_1800,h_1800,c_limit/Profile-Photos-Gear-1411545652.jpg" />
+                                <img class="w-[125px] min-h-[125px] rounded-[12px]"
+                                        src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
+                                <!-- <img class="w-[125px] h-[125px] rounded-[12px] bg-[red]"
+                                src="https://media.wired.com/photos/63b89b5b995aa119ba7ba7be/1:1/w_1800,h_1800,c_limit/Profile-Photos-Gear-1411545652.jpg" /> -->
                             </div>
                             <div class="ml-[12px]">
                                 <div class="flex flex-col justify-between h-[100%]">
