@@ -130,6 +130,7 @@
                             class=" ml-[10px] h-[15px] bg-[#E7E2F7] pl-[12px] pr-[12px] pt-[12px] pb-[12px] rounded-[13px] text-[#9A77FF] text-center cursor-pointer flex items-center">
                             {{ $store.state.buildingInfo[0].attributes.package.data?.attributes.title }}
                         </div>
+                        
                         <div class="flex ml-[10px] items-center">
                             <vs-tooltip bottom shadow interactivity not-arrow>
                                 <div class="cursor-pointer">
@@ -266,8 +267,19 @@
                             <div class="ml-[8px]">
                                 <!-- <vs-avatar> -->
                                 {{ $store.state.buildingInfo[0].attributes.buildingName }}
-
+                                &nbsp;
                                 <!-- </vs-avatar> -->
+                            </div>
+                            <div>
+                                <vs-avatar size="40">
+                                        <img :src="'https://api.resguru.app' + $store.state.userInfo.imageProfile.formats.small.url" />
+                                </vs-avatar>
+                            </div>
+                            <div>
+                                <div class="ml-[8px]">
+                                    {{ $store.state.userInfo.firstName }} {{ }}
+                                    {{ $store.state.userInfo.lastName }}
+                                </div>
                             </div>
                         </div>
                     </div>
