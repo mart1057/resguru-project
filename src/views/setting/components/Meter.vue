@@ -634,8 +634,8 @@ export default {
                     console.log(resp);
                     this.id_Facilities = resp.data.id,
                         this.title = resp.data.attributes.title,
-                        this.price = resp.data.attributes.price,
-                        this.discountAmount = resp.data.attributes.discountAmount
+                        this.price = resp.data.attributes.price
+                        //this.discountAmount = resp.data.attributes.discountAmount
                 }).finally(() => {
                     this.getUserBuilding();
                     this.getOtherBuilding();
@@ -649,7 +649,7 @@ export default {
                 data: {
                     title: this.title,
                     price: this.price,
-                    discountAmount: this.discountAmount,
+                    //discountAmount: this.discountAmount,
                 }
             })
                 .finally(() => {
@@ -676,7 +676,7 @@ export default {
                 data: {
                     title: this.title,
                     price: this.price,
-                    discountAmount: this.discountAmount,
+                    //discountAmount: this.discountAmount,
                     building: this.$store.state.building
                 }
             })
