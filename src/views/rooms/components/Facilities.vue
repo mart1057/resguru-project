@@ -136,7 +136,7 @@
                 class="p-[-20px] text-custom">
                 <div>
                     <div class="flex justify-between pl-[20px] pr-[20px]">
-                        <div class="text-custom flex justify-center items-center text-[18px] font-bold">แก้ไขข้อมูลทรัพย์สิน 
+                        <div class="text-custom flex justify-center items-center text-[18px] font-bold">แก้ไขข้อมูลทรัพย์สิน
                         </div>
                         <div @click="create = false" class="cursor-pointer">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -207,7 +207,8 @@
                                 <div class="text-custom text-[#5C6B79]">หมายเหตุ</div>
                             </div>
                             <div class="w-[80%] flex">
-                                <span class="text-[#5C6B79]">การแก้ไขนี้จะส่งผลต่อข้อมูลทรัพสินย์เดียวกันของห้องอื่นด้วย</span>
+                                <span
+                                    class="text-[#5C6B79]">การแก้ไขนี้จะส่งผลต่อข้อมูลทรัพสินย์เดียวกันของห้องอื่นด้วย</span>
                             </div>
                         </div>
                         <!-- <div class="flex w-[100%] mt-[14px]">
@@ -261,7 +262,7 @@
                             <div class="ml-[4px]">ห้อง</div>
                             <div class="font-bold ml-[4px]">{{ $route.query.number_room }} </div>
                         </div>
-                        <div @click="add_on = false,items=[]" class="cursor-pointer">
+                        <div @click="add_on = false, items = []" class="cursor-pointer">
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
                                     width="24" height="24">
@@ -394,7 +395,10 @@ export default {
 
             }).finally(() => {
                 this.add_on = false
-                this.getFacilities()
+                setTimeout(() => {
+                    this.getFacilities()
+                }, 500);
+
                 loading.close()
             })
 
@@ -430,7 +434,7 @@ export default {
             })
                 .finally(() => {
                     this.create = false,
-                    this.getFacilities()
+                        this.getFacilities()
                     loading.close()
                 })
         },
