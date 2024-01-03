@@ -962,7 +962,10 @@ export default {
                 }).finally(() => {
                     loading.close()
                     this.create = false
-                    this.getRentalContract()
+                    setTimeout(() => {
+                       this.getRentalContract(0) 
+                    }, 500);
+                    
                 })
             }
             else {
@@ -1005,7 +1008,9 @@ export default {
                     }).finally(() => {
                         loading.close()
                         this.create = false
-                        this.getRentalContract()
+                        setTimeout(() => {
+                       this.getRentalContract(0) 
+                    }, 500);
                     })
                 }).catch((err) => {
                     loading.close()
