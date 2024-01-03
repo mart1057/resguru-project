@@ -25,11 +25,11 @@
                         <div class="flex">
                             <div class="flex">
                                 <div v-if=data.imageProfile>
-                                    <img class="w-[125px] h-[125px] rounded-[12px]"
+                                    <img class="w-[125px] min-h-[125px] rounded-[12px]"
                                         :src="'https://api.resguru.app' + data.imageProfile.url" />
                                 </div>
                                 <div v-else>
-                                    <img class="w-[125px] h-[125px] rounded-[12px]"
+                                    <img class="w-[125px] min-h-[125px] rounded-[12px]"
                                         src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
                                 </div>
                                 <!-- <img class="w-[125px] h-[125px] rounded-[12px] bg-[red]"
@@ -38,7 +38,7 @@
                                     <div class="flex flex-col justify-between h-[100%]">
                                         <div class="">
                                             <div
-                                                class="h-[24px] rounded-[12px] justify-center font-bold text-[#003765] pl-[12px] pr-[12px] flex items-center bg-[#F0F8FF]">
+                                                class="h-[24px] w-[100px] rounded-[12px] justify-center font-bold text-[#003765] pl-[12px] pr-[12px] flex items-center bg-[#F0F8FF]">
                                                 Admin
                                             </div>
                                             <div class="mt-[14px] text-[18px] font-bold">{{ data.firstName }} {{
@@ -236,8 +236,9 @@
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile"
                                 ref="fileUploadAdminProfileForm" hidden type="file" @change="tempImageUploadAdmin()" />
                             <label for="uploadProfile">
-                                <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border" v-if="NewProfileAdmin.imageProfile"
-                                    :src="'https://api.resguru.app'+NewProfileAdmin.imageProfile" />
+                                <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
+                                    v-if="NewProfileAdmin.imageProfile"
+                                    :src="'https://api.resguru.app' + NewProfileAdmin.imageProfile" />
                                 <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border" v-else
                                     src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
 
@@ -309,7 +310,7 @@
                             </div>
                         </div>
                         <div class="mt-[44px] mb-[50px]">
-                            <vs-button dark shadow @click="addAdmin()">
+                            <vs-button dark shadow @click="addAdmin(NewProfileAdmin.id)">
                                 <div class="font-bold  text-custom">บันทึก</div>
                             </vs-button>
                         </div>
@@ -350,6 +351,7 @@ export default {
                 facebook: ''
             },
             NewProfileAdmin: {
+                id:'',
                 firstName: '',
                 lastName: '',
                 contactAddress: '',
@@ -393,43 +395,45 @@ export default {
                     loading.close()
                 })
         },
-        getDetail(id){
-            this.is_edit=true
-            fetch('https://api.resguru.app/api/users/'+id+'?populate=*')
-            .then(response => response.json())
+        getDetail(id) {
+            this.is_edit = true
+            fetch('https://api.resguru.app/api/users/' + id + '?populate=*')
+                .then(response => response.json())
                 .then((resp) => {
-                   this.NewProfileAdmin.firstName = resp.firstName,
-                    this.NewProfileAdmin.lastName= resp.lastName,
-                    this.NewProfileAdmin.contactAddress= resp.contactAddress,
-                    // province: this.NewProfileAdmin.province,
-                    // district: this.NewProfileAdmin.district,
-                    // amphoe: this.NewProfileAdmin.amphoe,
-                    // zipcode: this.NewProfileAdmin.zipcode,
-                     this.NewProfileAdmin.phone= resp.phone,
-                     this.NewProfileAdmin.email= resp.email,
-                     this.NewProfileAdmin.line= resp.line
-                     this.NewProfileAdmin.imageProfile = resp.imageProfile?.url
-                     this.NewProfileAdmin.coverProfile = 'https://api.resguru.app'+resp.imageBanner?.url
-                }).finally(()=>{
+                    this.NewProfileAdmin.firstName = resp.firstName,
+                    this.NewProfileAdmin.id = resp.id
+                        this.NewProfileAdmin.lastName = resp.lastName,
+                        this.NewProfileAdmin.contactAddress = resp.contactAddress,
+                        // province: this.NewProfileAdmin.province,
+                        // district: this.NewProfileAdmin.district,
+                        // amphoe: this.NewProfileAdmin.amphoe,
+                        // zipcode: this.NewProfileAdmin.zipcode,
+                        this.NewProfileAdmin.phone = resp.phone,
+                        this.NewProfileAdmin.email = resp.email,
+                        this.NewProfileAdmin.line = resp.line
+                    this.NewProfileAdmin.imageProfile = resp.imageProfile?.url
+                    this.NewProfileAdmin.coverProfile = 'https://api.resguru.app' + resp.imageBanner?.url
+                }).finally(() => {
                     this.profile_admin = true
                 })
         },
-        getDetailEm(id){
-            this.is_edit=true
-            fetch('https://api.resguru.app/api/building-employees/'+id+'?populate=*')
-            .then(response => response.json())
+        getDetailEm(id) {
+            this.is_edit = true
+            fetch('https://api.resguru.app/api/building-employees/' + id + '?populate=*')
+                .then(response => response.json())
                 .then((resp) => {
-                   this.NewProfileAdmin.firstName = resp.data.attributes.name,
-                    this.NewProfileAdmin.lastName= resp.data.attributes.lastname,
-                    this.NewProfileAdmin.contactAddress= resp.data.attributes.address,
-                    // province: this.NewProfileAdmin.province,
-                    // district: this.NewProfileAdmin.district,
-                    // amphoe: this.NewProfileAdmin.amphoe,
-                    // zipcode: this.NewProfileAdmin.zipcode,
-                     this.NewProfileAdmin.phone= resp.data.attributes.phone,
-                     this.NewProfileAdmin.imageProfile = 'https://api.resguru.app'+resp.data.employeeImage?.url
-                     this.NewProfileAdmin.line= resp.data.attributes.line
-                }).finally(()=>{
+                    this.NewProfileAdmin.firstName = resp.data.attributes.name,
+                        this.NewProfileAdmin.lastName = resp.data.attributes.lastname,
+                        this.NewProfileAdmin.contactAddress = resp.data.attributes.address,
+                        this.NewProfileAdmin.id = resp.data.id
+                        // province: this.NewProfileAdmin.province,
+                        // district: this.NewProfileAdmin.district,
+                        // amphoe: this.NewProfileAdmin.amphoe,
+                        // zipcode: this.NewProfileAdmin.zipcode,
+                        this.NewProfileAdmin.phone = resp.data.attributes.phone,
+                        this.NewProfileAdmin.imageProfile =  resp.data.attributes.employeeImage?.data?.attributes.url
+                    this.NewProfileAdmin.line = resp.data.attributes.line
+                }).finally(() => {
                     this.profile_admin = true
                 })
         },
@@ -551,114 +555,25 @@ export default {
             this.fileAdminCoverForm = this.$refs.fileUploadAdminCoverForm.files[0]
             console.log(this.fileAdminCoverForm);
         },
-        addAdmin() {
-            if (this.tab == 1) {
-                axios.post(`https://api.resguru.app/api/users/`, {
-                    role: 1,
-                    firstName: this.NewProfileAdmin.firstName,
-                    lastName: this.NewProfileAdmin.lastName,
-                    contactAddress: this.NewProfileAdmin.contactAddress,
-                    // province: this.NewProfileAdmin.province,
-                    // district: this.NewProfileAdmin.district,
-                    // amphoe: this.NewProfileAdmin.amphoe,
-                    // zipcode: this.NewProfileAdmin.zipcode,
-                    phone: this.NewProfileAdmin.phone,
-                    email: this.NewProfileAdmin.email,
-                    line: this.NewProfileAdmin.line,
-                    // position: 6,
-                    building: this.$store.state.building,
-                    username: this.NewProfileAdmin.email,
-                    password: this.NewProfileAdmin.password
-
-                }).then((resp) => {
-                    console.log(resp);
-                    if (this.fileAdminProfileForm) {
-                        console.log('object');
-                        let formData = new FormData();
-                        formData.append("files", this.fileAdminProfileForm);
-                        formData.append("refId", String(resp.data.id));
-                        formData.append("ref", "plugin::users-permissions.user");
-                        formData.append("field", "imageProfile");
-
-                        axios.post("https://api.resguru.app/api/upload", formData, {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                            },
-                        }).then((result) => { console.log("Upload file", result) })
-                            .catch((error) => {
-                                console.log(error);
-                            })
-                    }
-                    if (this.fileAdminCoverForm) {
-                        console.log('object');
-                        let formData = new FormData();
-                        formData.append("files", this.fileAdminCoverForm);
-                        formData.append("refId", String(resp.data.id));
-                        formData.append("ref", "plugin::users-permissions.user");
-                        formData.append("field", "imageBanner");
-
-                        axios.post("https://api.resguru.app/api/upload", formData, {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                            },
-                        }).then((result) => { console.log("Upload file", result) })
-                            .catch((error) => {
-                                console.log(error);
-                            })
-                    }
-                    this.$showNotification('#3A89CB', 'Create Admin Success')
-                }
-                )
-                    .catch(error => {
-                        const errorMessage = error.message ? error.message : 'Error updating information';
-                        this.$showNotification('danger', errorMessage);
-                    })
-                    .finally(() => {
-                        this.getUser();
-                        this.profile_admin = false
-                    })
-
-            }
-            else {
-                //     axios.post(`https://api.resguru.app/api/users/`, {
-                //     role: 1,
-                //     firstName: this.NewProfileAdmin.firstName,
-                //     lastName: this.NewProfileAdmin.lastName,
-                //     contactAddress: this.NewProfileAdmin.contactAddress,
-                //     phone: this.NewProfileAdmin.phone,
-                //     email: this.NewProfileAdmin.email,
-                //     line: this.NewProfileAdmin.line,
-                //     building: this.$store.state.building,
-                //     username: this.NewProfileAdmin.email,
-                //     password: this.NewProfileAdmin.password
-
-                // })
-                axios.post(`https://api.resguru.app/api/building-employees/`, {
-                    data: {
-                        name: this.NewProfileAdmin.firstName,
-                        lastname: this.NewProfileAdmin.lastName,
-                        address: this.NewProfileAdmin.contactAddress,
-                        // province: this.NewProfileEm.province,
-                        // district: this.NewProfileEm.district,
-                        // subdistrict: this.NewProfileEm.amphoe,
-                        // postcode: this.NewProfileEm.zipcode,
-                        // phone: this.NewProfileEm.phone,
-                        // email:  this.NewProfileAdmin.email,
+        addAdmin(id) {
+            if (this.is_edit == true) {
+                if (this.tab == 1) {
+                    axios.put('https://api.resguru.app/api/users/'+id, {
+                        firstName: this.NewProfileAdmin.firstName,
+                        lastName: this.NewProfileAdmin.lastName,
+                        contactAddress: this.NewProfileAdmin.contactAddress,
+                        phone: this.NewProfileAdmin.phone,
+                        email: this.NewProfileAdmin.email,
                         line: this.NewProfileAdmin.line,
-                        position: 'Technician',
-                        building: this.$store.state.building,
-                        // facebook: this.NewProfileEm.facebook
-                    }
-                })
-                    .then((resp) => {
+                    }).then((resp) => {
                         console.log(resp);
                         if (this.fileAdminProfileForm) {
                             console.log('object');
                             let formData = new FormData();
                             formData.append("files", this.fileAdminProfileForm);
                             formData.append("refId", String(resp.data.id));
-                            formData.append("ref", "plugin::building-employee.building-employee");
-                            formData.append("field", "employeeImage");
+                            formData.append("ref", "plugin::users-permissions.user");
+                            formData.append("field", "imageProfile");
 
                             axios.post("https://api.resguru.app/api/upload", formData, {
                                 headers: {
@@ -689,15 +604,226 @@ export default {
                         this.$showNotification('#3A89CB', 'Create Admin Success')
                     }
                     )
-                    .catch(error => {
-                        const errorMessage = error.message ? error.message : 'Error updating information';
-                        this.$showNotification('danger', errorMessage);
+                        .catch(error => {
+                            const errorMessage = error.message ? error.message : 'Error updating information';
+                            this.$showNotification('danger', errorMessage);
+                        })
+                        .finally(() => {
+                            this.getUser();
+                            this.profile_admin = false
+                        })
+
+                }
+                else {
+                    axios.put('https://api.resguru.app/api/building-employees/'+id, {
+                        data: {
+                            name: this.NewProfileAdmin.firstName,
+                            lastname: this.NewProfileAdmin.lastName,
+                            address: this.NewProfileAdmin.contactAddress,
+                            phone: this.NewProfileAdmin.phone,
+                            line: this.NewProfileAdmin.line,
+                            position: 'Technician',
+                        }
                     })
-                    .finally(() => {
-                        this.getEmployer();
-                        this.profile_admin = false
-                    })
+                        .then((resp) => {
+                            console.log(resp);
+                            if (this.fileAdminProfileForm) {
+                                console.log('object');
+                                let formData = new FormData();
+                                formData.append("files", this.fileAdminProfileForm);
+                                formData.append("refId", String(resp.data.id));
+                                formData.append("ref", "plugin::building-employee.building-employee");
+                                formData.append("field", "employeeImage");
+
+                                axios.post("https://api.resguru.app/api/upload", formData, {
+                                    headers: {
+                                        "Content-Type": "multipart/form-data",
+                                    },
+                                }).then((result) => { console.log("Upload file", result) })
+                                    .catch((error) => {
+                                        console.log(error);
+                                    })
+                            }
+                            if (this.fileAdminCoverForm) {
+                                console.log('object');
+                                let formData = new FormData();
+                                formData.append("files", this.fileAdminCoverForm);
+                                formData.append("refId", String(resp.data.id));
+                                formData.append("ref", "plugin::users-permissions.user");
+                                formData.append("field", "imageBanner");
+
+                                axios.post("https://api.resguru.app/api/upload", formData, {
+                                    headers: {
+                                        "Content-Type": "multipart/form-data",
+                                    },
+                                }).then((result) => { console.log("Upload file", result) })
+                                    .catch((error) => {
+                                        console.log(error);
+                                    })
+                            }
+                            this.$showNotification('#3A89CB', 'Create Admin Success')
+                        }
+                        )
+                        .catch(error => {
+                            const errorMessage = error.message ? error.message : 'Error updating information';
+                            this.$showNotification('danger', errorMessage);
+                        })
+                        .finally(() => {
+                            this.getEmployer();
+                            this.profile_admin = false
+                        })
+                }
+
             }
+            else {
+                if (this.tab == 1) {
+                    axios.post(`https://api.resguru.app/api/users/`, {
+                        role: 1,
+                        firstName: this.NewProfileAdmin.firstName,
+                        lastName: this.NewProfileAdmin.lastName,
+                        contactAddress: this.NewProfileAdmin.contactAddress,
+                        // province: this.NewProfileAdmin.province,
+                        // district: this.NewProfileAdmin.district,
+                        // amphoe: this.NewProfileAdmin.amphoe,
+                        // zipcode: this.NewProfileAdmin.zipcode,
+                        phone: this.NewProfileAdmin.phone,
+                        email: this.NewProfileAdmin.email,
+                        line: this.NewProfileAdmin.line,
+                        // position: 6,
+                        building: this.$store.state.building,
+                        username: this.NewProfileAdmin.email,
+                        password: this.NewProfileAdmin.password
+
+                    }).then((resp) => {
+                        console.log(resp);
+                        if (this.fileAdminProfileForm) {
+                            console.log('object');
+                            let formData = new FormData();
+                            formData.append("files", this.fileAdminProfileForm);
+                            formData.append("refId", String(resp.data.id));
+                            formData.append("ref", "plugin::users-permissions.user");
+                            formData.append("field", "imageProfile");
+
+                            axios.post("https://api.resguru.app/api/upload", formData, {
+                                headers: {
+                                    "Content-Type": "multipart/form-data",
+                                },
+                            }).then((result) => { console.log("Upload file", result) })
+                                .catch((error) => {
+                                    console.log(error);
+                                })
+                        }
+                        if (this.fileAdminCoverForm) {
+                            console.log('object');
+                            let formData = new FormData();
+                            formData.append("files", this.fileAdminCoverForm);
+                            formData.append("refId", String(resp.data.id));
+                            formData.append("ref", "plugin::users-permissions.user");
+                            formData.append("field", "imageBanner");
+
+                            axios.post("https://api.resguru.app/api/upload", formData, {
+                                headers: {
+                                    "Content-Type": "multipart/form-data",
+                                },
+                            }).then((result) => { console.log("Upload file", result) })
+                                .catch((error) => {
+                                    console.log(error);
+                                })
+                        }
+                        this.$showNotification('#3A89CB', 'Create Admin Success')
+                    }
+                    )
+                        .catch(error => {
+                            const errorMessage = error.message ? error.message : 'Error updating information';
+                            this.$showNotification('danger', errorMessage);
+                        })
+                        .finally(() => {
+                            this.getUser();
+                            this.profile_admin = false
+                        })
+
+                }
+                else {
+                    //     axios.post(`https://api.resguru.app/api/users/`, {
+                    //     role: 1,
+                    //     firstName: this.NewProfileAdmin.firstName,
+                    //     lastName: this.NewProfileAdmin.lastName,
+                    //     contactAddress: this.NewProfileAdmin.contactAddress,
+                    //     phone: this.NewProfileAdmin.phone,
+                    //     email: this.NewProfileAdmin.email,
+                    //     line: this.NewProfileAdmin.line,
+                    //     building: this.$store.state.building,
+                    //     username: this.NewProfileAdmin.email,
+                    //     password: this.NewProfileAdmin.password
+
+                    // })
+                    axios.post(`https://api.resguru.app/api/building-employees/`, {
+                        data: {
+                            name: this.NewProfileAdmin.firstName,
+                            lastname: this.NewProfileAdmin.lastName,
+                            address: this.NewProfileAdmin.contactAddress,
+                            // province: this.NewProfileEm.province,
+                            // district: this.NewProfileEm.district,
+                            // subdistrict: this.NewProfileEm.amphoe,
+                            // postcode: this.NewProfileEm.zipcode,
+                            // phone: this.NewProfileEm.phone,
+                            // email:  this.NewProfileAdmin.email,
+                            line: this.NewProfileAdmin.line,
+                            position: 'Technician',
+                            building: this.$store.state.building,
+                            // facebook: this.NewProfileEm.facebook
+                        }
+                    })
+                        .then((resp) => {
+                            console.log(resp);
+                            if (this.fileAdminProfileForm) {
+                                console.log('object');
+                                let formData = new FormData();
+                                formData.append("files", this.fileAdminProfileForm);
+                                formData.append("refId", String(resp.data.id));
+                                formData.append("ref", "plugin::building-employee.building-employee");
+                                formData.append("field", "employeeImage");
+
+                                axios.post("https://api.resguru.app/api/upload", formData, {
+                                    headers: {
+                                        "Content-Type": "multipart/form-data",
+                                    },
+                                }).then((result) => { console.log("Upload file", result) })
+                                    .catch((error) => {
+                                        console.log(error);
+                                    })
+                            }
+                            if (this.fileAdminCoverForm) {
+                                console.log('object');
+                                let formData = new FormData();
+                                formData.append("files", this.fileAdminCoverForm);
+                                formData.append("refId", String(resp.data.id));
+                                formData.append("ref", "plugin::users-permissions.user");
+                                formData.append("field", "imageBanner");
+
+                                axios.post("https://api.resguru.app/api/upload", formData, {
+                                    headers: {
+                                        "Content-Type": "multipart/form-data",
+                                    },
+                                }).then((result) => { console.log("Upload file", result) })
+                                    .catch((error) => {
+                                        console.log(error);
+                                    })
+                            }
+                            this.$showNotification('#3A89CB', 'Create Admin Success')
+                        }
+                        )
+                        .catch(error => {
+                            const errorMessage = error.message ? error.message : 'Error updating information';
+                            this.$showNotification('danger', errorMessage);
+                        })
+                        .finally(() => {
+                            this.getEmployer();
+                            this.profile_admin = false
+                        })
+                }
+            }
+
 
         },
     }
