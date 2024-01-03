@@ -86,10 +86,12 @@
                             <dvi class=" w-[70%] ">
                                 <div class="grid grid-cols-2  text-custom " v-if="is_edit == false">
                                     <div class="flex">
-                                        <vs-radio v-model="room_detail.check_user" color="#003765" :val="true" @input="clearButton()">
+                                        <vs-radio v-model="room_detail.check_user" color="#003765" :val="true"
+                                            @input="clearButton()">
                                             ผู้เช่าในระบบ
                                         </vs-radio>
-                                        <vs-radio v-model="room_detail.check_user" color="#003765" :val="false" @input="clearButton()">
+                                        <vs-radio v-model="room_detail.check_user" color="#003765" :val="false"
+                                            @input="clearButton()">
                                             ผู้เช่าใหม่
                                         </vs-radio>
                                     </div>
@@ -113,6 +115,17 @@
                                         <input type="input" v-model="room_detail.email"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             :disabled="is_edit == true" />
+                                    </div>
+                                </div>
+                                <div v-else>
+                                    <div class="grid grid-cols-2  text-custom mt-[14px]  ">
+                                        <div class="col-span-1">
+                                            <div class="text-custom"> <span
+                                                    class="text-[red] mr-[2px] text-custom">*</span>อีเมลล์</div>
+                                            <input type="input" v-model="room_detail.email"
+                                                class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                                :disabled="is_edit == true" />
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-4 gap-2  text-custom mt-[14px] ">
@@ -628,13 +641,13 @@ export default {
             this.room_detail.birth = ''
             this.room_detail.date_sign = ''
             this.room_detail.workplace = '',
-            this.room_detail.faculty = '',
-            this.room_detail.rank = ''
+                this.room_detail.faculty = '',
+                this.room_detail.rank = ''
             this.room_detail.idEmployee = ''
             this.room_detail.emergencyPerson = ''
             this.room_detail.relation = ''
             this.room_detail.emergencyPhone = '',
-            this.room_detail.lineID = ''
+                this.room_detail.lineID = ''
             this.room_detail.vehicles = []
             this.create = false
 
@@ -654,14 +667,14 @@ export default {
             this.room_detail.birth = ''
             this.room_detail.date_sign = ''
             this.room_detail.workplace = '',
-            this.room_detail.faculty = '',
-            this.room_detail.rank = ''
+                this.room_detail.faculty = '',
+                this.room_detail.rank = ''
             this.room_detail.idEmployee = ''
             this.room_detail.emergencyPerson = ''
             this.room_detail.relation = ''
             this.room_detail.emergencyPhone = '',
-            this.room_detail.lineID = '',
-            this.room_detail.image_card_name = ''
+                this.room_detail.lineID = '',
+                this.room_detail.image_card_name = ''
             this.room_detail.vehicles = []
 
         },
@@ -964,7 +977,7 @@ export default {
                     }
                 }
                 else {
-                    if (this.room_detail.email && this.room_detail.name && this.room_detail.last_name && this.room_detail.phone && this.room_detail.id_card && this.room_detail.address && this.img_arr_card.length != 0) {
+                    if (this.room_detail.email != '' && this.room_detail.name != '' && this.room_detail.last_name != '' && this.room_detail.phone != '' && this.room_detail.id_card && this.room_detail.address != '' && this.img_arr_card.length != 0) {
                         const loading = this.$vs.loading()
                         axios.post('https://api.resguru.app/api' + '/users', {
                             "username": this.room_detail.email,
@@ -1018,6 +1031,11 @@ export default {
                                         })
                                 }
                             }).finally(() => {
+                                axios.put('https://api.resguru.app/api' + '/rooms/' + this.$route.query.id_room, {
+                                    data: {
+                                        roomStatus: 'Reserved'
+                                    }
+                                })
                                 newVehicles.forEach((data) => {
                                     axios.post('https://api.resguru.app/api' + '/tenant-vehicles', {
                                         data: {
