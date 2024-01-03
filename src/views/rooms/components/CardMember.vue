@@ -9,7 +9,8 @@
                     {{ $route.query.status == "Checked In" ? 'ทำสัญญาแล้ว' : $route.query.status == "Reserved" ?
                         'ยังไม่ทำสัญญา' : 'ห้องว่าง' }}
                 </div>
-                <img class="w-[78px] h-[78px] rounded-[22px]" v-if="data.imageProfile" :src="'https://api.resguru.app'+data.imageProfile?.url" @click="getDetailRentalContract()" />
+                <img class="w-[78px] h-[78px] rounded-[22px]" v-if="data.imageProfile"
+                    :src="'https://api.resguru.app' + data.imageProfile?.url" @click="getDetailRentalContract()" />
                 <div @click="getDetailRentalContract()">{{ data.firstName }} {{ data.lastName }}</div>
                 <div class="flex" @click="getDetailRentalContract()">
                     <div><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -85,10 +86,10 @@
                             <dvi class=" w-[70%] ">
                                 <div class="grid grid-cols-2  text-custom " v-if="is_edit == false">
                                     <div class="flex">
-                                        <vs-radio v-model="room_detail.check_user" color="#003765" :val="true">
+                                        <vs-radio v-model="room_detail.check_user" color="#003765" :val="true" @input="clearButton()">
                                             ผู้เช่าในระบบ
                                         </vs-radio>
-                                        <vs-radio v-model="room_detail.check_user" color="#003765" :val="false">
+                                        <vs-radio v-model="room_detail.check_user" color="#003765" :val="false" @input="clearButton()">
                                             ผู้เช่าใหม่
                                         </vs-radio>
                                     </div>
@@ -372,7 +373,7 @@
                 </div>
                 <div class="flex justify-end mt-[30px]">
                     <div>
-                        <vs-button dark shadow @click="create = false">
+                        <vs-button dark shadow @click="cancleButton()">
                             <div class="text-custom">ยกเลิก</div>
                         </vs-button>
                     </div>
@@ -612,6 +613,58 @@ export default {
         this.getFloorRoom()
     },
     methods: {
+        cancleButton() {
+            this.id_card = ''
+            this.id_user = ''
+            this.room_detail.id = ''
+            this.room_detail.name = ''
+            this.room_detail.last_name = ''
+            this.room_detail.nick_name = ''
+            this.room_detail.phone = ''
+            this.room_detail.email = ''
+            this.room_detail.id_card = ''
+            this.room_detail.address = ''
+            this.room_detail.sex = ''
+            this.room_detail.birth = ''
+            this.room_detail.date_sign = ''
+            this.room_detail.workplace = '',
+            this.room_detail.faculty = '',
+            this.room_detail.rank = ''
+            this.room_detail.idEmployee = ''
+            this.room_detail.emergencyPerson = ''
+            this.room_detail.relation = ''
+            this.room_detail.emergencyPhone = '',
+            this.room_detail.lineID = ''
+            this.room_detail.vehicles = []
+            this.create = false
+
+        },
+        clearButton() {
+            this.id_card = ''
+            this.id_user = ''
+            this.room_detail.id = ''
+            this.room_detail.name = ''
+            this.room_detail.last_name = ''
+            this.room_detail.nick_name = ''
+            this.room_detail.phone = ''
+            this.room_detail.email = ''
+            this.room_detail.id_card = ''
+            this.room_detail.address = ''
+            this.room_detail.sex = ''
+            this.room_detail.birth = ''
+            this.room_detail.date_sign = ''
+            this.room_detail.workplace = '',
+            this.room_detail.faculty = '',
+            this.room_detail.rank = ''
+            this.room_detail.idEmployee = ''
+            this.room_detail.emergencyPerson = ''
+            this.room_detail.relation = ''
+            this.room_detail.emergencyPhone = '',
+            this.room_detail.lineID = '',
+            this.room_detail.image_card_name = ''
+            this.room_detail.vehicles = []
+
+        },
         previewImage(event) {
             const file = event.target.files[0];
             this.room_detail.image_card_name = event.target.files[0].name
@@ -663,7 +716,7 @@ export default {
         },
         getUser() {
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/users?filters[id][$eq]=' + this.id_user+'&populate=*')
+            fetch('https://api.resguru.app/api' + '/users?filters[id][$eq]=' + this.id_user + '&populate=*')
                 .then(response => response.json())
                 .then((resp) => {
                     this.user = resp
@@ -895,9 +948,9 @@ export default {
                                             this.id_user = this.room_detail.id
                                             this.getUser()
                                             this.create = false
-                                            
+
                                         })
-                                        loading.close()
+                                    loading.close()
                                 }
                                 else {
                                     loading.close()
