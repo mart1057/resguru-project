@@ -866,6 +866,7 @@ export default {
         },
         createOrEdit() {
             const newVehicles = this.room_detail.vehicles.filter(item => !item.hasOwnProperty('id'));
+            const id_con = ''
             if (this.is_edit == true) {
                 const loading = this.$vs.loading()
                 newVehicles.forEach((data) => {
@@ -957,6 +958,10 @@ export default {
                                                 data: {
                                                     roomStatus: 'Reserved'
                                                 }
+                                            })
+                                            this.$router.push({
+                                                path: '/room-detail',
+                                                query: { id_room: this.$route.query.id_room, number_room: this.$route.query.number_room, status: 'Reserved', tab: 1 },
                                             })
                                             this.id_user = this.room_detail.id
                                             this.getUser()
@@ -1052,6 +1057,10 @@ export default {
 
                             })
                         }).finally(() => {
+                            this.$router.push({
+                                path: '/room-detail',
+                                query: { id_room: this.$route.query.id_room, number_room: this.$route.query.number_room, status: 'Reserved', tab: 1 },
+                            })
                             this.getUser()
                             this.create = false
                             loading.close()
