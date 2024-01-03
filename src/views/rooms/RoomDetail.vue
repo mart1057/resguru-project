@@ -37,7 +37,7 @@
                     </div>
                     <div @click=" routTab(4)" class="cursor-pointer  ml-[8px]"  v-if=" $route.query.status == 'Checked In'"
                         :class="tab == 4 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : ' text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
-                        ย้ายออก
+                        ย้ายออก/ย้ายห้อง
                     </div>
                     <div @click="routTab(5)" class="cursor-pointer  ml-[8px]"
                         :class="tab == 5 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : ' text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">

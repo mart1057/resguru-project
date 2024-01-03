@@ -28,9 +28,9 @@
                     <div class="flex justify-center items-center ml-[4px] text-[12px]">{{ data.phone }}</div>
                 </div>
                 <div class="flex justify-around w-[100%]">
-                    <div @click="move_room = true"
+                    <!-- <div @click="move_room = true"
                         class="bg-[#003765] text-[white] pl-[8px] pr-[8px] pt-[1px] pb-[1px] flex justify-center items-center text-[12px] rounded-[8px]">
-                        ย้ายห้อง</div>
+                        ย้ายห้อง</div> -->
                     <!-- <div @click="deleteContract()"
                         class="bg-[#D44769] text-[white] pl-[8px] pr-[8px] pt-[1px] pb-[1px] flex justify-center items-center text-[12px] rounded-[8px]">
                         ลบผู้เช่า</div> -->
