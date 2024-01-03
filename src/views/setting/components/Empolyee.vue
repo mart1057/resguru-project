@@ -20,7 +20,7 @@
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 1">
             <div class="grid grid-cols-4 w-[100%] gap-4 mt-[14px]">
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer "
-                    v-for="data in UserBuilding">
+                    v-for="data in UserBuilding" @click="getDetail(data.id)">
                     <div class="flex justify-between">
                         <div class="flex">
                             <div class="flex">
@@ -115,8 +115,7 @@
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 2">
             <div class="grid grid-cols-4 w-[100%] gap-4 mt-[14px]">
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer "
-                    v-for="data in employee">
-
+                    v-for="data in employee" @click="getDetailEm(data.id)">
                     <div class="flex justify-between">
                         <div class="flex">
                             <div class="flex">
@@ -182,7 +181,7 @@
                     </div>
                 </div>
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer items-center justify-center "
-                    @click="profile_em = trueNewProfileEm.firstName = '', NewProfileEm.lastName = '', NewProfileEm.contactAddress = '', NewProfileEm.phone = '', NewProfileEm.email = '', NewProfileEm.line = '', NewProfileEm.password = '', this.fileProfileForm = [], fileCoverForm = []">
+                    @click="profile_admin = true">
                     <div class="flex flex-col items-center justify-center">
                         <div>
 
@@ -221,7 +220,7 @@
                 </svg>
             </div>
             <div class="mt-[14px]">
-                <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]" v-if="tab == 1">
+                <!-- <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]" v-if="tab == 1">
                     <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload" hidden
                         type="file" @change="tempImageCoverUploadAdmin()" ref="fileUploadAdminCoverForm" />
                     <label for="upload">
@@ -230,15 +229,18 @@
                             เปลี่ยนรูปภาพปก
                         </div>
                     </label>
-                </div>
+                </div> -->
                 <div class="flex w-[100%]">
-                    <div class="w-[20%] ml-[18px] " :class="tab == 1 ? 'mt-[-70px]' : ''">
+                    <div class="w-[20%] ml-[18px]">
                         <div class="bg-[white] rounded-[22px] w-[246px] border p-[14px] flex flex-col items-center">
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile"
                                 ref="fileUploadAdminProfileForm" hidden type="file" @change="tempImageUploadAdmin()" />
                             <label for="uploadProfile">
-                                <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
+                                <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border" v-if="NewProfileAdmin.imageProfile"
+                                    :src="'https://api.resguru.app'+NewProfileAdmin.imageProfile" />
+                                <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border" v-else
                                     src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
+
                                 <div
                                     class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] mt-[4px]  text-custom cursor-pointer">
                                     เปลี่ยนรูปภาพโปรไฟล์</div>
@@ -389,6 +391,46 @@ export default {
                     this.employee = resp.data
                 }).finally(() => {
                     loading.close()
+                })
+        },
+        getDetail(id){
+            this.is_edit=true
+            fetch('https://api.resguru.app/api/users/'+id+'?populate=*')
+            .then(response => response.json())
+                .then((resp) => {
+                   this.NewProfileAdmin.firstName = resp.firstName,
+                    this.NewProfileAdmin.lastName= resp.lastName,
+                    this.NewProfileAdmin.contactAddress= resp.contactAddress,
+                    // province: this.NewProfileAdmin.province,
+                    // district: this.NewProfileAdmin.district,
+                    // amphoe: this.NewProfileAdmin.amphoe,
+                    // zipcode: this.NewProfileAdmin.zipcode,
+                     this.NewProfileAdmin.phone= resp.phone,
+                     this.NewProfileAdmin.email= resp.email,
+                     this.NewProfileAdmin.line= resp.line
+                     this.NewProfileAdmin.imageProfile = resp.imageProfile?.url
+                     this.NewProfileAdmin.coverProfile = 'https://api.resguru.app'+resp.imageBanner?.url
+                }).finally(()=>{
+                    this.profile_admin = true
+                })
+        },
+        getDetailEm(id){
+            this.is_edit=true
+            fetch('https://api.resguru.app/api/building-employees/'+id+'?populate=*')
+            .then(response => response.json())
+                .then((resp) => {
+                   this.NewProfileAdmin.firstName = resp.data.attributes.name,
+                    this.NewProfileAdmin.lastName= resp.data.attributes.lastname,
+                    this.NewProfileAdmin.contactAddress= resp.data.attributes.address,
+                    // province: this.NewProfileAdmin.province,
+                    // district: this.NewProfileAdmin.district,
+                    // amphoe: this.NewProfileAdmin.amphoe,
+                    // zipcode: this.NewProfileAdmin.zipcode,
+                     this.NewProfileAdmin.phone= resp.data.attributes.phone,
+                     this.NewProfileAdmin.imageProfile = 'https://api.resguru.app'+resp.data.employeeImage?.url
+                     this.NewProfileAdmin.line= resp.data.attributes.line
+                }).finally(()=>{
+                    this.profile_admin = true
                 })
         },
         getUser() {
