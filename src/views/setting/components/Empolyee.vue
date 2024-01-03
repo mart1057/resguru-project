@@ -306,7 +306,7 @@
                             <div class="mt-[8px] col-span-2">
                                 <div class="text-custom text-[14px] text-[#003765]">ไลน์ติดต่อ</div>
                                 <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    v-model="NewProfileAdmin.lineID" type="input" />
+                                    v-model="NewProfileAdmin.line" type="input" />
                             </div>
                         </div>
                         <div class="mt-[44px] mb-[50px]">
