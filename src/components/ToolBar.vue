@@ -566,4 +566,7 @@ export default {
     -moz-animation-delay: 1s;
     -o-animation-duration: 1s;
     animation-delay: 0.1s;
+}
+audio:not(.md-image), canvas:not(.md-image), embed:not(.md-image), iframe:not(.md-image), img:not(.md-image), object:not(.md-image), video:not(.md-image) {
+    height: 100% !important;
 }</style>
