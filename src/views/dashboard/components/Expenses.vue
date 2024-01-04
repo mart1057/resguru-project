@@ -180,7 +180,7 @@
                                     </div>
                                     <div class="ml-[8px] text-[#F5D65E] font-bold">{{ data2[0] }}</div>
                                 </div>
-                                <div class="text-[12px] text-[#5C6B79]">60%</div>
+                                <div class="text-[12px] text-[#5C6B79]"></div>
                             </div>
                             <div
                                 class="mt-[8px] flex items-center justify-between border h-[28px] rounded-[8px] pl-[12px] pr-[12px]">
@@ -195,7 +195,7 @@
                                     </div>
                                     <div class="ml-[8px] text-[#008EF4] font-bold">{{ data2[1] }}</div>
                                 </div>
-                                <div class="text-[12px] text-[#5C6B79]">60%</div>
+                                <div class="text-[12px] text-[#5C6B79]"></div>
                             </div>
                             <div
                                 class="mt-[8px] flex items-center justify-between border h-[28px] rounded-[8px] pl-[12px] pr-[12px]">
@@ -216,7 +216,7 @@
                                     </div>
                                     <div class="ml-[8px] text-[#D44769] font-bold">{{ data2[2] }}</div>
                                 </div>
-                                <div class="text-[12px] text-[#5C6B79]">60%</div>
+                                <div class="text-[12px] text-[#5C6B79]"></div>
                             </div>
                             <div
                                 class=" mt-[8px] flex items-center justify-between border h-[28px] rounded-[8px] pl-[12px] pr-[12px]">
@@ -231,7 +231,7 @@
                                     </div>
                                     <div class="ml-[8px] text-[#9A77FF] font-bold">{{ data2[3] }}</div>
                                 </div>
-                                <div class="text-[12px] text-[#5C6B79]">60%</div>
+                                <div class="text-[12px] text-[#5C6B79]"></div>
                             </div>
                         </div>
                     </div>

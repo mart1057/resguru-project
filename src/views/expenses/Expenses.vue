@@ -185,7 +185,7 @@
                                     </svg>
                                 </div>
                                 <div class="flex flex-col justify-around">
-                                    <div class="text-[12px] text-[#B9CCDC]">60%</div>
+                                    <div class="text-[12px] text-[#B9CCDC]"></div>
                                     <div class="text-[#F5D65E] font-bold text-[16px]">{{ $formatNumber(data2[0]) }}</div>
                                 </div>
                             </div>
@@ -207,7 +207,7 @@
                                     </svg>
                                 </div>
                                 <div class="flex flex-col justify-around">
-                                    <div class="text-[12px] text-[#B9CCDC]">60%</div>
+                                    <div class="text-[12px] text-[#B9CCDC]"></div>
                                     <div class="text-[#008EF4] text-[16px] font-bold">{{$formatNumber(data2[1])  }}</div>
                                 </div>
                             </div>
@@ -229,7 +229,7 @@
                                     </svg>
                                 </div>
                                 <div class="flex flex-col justify-around">
-                                    <div class="text-[12px] text-[#B9CCDC]">60%</div>
+                                    <div class="text-[12px] text-[#B9CCDC]"></div>
                                     <div class="text-[#D44769] font-bold text-[16px]">{{ $formatNumber(data2[2] )}}</div>
                                 </div>
                             </div>
@@ -251,7 +251,7 @@
                                     </svg>
                                 </div>
                                 <div class="flex flex-col justify-around">
-                                    <div class="text-[12px] text-[#B9CCDC]">60%</div>
+                                    <div class="text-[12px] text-[#B9CCDC]"></div>
                                     <div class="text-[#CC00FF  ] font-bold text-[16px]">{{ $formatNumber(data2[3]) }}</div>
                                 </div>
                             </div>
