@@ -521,7 +521,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .vs-sidebar__item.active:after {
     background-color: #F5D65E;
 }
