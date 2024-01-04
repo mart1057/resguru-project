@@ -80,7 +80,7 @@
                         </div>
                         <input
                             class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center pl-[8px]"
-                            type="number" v-model="item.price" />
+                            type="number" v-model="item.price" :disabled="item.checked == true"/>
                     </div>
                 </div>
             </div>
