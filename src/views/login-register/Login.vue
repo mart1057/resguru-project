@@ -463,6 +463,7 @@ export default {
                             "password": this.dataRegister.pass,
                             "lastName": this.dataRegister.last,
                             "firstName": this.dataRegister.name,
+                            "role":6,
                             "sex": this.dataRegister.sex,
                             "idCard": this.dataRegister.CID,
                             "dateOfBirth" : this.dataRegister.birth

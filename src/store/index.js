@@ -8,16 +8,16 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     userInfo: {},
-    login:false,
+    login: false,
     errLogin: '',
-    main:true,
+    main: true,
     building: 0,
-    buildingInfo:{}
+    buildingInfo: {}
   },
   getters: {
   },
   mutations: {
-    setMain(state,data){
+    setMain(state, data) {
       state.main = data
     },
     setUser(state, data) {
@@ -29,10 +29,10 @@ export default new Vuex.Store({
     setErr(state, data) {
       state.errLogin = data
     },
-    setBuilding(state,data){
+    setBuilding(state, data) {
       state.building = data
     },
-    setBuildingInfo(state,data){
+    setBuildingInfo(state, data) {
       state.buildingInfo = data
     }
   },
@@ -44,23 +44,30 @@ export default new Vuex.Store({
       }).then((resp) => {
         console.log(resp.data);
         fetch('https://api.resguru.app/api/users/' + resp.data.user.id + '?populate=*')
-        .then(response => response.json())
-        .then((resp2) => {
-          commit('setUser', resp2)
-          commit('setLogin', true)
-          localStorage.setItem("is_login", true)
-        })
+          .then(response => response.json())
+          .then((resp2) => {
+            if (resp2.role.id == 6) {
+              commit('setUser', resp2)
+              commit('setLogin', true)
+              localStorage.setItem("is_login", true)
+            }
+            else{
+              const errorMessage = 'บัญชีของคุณไม่มีสิทธิ์เข้าใช้งาน';
+              // this.$showNotification('danger', errorMessage); 
+              alert(errorMessage)
+            }
+          })
         // .catch((err)=>{
         //   console.log(err);
         //   commit('setErr', err.response.data.error.message);
         // })
       })
-      .catch(error => {
-        console.log(error)
-        const errorMessage = 'Email หรือ Password ผิดพลาด';
-        // this.$showNotification('danger', errorMessage); 
-        alert(errorMessage)
-      })
+        .catch(error => {
+          console.log(error)
+          const errorMessage = 'Email หรือ Password ผิดพลาด';
+          // this.$showNotification('danger', errorMessage); 
+          alert(errorMessage)
+        })
     }
   },
   modules: {

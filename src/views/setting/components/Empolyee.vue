@@ -678,7 +678,6 @@ export default {
             else {
                 if (this.tab == 1) {
                     axios.post(`https://api.resguru.app/api/users/`, {
-                        role: 1,
                         firstName: this.NewProfileAdmin.firstName,
                         lastName: this.NewProfileAdmin.lastName,
                         contactAddress: this.NewProfileAdmin.contactAddress,
@@ -689,7 +688,7 @@ export default {
                         phone: this.NewProfileAdmin.phone,
                         email: this.NewProfileAdmin.email,
                         line: this.NewProfileAdmin.line,
-                        // position: 6,
+                        role: 6,
                         building: this.$store.state.building,
                         username: this.NewProfileAdmin.email,
                         password: this.NewProfileAdmin.password

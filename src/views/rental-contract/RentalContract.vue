@@ -977,7 +977,7 @@ export default {
                     "firstName": this.room_detail_create.name,
                     "lastName": this.room_detail_create.last_name,
                     "nickName": this.room_detail_create.nick_name,
-                    "role": 4,
+                    "role": 2,
                     "phone": this.room_detail_create.phone,
                     "email": this.room_detail_create.email,
                     "idCard": this.room_detail_create.id_card,

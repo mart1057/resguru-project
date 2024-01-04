@@ -130,13 +130,18 @@
                             class=" ml-[10px] h-[15px] bg-[#E7E2F7] pl-[12px] pr-[12px] pt-[12px] pb-[12px] rounded-[13px] text-[#9A77FF] text-center cursor-pointer flex items-center">
                             {{ $store.state.buildingInfo[0].attributes.package.data?.attributes.title }}
                         </div>
-                        
+
                         <div class="flex ml-[10px] items-center">
                             <vs-tooltip bottom shadow interactivity not-arrow>
                                 <div class="cursor-pointer">
-                                    <vs-avatar size="40">
-                                        <img
-                                            :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.formats?.url" />
+                                    <vs-avatar size="40" v-if="$store.state.buildingInfo[0]?.attributes.buildingLogo?.data.attributes.url">
+                                        <img 
+                                            :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes.buildingLogo?.data.attributes.url" />
+                                        <!-- <img v-else
+                                            :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.formats?.large?.url" /> -->
+                                    </vs-avatar>
+                                    <vs-avatar size="40" v-else>
+                                        
                                     </vs-avatar>
 
                                 </div>
@@ -144,11 +149,15 @@
                                     <div class="content-tooltip p-[8px]">
                                         <div class="flex">
                                             <div>
-                                                <vs-avatar size="40"
-                                                    v-if="$store.state.buildingInfo[0]?.attributes.buildingLogo">
-                                                    <template>
+                                                <vs-avatar size="40">
+                                                    <template
+                                                        v-if="$store.state.buildingInfo[0]?.attributes.buildingLogo?.data.attributes.url">
                                                         <img
-                                                            :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.formats?.large?.url" />
+                                                            :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes.buildingLogo?.data.attributes.url" />
+
+                                                    </template>
+                                                    <template v-else>
+
                                                     </template>
                                                 </vs-avatar>
                                             </div>
@@ -270,8 +279,13 @@
                                 <!-- </vs-avatar> -->
                             </div>
                             <div>
-                                <vs-avatar size="40">
-                                        <img :src="'https://api.resguru.app' + $store.state.userInfo.imageProfile?.formats?.small.url" />
+                                <vs-avatar size="40" v-if=" $store.state.userInfo.imageProfile?.formats?.small.url">
+                                    <img
+                                        :src="'https://api.resguru.app' + $store.state.userInfo.imageProfile?.formats?.small.url" />
+                                </vs-avatar>
+                                <vs-avatar size="40" v-else>
+                                    <!-- <img
+                                        :src="'https://api.resguru.app' + $store.state.userInfo.imageProfile?.formats?.small.url" /> -->
                                 </vs-avatar>
                             </div>
                             <div>
@@ -566,6 +580,14 @@ export default {
     -o-animation-duration: 1s;
     animation-delay: 0.1s;
 }
-audio:not(.md-image), canvas:not(.md-image), embed:not(.md-image), iframe:not(.md-image), img:not(.md-image), object:not(.md-image), video:not(.md-image) {
+
+audio:not(.md-image),
+canvas:not(.md-image),
+embed:not(.md-image),
+iframe:not(.md-image),
+img:not(.md-image),
+object:not(.md-image),
+video:not(.md-image) {
     height: 100% !important;
-}</style>
+}
+</style>
