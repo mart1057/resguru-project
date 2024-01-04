@@ -219,30 +219,28 @@
                                 <div class="flex">
                                     <input
                                         class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start items-center"
-                                        type="number" v-model="bill_detail.room" />
+                                        type="number" v-model="bill_detail.room" @input="sumValue" />
                                 </div>
                                 <div class="flex mt-[-8px]">
                                     <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                        type="number" v-model="bill_detail.water" />
+                                        type="number" v-model="bill_detail.water" @input="sumValue"/>
                                 </div>
                                 <div class="flex mt-[-8px]">
                                     <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                        type="number" v-model="bill_detail.ele" />
+                                        type="number" v-model="bill_detail.ele" @input="sumValue"/>
                                 </div>
                                 <div class="flex mt-[-8px]">
                                     <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                        type="number" v-model="bill_detail.communalPrice" />
+                                        type="number" v-model="bill_detail.communalPrice" @input="sumValue" />
                                 </div>
                                 <div class="flex mt-[-8px]">
                                     <input class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                        type="number" v-model="bill_detail.other" />
+                                        type="number" v-model="bill_detail.other" @input="sumValue"/>
                                 </div>
                                 <div>
                                     <div v-if="bill_detail.room"
                                         class="font-bold text-custom text-[14px] flex justify-start items-start pl-[16px] mt-[24px]">
-                                        {{ parseInt(bill_detail.room + bill_detail.other + bill_detail.water +
-                                            bill_detail.ele + bill_detail.communalPrice)
-                                        }}
+                                        {{ total }}
                                     </div>
                                     <div v-else
                                         class="font-bold text-custom text-[14px] flex justify-start items-start pl-[16px] mt-[24px]">
@@ -265,12 +263,12 @@
                                 <div class="text-custom ">ค้างชำระ</div>
                                 <div class="text-custom " v-if="bill_detail.water || bill_detail.room || bill_detail.other">
                                     {{
-                                        bill_detail.room + bill_detail.water + bill_detail.ele +
-                                        bill_detail.other + bill_detail.communalPrice }} <span
+                                        total }} <span
                                         class="ml-[4px] text-custom ">บาท</span>
                                 </div>
+                              
                                 <div class="text-custom " v-else>-<span class="ml-[4px] text-custom ">บาท</span>
-                                </div>
+                                </div> 
                             </div>
                             <div class="flex justify-between w-[100%] mt-[4px]" v-for="item in options">
                                 <div class="text-custom ">ค่าปรับทรัพย์สินเสียหาย ({{ item.name }})</div>
@@ -292,7 +290,7 @@
                                 <div class="text-custom text-[16px] font-bold" v-if="list_debt.total">
                                     {{
                                         totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) +
-                                        parseInt(list_debt.total)
+                                        parseInt(total)
                                     }} <span class="ml-[4px] text-custom ">บาท</span>
                                 </div>
                                 <div class="text-custom text-[16px] font-bold" v-else>
@@ -303,9 +301,9 @@
                             </div>
                             <div class="flex justify-between w-[100%] mt-[4px]" v-if="tab == true">
                                 <div class="text-custom text-[#D44769] font-bold text-[16px]">หนี้สูญ {{
-                                    (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + list_debt.total) < 0
+                                    (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) + total) < 0
                                     ? 0 : (totalBillItems() + (-list_debt.deposit2) + (-list_debt.deposit) +
-                                        list_debt.total) }} บาท</div>
+                                        total) }} บาท</div>
                                 </div>
                             </div>
                             <div class="text-custom text-[12px] font-bold text-[#003765] mt-[24px]">วันที่ย้ายออก</div>
@@ -549,7 +547,8 @@ export default {
                 water: 0,
                 room: 0,
                 other: 0
-            }
+            },
+            total:0
 
         }
     },
@@ -638,6 +637,7 @@ export default {
                                     }
 
                                 })
+                                this.sumValue()
                         })
                 })
             loading.close()
@@ -883,6 +883,10 @@ export default {
                     // window.location.reload()
                 })
         },
+        sumValue(){
+            this.total = parseInt(this.bill_detail.room)  + parseInt(this.bill_detail.water)  + parseInt(this.bill_detail.ele)  +
+            parseInt(this.bill_detail.other)  + parseInt(this.bill_detail.communalPrice)
+        }
     }
 }
 
