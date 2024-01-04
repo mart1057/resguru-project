@@ -2,7 +2,7 @@
     <div class="flex mt-[10px] justify-between tt">
         <div class="w-[55%]">
             <UserPlan :data="count_user" :childFunction="getDashboard"/>
-            <PayMent :data="db_payment"/>
+            <PayMent :data="db_payment" :childFunction2="getDashboard"/>
             <Notification :data="db_services"/>
         </div>
         <div class="w-[44%]">

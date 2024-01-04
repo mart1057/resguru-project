@@ -27,12 +27,13 @@
                     </svg>
                 </div> -->
                 <div class="flex justify-center items-center">
-                    <input class="h-[40px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหา" type="input" />
+                    <input class="h-[40px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหา" type="input"
+                        v-model="filter.search" @input="filterData" @keydown="handleKeyDown" />
                 </div>
 
             </div>
         </div>
-        <div class="mt-[14px]"  :class="data.length > 5 ? 'table-container' : ''">
+        <div class="mt-[14px]" :class="data.length > 5 ? 'table-container' : ''">
             <vs-table>
                 <template #thead>
                     <vs-tr>
@@ -67,13 +68,13 @@
                         </vs-td>
                         <vs-td>
                             {{ convertDateNoTime(tr.createdAt) }}
-                            {{ data.room}}
+                            {{ data.room }}
                         </vs-td>
                         <vs-td>
                             <div class="flex items-center justify-start">
                                 <div class=" w-[auto] pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
                                     :class="tr.tenant_bills[0]?.paymentStatus == 'Paid' ? 'bg-[#CFFBDA] text-[#0B9A3C]' : tr.website == 2 ? 'bg-[#FFE1E8] text-[#EA2F5C]' : ' bg-[#FFF2BC] text-[#D48C00] '">
-                                    {{ tr.tenant_bills[0]?.paymentStatus== 'Paid' ?'ชำระแล้ว' :'ยังไม่ชำระ'}} </div>
+                                    {{ tr.tenant_bills[0]?.paymentStatus == 'Paid' ? 'ชำระแล้ว' : 'ยังไม่ชำระ' }} </div>
                             </div>
                         </vs-td>
                     </vs-tr>
@@ -87,11 +88,43 @@ import { convertDateNoTime } from '@/components/hook/hook'
 export default {
     props: {
         data: { type: Object },
+        childFunction2: {
+            type: Function,
+        },
     },
     data() {
         return {
-            convertDateNoTime
+            convertDateNoTime,
+            filter: {
+                select: [],
+                checkSelect: [],
+                search: '',
+                floor: '',
+                Id_card: ''
+            },
         }
+    },
+    methods: {
+        filterData() {
+            this.data = this.data.filter(item =>
+                item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase())
+            );
+            if (this.filter.search == '') {
+                this.childFunction2(false);
+            }
+        },
+        async handleKeyDown(event) {
+            // Check if the pressed key is the backspace key
+            if (event.keyCode === 8) {
+                await this.childFunction2(false);
+                setTimeout(() => {
+                    this.data = this.data.filter(item =>
+                        item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase())
+                    );
+                }, 300)
+
+            }
+        },
     }
 }
 </script>
@@ -110,6 +143,7 @@ input[type=input] {
     padding-left: 32px;
     margin: 8px 0;
 }
+
 .table-container {
     height: 250px;
     /* Set a fixed height to enable scrolling */
