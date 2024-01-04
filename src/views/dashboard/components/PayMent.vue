@@ -36,7 +36,7 @@
             <vs-table>
                 <template #thead>
                     <vs-tr>
-                        <vs-th v-if="data[0].room_building">
+                        <vs-th v-if="data[0]?.room_building">
                             ชื่อหอพัก
                         </vs-th>
                         <vs-th>
@@ -55,7 +55,7 @@
                 </template>
                 <template #tbody>
                     <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
-                        <vs-td v-if="tr.room_building">
+                        <vs-td v-if="tr?.room_building">
                             {{ tr.room_building?.buildingName }}
                         </vs-td>
                         <vs-td>

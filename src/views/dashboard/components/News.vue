@@ -28,7 +28,7 @@
             <vs-table>
                 <template #thead>
                     <vs-tr>
-                        <vs-th v-if="data[0].building">
+                        <vs-th v-if="data[0]?.building">
                             ชื่อหอพัก
                         </vs-th>
                         <vs-th>

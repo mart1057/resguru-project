@@ -39,7 +39,7 @@
             <vs-table>
                 <template #thead>
                     <vs-tr>
-                        <vs-th v-if="(tab == 1 || tab == 2) && data[0].room_building">
+                        <vs-th v-if="(tab == 1 || tab == 2) && data[0]?.room_building">
                             ชื่อหอพัก
                         </vs-th>
                         <vs-th v-if="tab == 1 || tab == 2">
