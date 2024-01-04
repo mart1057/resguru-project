@@ -154,8 +154,7 @@
                                             </div>
                                             <div
                                                 class="flex items-center text-[16px] font-bold ml-[8px] text-custom w-[150px]">
-                                                {{ $store.state.userInfo.firstName }} {{ }}
-                                                {{ $store.state.userInfo.lastName }}</div>
+                                                {{ $store.state.buildingInfo[0].attributes.buildingName }}</div>
                                         </div>
                                         <div
                                             class="w-[100%] h-[1px]  mt-[12px] mb-[12px] bg-gray-200 border-0 dark:bg-gray-700">
