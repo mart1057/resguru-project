@@ -134,7 +134,7 @@
                             <div class="flex">
                                 <div class="h-[32px] pr-[8px] pl-[8px]   cursor-pointer   rounded-[12px]"
                                     :class="data.roomStatus == 'Checked In' ? 'bg-[#003765]' : 'bg-[#165D98]'"
-                                    @click="data.roomStatus == 'Checked In' ? getDetailRentalContract(data.user_sign_contract.id) : data.roomStatus == 'Reserved' ? create_sign(data.id, data.RoomNumber, 'reserved', data.user_sign_contract.users_permissions_user?.idCard, data.room_type.id) : create_sign(data.id, data.RoomNumber)">
+                                    @click="data.roomStatus == 'Checked In' ? (getDetailRentalContract(data.user_sign_contract.id),data_mock=data) : data.roomStatus == 'Reserved' ? (create_sign(data.id, data.RoomNumber, 'reserved', data.user_sign_contract.users_permissions_user?.idCard, data.room_type.id),data_mock=data) : (create_sign(data.id, data.RoomNumber),data_mock=data)">
                                     <div class="flex items-center h-[100%]">
                                         <div class="flex justify-center items-center">
                                             <svg width="18" height="19" viewBox="0 0 18 19" fill="none"
@@ -195,7 +195,8 @@
                             </div>
                         </div>
                         <div class="flex justify-end">
-                            <div @click=" data.roomStatus == 'Checked In' ? PDFPrintRental(data, true,data.user_sign_contract.id) : ''">
+                            <div
+                                @click=" data.roomStatus == 'Checked In' ? PDFPrintRental(data, true, data.user_sign_contract.id) : ''">
                                 <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1318_22597" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5"
@@ -232,6 +233,267 @@
 
             </div>
         </div>
+        <b-modal centered v-model="create" size="xl" hide-backdrop hide-header-close hide-header hide-footer
+            class="p-[-20px] text-custom">
+            <div>
+                <div class="flex justify-between pl-[20px] pr-[20px]">
+                    <div class="text-custom flex justify-center items-center text-[18px] font-bold">
+                        เพิ่มสัญญาเช่าห้อง {{
+                            create_room_number }}</div>
+                    <div @click="create = false" class="cursor-pointer">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
+                                width="24" height="24">
+                                <rect width="24" height="24" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_417_4814)">
+                                <path
+                                    d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                                    fill="#5C6B79" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <!-- <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
+                <div class="pl-[20px] pr-[20px] mt-[24px]">
+                    <div class=" mt-[24px]">
+                        <div class="w-[100%] flex">
+                            <div class="w-[30%] text-custom flex items-start">ข้อมูลหลัก</div>
+                            <dvi class=" w-[70%] ">
+                                <div class="grid grid-cols-2  text-custom  ">
+                                    <div class="flex">
+                                        <vs-radio v-model="room_detail_create.check_user" color="#003765" :val="true">
+                                            ผู้เช่าในระบบ
+                                        </vs-radio>
+                                        <vs-radio v-model="room_detail_create.check_user" color="#003765" :val="false"
+                                            v-if="check_rent != 'reserved'">
+                                            ผู้เช่าใหม่
+                                        </vs-radio>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-2  text-custom mt-[14px]  "
+                                    v-if="room_detail_create.check_user == true">
+                                    <div>
+                                        <div class=""><span
+                                                class="text-[red] mr-[2px]">*</span>ค้นหาผู้เช่าด้วยรหัสบัตรประชาชน
+                                        </div>
+                                        <div>
+                                            <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                                v-model="filter.Id_card">
+                                            <vs-button primary @click="getUserDetail(filter.Id_card)">ค้นหา</vs-button>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="grid grid-cols-8  text-custom mt-[14px]  ">
+                                    <div>
+                                        <div><span class="text-[red] mr-[2px]">*</span>คำนำหน้า</div>
+                                        <select :disabled="room_detail_create.check_user == true" placeholder="ชื่อ" id="mr"
+                                            class="mt-[6px] pl-[4px] pr-[4px] h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            v-model="room_detail_create.sex">
+                                            <option label="นาย" :value="true">
+                                                นาย
+                                            </option>
+                                            <option label="นางสาว" :value="false">
+                                                นางสาว
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col-span-3 ml-[8px]">
+                                        <div><span class="text-[red] mr-[2px]">*</span>ชื่อ</div>
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            :disabled="room_detail_create.check_user == true"
+                                            v-model="room_detail_create.name" required />
+                                        <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                            {{ errorFieldMessage }}
+                                        </div> -->
+                                    </div>
+                                    <div class="col-span-3  ml-[8px]">
+                                        <div><span class="text-[red] mr-[2px]">*</span>สกุล</div>
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            :disabled="room_detail_create.check_user == true"
+                                            v-model="room_detail_create.last_name" required />
+                                        <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                            {{ errorFieldMessage }}
+                                        </div> -->
+                                    </div>
+                                    <div class="ml-[8px]">
+                                        <div>ชื่อเล่น</div>
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            :disabled="room_detail_create.check_user == true"
+                                            v-model="room_detail_create.nick_name" />
+                                    </div>
+                                </div>
+                            </dvi>
+                        </div>
+                        <div class="w-[100%] flex mt-[14px]">
+                            <div class="w-[30%] text-custom flex items-start"></div>
+                            <div class="grid grid-cols-8  text-custom w-[70%] ">
+                                <div class="col-span-4">
+                                    <div><span class="text-[red] mr-[2px]">*</span>เบอร์โทรศัพท์</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail_create.phone" required
+                                        :disabled="room_detail_create.check_user == true" />
+                                </div>
+                                <div class="col-span-4  ml-[8px]">
+                                    <div><span class="text-[red] mr-[2px]">*</span>หมายเลขบัตรประชาชน <span
+                                            class="text-[#5C6B79]"></span></div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail_create.id_card" required
+                                        :disabled="room_detail_create.check_user == true" />
+                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                        {{ errorFieldMessage }}
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-[100%] flex mt-[14px]">
+                            <div class="w-[30%] text-custom flex items-start"></div>
+                            <div class="grid grid-cols-6  text-custom w-[70%] ">
+                                <div class="col-span-3">
+                                    <div><span class="text-[red] mr-[2px]">*</span>Email <span
+                                            class="text-[#5C6B79]">สำหรับล็อกอินเข้าใช้แอปพลิเคชัน</span></div>
+                                    <input type="email"
+                                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
+                                        v-model="room_detail_create.email" required
+                                        :disabled="room_detail_create.check_user == true" />
+                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                        {{ errorFieldMessage }}
+                                    </div> -->
+                                </div>
+                                <div class="col-span-3 ml-[8px]">
+                                    <div><span class="text-[red] mr-[2px]">*</span>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
+                                    <input type="date"
+                                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
+                                        v-model="room_detail_create.birth" required
+                                        :disabled="room_detail_create.check_user == true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-[100%] flex mt-[14px]">
+                            <div class="w-[30%] text-custom flex items-start"></div>
+                            <div class="grid grid-cols-6  text-custom w-[70%] ">
+                                <div class="col-span-6">
+                                    <div><span class="text-[red] mr-[2px]">*</span>ที่อยู่</div>
+                                    <input type="input"
+                                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
+                                        v-model="room_detail_create.address" required
+                                        :disabled="room_detail_create.check_user == true">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-[100%] flex mt-[16px]">
+                            <div class="w-[30%] text-custom flex items-start text-white">.</div>
+                            <div class="grid grid-cols-8  text-custom w-[70%] ">
+                                <div class="col-span-4">
+                                    <div><span class="text-[red] mr-[2px]">*</span>วันที่ทำสัญญา</div>
+                                    <input type="date"
+                                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
+                                        v-model="room_detail_create.date_sign" required />
+                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                        {{ errorFieldMessage }}
+                                    </div> -->
+                                </div>
+                                <div class="col-span-4  ml-[8px]">
+                                    <div><span class="text-[red] mr-[2px]">*</span>วันสิ้นสุดสัญญา</div>
+                                    <input type="date"
+                                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
+                                        v-model="room_detail_create.exp_date" required />
+                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                        {{ errorFieldMessage }}
+                                    </div> -->
+                                </div>
+                                <div class="col-span-4 mt-[16px]">
+                                    <div><span class="text-[red] mr-[2px]">*</span>เลขมิเตอร์ค่าน้ำเริ่มต้น
+                                    </div>
+                                    <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail_create.water" required />
+                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                        {{ errorFieldMessage }}
+                                    </div> -->
+                                </div>
+                                <div class="col-span-4 mt-[16px]  ml-[8px]">
+                                    <div><span class="text-[red] mr-[2px]">*</span>เลขมิเตอร์ค่าไฟเริ่มต้น</div>
+                                    <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail_create.ele" required />
+                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                        {{ errorFieldMessage }}
+                                    </div> -->
+                                </div>
+                                <div class="col-span-4 mt-[16px]">
+                                    <div><span class="text-[red] mr-[2px]">*</span>ประเภทห้องพัก</div>
+                                    <select placeholder="Select" v-model="room_detail_create.type_room" disabled
+                                        class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]">
+                                        <option v-for="type_room in room_type" :value="type_room.id">
+                                            {{ type_room.attributes.roomTypeName }}
+                                        </option>
+                                    </select>
+                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                        {{ errorFieldMessage }}
+                                    </div> -->
+                                </div>
+                                <div class="col-span-4  ml-[8px] mt-[16px]">
+                                    <div><span class="text-[red] mr-[2px]">*</span>ระยะเวลาสัญญา (เดือน)</div>
+                                    <select placeholder="Select" v-model="room_detail_create.contract_duration"
+                                        class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]">
+                                        <option>
+                                            3
+                                        </option>
+                                        <option>
+                                            6
+                                        </option>
+                                        <option>
+                                            12
+                                        </option>
+                                    </select>
+                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                        {{ errorFieldMessage }}
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="w-[100%] flex mt-[14px]">
+                            <div class="w-[30%] text-custom flex items-start text-white">.</div>
+                            <div class="grid grid-cols-8  text-custom w-[70%] ">
+                                <div class="col-span-4">
+                                    <div><span class="text-[red] mr-[2px]">*</span>ค่าประกันห้อง</div>
+                                    <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail_create.roomInsuranceDeposit" required />
+                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                        {{ errorFieldMessage }}
+                                    </div> -->
+                                </div>
+                                <div class="col-span-4 ml-[8px]">
+                                    <div><span class="text-[red] mr-[2px]">*</span>วางเงินมัดจำ (บาท)</div>
+                                    <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail_create.room_deposit" required />
+                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                        {{ errorFieldMessage }}
+                                    </div> -->
+                                </div>
+                                <!-- <div class="col-span-4  ml-[8px]">
+                                    <div>เลือกห้อง</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-end mt-[30px]">
+                    <div>
+                        <vs-button dark shadow @click="create = false">
+                            <div class="text-custom">ยกเลิก</div>
+                        </vs-button>
+                    </div>
+                    <div>
+                        <vs-button @click="validateField(data_mock, true)" color="#003765">
+                            <div class="text-custom">บันทึก</div>
+                        </vs-button>
+                    </div>
+                </div>
+            </div>
+        </b-modal>
         <b-modal centered v-model="detail" size="xl" hide-backdrop hide-header-close hide-header hide-footer
             class="p-[-20px] text-custom">
             <div>
@@ -374,261 +636,6 @@
                 </div>
             </div>
         </b-modal>
-        <b-modal centered v-model="create" size="xl" hide-backdrop hide-header-close hide-header hide-footer
-            class="p-[-20px] text-custom">
-            <div>
-                <div class="flex justify-between pl-[20px] pr-[20px]">
-                    <div class="text-custom flex justify-center items-center text-[18px] font-bold">เพิ่มสัญญาเช่าห้อง {{
-                        create_room_number }}</div>
-                    <div @click="create = false" class="cursor-pointer">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-                                width="24" height="24">
-                                <rect width="24" height="24" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_417_4814)">
-                                <path
-                                    d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
-                                    fill="#5C6B79" />
-                            </g>
-                        </svg>
-                    </div>
-                </div>
-                <!-- <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
-                <div class="pl-[20px] pr-[20px] mt-[24px]">
-                    <div class=" mt-[24px]">
-                        <div class="w-[100%] flex">
-                            <div class="w-[30%] text-custom flex items-start">ข้อมูลหลัก</div>
-                            <dvi class=" w-[70%] ">
-                                <div class="grid grid-cols-2  text-custom  ">
-                                    <div class="flex">
-                                        <vs-radio v-model="room_detail_create.check_user" color="#003765" :val="true">
-                                            ผู้เช่าในระบบ
-                                        </vs-radio>
-                                        <vs-radio v-model="room_detail_create.check_user" color="#003765" :val="false"
-                                            v-if="check_rent != 'reserved'">
-                                            ผู้เช่าใหม่
-                                        </vs-radio>
-                                    </div>
-                                </div>
-                                <div class="grid grid-cols-2  text-custom mt-[14px]  "
-                                    v-if="room_detail_create.check_user == true">
-                                    <div>
-                                        <div class=""><span class="text-[red] mr-[2px]">*</span>ค้นหาผู้เช่าด้วยรหัสบัตรประชาชน</div>
-                                        <div>
-                                            <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                                v-model="filter.Id_card">
-                                            <vs-button primary @click="getUserDetail(filter.Id_card)">ค้นหา</vs-button>
-                                        </div>
-
-                                    </div>
-
-                                </div>
-                                <div class="grid grid-cols-8  text-custom mt-[14px]  ">
-                                    <div>
-                                        <div><span class="text-[red] mr-[2px]">*</span>คำนำหน้า</div>
-                                        <select :disabled="room_detail_create.check_user == true" placeholder="ชื่อ" id="mr"
-                                            class="mt-[6px] pl-[4px] pr-[4px] h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail_create.sex">
-                                            <option label="นาย" :value="true">
-                                                นาย
-                                            </option>
-                                            <option label="นางสาว" :value="false">
-                                                นางสาว
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <div class="col-span-3 ml-[8px]">
-                                        <div><span class="text-[red] mr-[2px]">*</span>ชื่อ</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            :disabled="room_detail_create.check_user == true"
-                                            v-model="room_detail_create.name" required />
-                                        <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                            {{ errorFieldMessage }}
-                                        </div> -->
-                                    </div>
-                                    <div class="col-span-3  ml-[8px]">
-                                        <div><span class="text-[red] mr-[2px]">*</span>สกุล</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            :disabled="room_detail_create.check_user == true"
-                                            v-model="room_detail_create.last_name" required />
-                                        <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                            {{ errorFieldMessage }}
-                                        </div> -->
-                                    </div>
-                                    <div class="ml-[8px]">
-                                        <div>ชื่อเล่น</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            :disabled="room_detail_create.check_user == true"
-                                            v-model="room_detail_create.nick_name" />
-                                    </div>
-                                </div>
-                            </dvi>
-                        </div>
-                        <div class="w-[100%] flex mt-[14px]">
-                            <div class="w-[30%] text-custom flex items-start"></div>
-                            <div class="grid grid-cols-8  text-custom w-[70%] ">
-                                <div class="col-span-4">
-                                    <div><span class="text-[red] mr-[2px]">*</span>เบอร์โทรศัพท์</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail_create.phone" required
-                                        :disabled="room_detail_create.check_user == true" />
-                                </div>
-                                <div class="col-span-4  ml-[8px]">
-                                    <div><span class="text-[red] mr-[2px]">*</span>หมายเลขบัตรประชาชน <span class="text-[#5C6B79]"></span></div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail_create.id_card" required
-                                        :disabled="room_detail_create.check_user == true" />
-                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-[100%] flex mt-[14px]">
-                            <div class="w-[30%] text-custom flex items-start"></div>
-                            <div class="grid grid-cols-6  text-custom w-[70%] ">
-                                <div class="col-span-3">
-                                    <div><span class="text-[red] mr-[2px]">*</span>Email <span class="text-[#5C6B79]">สำหรับล็อกอินเข้าใช้แอปพลิเคชัน</span></div>
-                                    <input type="email"
-                                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
-                                        v-model="room_detail_create.email" required
-                                        :disabled="room_detail_create.check_user == true" />
-                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
-                                </div>
-                                <div class="col-span-3 ml-[8px]">
-                                    <div><span class="text-[red] mr-[2px]">*</span>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
-                                    <input type="date"
-                                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
-                                        v-model="room_detail_create.birth" required
-                                        :disabled="room_detail_create.check_user == true">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-[100%] flex mt-[14px]">
-                            <div class="w-[30%] text-custom flex items-start"></div>
-                            <div class="grid grid-cols-6  text-custom w-[70%] ">
-                                <div class="col-span-6">
-                                    <div><span class="text-[red] mr-[2px]">*</span>ที่อยู่</div>
-                                    <input type="input"
-                                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
-                                        v-model="room_detail_create.address" required
-                                        :disabled="room_detail_create.check_user == true">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-[100%] flex mt-[16px]">
-                            <div class="w-[30%] text-custom flex items-start text-white">.</div>
-                            <div class="grid grid-cols-8  text-custom w-[70%] ">
-                                <div class="col-span-4">
-                                    <div><span class="text-[red] mr-[2px]">*</span>วันที่ทำสัญญา</div>
-                                    <input type="date"
-                                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
-                                        v-model="room_detail_create.date_sign" required />
-                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
-                                </div>
-                                <div class="col-span-4  ml-[8px]">
-                                    <div><span class="text-[red] mr-[2px]">*</span>วันสิ้นสุดสัญญา</div>
-                                    <input type="date"
-                                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
-                                        v-model="room_detail_create.exp_date" required />
-                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
-                                </div>
-                                <div class="col-span-4 mt-[16px]">
-                                    <div><span class="text-[red] mr-[2px]">*</span>เลขมิเตอร์ค่าน้ำเริ่มต้น</div>
-                                    <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail_create.water" required />
-                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
-                                </div>
-                                <div class="col-span-4 mt-[16px]  ml-[8px]">
-                                    <div><span class="text-[red] mr-[2px]">*</span>เลขมิเตอร์ค่าไฟเริ่มต้น</div>
-                                    <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail_create.ele" required />
-                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
-                                </div>
-                                <div class="col-span-4 mt-[16px]">
-                                    <div><span class="text-[red] mr-[2px]">*</span>ประเภทห้องพัก</div>
-                                    <select placeholder="Select" v-model="room_detail_create.type_room" disabled
-                                        class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]">
-                                        <option v-for="type_room in room_type" :value="type_room.id">
-                                            {{ type_room.attributes.roomTypeName }}
-                                        </option>
-                                    </select>
-                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
-                                </div>
-                                <div class="col-span-4  ml-[8px] mt-[16px]">
-                                    <div><span class="text-[red] mr-[2px]">*</span>ระยะเวลาสัญญา (เดือน)</div>
-                                    <select placeholder="Select" v-model="room_detail_create.contract_duration"
-                                        class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]">
-                                        <option>
-                                            3
-                                        </option>
-                                        <option>
-                                            6
-                                        </option>
-                                        <option>
-                                            12
-                                        </option>
-                                    </select>
-                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-[100%] flex mt-[14px]">
-                            <div class="w-[30%] text-custom flex items-start text-white">.</div>
-                            <div class="grid grid-cols-8  text-custom w-[70%] ">
-                                <div class="col-span-4">
-                                    <div><span class="text-[red] mr-[2px]">*</span>ค่าประกันห้อง</div>
-                                    <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail_create.roomInsuranceDeposit" required />
-                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
-                                </div>
-                                <div class="col-span-4 ml-[8px]">
-                                    <div><span class="text-[red] mr-[2px]">*</span>วางเงินมัดจำ (บาท)</div>
-                                    <input type="number" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail_create.room_deposit" required />
-                                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
-                                </div>
-                                <!-- <div class="col-span-4  ml-[8px]">
-                                    <div>เลือกห้อง</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
-                                </div> -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="flex justify-end mt-[30px]">
-                    <div>
-                        <vs-button dark shadow @click="create = false">
-                            <div class="text-custom">ยกเลิก</div>
-                        </vs-button>
-                    </div>
-                    <div>
-                        <vs-button @click="validateField()" color="#003765">
-                            <div class="text-custom">บันทึก</div>
-                        </vs-button>
-                    </div>
-                </div>
-            </div>
-        </b-modal>
         <PDFgeneratorRentalContract ref="childComponentPDFRental" />
     </div>
 </template>
@@ -649,6 +656,7 @@ export default {
             create: false,
             popup_filter: false,
             contract: [],
+            data_mock:{},
             users: [],
             id_user: '',
             tab_floor: '0',
@@ -700,7 +708,8 @@ export default {
             },
             room_type: [],
             floorRoom: [],
-            errorFieldMessage: ''
+            errorFieldMessage: '',
+            id_sign: ''
         }
 
     },
@@ -721,10 +730,10 @@ export default {
         // }, 1000)
     },
     methods: {
-        async PDFPrintRental(tr, check,id) {
-            this.$refs.childComponentPDFRental.generatePDF(tr, check,id)
+        async PDFPrintRental(tr, check, id, data) {
+            this.$refs.childComponentPDFRental.generatePDF(tr, check, id, data)
             setTimeout(() => {
-                this.$refs.childComponentPDFRental.generatePDF(tr, check,id)
+                this.$refs.childComponentPDFRental.generatePDF(tr, check, id, data)
             }, 100);
         },
         openNotificationRenralPage(position = null, color, title, desc) {
@@ -740,7 +749,7 @@ export default {
                 path: path,
             })
         },
-        validateField() {
+        validateField(a, b) {
             if (
                 this.room_detail_create.name == '' ||
                 this.room_detail_create.water == '' ||
@@ -760,7 +769,7 @@ export default {
             } else {
                 console.log(this.room_detail_create);
                 this.errorFieldMessage = ''
-                this.submitSign()
+                this.submitSign(a, b)
             }
         },
         getRentalContract(code) {
@@ -846,33 +855,33 @@ export default {
             fetch(`https://api.resguru.app/api/users?filters[idCard][$eq]=${id_room}`)
                 .then(response => response.json())
                 .then((resp) => {
-                    if(resp.length > 0 ){
-                         console.log('detail from get user', resp);
-                    this.room_detail_create.id = resp[0].id
-                    this.room_detail_create.name = resp[0].firstName
-                    this.room_detail_create.last_name = resp[0].lastName
-                    this.room_detail_create.nick_name = resp[0].nickName
-                    this.room_detail_create.phone = resp[0].phone
-                    this.room_detail_create.email = resp[0].email
-                    this.room_detail_create.id_card = resp[0].idCard
-                    this.room_detail_create.address = resp[0].contactAddress
-                    this.room_detail_create.sex = resp[0].sex
-                    this.room_detail_create.birth = resp[0].dateOfBirth
+                    if (resp.length > 0) {
+                        console.log('detail from get user', resp);
+                        this.room_detail_create.id = resp[0].id
+                        this.room_detail_create.name = resp[0].firstName
+                        this.room_detail_create.last_name = resp[0].lastName
+                        this.room_detail_create.nick_name = resp[0].nickName
+                        this.room_detail_create.phone = resp[0].phone
+                        this.room_detail_create.email = resp[0].email
+                        this.room_detail_create.id_card = resp[0].idCard
+                        this.room_detail_create.address = resp[0].contactAddress
+                        this.room_detail_create.sex = resp[0].sex
+                        this.room_detail_create.birth = resp[0].dateOfBirth
                     }
-                    else{
+                    else {
                         this.$showNotification('danger', 'ไม่พบผู้ใช้');
-                    this.room_detail_create.id = ''
-                    this.room_detail_create.name = ''
-                    this.room_detail_create.last_name = ''
-                    this.room_detail_create.nick_name = ''
-                    this.room_detail_create.phone = ''
-                    this.room_detail_create.email = ''
-                    this.room_detail_create.id_card = ''
-                    this.room_detail_create.address = ''
-                    this.room_detail_create.sex = ''
-                    this.room_detail_create.birth = ''
+                        this.room_detail_create.id = ''
+                        this.room_detail_create.name = ''
+                        this.room_detail_create.last_name = ''
+                        this.room_detail_create.nick_name = ''
+                        this.room_detail_create.phone = ''
+                        this.room_detail_create.email = ''
+                        this.room_detail_create.id_card = ''
+                        this.room_detail_create.address = ''
+                        this.room_detail_create.sex = ''
+                        this.room_detail_create.birth = ''
                     }
-                   
+
 
                 }).catch(() => {
                     loading.close()
@@ -914,7 +923,7 @@ export default {
                 this.getUserDetail(idCard)
             }
         },
-        submitSign() {
+        submitSign(a, b) {
             if (this.room_detail_create.check_user == true) {
                 console.log('1');
                 const loading = this.$vs.loading()
@@ -930,6 +939,8 @@ export default {
                         contractDuration: parseInt(this.room_detail_create.contract_duration)
                     }
                 }).then((resp) => {
+                    this.id_sign = resp.data.data.id
+                    this.PDFPrintRental(a, b, resp.data.data.id, this.room_detail_create)
                     axios.put('https://api.resguru.app/api' + '/rooms/' + this.room_detail_create.id_room, {
                         data: {
                             // user_sign_contract: resp.data.id,
@@ -960,12 +971,13 @@ export default {
                     };
 
                 }).finally(() => {
+                    // this.PDFPrintRental(a, b,this.id_sign)
                     loading.close()
                     this.create = false
                     setTimeout(() => {
-                       this.getRentalContract(0) 
+                        this.getRentalContract(0)
                     }, 500);
-                    
+
                 })
             }
             else {
@@ -999,6 +1011,8 @@ export default {
                             contractDuration: parseInt(this.room_detail_create.contract_duration)
                         }
                     }).then((resp) => {
+                        this.id_sign = resp.data.data.id
+                        this.PDFPrintRental(a, b, resp.data.data.id, room_detail_create)
                         axios.put('https://api.resguru.app/api' + '/rooms/' + this.room_detail_create.id_room, {
                             data: {
                                 // user_sign_contract: resp.data.id,
@@ -1006,11 +1020,12 @@ export default {
                             }
                         })
                     }).finally(() => {
+                        // this.PDFPrintRental(a, b,this.id_sign)
                         loading.close()
                         this.create = false
                         setTimeout(() => {
-                       this.getRentalContract(0) 
-                    }, 500);
+                            this.getRentalContract(0)
+                        }, 500);
                     })
                 }).catch((err) => {
                     loading.close()

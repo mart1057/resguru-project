@@ -9,12 +9,8 @@
                 <div><span class="ml-[42px]">สัญญานี้ทำที่ {{ $store.state.buildingInfo[0].attributes.buildingName }}</span>
                     เมื่อวันที่ {{ convertDateNoTime(detail.createdAt) }}
                     ระหว่าง {{ $store.state.buildingInfo[0].attributes.buildingName + ' ' + 'และ' + '
-                    '+detail.user_sign_contract.users_permissions_user.firstName +'
-                    '+detail.user_sign_contract.users_permissions_user.lastName }}
-                    <div>อยู่บ้านเลขที่ {{ detail.user_sign_contract.users_permissions_user.contactAddress }}
-                        ตำบล {{ detail.user_sign_contract.users_permissions_user.district }}
-                        อำเภอ/เขต {{ detail.user_sign_contract.users_permissions_user.subDistrict }}
-                        จังหวัด {{ detail.user_sign_contract.users_permissions_user.province }}
+                    '+detail_sing.name +' '+detail_sing.last_name }}
+                    <div>ที่อยู่ {{detail_sing.address }}
                         ซึ่งต่อไปในสัญญานี้จะเรียกว่า "ผู้เช่า" อีกฝ่ายหนึ่ง</div>
                 </div>
                 <div class="ml-[42px]">
@@ -33,9 +29,9 @@
                 </div>
                 <div>
                     <span class="ml-[42px]">ข้อ ๒</span> ผู้เช่าตกลงเช่าห้องพักอาศัยตามสัญญาข้อ ๑ มีกำหนดเวลา {{
-                        detail.user_sign_contract.contractDuration }} เดือน นับตั้งแต่วันที่ {{
-        detail.user_sign_contract.checkInDate }}
-                    ถึงวันที่ {{ detail.user_sign_contract.contractEndDate }}
+                        detail.user_sign_contract?.contractDuration }} เดือน นับตั้งแต่วันที่ {{
+        detail.user_sign_contract?.checkInDate }}
+                    ถึงวันที่ {{ detail.user_sign_contract?.contractEndDate }}
                 </div>
                 <div>
                     <span class="ml-[42px]">ข้อ ๓</span> การชําระค่าเช่า
@@ -54,7 +50,7 @@
                 </div>
                 <div>
                     <span class="ml-[42px]">ข้อ ๖</span> เพื่อเป็นการปฏิบัติตามสัญญาเช่า
-                    ผู้เช่าตกลงมอบเงินประกันแก่ผู้ให้เช่าไว้เป็นจำนวน {{ detail.user_sign_contract.roomInsuranceDeposit }}
+                    ผู้เช่าตกลงมอบเงินประกันแก่ผู้ให้เช่าไว้เป็นจำนวน {{ detail.user_sign_contract?.roomInsuranceDeposit }}
                     บาท เงินประกันนี้ผู้ให้เช่าจะคืนให้แก่ผู้เช่าเมื่อผู้เช่ามิได้
                     ผิดสัญญา และมิได้ค้างชําระเงินต่างๆ ตามสัญญานี้
                 </div>
@@ -135,8 +131,7 @@
                     <div class="flex flex-col items-start">
                         <div class="flex justify-center flex-col items-center">
                             <div>ลงชื่อ...........................ผู้เช่า</div>
-                            <div class=" mt-[8px]">( {{ detail.user_sign_contract.users_permissions_user.firstName + '
-                            '+detail.user_sign_contract.users_permissions_user.lastName }} )</div>
+                            <div class=" mt-[8px]">( {{ detail_sing.name +' '+detail_sing.lastName }} )</div>
                         </div>
                         <div class="flex justify-center flex-col items-center mt-[8px]">
                             <div>ลงชื่อ...........................ผู้ให้เช่า</div>
@@ -168,7 +163,8 @@ export default {
     data() {
         return {
             convertDateNoTime,
-            detail: {}
+            detail: {},
+            detail_sing:{}
         }
 
     },
@@ -176,9 +172,10 @@ export default {
     //     this.generatePDF()
     // },
     methods: {
-        generatePDF(data, check, id) {
-            console.log(data);
+        generatePDF(data, check, id,data2) {
+            console.log(data2);
             this.detail = data
+            this.detail_sing = data2
             const content = this.$refs.pdfContent;
             const opt = {
                 margin: 10,
@@ -194,21 +191,21 @@ export default {
                     .from(content)
                     .set(opt)
                     // .save()
-                    .output('dataurlnewwindow')
-                    // .output('blob').then((dataPDF) => {
-                    //     console.log(dataPDF);
-                    //     formData.append("files", dataPDF);
-                    //     formData.append("refId", String(id));
-                    //     formData.append("ref", "plugin::user-sign-contract.user-sign-contract");
-                    //     formData.append("field", "PDFfile");
-                    //     axios.post("https://api.resguru.app/api/upload", formData, {
-                    //         headers: {
-                    //             "Content-Type": "multipart/form-data",
-                    //         },
-                    //     })
-                    // }).finally(() => {
+                    // .output('dataurlnewwindow')
+                    .output('blob').then((dataPDF) => {
+                        console.log(dataPDF);
+                        formData.append("files", dataPDF);
+                        formData.append("refId", String(id));
+                        formData.append("ref", "api::user-sign-contract.user-sign-contract");
+                        formData.append("field", "PDFfile");
+                        axios.post("https://api.resguru.app/api/upload", formData, {
+                            headers: {
+                                "Content-Type": "multipart/form-data",
+                            },
+                        })
+                    }).finally(() => {
 
-                    // })
+                    })
             }
             else {
                 html2pdf()
