@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="grid grid-cols-5 w-[100%] gap-4 mt-[14px]">
-            <div class="h-[125px] border rounded-[12px] flex flex-col p-[12px] cursor-pointer " @click="create = true"
+            <div class="h-[125px] border rounded-[12px] flex flex-col p-[12px] cursor-pointer " @click="openNewTab('https://api.resguru.app'+item.attributes.user_sign_contract.data.attributes.PDFfile.data[0]?.attributes.url)"
                 v-for="item in contract">
                 <div class="flex justify-between w-[100%]">
                     <div class="flex">
@@ -812,6 +812,9 @@ export default {
                     loading.close()
                 })
         },
+        openNewTab(url){
+            window.open(url, '_blank')
+        }
     }
 }
 
