@@ -1,6 +1,11 @@
 <template>
     <div class="mt-[14px] bg-[white] rounded-[12px] p-[24px]">
-        <div class="font-bold text-[18px]">ชั้น {{ tab }}</div>
+        <div class="flex justify-between">
+            <div class="font-bold text-[18px]">ชั้น {{ tab }}</div>
+            <div @click="updateMeterAll()" :disabled="ElectricityFee.length < 1">
+                <vs-button>บันทึกทั้งหมด</vs-button>
+            </div>
+        </div>
         <div class="mt-[14px]">
             <vs-table>
                 <template #thead>
@@ -193,6 +198,29 @@ export default {
             })
                 
         }, 
+        updateMeterAll() {
+            if (this.ElectricityFee.length > 0) {
+                console.log(this.ElectricityFee.length);
+                const loading = this.$vs.loading()
+                this.ElectricityFee.forEach((data, i) => {
+                    if (data.electric_fees[0]) {
+                        axios.put(`https://api.resguru.app/api/electric-fees/${data.electric_fees[0].id}`, {
+                            data: {
+                                electicUnit: parseInt(data.electric_fees[0].electicUnit),
+                            }
+                        }).then(() => {
+                            if (this.ElectricityFee.length == (i + 1)) {
+                                loading.close()
+                                this.$showNotification('#3A89CB', 'Update Electric Fee Success')
+                            }
+                        })
+                    }
+
+                })
+            }
+
+
+        },
         filterData(text,code) {
             this.text = text
             console.log('filter',text);

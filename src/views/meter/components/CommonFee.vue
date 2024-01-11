@@ -42,7 +42,7 @@
                             {{ tr.user_sign_contract && tr.user_sign_contract.users_permissions_user && tr.user_sign_contract.users_permissions_user.lastName  ? tr.user_sign_contract.users_permissions_user.lastName : "" }} 
                         </vs-td>
                         <vs-td>
-                            <div v-if=tr.communal_fees>
+                            <div v-if=tr.communal_fees[0]>
                                 <vs-input v-model="tr.communal_fees[0].communalUnit">
                                 </vs-input>
                             </div>
