@@ -97,14 +97,14 @@
                         <div class="flex justify-between w-[100%] p-[8px]">
                             <div class="flex flex-col justify-between">
                                 <div>
-                                    <div class="font-bold truncate w-[230px]">ห้อง {{ item.user_sign_contract?.room?.RoomNumber }} {{ item.title }}</div>
+                                    <div class="font-bold truncate w-[200px]">ห้อง {{ item.user_sign_contract?.room?.RoomNumber }} {{ item.title }}</div>
                                     <div class="text-[12px] text-[#8396A6]">รายละเอียด</div>
                                 </div>
                                 <div>{{ item.description }}</div>
                             </div>
                             <div class="flex flex-col justify-between items-end">
                                 <div class="pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[8px]"
-                                    :class="item.serviceStatus == 'Completed' ? 'bg-[#CFFBDA] text-[#0B9A3C]' : item.serviceStatus == 'In Progress' ? 'bg-[#FFF2BC] text-[#D48C00]' : 'bg-[#FFE1E8] text-[#EA2F5C]'">
+                                    :class="item.serviceStatus == 'Completed' ? 'bg-[#CFFBDA] text-[#0B9A3C]' : item.serviceStatus == 'In Progress' ? 'bg-[#FFF2BC] text-[#D48C00] text-[12px]' : 'bg-[#FFE1E8] text-[#EA2F5C]'">
                                     {{ item.serviceStatus == "Completed" ? 'เสร็จสิ้น' : item.serviceStatus == "In Progress"
                                         ? 'กำลังดำเนินการ' : 'ยกเลิก' }}</div>
                                 <div class="text-[12px] text-[#8396A6]"> {{ timeDiff(item.createdAt) }}</div>

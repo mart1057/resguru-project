@@ -1,6 +1,12 @@
 <template>
     <div class="mt-[14px] bg-[white] rounded-[12px] p-[24px]">
-        <div class="font-bold text-[18px]">ชั้น {{ tab }}</div>
+        <div class="flex justify-between">
+            <div class="font-bold text-[18px]">ชั้น {{ tab }}</div>
+            <div @click="updateMeterAll()" :disabled="WaterFee.length < 1">
+                <vs-button>บันทึกทั้งหมด</vs-button>
+            </div>
+        </div>
+
         <div class="mt-[14px]">
             <vs-table>
                 <template #thead>
@@ -43,7 +49,8 @@
 
                         </vs-td>
                         <vs-td>
-                            {{ tr.user_sign_contract? tr.user_sign_contract.users_permissions_user.firstName +' '+ tr.user_sign_contract.users_permissions_user.lastName: "" }} 
+                            {{ tr.user_sign_contract ? tr.user_sign_contract.users_permissions_user.firstName + ' ' +
+                                tr.user_sign_contract.users_permissions_user.lastName : "" }}
                         </vs-td>
                         <vs-td>
                             <div>
@@ -89,22 +96,22 @@
                         <vs-td>
                             <div v-if="tr.water_fees[1]">
                                 {{ tr.water_fees[0] ? (tr.water_fees[0].meterUnit - tr.water_fees[1].meterUnit) :
-                                "ยังไม่ได้ระบุ" }}
+                                    "ยังไม่ได้ระบุ" }}
                             </div>
                             <div v-else>
                                 {{ tr.water_fees[0] ? tr.water_fees[0].meterUnit :
-                                "ยังไม่ได้ระบุ" }}
+                                    "ยังไม่ได้ระบุ" }}
                             </div>
                         </vs-td>
                         <vs-td>
                             <div>
                                 <div v-if="tr.water_fees[1]">
                                     <vs-button
-                                    @click="updateWaterfee(tr.water_fees[0].id, tr.water_fees[0].meterUnit, (tr.water_fees[0].meterUnit - tr.water_fees[1].meterUnit))">บันทึก</vs-button>
+                                        @click="updateWaterfee(tr.water_fees[0].id, tr.water_fees[0].meterUnit, (tr.water_fees[0].meterUnit - tr.water_fees[1].meterUnit))">บันทึก</vs-button>
                                 </div>
                                 <div v-else>
                                     <vs-button :disabled="!tr.water_fees[0]"
-                                    @click="updateWaterfee(tr.water_fees[0].id, tr.water_fees[0].meterUnit, tr.water_fees[0].meterUnit)">บันทึก</vs-button>
+                                        @click="updateWaterfee(tr.water_fees[0].id, tr.water_fees[0].meterUnit, tr.water_fees[0].meterUnit)">บันทึก</vs-button>
                                 </div>
                             </div>
                         </vs-td>
@@ -129,8 +136,8 @@ export default {
             floor: [],
             code: 0,
             text: '',
-            month:'',
-            year:'',
+            month: '',
+            year: '',
             importExcel: []
         }
     },
@@ -141,14 +148,14 @@ export default {
         }, 1000)
     },
     mounted() {
-        const dateStr =  new Date().toISOString().substr(0, 7);
+        const dateStr = new Date().toISOString().substr(0, 7);
         const [y, m] = dateStr.split('-');
         this.month = m
         this.year = y
-        this.getWaterFee(this.id,this.month,this.year);
+        this.getWaterFee(this.id, this.month, this.year);
     },
     methods: {
-        getWaterFee(id,m,y) {
+        getWaterFee(id, m, y) {
             console.log(m);
             console.log(y);
             this.WaterFee = []
@@ -158,14 +165,14 @@ export default {
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()", resp.data);
                     if (this.code == 8) {
-                        this.WaterFee = resp.data .filter(item =>
+                        this.WaterFee = resp.data.filter(item =>
                             item.RoomNumber.toLowerCase().includes(this.text.toLowerCase()),
                         );
                     }
-                    else{
-                     this.WaterFee = resp.data   
+                    else {
+                        this.WaterFee = resp.data
                     }
-                    
+
                 }).finally(() => {
                     loading.close()
                 })
@@ -177,17 +184,40 @@ export default {
                     usageMeter: usageMeter
                 }
             })
-            .then( (resp) =>{
-              
-            })
-            .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
-            this.$showNotification('danger', errorMessage); 
-            })
-            .finally(()=>{
-                this.$showNotification('#3A89CB', 'Update Electric Fee Success')
-                this.getWaterFee(this.id,this.month,this.year)
-            })
+                .then((resp) => {
+
+                })
+                .catch(error => {
+                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                })
+                .finally(() => {
+                    this.$showNotification('#3A89CB', 'Update Electric Fee Success')
+                    this.getWaterFee(this.id, this.month, this.year)
+                })
+
+        },
+        updateMeterAll() {
+            if (this.WaterFee.length > 0) {
+                console.log(this.WaterFee.length);
+                const loading = this.$vs.loading()
+                this.WaterFee.forEach((data, i) => {
+                    if (data.water_fees[0]) {
+                        axios.put(`https://api.resguru.app/api/water-fees/${data.water_fees[0].id}`, {
+                            data: {
+                                meterUnit: parseInt(data.water_fees[0].meterUnit),
+                            }
+                        }).then(() => {
+                            if (this.WaterFee.length == (i + 1)) {
+                                loading.close()
+                                this.$showNotification('#3A89CB', 'Update Electric Fee Success')
+                            }
+                        })
+                    }
+
+                })
+            }
+
 
         },
         filterData(text, code) {
@@ -197,11 +227,11 @@ export default {
                 item.RoomNumber.toLowerCase().includes(text.toLowerCase()),
             );
             if (text == '') {
-                this.getWaterFee(this.id,this.month,this.year)
+                this.getWaterFee(this.id, this.month, this.year)
             }
             if (code == 8) {
                 this.code = 8
-                this.getWaterFee(this.id,this.month,this.year)
+                this.getWaterFee(this.id, this.month, this.year)
             }
         },
         // importWater(){
