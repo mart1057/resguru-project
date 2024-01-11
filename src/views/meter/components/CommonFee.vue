@@ -1,6 +1,11 @@
 <template>
     <div class="mt-[14px] bg-[white] rounded-[12px] p-[24px]">
-        <div class="font-bold text-[18px]">ชั้น {{ tab }}</div>
+        <div class="flex justify-between">
+            <div class="font-bold text-[18px]">ชั้น {{ tab }}</div>
+            <div @click="updateMeterAll()" :disabled="commonRoom.length < 1">
+                <vs-button>บันทึกทั้งหมด</vs-button>
+            </div>
+        </div>
         <div class="mt-[14px]">
             <vs-table>
                 <template #thead>
@@ -156,6 +161,29 @@ export default {
             .finally(()=>{
                     this.$showNotification('#3A89CB', 'Update Communal Fee Success')
             })
+        },
+        updateMeterAll() {
+            if (this.commonRoom.length > 0) {
+                console.log(this.commonRoom.length);
+                const loading = this.$vs.loading()
+                this.commonRoom.forEach((data, i) => {
+                    if (data.communal_fees[0]) {
+                        axios.put(`https://api.resguru.app/api/communal-fees/${data.communal_fees[0].id}`, {
+                            data: {
+                                communalUnit: parseInt(data.communal_fees[0].communalUnit),
+                            }
+                        }).then(() => {
+                            if (this.commonRoom.length == (i + 1)) {
+                                loading.close()
+                                this.$showNotification('#3A89CB', 'Update Electric Fee Success')
+                            }
+                        })
+                    }
+
+                })
+            }
+
+
         },
         filterData(text,code) {
             this.text = text
