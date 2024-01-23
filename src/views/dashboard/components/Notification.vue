@@ -21,20 +21,20 @@
                 <div class="flex justify-center items-center">ดูทั้งหมด</div>
             </div>
         </div>
-        <div class="flex w-[60%] justify-between mt-[18px]">
-            <div @click="tab = 1" class="cursor-pointer text-[#8396A6]"
+        <div class="flex w-[80%] justify-between mt-[18px]">
+            <div @click="tab = 1" class="cursor-pointer text-[#8396A6]  text-[1rem]"
                 :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
                 ทั้งหมด</div>
-            <div @click="tab = 2" class="cursor-pointer text-[#8396A6]"
+            <div @click="tab = 2" class="cursor-pointer text-[#8396A6]  text-[1rem]"
                 :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
                 ซ่อมบำรุง</div>
-            <div @click="tab = 3" class="cursor-pointer text-[#8396A6]"
+            <div @click="tab = 3" class="cursor-pointer text-[#8396A6] text-[1rem]"
                 :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
                 ทำความสะอาด</div>
-            <div @click="tab = 4" class="cursor-pointer text-[#8396A6]"
+            <div @click="tab = 4" class="cursor-pointer text-[#8396A6]  text-[1rem]"
                 :class="tab == 4 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
                 แจ้งย้ายออก</div>
-            <div @click="tab = 5" class="cursor-pointer text-[#8396A6]"
+            <div @click="tab = 5" class="cursor-pointer text-[#8396A6]  text-[1rem]"
                 :class="tab == 5 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
                 ฉุกเฉิน</div>
         </div>
