@@ -15,7 +15,7 @@
                         </g>
                     </svg>
                 </div>
-                <div class="text-[18px] font-bold flex items-center ml-[4px]">การจ่ายเงิน</div>
+                <div class="text-[1.125rem] font-bold flex items-center ml-[4px]">การจ่ายเงิน</div>
             </div>
             <div class="flex">
                 <div></div>

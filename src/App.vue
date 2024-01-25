@@ -31,6 +31,7 @@ body {
 #app {
 
   font-family: 'Prompt';
+  /* font-size: 1rem; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   color: #003765;

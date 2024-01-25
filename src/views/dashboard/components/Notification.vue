@@ -21,11 +21,11 @@
                 <div class="flex justify-center items-center">ดูทั้งหมด</div>
             </div>
         </div>
-        <div class="flex w-[60%] justify-between mt-[18px]">
-            <div @click="tab = 1" class="cursor-pointer text-[#8396A6]"
-                :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
+        <div  class="grid grid-flow-col auto-cols-auto  gap-2 mt-[18px]">
+            <div @click="tab = 1" class="cursor-pointer text-[#8396A6] flex justify-center items-center text-[1rem] w-[100%]"
+                :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white] ' : 'flex justify-center items-center'">
                 ทั้งหมด</div>
-            <div @click="tab = 2" class="cursor-pointer text-[#8396A6]"
+            <div @click="tab = 2" class="cursor-pointer text-[#8396A6] flex justify-center items-center w-[100%]"
                 :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
                 ซ่อมบำรุง</div>
             <div @click="tab = 3" class="cursor-pointer text-[#8396A6]"
@@ -39,19 +39,12 @@
                 ฉุกเฉิน</div>
         </div>
         <div class="mt-[18px]" >
-            <div class="grid grid-cols-2 w-[100%] gap-2 ">
-                <div class="h-[78px] bg-[#F3F7FA] rounded-[22px] w-[100%] p-[4px]"
+            <div class="table-container">
+                <div class="h-[78px] bg-[#F3F7FA] rounded-[22px] w-[100%] p-[4px] mb-[8px]"
                     v-for="item in tab == 1 ? data : tab == 2 ? data_maintenacec : tab == 3 ? data_clean : tab == 4 ? data_move : data_emergency">
                     <div class="flex items-center h-[100%]">
-                        
                         <div class="w-[54px]  h-[100%] flex justify-center items-center rounded-[19px]"
                             :class="item.Type == 'Move out' ? 'bg-[#2011D3]' : item.Type == 'Maintenance' ? 'bg-[#F5D65E]' : item.Type == 'Clean' ? 'bg-[#5FB3FA]' : 'bg-[#F4003B]'">
-                            <!-- <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                v-if="item.Type == 'Move out'">
-                                <path
-                                    d="M20.1539 23.1155C19.7702 23.1155 19.4061 23.045 19.0617 22.904C18.7172 22.7629 18.3997 22.5471 18.1091 22.2566L10.9039 15.0309C10.4339 15.2343 9.95598 15.3911 9.47031 15.5014C8.98465 15.6116 8.46936 15.6668 7.92445 15.6668C5.79482 15.6668 3.98465 14.9214 2.49391 13.4307C1.00318 11.9399 0.257812 10.1298 0.257812 8.00013C0.257812 7.31124 0.345412 6.6527 0.520612 6.0245C0.695835 5.39632 0.944979 4.79846 1.26805 4.23093L6.05778 8.99503L8.91935 6.13346L4.18091 1.36936C4.74842 1.0463 5.3424 0.792885 5.96285 0.609129C6.58331 0.425374 7.23718 0.333496 7.92445 0.333496C10.0541 0.333496 11.8642 1.07886 13.355 2.5696C14.8457 4.06033 15.5911 5.87051 15.5911 8.00013C15.5911 8.56253 15.5381 9.08646 15.4321 9.57193C15.3261 10.0574 15.1672 10.5266 14.9552 10.9796L22.2014 18.1848C22.492 18.4754 22.7078 18.7934 22.8488 19.1387C22.9898 19.484 23.0603 19.8486 23.0603 20.2323C23.0603 20.616 22.9864 20.9835 22.8385 21.3348C22.6907 21.686 22.4798 21.9987 22.2058 22.2726C21.9123 22.5662 21.5928 22.7801 21.2475 22.9142C20.9021 23.0484 20.5376 23.1155 20.1539 23.1155ZM19.5552 20.872C19.7176 21.0344 19.9211 21.1121 20.1655 21.1053C20.41 21.0985 20.6134 21.0139 20.7758 20.8515C20.9382 20.6891 21.0194 20.4856 21.0194 20.2412C21.0194 19.9967 20.9382 19.7933 20.7758 19.6309L12.4963 11.3719C12.8706 10.9104 13.1467 10.3852 13.3245 9.7963C13.5023 9.20741 13.5911 8.60869 13.5911 8.00013C13.5911 6.52149 13.0629 5.21293 12.0065 4.07446C10.9501 2.936 9.61331 2.37787 7.99618 2.4001L10.8988 5.3027C11.1313 5.53519 11.2518 5.80783 11.2603 6.12063C11.2689 6.43345 11.1569 6.70611 10.9244 6.9386L6.88855 10.9745C6.65608 11.2069 6.37916 11.3232 6.05778 11.3232C5.73642 11.3232 5.4595 11.2069 5.22701 10.9745L2.32441 8.07186C2.32783 9.78302 2.90306 11.1433 4.05008 12.1527C5.19708 13.1621 6.48853 13.6668 7.92445 13.6668C8.50793 13.6668 9.09141 13.5801 9.67488 13.4066C10.2583 13.2331 10.792 12.9617 11.2757 12.5925L19.5552 20.872Z"
-                                    fill="white" />
-                            </svg> -->
                             <svg width="28" height="24" viewBox="0 0 28 24" fill="none" xmlns="http://www.w3.org/2000/svg"
                                 v-if="item.Type == 'Move out'">
                                 <path
@@ -95,12 +88,12 @@
                             </svg>
                         </div>
                         <div class="flex justify-between w-[100%] p-[8px]">
-                            <div class="flex flex-col justify-between">
+                            <div class="flex-col justify-between">
                                 <div>
-                                    <div class="font-bold truncate w-[230px]">ห้อง {{ item.user_sign_contract?.room?.RoomNumber }} {{ item.title }}</div>
+                                    <div class="font-bold truncate !w-[8.375rem]">ห้อง {{ item.user_sign_contract?.room?.RoomNumber }} {{ item.title }}</div>
                                     <div class="text-[12px] text-[#8396A6]">รายละเอียด</div>
                                 </div>
-                                <div>{{ item.description }}</div>
+                                <div class="truncate !w-[8.375rem]">{{ item.description }} {{ screenW }}}</div>
                             </div>
                             <div class="flex flex-col justify-between items-end">
                                 <div class="pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[8px]"
@@ -130,16 +123,18 @@ export default {
             data_clean: [],
             data_maintenace: [],
             data: [],
-
+            screenW:0,
 
 
         }
     },
     beforeCreate() {
         console.log('beforeCreate hook',);
+        
     },
     created() {
         this.getDashboard()
+        this.screenW = window.innerWidth
         console.log('created hook', this.data);
 
     },
@@ -231,5 +226,13 @@ export default {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #E9EEF6;
+}
+.table-container {
+    height: 180px;
+    /* Set a fixed height to enable scrolling */
+    overflow-y: scroll;
+    /* Enable vertical scrolling */
+    padding: 10px;
+    /* Optional: Add padding for spacing */
 }
 </style>

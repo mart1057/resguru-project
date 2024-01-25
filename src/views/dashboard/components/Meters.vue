@@ -18,18 +18,18 @@
                 </div>
                 <div class="text-[18px] font-bold flex items-center ml-[4px]">มิเตอร์</div>
             </div>
-            <div class="flex justify-center items-center">
+            <div class="grid grid-flow-col auto-cols-auto  gap-2 mt-[8px] ml-[8px] w-[80%]">
                 <div class="flex justify-center items-center">
-                    <div @click="tab = 1" class="cursor-pointer text-[#8396A6]"
+                    <div @click="tab = 1" class="cursor-pointer text-[#8396A6] flex justify-center items-center text-[1rem] w-[100%]"
                         :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
                         น้ำ</div>
-                    <div @click="tab = 2" class="cursor-pointer text-[#8396A6] ml-[8px]"
+                    <div @click="tab = 2" class="cursor-pointer text-[#8396A6] ml-[8px] flex justify-center items-center text-[1rem] w-[100%]"
                         :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
                         ไฟฟ้า</div>
-                    <div @click="tab = 3" class="cursor-pointer text-[#8396A6] ml-[8px]"
+                    <div @click="tab = 3" class="cursor-pointer text-[#8396A6] ml-[8px] flex justify-center items-center text-[1rem] w-[100%]"
                         :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
                         ค่าส่วนกลาง</div>
-                    <div @click="tab = 4" class="cursor-pointer text-[#8396A6] ml-[8px]"
+                    <div @click="tab = 4" class="cursor-pointer text-[#8396A6] ml-[8px] flex justify-center items-center text-[1rem] w-[100%]"
                         :class="tab == 4 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
                         ค่าบริการอื่น ๆ</div>
                 </div>
