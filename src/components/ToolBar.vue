@@ -134,9 +134,9 @@
                         <div class="flex ml-[10px] items-center">
                             <vs-tooltip bottom shadow interactivity not-arrow>
                                 <div class="cursor-pointer">
-                                    <vs-avatar size="40" v-if="$store.state.buildingInfo[0]?.attributes.buildingLogo?.data.attributes.url">
+                                    <vs-avatar size="40" v-if="$store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.url">
                                         <img 
-                                            :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes.buildingLogo?.data.attributes.url" />
+                                            :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.url" />
                                         <!-- <img v-else
                                             :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.formats?.large?.url" /> -->
                                     </vs-avatar>
@@ -151,9 +151,9 @@
                                             <div>
                                                 <vs-avatar size="40">
                                                     <template
-                                                        v-if="$store.state.buildingInfo[0]?.attributes.buildingLogo?.data.attributes.url">
+                                                        v-if="$store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.url">
                                                         <img
-                                                            :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes.buildingLogo?.data.attributes.url" />
+                                                            :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.url" />
 
                                                     </template>
                                                     <template v-else>
