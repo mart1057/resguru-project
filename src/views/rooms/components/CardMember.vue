@@ -555,7 +555,7 @@ export default {
     data() {
         return {
             tab: 0,
-            create: true,
+            create: false,
             move_room: false,
             confirm: false,
             user: [],
