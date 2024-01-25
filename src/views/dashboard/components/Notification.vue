@@ -21,37 +21,29 @@
                 <div class="flex justify-center items-center">ดูทั้งหมด</div>
             </div>
         </div>
-        <div class="grid grid-cols-5 gap-2 w-[100%] justify-between mt-[18px]">
-            <div class="flex justify-center">
-                <div @click="tab = 1" class="cursor-pointer text-[#8396A6]  text-[1rem] "
-                    :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
-                    ทั้งหมด</div>
-            </div>
-            <div class="flex justify-center">
-                <div @click="tab = 2" class="cursor-pointer text-[#8396A6]  text-[1rem]"
-                    :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
-                    ซ่อมบำรุง</div>
-            </div>
-
-            <div @click="tab = 3" class="cursor-pointer text-[#8396A6] text-[1rem] flex justify-center"
+        <div class="flex w-[60%] justify-between mt-[18px]">
+            <div @click="tab = 1" class="cursor-pointer text-[#8396A6]"
+                :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
+                ทั้งหมด</div>
+            <div @click="tab = 2" class="cursor-pointer text-[#8396A6]"
+                :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
+                ซ่อมบำรุง</div>
+            <div @click="tab = 3" class="cursor-pointer text-[#8396A6]"
                 :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
                 ทำความสะอาด</div>
-            <div @click="tab = 4" class="cursor-pointer text-[#8396A6]  text-[1rem] flex justify-center"
+            <div @click="tab = 4" class="cursor-pointer text-[#8396A6]"
                 :class="tab == 4 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
                 แจ้งย้ายออก</div>
-            <div class="flex justify-center">
-                <div @click="tab = 5" class="cursor-pointer text-[#8396A6]  text-[1rem]"
-                    :class="tab == 5 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
-                    ฉุกเฉิน</div>
-            </div>
-
+            <div @click="tab = 5" class="cursor-pointer text-[#8396A6]"
+                :class="tab == 5 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
+                ฉุกเฉิน</div>
         </div>
-        <div class="mt-[18px]">
-            <div class="test w-[100%] gap-2 ">
-                <div class="h-[78px] bg-[#F3F7FA] rounded-[22px] w-[90%] p-[4px]"
+        <div class="mt-[18px]" >
+            <div class="grid grid-cols-2 w-[100%] gap-2 ">
+                <div class="h-[78px] bg-[#F3F7FA] rounded-[22px] w-[100%] p-[4px]"
                     v-for="item in tab == 1 ? data : tab == 2 ? data_maintenacec : tab == 3 ? data_clean : tab == 4 ? data_move : data_emergency">
                     <div class="flex items-center h-[100%]">
-
+                        
                         <div class="w-[54px]  h-[100%] flex justify-center items-center rounded-[19px]"
                             :class="item.Type == 'Move out' ? 'bg-[#2011D3]' : item.Type == 'Maintenance' ? 'bg-[#F5D65E]' : item.Type == 'Clean' ? 'bg-[#5FB3FA]' : 'bg-[#F4003B]'">
                             <!-- <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -90,8 +82,7 @@
                                         fill="white" />
                                 </g>
                             </svg>
-                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                v-else>
+                            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" v-else>
                                 <mask id="mask0_1510_23443" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
                                     width="32" height="32">
                                     <rect width="32" height="32" fill="#D9D9D9" />
@@ -103,11 +94,10 @@
                                 </g>
                             </svg>
                         </div>
-                        <div class="flex justify-between max-w-[100%] p-[8px] h-[100%]">
+                        <div class="flex justify-between w-[100%] p-[8px]">
                             <div class="flex flex-col justify-between">
                                 <div>
-                                    <div class="font-bold truncate w-[8rem]">ห้อง {{
-                                        item.user_sign_contract?.room?.RoomNumber }} {{ item.title }}</div>
+                                    <div class="font-bold truncate w-[230px]">ห้อง {{ item.user_sign_contract?.room?.RoomNumber }} {{ item.title }}</div>
                                     <div class="text-[12px] text-[#8396A6]">รายละเอียด</div>
                                 </div>
                                 <div>{{ item.description }}</div>
@@ -116,8 +106,8 @@
                                 <div class="pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[8px]"
                                     :class="item.serviceStatus == 'Completed' ? 'bg-[#CFFBDA] text-[#0B9A3C]' : item.serviceStatus == 'In Progress' ? 'bg-[#FFF2BC] text-[#D48C00]' : 'bg-[#FFE1E8] text-[#EA2F5C]'">
                                     {{ item.serviceStatus == "Completed" ? 'เสร็จสิ้น' : item.serviceStatus == "In Progress"
-                                        ? 'ดำเนินการ' : 'ยกเลิก' }}</div>
-                                <!-- <div class="text-[12px] text-[#8396A6]"> {{ timeDiff(item.createdAt) }}</div> -->
+                                        ? 'กำลังดำเนินการ' : 'ยกเลิก' }}</div>
+                                <div class="text-[12px] text-[#8396A6]"> {{ timeDiff(item.createdAt) }}</div>
                             </div>
                         </div>
                     </div>
@@ -207,12 +197,10 @@ export default {
     }
 }
 </script>
-<style scoped>
-#payment {
+<style scoped>#payment {
     background-color: rgb(255, 255, 255);
 
 }
-
 .table-container {
     height: 250px;
     /* Set a fixed height to enable scrolling */
@@ -244,11 +232,4 @@ export default {
 ::-webkit-scrollbar-thumb:hover {
     background: #E9EEF6;
 }
-
-@media only screen and (min-width: 1024px) {
-    .test {
-        display: grid;
-        grid-template-columns: auto auto auto;
-        grid-column-gap: 5px;
-    }
-}</style>
+</style>
