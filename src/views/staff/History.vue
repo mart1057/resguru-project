@@ -2,7 +2,7 @@
     <div>
         <div class="mt-[24px]">
             <div class="text-[24px] font-bold">รายละเอียดประวัติการแจ้ง</div>
-            <div class="grid grid-cols-2 w-[100%] gap-2 mt-[14px] ">
+            <div class="grid grid-cols-1 md:grid-cols-2  w-[100%] gap-2 mt-[14px] ">
                 <div class="h-[auto] bg-[#ffffff] rounded-[22px] w-[100%] p-[8px]" v-for="data in History">
                     <div class="flex  h-[100%]">
                         <div class="w-[140px]  h-[100%] flex justify-center items-center rounded-[19px]"
@@ -57,7 +57,7 @@
                         </div>
                         <div class=" w-[100%] pt-[8px] p-[12px]">
                             <div class="flex justify-between items-center">
-                                <div class="font-bold text-[18px] truncate w-[450px] ">ห้อง  {{ data.attributes.user_sign_contract.data?.attributes.room.data?.attributes.RoomNumber  }} | {{ data.attributes.title }} <span
+                                <div class="font-bold text-[18px] truncate w-[28.125rem] ">ห้อง  {{ data.attributes.user_sign_contract.data?.attributes.room.data?.attributes.RoomNumber  }} | {{ data.attributes.title }} <span
                                         class="text-[10px] font-normal text-[#8396A6]">{{  convertDateNoTime(data.attributes.createdAt) }}</span></div>
                                 <div
                                     class="bg-[#CFFBDA] text-[#0B9A3C] pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[12px]">

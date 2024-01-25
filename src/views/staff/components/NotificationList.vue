@@ -2,7 +2,7 @@
     <div>
         <div class="mt-[24px]">
             <div class="text-[24px] font-bold">รายละเอียดการแจ้งทั้งหมด</div>
-            <div class="grid grid-cols-2 w-[100%] gap-2 mt-[14px] ">
+            <div class="grid grid-cols-1 md:grid-cols-2 w-[100%] gap-2 mt-[14px] ">
                 <div class="h-[auto] bg-[#ffffff] rounded-[22px] w-[100%] p-[8px]" v-for="data in service">
                     <div class="flex  h-[100%]">
                         <!-- <div class="w-[140px] bg-[#F5D65E] h-[100%] flex justify-center items-center rounded-[19px]">

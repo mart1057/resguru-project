@@ -92,7 +92,7 @@
                 </div>
 
             </div>
-            <div class="flex items-center mb-[8px] mt-[14px]">
+            <div class="flex items-center mb-[8px] mt-[14px] table-container ">
                 <!-- <div class="mr-[14px] font-bold cursor-pointer" v-for="floors in floor">อาคาร A ชั้น {{ floors.attributes.floorName }}</div> -->
                 <!-- <div class="text-[#8396A6] cursor-pointer">อาคาร A ชั้น 2</div> -->
                 <div v-for="(data, i) in floor">
@@ -1137,3 +1137,13 @@ export default {
     }
 }
 </script>
+<style>
+.table-container {
+    width: 100%;
+    /* Set a fixed height to enable scrolling */
+    overflow-y: scroll;
+    padding: 8px;
+    /* Enable vertical scrolling */
+    /* Optional: Add padding for spacing */
+}
+</style>

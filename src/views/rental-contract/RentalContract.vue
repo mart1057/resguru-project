@@ -101,7 +101,7 @@
                     </vs-tooltip>
                 </div>
             </div>
-            <div class="flex items-center mb-[8px] mt-[14px]">
+            <div class="flex items-center mb-[8px] mt-[14px] table-container ">
                 <div v-for="(data, i) in roomFloor">
                     <div class=" cursor-pointer mr-[8px]"
                         :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
@@ -115,7 +115,7 @@
         <!-- //////////////////////////// card /////////////////////// -->
         <div class="mt-[24px]">
             <div class="text-[24px] font-bold">ชั้น {{ name_floor }} ({{ contract.length }})</div>
-            <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px] ">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3  w-[100%] gap-4 mt-[14px] ">
                 <!-- //////////////////////////// Loop Room Contract /////////////////////// -->
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer"
                     v-for="data in contract">
@@ -1157,4 +1157,12 @@ export default {
     height: 36px !important;
     width: 350px !important;
 } */
+.table-container {
+    width: 100%;
+    /* Set a fixed height to enable scrolling */
+    overflow-y: scroll;
+    padding: 8px;
+    /* Enable vertical scrolling */
+    /* Optional: Add padding for spacing */
+}
 </style>
