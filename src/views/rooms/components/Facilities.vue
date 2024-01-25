@@ -14,7 +14,7 @@
                 <div class="text-[white] ml-[4px]" @click="add_on = true, is_edit = false">เพิ่มบริการ</div>
             </div>
         </button>
-        <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px]">
+        <div class=" grid grid-cols-1  md:grid-cols-2 lg:grid-cols-3 w-[100%] gap-2 mt-[14px]">
             <div class="h-[78px] bg-[#F3F8FD] rounded-[12px] pl-[4px] pr-[12px] cursor-pointer"
                 @click="is_edit = true, getDetailFacilities(item.id)" v-for="item in items">
                 <div class="flex justify-between items-center">
@@ -281,7 +281,7 @@
                         <div class="text-custom">
                             <div class="mt-[14px] mb-[14px]">
                                 <div class="text-[#141629] font-bold text-[16px]">เลือกทรัพย์สิน</div>
-                                <div class="grid grid-cols-8 w-[100%] gap-2 mt-[14px]">
+                                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 w-[100%] gap-2 mt-[14px]">
                                     <!-- <div v-for="data in otherOfBuilding">
                                         <div class="h-[32px] bg-[#DEEAF5] rounded-[12px] flex items-center justify-between pl-[8px] pr-[8px]"
                                             @click=" room.status ? '' : room_move.id_room = room.id, room_move.Number = room.RoomNumber, confirm = true, tab = ''"
@@ -291,9 +291,9 @@
                                             </div>
                                         </div>
                                     </div> -->
-                                    <div v-for="data in otherOfBuilding">
+                                    <div v-for="data in otherOfBuilding" class="col-auto">
                                         <div
-                                            class="h-[32px] bg-[#165D98] rounded-[12px] flex items-center justify-between pl-[8px] pr-[8px] text-white">
+                                            class="h-[32px] bg-[#165D98]  rounded-[12px] flex items-center justify-between pl-[8px] pr-[8px] text-white">
                                             <div>{{ data.attributes.title }}</div>
                                             <div>
                                                 <vs-checkbox color="#a3aab1" :val="data" v-model="items">
@@ -327,7 +327,7 @@ import axios from 'axios'
 export default {
     data() {
         return {
-            add_on: false,
+            add_on:false,
             create: false,
             items: [],
             is_edit: false,

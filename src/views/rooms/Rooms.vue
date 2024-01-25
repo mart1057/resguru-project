@@ -93,7 +93,8 @@
                     </vs-tooltip>
                 </div>
             </div>
-            <div class="flex items-center mb-[8px] mt-[14px]">
+            <div></div>
+            <div class="flex items-center mb-[8px] mt-[14px] table-container">
                 <div v-for="(data, i) in roomFloor">
                     <div class=" cursor-pointer mr-[8px]"
                         :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
@@ -107,7 +108,7 @@
         <!-- //////////////////////////// card /////////////////////// -->
         <div class="mt-[24px]">
             <div class="text-[24px] font-bold">ชั้น {{ name_floor }} ({{ room.length }})</div>
-            <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px] ">
+            <div class="   grid grid-cols-1md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 w-[100%] gap-4 mt-[14px]  ">
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer"
                     v-for="data in room" @click="data.roomStatus == 'Maintenance' ?'':routeTo2('/room-detail', data.user_sign_contract?.users_permissions_user?.id, data.id, data.RoomNumber, data.roomStatus, data.user_sign_contract?.id), $route.meta.desc = 'ห้องพัก - ห้อง ' + $route.query.number_room, $route.meta.title = 'ห้อง ' + $route.query.number_room">
                     <div class="flex"
@@ -171,7 +172,7 @@
                     </div>
                     <div @click="data.roomStatus == 'Maintenance' ? (edit_room = true, roomID = data.id) : ''"
                         :class="data.roomStatus == 'Checked In' ? 'text-[#0B9A3C] bg-[#CFFBDA]' : 'text-[#003765] bg-[#F0F8FF]'"
-                        class="h-[36px] ml-[8px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] ">
+                        class="h-[36px] ml-[8px]  text-[1rem] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] ">
                         <!-- {{ data.user_sign_contract ? "มีผู้เข้าพัก" : "ห้องว่าง" }} -->
                         {{ data.roomStatus == 'Reserved' ? 'ห้องจอง' :
                             data.roomStatus == 'Checked In' ? "มีผู้เข้าพัก" :
@@ -406,6 +407,7 @@ export default {
                 floor: '',
                 search: '',
             },
+            screenW:0,
         }
 
     },
@@ -416,6 +418,7 @@ export default {
         this.getFloorRoom();
     },
     created() {
+        this.screenW = window.innerWidth
         const loading = this.$vs.loading({
             opacity: 1,
         })
@@ -554,4 +557,12 @@ export default {
     height: 36px !important;
     width: 350px !important;
 } */
+.table-container {
+    width: 100%;
+    /* Set a fixed height to enable scrolling */
+    overflow-y: scroll;
+    padding: 8px;
+    /* Enable vertical scrolling */
+    /* Optional: Add padding for spacing */
+}
 </style>

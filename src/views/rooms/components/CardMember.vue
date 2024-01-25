@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="grid grid-cols-7 w-[100%] gap-4 mt-[14px]">
-            <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[14px] cursor-pointer "
+            <div class="h-[212px] w-[11.25rem] border rounded-[12px] flex flex-col justify-between items-center p-[14px] cursor-pointer "
                 v-for="data in user">
                 <div :class="$route.query.status == 'Checked In' ? 'bg-[#D7F1E3] text-[#39B974]' : 'bg-[#F0F8FF] text-[#003765]'"
                     @click="getDetailRentalContract()"
@@ -36,7 +36,7 @@
                         ลบผู้เช่า</div> -->
                 </div>
             </div>
-            <div class="h-[212px] border rounded-[12px] flex flex-col justify-center items-center p-[14px] cursor-pointer"
+            <div class="h-[212px] w-[11.25rem] border rounded-[12px] flex flex-col justify-center items-center p-[14px] cursor-pointer"
                 v-if="user.length == 0" @click="is_edit = false, create = true, getUsers()">
                 <div class="flex flex-col">
                     <div>
@@ -81,7 +81,7 @@
                 <div class="pl-[20px] pr-[20px] mt-[24px]">
                     <div class="font-bold text-custom">ข้อมูลผู้เช่า</div>
                     <div class=" mt-[24px]">
-                        <div class="w-[100%] flex">
+                        <div class="w-[100%] col-auto">
                             <div class="w-[30%] text-custom flex items-start">ข้อมูลหลัก</div>
                             <dvi class=" w-[70%] ">
                                 <div class="grid grid-cols-2  text-custom " v-if="is_edit == false">
@@ -146,11 +146,11 @@
                                             :disabled="is_edit == true" />
                                     </div> -->
                                 </div>
-                                <div class="grid grid-cols-8  text-custom mt-[14px]  ">
-                                    <div>
+                                <div class="grid grid-flow-row-dense grid-cols-6  text-custom mt-[14px] ">
+                                    <div class="col-span-1 ml-[4px] w-[80%]">
                                         <div>คำนำหน้า</div>
                                         <select placeholder="ชื่อ" id="mr"
-                                            class="mt-[6px] pl-[4px] pr-[4px] h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            class="mt-[6px] pl-[4px] pr-[4px] h-[36px] w-[80%] rounded-[12px] bg-[#F3F7FA]"
                                             v-model="room_detail.sex"
                                             :disabled="is_edit == true || room_detail.check_user == true">
                                             <option label="นาย" :value="true">
@@ -161,12 +161,12 @@
                                             </option>
                                         </select>
                                     </div>
-                                    <div class="col-span-3 ml-[8px]">
+                                    <div class="col-span-2">
                                         <div><span class="text-[red] mr-[2px]">*</span>ชื่อ</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             v-model="room_detail.name" :disabled="is_edit == true" />
                                     </div>
-                                    <div class="col-span-3  ml-[8px]">
+                                    <div class="ml-[8px] col-span-2">
                                         <div><span class="text-[red] mr-[2px]">*</span>สกุล</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             v-model="room_detail.last_name" :disabled="is_edit == true" />
@@ -179,72 +179,63 @@
                                 </div>
                             </dvi>
                         </div>
-                        <div class="w-[100%] flex mt-[14px]">
-                            <div class="w-[30%] text-custom flex items-start"></div>
-                            <div class="grid grid-cols-8  text-custom w-[70%] ">
-                                <div class="col-span-4">
-                                    <div><span class="text-[red] mr-[2px]">*</span>เบอร์โทรศัพท์ <span
-                                            class="text-[#5C6B79]">(ไม่ต้องใส่ขีด ตัวอย่าง.
-                                            0815578945)</span></div>
+                        <div class="w-[100%] grid grid-flow-row-dense grid-cols-6 mt-[14px]">
+                            <div class="text-custom col-span-2">
+                                <div class="col-span-2">
+                                    <div><span class="text-[red] mr-[2px]">*</span>เบอร์โทรศัพท์</div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="room_detail.phone" :disabled="is_edit == true" />
                                 </div>
-                                <div class="col-span-4  ml-[8px]">
-                                    <div><span class="text-[red] mr-[2px]">*</span>หมายเลขบัตรประชาชน</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail.id_card" :disabled="is_edit == true" />
-                                </div>
+                            </div>
+                            <div class="col-span-2  ml-[8px]">
+                                <div class="text-custom"><span
+                                        class="text-[red] mr-[2px] text-custom">*</span>หมายเลขบัตรประชาชน</div>
+                                <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                    v-model="room_detail.id_card" :disabled="is_edit == true" />
+                            </div>
+                            <div class="col-span-2 ml-[8px]">
+                                <div class="text-custom">วัน/เดือน/ปีเกิด (ค.ศ.)</div>
+                                <input type="date"
+                                    class="h-[36px] mt-[6px] pl-[8px] pr-[8px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                    v-model="room_detail.birth" :disabled="is_edit == true" />
                             </div>
                         </div>
-                        <div class="w-[100%] flex mt-[14px]">
-                            <div class="w-[30%] text-custom flex items-start"></div>
-                            <div class="grid grid-cols-6  text-custom w-[70%] ">
-                                <div class="col-span-2">
-                                    <div>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
-                                    <input type="date"
-                                        class="h-[36px] mt-[6px] pl-[8px] pr-[8px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail.birth" :disabled="is_edit == true" />
-                                </div>
+                        <div class="w-[100%] grid grid-flow-row-dense grid-cols-6 mt-[14px]">
+                            <div class="col-span-4">
+                                <div class="text-custom"><span class="text-[red] mr-[2px]">*</span>ที่อยู่</div>
+                                <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                    v-model="room_detail.address" :disabled="is_edit == true" />
                             </div>
-                        </div>
-                        <div class="w-[100%] flex mt-[14px]">
-                            <div class="w-[30%] text-custom flex items-start"></div>
-                            <div class="grid grid-cols-6  text-custom w-[70%] ">
-                                <div class="col-span-6">
-                                    <div><span class="text-[red] mr-[2px]">*</span>ที่อยู่</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail.address" :disabled="is_edit == true" />
-                                </div>
-                            </div>
-                        </div>
-                        <div class="w-[100%] flex mt-[14px]">
-                            <div class="w-[30%] text-custom flex items-start"></div>
-                            <div class="grid grid-cols-6  text-custom w-[70%] ">
-                                <div class="col-span-3 mt-[6px]">
-                                    <div><span class="text-[red] mr-[2px]">*</span>แนบรูปบัตรประชาชน</div>
-                                    <div class="flex mt-[4px]" v-if="room_detail.image_card_name == ''">
-                                        <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
-                                            id="upload" @change="previewImage" type="file" accept="image/*" hidden />
-                                        <label for="upload">
-                                            <div
-                                                class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
-                                                อัพโหลดรูปภาพ</div>
-                                        </label>
+                            <div class="col-span-2 mt-[6px] ml-[8px]">
+                                <div class="text-custom"><span class="text-[red] mr-[2px]">*</span>แนบรูปบัตรประชาชน</div>
+                                <div class="flex mt-[4px]" v-if="room_detail.image_card_name == ''">
+                                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
+                                        @change="previewImage" type="file" accept="image/*" hidden />
+                                    <label for="upload">
                                         <div
-                                            class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
-                                            ยังไม่ได้เลือกไฟล์</div>
-                                    </div>
-                                    <div class="flex mt-[4px]" v-else>
-                                        <div @click="previewImg(room_detail.image_card)"
-                                            class="text-[#5C6B79] text-custom flex justify-center items-center text-[12px] cursor-pointer">
-                                            {{ room_detail.image_card_name }}</div>
-                                    </div>
+                                            class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
+                                            อัพโหลดรูปภาพ</div>
+                                    </label>
+                                    <div
+                                        class="text-[#5C6B79] !w-[100px] text-custom flex justify-center items-center ml-[8px] text-[0.75rem]">
+                                        ยังไม่ได้เลือกไฟล์</div>
+                                </div>
+                                <div class="flex mt-[4px]" v-else>
+                                    <div @click="previewImg(room_detail.image_card)"
+                                        class="text-[#5C6B79] text-custom flex justify-center items-center text-[12px] cursor-pointer">
+                                        {{ room_detail.image_card_name }}</div>
                                 </div>
                             </div>
                         </div>
+                        <!-- <div class="w-[100%] flex mt-[14px]">
+                            <div class="w-[30%] text-custom flex items-start"></div>
+                           
+                        </div> -->
+                     
                         <div class="w-[100%] flex mt-[14px]">
                             <div class="w-[30%] text-custom flex  items-start">ข้อมูลเพิ่มเติม</div>
-                            <div class="w-[70%]">
+                        </div>
+                        <div class="mt-[14px]">
                                 <div class="grid grid-cols-8  text-custom w-[100%] ">
                                     <div class="col-span-4">
                                         <div>Line ID</div>
@@ -253,53 +244,51 @@
                                     </div>
                                 </div>
                                 <div class="grid grid-cols-8  text-custom w-[100%] mt-[6px] ">
-                                    <div class="col-span-8 ">
+                                    <div class="col-span-4 ">
                                         <div>สถาบันการศึกษา / สถานที่ทำงานปัจจุบัน</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             v-model="room_detail.workplace" :disabled="is_edit == true" />
                                     </div>
-                                </div>
-                                <div class="grid grid-cols-8 gap-2  text-custom w-[100%] mt-[6px] ">
-                                    <div class="col-span-4 ">
+                                    <div class="col-span-4 ml-[8px] ">
                                         <div>คณะ / แผนก</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             v-model="room_detail.faculty" :disabled="is_edit == true" />
                                     </div>
-                                    <div class="col-span-4 ">
+                                </div>
+                                <div class="grid grid-cols-8 gap-2  text-custom w-[100%] mt-[6px] ">
+                                    <div class="col-span-2 ">
                                         <div>ชั้นปี / ตำแหน่ง</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             v-model="room_detail.rank" :disabled="is_edit == true" />
                                     </div>
-                                </div>
-                                <div class="grid grid-cols-8  text-custom w-[100%] ">
-                                    <div class="col-span-4 mt-[6px]">
+                                    <div class="col-span-2">
                                         <div>รหัสนักศึกษา / รหัสพนักงาน</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             v-model="room_detail.idEmployee" :disabled="is_edit == true" />
                                     </div>
-                                </div>
-                                <div class="grid grid-cols-8 gap-2  text-custom w-[100%] mt-[6px] ">
                                     <div class="col-span-4 ">
                                         <div>บุคคลที่สามารถติดต่อได้กรณีฉุกเฉิน</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             v-model="room_detail.emergencyPerson" :disabled="is_edit == true" />
                                     </div>
+                                </div>
+                                <div class="grid grid-cols-8 gap-2  text-custom w-[100%] mt-[6px] ">
                                     <div class="col-span-2">
                                         <div>ความสัมพันธ์</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                             v-model="room_detail.relation" :disabled="is_edit == true" />
                                     </div>
                                     <div class="col-span-2">
-                                        <div>เบอร์โทรศัพท์ผู้ติดต่อฉุกเฉิน</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.emergencyPhone" :disabled="is_edit == true" />
-                                    </div>
+                                    <div>เบอร์โทรศัพท์ผู้ติดต่อฉุกเฉิน</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail.emergencyPhone" :disabled="is_edit == true" />
+                                </div>
                                 </div>
                             </div>
-                        </div>
                         <div class="w-[100%] flex mt-[14px]">
                             <div class="w-[30%] text-custom flex  items-start">ข้อมูลยานพหนะ</div>
-                            <div class="w-[70%]" v-if="room_detail.vehicles.length > 0">
+                        </div>
+                        <div class="mt-[14px]" v-if="room_detail.vehicles.length > 0">
                                 <div v-for="(data, i) in  room_detail.vehicles">
                                     <div class="grid grid-cols-8  text-custom w-[100%]">
                                         <div class="col-span-2">
@@ -367,10 +356,8 @@
                                 </div>
 
                             </div>
-                        </div>
-                        <div class="w-[100%] flex" v-if="room_detail.vehicles.length != 2">
-                            <div class="w-[30%] text-custom flex  items-start text-[white]">.</div>
-                            <div class="w-[70%]">
+                        <div class="w-[100%] mt-[14px] flex" v-if="room_detail.vehicles.length != 2">
+                            <div class="w-[100%]">
                                 <div class="grid grid-cols-8  text-custom w-[100%] ">
                                     <div class="col-span-3 ">
                                         <div class="flex">
@@ -568,7 +555,7 @@ export default {
     data() {
         return {
             tab: 0,
-            create: false,
+            create: true,
             move_room: false,
             confirm: false,
             user: [],
