@@ -1,7 +1,7 @@
 <template>
-    <div>
-        <div class="grid grid-cols-7 w-[100%] gap-4 mt-[14px]">
-            <div class="h-[212px] border rounded-[12px] flex flex-col justify-between items-center p-[12px]"
+    <div class="">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 w-[60%]  gap-2 mt-[14px]">
+            <div class="h-[212px] w-[11.25rem] border rounded-[12px] flex flex-col justify-between items-center p-[12px]"
                 v-for="user in history" @click="getDetailRentalContract(user.attributes
                     .users_permissions_user
                     .data?.id)">

@@ -44,16 +44,16 @@
         <div class="w-[100%] h-[1px]  mt-[34px] mb-[34px] bg-gray-200 border-0 dark:bg-gray-700"></div>
         <div class="">
             <div class="font-bold text-[16px]">ยอดค้างชำระ</div>
-            <div class="grid grid-cols-4">
-                <div class="flex flex-col justify-between w-[339px] h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
+                <div class="flex flex-col justify-between  h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
                     <div>คงเหลือ</div>
                     <div class="text-[#D44769] font-bold text-[16px]" v-if="list_debt.total">{{ list_debt.total }}</div>
                 </div>
-                <div class="flex flex-col justify-between w-[339px] h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
+                <div class="flex flex-col justify-between  h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
                     <div>เงินมัดจำ</div>
                     <div class="text-[#D44769] font-bold text-[16px]">{{ list_debt.deposit }}</div>
                 </div>
-                <div class="flex flex-col justify-between w-[339px] h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
+                <div class="flex flex-col justify-between  h-[126px] rounded-[22px] border p-[16px] mt-[14px]">
                     <div>เงินประกัน</div>
                     <div class="text-[#D44769] font-bold text-[16px]">{{ list_debt.deposit2 }}</div>
                 </div>
@@ -66,7 +66,7 @@
         </div>
         <div class="mt-[14px]">
             <!-- /////////////////////////////////// items ///////////////////////////////// -->
-            <div class="grid grid-cols-3 w-[100%]">
+            <div class="grid md:grid-cols-2  gap-1 ">
                 <div v-for="(item, i) in list_items">
                     <div class="flex items-center">
                         <div class="flex justify-center h-[100%] items-center">{{ item.name }}</div>
@@ -123,9 +123,9 @@
                         บันทึกหนี้สูญแล้ว</div>
                 </div> -->
             </div>
-            <div class="flex">
+            <div class="grid grid-cols-1 md:grid-cols-2">
                 <div class="mt-[50px]">
-                    <div class="w-[48%]  text-custom">
+                    <div class="text-custom">
                         <div>
                             <div class="flex justify-start items-start">คืนเงินประกัน</div>
                             <div class=" mt-[14px] flex">
@@ -253,10 +253,7 @@
                     </div>
                 </div>
                 <div class=" flex w-[100%] justify-end mt-[50px]">
-                    <div class="w-[2%] flex justify-center items-center ">
-                        <!-- <div class="w-[1px] h-[100%] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
-                    </div>
-                    <div class="w-[80%] flex flex-col  items-center pl-[100px] pr-[100px] ">
+                    <div class="w-[90%] flex flex-col  items-center">
                         <div class="text-custom text-[18px] font-bold text-[#003765]">สรุปการย้ายออก</div>
                         <div class="w-[100%] mt-[14px]">
                             <div class="flex justify-between w-[100%]">
@@ -312,7 +309,7 @@
                                     class="h-[28px] w-[180px] bg-[#F3F8FD] rounded-[12px] mt-[4px]  flex justify-start pl-[8px] pr-[8px]"
                                     type="date" v-model="date_moveout" />
                             </div>
-                            <div class="flex mt-[14px]">
+                            <div class=" grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-[14px]">
                                 <button @click="PDFPrint()"
                                     class="bg-[#165D98] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
                                     <div class="flex">
