@@ -68,7 +68,7 @@
 
             <div class="flex w-[100%]">
                 <div class="w-[20%] ml-[18px] mt-[-70px]">
-                    <div class="bg-[white] rounded-[22px] w-[246px] border p-[14px] flex flex-col items-center">
+                    <div class="bg-[white] rounded-[22px] w-[16vw] border p-[14px] flex flex-col items-center">
                         <div v-if="tabSetting == 1">
                             <img v-if="userData.imageProfile" class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
                                 :src="`https://api.resguru.app${userData.imageProfile.url}`" />
@@ -78,7 +78,7 @@
                                 ref="buildingProfile" hidden type="file" @change="editProfilewithUpload()" />
                             <label for="uploadProfile">
                                 <div
-                                    class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer mt-[4px]">
+                                    class="rounded-[22px] pl-[8px] text-[1vw] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer mt-[4px]">
                                     เปลี่ยนรูปภาพโปรไฟล์</div>
                             </label>
                         </div>
@@ -92,13 +92,13 @@
                                 ref="buildingProfileCom" hidden type="file" @change=" editBannerwithUpload(1)" />
                             <label for="uploadProfile">
                                 <div
-                                    class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer mt-[4px]">
+                                    class="rounded-[22px] text-[1vw] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] cursor-pointer mt-[4px]">
                                     เปลี่ยนรูปภาพโปรไฟล์</div>
                             </label>
                         </div>
-                        <div class="text-[18px] font-bold mt-[8px]" v-if="tabSetting == 1">{{ userData.firstName }}
+                        <div class="text-[1.1vw] font-bold mt-[8px]" v-if="tabSetting == 1">{{ userData.firstName }}
                             {{ userData.lastName }}</div>
-                        <div class="text-[18px] font-bold mt-[8px]" v-else>
+                        <div class="text-[1.1vw]font-bold mt-[8px]" v-else>
                             {{ $store.state.buildingInfo[0].attributes.buildingName }}</div>
                         <div class="w-[100%]" v-if="tabSetting == 2">
                             <!-- <div class="w-[100%] mt-[8px]">
@@ -182,7 +182,7 @@
                             $store.state.buildingInfo[0].attributes.package.data?.attributes.title }}</div>
                     </div>
                 </div>
-                <div class="w-[100%] ml-[24px] mt-[8px]" v-if="tabSetting == 1">
+                <div class="w-[100%] ml-[1.57vw] mt-[8px]" v-if="tabSetting == 1">
                     <div class="grid grid-cols-4 w-[100%] gap-2 ">
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">ชื่อ</div>

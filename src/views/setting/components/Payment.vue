@@ -1,6 +1,6 @@
 <template>
     <div class="bg-[white] pt-[14px] pl-[24px] pr-[24px] ">
-        <div class="grid grid-cols-5 gap-4 mt-[14px] w-[100%]">
+        <div class="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-ภ gap-4 mt-[14px] w-[100%]">
             <div class="rounded-[16px]  p-[14px] h-[auto] mb-[24px] border cursor-pointer flex flex-col items-center justify-center"
                 @click="create = true, accountBankName = '', bankName = '', accountNumber = '',filepaymentForm=[]">
                 <div>

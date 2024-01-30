@@ -117,7 +117,7 @@
                             </vs-tooltip> -->
                         </div>
                     </div>
-                    <div class="flex items-center mb-[8px] mt-[14px]">
+                    <div class="flex items-center mb-[8px] mt-[14px] table-container">
                         <!-- <div class="mr-[14px]">
                             <vs-select placeholder="เลือกอาคาร">
                                 <vs-option label="อาคาร A">
@@ -277,8 +277,8 @@
             </div>
         </div>
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 2">
-            <div class="text-[16px] font-bold mt-[24px]">รายการประเภทห้องพัก</div>
-            <div class="grid grid-cols-5 gap-4 mt-[14px] w-[100%]">
+            <div class="text-[1.1vw] font-bold mt-[24px]">รายการประเภทห้องพัก</div>
+            <div class=" grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-[14px] w-[100%]">
                 <div class="border h-[100%] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
                     @click="create_type = true, roomTypePrice = '', roomTypeName = '', is_edit_type = false">
                     <div>
@@ -295,7 +295,7 @@
                             </g>
                         </svg>
                     </div>
-                    <div class="text-[#5C6B79] font-bold mt-[4px]">สร้างประเภทห้องพักและห้องเช่า</div>
+                    <div class="text-[#5C6B79] font-bold text-[1.1vw] mt-[4px]">สร้างประเภทห้องพัก</div>
                 </div>
                 <div class="border h-[130px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] cursor-pointer"
                     v-for="data in roomType" @click="create_type = true, is_edit_type = true, getTypeRoomDetail(data.id)">
@@ -332,7 +332,7 @@
 
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 3">
             <div class="text-[16px] font-bold mt-[24px]">รายการจำนวนชั้นของหอพัก</div>
-            <div class="grid grid-cols-5 gap-4 mt-[14px] w-[100%]">
+            <div class="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-[14px] w-[100%]">
                 <div class="border h-[100%] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
                     @click="createFloor = true, buildingfloorName = ''">
                     <div>
@@ -1187,5 +1187,13 @@ export default {
 <style  >
 .vs-input {
     width: 100% !important;
+}
+.table-container {
+    width: 100%;
+    /* Set a fixed height to enable scrolling */
+    overflow-y: scroll;
+    padding: 8px;
+    /* Enable vertical scrolling */
+    /* Optional: Add padding for spacing */
 }
 </style>

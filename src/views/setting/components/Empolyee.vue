@@ -18,7 +18,7 @@
             </div>
         </div>
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 1">
-            <div class="grid grid-cols-4 w-[100%] gap-4 mt-[14px]">
+            <div class="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-[14px]">
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer "
                     v-for="data in UserBuilding" @click="getDetail(data.id)">
                     <div class="flex justify-between">
@@ -113,7 +113,7 @@
             </div>
         </div>
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 2">
-            <div class="grid grid-cols-4 w-[100%] gap-4 mt-[14px]">
+            <div class="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3  gap-4 mt-[14px]">
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer "
                     v-for="data in employee" @click="getDetailEm(data.id)">
                     <div class="flex justify-between">
@@ -230,9 +230,9 @@
                         </div>
                     </label>
                 </div> -->
-                <div class="flex w-[100%]">
+                <div class="grid grid-cols-3 gap-1">
                     <div class="w-[20%] ml-[18px]">
-                        <div class="bg-[white] rounded-[22px] w-[246px] border p-[14px] flex flex-col items-center">
+                        <div class="bg-[white] rounded-[22px] w-[16vw] border p-[14px] flex flex-col items-center">
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile"
                                 ref="fileUploadAdminProfileForm" hidden type="file" @change="tempImageUploadAdmin()" />
                             <label for="uploadProfile">
@@ -243,7 +243,7 @@
                                     src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
 
                                 <div
-                                    class="rounded-[22px] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] mt-[4px]  text-custom cursor-pointer">
+                                    class="rounded-[22px] text-[1vw] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] mt-[4px]  text-custom cursor-pointer">
                                     เปลี่ยนรูปภาพโปรไฟล์</div>
                             </label>
                             <div class="text-[18px] font-bold mt-[8px] text-custom">{{ NewProfileAdmin.firstName }}
@@ -254,7 +254,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="w-[100%] ml-[24px] mt-[8px] pl-[18px] pr-[18px]">
+                    <div class="w-[100%] ml-[24px] mt-[8px] pl-[18px] pr-[18px] col-span-2">
                         <div class="grid grid-cols-4 w-[100%] gap-2 ">
                             <div class="mt-[8px] col-span-2" v-if="tab == 1">
                                 <div class="text-custom text-[14px] text-[#003765]">อีเมลล์</div>

@@ -23,8 +23,8 @@
         </div>
 
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 1">
-            <div class="grid grid-cols-6 gap-4 mt-[14px] w-[100%]">
-                <div class="border h-[auto] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]">
+            <div class="grid grid-cols-2 gap-4 mt-[14px] w-[100%]">
+                <div class="border h-[auto]  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]">
                     <div class="flex flex-col justify-between h-[100%]">
                         <div class="flex">
                             <div>
@@ -53,7 +53,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="border h-[auto] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]">
+                <div class="border h-[auto]  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] ml-[30px]">
                     <div class="flex flex-col justify-between h-[100%]">
                         <div class="flex">
                             <div>
@@ -88,7 +88,7 @@
         </div>
 
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 2">
-            <div class="grid grid-cols-6 gap-4 mt-[14px] w-[100%]">
+            <div class="grid grid-cols-2 gap-4 mt-[14px] w-[100%]">
                 <div class="border h-[auto] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]">
                     <div class="flex flex-col justify-between h-[100%]">
                         <div class="flex">
@@ -125,7 +125,7 @@
 
         <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 3">
             <div class="text-[16px] font-bold mt-[24px]">ค่าบริการอื่น ๆ</div>
-            <div class="grid grid-cols-6 gap-4 mt-[14px] w-[100%]">
+            <div class="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-[14px] w-[100%]">
                 <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
                     @click="is_edit = false, discountAmount = '', price = '', title = '', create_service = true">
                     <div>
