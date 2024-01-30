@@ -48,7 +48,7 @@
                         </svg>
                     </div>
                     <div
-                        class="text-[white] text-[32px]  w-[100%] text-center mt-[60px] flex flex-col justify-center items-center">
+                        class="text-[white] text-[2.1vw]  w-[100%] text-center mt-[60px] flex flex-col justify-center items-center">
                         สำหรับเจ้าของห้องพัก</div>
                 </div>
                 <div class="ml-[-20px]">
@@ -82,14 +82,14 @@
             </div>
             <div class="flex flex-col justify-center items-center mt-[10px]">
                 <div class="grid grid-cols-2 gap-5 mt-[10px]">
-                    <div class="w-[360px] border border-[#B9CCDC]  rounded-[16px] flex"
+                    <div class="w-[23.5vw] border border-[#B9CCDC]  rounded-[16px] flex"
                         v-for="data in building">
                         
                         <div class="w-[30%]  h-[100%] rounded-[16px] flex flex-col items-center justify-center" 
                             :style="{ background: data.attributes.colorCode }" v-if="data.attributes.buildingLogo?.data">
                             <img :src="'https://api.resguru.app' + data.attributes.buildingLogo?.data?.attributes.url"
                                 class="w-[90px] h-[90px] rounded-[22px]" />
-                            <div class="text-[12px] mt-[4px]"
+                            <div class="text-[0.79vw] mt-[4px]"
                                 :class="data.attributes.colorCode == '#ffffff' ? '' : 'text-[white]'">{{ data.attributes.package?.data ? data.attributes.package?.data?.attributes.title : "" }}</div>
                         </div>
                        
@@ -98,8 +98,8 @@
                             :style="{ background: data.attributes.colorCode }">
                             <img src="../../assets/img/Logo-01.png"
                                 class="w-[90px] h-[90px] rounded-[0px]" />
-                            <div class="text-[12px] mt-[4px]"
-                                :class="data.attributes.colorCode == '#ffffff' ? '' : 'text-[white]'">Professional</div>
+                                <div class="text-[0.79vw] mt-[4px]"
+                                :class="data.attributes.colorCode == '#ffffff' ? '' : 'text-[white]'">{{ data.attributes.package?.data ? data.attributes.package?.data?.attributes.title : "" }}</div>
                         </div>
                       
 
@@ -121,13 +121,13 @@
                                 </div>
                                 <div
                                     class="w-[100%] rounded-[16px] border border-[#B9CCDC] flex justify-between pl-[8px] pr-[8px] mt-[8px]">
-                                    <div class="text-[12px]">สร้างเมื่อวันที่</div>
-                                    <div class="text-[12px]">{{ covertDate(data.attributes.createdAt) }}</div>
+                                    <div class="text-[0.79vw]">สร้างเมื่อวันที่</div>
+                                    <div class="text-[0.79vw]">{{ covertDate(data.attributes.createdAt) }}</div>
                                 </div>
                                 <div
                                     class="w-[100%] rounded-[16px] border border-[#B9CCDC]  flex justify-between pl-[8px] pr-[8px] mt-[8px]">
-                                    <div class="text-[12px]">จำนวน ชั้น/ห้อง</div>
-                                    <div class="text-[12px]">2/12</div>
+                                    <div class="text-[0.79vw]">จำนวน ชั้น/ห้อง</div>
+                                    <div class="text-[0.79vw]">2/12</div>
                                 </div>
                             </div>
                             <div>
@@ -239,7 +239,7 @@
                         </div>
                     </div> -->
                     <div @click="routeTo()"
-                        class="w-[360px] border border-[#B9CCDC] rounded-[16px] h-[147px] flex justify-center items-center cursor-pointer">
+                        class="w-[23.5vw] border border-[#B9CCDC] rounded-[16px] h-[147px] flex justify-center items-center cursor-pointer">
                         <div>
                             <div class="flex justify-center items-center">
                                 <svg width="55" height="55" viewBox="0 0 55 55" fill="none"

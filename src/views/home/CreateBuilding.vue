@@ -116,7 +116,7 @@
                         <div class="flex flex-col justify-center items-center w-[100%]">
                             <div class="grid grid-cols-1 w-[100%]  gap-4 mt-[10px] ">
                                 <div>
-                                    <div class="font-bold">ชื่อหอพัก</div>
+                                    <div class="font-bold text-[1vw]">ชื่อหอพัก</div>
                                     <div class="">
                                         <input type="input" v-model="buildingName"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
@@ -128,7 +128,7 @@
                             </div>
                             <div class="grid grid-cols-1 w-[100%]  gap-4 mt-[10px] ">
                                 <div>
-                                    <div class="font-bold">ที่อยู่</div>
+                                    <div class="font-bold text-[1vw]">ที่อยู่</div>
                                     <div class="">
                                         <input type="input" v-model="buildingAddress"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
@@ -140,28 +140,28 @@
                             </div>
                             <div class="grid grid-cols-4 w-[100%]  gap-4 mt-[10px] ">
                                 <div>
-                                    <div class="font-bold">เขต</div>
+                                    <div class="font-bold text-[1vw]">เขต</div>
                                     <div class="mt-[5px]">
                                         <input type="input" v-model="buildingSubDistrict"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="font-bold">แขวง/อำเภอ</div>
+                                    <div class="font-bold text-[1vw]">แขวง/อำเภอ</div>
                                     <div class="mt-[5px]">
                                         <input type="input" v-model="buildingDistrict"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="font-bold">จังหวัด</div>
+                                    <div class="font-bold text-[1vw]">จังหวัด</div>
                                     <div class="mt-[5px]">
                                         <input type="input" v-model=" buildingProvince"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="font-bold">รหัสไปรษณี</div>
+                                    <div class="font-bold text-[1vw]">รหัสไปรษณี</div>
                                     <div class="mt-[5px]">
                                          <input type="input" v-model="buildingPostcode"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
@@ -170,7 +170,7 @@
                             </div>
                             <div class="grid grid-cols-2 w-[100%]  gap-4 mt-[10px] ">
                                 <div>
-                                    <div class="font-bold">เบอร์โทรติดต่อ</div>
+                                    <div class="font-bold text-[1vw]">เบอร์โทรติดต่อ</div>
                                     <div class="">
                                         <input type="input" v-model="buildingPhone"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
@@ -180,7 +180,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="font-bold">อีเมล</div>
+                                    <div class="font-bold text-[1vw]">อีเมล</div>
                                     <div class="">
                                         <input type="input" v-model="buildingEmail"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
@@ -192,7 +192,7 @@
                             </div>
                             <div class="grid grid-cols-2 w-[100%]  gap-4 mt-[10px] ">
                                 <div>
-                                    <div class="font-bold">ไลน์ติดต่อ</div>
+                                    <div class="font-bold text-[1vw]">ไลน์ติดต่อ</div>
                                     <div class="">
                                         <input type="input" v-model="buildingLine"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
@@ -202,7 +202,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="font-bold">เฟสบุ๊ค</div>
+                                    <div class="font-bold text-[1vw]">เฟสบุ๊ค</div>
                                     <div class="">
                                         <input type="input" v-model="buildingFacebook"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
@@ -212,7 +212,7 @@
                             </div>
                             <div class="grid grid-cols-2 w-[100%]  gap-4 mt-[10px] ">
                                 <div>
-                                    <div class="font-bold">อัตราภาษีหอพัก</div>
+                                    <div class="font-bold text-[1vw]">อัตราภาษีหอพัก</div>
                                     <div class="mt-[5px]">
                                         <vs-input v-model="buildingTax" />
                                     </div>
@@ -221,7 +221,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="font-bold">DueDate</div>
+                                    <div class="font-bold text-[1vw]">DueDate</div>
                                     <div class="mt-[5px]">
                                         <vs-input v-model="buildingDueDate" />
                                     </div>

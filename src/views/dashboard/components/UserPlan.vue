@@ -16,7 +16,7 @@
                             </g>
                         </svg>
                     </div>
-                    <div class="text-[22px] text-white ml-[10px]">{{
+                    <div class="text-[1.44vw] text-white ml-[10px]">{{
                         $store.state.buildingInfo[0].attributes.package.data?.attributes.title }} Plan</div>
                 </div>
                 <div
