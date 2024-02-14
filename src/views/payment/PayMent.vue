@@ -850,14 +850,14 @@ export default {
                     sumAmount = sumAmount+k.total
                  }
                 console.log("Data from Select", roomdata)
-                // this.fullPaymentForm.invoiceName = roomdata.tenant_bills[0].invoiceNumber
-                // this.fullPaymentForm.invoiceID = roomdata.tenant_bills[0].id
                 this.fullPaymentForm.roomName = roomdata.RoomNumber
                 this.fullPaymentForm.amount = sumAmount
                 this.fullPaymentForm.userID = roomdata.user_sign_contract.id
                 this.fullPaymentForm.building = roomdata.room_building.id
                 this.fullPaymentForm.accountBankName = this.userProfile.firstName + " " + this.userProfile.lastName
                 this.createFullpayment = true
+                // this.fullPaymentForm.invoiceName = roomdata.tenant_bills[0].invoiceNumber
+                // this.fullPaymentForm.invoiceID = roomdata.tenant_bills[0].id
 
     
                 this.fullPaymentForm.amount = this.userPayRemain
@@ -925,13 +925,15 @@ export default {
                 }
             }).then(
                 (resp) => {
-                    console.log("Response in create", resp)
-                    console.log("Response Evidence ID", resp.data.data.id)
+                    // console.log("Response in create", resp)
+                    // console.log("Response Evidence ID", resp.data.data.id)
                     axios.put("https://api.resguru.app/api/tenant-bills/" + this.fullPaymentForm.invoiceID, {
                         data: {
                             paymentStatus: "Waiting Review"
                         }
-                    }).then((res) => { console.log("Response in Edit Invoice", res) })
+                    }).then((res) => { 
+                        // console.log("Response in Edit Invoice", res) 
+                    })
 
                     if (this.fileFullPayment.length != 0) {
                         let formData = new FormData();
@@ -944,9 +946,11 @@ export default {
                             headers: {
                                 "Content-Type": "multipart/form-data",
                             },
-                        }).then((result) => { console.log("Upload file", result) })
+                        }).then((result) => { 
+                            // console.log("Upload file", result) 
+                        })
                             .catch((error) => {
-                                console.log(error);
+                                // console.log(error);
                             })
                     }
 
@@ -983,8 +987,8 @@ export default {
                 }
             }).then(
                 (resp) => {
-                    console.log("Response in create", resp)
-                    console.log("Response Evidence ID", resp.data.data.id)
+                    // console.log("Response in create", resp)
+                    // console.log("Response Evidence ID", resp.data.data.id)
                     axios.put("https://api.resguru.app/api/tenant-bills/" + this.partialPaymentForm.invoiceID, {
                         data: {
                             paymentStatus: "Waiting Review"
@@ -1002,7 +1006,9 @@ export default {
                             headers: {
                                 "Content-Type": "multipart/form-data",
                             },
-                        }).then((result) => { console.log("Upload file", result) })
+                        }).then((result) => { 
+                            // console.log("Upload file", result) 
+                        })
                             .catch((error) => {
                                 console.log(error);
                             })
@@ -1056,7 +1062,7 @@ export default {
             fetch(`https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}&floor=${id}&month=${m}&year=${y}&paymentStatus=`+output )
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getRoomBill()", resp.data);
+                    // console.log("Return from getRoomBill()", resp.data);
                     if (code == 8) {
                         this.payments = resp.data.filter(item =>
                             item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase()),
@@ -1074,11 +1080,11 @@ export default {
             fetch('https://api.resguru.app/api/building-floors?filters[building][id][$eq]=' + this.$store.state.building + '&populate=*')
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getfloor()", resp.data);
+                    // console.log("Return from getfloor()", resp.data);
                     this.floor = resp.data
-                    console.log("resp.data[0].id", resp.data[0].id)
-                    console.log("resp.data[0].attributes.floorName", resp.data[0].attributes.floorName)
-                    console.log("this.filter.floor", this.filter.floor)
+                    // console.log("resp.data[0].id", resp.data[0].id)
+                    // console.log("resp.data[0].attributes.floorName", resp.data[0].attributes.floorName)
+                    // console.log("this.filter.floor", this.filter.floor)
                     if (resp.data[0]) {
                         this.filter.floor = resp.data[0].id
                         this.name_floor = resp.data[0].attributes.floorName
