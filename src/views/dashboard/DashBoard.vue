@@ -57,7 +57,8 @@ export default {
                     this.db_services = resp.service.notiData
                     this.db_payment = resp.paymentStatus.paymentStatus
                     this.db_expense = resp.accounting
-                    this.count_user = resp.room.meta
+                    // this.count_user = resp.room.meta
+                    this.count_user = resp.room
             })
         }
     }
