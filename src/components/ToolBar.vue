@@ -321,7 +321,7 @@
                                 fill="#B9CCDC" />
                         </svg>
                     </template>
-                    <span class="text-[white]" @click="routerTo('/dashboard')">แดชบอร์ด</span>
+                    <span class="text-[white]" @click="routerTo('/dashboard')">หน้าหลัก</span>
                 </vs-sidebar-item>
                 <vs-sidebar-item id="market" to="/rooms">
                     <template #icon>
