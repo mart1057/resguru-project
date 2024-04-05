@@ -9,7 +9,7 @@
                             fill="#003765" />
                     </svg>
                 </div>
-                <div class="text-[18px] font-bold flex items-center ml-[4px]">ข่าวสารประจำหอพัก</div>
+                <div class="text-[20px] font-bold flex items-center ml-[4px]">ข่าวสารประจำหอพัก</div>
             </div>
             <div class="flex justify-center items-center">
                 <div class="flex justify-center items-center cursor-pointer" @click=" routerTo('/announcement')">ดูทั้งหมด</div>
@@ -85,6 +85,25 @@ export default {
 }
 </script>
 <style scoped>
+tbody tr:nth-child(odd) {
+  background-color: #c3d4f1;
+  border-radius: solid !important;
+}
+tbody tr:nth-child(even) {
+  background-color: #e3e5e9;
+  border-radius: solid !important; 
+}
+th {
+  font-size: 16px;
+}
+tbody td:first-child {
+  font-size: 14px;
+  width: 100;
+}
+tbody td {
+  font-size: 14px;
+}
+
 #payment {
     background-color: rgb(255, 255, 255);
 }

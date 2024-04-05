@@ -1,5 +1,5 @@
 <template>
-    <div class="p-[20px] pt-[20px]">
+    <div class="p-[0px] pt-[20px] ">
         <div class="h-[auto] bg-[white] rounded-[12px] pt-[28px] pl-[28px] pr-[28px] flex flex-col justify-end">
             <div>
                 <div class="flex justify-between">
@@ -16,7 +16,7 @@
                                 </g>
                             </svg>
                         </div>
-                        <div class="text-[24px] font-bold ml-[8px] flex justify-center items-center">ผังห้องพัก</div>
+                        <div class="text-[24px] font-bold ml-[8px] flex justify-center items-center">ผังห้องพัก (จำนวนทั้งหมด {{ room.length }} ห้อง)</div>
                     </div>
                     <div class="flex border pl-[14px] pr-[14px]  rounded-[12px] cursor-pointer "
                         @click="routeTo('/setting')">
@@ -95,8 +95,9 @@
             </div>
             <div></div>
             <div class="flex items-center mb-[8px] mt-[14px] table-container">
-                <div v-for="(data, i) in roomFloor">
-                    <div class=" cursor-pointer mr-[8px]"
+                <div v-for="(data, i) in roomFloor" class="flex-initial flex-nowrap w-32 p-2 border-1"
+                :class="tab_floor == i ? 'font-bold text-[16px] text-[white] bg-[#003765]' : 'text-[#8396A6]'">
+                    <div class="cursor-pointer whitespace-nowrap"
                         :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
                         @click="tab_floor = i, filter.floor = data.id, getRoom(), name_floor = data.attributes.floorName">
                         ชั้น {{ data.attributes.floorName }}
@@ -107,7 +108,7 @@
 
         <!-- //////////////////////////// card /////////////////////// -->
         <div class="mt-[24px]">
-            <div class="text-[24px] font-bold">ชั้น {{ name_floor }} ({{ room.length }})</div>
+            <div class="text-[24px] font-bold">ชั้น {{ name_floor }} (จำนวน {{ room.length }} ห้อง)</div>
             <div class="   grid grid-cols-1md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 w-[100%] gap-4 mt-[14px]  ">
                 <div class="bg-[white] rounded-[16px] flex justify-between p-[14px] h-[160px] cursor-pointer"
                     v-for="data in room" @click="data.roomStatus == 'Maintenance' ?'':routeTo2('/room-detail', data.user_sign_contract?.users_permissions_user?.id, data.id, data.RoomNumber, data.roomStatus, data.user_sign_contract?.id), $route.meta.desc = 'ห้องพัก - ห้อง ' + $route.query.number_room, $route.meta.title = 'ห้อง ' + $route.query.number_room">
@@ -160,9 +161,9 @@
                         </div>
                         <div class="ml-[14px]">
 
-                            <div class="text-[18px] font-bold text-[#141629]">ห้อง {{ data.RoomNumber }}</div>
+                            <div class="text-[20px] font-bold text-[#141629]">ห้อง {{ data.RoomNumber }}</div>
 
-                            <div class="text-[14px] mt-[12px] font-bold text-[#003765]">{{
+                            <div class="text-[16px] mt-[12px] font-bold text-[#003765]">{{
                                 data.user_sign_contract && data.user_sign_contract.users_permissions_user ?
                                 data.user_sign_contract.users_permissions_user.firstName
                                 : "" }} {{ data.user_sign_contract && data.user_sign_contract.users_permissions_user ?

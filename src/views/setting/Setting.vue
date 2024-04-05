@@ -1,19 +1,19 @@
 <template>
     <div class="pl-[20px] pr-[20px] pt-[10px]">
-        <div class="h-[100%] bg-[white] rounded-t-lg  pt-[28px] pl-[28px] pr-[28px] flex flex-col justify-end mt-[14px]">
+        <div class="text-[18px] h-[100%] bg-[white] rounded-t-lg  pt-[28px] pl-[28px] pr-[28px] flex flex-col justify-end mt-[14px]">
             <div class="flex justify-center">
                 <div class="flex justify-center items-center cursor-pointer"
-                    :class="tab == 1 ? 'font-bold text-[16px]' : ''" @click="tab = 1">โปรไฟล์</div>
+                    :class="tab == 1 ? 'font-bold text-[20px]' : ''" @click="tab = 1">โปรไฟล์</div>
                 <div class="flex justify-center items-center ml-[24px] cursor-pointer"
-                    :class="tab == 2 ? 'font-bold text-[16px]' : ''" @click="tab = 2">จัดการห้องพัก</div>
+                    :class="tab == 2 ? 'font-bold text-[20px]' : ''" @click="tab = 2">จัดการห้องพัก</div>
                 <div class="flex justify-center items-center ml-[24px] cursor-pointer"
-                    :class="tab == 3 ? 'font-bold text-[16px]' : ''" @click="tab = 3">ค่าน้ำค่าไฟและบริการ</div>
+                    :class="tab == 3 ? 'font-bold text-[20px]' : ''" @click="tab = 3">ค่าน้ำค่าไฟและบริการ</div>
                 <div class="flex justify-center items-center ml-[24px] cursor-pointer"
-                    :class="tab == 4 ? 'font-bold text-[16px]' : ''" @click="tab = 4">การจ่ายเงิน</div>
+                    :class="tab == 4 ? 'font-bold text-[20px]' : ''" @click="tab = 4">ข้อมูลบัญชีธนาคาร</div>
                 <!-- <div class="flex justify-center items-center ml-[24px] cursor-pointer"
                     :class="tab == 5 ? 'font-bold text-[16px]' : ''" @click="tab = 5">การจัดการสัญญา</div> -->
                 <div class="flex justify-center items-center ml-[24px] cursor-pointer"
-                    :class="tab == 6 ? 'font-bold text-[16px]' : ''" @click="tab = 6">บุคลากร</div>
+                    :class="tab == 6 ? 'font-bold text-[20px]' : ''" @click="tab = 6">บุคลากร</div>
             </div>
             <div class="w-[100%] h-[1px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
 

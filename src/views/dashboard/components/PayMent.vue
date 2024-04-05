@@ -15,7 +15,13 @@
                         </g>
                     </svg>
                 </div>
-                <div class="text-[1.125rem] font-bold flex items-center ml-[4px]">การจ่ายเงิน</div>
+
+                <div class="text-[20px] font-bold flex items-center ml-[4px]">การจ่ายเงิน</div>
+                <!-- <div class="text-[1.125rem] font-bold flex items-center ml-[4px]">การจ่ายเงิน</div> -->
+                <div class="flex items-center justify-start  pl-2">
+                                <div class=" w-[auto] pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#FFE1E8] text-[#EA2F5C]">
+                                    ! รออนุมัติ  {{data.length}} รายการ</div>
+                </div>
             </div>
             <div class="flex">
                 <div></div>
@@ -27,20 +33,20 @@
                     </svg>
                 </div> -->
                 <div class="flex justify-center items-center">
-                    <input class="h-[40px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหา" type="input"
+                    <input class="h-[40px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาเลขห้อง" type="input"
                         v-model="filter.search" @input="filterData" @keydown="handleKeyDown" />
                 </div>
 
             </div>
         </div>
         <div class="mt-[14px]" :class="data.length > 5 ? 'table-container' : ''">
-            <vs-table>
+            <vs-table xl>
                 <template #thead>
                     <vs-tr>
-                        <vs-th v-if="data[0]?.room_building">
+                        <vs-th class="text-[20px]" v-if="data[0]?.room_building">
                             ชื่อหอพัก
                         </vs-th>
-                        <vs-th>
+                        <vs-th >
                             เลขห้อง
                         </vs-th>
                         <vs-th>
@@ -59,7 +65,7 @@
                         <vs-td v-if="tr?.room_building">
                             {{ tr.room_building?.buildingName }}
                         </vs-td>
-                        <vs-td>
+                        <vs-td class="body-2 font-weight-bold">
                             {{ tr.RoomNumber }}
                         </vs-td>
                         <vs-td>
@@ -125,10 +131,39 @@ export default {
 
             }
         },
+        // async created() {
+        //     this.attributes = await axios.get('user/get-profile?access-token=1');
+        //     this.photo = await axios.get('photos?access-token=1');
+        // },
     }
 }
 </script>
 <style scoped>
+tbody tr:nth-child(odd) {
+  background-color: #c3d4f1;
+  border-radius: solid !important;
+}
+tbody tr:nth-child(even) {
+  background-color: #e3e5e9;
+  border-radius: solid !important; 
+}
+th {
+  font-size: 16px;
+}
+tbody td:first-child {
+  font-size: 14px;
+  width: 100;
+}
+tbody td {
+  font-size: 14px;
+}
+
+/* th,td{
+width:20px;
+max-width:5px;
+min-width:20px;
+} */
+
 #payment {
     background-color: rgb(255, 255, 255);
 }

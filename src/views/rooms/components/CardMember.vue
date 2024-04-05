@@ -7,25 +7,56 @@
                     @click="getDetailRentalContract()"
                     class="h-[24px] w-[auto] mt-[-22px] text-[12px] flex items-center justify-center p-[8px] rounded-[8px]">
                     {{ $route.query.status == "Checked In" ? 'ทำสัญญาแล้ว' : $route.query.status == "Reserved" ?
-                        'ยังไม่ทำสัญญา' : 'ห้องว่าง' }}
+                    'ยังไม่ทำสัญญา' : 'ห้องว่าง' }}
                 </div>
                 <img class="w-[78px] h-[78px] rounded-[22px]" v-if="data.imageProfile"
                     :src="'https://api.resguru.app' + data.imageProfile?.url" @click="getDetailRentalContract()" />
-                <div @click="getDetailRentalContract()">{{ data.firstName }} {{ data.lastName }}</div>
+                <div @click="getDetailRentalContract()" class="text-[18px]">{{ data.firstName }} {{ data.lastName }}
+                </div>
                 <div class="flex" @click="getDetailRentalContract()">
-                    <div><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <mask id="mask0_417_4380" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-                                width="16" height="16">
-                                <rect width="16" height="16" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_417_4380)">
-                                <path
-                                    d="M12.9553 13.6283C11.6587 13.6283 10.3748 13.3206 9.10339 12.7052C7.83203 12.0899 6.697 11.2828 5.69829 10.2841C4.69957 9.28539 3.89145 8.15142 3.27394 6.8822C2.65642 5.61297 2.34766 4.33007 2.34766 3.0335C2.34766 2.8335 2.41432 2.66683 2.54766 2.5335C2.68099 2.40016 2.84766 2.3335 3.04766 2.3335H5.22197C5.39463 2.3335 5.54527 2.3867 5.67391 2.49311C5.80253 2.59952 5.88223 2.73692 5.91301 2.9053L6.29506 4.86681C6.32155 5.03091 6.31877 5.18006 6.28672 5.31425C6.25467 5.44844 6.18437 5.56553 6.07582 5.66553L4.54249 7.16425C5.06899 8.05827 5.69677 8.86596 6.42584 9.58733C7.1549 10.3087 7.98011 10.9378 8.90149 11.4745L10.3912 9.95913C10.4998 9.85059 10.6282 9.77345 10.7765 9.72773C10.9248 9.682 11.0767 9.67238 11.2322 9.69888L13.0835 10.0758C13.2519 10.1134 13.3893 10.1948 13.4957 10.32C13.6021 10.4452 13.6553 10.5942 13.6553 10.7668V12.9283C13.6553 13.1283 13.5886 13.295 13.4553 13.4283C13.322 13.5617 13.1553 13.6283 12.9553 13.6283ZM4.06302 6.21811L5.25277 5.07965C5.27414 5.06255 5.28803 5.03904 5.29444 5.00913C5.30085 4.97921 5.29978 4.95143 5.29122 4.9258L5.00149 3.43605C4.99293 3.40186 4.97797 3.37622 4.95661 3.35913C4.93524 3.34203 4.90746 3.33348 4.87327 3.33348H3.44764C3.422 3.33348 3.40062 3.34203 3.38352 3.35913C3.36643 3.37622 3.35789 3.39759 3.35789 3.42323C3.39207 3.87879 3.46664 4.34161 3.58161 4.8117C3.69656 5.28179 3.85703 5.75059 4.06302 6.21811ZM12.5656 12.6078C12.5912 12.6078 12.6126 12.5993 12.6297 12.5822C12.6468 12.5651 12.6553 12.5437 12.6553 12.5181V11.1155C12.6553 11.0813 12.6468 11.0536 12.6297 11.0322C12.6126 11.0108 12.5869 10.9959 12.5527 10.9873L11.1528 10.7027C11.1271 10.6942 11.1047 10.6931 11.0854 10.6995C11.0662 10.7059 11.0459 10.7198 11.0245 10.7412L9.83736 11.9412C10.2792 12.1472 10.7401 12.3046 11.2201 12.4136C11.7 12.5226 12.1485 12.5873 12.5656 12.6078Z"
-                                    fill="#141629" />
-                            </g>
-                        </svg>
+                    <div class="grid grid-cols-1 gap-0">
+                        <div class="grid grid-cols-2 gap-0">
+                            <div><svg width="18" height="18" viewBox="0 0 16 16" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <mask id="mask0_417_4380" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
+                                        y="0" width="16" height="16">
+                                        <rect width="16" height="16" fill="#D9D9D9" />
+                                    </mask>
+                                    <g mask="url(#mask0_417_4380)">
+                                        <path
+                                            d="M12.9553 13.6283C11.6587 13.6283 10.3748 13.3206 9.10339 12.7052C7.83203 12.0899 6.697 11.2828 5.69829 10.2841C4.69957 9.28539 3.89145 8.15142 3.27394 6.8822C2.65642 5.61297 2.34766 4.33007 2.34766 3.0335C2.34766 2.8335 2.41432 2.66683 2.54766 2.5335C2.68099 2.40016 2.84766 2.3335 3.04766 2.3335H5.22197C5.39463 2.3335 5.54527 2.3867 5.67391 2.49311C5.80253 2.59952 5.88223 2.73692 5.91301 2.9053L6.29506 4.86681C6.32155 5.03091 6.31877 5.18006 6.28672 5.31425C6.25467 5.44844 6.18437 5.56553 6.07582 5.66553L4.54249 7.16425C5.06899 8.05827 5.69677 8.86596 6.42584 9.58733C7.1549 10.3087 7.98011 10.9378 8.90149 11.4745L10.3912 9.95913C10.4998 9.85059 10.6282 9.77345 10.7765 9.72773C10.9248 9.682 11.0767 9.67238 11.2322 9.69888L13.0835 10.0758C13.2519 10.1134 13.3893 10.1948 13.4957 10.32C13.6021 10.4452 13.6553 10.5942 13.6553 10.7668V12.9283C13.6553 13.1283 13.5886 13.295 13.4553 13.4283C13.322 13.5617 13.1553 13.6283 12.9553 13.6283ZM4.06302 6.21811L5.25277 5.07965C5.27414 5.06255 5.28803 5.03904 5.29444 5.00913C5.30085 4.97921 5.29978 4.95143 5.29122 4.9258L5.00149 3.43605C4.99293 3.40186 4.97797 3.37622 4.95661 3.35913C4.93524 3.34203 4.90746 3.33348 4.87327 3.33348H3.44764C3.422 3.33348 3.40062 3.34203 3.38352 3.35913C3.36643 3.37622 3.35789 3.39759 3.35789 3.42323C3.39207 3.87879 3.46664 4.34161 3.58161 4.8117C3.69656 5.28179 3.85703 5.75059 4.06302 6.21811ZM12.5656 12.6078C12.5912 12.6078 12.6126 12.5993 12.6297 12.5822C12.6468 12.5651 12.6553 12.5437 12.6553 12.5181V11.1155C12.6553 11.0813 12.6468 11.0536 12.6297 11.0322C12.6126 11.0108 12.5869 10.9959 12.5527 10.9873L11.1528 10.7027C11.1271 10.6942 11.1047 10.6931 11.0854 10.6995C11.0662 10.7059 11.0459 10.7198 11.0245 10.7412L9.83736 11.9412C10.2792 12.1472 10.7401 12.3046 11.2201 12.4136C11.7 12.5226 12.1485 12.5873 12.5656 12.6078Z"
+                                            fill="#141629" />
+                                    </g>
+                                </svg>
+                            </div>
+                            <div class="flex justify-center items-center ml-[4px] text-[12px]">{{ data.phone }}</div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-0">
+                            <div>
+                                <template>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 32 32">
+                                        <path fill="#003765"
+                                            d="M28.516 7.167H3.482L16 14.275zM16.74 17.303a1.494 1.494 0 0 1-1.48 0L2.5 10.06v14.773h27V10.06z" />
+                                    </svg>
+                                </template>
+
+                            </div>
+                            <div class="flex justify-center items-center ml-[4px] text-[12px]">{{ data.email? data.email:" - " }}</div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-0">
+                            <div>
+                                <template>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24">
+                                        <path fill="#003765"
+                                            d="M13.78 9.46a.38.38 0 0 0-.38.38v1.67L12 9.65a.4.4 0 0 0-.33-.19a.38.38 0 0 0-.38.38v2.84a.38.38 0 0 0 .38.38a.38.38 0 0 0 .38-.38V11l1.39 1.91a.27.27 0 0 0 .15.11a.32.32 0 0 0 .14 0A.33.33 0 0 0 14 13l.1-.07a.39.39 0 0 0 .11-.27V9.84a.38.38 0 0 0-.43-.38M9.2 12.27H8.14V9.84a.38.38 0 0 0-.38-.38a.38.38 0 0 0-.38.38v2.84a.38.38 0 0 0 .38.38H9.2a.39.39 0 0 0 .39-.38a.39.39 0 0 0-.39-.41m1.11-2.81a.39.39 0 0 0-.39.38v2.84a.39.39 0 0 0 .39.38a.38.38 0 0 0 .38-.38V9.84a.38.38 0 0 0-.38-.38M17.91 2H6.09A4.1 4.1 0 0 0 2 6.09v11.82A4.1 4.1 0 0 0 6.09 22h11.82A4.1 4.1 0 0 0 22 17.91V6.09A4.1 4.1 0 0 0 17.91 2m.31 12.28a1.55 1.55 0 0 1-.13.17a5.5 5.5 0 0 1-.8.8c-2 1.87-5.36 4.11-5.81 3.76s.64-1.76-.53-2a1 1 0 0 1-.25 0c-3.44-.48-6-2.89-6-5.78c0-3.25 3.29-5.88 7.34-5.88s7.34 2.63 7.34 5.88a5 5 0 0 1-1.16 3.05m-1.71-4.81H15a.38.38 0 0 0-.38.38v2.84a.38.38 0 0 0 .38.38h1.48a.38.38 0 0 0 .38-.38a.38.38 0 0 0-.38-.38h-1.03v-.6h1.06a.39.39 0 0 0 .38-.39a.38.38 0 0 0-.38-.38h-1.06v-.61h1.06a.38.38 0 0 0 .38-.38a.38.38 0 0 0-.38-.48" />
+                                    </svg>
+                                </template>
+
+
+                            </div>
+                            <div class="flex justify-center items-center ml-[4px] text-[12px]">{{ data.lineID? data.lineID:" - "}}</div>
+                        </div>
                     </div>
-                    <div class="flex justify-center items-center ml-[4px] text-[12px]">{{ data.phone }}</div>
                 </div>
                 <div class="flex justify-around w-[100%]">
                     <!-- <div @click="move_room = true"
@@ -62,7 +93,7 @@
             <div>
                 <div class="flex justify-between pl-[20px] pr-[20px]">
                     <div class="text-custom flex justify-center items-center text-[18px] font-bold">{{
-                        is_edit == true ? room_detail.name + ' ' + room_detail.last_name : 'เพิ่มผู้เช่า' }}</div>
+                    is_edit == true ? room_detail.name + ' ' + room_detail.last_name : 'เพิ่มผู้เช่า' }}</div>
                     <div @click="create = false" class="cursor-pointer">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -100,10 +131,12 @@
                                     v-if="room_detail.check_user == true && is_edit == false">
                                     <div class="col-span-2">
                                         <div class=""> <span
-                                                class="text-[red] mr-[2px]">*</span>ค้นหาผู้เช่าด้วยรหัสบัตรประชาชน</div>
+                                                class="text-[red] mr-[2px]">*</span>ค้นหาผู้เช่าด้วยรหัสบัตรประชาชน
+                                        </div>
                                         <div>
                                             <div>
-                                                <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                                <input type="input"
+                                                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                                     v-model="id_card">
                                                 <vs-button primary @click="getUserDetail(id_card)">ค้นหา</vs-button>
                                             </div>
@@ -207,10 +240,11 @@
                                     v-model="room_detail.address" :disabled="is_edit == true" />
                             </div>
                             <div class="col-span-2 mt-[6px] ml-[8px]">
-                                <div class="text-custom"><span class="text-[red] mr-[2px]">*</span>แนบรูปบัตรประชาชน</div>
+                                <div class="text-custom"><span class="text-[red] mr-[2px]">*</span>แนบรูปบัตรประชาชน
+                                </div>
                                 <div class="flex mt-[4px]" v-if="room_detail.image_card_name == ''">
-                                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
-                                        @change="previewImage" type="file" accept="image/*" hidden />
+                                    <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
+                                        id="upload" @change="previewImage" type="file" accept="image/*" hidden />
                                     <label for="upload">
                                         <div
                                             class="h-[28px] w-[120px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
@@ -231,112 +265,112 @@
                             <div class="w-[30%] text-custom flex items-start"></div>
                            
                         </div> -->
-                     
+
                         <div class="w-[100%] flex mt-[14px]">
                             <div class="w-[30%] text-custom flex  items-start">ข้อมูลเพิ่มเติม</div>
                         </div>
                         <div class="mt-[14px]">
-                                <div class="grid grid-cols-8  text-custom w-[100%] ">
-                                    <div class="col-span-4">
-                                        <div>Line ID</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.lineID" :disabled="is_edit == true" />
-                                    </div>
+                            <div class="grid grid-cols-8  text-custom w-[100%] ">
+                                <div class="col-span-4">
+                                    <div>Line ID</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail.lineID" :disabled="is_edit == true" />
                                 </div>
-                                <div class="grid grid-cols-8  text-custom w-[100%] mt-[6px] ">
-                                    <div class="col-span-4 ">
-                                        <div>สถาบันการศึกษา / สถานที่ทำงานปัจจุบัน</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.workplace" :disabled="is_edit == true" />
-                                    </div>
-                                    <div class="col-span-4 ml-[8px] ">
-                                        <div>คณะ / แผนก</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.faculty" :disabled="is_edit == true" />
-                                    </div>
+                            </div>
+                            <div class="grid grid-cols-8  text-custom w-[100%] mt-[6px] ">
+                                <div class="col-span-4 ">
+                                    <div>สถาบันการศึกษา / สถานที่ทำงานปัจจุบัน</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail.workplace" :disabled="is_edit == true" />
                                 </div>
-                                <div class="grid grid-cols-8 gap-2  text-custom w-[100%] mt-[6px] ">
-                                    <div class="col-span-2 ">
-                                        <div>ชั้นปี / ตำแหน่ง</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.rank" :disabled="is_edit == true" />
-                                    </div>
-                                    <div class="col-span-2">
-                                        <div>รหัสนักศึกษา / รหัสพนักงาน</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.idEmployee" :disabled="is_edit == true" />
-                                    </div>
-                                    <div class="col-span-4 ">
-                                        <div>บุคคลที่สามารถติดต่อได้กรณีฉุกเฉิน</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.emergencyPerson" :disabled="is_edit == true" />
-                                    </div>
+                                <div class="col-span-4 ml-[8px] ">
+                                    <div>คณะ / แผนก</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail.faculty" :disabled="is_edit == true" />
                                 </div>
-                                <div class="grid grid-cols-8 gap-2  text-custom w-[100%] mt-[6px] ">
-                                    <div class="col-span-2">
-                                        <div>ความสัมพันธ์</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                            v-model="room_detail.relation" :disabled="is_edit == true" />
-                                    </div>
-                                    <div class="col-span-2">
+                            </div>
+                            <div class="grid grid-cols-8 gap-2  text-custom w-[100%] mt-[6px] ">
+                                <div class="col-span-2 ">
+                                    <div>ชั้นปี / ตำแหน่ง</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail.rank" :disabled="is_edit == true" />
+                                </div>
+                                <div class="col-span-2">
+                                    <div>รหัสนักศึกษา / รหัสพนักงาน</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail.idEmployee" :disabled="is_edit == true" />
+                                </div>
+                                <div class="col-span-4 ">
+                                    <div>บุคคลที่สามารถติดต่อได้กรณีฉุกเฉิน</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail.emergencyPerson" :disabled="is_edit == true" />
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-8 gap-2  text-custom w-[100%] mt-[6px] ">
+                                <div class="col-span-2">
+                                    <div>ความสัมพันธ์</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="room_detail.relation" :disabled="is_edit == true" />
+                                </div>
+                                <div class="col-span-2">
                                     <div>เบอร์โทรศัพท์ผู้ติดต่อฉุกเฉิน</div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="room_detail.emergencyPhone" :disabled="is_edit == true" />
                                 </div>
-                                </div>
                             </div>
+                        </div>
                         <div class="w-[100%] flex mt-[14px]">
                             <div class="w-[30%] text-custom flex  items-start">ข้อมูลยานพหนะ</div>
                         </div>
                         <div class="mt-[14px]" v-if="room_detail.vehicles.length > 0">
-                                <div v-for="(data, i) in  room_detail.vehicles">
-                                    <div class="grid grid-cols-8  text-custom w-[100%]">
-                                        <div class="col-span-2">
-                                            <div class="flex">
-                                                <div class="flex items-center">คันที่ {{ i + 1 }}</div>
-                                                <div class="ml-[8px] cursor-pointer" @click="removeVehicles(i, data.id)">
-                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                        xmlns="http://www.w3.org/2000/svg">
-                                                        <mask id="mask0_417_4814" style="mask-type:alpha"
-                                                            maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
-                                                            <rect width="24" height="24" fill="#D9D9D9" />
-                                                        </mask>
-                                                        <g mask="url(#mask0_417_4814)">
-                                                            <path
-                                                                d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
-                                                                fill="#5C6B79" />
-                                                        </g>
-                                                    </svg>
-                                                </div>
+                            <div v-for="(data, i) in  room_detail.vehicles">
+                                <div class="grid grid-cols-8  text-custom w-[100%]">
+                                    <div class="col-span-2">
+                                        <div class="flex">
+                                            <div class="flex items-center">คันที่ {{ i + 1 }}</div>
+                                            <div class="ml-[8px] cursor-pointer" @click="removeVehicles(i, data.id)">
+                                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                    xmlns="http://www.w3.org/2000/svg">
+                                                    <mask id="mask0_417_4814" style="mask-type:alpha"
+                                                        maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                                        <rect width="24" height="24" fill="#D9D9D9" />
+                                                    </mask>
+                                                    <g mask="url(#mask0_417_4814)">
+                                                        <path
+                                                            d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                                                            fill="#5C6B79" />
+                                                    </g>
+                                                </svg>
                                             </div>
-                                            <select placeholder="ชื่อ"
-                                                class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]"
-                                                v-model="data.Type">
-                                                <option label="เลือกประเภท" value="" disabled>
-                                                    เลือกประเภท
-                                                </option>
-                                                <option label="รถยนต์" value="Car">
-                                                    รถยนต์
-                                                </option>
-                                                <option label="มอเตอร์ไซต์" value="Motocycle">
-                                                    มอเตอร์ไซต์
-                                                </option>
-                                            </select>
                                         </div>
-                                        <div class="col-span-3  ml-[8px]">
-                                            <div class="text-[white]">.</div>
-                                            <input type="input" placeholder="ทะเบียนรถ"
-                                                class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                                v-model="data.licensePlate" />
-                                        </div>
-                                        <div class="col-span-3  ml-[8px]">
-                                            <div class="text-[white]">.</div>
-                                            <input type="input" placeholder="รายละเอียดรถ"
-                                                class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                                v-model="data.remark" />
-                                        </div>
+                                        <select placeholder="ชื่อ"
+                                            class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]"
+                                            v-model="data.Type">
+                                            <option label="เลือกประเภท" value="" disabled>
+                                                เลือกประเภท
+                                            </option>
+                                            <option label="รถยนต์" value="Car">
+                                                รถยนต์
+                                            </option>
+                                            <option label="มอเตอร์ไซต์" value="Motocycle">
+                                                มอเตอร์ไซต์
+                                            </option>
+                                        </select>
                                     </div>
-                                    <!-- <div class="grid grid-cols-8  text-custom w-[100%] mb-[18px]  ">
+                                    <div class="col-span-3  ml-[8px]">
+                                        <div class="text-[white]">.</div>
+                                        <input type="input" placeholder="ทะเบียนรถ"
+                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            v-model="data.licensePlate" />
+                                    </div>
+                                    <div class="col-span-3  ml-[8px]">
+                                        <div class="text-[white]">.</div>
+                                        <input type="input" placeholder="รายละเอียดรถ"
+                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            v-model="data.remark" />
+                                    </div>
+                                </div>
+                                <!-- <div class="grid grid-cols-8  text-custom w-[100%] mb-[18px]  ">
                                         <div class="col-span-3 mt-[6px]">
                                             <div>แนบรูปภาพยานพหนะคันที่ {{ i + 1 }}</div>
                                             <div class="flex mt-[4px]">
@@ -353,9 +387,9 @@
                                             </div>
                                         </div>
                                     </div> -->
-                                </div>
-
                             </div>
+
+                        </div>
                         <div class="w-[100%] mt-[14px] flex" v-if="room_detail.vehicles.length != 2">
                             <div class="w-[100%]">
                                 <div class="grid grid-cols-8  text-custom w-[100%] ">
@@ -462,8 +496,8 @@
                 <!-- <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
                 <div class="pl-[20px] pr-[20px] mt-[24px]">
                     <div class="flex cursor-pointer text-custom">
-                        <div class="flex justify-center items-center mr-[8px]"><svg width="7" height="12" viewBox="0 0 7 12"
-                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <div class="flex justify-center items-center mr-[8px]"><svg width="7" height="12"
+                                viewBox="0 0 7 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M0.338101 5.99962C0.338101 5.88552 0.357334 5.77495 0.3958 5.6679C0.434267 5.56085 0.500293 5.46053 0.593876 5.36695L5.10348 0.857324C5.24834 0.712458 5.42142 0.642591 5.6227 0.647724C5.82398 0.652841 5.99706 0.727841 6.14193 0.872724C6.28679 1.01759 6.35923 1.19322 6.35923 1.39962C6.35923 1.60602 6.28679 1.78166 6.14193 1.92652L2.06883 5.99962L6.1573 10.0881C6.30217 10.233 6.37204 10.406 6.36693 10.6073C6.36179 10.8086 6.28679 10.9817 6.14193 11.1265C5.99706 11.2714 5.82142 11.3438 5.615 11.3438C5.4086 11.3438 5.23297 11.2714 5.0881 11.1265L0.593876 6.6323C0.500293 6.53872 0.434267 6.44 0.3958 6.33615C0.357334 6.23232 0.338101 6.12014 0.338101 5.99962Z"
                                     fill="#8396A6" />
@@ -481,8 +515,8 @@
                                 <div class="mt-[8px]">
                                     <svg width="65" height="65" viewBox="0 0 65 65" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_3528_18769" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="65" height="65">
+                                        <mask id="mask0_3528_18769" style="mask-type:alpha" maskUnits="userSpaceOnUse"
+                                            x="0" y="0" width="65" height="65">
                                             <rect width="65" height="65" fill="#D9D9D9" />
                                         </mask>
                                         <g mask="url(#mask0_3528_18769)">
@@ -508,8 +542,8 @@
                                 <div class="mt-[8px]">
                                     <svg width="65" height="65" viewBox="0 0 65 65" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_3596_18066" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="65" height="65">
+                                        <mask id="mask0_3596_18066" style="mask-type:alpha" maskUnits="userSpaceOnUse"
+                                            x="0" y="0" width="65" height="65">
                                             <rect width="65" height="65" fill="#D9D9D9" />
                                         </mask>
                                         <g mask="url(#mask0_3596_18066)">
@@ -546,6 +580,7 @@
 <script>
 import axios from 'axios'
 export default {
+    name: 'UilLine',
     props: {
         id_user: { type: String },
         id_room: { type: String },

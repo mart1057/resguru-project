@@ -15,26 +15,26 @@
                         </g>
                     </svg>
                 </div>
-                <div class="text-[18px] font-bold flex items-center ml-[4px]">แจ้งเตือน</div>
+                <div class="text-[20px] font-bold flex items-center ml-[4px]">แจ้งเตือน</div>
             </div>
             <div class="flex justify-center items-center">
                 <div class="flex justify-center items-center">ดูทั้งหมด</div>
             </div>
         </div>
         <div  class="grid grid-flow-col auto-cols-auto  gap-2 mt-[18px]">
-            <div @click="tab = 1" class="cursor-pointer text-[#8396A6] flex justify-center items-center text-[1rem] w-[100%]"
+            <div @click="tab = 1" class="cursor-pointer text-[#8396A6] flex justify-center items-center text-[18px] w-[100%]"
                 :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white] ' : 'flex justify-center items-center'">
                 ทั้งหมด</div>
-            <div @click="tab = 2" class="cursor-pointer text-[#8396A6] flex justify-center items-center w-[100%]"
+            <div @click="tab = 2" class="cursor-pointer text-[#8396A6] flex justify-center items-center text-[18px] w-[100%]"
                 :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
                 ซ่อมบำรุง</div>
-            <div @click="tab = 3" class="cursor-pointer text-[#8396A6]"
+            <div @click="tab = 3" class="cursor-pointer text-[#8396A6] flex justify-center items-center text-[18px]"
                 :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
                 ทำความสะอาด</div>
-            <div @click="tab = 4" class="cursor-pointer text-[#8396A6]"
+            <div @click="tab = 4" class="cursor-pointer text-[#8396A6] flex justify-center items-center text-[18px]"
                 :class="tab == 4 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
                 แจ้งย้ายออก</div>
-            <div @click="tab = 5" class="cursor-pointer text-[#8396A6]"
+            <div @click="tab = 5" class="cursor-pointer text-[#8396A6] flex justify-center items-center text-[18px]"
                 :class="tab == 5 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
                 ฉุกเฉิน</div>
         </div>
@@ -90,8 +90,8 @@
                         <div class="flex justify-between w-[100%] p-[8px]">
                             <div class="flex-col justify-between">
                                 <div>
-                                    <div class="font-bold truncate !w-[8.375rem]">ห้อง {{ item.user_sign_contract?.room?.RoomNumber }} {{ item.title }}</div>
-                                    <div class="text-[12px] text-[#8396A6]">รายละเอียด</div>
+                                    <div class="text-[18px] font-bold truncate !w-[8.375rem]">ห้อง {{ item.user_sign_contract?.room?.RoomNumber }} {{ item.title }}</div>
+                                    <div class="text-[16px] text-[#8396A6]">รายละเอียด</div>
                                 </div>
                                 <div class="truncate !w-[8.375rem]">{{ item.description }} {{ screenW }}}</div>
                             </div>

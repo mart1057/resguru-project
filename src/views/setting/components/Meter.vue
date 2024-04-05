@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="bg-[white] pt-[14px] pl-[24px] pr-[24px] " :class="tab == 1 ? 'rounded-b-lg' : 'rounded-t-lg'">
+        <!-- <div class="bg-[white] pt-[14px] pl-[24px] pr-[24px] " :class="tab == 1 ? 'rounded-b-lg' : 'rounded-t-lg'">
             <div class="bg-[white] ">
                 <div class="flex justify-start items-center rounded-[12px] ">
                     <div class="bg-[#F3F7FA] rounded-[12px]">
@@ -14,16 +14,16 @@
                             </div>
                             <div @click="tab = 3" class="cursor-pointer ml-[8px]"
                                 :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
-                                ค่าบริการอื่น ๆ
+                                ค่าบริการเสริม
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 1">
-            <div class="grid grid-cols-2 gap-4 mt-[14px] w-[100%]">
+        <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg">
+            <div class="grid grid-cols-3 gap-4 mt-[14px] w-[100%]">
                 <div class="border h-[auto]  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]">
                     <div class="flex flex-col justify-between h-[100%]">
                         <div class="flex">
@@ -41,19 +41,19 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class="text-[16px] ml-[4px] font-bold">ค่าน้ำ</div>
+                            <div class="text-[20px] ml-[4px] font-bold">ค่าน้ำ</div>
                         </div>
                         <div
-                            class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] text-[#2875E9] mt-[8px]">
+                            class="text-[20px] flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] text-[#2875E9] mt-[8px]">
                             <div>ราคา</div>
                             <input type="number" @change="updateUserBuildingWater()"
-                                class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
+                                class=" flex justify-center h-[30px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
                                 v-model="building[0].attributes.waterUnitPrice">
                             <!-- <div class="font-bold">{{ building[0].attributes.waterUnitPrice }}</div> -->
                         </div>
                     </div>
                 </div>
-                <div class="border h-[auto]  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] ml-[30px]">
+                <div class="border h-[auto]  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]">
                     <div class="flex flex-col justify-between h-[100%]">
                         <div class="flex">
                             <div>
@@ -70,30 +70,34 @@
                                     </g>
                                 </svg>
                             </div>
-                            <div class="text-[16px] ml-[4px] font-bold">ค่าไฟ</div>
+                            <div class="text-[20px] ml-[4px] font-bold">ค่าไฟ</div>
                         </div>
                         <div
-                            class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] text-[#EEA10B] mt-[8px]">
+                            class="text-[20px] flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] text-[#EEA10B] mt-[8px]">
                             <div>ราคา</div>
                             <input type="number" @change="updateUserBuildingElectric()"
-                                class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
+                                class=" flex justify-center h-[30px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
                                 v-model="building[0].attributes.electricUnitPrice">
                             <!-- <div class="font-bold">{{ building[0].attributes.electricUnitPrice }}</div> -->
                         </div>
                     </div>
                 </div>
-
-
-            </div>
-        </div>
-
-        <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 2">
-            <div class="grid grid-cols-2 gap-4 mt-[14px] w-[100%]">
                 <div class="border h-[auto] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]">
                     <div class="flex flex-col justify-between h-[100%]">
                         <div class="flex">
                             <div>
-                                <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
+
+                                <template>
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48">
+                                        <g fill="none" stroke="#003765" stroke-linejoin="round" stroke-width="4">
+                                            <path
+                                                d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
+                                            <path stroke-linecap="round" d="M24 16v16m-8-8h16" />
+                                        </g>
+                                    </svg>
+                                </template>
+
+                                <!-- <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_967_29728" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="20" height="21">
@@ -104,27 +108,28 @@
                                             d="M3.95699 17.6458C3.61618 17.6458 3.32266 17.5227 3.07641 17.2764C2.83016 17.0302 2.70703 16.7366 2.70703 16.3958V7.64581C2.70703 7.30501 2.83016 7.01147 3.07641 6.76521C3.32266 6.51896 3.61618 6.39583 3.95699 6.39583H6.04036V4.31248C6.04036 3.97167 6.16349 3.67814 6.40974 3.43187C6.65599 3.18562 6.94952 3.0625 7.29032 3.0625H12.707C13.0478 3.0625 13.3414 3.18562 13.5876 3.43187C13.8339 3.67814 13.957 3.97167 13.957 4.31248V9.72917H16.0404C16.3812 9.72917 16.6747 9.85229 16.9209 10.0985C17.1672 10.3448 17.2903 10.6383 17.2903 10.9791V16.3958C17.2903 16.7366 17.1672 17.0302 16.9209 17.2764C16.6747 17.5227 16.3812 17.6458 16.0404 17.6458H11.0404V14.3125H8.95699V17.6458H3.95699ZM3.95699 16.3958H6.04036V14.3125H3.95699V16.3958ZM3.95699 13.0625H6.04036V10.9791H3.95699V13.0625ZM3.95699 9.72917H6.04036V7.64581H3.95699V9.72917ZM7.29032 13.0625H9.3737V10.9791H7.29032V13.0625ZM7.29032 9.72917H9.3737V7.64581H7.29032V9.72917ZM7.29032 6.39583H9.3737V4.31248H7.29032V6.39583ZM10.6237 13.0625H12.707V10.9791H10.6237V13.0625ZM10.6237 9.72917H12.707V7.64581H10.6237V9.72917ZM10.6237 6.39583H12.707V4.31248H10.6237V6.39583ZM13.957 16.3958H16.0404V14.3125H13.957V16.3958ZM13.957 13.0625H16.0404V10.9791H13.957V13.0625Z"
                                             fill="#003765" />
                                     </g>
-                                </svg>
+                                </svg> -->
                             </div>
                             <div class="text-[16px] ml-[4px] font-bold">ค่าส่วนกลาง</div>
                         </div>
                         <div
-                            class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] mt-[8px] ">
+                            class="text-[20px] flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] mt-[8px] ">
                             <div>ราคา</div>
                             <input type="number" @change="updateUserBuildingCommunual()"
-                                class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
+                                class=" flex justify-center h-[30px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
                                 v-model="building[0].attributes.communalUnitPrice">
                             <!-- <div class="font-bold">{{ building[0].attributes.communalUnitPrice }}</div> -->
                         </div>
                     </div>
                 </div>
 
-
             </div>
         </div>
 
-        <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg" v-if="tab == 3">
-            <div class="text-[16px] font-bold mt-[24px]">ค่าบริการอื่น ๆ</div>
+
+
+        <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg">
+            <div class="text-[20px] font-bold mt-[24px]">ค่าบริการเสริม</div>
             <div class="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-[14px] w-[100%]">
                 <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
                     @click="is_edit = false, discountAmount = '', price = '', title = '', create_service = true">
@@ -144,10 +149,11 @@
                     </div>
                     <div class="text-[#5C6B79] font-bold mt-[4px] ">สร้างบริการ</div>
                 </div>
-                <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]" v-for="data in otherOfBuilding">
+                <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]"
+                    v-for="data in otherOfBuilding">
                     <div class="flex flex-col justify-between h-[100%]">
                         <div class="flex justify-between">
-                            <div class="text-[16px]"> {{ data.attributes.title }}</div>
+                            <div class="text-[18px]"> {{ data.attributes.title }}</div>
                             <div>
                                 <!-- <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
@@ -161,12 +167,12 @@
                             </div>
                         </div>
                         <div
-                            class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]  mt-[14px]">
+                            class="text-[18px] flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]  mt-[14px]">
                             <div>ราคา/เดือน</div>
                             <!-- <div class="font-bold">{{ data.attributes.price }}</div> -->
                             <input type="number" @change="changeotherPrice(data.id, data.attributes.price)"
                                 v-model="data.attributes.price"
-                                class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]">
+                                class=" flex justify-center h-[30px] w-[50%] bg-[#F3F8FD] rounded-[12px]">
                         </div>
                         <!-- <div
                             class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]  mt-[4px]">
@@ -209,8 +215,8 @@
                                 <div>
                                     <svg width="22" height="22" viewBox="0 0 22 22" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1373_22419" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="22" height="22">
+                                        <mask id="mask0_1373_22419" style="mask-type:alpha" maskUnits="userSpaceOnUse"
+                                            x="0" y="0" width="22" height="22">
                                             <rect y="22" width="22" height="22" transform="rotate(-90 0 22)"
                                                 fill="#D9D9D9" />
                                         </mask>
@@ -228,8 +234,8 @@
                                 <div class="cursor-pointer">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1373_22414" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="24" height="24">
+                                        <mask id="mask0_1373_22414" style="mask-type:alpha" maskUnits="userSpaceOnUse"
+                                            x="0" y="0" width="24" height="24">
                                             <rect width="24" height="24" fill="#D9D9D9" />
                                         </mask>
                                         <g mask="url(#mask0_1373_22414)">
@@ -254,8 +260,8 @@
                                 <div>
                                     <svg width="22" height="22" viewBox="0 0 22 22" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1373_22419" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="22" height="22">
+                                        <mask id="mask0_1373_22419" style="mask-type:alpha" maskUnits="userSpaceOnUse"
+                                            x="0" y="0" width="22" height="22">
                                             <rect y="22" width="22" height="22" transform="rotate(-90 0 22)"
                                                 fill="#D9D9D9" />
                                         </mask>
@@ -273,8 +279,8 @@
                                 <div class="cursor-pointer">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1373_22414" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="24" height="24">
+                                        <mask id="mask0_1373_22414" style="mask-type:alpha" maskUnits="userSpaceOnUse"
+                                            x="0" y="0" width="24" height="24">
                                             <rect width="24" height="24" fill="#D9D9D9" />
                                         </mask>
                                         <g mask="url(#mask0_1373_22414)">
@@ -299,8 +305,8 @@
                                 <div>
                                     <svg width="22" height="22" viewBox="0 0 22 22" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1373_22419" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="22" height="22">
+                                        <mask id="mask0_1373_22419" style="mask-type:alpha" maskUnits="userSpaceOnUse"
+                                            x="0" y="0" width="22" height="22">
                                             <rect y="22" width="22" height="22" transform="rotate(-90 0 22)"
                                                 fill="#D9D9D9" />
                                         </mask>
@@ -318,8 +324,8 @@
                                 <div class="cursor-pointer">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1373_22414" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="24" height="24">
+                                        <mask id="mask0_1373_22414" style="mask-type:alpha" maskUnits="userSpaceOnUse"
+                                            x="0" y="0" width="24" height="24">
                                             <rect width="24" height="24" fill="#D9D9D9" />
                                         </mask>
                                         <g mask="url(#mask0_1373_22414)">
@@ -376,10 +382,11 @@
                         class="text-custom  h-[36px] bg-[#003765] rounded-[12px] flex justify-between items-center text-[white] pl-[8px] pr-[8px]">
                         <div>ห้อง 101</div>
                         <div class="cursor-pointer">
-                            <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
                                 <rect x="0.5" width="18" height="18" rx="9" fill="#003765" />
-                                <mask id="mask0_902_18142" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-                                    width="19" height="18">
+                                <mask id="mask0_902_18142" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
+                                    y="0" width="19" height="18">
                                     <rect x="0.5" width="18" height="18" fill="#D9D9D9" />
                                 </mask>
                                 <g mask="url(#mask0_902_18142)">
@@ -394,10 +401,11 @@
                         class="text-custom  h-[36px] bg-[#003765] rounded-[12px] flex justify-between items-center text-[white] pl-[8px] pr-[8px]">
                         <div>ห้อง 102</div>
                         <div class="cursor-pointer">
-                            <svg width="19" height="18" viewBox="0 0 19 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
                                 <rect x="0.5" width="18" height="18" rx="9" fill="#003765" />
-                                <mask id="mask0_902_18142" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-                                    width="19" height="18">
+                                <mask id="mask0_902_18142" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
+                                    y="0" width="19" height="18">
                                     <rect x="0.5" width="18" height="18" fill="#D9D9D9" />
                                 </mask>
                                 <g mask="url(#mask0_902_18142)">
@@ -500,7 +508,7 @@
             <div>
                 <div class="flex justify-between">
                     <div class="text-custom flex justify-center items-center text-[16px] font-bold">
-                        สร้างบริการอื่น ๆ</div>
+                        สร้างบริการเสริม</div>
                     <div @click="create_service = false" class="cursor-pointer">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
@@ -519,7 +527,8 @@
                 <div class="mt-[14px]">
                     <div class="text-custom">ชื่อบริการ</div>
                     <div>
-                        <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                        <input
+                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
                             v-model="title" />
                     </div>
                 </div>
@@ -533,7 +542,8 @@
                 <div class="mt-[14px]">
                     <div class="text-custom">ราคา/เดือน</div>
                     <div>
-                        <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                        <input
+                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
                             v-model="price" />
                     </div>
                 </div>
@@ -635,7 +645,7 @@ export default {
                     this.id_Facilities = resp.data.id,
                         this.title = resp.data.attributes.title,
                         this.price = resp.data.attributes.price
-                        //this.discountAmount = resp.data.attributes.discountAmount
+                    //this.discountAmount = resp.data.attributes.discountAmount
                 }).finally(() => {
                     this.getUserBuilding();
                     this.getOtherBuilding();
@@ -791,7 +801,7 @@ export default {
 }
 
 </script>
-<style  >
+<style>
 .vs-input {
     width: 100% !important;
 }

@@ -1,7 +1,8 @@
 <template>
     <div class="h-[100%]" @mouseleave="sidebar = false">
         <div class="bg-[#E0ECE4] flex items-center justify-between h-[70px] w-[100%]"
-            :style="{ height: toolbarHeight, background: $store.state.buildingInfo[0]?.attributes.colorCode }">
+            :style="{ height: toolbarHeight, background: '#F5D65E' }">
+            <!-- $store.state.buildingInfo[0]?.attributes.colorCode -->
             <div class="flex justify-center items-center w-[100%]">
                 <div class="flex justify-between  w-[100%] pl-[24px] pr-[24px]">
                     <div class="flex">
@@ -16,7 +17,7 @@
                             </div>
 
                         </div>
-                        <div class="ml-[8px]"><svg width="35" height="38" viewBox="0 0 35 38" fill="none"
+                        <div class="ml-[8px]" @click="routerTo('/dashboard')"><svg width="35" height="38" viewBox="0 0 35 38" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path
                                     d="M32.9822 35.4743L26.026 24.7507C30.0591 22.8879 32.4081 19.219 32.4081 14.2123C32.4081 6.72532 27.222 2.10449 18.931 2.10449H14.7305C15.716 3.56072 16.2997 5.35142 16.2997 7.2862C16.2997 7.66183 16.2758 8.03232 16.2327 8.39767H18.5339C22.921 8.39767 25.1409 10.5434 25.1409 14.2123C25.1409 17.8812 22.921 20.0269 18.5339 20.0269H15.5916V26.1812H19.2898L25.2701 35.4743L26.3322 37.126H34.0539L32.9822 35.4743Z"
@@ -27,8 +28,9 @@
                             </svg>
                         </div>
                         <div class="ml-[16px] flex flex-col justify-between">
-                            <div class="text-[22px] font-bold">{{ $route.meta.title }}</div>
-                            <div class="text-[12px] text-[#8396A6]">{{ $route.meta.desc }}</div>
+                            <div class="text-[22px] font-bold">{{ $store.state.buildingInfo[0].attributes.buildingName }}</div>
+                            <div class="text-[16px] text-[#003765]">{{ $route.meta.desc }}</div>
+                            <!-- 8396A6  -->
                         </div>
                     </div>
                     <div class="flex justify-center items-center">

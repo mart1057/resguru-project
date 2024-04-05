@@ -21,11 +21,11 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/dashboard',
-    name: 'dashboard',
+    name: 'Home',
     component: DashBoard,
     meta: {
-      title:'แดชบอร์ด',
-      desc:'แดชบอร์ด'
+      title:'หน้าหลัก',
+      desc:'หน้าหลัก'
     }
   },
 

@@ -92,11 +92,26 @@
                 </div>
 
             </div>
+<!-- 
+            <div class="flex items-center mb-[8px] mt-[14px] table-container">
+                <div v-for="(data, i) in roomFloor" class="flex-initial flex-nowrap w-32 p-2 border-1"
+                :class="tab_floor == i ? 'font-bold text-[16px] text-[white] bg-[#003765]' : 'text-[#8396A6]'">
+                    <div class="cursor-pointer whitespace-nowrap"
+                        :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
+                        @click="tab_floor = i, filter.floor = data.id, getRoom(), name_floor = data.attributes.floorName">
+                        ชั้น {{ data.attributes.floorName }}
+                    </div>
+                </div>
+            </div> -->
+
+
+
             <div class="flex items-center mb-[8px] mt-[14px] table-container ">
                 <!-- <div class="mr-[14px] font-bold cursor-pointer" v-for="floors in floor">อาคาร A ชั้น {{ floors.attributes.floorName }}</div> -->
                 <!-- <div class="text-[#8396A6] cursor-pointer">อาคาร A ชั้น 2</div> -->
-                <div v-for="(data, i) in floor">
-                    <div class=" cursor-pointer mr-[8px]"
+                <div v-for="(data, i) in floor" class="flex-initial flex-nowrap w-32 p-2 border-1"
+                :class="tab_floor == i ? 'font-bold text-[16px] text-[white] bg-[#003765]' : 'text-[#8396A6]'">
+                    <div class=" cursor-pointer whitespace-nowrap mr-[16px]"
                         :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
                         @click="tab_floor = i, filter.floor = data.id, getRoomBill(data.id, 0, filter.selectedMonth, filter.selectedYear), name_floor = data.attributes.floorName">
                        ชั้น {{ data.attributes.floorName }}
@@ -105,7 +120,7 @@
             </div>
         </div>
         <div class="mt-[14px] bg-[white] rounded-[12px] p-[24px]">
-            <div class="font-bold text-[18px]">ชั้น {{ name_floor }}</div>
+            <div class="font-bold text-[20px]">ชั้น {{ name_floor }}</div>
             <div class="mt-[14px]">
                 <vs-table v-model="selected">
                     <template #thead>
@@ -123,15 +138,15 @@
                             <vs-th>
                                 ประเภทห้อง
                             </vs-th>
-                            <vs-th>
-                                ค่าห้องเช่า
+                            <!-- <vs-th>
+                                ค่าเช่าห้อง
                             </vs-th>
                             <vs-th>
                                 ค่าส่วนกลาง
                             </vs-th>
                             <vs-th>
-                                ค่าบริการอื่น ๆ
-                            </vs-th>
+                                ค่าบริการเสริม
+                            </vs-th> -->
                             <vs-th>
                                 ยอดรวม
                             </vs-th>
@@ -191,7 +206,7 @@
 
 
 
-                            <vs-td>
+                            <!-- <vs-td>
                                 <div @click="routeTo(tr.id)">
                                     <div v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                         {{ $formatNumber(tr.tenant_bills[0].roomPrice) }}
@@ -212,7 +227,7 @@
                                         {{ $formatNumber(tr.tenant_bills[0].otherPrice) }}
                                     </div>
                                 </div>
-                            </vs-td>
+                            </vs-td> -->
                             <vs-td>
                                 <div @click="routeTo(tr.id)">
                                     <div v-if="tr.user_sign_contract && tr.tenant_bills[0]">
@@ -1144,6 +1159,25 @@ export default {
 }
 </script>
 <style>
+tbody tr:nth-child(odd) {
+  background-color: #c3d4f1;
+  border-radius: solid !important;
+}
+tbody tr:nth-child(even) {
+  background-color: #e3e5e9;
+  border-radius: solid !important; 
+}
+th {
+  font-size: 20px;
+}
+tbody td:first-child {
+  font-size: 16px !important;
+  width: 10%;
+}
+tbody td {
+  font-size: 16px !important;
+}
+
 .table-container {
     width: 100%;
     /* Set a fixed height to enable scrolling */

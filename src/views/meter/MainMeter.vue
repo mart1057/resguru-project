@@ -50,20 +50,21 @@
                     @click="tab = 4, filter.search = ''"
                     :class="tab == 4 ? 'bg-[#5D5FEF] text-[white]' : 'bg-[white] text-[#003765]'">
                     <div>
-                        <svg width="69" height="69" viewBox="0 0 69 69" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <mask id="mask0_528_18483" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-                                width="69" height="69">
-                                <rect width="69" height="69" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_528_18483)">
-                                <path
-                                    d="M34.5004 56.6705C31.7802 56.6705 29.46 55.7104 27.5397 53.79C25.6194 51.8697 24.6592 49.5494 24.6592 46.8293C24.6592 44.1091 25.6194 41.7889 27.5397 39.8685C29.46 37.9482 31.7802 36.9881 34.5004 36.9881C37.2206 36.9881 39.5409 37.9482 41.4612 39.8685C43.3815 41.7889 44.3416 44.1091 44.3416 46.8293C44.3416 49.5494 43.3815 51.8697 41.4612 53.79C39.5409 55.7104 37.2206 56.6705 34.5004 56.6705ZM34.5063 52.3581C36.0284 52.3581 37.3293 51.8162 38.4093 50.7323C39.4893 49.6484 40.0293 48.3455 40.0293 46.8234C40.0293 45.3014 39.4873 44.0004 38.4035 42.9204C37.3196 41.8405 36.0166 41.3005 34.4945 41.3005C32.9725 41.3005 31.6715 41.8424 30.5916 42.9263C29.5116 44.0102 28.9716 45.3131 28.9716 46.8352C28.9716 48.3572 29.5135 49.6582 30.5974 50.7382C31.6813 51.8181 32.9843 52.3581 34.5063 52.3581ZM11.5062 24.7804L8.34375 21.7949C11.7273 18.4887 15.6371 15.8819 20.073 13.9744C24.509 12.067 29.3181 11.1133 34.5004 11.1133C39.6828 11.1133 44.4919 12.067 48.9278 13.9744C53.3638 15.8819 57.2735 18.4887 60.6571 21.7949L57.4947 24.7804C54.4612 21.8649 50.9855 19.5769 47.0674 17.9164C43.1493 16.2559 38.9603 15.4256 34.5004 15.4256C30.0405 15.4256 25.8515 16.2559 21.9334 17.9164C18.0154 19.5769 14.5396 21.8649 11.5062 24.7804ZM48.1621 33.715C46.297 31.9863 44.2228 30.6621 41.9394 29.7425C39.656 28.8229 37.1764 28.3631 34.5004 28.3631C31.8245 28.3631 29.3568 28.8229 27.0974 29.7425C24.838 30.6621 22.7518 31.9863 20.8388 33.715L17.6764 30.7295C20.0058 28.5917 22.5868 26.9441 25.4194 25.7867C28.252 24.6293 31.279 24.0506 34.5004 24.0506C37.7219 24.0506 40.7415 24.6293 43.5593 25.7867C46.3772 26.9441 48.9508 28.5917 51.2803 30.7295L48.1621 33.715Z"
-                                    :fill="tab == 4 ? 'white' : '#003765'" />
-                            </g>
-                        </svg>
+                        
+                        <template>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="69" height="69" viewBox="0 0 48 48">
+                                <g fill="none" stroke="#D9D9D9" stroke-linejoin="round" stroke-width="4">
+                                    <path d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" 
+                                    :stroke="tab == 4 ? 'white' : '#003765'" />
+                                    <path stroke-linecap="round" d="M24 16v16m-8-8h16" 
+                                    :stroke="tab == 4 ? 'white' : '#003765'"/>
+                                </g>
+                            </svg>
+                        </template>
+
 
                     </div>
-                    <div class=" text-[18px] font-bold">บริการอื่น ๆ</div>
+                    <div class=" text-[18px] font-bold">บริการเสริม</div>
                 </div>
             </div>
             <div
@@ -376,9 +377,11 @@
                         </label>
                     </div>
                 </div>
-                <div class="flex items-center mb-[8px] mt-[18px] table-container">
-                    <div v-for="(data, i) in floor ">
-                        <div class=" cursor-pointer mr-[8px]"
+                <div class="flex items-center mb-[8px] mt-[14px] table-container">
+                    <!-- <div v-for="(data, i) in floor " class="flex-initial flex-nowrap w-32 p-2 border-1 rounded-t-lg" -->
+                    <div v-for="(data, i) in floor " class="flex-initial flex-nowrap w-32 p-2 border-1"
+                    :class="tab_floor == i ? 'font-bold text-[16px] text-[white] bg-[#003765]' : 'text-[#8396A6]'">
+                        <div class=" cursor-pointer mr-[8px] whitespace-nowrap"
                             :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
                             @click="tab_floor = i, filter.floor = data.id, callChildFunction(data.id), name_floor = data.attributes.floorName">
                             ชั้น {{ data.attributes.floorName }}
@@ -544,6 +547,25 @@ export default {
 }
 </script>
 <style>
+tbody tr:nth-child(odd) {
+  background-color: #c3d4f1;
+  border-radius: solid !important;
+}
+tbody tr:nth-child(even) {
+  background-color: #e3e5e9;
+  border-radius: solid !important; 
+}
+th {
+  font-size: 16px;
+}
+tbody td:first-child {
+  font-size: 14px;
+  width: 100;
+}
+tbody td {
+  font-size: 14px;
+}
+
 .table-container {
     width: 100%;
     /* Set a fixed height to enable scrolling */

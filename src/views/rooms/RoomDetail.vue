@@ -14,10 +14,10 @@
             </div>
         </div>
         <div class="flex mt-[14px]">
-            <div class="text-[18px] font-bold text-[#141629] flex items-center justify-center">ห้อง {{
+            <div class="text-[20px] font-bold text-[#141629] flex items-center justify-center">ห้อง {{
                 $route.query.number_room }}</div>
             <div :class="$route.query.status == 'Checked In' ? 'bg-[#D7F1E3] text-[#39B974]' : 'bg-[#F0F8FF] text-[#003765]'"
-                class="ml-[14px] h-[36px] w-[auto] text-[12px] flex items-center justify-center p-[8px] rounded-[12px]">
+                class="ml-[14px] h-[36px] w-[auto] text-[16px] flex items-center justify-center p-[8px] rounded-[12px]">
                 {{ $route.query.status == "Checked In" ? 'ทำสัญญาแล้ว' : $route.query.status == "Reserved" ? 'ห้องจอง'
                     :  $route.query.status == "Maintenance"?'รอซ่อม':'ห้องว่าง' }} </div>
         </div>
@@ -26,36 +26,40 @@
                 <div class="flex justify-start items-center">
                     <div @click=" routTab(1)" class="cursor-pointer "
                         :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
-                        ผู้เช่า</div>
-                    <div @click=" routTab(2)" class="cursor-pointer ml-[8px]" v-if=" $route.query.status == 'Checked In'"
+                        ข้อมูลผู้เช่า</div>
+                    <!-- <div @click=" routTab(2)" class="cursor-pointer ml-[8px]" v-if=" $route.query.status == 'Checked In'"
                         :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         สัญญาเช่า
                     </div>
                     <div @click=" routTab(3)" class="cursor-pointer  ml-[8px]"
                         :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
-                        บริการอื่น ๆ
-                    </div>
+                        บริการเสริม
+                    </div> -->
                     <div @click=" routTab(4)" class="cursor-pointer  ml-[8px]"  v-if=" $route.query.status == 'Checked In'"
                         :class="tab == 4 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : ' text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
                         ย้ายออก/ย้ายห้อง
                     </div>
                     <div @click="routTab(5)" class="cursor-pointer  ml-[8px]"
                         :class="tab == 5 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : ' text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
-                        ผู้เช่ารายเก่า
+                        ประวัติห้อง
                     </div>
                 </div>
             </div>
         </div>
         <div v-if="tab == 1">
+            <div class="grid grid-cols-6 gap-0 justify-start pb-3">
             <CardMember :id_user="$route.query.id_user" :id_room="$route.query.id_room" :status="$route.query.status"
                 :id_contract="$route.query.id_contract" />
+            <Contract />
+            </div>
+            <Facilites />
         </div>
-        <div v-else-if="tab == 2">
+        <!-- <div v-else-if="tab == 2">
             <Contract />
         </div>
         <div v-else-if="tab == 3">
             <Facilites />
-        </div>
+        </div> -->
         <div v-else-if="tab == 4">
             <MoveOut />
         </div>

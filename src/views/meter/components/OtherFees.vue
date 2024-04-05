@@ -15,7 +15,7 @@
                             ชื่อผู้เช่า
                         </vs-th>
                         <vs-th>
-                            รายการค่าบริการอื่น ๆ
+                            รายการค่าบริการเสริม
                         </vs-th>
                     </vs-tr>
                 </template>
@@ -81,7 +81,7 @@
                                             </div>
                                             <div class="center">
                                                 <vs-checkbox v-model="option">
-                                                    <div class="text-custom">บริการอื่น ๆ</div>
+                                                    <div class="text-custom">บริการเสริม</div>
                                                 </vs-checkbox>
                                             </div>
                                         </div>

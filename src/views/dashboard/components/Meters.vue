@@ -16,7 +16,7 @@
                     </svg>
 
                 </div>
-                <div class="text-[18px] font-bold flex items-center ml-[4px]">มิเตอร์</div>
+                <div class="text-[20px] font-bold flex items-center ml-[4px]">มิเตอร์</div>
             </div>
             <div class="grid grid-flow-col auto-cols-auto  gap-2 mt-[8px] ml-[8px] w-[80%]">
                 <div class="flex justify-center items-center">
@@ -31,7 +31,7 @@
                         ค่าส่วนกลาง</div>
                     <div @click="tab = 4" class="cursor-pointer text-[#8396A6] ml-[8px] flex justify-center items-center text-[1rem] w-[100%]"
                         :class="tab == 4 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
-                        ค่าบริการอื่น ๆ</div>
+                        ค่าบริการเสริม</div>
                 </div>
             </div>
         </div>
@@ -84,7 +84,7 @@
 
                         </vs-td>
                         <vs-td v-if="tab == 1 || tab == 2">
-                            <div v-if="tab == 1"> {{ tr.water_fees[1]?.usageMeter ? tr.water_fees[1]?.usageMeter : '-' }}
+                            <div v-if="tab == 1"> {{ tr.water_fees[0]?.usageMeter ? tr.water_fees[0]?.usageMeter : '-' }}
                             </div>
                             <div v-else-if="tab == 2"> {{ tr.electric_fees[0]?.usageMeter ? tr.electric_fees[0]?.usageMeter :
                                 '-' }}</div>
@@ -166,6 +166,25 @@ export default {
 }
 </script>
 <style scoped>
+tbody tr:nth-child(odd) {
+  background-color: #c3d4f1;
+  border-radius: solid !important;
+}
+tbody tr:nth-child(even) {
+  background-color: #e3e5e9;
+  border-radius: solid !important; 
+}
+th {
+  font-size: 16px;
+}
+tbody td:first-child {
+  font-size: 14px;
+  width: 70;
+}
+tbody td {
+  font-size: 14px;
+}
+
 #payment {
     background-color: rgb(255, 255, 255);
 }

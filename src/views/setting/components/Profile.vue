@@ -486,7 +486,7 @@ export default {
                 })
                 .finally(() => {
                     this.getUserDetail();
-                    this.$showNotification('#3A89CB', 'Upload Profile Success')
+                    this.$showNotification('#3A89CB', 'Update Profile Success')
                 })
 
         },
@@ -672,7 +672,7 @@ export default {
                     })
                     .finally(() => {
                         this.getBuildingData();
-                        this.$showNotification('#3A89CB', 'Upload Banner Success')
+                        this.$showNotification('#3A89CB', 'Upload Building Profile Success')
                     })
             }
         },

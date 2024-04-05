@@ -7,14 +7,14 @@
                         <div class="flex justify-start items-center">
                             <div @click="tab = 1" class="cursor-pointer "
                                 :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
-                                ผังห้อง</div>
+                                รายการห้องพัก</div>
                             <div @click="tab = 2" class="cursor-pointer ml-[8px]"
                                 :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
-                                รายการประเภทห้องพัก
+                                ประเภทห้องพัก
                             </div>
                             <div @click="tab = 3, getFloorRoom()" class="cursor-pointer ml-[8px]"
                                 :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[12px] text-[white]' : 'text-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] flex justify-center items-center'">
-                                รายการจำนวนชั้นของหอพัก
+                                ชั้นของหอพัก
                             </div>
                         </div>
                     </div>
@@ -128,8 +128,12 @@
                                 </vs-option>
                             </vs-select>
                         </div> -->
-                        <div v-for="(data, i) in roomFloor">
-                            <div class="cursor-pointer mr-[8px]"
+
+
+
+                        <div v-for="(data, i) in roomFloor" class="flex-initial flex-nowrap w-32 p-2 border-1"
+                :class="tab_floor == i ? 'font-bold text-[16px] text-[white] bg-[#003765]' : 'text-[#8396A6]'">
+                            <div class="cursor-pointer whitespace-nowrap"
                                 :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
                                 @click="tab_floor = i, filter.floor = data.id, name_floor = data.attributes.floorName, getUserRoom()">
                                 ชั้น {{ data.attributes.floorName }} </div>
@@ -295,7 +299,7 @@
                             </g>
                         </svg>
                     </div>
-                    <div class="text-[#5C6B79] font-bold text-[1.1vw] mt-[4px]">สร้างประเภทห้องพัก</div>
+                    <div class="text-[#5C6B79] font-bold text-[1.1vw] mt-[4px]">สร้างประเภทห้องพักใหม่</div>
                 </div>
                 <div class="border h-[130px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] cursor-pointer"
                     v-for="data in roomType" @click="create_type = true, is_edit_type = true, getTypeRoomDetail(data.id)">
@@ -349,13 +353,14 @@
                             </g>
                         </svg>
                     </div>
-                    <div class="text-[#5C6B79] font-bold mt-[4px]">สร้างชั้น</div>
+                    <div class="text-[#5C6B79] font-bold mt-[4px]">สร้างชั้นใหม่</div>
                 </div>
                 <div class="border h-[130px] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]"
                     v-for="data in roomFloor">
                     <div class="flex flex-col justify-between h-[100%]">
                         <div class="flex justify-between">
-                            <div class="text-[16px]">ชื่อชั้น : {{ data.attributes.floorName }}</div>
+                            <!-- <div class="text-[16px]">ชื่อชั้น : {{ data.attributes.floorName }}</div> -->
+                            <div class="text-[16px]">ชื่อชั้น :</div>
                             <div class="cursor-pointer">
                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                     xmlns="http://www.w3.org/2000/svg" @click="removeFloor(data.id)">
@@ -373,7 +378,7 @@
                             </div>
                         </div>
                         <input type="input" placeholder="แก้ไขชื่อชั้น"
-                            class=" flex justify-center h-[24px] w-[100%] bg-[#F3F8FD] rounded-[12px]"
+                            class="text-[18px] flex justify-center h-[24px] w-[100%] bg-[#F3F8FD] rounded-[12px]"
                             v-model="data.attributes.floorName">
                         <vs-button @click="updateFloor(data.id, data.attributes.floorName)"
                             color="#003765">แก้ไขชื่อชั้น</vs-button>

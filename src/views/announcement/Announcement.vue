@@ -162,7 +162,7 @@
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">รายละเอียดการแจ้ง</div>
-                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                        <textarea class="h-[60px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
                             v-model="description" />
                     </div>
                     <div class="mt-[14px]">

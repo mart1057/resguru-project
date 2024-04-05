@@ -15,7 +15,7 @@
                         </g>
                     </svg>
                 </div>
-                <div class="text-[18px] font-bold flex items-center ml-[4px]">รายรับ-รายจ่าย </div>
+                <div class="text-[20px] font-bold flex items-center ml-[4px]">รายรับ-รายจ่าย </div>
             </div>
             <div class="flex justify-center items-center">
                 <div class="flex justify-center items-center">
@@ -46,7 +46,7 @@
                             </div> -->
                             <div class="flex items-center mt-[2px]">
                                 <div class="w-[12px] h-[12px] bg-[#008EF4] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">{{ label1[0] }}</div>
+                                <div class="text-[14px] text-[#5C6B79]">{{ label1[0] }}</div>
                             </div>
                             <!-- <div class="flex items-center mt-[2px]">
                                 <div class="w-[12px] h-[12px] bg-[#D44769] rounded-[100px] mr-[8px]"></div>
@@ -91,7 +91,7 @@
                                                 fill="#008EF4" />
                                         </svg>
                                     </div>
-                                    <div class="ml-[8px] text-[#008EF4] font-bold">{{ data1[0] }}</div>
+                                    <div class="ml-[8px] text-[#008EF4] text-[12px] font-bold">{{ data1[0] }}</div>
                                 </div>
                                 <div class="text-[12px] text-[#5C6B79]">100%</div>
                             </div>
@@ -144,19 +144,19 @@
                         <div class="mt-[8px]">
                             <div class="flex items-center">
                                 <div class="w-[12px] h-[12px] bg-[#F1B826] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">{{ label2[0] }}</div>
+                                <div class="text-[14px] text-[#5C6B79]">{{ label2[0] }}</div>
                             </div>
                             <div class="flex items-center mt-[2px]">
                                 <div class="w-[12px] h-[12px] bg-[#008EF4] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">{{ label2[1] }}</div>
+                                <div class="text-[14px] text-[#5C6B79]">{{ label2[1] }}</div>
                             </div>
                             <div class="flex items-center mt-[2px]">
                                 <div class="w-[12px] h-[12px] bg-[#D44769] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">{{ label2[2] }}</div>
+                                <div class="text-[14px] text-[#5C6B79]">{{ label2[2] }}</div>
                             </div>
                             <div class="flex items-center mt-[2px]">
                                 <div class="w-[12px] h-[12px] bg-[#9A77FF] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">{{ label2[3] }}</div>
+                                <div class="text-[14px] text-[#5C6B79]">{{ label2[3] }}</div>
                             </div>
                         </div>
                     </div>

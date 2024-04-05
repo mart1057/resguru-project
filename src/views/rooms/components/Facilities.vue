@@ -1,6 +1,6 @@
 <template>
     <div class="mt-[14px]">
-        <!-- <div class="font-bold">บริการอื่น ๆ</div> -->
+        <!-- <div class="font-bold">บริการเสริม</div> -->
         <button
             class="bg-[#003765] w-[129px] rounded-[12px] flex justify-center items-center pt-[8px] pb-[8px] pl-[12px] pr-[12px] mt-[14px]">
             <div class="flex">

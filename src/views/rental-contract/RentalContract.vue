@@ -101,9 +101,24 @@
                     </vs-tooltip>
                 </div>
             </div>
+
+<!-- 
+            <div class="flex items-center mb-[8px] mt-[14px] table-container">
+                <div v-for="(data, i) in roomFloor" class="flex-initial flex-nowrap w-32 p-2 border-1"
+                :class="tab_floor == i ? 'font-bold text-[16px] text-[white] bg-[#003765]' : 'text-[#8396A6]'">
+                    <div class="cursor-pointer whitespace-nowrap"
+                        :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
+                        @click="tab_floor = i, filter.floor = data.id, getRoom(), name_floor = data.attributes.floorName">
+                        ชั้น {{ data.attributes.floorName }}
+                    </div>
+                </div>
+            </div> -->
+
+
             <div class="flex items-center mb-[8px] mt-[14px] table-container ">
-                <div v-for="(data, i) in roomFloor">
-                    <div class=" cursor-pointer mr-[8px]"
+                <div v-for="(data, i) in roomFloor" class="flex-initial flex-nowrap w-32 p-2 border-1"
+                :class="tab_floor == i ? 'font-bold text-[16px] text-[white] bg-[#003765]' : 'text-[#8396A6]'">
+                    <div class=" cursor-pointer mr-[8px] whitespace-nowrap"
                         :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
                         @click="tab_floor = i, filter.floor = data.id, getRentalContract(), name_floor = data.attributes.floorName">
                         ชั้น {{ data.attributes.floorName }}

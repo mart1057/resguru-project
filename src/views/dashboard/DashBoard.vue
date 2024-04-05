@@ -2,6 +2,7 @@
     <div class="flex mt-[10px] justify-between tt">
         <div class="w-[55%]">
             <UserPlan :data="count_user" :childFunction="getDashboard"/>
+            <Meters2 :data="db_meter2"/>
             <PayMent :data="db_payment" :childFunction2="getDashboard"/>
             <Notification :data="db_services"/>
         </div>
@@ -18,12 +19,14 @@ import PayMent from '@/views/dashboard/components/PayMent'
 import Notification from '@/views/dashboard/components/Notification'
 import Expenses from '@/views/dashboard/components/Expenses'
 import Meters from '@/views/dashboard/components/Meters'
+import Meters2 from '@/views/dashboard/components/Meters2'
 import News from '@/views/dashboard/components/News'
 export default {
-    components: { UserPlan,PayMent, Notification,Expenses,Meters,News    },
+    components: { UserPlan,PayMent, Notification,Expenses,Meters,Meters2,News    },
     data() {
         return {
             db_meter : [],
+            db_meter2 : [],
             db_annocment:[],
             db_services:[],
             db_payment:[],
@@ -51,8 +54,9 @@ export default {
             fetch(`https://api.resguru.app/api/getdashboard?buildingid=${this.$store.state.building}&month=10&year=2023&allBuilding=${check==true?'1':'0'}&user_id=${this.$store.state.userInfo.id}`)
             .then(response => response.json())
                 .then((resp) => { 
-                    console.log("Return from getRoom()", resp);
+                    console.log("Return from getRoom()", resp.sumMeter);
                     this.db_meter = resp.room.roomData  
+                    this.db_meter2 = resp.sumMeter
                     this.db_annocment = resp.announcement.announceData
                     this.db_services = resp.service.notiData
                     this.db_payment = resp.paymentStatus.paymentStatus
