@@ -839,6 +839,13 @@
                             v-model="approvePaymentForm.amount" />
                     </div>
                 </div>
+                <div class="mt-[14px]">
+                    <div class="text-custom">ค่าปรับ</div>
+                    <div>
+                        <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                            v-model="approvePaymentForm.fineamount" />
+                    </div>
+                </div>
                 <!-- <div class="mt-[14px]">
                     <div class="text-custom">อนุมัติโดย</div>
                     <div>
@@ -994,7 +1001,8 @@ export default {
                 paymentDate: '',
                 paymentTime: '',
                 building: '',
-                approver: ''
+                approver: '',
+                fineamount: ''
             },
             convertDateNoTime
         }
@@ -1165,6 +1173,7 @@ export default {
             }
             else if (menu_option == "Approve Payment") {
                 this.approvePaymentForm.amount = tr.attributes.amount
+                this.approvePaymentForm.fineamount = tr.attributes.fineamount
                 // this.partialPaymentForm.invoiceName = tr.attributes.invoiceNumber
                 // this.fullPaymentForm.invoiceName = generateReNumber()
                 
@@ -1290,6 +1299,7 @@ export default {
                     paymentDate: this.partialPaymentForm.paymentDate != ''? this.partialPaymentForm.paymentDate: new Date(),
                     paymentTime: this.partialPaymentForm.paymentTime != ''? this.partialPaymentForm.paymentTime: new Date().toTimeString, 
                     building: this.partialPaymentForm.building,
+                    fine: this.partialPaymentForm.fineamount,
                     room: this.$route.query.roomID
                 }
             }).then(
@@ -1307,10 +1317,11 @@ export default {
                         }).finally(() => {
                             this.getInvoice();})
                     }
-
+                    console.log("HERE0");
                     if (this.filePartialPayment.length != 0) {
+                        
                         let formData = new FormData();
-                        formData.append("files", this.file);
+                        formData.append("files", this.filePartialPayment);
                         formData.append("refId", String(resp.data.data.id));
                         formData.append("ref", "api::tenant-evidence-payment.tenant-evidence-payment");
                         formData.append("field", "evidence");
@@ -1499,6 +1510,7 @@ export default {
                     buildingid: currentEvident.attributes.building.data.id,
                     roomid: parseInt(this.$route.query.roomID),
                     paidDate: currentEvident.attributes.paymentDate? currentEvident.attributes.paymentDate : today,
+                    fine: this.partialPaymentForm.fineamount,
                     // approveBy: data.attributes.toUser.data?.attributes.firstName
                 }
             })

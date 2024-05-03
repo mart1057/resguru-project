@@ -233,6 +233,9 @@
                                     <div v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                         {{ $formatNumber(tr.tenant_bills[0].total) }}
                                     </div>
+                                    <div v-else>
+                                            -
+                                    </div>
                                 </div>
                             </vs-td>
                             <vs-td>
@@ -240,12 +243,18 @@
                                     <div v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                         {{ $formatNumber(tr.tenant_bills[0].remainPaid) }}
                                     </div>
+                                    <div v-else>
+                                            -
+                                        </div>
                                 </div>
                             </vs-td>
                             <vs-td>
                                 <div @click="routeTo(tr.id)">
                                     <div v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                         {{ $formatNumber(tr.tenant_bills[0].paid) }}
+                                    </div>
+                                    <div v-else>
+                                            -
                                     </div>
                                 </div>
                             </vs-td>
@@ -259,6 +268,11 @@
                                         <div v-if="tr.user_sign_contract && tr.tenant_bills[0]">
                                             {{ tr.tenant_bills[0].paymentStatus }}
                                         </div>
+
+                                        <div v-else>
+                                            -
+                                        </div>
+                                        
                                     </div>
                                 </div>
                                 <!-- <div v-if="tr.attributes.paymentStatus == ชำระบางส่วน">

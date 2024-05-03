@@ -19,8 +19,10 @@
                 <div class="text-[20px] font-bold flex items-center ml-[4px]">การจ่ายเงิน</div>
                 <!-- <div class="text-[1.125rem] font-bold flex items-center ml-[4px]">การจ่ายเงิน</div> -->
                 <div class="flex items-center justify-start  pl-2">
-                                <div class=" w-[auto] pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#FFE1E8] text-[#EA2F5C]">
-                                    ! รออนุมัติ  {{data.length}} รายการ</div>
+                                <!-- <div class=" w-[auto] pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#FFE1E8] text-[#EA2F5C]">
+                                    ! รออนุมัติ  {{data.length}} รายการ</div> -->
+                                    <div class=" w-[auto] pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#FFE1E8] text-[#EA2F5C]">
+                                    ! ดูรายการรออนุมัติ</div>
                 </div>
             </div>
             <div class="flex">

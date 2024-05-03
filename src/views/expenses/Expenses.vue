@@ -469,7 +469,7 @@
                                 {{ tr.attributes.receiptNumber }}
                             </vs-td>
                             <vs-td>
-                                {{ tr.attributes.createdAt }}
+                                {{ convertDateNoTime(tr.attributes.createdAt) }}
                             </vs-td>
                             <vs-td>
                                 Room Number
@@ -487,7 +487,7 @@
         </div>
 
         <!-- //////////////////////////// pop-up /////////////////////// -->
-        <b-modal centered v-model="create" size="default" hide-backdrop hide-header-close hide-header hide-footer
+        <b-modal  v-if="tab == 2"  centered v-model="create" size="default" hide-backdrop hide-header-close hide-header hide-footer
             class="p-[-20px] text-custom">
             <div>
                 <div class="flex justify-between pl-[20px] pr-[20px]">
@@ -591,7 +591,7 @@
 <script>
 import VueApexCharts from "vue-apexcharts";
 import axios from 'axios'
-
+import { convertDateNoTime } from '@/components/hook/hook';
 export default {
     components: {
         apexchart: VueApexCharts,
@@ -623,6 +623,7 @@ export default {
                 selectedMonth: '',
                 selectedYear: '',
             },
+            convertDateNoTime,
         }
 
     },

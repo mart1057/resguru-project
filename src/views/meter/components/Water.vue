@@ -42,7 +42,7 @@
                         <vs-td>
                             <div class="flex justify-start items-center">
                                 <div class="pl-[12px] pr-[12px] pb-[4px] pt-[4px] rounded-[12px] text-center"
-                                    :class="tr.status == 'มีผู้เช่า' ? 'text-[#1DC56A] bg-[#D8FAD5]' : 'text-[#8396A6] bg-[#DEEAF5]'">
+                                    :class="tr.user_sign_contract? 'text-[#1DC56A] bg-[#D8FAD5]' : 'text-[#8396A6] bg-[#DEEAF5]'">
                                     {{ tr.user_sign_contract ? "มีผู้เข้าพัก" : "ห้องว่าง" }}
                                 </div>
                             </div>
