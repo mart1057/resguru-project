@@ -605,7 +605,7 @@
             </div>
         </div>
 
-        <b-modal centered v-model="createFullpayment" size="l" hide-backdrop hide-header-close hide-header hide-footer
+        <!-- <b-modal centered v-model="createFullpayment" size="l" hide-backdrop hide-header-close hide-header hide-footer
             class="p-[-20px] text-custom">
             <div>
                 <div class="flex justify-between">
@@ -705,7 +705,7 @@
                     </div>
                 </div>
             </div>
-        </b-modal>
+        </b-modal> -->
 
         <b-modal centered v-model="createPartialPayment" size="l" hide-backdrop hide-header-close hide-header hide-footer
             class="p-[-20px] text-custom">
@@ -737,6 +737,20 @@
                         v-model="partialPaymentForm.invoiceID" hidden />
                 </div> -->
                 <div class="mt-[14px]">
+                    <div class="text-custom">วิธีการชำระเงิน</div>
+                    <div>
+                        <!-- <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                            v-model="partialPaymentForm.paymentType" /> -->
+                            <select class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" required
+                            v-model="partialPaymentForm.paymentType">
+                                <option value="Bank" selected>โอนธนาคาร</option>
+                                <option value="Cash">เงินสด</option>
+                                <option value="Other">อื่น ๆ</option>
+                            </select>
+
+                    </div>
+                </div>
+                <div class="mt-[14px]">
                     <div class="text-custom">ชื่อธนาคาร</div>
                     <div>
                         <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
@@ -744,7 +758,7 @@
                     </div>
                 </div>
                 <div class="mt-[14px]">
-                    <div class="text-custom">ชื่อผู้โอน</div>
+                    <div class="text-custom">ชื่อบัญชีธนาคาร</div>
                     <div>
                         <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
                             v-model="partialPaymentForm.accountBankName" />
@@ -753,14 +767,14 @@
                     </div>
                 </div>
                 <div class="mt-[14px]">
-                    <div class="text-custom">ยอดโอน</div>
+                    <div class="text-custom">ยอดชำระ</div>
                     <div>
                         <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
                             v-model="partialPaymentForm.amount" />
                     </div>
                 </div>
                 <div class="mt-[14px]">
-                    <div class="text-custom">วันที่</div>
+                    <div class="text-custom">วันที่ชำระ</div>
                     <div>
                         <input type="date"
                             class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
@@ -776,7 +790,7 @@
                     </div>
                 </div>
                 <div class="mt-[14px]">
-                    <div class="text-custom">แนบหลักฐานการโอน</div>
+                    <div class="text-custom">แนบหลักฐานการชำระ</div>
                     <div class="mt-[4px] flex">
                         <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
                             ref="PartialPayment" hidden @change="setUploadFilePayment()" type="file" />
@@ -833,17 +847,24 @@
                 <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
 
                 <div class="mt-[14px]">
-                    <div class="text-custom">ยอดโอน</div>
+                    <div class="text-custom">ยอดที่ชำระมา</div>
                     <div>
                         <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
-                            v-model="approvePaymentForm.amount" />
+                            v-model="approvePaymentForm.amount" v-on:change="calAfterFine()"/>
                     </div>
                 </div>
                 <div class="mt-[14px]">
                     <div class="text-custom">ค่าปรับ</div>
                     <div>
                         <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
-                            v-model="approvePaymentForm.fineamount" />
+                            v-model="approvePaymentForm.fineamount" v-on:change="calAfterFine()"/>
+                    </div>
+                </div>
+                <div class="mt-[14px]">
+                    <div class="text-custom">สรุปยอดหลังหักค่าปรับ</div>
+                    <div>
+                        <input id="afterFine" class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" disabled
+                            v-model="approvePaymentForm.afterFine" />
                     </div>
                 </div>
                 <!-- <div class="mt-[14px]">
@@ -1184,6 +1205,7 @@ export default {
                 // this.partialPaymentForm.invoiceID = tr.id
                 this.approvePaymentForm.accountBankName = this.userProfile.firstName + " " + this.userProfile.lastName
                 // this.fullPaymentForm.accountBankName = "test"
+
                 this.createApprovePayment = true
             }
         },
@@ -1300,7 +1322,8 @@ export default {
                     paymentTime: this.partialPaymentForm.paymentTime != ''? this.partialPaymentForm.paymentTime: new Date().toTimeString, 
                     building: this.partialPaymentForm.building,
                     fine: this.partialPaymentForm.fineamount,
-                    room: this.$route.query.roomID
+                    room: this.$route.query.roomID,
+                    paymentType: this.partialPaymentForm.paymentType
                 }
             }).then(
                 (resp) => {
@@ -1506,11 +1529,11 @@ export default {
                     year: today.getFullYear(),
                     month: today.getMonth()+1,
                     evidenceid: currentEvident.id,
-                    paidAmount: this.partialPaymentForm.amount,
+                    paidAmount: this.approvePaymentForm.amount,
                     buildingid: currentEvident.attributes.building.data.id,
                     roomid: parseInt(this.$route.query.roomID),
                     paidDate: currentEvident.attributes.paymentDate? currentEvident.attributes.paymentDate : today,
-                    fine: this.partialPaymentForm.fineamount,
+                    fine: this.approvePaymentForm.fineamount,
                     // approveBy: data.attributes.toUser.data?.attributes.firstName
                 }
             })
@@ -1529,33 +1552,43 @@ export default {
             })
         },
 
-        createReceipt(currentEvident) { //ส่งบอกว่า evident ถูก approve แล้ว หลังบ้านจะไป update invoice, current evident, และ สร้าง reciept ตามจำเป็น
-            let today = new Date()
-            axios.post('https://api.resguru.app/api' + '/approvePayment', {
-                data:{
-                    year: today.getFullYear(),
-                    month: today.getMonth()+1,
-                    evidenceid: currentEvident.id,
-                    paidAmount: currentEvident.attributes.amount,
-                    buildingid: currentEvident.attributes.building.data.id,
-                    roomid: parseInt(this.$route.query.roomID),
-                    paidDate: currentEvident.attributes.paymentDate? currentEvident.attributes.paymentDate : today
-                }
-            })
-            .then((res) => {
-                this.$showNotification('#3A89CB', 'Approve Evident Success')
-            }
-            )
-            .catch(error => {
-                const errorMessage = error.message ? error.message : 'Error updating information';
-                this.$showNotification('danger', errorMessage);
-            })
-            .finally(() => {
-                this.getInvoice();
-                this.getReceipt();
-                this.getEvidence();
-            })
+        //cal afterFine in approve popup
+        calAfterFine(){
+            let result
+            result = this.approvePaymentForm.amount-this.approvePaymentForm.fineamount
+            console.log("adfcvarfasdf",result)
+            document.getElementById('afterFine').value = result
         },
+
+
+        // createReceipt(currentEvident) { //ส่งบอกว่า evident ถูก approve แล้ว หลังบ้านจะไป update invoice, current evident, และ สร้าง reciept ตามจำเป็น
+        //     let today = new Date()
+        //     axios.post('https://api.resguru.app/api' + '/approvePayment', {
+        //         data:{
+        //             year: today.getFullYear(),
+        //             month: today.getMonth()+1,
+        //             evidenceid: currentEvident.id,
+        //             paidAmount: currentEvident.attributes.amount,
+        //             buildingid: currentEvident.attributes.building.data.id,
+        //             roomid: parseInt(this.$route.query.roomID),
+        //             paidDate: currentEvident.attributes.paymentDate? currentEvident.attributes.paymentDate : today,
+                    
+        //         }
+        //     })
+        //     .then((res) => {
+        //         this.$showNotification('#3A89CB', 'Approve Evident Success')
+        //     }
+        //     )
+        //     .catch(error => {
+        //         const errorMessage = error.message ? error.message : 'Error updating information';
+        //         this.$showNotification('danger', errorMessage);
+        //     })
+        //     .finally(() => {
+        //         this.getInvoice();
+        //         this.getReceipt();
+        //         this.getEvidence();
+        //     })
+        // },
         cancelPayment(currentEvident) { //ส่งบอกว่า evident ถูก approve แล้ว หลังบ้านจะไป update invoice, current evident, และ สร้าง reciept ตามจำเป็น
             let today = new Date()
 

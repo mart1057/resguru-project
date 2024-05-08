@@ -349,22 +349,22 @@
                             @select="selectBuild" label="รหัสไปรษณีย์" size="small" placeholder="รหัสไปรษณีย์..." /> -->
 
                         <div class="mt-[8px] col-span-2">
-                            <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
+                            <div class="text-custom text-[14px] text-[#003765]">ข้อมูลแสดงในแผนที่: เบอร์ติดต่อ</div>
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingPhone" />
                         </div>
                         <div class="mt-[8px] col-span-2">
-                            <div class="text-custom text-[14px] text-[#003765]">Email</div>
+                            <div class="text-custom text-[14px] text-[#003765]">ข้อมูลแสดงในแผนที่: Email</div>
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingEmail" />
                         </div>
                         <div class="mt-[8px] col-span-2">
-                            <div class="text-custom text-[14px] text-[#003765]">ไลน์ติดต่อ</div>
+                            <div class="text-custom text-[14px] text-[#003765]">ข้อมูลแสดงในแผนที่: ไลน์ติดต่อ</div>
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingLine" />
                         </div>
                         <div class="mt-[8px] col-span-2">
-                            <div class="text-custom text-[14px] text-[#003765]">เฟสบุ๊ค</div>
+                            <div class="text-custom text-[14px] text-[#003765]">ข้อมูลแสดงในแผนที่: เฟสบุ๊ค</div>
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingFacebook" />
                         </div>
@@ -378,6 +378,31 @@
                                 1-28)</div>
                             <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
                                 v-model="buildingData.attributes.dueDate">
+                        </div>
+                        <div class="">
+                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">ข้อมูลแสดงในแผนที่: ช่วงราคาห้อง (ใส่ตัวเลขและ - ได้)</div>
+                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                v-model="buildingData.attributes.buildingPrice">
+                        </div>
+                        <div class="">
+                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">ข้อมูลแสดงในแผนที่: จำนวนห้องนอน</div>
+                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                v-model="buildingData.attributes.buildingBed">
+                        </div>
+                        <div class="">
+                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">ข้อมูลแสดงในแผนที่: จำนวนห้องน้ำ</div>
+                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                v-model="buildingData.attributes.buildingBath">
+                        </div>
+                        <div class="">
+                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">ข้อมูลแสดงในแผนที่: ขนาดห้อง (ใส่ตัวเลขและ - ได้)</div>
+                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                v-model="buildingData.attributes.buildingArea">
+                        </div>
+                        <div class="">
+                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">ข้อมูลแสดงในแผนที่: ราคาต่อตารางเมตร</div>
+                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                                v-model="buildingData.attributes.buildingPriceArea">
                         </div>
 
                         <!-- <form class="max-w-xs mx-auto">
@@ -399,13 +424,13 @@
 </form> -->
 
                         <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">Latitude (use for map marker)
+                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">หมุดแผนที่: Latitude
                             </div>
                             <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
                                 v-model="buildingData.attributes.lat">
                         </div>
                         <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">Longitude (use for map marker)
+                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">หมุดแผนที่: Longitude 
                             </div>
                             <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
                                 v-model="buildingData.attributes.long">
@@ -528,7 +553,12 @@ export default {
                     vat_rate: this.buildingData.attributes.vat_rate,
                     buildingLat: this.buildingData.attributes.lat,
                     buildingLong: this.buildingData.attributes.long,
-                    BuildingDueDate: this.buildingData.attributes.dueDate
+                    BuildingDueDate: this.buildingData.attributes.dueDate,
+                    buildingPrice: this.buildingData.attributes.buildingPrice,
+                    buildingBed: this.buildingData.attributes.buildingBed,
+                    buildingBath: this.buildingData.attributes.buildingBath,
+                    buildingArea: this.buildingData.attributes.buildingArea,
+                    buildingPriceArea: this.buildingData.attributes.buildingPriceArea   
                 }
             })
                 .then((resp) => {
