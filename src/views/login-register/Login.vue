@@ -165,7 +165,7 @@
                             <div class="flex">
                                 <div @click="dataRegister.sex = true"
                                     class="h-[41px] w-[78px] rounded-[12px]  border items-center flex justify-around cursor-pointer"
-                                    :class="dataRegister.sex ? 'bg-[#008EF4] text-[white]' : '#fffff'">
+                                    :class="dataRegister.sex? 'bg-[#008EF4] text-[white]' : '#fffff'">
                                     <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <mask id="mask0_902_17193" style="mask-type:alpha" maskUnits="userSpaceOnUse"

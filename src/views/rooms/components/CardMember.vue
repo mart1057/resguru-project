@@ -41,7 +41,8 @@
                                 </template>
 
                             </div>
-                            <div class="flex justify-center items-center ml-[4px] text-[12px]">{{ data.email? data.email:" - " }}</div>
+                            <div class="flex justify-center items-center ml-[4px] text-[12px]">{{ data.email ?
+                    data.email : " - " }}</div>
                         </div>
                         <div class="grid grid-cols-2 gap-0">
                             <div>
@@ -54,7 +55,8 @@
 
 
                             </div>
-                            <div class="flex justify-center items-center ml-[4px] text-[12px]">{{ data.lineID? data.lineID:" - "}}</div>
+                            <div class="flex justify-center items-center ml-[4px] text-[12px]">{{ data.lineID ?
+                    data.lineID : " - " }}</div>
                         </div>
                     </div>
                 </div>
@@ -68,7 +70,7 @@
                 </div>
             </div>
             <div class="h-[212px] w-[11.25rem] border rounded-[12px] flex flex-col justify-center items-center p-[14px] cursor-pointer"
-                v-if="user.length == 0" @click="is_edit = false, create = true, getUsers()">
+                v-if="user.length == 0" @click="is_edit = false, create = true,clearButton1(), getUsers()">
                 <div class="flex flex-col">
                     <div>
                         <svg width="76" height="76" viewBox="0 0 76 76" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -118,11 +120,11 @@
                                 <div class="grid grid-cols-2  text-custom " v-if="is_edit == false">
                                     <div class="flex">
                                         <vs-radio v-model="room_detail.check_user" color="#003765" :val="true"
-                                            @input="clearButton()">
+                                            @input="clearButton1()">
                                             ผู้เช่าในระบบ
                                         </vs-radio>
                                         <vs-radio v-model="room_detail.check_user" color="#003765" :val="false"
-                                            @input="clearButton()">
+                                            @input="clearButton2()">
                                             ผู้เช่าใหม่
                                         </vs-radio>
                                     </div>
@@ -160,6 +162,50 @@
                                                 :disabled="is_edit == true" />
                                         </div>
                                     </div>
+                                    <div class="mt-[10px]">
+                                        <div class="font-bold"><span class="text-[red] mr-[2px]">*</span>เพศ</div>
+                                        <div class="flex">
+                                            <div @click="room_detail.sex = true"
+                                                class="h-[41px] w-[78px] rounded-[12px]  border items-center flex justify-around cursor-pointer"
+                                                :class="room_detail.sex? 'bg-[#008EF4] text-[white]' : '#fffff'">
+                                                <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <mask id="mask0_902_17193" style="mask-type:alpha"
+                                                            maskUnits="userSpaceOnUse" x="0" y="0" width="24"
+                                                            height="24">
+                                                            <rect width="24" height="24" fill="#D9D9D9" />
+                                                        </mask>
+                                                        <g mask="url(#mask0_902_17193)">
+                                                            <path
+                                                                d="M9.50085 19.75C8.03745 19.75 6.79646 19.241 5.77788 18.223C4.75929 17.2049 4.25 15.9642 4.25 14.5009C4.25 13.0375 4.75908 11.7965 5.77725 10.7779C6.79543 9.75929 8.03634 9.25 9.49998 9.25C10.0628 9.25 10.6093 9.34198 11.1394 9.52595C11.6695 9.70993 12.166 9.96859 12.6288 10.3019L17.1808 5.74995H15C14.7875 5.74995 14.6094 5.67805 14.4656 5.53425C14.3219 5.39043 14.25 5.21223 14.25 4.99965C14.25 4.78705 14.3219 4.60896 14.4656 4.46538C14.6094 4.32179 14.7875 4.25 15 4.25H18.8461C19.1022 4.25 19.3169 4.33662 19.4901 4.50985C19.6633 4.68308 19.75 4.89774 19.75 5.15383V8.99998C19.75 9.21248 19.6781 9.3906 19.5343 9.53435C19.3904 9.67808 19.2122 9.74995 18.9997 9.74995C18.7871 9.74995 18.609 9.67808 18.4654 9.53435C18.3218 9.3906 18.25 9.21248 18.25 8.99998V6.82878L13.698 11.3461C14.0211 11.8192 14.2772 12.3203 14.4663 12.8495C14.6554 13.3787 14.75 13.9288 14.75 14.5C14.75 15.9636 14.241 17.2045 13.223 18.2227C12.2049 19.2409 10.9642 19.75 9.50085 19.75ZM9.49843 10.75C8.46228 10.75 7.57849 11.1162 6.84708 11.8486C6.11566 12.5811 5.74995 13.4654 5.74995 14.5015C5.74995 15.5377 6.11618 16.4215 6.84863 17.1529C7.58108 17.8843 8.46538 18.25 9.50153 18.25C10.5377 18.25 11.4215 17.8838 12.1529 17.1513C12.8843 16.4189 13.25 15.5346 13.25 14.4984C13.25 13.4623 12.8838 12.5785 12.1513 11.8471C11.4189 11.1157 10.5346 10.75 9.49843 10.75Z"
+                                                                :fill="room_detail.sex ? 'white' : '#008EF4'" />
+                                                        </g>
+                                                    </svg>
+                                                </div>
+                                                <div>ชาย</div>
+                                            </div>
+                                            <div @click="room_detail.sex = false"
+                                                class="h-[41px] ml-[14px] w-[78px] rounded-[12px]  border items-center flex justify-around cursor-pointer"
+                                                :class="room_detail.sex == false ? 'bg-[#CC00FF] text-[white]' : '#fffff'">
+                                                <div>
+                                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                        xmlns="http://www.w3.org/2000/svg">
+                                                        <mask id="mask0_902_17246" style="mask-type:alpha"
+                                                            maskUnits="userSpaceOnUse" x="0" y="0" width="24"
+                                                            height="24">
+                                                            <rect width="24" height="24" fill="#D9D9D9" />
+                                                        </mask>
+                                                        <g mask="url(#mask0_902_17246)">
+                                                            <path
+                                                                d="M11.25 14.6884C9.95257 14.5 8.87821 13.9125 8.02692 12.9259C7.17564 11.9394 6.75 10.7872 6.75 9.4692C6.75 8.01677 7.26186 6.78379 8.28558 5.77028C9.30928 4.75676 10.5474 4.25 12 4.25C13.4525 4.25 14.6907 4.75676 15.7144 5.77028C16.7381 6.78379 17.25 8.01677 17.25 9.4692C17.25 10.7872 16.8243 11.9394 15.973 12.9259C15.1217 13.9125 14.0474 14.5 12.7499 14.6884V17.25H14C14.2125 17.25 14.3906 17.3219 14.5343 17.4657C14.6781 17.6095 14.75 17.7877 14.75 18.0003C14.75 18.2129 14.6781 18.391 14.5343 18.5346C14.3906 18.6782 14.2125 18.75 14 18.75H12.7499V20C12.7499 20.2125 12.678 20.3906 12.5342 20.5343C12.3904 20.6781 12.2122 20.75 11.9997 20.75C11.7871 20.75 11.609 20.6781 11.4654 20.5343C11.3218 20.3906 11.25 20.2125 11.25 20V18.75H9.99997C9.78747 18.75 9.60936 18.6781 9.46563 18.5343C9.32188 18.3904 9.25 18.2122 9.25 17.9997C9.25 17.7871 9.32188 17.609 9.46563 17.4654C9.60936 17.3218 9.78747 17.25 9.99997 17.25H11.25V14.6884ZM12.0015 13.25C13.0377 13.25 13.9215 12.8838 14.6529 12.1513C15.3843 11.4189 15.75 10.5346 15.75 9.49843C15.75 8.46228 15.3838 7.57849 14.6513 6.84708C13.9189 6.11566 13.0346 5.74995 11.9984 5.74995C10.9623 5.74995 10.0785 6.11618 9.34707 6.84863C8.61566 7.58108 8.24995 8.46538 8.24995 9.50153C8.24995 10.5377 8.61618 11.4215 9.34863 12.1529C10.0811 12.8843 10.9654 13.25 12.0015 13.25Z"
+                                                                :fill="room_detail.sex == false ? 'white' : '#CC00FF'" />
+                                                        </g>
+                                                    </svg>
+                                                </div>
+                                                <div>หญิง</div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="grid grid-cols-4 gap-2  text-custom mt-[14px] ">
                                     <!-- <div class="col-span-2">
@@ -180,7 +226,7 @@
                                     </div> -->
                                 </div>
                                 <div class="grid grid-flow-row-dense grid-cols-6  text-custom mt-[14px] ">
-                                    <div class="col-span-1 ml-[4px] w-[80%]">
+                                    <!-- <div class="col-span-1 ml-[4px] w-[80%]">
                                         <div>คำนำหน้า</div>
                                         <select placeholder="ชื่อ" id="mr"
                                             class="mt-[6px] pl-[4px] pr-[4px] h-[36px] w-[80%] rounded-[12px] bg-[#F3F7FA]"
@@ -193,7 +239,7 @@
                                                 นางสาว
                                             </option>
                                         </select>
-                                    </div>
+                                    </div> -->
                                     <div class="col-span-2">
                                         <div><span class="text-[red] mr-[2px]">*</span>ชื่อ</div>
                                         <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
@@ -605,7 +651,7 @@ export default {
             id_card: '',
             room_detail: {
                 id: '',
-                sex: null,
+                sex: true,
                 check_user: true,
                 email: '',
                 name: '',
@@ -653,13 +699,13 @@ export default {
             this.id_user = ''
             this.room_detail.id = ''
             this.room_detail.name = ''
+            this.room_detail.sex = true
             this.room_detail.last_name = ''
             this.room_detail.nick_name = ''
             this.room_detail.phone = ''
             this.room_detail.email = ''
             this.room_detail.id_card = ''
             this.room_detail.address = ''
-            this.room_detail.sex = ''
             this.room_detail.birth = ''
             this.room_detail.date_sign = ''
             this.room_detail.workplace = '',
@@ -674,31 +720,61 @@ export default {
             this.create = false
 
         },
-        clearButton() {
-            this.id_card = ''
-            this.id_user = ''
-            this.room_detail.id = ''
-            this.room_detail.name = ''
-            this.room_detail.last_name = ''
-            this.room_detail.nick_name = ''
-            this.room_detail.phone = ''
-            this.room_detail.email = ''
-            this.room_detail.id_card = ''
-            this.room_detail.address = ''
-            this.room_detail.sex = ''
-            this.room_detail.birth = ''
-            this.room_detail.date_sign = ''
+        clearButton1() {
+            this.id_card = '',
+            this.id_user = '',
+            this.room_detail.id = '',
+            this.room_detail.name = '',
+            this.room_detail.sex = true,
+            this.room_detail.last_name = '',
+            this.room_detail.nick_name = '',
+            this.room_detail.phone = '',
+            this.room_detail.email = '',
+            this.room_detail.id_card = '',
+            this.room_detail.address = '',
+            this.room_detail.birth = '',
+            this.room_detail.date_sign = '',
             this.room_detail.workplace = '',
                 this.room_detail.faculty = '',
-                this.room_detail.rank = ''
-            this.room_detail.idEmployee = ''
-            this.room_detail.emergencyPerson = ''
-            this.room_detail.relation = ''
+                this.room_detail.rank = '',
+            this.room_detail.idEmployee = '',
+            this.room_detail.emergencyPerson = '',
+            this.room_detail.relation = '',
             this.room_detail.emergencyPhone = '',
                 this.room_detail.lineID = '',
-                this.room_detail.image_card_name = ''
+                this.room_detail.image_card_name = '',
             this.room_detail.vehicles = []
-
+            this.room_detail.check_user = true
+            console.log('Clear button triggered');
+            console.log('Current check_user value:', this.room_detail.check_user)
+        },
+        clearButton2() {
+            this.id_card = '',
+            this.id_user = '',
+            this.room_detail.id = '',
+            this.room_detail.name = '',
+            this.room_detail.sex = true,
+            this.room_detail.last_name = '',
+            this.room_detail.nick_name = '',
+            this.room_detail.phone = '',
+            this.room_detail.email = '',
+            this.room_detail.id_card = '',
+            this.room_detail.address = '',
+            this.room_detail.birth = '',
+            this.room_detail.date_sign = '',
+            this.room_detail.workplace = '',
+                this.room_detail.faculty = '',
+                this.room_detail.rank = '',
+            this.room_detail.idEmployee = '',
+            this.room_detail.emergencyPerson = '',
+            this.room_detail.relation = '',
+            this.room_detail.emergencyPhone = '',
+                this.room_detail.lineID = '',
+                this.room_detail.image_card_name = '',
+            this.room_detail.vehicles = []
+            this.room_detail.check_user = false
+            console.log('Clear button triggered');
+            console.log('Current check_user value:', this.room_detail.check_user)
         },
         previewImage(event) {
             const file = event.target.files[0];
