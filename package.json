@@ -19,6 +19,7 @@
     "core-js": "^3.8.3",
     "downloadjs": "^1.4.7",
     "html2pdf.js": "^0.10.1",
+    "leaflet": "^1.9.4",
     "pdf-lib": "^1.17.1",
     "thai-baht-text": "^1.0.8",
     "vue": "^2.7.14",

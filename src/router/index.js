@@ -15,6 +15,10 @@ import Payment from '@/views/payment/PayMent'
 import PaymentDetail from '@/views/payment/components/PaymentDetail'
 import  Setting from '@/views/setting/Setting'
 import Plan from '@/views/plans/Plan'
+import RoomLayout from '@/views/login-register/RoomLayout.vue'
+import GeneralDormInfo from '@/views/login-register/GeneralDormInfo.vue'
+import CreateDormSteps from '@/views/login-register/CreateDormSteps.vue'
+import UtilityRates from '@/views/login-register/UtilityRates.vue';
 
 Vue.use(VueRouter)
 
@@ -27,6 +31,26 @@ const routes = [
       title:'หน้าหลัก',
       desc:'หน้าหลัก'
     }
+  },
+  {
+    path: '/room-layout',
+    name: 'RoomLayout',
+    component: RoomLayout,
+  },
+  {
+    path: '/dormInfo',
+    name: 'dormInfo',
+    component: GeneralDormInfo,
+  },
+  {
+    path: '/createdorm',
+    name: 'CreateDormSteps',
+    component: CreateDormSteps,
+  },
+  {
+    path: '/utility-rates',
+    name: 'UtilityRates',
+    component: UtilityRates,
   },
 
   {
