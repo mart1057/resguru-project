@@ -1,13 +1,12 @@
 <template>
   <div class="dashboard-wrapper" @click="hideOverlay()">
     <!-- Gray Overlay -->
-    <div v-if="showOverlay" class="overlay">
+    <div v-if="isCountUserEmpty" class="overlay">
       <div class="highlighted-menu">
         <p>
           Welcome to ResGuru, Please add Room and Utility cost in our setting
           menu here.
         </p>
-        <!-- <button @click="hideOverlay" class="highlight-button"> -->
         <button @click="routerTo('/setting')" class="highlight-button">
           Go to Settings
         </button>
@@ -42,6 +41,7 @@ import Expenses from "@/views/dashboard/components/Expenses";
 import Meters from "@/views/dashboard/components/Meters";
 import Meters2 from "@/views/dashboard/components/Meters2";
 import News from "@/views/dashboard/components/News";
+
 export default {
   components: {
     UserPlan,
@@ -61,8 +61,14 @@ export default {
       db_payment: [],
       db_expense: [],
       count_user: {},
-      showOverlay: true, // Initially show the overlay
+      showOverlay: true,
     };
+  },
+  computed: {
+    isCountUserEmpty() {
+      // Check if count_user is an empty object
+      return Object.keys(this.count_user).length === 0;
+    },
   },
   created() {
     this.$store.state.main = true;
@@ -116,13 +122,12 @@ export default {
           this.db_payment = resp.paymentStatus.paymentStatus;
           this.db_expense = resp.accounting;
           this.count_user = resp.room.meta;
-          // this.count_user = resp.room
         });
     },
   },
 };
 </script>
-<!-- <style> -->
+
 <style scoped>
 .overlay {
   position: fixed;
