@@ -296,9 +296,7 @@
                       tr.user_sign_contract.users_permissions_user
                     "
                   >
-                    {{
-                      tr.user_sign_contract.users_permissions_user.firstName
-                    }}
+                    {{ tr.user_sign_contract.users_permissions_user.firstName }}
                     {{ tr.user_sign_contract.users_permissions_user.lastName }}
                   </div>
                   <div v-else>ยังไม่มีผู้เช่า</div>
@@ -1218,8 +1216,10 @@ export default {
           const errorMessage = error.message
             ? error.message
             : "Error updating information";
-          this.$showNotification("danger", errorMessage);
-          console.log(error);
+          this.$showNotification(
+            "danger",
+            "Please filled out all necessary information"
+          );
         })
         .finally(() => {
           this.getfloor();
@@ -1299,7 +1299,7 @@ export default {
           const errorMessage = error.message
             ? error.message
             : "Error updating information";
-          this.$showNotification("danger", errorMessage);
+          this.$showNotification("danger", "Fail to Create Payment ");
         })
         .finally(() => {
           this.getfloor();
@@ -1386,7 +1386,7 @@ export default {
           const errorMessage = error.message
             ? error.message
             : "Error updating information";
-          this.$showNotification("danger", errorMessage);
+          this.$showNotification("danger", "Fail to Create New Payment");
         });
       this.createPartialPayment = false;
     },
@@ -1495,9 +1495,13 @@ export default {
         })
         .catch((error) => {
           const errorMessage = error.message
-            ? error.message
+            ? "ไม่สามารถสร้างใบเรียกเก็บเงินใหม่ได้ กรุณาตรวจสอบค่าน่ำและค่าไฟเดือนปัจจุบันของห้องดังกล่าว"
             : "Error updating information";
-          this.$showNotification("danger", errorMessage);
+          // this.$showNotification("danger", errorMessage);
+          this.$showNotification(
+            "danger",
+            "ไม่สามารถสร้างใบเรียกเก็บเงินใหม่ได้ กรุณาตรวจสอบค่าน่ำและค่าไฟเดือนปัจจุบันของห้องดังกล่าว"
+          );
         });
     },
     setUploadFilePayment() {
