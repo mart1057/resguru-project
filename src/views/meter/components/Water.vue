@@ -2,7 +2,10 @@
   <div class="mt-[14px] bg-[white] rounded-[12px] p-[24px]">
     <div class="flex justify-between">
       <div class="font-bold text-[18px]">ชั้น {{ tab }}</div>
-      <div @click="updateMeterAll()" :disabled="WaterFee.length < 1">
+      <div
+        @click="updateMeterAll(WaterFee.map((data) => data.newWater))"
+        :disabled="WaterFee.length < 1"
+      >
         <vs-button>บันทึกทั้งหมด</vs-button>
       </div>
     </div>
@@ -115,6 +118,7 @@
               </div>
             </vs-td>
             <vs-td v-if="tr.water_fees[0]">
+              <!-- case HAVE last month water -->
               <vs-input v-model="tr.water_fees[0].meterUnit">
                 <template #icon>
                   <svg
@@ -146,7 +150,8 @@
               </vs-input>
             </vs-td>
             <vs-td v-else>
-              <vs-input class="newWater" v-model="newWater">
+              <!-- case no last month water -->
+              <vs-input class="newWater" v-model="tr.newWater">
                 <template #icon>
                   <svg
                     width="24"
@@ -186,37 +191,43 @@
               </div>
               <div v-else>
                 {{
-                  tr.water_fees[0]
-                    ? tr.water_fees[0].meterUnit - tr.water_fees[1].meterUnit
-                    : 0
+                  tr.water_fees[0] ? tr.water_fees[0].usageMeter : tr.newWater
                 }}
               </div>
             </vs-td>
             <vs-td>
               <div>
                 <div v-if="tr.water_fees[1]">
+                  <!-- Save when HAVE last month -->
                   <vs-button
                     @click="
                       updateWaterfee(
                         tr.water_fees[0].id,
-                        tr.water_fees[0].meterUnit,
-                        tr.water_fees[0].meterUnit - tr.water_fees[1].meterUnit
+                        // tr.water_fees[0].meterUnit,
+                        // tr.water_fees[0].meterUnit - tr.water_fees[1].meterUnit
+                        tr.newWater,
+                        tr.newWater - tr.water_fees[1].meterUnit
                       )
                     "
-                    >บันทึก</vs-button
+                    >บันทึก1</vs-button
                   >
                 </div>
                 <div v-else>
+                  <!-- Save when no last month -->
                   <vs-button
-                    :disabled="!tr.water_fees[0]"
+                    :disabled="!tr.newWater"
                     @click="
-                      updateWaterfee(
-                        tr.water_fees[0].id,
-                        tr.water_fees[0].meterUnit,
-                        tr.water_fees[0].meterUnit
+                      createNewWaterfee(
+                        tr.id, // roomID
+                        tr.user_sign_contract.id,
+                        // tr.water_fees[0].id,
+                        // tr.water_fees[0].meterUnit,
+                        // tr.water_fees[0].meterUnit
+                        tr.newWater,
+                        tr.newWater
                       )
                     "
-                    >บันทึก</vs-button
+                    >บันทึก2</vs-button
                   >
                 </div>
               </div>
@@ -245,7 +256,6 @@ export default {
       month: "",
       year: "",
       importExcel: [],
-      newWater: 0,
     };
   },
   created() {
@@ -263,8 +273,8 @@ export default {
   },
   methods: {
     getWaterFee(id, m, y) {
-      console.log(m);
-      console.log(y);
+      console.log("month", m);
+      console.log("year", y);
       this.WaterFee = [];
       const loading = this.$vs.loading();
       fetch(
@@ -285,7 +295,34 @@ export default {
           loading.close();
         });
     },
+    createNewWaterfee(room, user_sign_contract, waterUnit, usageMeter) {
+      console.log("room", room);
+      console.log("user_sign_contract", user_sign_contract);
+      console.log("waterUnit", waterUnit);
+      console.log("usageMeter", usageMeter);
+      axios
+        .post(`https://api.resguru.app/api/water-fees/`, {
+          data: {
+            room: room,
+            user_sign_contract: user_sign_contract,
+            meterUnit: waterUnit,
+            usageMeter: usageMeter,
+          },
+        })
+        .then((resp) => {})
+        .catch((error) => {
+          const errorMessage = error.message
+            ? error.message
+            : "Error updating information";
+          this.$showNotification("danger", errorMessage);
+        })
+        .finally(() => {
+          this.$showNotification("#3A89CB", "Update Water Fee Success");
+          this.getWaterFee(this.id, this.month, this.year);
+        });
+    },
     updateWaterfee(waterFeeId, waterUnit, usageMeter) {
+      console.log("test", usageMeter);
       axios
         .put(`https://api.resguru.app/api/water-fees/${waterFeeId}`, {
           data: {
@@ -305,29 +342,54 @@ export default {
           this.getWaterFee(this.id, this.month, this.year);
         });
     },
-    updateMeterAll() {
+    updateMeterAll(newWaterArray) {
       if (this.WaterFee.length > 0) {
-        console.log(this.WaterFee.length);
+        // console.log(this.WaterFee.length);
         const loading = this.$vs.loading();
+        // Collect all newWater values into an array
+
         this.WaterFee.forEach((data, i) => {
-          if (data.water_fees[0]) {
+          console.log("data", i, data);
+
+          if (data.water_fees[0] && data.water_fees[0].meterUnit) {
+            console.log("RESD", i, data);
             axios
               .put(
                 `https://api.resguru.app/api/water-fees/${data.water_fees[0].id}`,
                 {
                   data: {
-                    meterUnit: parseInt(data.water_fees[0].meterUnit),
+                    meterUnit: parseInt(data.newWater),
                   },
                 }
               )
               .then(() => {
-                if (this.WaterFee.length == i + 1) {
-                  loading.close();
-                  this.$showNotification("#3A89CB", "Update Water Fee Success");
-                }
+                // if (this.WaterFee.length == i + 1) {
+                //   loading.close();
+                //   this.$showNotification("#3A89CB", "Update Water Fee Success");
+                // }
+              });
+          } else if (data.water_fees[0]) {
+            console.log("data2 else", i, data.water_fees[0].meterUnit);
+            axios
+              .post(`https://api.resguru.app/api/water-fees/`, {
+                data: {
+                  room: data.id,
+                  user_sign_contract: data.user_sign_contract.id,
+                  meterUnit: parseInt(data.water_fees[0].meterUnit),
+                  usageMeter: parseInt(data.water_fees[0].meterUnit),
+                },
+              })
+              .then(() => {})
+              .catch((error) => {
+                const errorMessage = error.message
+                  ? error.message
+                  : "Error updating information";
+                this.$showNotification("danger", errorMessage);
               });
           }
         });
+        loading.close();
+        this.$showNotification("#3A89CB", "Update Water Fee Success");
       }
     },
     filterData(text, code) {
@@ -369,5 +431,13 @@ export default {
     //             }
     // }
   },
+  // watch: {
+  //   WaterFee: {
+  //     handler(newVal) {
+  //       console.log("Updated WaterFee:", newVal);
+  //     },
+  //     deep: true,
+  //   },
+  // },
 };
 </script>
