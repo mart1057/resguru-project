@@ -209,7 +209,7 @@
                         tr.newWater - tr.water_fees[1].meterUnit
                       )
                     "
-                    >บันทึก1</vs-button
+                    >บันทึก</vs-button
                   >
                 </div>
                 <div v-else>
@@ -227,7 +227,7 @@
                         tr.newWater
                       )
                     "
-                    >บันทึก2</vs-button
+                    >บันทึก</vs-button
                   >
                 </div>
               </div>
