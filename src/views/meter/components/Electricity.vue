@@ -242,7 +242,7 @@
                         tr.newElec
                       )
                     "
-                    >บันทึก2</vs-button
+                    >บันทึก</vs-button
                   >
                 </div>
               </div>
