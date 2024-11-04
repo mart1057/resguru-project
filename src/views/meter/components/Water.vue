@@ -189,6 +189,9 @@
                     : 0
                 }}
               </div>
+              <div v-else-if="!tr.water_fees[1] && tr.water_fees[0]">
+                {{ tr.water_fees[0].meterUnit }}
+              </div>
               <div v-else>
                 {{
                   tr.water_fees[0] ? tr.water_fees[0].usageMeter : tr.newWater
@@ -196,6 +199,7 @@
               </div>
             </vs-td>
             <vs-td>
+              <!-- Action HERE -->
               <div>
                 <div v-if="tr.water_fees[1]">
                   <!-- Save when HAVE last month -->
@@ -205,8 +209,21 @@
                         tr.water_fees[0].id,
                         // tr.water_fees[0].meterUnit,
                         // tr.water_fees[0].meterUnit - tr.water_fees[1].meterUnit
-                        tr.newWater,
-                        tr.newWater - tr.water_fees[1].meterUnit
+                        tr.water_fees[0].meterUnit,
+                        tr.water_fees[0].meterUnit - tr.water_fees[1].meterUnit
+                      )
+                    "
+                    >บันทึก</vs-button
+                  >
+                </div>
+                <div v-else-if="tr.water_fees[0]">
+                  <!-- Save when HAVE last month -->
+                  <vs-button
+                    @click="
+                      updateWaterfee(
+                        tr.water_fees[0].id,
+                        tr.water_fees[0].meterUnit,
+                        tr.water_fees[0].meterUnit
                       )
                     "
                     >บันทึก</vs-button
@@ -322,7 +339,11 @@ export default {
         });
     },
     updateWaterfee(waterFeeId, waterUnit, usageMeter) {
-      console.log("test", usageMeter);
+      // console.log("Received values:", {
+      //   waterFeeId,
+      //   waterUnit,
+      //   usageMeter
+      // });
       axios
         .put(`https://api.resguru.app/api/water-fees/${waterFeeId}`, {
           data: {
