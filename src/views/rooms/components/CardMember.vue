@@ -291,6 +291,18 @@
                         :disabled="is_edit == true"
                       />
                     </div>
+                    <div class="col-span-1">
+                      <div class="text-custom">
+                        <span class="text-[red] mr-[2px] text-custom">*</span
+                        >(ในกรณีผู้เช่าไม่มีอีเมลล์ กดเพื่อสร้างอีเมลล์ชัวคราว)
+                      </div>
+                      <div
+                        @click="autoGenMail()"
+                        class="ml-[4px] mr-[4px] h-[36px] flex cursor-pointer justify-center items-center bg-[#003765] text-[14px] text-[white] pt-[20px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]"
+                      >
+                        สร้่างอีเมลล์ชั่วคราว
+                      </div>
+                    </div>
                   </div>
                   <div class="mt-[10px]">
                     <div class="font-bold">
@@ -1229,6 +1241,14 @@ export default {
     },
     previewImg(url) {
       window.open(url, "_blank");
+    },
+    autoGenMail() {
+      console.log(this.$store.state);
+      const ran = Math.floor(100 + Math.random() * 900); // Generates a random 3-digit number
+      const matchingBuilding = this.$store.state.buildingInfo
+        .find((item) => item.id === this.$store.state.building)
+        .attributes.buildingName.replace(/\s+/g, "");
+      this.room_detail.email = ran + matchingBuilding + "@resguru.app";
     },
     getFloorRoom() {
       const loading = this.$vs.loading();
