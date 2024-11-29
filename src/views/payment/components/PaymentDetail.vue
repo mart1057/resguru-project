@@ -168,7 +168,7 @@
         class="bg-[#D44769] h-[147px] w-[339px] rounded-[22px] p-[14px] text-[white] ml-[14px]"
       >
         <div class="flex flex-col justify-between h-[100%]">
-          <div class="font-bold text-[16px]">ยอดค้างชำระสะสม</div>
+          <div class="font-bold text-[16px]">ยอดค้างชำระ</div>
 
           <div>
             <div class="text-[12px]">คงเหลือ</div>
@@ -771,7 +771,9 @@
                   "
                 >
                   <!-- <vs-button @click="createReceipt(tr)" small>รับชำระ</vs-button> -->
-                  <vs-button @click="selectMenu('Approve Payment', tr)" small
+                  <vs-button
+                    @click="selectMenu('Approve Payment', tr, tr.id)"
+                    small
                     >รับชำระ</vs-button
                   >
                 </div>
@@ -1307,6 +1309,8 @@ export default {
         building: "",
         approver: "",
         fineamount: "",
+        afterFine: "",
+        building: "",
       },
       convertDateNoTime,
     };
@@ -1462,7 +1466,7 @@ export default {
           loading.close();
         });
     },
-    selectMenu(menu_option, tr) {
+    selectMenu(menu_option, tr, trID) {
       if (menu_option == "Full Payment") {
         // this.fullPaymentForm.amount = tr.attributes.totaluserPayRemain
         this.fullPaymentForm.amount = this.userPayRemain;
@@ -1491,15 +1495,16 @@ export default {
         this.createPartialPayment = true;
       } else if (menu_option == "Approve Payment") {
         this.approvePaymentForm.amount = tr.attributes.amount;
-        this.approvePaymentForm.fineamount = tr.attributes.fineamount;
+        this.approvePaymentForm.fineamount = 0;
+        // this.approvePaymentForm.fineamount = tr.attributes.fineamount?tr.attributes.fineamount:0
         // this.partialPaymentForm.invoiceName = tr.attributes.invoiceNumber
         // this.fullPaymentForm.invoiceName = generateReNumber()
-
+        this.approvePaymentForm.afterFine = tr.attributes.amount;
         this.approvePaymentForm.building = tr.attributes.building.data.id;
         this.approvePaymentForm.userID =
           tr.attributes.user_sign_contract.data.id;
         // this.approvePaymentForm.approveBy = ${this.$store.state.userInfo.id}
-
+        this.approvePaymentForm.invoiceID = trID;
         // this.partialPaymentForm.invoiceID = tr.id
         this.approvePaymentForm.accountBankName =
           this.userProfile.firstName + " " + this.userProfile.lastName;
@@ -1888,7 +1893,7 @@ export default {
     //         }
     //     });
     // },
-    createReceipt(currentEvident) {
+    createReceipt() {
       //ส่งบอกว่า evident ถูก approve แล้ว หลังบ้านจะไป update invoice, current evident, และ สร้าง reciept ตามจำเป็น
       let today = new Date();
       axios
@@ -1896,13 +1901,11 @@ export default {
           data: {
             year: today.getFullYear(),
             month: today.getMonth() + 1,
-            evidenceid: currentEvident.id,
+            evidenceid: this.approvePaymentForm.invoiceID,
             paidAmount: this.approvePaymentForm.amount,
-            buildingid: currentEvident.attributes.building.data.id,
+            buildingid: this.approvePaymentForm.building,
             roomid: parseInt(this.$route.query.roomID),
-            paidDate: currentEvident.attributes.paymentDate
-              ? currentEvident.attributes.paymentDate
-              : today,
+            paidDate: today,
             fine: this.approvePaymentForm.fineamount,
             // approveBy: data.attributes.toUser.data?.attributes.firstName
           },
@@ -1921,6 +1924,7 @@ export default {
           this.getReceipt();
           this.getEvidence();
         });
+      this.createApprovePayment = false;
     },
 
     //cal afterFine in approve popup
@@ -1928,7 +1932,6 @@ export default {
       let result;
       result =
         this.approvePaymentForm.amount - this.approvePaymentForm.fineamount;
-      console.log("adfcvarfasdf", result);
       document.getElementById("afterFine").value = result;
     },
 
