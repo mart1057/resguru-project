@@ -136,7 +136,7 @@
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
-              <circle cx="38" cy="38" r="38" fill="#F3F7FA" />
+              <circle cx="38" cy="38" r="38" fill="#dadfe3" />
               <mask
                 id="mask0_2514_22683"
                 style="mask-type: alpha"
@@ -258,7 +258,7 @@
                       <div>
                         <input
                           type="input"
-                          class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                          class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                           v-model="id_card"
                         />
                         <vs-button primary @click="getUserDetail(id_card)"
@@ -272,7 +272,7 @@
                     <input
                       type="input"
                       v-model="room_detail.email"
-                      class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                      class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                       :disabled="is_edit == true"
                     />
                   </div>
@@ -287,7 +287,7 @@
                       <input
                         type="input"
                         v-model="room_detail.email"
-                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                        class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                         :disabled="is_edit == true"
                       />
                     </div>
@@ -382,17 +382,17 @@
                   <!-- <div class="col-span-2">
                                         <div><span class="text-[red] mr-[2px]">*</span>อีเมลล์</div>
                                         <input type="input" v-model="room_detail.email"
-                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                                             :disabled="is_edit == true" />
                                     </div> -->
                   <!-- <div class="col-span-1">
                                         <div>เลขมิเตอร์ค่าน้ำเริ่มต้น</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                                             :disabled="is_edit == true" />
                                     </div>
                                     <div class="col-span-1">
                                         <div>เลขมิเตอร์ค่าไฟเริ่มต้น</div>
-                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                                             :disabled="is_edit == true" />
                                     </div> -->
                 </div>
@@ -402,7 +402,7 @@
                   <!-- <div class="col-span-1 ml-[4px] w-[80%]">
                                         <div>คำนำหน้า</div>
                                         <select placeholder="ชื่อ" id="mr"
-                                            class="mt-[6px] pl-[4px] pr-[4px] h-[36px] w-[80%] rounded-[12px] bg-[#F3F7FA]"
+                                            class="mt-[6px] pl-[4px] pr-[4px] h-[36px] w-[80%] rounded-[12px] bg-[#dadfe3]"
                                             v-model="room_detail.sex"
                                             :disabled="is_edit == true || room_detail.check_user == true">
                                             <option label="นาย" :value="true">
@@ -417,7 +417,7 @@
                     <div><span class="text-[red] mr-[2px]">*</span>ชื่อ</div>
                     <input
                       type="input"
-                      class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                      class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                       v-model="room_detail.name"
                       :disabled="is_edit == true"
                     />
@@ -426,7 +426,7 @@
                     <div><span class="text-[red] mr-[2px]">*</span>สกุล</div>
                     <input
                       type="input"
-                      class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                      class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                       v-model="room_detail.last_name"
                       :disabled="is_edit == true"
                     />
@@ -435,7 +435,7 @@
                     <div>ชื่อเล่น</div>
                     <input
                       type="input"
-                      class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                      class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                       v-model="room_detail.nick_name"
                       :disabled="is_edit == true"
                     />
@@ -453,7 +453,7 @@
                   </div>
                   <input
                     type="input"
-                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                    class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                     v-model="room_detail.phone"
                     :disabled="is_edit == true"
                   />
@@ -466,7 +466,7 @@
                 </div>
                 <input
                   type="input"
-                  class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                  class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                   v-model="room_detail.id_card"
                   :disabled="is_edit == true"
                 />
@@ -475,7 +475,7 @@
                 <div class="text-custom">วัน/เดือน/ปีเกิด (ค.ศ.)</div>
                 <input
                   type="date"
-                  class="h-[36px] mt-[6px] pl-[8px] pr-[8px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                  class="h-[36px] mt-[6px] pl-[8px] pr-[8px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                   v-model="room_detail.birth"
                   :disabled="is_edit == true"
                 />
@@ -490,7 +490,7 @@
                 </div>
                 <input
                   type="input"
-                  class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                  class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                   v-model="room_detail.address"
                   :disabled="is_edit == true"
                 />
@@ -551,7 +551,7 @@
                   <div>Line ID</div>
                   <input
                     type="input"
-                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                    class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                     v-model="room_detail.lineID"
                     :disabled="is_edit == true"
                   />
@@ -562,7 +562,7 @@
                   <div>สถาบันการศึกษา / สถานที่ทำงานปัจจุบัน</div>
                   <input
                     type="input"
-                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                    class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                     v-model="room_detail.workplace"
                     :disabled="is_edit == true"
                   />
@@ -571,7 +571,7 @@
                   <div>คณะ / แผนก</div>
                   <input
                     type="input"
-                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                    class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                     v-model="room_detail.faculty"
                     :disabled="is_edit == true"
                   />
@@ -582,7 +582,7 @@
                   <div>ชั้นปี / ตำแหน่ง</div>
                   <input
                     type="input"
-                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                    class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                     v-model="room_detail.rank"
                     :disabled="is_edit == true"
                   />
@@ -591,7 +591,7 @@
                   <div>รหัสนักศึกษา / รหัสพนักงาน</div>
                   <input
                     type="input"
-                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                    class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                     v-model="room_detail.idEmployee"
                     :disabled="is_edit == true"
                   />
@@ -602,7 +602,7 @@
                   <div>บุคคลที่สามารถติดต่อได้กรณีฉุกเฉิน</div>
                   <input
                     type="input"
-                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                    class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                     v-model="room_detail.emergencyPerson"
                     :disabled="is_edit == true"
                   />
@@ -611,7 +611,7 @@
                   <div>ความสัมพันธ์</div>
                   <input
                     type="input"
-                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                    class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                     v-model="room_detail.relation"
                     :disabled="is_edit == true"
                   />
@@ -620,7 +620,7 @@
                   <div>เบอร์โทรศัพท์ผู้ติดต่อฉุกเฉิน</div>
                   <input
                     type="input"
-                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                    class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                     v-model="room_detail.emergencyPhone"
                     :disabled="is_edit == true"
                   />
@@ -631,7 +631,7 @@
                   <div>ความสัมพันธ์</div>
                   <input
                     type="input"
-                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                    class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                     v-model="room_detail.relation"
                     :disabled="is_edit == true"
                   />
@@ -640,7 +640,7 @@
                   <div>เบอร์โทรศัพท์ผู้ติดต่อฉุกเฉิน</div>
                   <input
                     type="input"
-                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                    class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                     v-model="room_detail.emergencyPhone"
                     :disabled="is_edit == true"
                   />
@@ -691,7 +691,7 @@
                     </div>
                     <select
                       placeholder="ชื่อ"
-                      class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]"
+                      class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#dadfe3]"
                       v-model="data.Type"
                     >
                       <option label="เลือกประเภท" value="" disabled>
@@ -708,7 +708,7 @@
                     <input
                       type="input"
                       placeholder="ทะเบียนรถ"
-                      class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                      class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                       v-model="data.licensePlate"
                     />
                   </div>
@@ -717,7 +717,7 @@
                     <input
                       type="input"
                       placeholder="รายละเอียดรถ"
-                      class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                      class="h-[36px] w-[100%] rounded-[12px] bg-[#dadfe3]"
                       v-model="data.remark"
                     />
                   </div>
@@ -945,7 +945,7 @@
                 :class="
                   tab == 1
                     ? 'bg-[#003765] text-white'
-                    : 'bg-[#F3F7FA] text-[#003765]'
+                    : 'bg-[#dadfe3] text-[#003765]'
                 "
               >
                 <div class="text-custom text-[16px] font-bold">
@@ -999,7 +999,7 @@
                 :class="
                   tab == 2
                     ? 'bg-[#003765] text-white'
-                    : 'bg-[#F3F7FA] text-[#003765]'
+                    : 'bg-[#dadfe3] text-[#003765]'
                 "
               >
                 <div class="text-custom text-[16px] font-bold">
