@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <!-- <div class="bg-[white] pt-[14px] pl-[24px] pr-[24px] " :class="tab == 1 ? 'rounded-b-lg' : 'rounded-t-lg'">
+  <div>
+    <!-- <div class="bg-[white] pt-[14px] pl-[24px] pr-[24px] " :class="tab == 1 ? 'rounded-b-lg' : 'rounded-t-lg'">
             <div class="bg-[white] ">
                 <div class="flex justify-start items-center rounded-[12px] ">
                     <div class="bg-[#F3F7FA] rounded-[12px]">
@@ -22,82 +22,134 @@
             </div>
         </div> -->
 
-        <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg">
-            <div class="grid grid-cols-3 gap-4 mt-[14px] w-[100%]">
-                <div class="border h-[auto]  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]">
-                    <div class="flex flex-col justify-between h-[100%]">
-                        <div class="flex">
-                            <div>
-                                <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <mask id="mask0_865_21476" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                        y="0" width="20" height="21">
-                                        <rect y="0.5" width="20" height="20" fill="#D9D9D9" />
-                                    </mask>
-                                    <g mask="url(#mask0_865_21476)">
-                                        <path
-                                            d="M9.99998 18.4168C8.34634 18.4168 6.89127 17.8397 5.63477 16.6854C4.37826 15.5311 3.75 13.9692 3.75 11.9998C3.75 10.7607 4.22196 9.41311 5.16587 7.95692C6.10978 6.50072 7.5366 4.91537 9.44635 3.20085C9.52484 3.1344 9.61163 3.08301 9.70671 3.04669C9.80179 3.01035 9.89955 2.99219 9.99998 2.99219C10.1004 2.99219 10.1982 3.01035 10.2933 3.04669C10.3883 3.08301 10.4751 3.1344 10.5536 3.20085C12.4634 4.91537 13.8902 6.50072 14.8341 7.95692C15.778 9.41311 16.25 10.7607 16.25 11.9998C16.25 13.9692 15.6217 15.5311 14.3652 16.6854C13.1087 17.8397 11.6536 18.4168 9.99998 18.4168ZM9.99998 17.1668C11.3974 17.1668 12.5801 16.6863 13.5481 15.7253C14.516 14.7643 15 13.5226 15 12.0002C15 11.0141 14.5903 9.88558 13.7708 8.61475C12.9514 7.34392 11.6944 5.93072 9.99998 4.37517C8.30553 5.93072 7.04859 7.34392 6.22915 8.61475C5.4097 9.88558 4.99998 11.0141 4.99998 12.0002C4.99998 13.5226 5.48395 14.7643 6.4519 15.7253C7.41985 16.6863 8.60255 17.1668 9.99998 17.1668ZM10.2051 16.2053C10.3504 16.1914 10.4701 16.137 10.5641 16.0422C10.6581 15.9474 10.7051 15.833 10.7051 15.6992C10.7051 15.543 10.6539 15.4192 10.5514 15.3279C10.4489 15.2365 10.318 15.1978 10.1586 15.2117C9.58918 15.2534 8.96899 15.0864 8.29804 14.7109C7.62711 14.3354 7.20831 13.6823 7.04165 12.7518C7.01387 12.6097 6.95431 12.498 6.86296 12.4168C6.77161 12.3356 6.6629 12.295 6.53683 12.295C6.38513 12.295 6.25879 12.3519 6.15783 12.4657C6.05687 12.5795 6.02456 12.7256 6.0609 12.904C6.28631 14.1145 6.83118 14.9799 7.6955 15.5002C8.55982 16.0205 9.39635 16.2555 10.2051 16.2053Z"
-                                            fill="#003765" />
-                                    </g>
-                                </svg>
-                            </div>
-                            <div class="text-[20px] ml-[4px] font-bold">ค่าน้ำ</div>
-                        </div>
-                        <div
-                            class="text-[20px] flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] text-[#2875E9] mt-[8px]">
-                            <div>ราคา</div>
-                            <input type="number" @change="updateUserBuildingWater()"
-                                class=" flex justify-center h-[30px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
-                                v-model="building[0].attributes.waterUnitPrice">
-                            <!-- <div class="font-bold">{{ building[0].attributes.waterUnitPrice }}</div> -->
-                        </div>
-                    </div>
-                </div>
-                <div class="border h-[auto]  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]">
-                    <div class="flex flex-col justify-between h-[100%]">
-                        <div class="flex">
-                            <div>
-                                <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <mask id="mask0_865_21482" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                        y="0" width="20" height="21">
-                                        <rect y="0.5" width="20" height="20" fill="#D9D9D9" />
-                                    </mask>
-                                    <g mask="url(#mask0_865_21482)">
-                                        <path
-                                            d="M9.72153 14.7487L12.1603 10.6108C12.183 10.5681 12.1853 10.524 12.1671 10.4786C12.149 10.4332 12.1172 10.4105 12.0717 10.4105H10.0855L11.326 5.34645C11.3442 5.28235 11.3351 5.22225 11.2988 5.16616C11.2624 5.11006 11.217 5.08201 11.1624 5.08201H7.94937C7.88575 5.08201 7.8335 5.10605 7.79261 5.15414C7.75171 5.20222 7.73125 5.26366 7.73125 5.33845V11.4922C7.73125 11.567 7.75171 11.6285 7.79261 11.6766C7.8335 11.7246 7.88575 11.7487 7.94937 11.7487H9.72153V14.7487ZM13.259 10.9265L9.53751 17.2742C9.47117 17.3885 9.3887 17.4639 9.29009 17.5002C9.19149 17.5365 9.09357 17.5365 8.99632 17.5002C8.89909 17.4639 8.81843 17.3976 8.75435 17.3015C8.69028 17.2053 8.65824 17.0889 8.65824 16.9521V12.9987H7.94937C7.59586 12.9987 7.29391 12.8515 7.04353 12.5571C6.79315 12.2628 6.66797 11.9078 6.66797 11.4922V5.33845C6.66797 4.92285 6.79315 4.56789 7.04353 4.27355C7.29391 3.9792 7.59586 3.83203 7.94937 3.83203H11.3805C11.7313 3.83203 12.0162 3.98828 12.2352 4.30078C12.4543 4.61328 12.5188 4.95917 12.4288 5.33845L11.4937 9.16053H12.4616C12.846 9.16053 13.1302 9.36004 13.3143 9.75907C13.4983 10.1581 13.4799 10.5473 13.259 10.9265Z"
-                                            fill="#003765" />
-                                    </g>
-                                </svg>
-                            </div>
-                            <div class="text-[20px] ml-[4px] font-bold">ค่าไฟ</div>
-                        </div>
-                        <div
-                            class="text-[20px] flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] text-[#EEA10B] mt-[8px]">
-                            <div>ราคา</div>
-                            <input type="number" @change="updateUserBuildingElectric()"
-                                class=" flex justify-center h-[30px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
-                                v-model="building[0].attributes.electricUnitPrice">
-                            <!-- <div class="font-bold">{{ building[0].attributes.electricUnitPrice }}</div> -->
-                        </div>
-                    </div>
-                </div>
-                <div class="border h-[auto] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]">
-                    <div class="flex flex-col justify-between h-[100%]">
-                        <div class="flex">
-                            <div>
+    <div
+      class="bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px] rounded-b-lg"
+    >
+      <div class="grid grid-cols-3 gap-4 mt-[14px] w-[100%]">
+        <div
+          class="border h-[auto] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]"
+        >
+          <div class="flex flex-col justify-between h-[100%]">
+            <div class="flex">
+              <div>
+                <svg
+                  width="20"
+                  height="21"
+                  viewBox="0 0 20 21"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <mask
+                    id="mask0_865_21476"
+                    style="mask-type: alpha"
+                    maskUnits="userSpaceOnUse"
+                    x="0"
+                    y="0"
+                    width="20"
+                    height="21"
+                  >
+                    <rect y="0.5" width="20" height="20" fill="#D9D9D9" />
+                  </mask>
+                  <g mask="url(#mask0_865_21476)">
+                    <path
+                      d="M9.99998 18.4168C8.34634 18.4168 6.89127 17.8397 5.63477 16.6854C4.37826 15.5311 3.75 13.9692 3.75 11.9998C3.75 10.7607 4.22196 9.41311 5.16587 7.95692C6.10978 6.50072 7.5366 4.91537 9.44635 3.20085C9.52484 3.1344 9.61163 3.08301 9.70671 3.04669C9.80179 3.01035 9.89955 2.99219 9.99998 2.99219C10.1004 2.99219 10.1982 3.01035 10.2933 3.04669C10.3883 3.08301 10.4751 3.1344 10.5536 3.20085C12.4634 4.91537 13.8902 6.50072 14.8341 7.95692C15.778 9.41311 16.25 10.7607 16.25 11.9998C16.25 13.9692 15.6217 15.5311 14.3652 16.6854C13.1087 17.8397 11.6536 18.4168 9.99998 18.4168ZM9.99998 17.1668C11.3974 17.1668 12.5801 16.6863 13.5481 15.7253C14.516 14.7643 15 13.5226 15 12.0002C15 11.0141 14.5903 9.88558 13.7708 8.61475C12.9514 7.34392 11.6944 5.93072 9.99998 4.37517C8.30553 5.93072 7.04859 7.34392 6.22915 8.61475C5.4097 9.88558 4.99998 11.0141 4.99998 12.0002C4.99998 13.5226 5.48395 14.7643 6.4519 15.7253C7.41985 16.6863 8.60255 17.1668 9.99998 17.1668ZM10.2051 16.2053C10.3504 16.1914 10.4701 16.137 10.5641 16.0422C10.6581 15.9474 10.7051 15.833 10.7051 15.6992C10.7051 15.543 10.6539 15.4192 10.5514 15.3279C10.4489 15.2365 10.318 15.1978 10.1586 15.2117C9.58918 15.2534 8.96899 15.0864 8.29804 14.7109C7.62711 14.3354 7.20831 13.6823 7.04165 12.7518C7.01387 12.6097 6.95431 12.498 6.86296 12.4168C6.77161 12.3356 6.6629 12.295 6.53683 12.295C6.38513 12.295 6.25879 12.3519 6.15783 12.4657C6.05687 12.5795 6.02456 12.7256 6.0609 12.904C6.28631 14.1145 6.83118 14.9799 7.6955 15.5002C8.55982 16.0205 9.39635 16.2555 10.2051 16.2053Z"
+                      fill="#003765"
+                    />
+                  </g>
+                </svg>
+              </div>
+              <div class="text-[20px] ml-[4px] font-bold">ค่าน้ำ</div>
+            </div>
+            <div
+              class="text-[20px] flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] text-[#2875E9] mt-[8px]"
+            >
+              <div>ราคาต่อหน่วย</div>
+              <input
+                type="number"
+                @change="updateUserBuildingWater()"
+                class="flex justify-center h-[30px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
+                v-model="building[0].attributes.waterUnitPrice"
+              />
+              <!-- <div class="font-bold">{{ building[0].attributes.waterUnitPrice }}</div> -->
+            </div>
+          </div>
+        </div>
+        <div
+          class="border h-[auto] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]"
+        >
+          <div class="flex flex-col justify-between h-[100%]">
+            <div class="flex">
+              <div>
+                <svg
+                  width="20"
+                  height="21"
+                  viewBox="0 0 20 21"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <mask
+                    id="mask0_865_21482"
+                    style="mask-type: alpha"
+                    maskUnits="userSpaceOnUse"
+                    x="0"
+                    y="0"
+                    width="20"
+                    height="21"
+                  >
+                    <rect y="0.5" width="20" height="20" fill="#D9D9D9" />
+                  </mask>
+                  <g mask="url(#mask0_865_21482)">
+                    <path
+                      d="M9.72153 14.7487L12.1603 10.6108C12.183 10.5681 12.1853 10.524 12.1671 10.4786C12.149 10.4332 12.1172 10.4105 12.0717 10.4105H10.0855L11.326 5.34645C11.3442 5.28235 11.3351 5.22225 11.2988 5.16616C11.2624 5.11006 11.217 5.08201 11.1624 5.08201H7.94937C7.88575 5.08201 7.8335 5.10605 7.79261 5.15414C7.75171 5.20222 7.73125 5.26366 7.73125 5.33845V11.4922C7.73125 11.567 7.75171 11.6285 7.79261 11.6766C7.8335 11.7246 7.88575 11.7487 7.94937 11.7487H9.72153V14.7487ZM13.259 10.9265L9.53751 17.2742C9.47117 17.3885 9.3887 17.4639 9.29009 17.5002C9.19149 17.5365 9.09357 17.5365 8.99632 17.5002C8.89909 17.4639 8.81843 17.3976 8.75435 17.3015C8.69028 17.2053 8.65824 17.0889 8.65824 16.9521V12.9987H7.94937C7.59586 12.9987 7.29391 12.8515 7.04353 12.5571C6.79315 12.2628 6.66797 11.9078 6.66797 11.4922V5.33845C6.66797 4.92285 6.79315 4.56789 7.04353 4.27355C7.29391 3.9792 7.59586 3.83203 7.94937 3.83203H11.3805C11.7313 3.83203 12.0162 3.98828 12.2352 4.30078C12.4543 4.61328 12.5188 4.95917 12.4288 5.33845L11.4937 9.16053H12.4616C12.846 9.16053 13.1302 9.36004 13.3143 9.75907C13.4983 10.1581 13.4799 10.5473 13.259 10.9265Z"
+                      fill="#003765"
+                    />
+                  </g>
+                </svg>
+              </div>
+              <div class="text-[20px] ml-[4px] font-bold">ค่าไฟ</div>
+            </div>
+            <div
+              class="text-[20px] flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] text-[#EEA10B] mt-[8px]"
+            >
+              <div>ราคาต่อหน่วย</div>
+              <input
+                type="number"
+                @change="updateUserBuildingElectric()"
+                class="flex justify-center h-[30px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
+                v-model="building[0].attributes.electricUnitPrice"
+              />
+              <!-- <div class="font-bold">{{ building[0].attributes.electricUnitPrice }}</div> -->
+            </div>
+          </div>
+        </div>
+        <div
+          class="border h-[auto] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]"
+        >
+          <div class="flex flex-col justify-between h-[100%]">
+            <div class="flex">
+              <div>
+                <template>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 48 48"
+                  >
+                    <g
+                      fill="none"
+                      stroke="#003765"
+                      stroke-linejoin="round"
+                      stroke-width="4"
+                    >
+                      <path
+                        d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z"
+                      />
+                      <path stroke-linecap="round" d="M24 16v16m-8-8h16" />
+                    </g>
+                  </svg>
+                </template>
 
-                                <template>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48">
-                                        <g fill="none" stroke="#003765" stroke-linejoin="round" stroke-width="4">
-                                            <path
-                                                d="M24 44c11.046 0 20-8.954 20-20S35.046 4 24 4S4 12.954 4 24s8.954 20 20 20Z" />
-                                            <path stroke-linecap="round" d="M24 16v16m-8-8h16" />
-                                        </g>
-                                    </svg>
-                                </template>
-
-                                <!-- <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
+                <!-- <svg width="20" height="21" viewBox="0 0 20 21" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_967_29728" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="20" height="21">
@@ -109,53 +161,88 @@
                                             fill="#003765" />
                                     </g>
                                 </svg> -->
-                            </div>
-                            <div class="text-[16px] ml-[4px] font-bold">ค่าส่วนกลาง</div>
-                        </div>
-                        <div
-                            class="text-[20px] flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] mt-[8px] ">
-                            <div>ราคา</div>
-                            <input type="number" @change="updateUserBuildingCommunual()"
-                                class=" flex justify-center h-[30px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
-                                v-model="building[0].attributes.communalUnitPrice">
-                            <!-- <div class="font-bold">{{ building[0].attributes.communalUnitPrice }}</div> -->
-                        </div>
-                    </div>
-                </div>
-
+              </div>
+              <div class="text-[16px] ml-[4px] font-bold">ค่าส่วนกลาง</div>
             </div>
+            <div
+              class="text-[20px] flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[8px] pb-[8px] mt-[8px]"
+            >
+              <div>ราคาต่อเดือน</div>
+              <input
+                type="number"
+                @change="updateUserBuildingCommunual()"
+                class="flex justify-center h-[30px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
+                v-model="building[0].attributes.communalUnitPrice"
+              />
+              <!-- <div class="font-bold">{{ building[0].attributes.communalUnitPrice }}</div> -->
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
 
-
-
-        <div class=" bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px]  rounded-b-lg">
-            <div class="text-[20px] font-bold mt-[24px]">ค่าบริการเสริม</div>
-            <div class="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-[14px] w-[100%]">
-                <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
-                    @click="is_edit = false, discountAmount = '', price = '', title = '', create_service = true">
-                    <div>
-                        <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
-                            <mask id="mask0_1373_22044" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="6" y="7"
-                                width="56" height="55">
-                                <rect x="6.80078" y="7.25586" width="54.4" height="54.4" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_1373_22044)">
-                                <path
-                                    d="M33.9984 49.7561C33.5165 49.7561 33.1129 49.5932 32.7874 49.2674C32.4619 48.9416 32.2992 48.5379 32.2992 48.0562V36.1561H20.3992C19.9175 36.1561 19.5138 35.9932 19.188 35.6672C18.8621 35.3412 18.6992 34.9373 18.6992 34.4555C18.6992 33.9736 18.8621 33.5699 19.188 33.2444C19.5138 32.919 19.9175 32.7562 20.3992 32.7562H32.2992V20.8562C32.2992 20.3745 32.4622 19.9708 32.7881 19.6449C33.1141 19.3191 33.518 19.1562 33.9999 19.1562C34.4818 19.1562 34.8855 19.3191 35.2109 19.6449C35.5364 19.9708 35.6991 20.3745 35.6991 20.8562V32.7562H47.5992C48.0808 32.7562 48.4846 32.9192 48.8104 33.2452C49.1362 33.5712 49.2991 33.9751 49.2991 34.4569C49.2991 34.9388 49.1362 35.3425 48.8104 35.668C48.4846 35.9934 48.0808 36.1561 47.5992 36.1561H35.6991V48.0562C35.6991 48.5379 35.5361 48.9416 35.2102 49.2674C34.8842 49.5932 34.4803 49.7561 33.9984 49.7561Z"
-                                    fill="#B9CCDC" />
-                            </g>
-                        </svg>
-                    </div>
-                    <div class="text-[#5C6B79] font-bold mt-[4px] ">สร้างบริการ</div>
-                </div>
-                <div class="border  rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]"
-                    v-for="data in otherOfBuilding">
-                    <div class="flex flex-col justify-between h-[100%]">
-                        <div class="flex justify-between">
-                            <div class="text-[18px]"> {{ data.attributes.title }}</div>
-                            <div>
-                                <!-- <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+    <div
+      class="bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px] rounded-b-lg"
+    >
+      <div class="text-[20px] font-bold mt-[24px]">ค่าบริการเสริม</div>
+      <div
+        class="grid grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4 mt-[14px] w-[100%]"
+      >
+        <div
+          class="border rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
+          @click="
+            (is_edit = false),
+              (discountAmount = ''),
+              (price = ''),
+              (title = ''),
+              (create_service = true)
+          "
+        >
+          <div>
+            <svg
+              width="60"
+              height="60"
+              viewBox="0 0 68 69"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
+              <mask
+                id="mask0_1373_22044"
+                style="mask-type: alpha"
+                maskUnits="userSpaceOnUse"
+                x="6"
+                y="7"
+                width="56"
+                height="55"
+              >
+                <rect
+                  x="6.80078"
+                  y="7.25586"
+                  width="54.4"
+                  height="54.4"
+                  fill="#D9D9D9"
+                />
+              </mask>
+              <g mask="url(#mask0_1373_22044)">
+                <path
+                  d="M33.9984 49.7561C33.5165 49.7561 33.1129 49.5932 32.7874 49.2674C32.4619 48.9416 32.2992 48.5379 32.2992 48.0562V36.1561H20.3992C19.9175 36.1561 19.5138 35.9932 19.188 35.6672C18.8621 35.3412 18.6992 34.9373 18.6992 34.4555C18.6992 33.9736 18.8621 33.5699 19.188 33.2444C19.5138 32.919 19.9175 32.7562 20.3992 32.7562H32.2992V20.8562C32.2992 20.3745 32.4622 19.9708 32.7881 19.6449C33.1141 19.3191 33.518 19.1562 33.9999 19.1562C34.4818 19.1562 34.8855 19.3191 35.2109 19.6449C35.5364 19.9708 35.6991 20.3745 35.6991 20.8562V32.7562H47.5992C48.0808 32.7562 48.4846 32.9192 48.8104 33.2452C49.1362 33.5712 49.2991 33.9751 49.2991 34.4569C49.2991 34.9388 49.1362 35.3425 48.8104 35.668C48.4846 35.9934 48.0808 36.1561 47.5992 36.1561H35.6991V48.0562C35.6991 48.5379 35.5361 48.9416 35.2102 49.2674C34.8842 49.5932 34.4803 49.7561 33.9984 49.7561Z"
+                  fill="#B9CCDC"
+                />
+              </g>
+            </svg>
+          </div>
+          <div class="text-[#5C6B79] font-bold mt-[4px]">สร้างบริการ</div>
+        </div>
+        <div
+          class="border rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]"
+          v-for="data in otherOfBuilding"
+        >
+          <div class="flex flex-col justify-between h-[100%]">
+            <div class="flex justify-between">
+              <div class="text-[18px]">{{ data.attributes.title }}</div>
+              <div>
+                <!-- <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
                                     xmlns="http://www.w3.org/2000/svg">
                                     <ellipse cx="10.0013" cy="4.16667" rx="1.66667" ry="1.66667"
                                         transform="rotate(90 10.0013 4.16667)" fill="#5C6B79" />
@@ -164,645 +251,953 @@
                                     <ellipse cx="10.0013" cy="15.8327" rx="1.66667" ry="1.66667"
                                         transform="rotate(90 10.0013 15.8327)" fill="#5C6B79" />
                                 </svg> -->
-                            </div>
-                        </div>
-                        <div
-                            class="text-[18px] flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]  mt-[14px]">
-                            <div>ราคา/เดือน</div>
-                            <!-- <div class="font-bold">{{ data.attributes.price }}</div> -->
-                            <input type="number" @change="changeotherPrice(data.id, data.attributes.price)"
-                                v-model="data.attributes.price"
-                                class=" flex justify-center h-[30px] w-[50%] bg-[#F3F8FD] rounded-[12px]">
-                        </div>
-                        <!-- <div
+              </div>
+            </div>
+            <div
+              class="text-[18px] flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px] mt-[14px]"
+            >
+              <div>ราคาต่อเดือน</div>
+              <!-- <div class="font-bold">{{ data.attributes.price }}</div> -->
+              <input
+                type="number"
+                @change="changeotherPrice(data.id, data.attributes.price)"
+                v-model="data.attributes.price"
+                class="flex justify-center h-[30px] w-[50%] bg-[#F3F8FD] rounded-[12px]"
+              />
+            </div>
+            <!-- <div
                             class="flex justify-between border rounded-[12px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]  mt-[4px]">
                             <div>ส่วนลด</div>
                             <input type="number" @change="changeotherDiscountPrice(data.id, data.attributes.discountAmount)"
                                 v-model="data.attributes.discountAmount"
                                 class=" flex justify-center h-[24px] w-[50%] bg-[#F3F8FD] rounded-[12px]">
                         </div> -->
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
+    </div>
 
-        <b-modal centered v-model="create" size="xl" hide-backdrop hide-header-close hide-header hide-footer
-            class="p-[-20px] text-custom">
-            <div>
-                <div class="flex justify-between pl-[20px] pr-[20px]">
-                    <div class="text-custom flex justify-center items-center text-[16px] font-bold">แก้ไขผังหอพัก</div>
-                    <div @click="create = false" class="cursor-pointer">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-                                width="24" height="24">
-                                <rect width="24" height="24" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_417_4814)">
-                                <path
-                                    d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
-                                    fill="#5C6B79" />
-                            </g>
-                        </svg>
-                    </div>
+    <b-modal
+      centered
+      v-model="create"
+      size="xl"
+      hide-backdrop
+      hide-header-close
+      hide-header
+      hide-footer
+      class="p-[-20px] text-custom"
+    >
+      <div>
+        <div class="flex justify-between pl-[20px] pr-[20px]">
+          <div
+            class="text-custom flex justify-center items-center text-[16px] font-bold"
+          >
+            แก้ไขผังหอพัก
+          </div>
+          <div @click="create = false" class="cursor-pointer">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <mask
+                id="mask0_417_4814"
+                style="mask-type: alpha"
+                maskUnits="userSpaceOnUse"
+                x="0"
+                y="0"
+                width="24"
+                height="24"
+              >
+                <rect width="24" height="24" fill="#D9D9D9" />
+              </mask>
+              <g mask="url(#mask0_417_4814)">
+                <path
+                  d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                  fill="#5C6B79"
+                />
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div
+          class="w-[100%] h-[1px] mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"
+        ></div>
+        <div class="grid grid-cols-3 gap-4">
+          <div class="flex">
+            <div class="w-[100%]">
+              <div
+                class="h-[46px] w-[100%] rounded-[12px] bg-[#003765] flex justify-between items-center pl-[14px] pr-[14px]"
+              >
+                <div class="text-white text-[16px] text-custom">รายการห้อง</div>
+                <div>
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 22 22"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <mask
+                      id="mask0_1373_22419"
+                      style="mask-type: alpha"
+                      maskUnits="userSpaceOnUse"
+                      x="0"
+                      y="0"
+                      width="22"
+                      height="22"
+                    >
+                      <rect
+                        y="22"
+                        width="22"
+                        height="22"
+                        transform="rotate(-90 0 22)"
+                        fill="#D9D9D9"
+                      />
+                    </mask>
+                    <g mask="url(#mask0_1373_22419)">
+                      <path
+                        d="M17.1875 11.0003C17.1875 11.1952 17.1216 11.3585 16.9898 11.4901C16.8581 11.6217 16.6948 11.6875 16.5 11.6875H11.6875V16.5C11.6875 16.6948 11.6215 16.8581 11.4897 16.9898C11.3579 17.1216 11.1945 17.1875 10.9997 17.1875C10.8048 17.1875 10.6415 17.1216 10.5099 16.9898C10.3783 16.8581 10.3125 16.6948 10.3125 16.5V11.6875H5.49998C5.30519 11.6875 5.1419 11.6216 5.01013 11.4898C4.87838 11.3579 4.8125 11.1946 4.8125 10.9997C4.8125 10.8048 4.87838 10.6416 5.01013 10.51C5.1419 10.3784 5.30519 10.3125 5.49998 10.3125H10.3125V5.50002C10.3125 5.30523 10.3784 5.14195 10.5102 5.01018C10.6421 4.87842 10.8054 4.81254 11.0003 4.81254C11.1952 4.81254 11.3584 4.87842 11.49 5.01018C11.6216 5.14195 11.6875 5.30523 11.6875 5.50002V10.3125H16.5C16.6948 10.3125 16.8581 10.3785 16.9898 10.5103C17.1216 10.6421 17.1875 10.8055 17.1875 11.0003Z"
+                        fill="white"
+                      />
+                    </g>
+                  </svg>
                 </div>
-                <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
-                <div class="grid grid-cols-3 gap-4">
-                    <div class="flex">
-                        <div class="w-[100%]">
-                            <div
-                                class="h-[46px] w-[100%] rounded-[12px] bg-[#003765] flex justify-between items-center pl-[14px] pr-[14px]">
-                                <div class="text-white text-[16px] text-custom">รายการห้อง</div>
-                                <div>
-                                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1373_22419" style="mask-type:alpha" maskUnits="userSpaceOnUse"
-                                            x="0" y="0" width="22" height="22">
-                                            <rect y="22" width="22" height="22" transform="rotate(-90 0 22)"
-                                                fill="#D9D9D9" />
-                                        </mask>
-                                        <g mask="url(#mask0_1373_22419)">
-                                            <path
-                                                d="M17.1875 11.0003C17.1875 11.1952 17.1216 11.3585 16.9898 11.4901C16.8581 11.6217 16.6948 11.6875 16.5 11.6875H11.6875V16.5C11.6875 16.6948 11.6215 16.8581 11.4897 16.9898C11.3579 17.1216 11.1945 17.1875 10.9997 17.1875C10.8048 17.1875 10.6415 17.1216 10.5099 16.9898C10.3783 16.8581 10.3125 16.6948 10.3125 16.5V11.6875H5.49998C5.30519 11.6875 5.1419 11.6216 5.01013 11.4898C4.87838 11.3579 4.8125 11.1946 4.8125 10.9997C4.8125 10.8048 4.87838 10.6416 5.01013 10.51C5.1419 10.3784 5.30519 10.3125 5.49998 10.3125H10.3125V5.50002C10.3125 5.30523 10.3784 5.14195 10.5102 5.01018C10.6421 4.87842 10.8054 4.81254 11.0003 4.81254C11.1952 4.81254 11.3584 4.87842 11.49 5.01018C11.6216 5.14195 11.6875 5.30523 11.6875 5.50002V10.3125H16.5C16.6948 10.3125 16.8581 10.3785 16.9898 10.5103C17.1216 10.6421 17.1875 10.8055 17.1875 11.0003Z"
-                                                fill="white" />
-                                        </g>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div
-                                class="h-[46px] w-[100%] rounded-[12px] border flex justify-between items-center pl-[14px] pr-[14px] mt-[8px] hover:bg-[#DEEAF5]">
-                                <div class="text-[16px] text-custom">อาคาร A</div>
-                                <div class="cursor-pointer">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1373_22414" style="mask-type:alpha" maskUnits="userSpaceOnUse"
-                                            x="0" y="0" width="24" height="24">
-                                            <rect width="24" height="24" fill="#D9D9D9" />
-                                        </mask>
-                                        <g mask="url(#mask0_1373_22414)">
-                                            <path
-                                                d="M7.3077 20.4998C6.80257 20.4998 6.375 20.3248 6.025 19.9748C5.675 19.6248 5.5 19.1972 5.5 18.6921V5.99981H5.25C5.03718 5.99981 4.85898 5.92802 4.7154 5.78443C4.5718 5.64085 4.5 5.46265 4.5 5.24983C4.5 5.03702 4.5718 4.85882 4.7154 4.71523C4.85898 4.57163 5.03718 4.49983 5.25 4.49983H8.99997C8.99997 4.24857 9.08779 4.03832 9.26342 3.86908C9.43907 3.69985 9.65254 3.61523 9.90382 3.61523H14.0961C14.3474 3.61523 14.5609 3.69985 14.7365 3.86908C14.9122 4.03832 15 4.24857 15 4.49983H18.75C18.9628 4.49983 19.141 4.57163 19.2845 4.71523C19.4281 4.85882 19.5 5.03702 19.5 5.24983C19.5 5.46265 19.4281 5.64085 19.2845 5.78443C19.141 5.92802 18.9628 5.99981 18.75 5.99981H18.5V18.6921C18.5 19.1972 18.325 19.6248 17.975 19.9748C17.625 20.3248 17.1974 20.4998 16.6922 20.4998H7.3077ZM6.99997 5.99981V18.6921C6.99997 18.7818 7.02883 18.8556 7.08652 18.9133C7.14422 18.971 7.21795 18.9998 7.3077 18.9998H16.6922C16.782 18.9998 16.8557 18.971 16.9134 18.9133C16.9711 18.8556 17 18.7818 17 18.6921V5.99981H6.99997ZM9.40385 16.2498C9.40385 16.4626 9.47564 16.6409 9.61922 16.7844C9.76281 16.928 9.94101 16.9998 10.1538 16.9998C10.3666 16.9998 10.5448 16.928 10.6884 16.7844C10.832 16.6409 10.9038 16.4626 10.9038 16.2498V8.74978C10.9038 8.53697 10.832 8.35877 10.6884 8.21518C10.5448 8.0716 10.3666 7.99981 10.1538 7.99981C9.94101 7.99981 9.76281 8.0716 9.61922 8.21518C9.47564 8.35877 9.40385 8.53697 9.40385 8.74978V16.2498ZM13.0961 16.2498C13.0961 16.4626 13.1679 16.6409 13.3115 16.7844C13.4551 16.928 13.6333 16.9998 13.8461 16.9998C14.0589 16.9998 14.2371 16.928 14.3807 16.7844C14.5243 16.6409 14.5961 16.4626 14.5961 16.2498V8.74978C14.5961 8.53697 14.5243 8.35877 14.3807 8.21518C14.2371 8.0716 14.0589 7.99981 13.8461 7.99981C13.6333 7.99981 13.4551 8.0716 13.3115 8.21518C13.1679 8.35877 13.0961 8.53697 13.0961 8.74978V16.2498ZM6.99997 5.99981V18.6921C6.99997 18.7818 7.02883 18.8556 7.08652 18.9133C7.14422 18.971 7.21795 18.9998 7.3077 18.9998H6.99997V5.99981Z"
-                                                fill="#D44769" />
-                                        </g>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div
-                            class="w-[1px] h-[100%] ml-[18px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700 flex justify-center items-center">
-                        </div>
-                    </div>
-                    <div class="flex">
-                        <div class="w-[100%]">
-                            <div
-                                class="h-[46px] w-[100%] rounded-[12px] bg-[#008EF4] flex justify-between items-center pl-[14px] pr-[14px]">
-                                <div class="text-white text-[16px] text-custom">เพิ่มชั้น</div>
-                                <div>
-                                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1373_22419" style="mask-type:alpha" maskUnits="userSpaceOnUse"
-                                            x="0" y="0" width="22" height="22">
-                                            <rect y="22" width="22" height="22" transform="rotate(-90 0 22)"
-                                                fill="#D9D9D9" />
-                                        </mask>
-                                        <g mask="url(#mask0_1373_22419)">
-                                            <path
-                                                d="M17.1875 11.0003C17.1875 11.1952 17.1216 11.3585 16.9898 11.4901C16.8581 11.6217 16.6948 11.6875 16.5 11.6875H11.6875V16.5C11.6875 16.6948 11.6215 16.8581 11.4897 16.9898C11.3579 17.1216 11.1945 17.1875 10.9997 17.1875C10.8048 17.1875 10.6415 17.1216 10.5099 16.9898C10.3783 16.8581 10.3125 16.6948 10.3125 16.5V11.6875H5.49998C5.30519 11.6875 5.1419 11.6216 5.01013 11.4898C4.87838 11.3579 4.8125 11.1946 4.8125 10.9997C4.8125 10.8048 4.87838 10.6416 5.01013 10.51C5.1419 10.3784 5.30519 10.3125 5.49998 10.3125H10.3125V5.50002C10.3125 5.30523 10.3784 5.14195 10.5102 5.01018C10.6421 4.87842 10.8054 4.81254 11.0003 4.81254C11.1952 4.81254 11.3584 4.87842 11.49 5.01018C11.6216 5.14195 11.6875 5.30523 11.6875 5.50002V10.3125H16.5C16.6948 10.3125 16.8581 10.3785 16.9898 10.5103C17.1216 10.6421 17.1875 10.8055 17.1875 11.0003Z"
-                                                fill="white" />
-                                        </g>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div
-                                class="h-[46px] w-[100%] rounded-[12px] border flex justify-between items-center pl-[14px] pr-[14px] mt-[8px] hover:bg-[#DEEAF5]">
-                                <div class="text-[16px] text-custom">ชั้น 1</div>
-                                <div class="cursor-pointer">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1373_22414" style="mask-type:alpha" maskUnits="userSpaceOnUse"
-                                            x="0" y="0" width="24" height="24">
-                                            <rect width="24" height="24" fill="#D9D9D9" />
-                                        </mask>
-                                        <g mask="url(#mask0_1373_22414)">
-                                            <path
-                                                d="M7.3077 20.4998C6.80257 20.4998 6.375 20.3248 6.025 19.9748C5.675 19.6248 5.5 19.1972 5.5 18.6921V5.99981H5.25C5.03718 5.99981 4.85898 5.92802 4.7154 5.78443C4.5718 5.64085 4.5 5.46265 4.5 5.24983C4.5 5.03702 4.5718 4.85882 4.7154 4.71523C4.85898 4.57163 5.03718 4.49983 5.25 4.49983H8.99997C8.99997 4.24857 9.08779 4.03832 9.26342 3.86908C9.43907 3.69985 9.65254 3.61523 9.90382 3.61523H14.0961C14.3474 3.61523 14.5609 3.69985 14.7365 3.86908C14.9122 4.03832 15 4.24857 15 4.49983H18.75C18.9628 4.49983 19.141 4.57163 19.2845 4.71523C19.4281 4.85882 19.5 5.03702 19.5 5.24983C19.5 5.46265 19.4281 5.64085 19.2845 5.78443C19.141 5.92802 18.9628 5.99981 18.75 5.99981H18.5V18.6921C18.5 19.1972 18.325 19.6248 17.975 19.9748C17.625 20.3248 17.1974 20.4998 16.6922 20.4998H7.3077ZM6.99997 5.99981V18.6921C6.99997 18.7818 7.02883 18.8556 7.08652 18.9133C7.14422 18.971 7.21795 18.9998 7.3077 18.9998H16.6922C16.782 18.9998 16.8557 18.971 16.9134 18.9133C16.9711 18.8556 17 18.7818 17 18.6921V5.99981H6.99997ZM9.40385 16.2498C9.40385 16.4626 9.47564 16.6409 9.61922 16.7844C9.76281 16.928 9.94101 16.9998 10.1538 16.9998C10.3666 16.9998 10.5448 16.928 10.6884 16.7844C10.832 16.6409 10.9038 16.4626 10.9038 16.2498V8.74978C10.9038 8.53697 10.832 8.35877 10.6884 8.21518C10.5448 8.0716 10.3666 7.99981 10.1538 7.99981C9.94101 7.99981 9.76281 8.0716 9.61922 8.21518C9.47564 8.35877 9.40385 8.53697 9.40385 8.74978V16.2498ZM13.0961 16.2498C13.0961 16.4626 13.1679 16.6409 13.3115 16.7844C13.4551 16.928 13.6333 16.9998 13.8461 16.9998C14.0589 16.9998 14.2371 16.928 14.3807 16.7844C14.5243 16.6409 14.5961 16.4626 14.5961 16.2498V8.74978C14.5961 8.53697 14.5243 8.35877 14.3807 8.21518C14.2371 8.0716 14.0589 7.99981 13.8461 7.99981C13.6333 7.99981 13.4551 8.0716 13.3115 8.21518C13.1679 8.35877 13.0961 8.53697 13.0961 8.74978V16.2498ZM6.99997 5.99981V18.6921C6.99997 18.7818 7.02883 18.8556 7.08652 18.9133C7.14422 18.971 7.21795 18.9998 7.3077 18.9998H6.99997V5.99981Z"
-                                                fill="#D44769" />
-                                        </g>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div
-                            class="w-[1px] h-[100%] ml-[18px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700 flex justify-center items-center">
-                        </div>
-                    </div>
-                    <div class="flex">
-                        <div class="w-[100%]">
-                            <div
-                                class="h-[46px] w-[100%] rounded-[12px] bg-[#9A77FF] flex justify-between items-center pl-[14px] pr-[14px]">
-                                <div class="text-white text-[16px] text-custom">เพิ่มห้อง</div>
-                                <div>
-                                    <svg width="22" height="22" viewBox="0 0 22 22" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1373_22419" style="mask-type:alpha" maskUnits="userSpaceOnUse"
-                                            x="0" y="0" width="22" height="22">
-                                            <rect y="22" width="22" height="22" transform="rotate(-90 0 22)"
-                                                fill="#D9D9D9" />
-                                        </mask>
-                                        <g mask="url(#mask0_1373_22419)">
-                                            <path
-                                                d="M17.1875 11.0003C17.1875 11.1952 17.1216 11.3585 16.9898 11.4901C16.8581 11.6217 16.6948 11.6875 16.5 11.6875H11.6875V16.5C11.6875 16.6948 11.6215 16.8581 11.4897 16.9898C11.3579 17.1216 11.1945 17.1875 10.9997 17.1875C10.8048 17.1875 10.6415 17.1216 10.5099 16.9898C10.3783 16.8581 10.3125 16.6948 10.3125 16.5V11.6875H5.49998C5.30519 11.6875 5.1419 11.6216 5.01013 11.4898C4.87838 11.3579 4.8125 11.1946 4.8125 10.9997C4.8125 10.8048 4.87838 10.6416 5.01013 10.51C5.1419 10.3784 5.30519 10.3125 5.49998 10.3125H10.3125V5.50002C10.3125 5.30523 10.3784 5.14195 10.5102 5.01018C10.6421 4.87842 10.8054 4.81254 11.0003 4.81254C11.1952 4.81254 11.3584 4.87842 11.49 5.01018C11.6216 5.14195 11.6875 5.30523 11.6875 5.50002V10.3125H16.5C16.6948 10.3125 16.8581 10.3785 16.9898 10.5103C17.1216 10.6421 17.1875 10.8055 17.1875 11.0003Z"
-                                                fill="white" />
-                                        </g>
-                                    </svg>
-                                </div>
-                            </div>
-                            <div
-                                class="h-[46px] w-[100%] rounded-[12px] border flex justify-between items-center pl-[14px] pr-[14px] mt-[8px] hover:bg-[#DEEAF5]">
-                                <div class="text-[16px] text-custom">ห้อง 101</div>
-                                <div class="cursor-pointer">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1373_22414" style="mask-type:alpha" maskUnits="userSpaceOnUse"
-                                            x="0" y="0" width="24" height="24">
-                                            <rect width="24" height="24" fill="#D9D9D9" />
-                                        </mask>
-                                        <g mask="url(#mask0_1373_22414)">
-                                            <path
-                                                d="M7.3077 20.4998C6.80257 20.4998 6.375 20.3248 6.025 19.9748C5.675 19.6248 5.5 19.1972 5.5 18.6921V5.99981H5.25C5.03718 5.99981 4.85898 5.92802 4.7154 5.78443C4.5718 5.64085 4.5 5.46265 4.5 5.24983C4.5 5.03702 4.5718 4.85882 4.7154 4.71523C4.85898 4.57163 5.03718 4.49983 5.25 4.49983H8.99997C8.99997 4.24857 9.08779 4.03832 9.26342 3.86908C9.43907 3.69985 9.65254 3.61523 9.90382 3.61523H14.0961C14.3474 3.61523 14.5609 3.69985 14.7365 3.86908C14.9122 4.03832 15 4.24857 15 4.49983H18.75C18.9628 4.49983 19.141 4.57163 19.2845 4.71523C19.4281 4.85882 19.5 5.03702 19.5 5.24983C19.5 5.46265 19.4281 5.64085 19.2845 5.78443C19.141 5.92802 18.9628 5.99981 18.75 5.99981H18.5V18.6921C18.5 19.1972 18.325 19.6248 17.975 19.9748C17.625 20.3248 17.1974 20.4998 16.6922 20.4998H7.3077ZM6.99997 5.99981V18.6921C6.99997 18.7818 7.02883 18.8556 7.08652 18.9133C7.14422 18.971 7.21795 18.9998 7.3077 18.9998H16.6922C16.782 18.9998 16.8557 18.971 16.9134 18.9133C16.9711 18.8556 17 18.7818 17 18.6921V5.99981H6.99997ZM9.40385 16.2498C9.40385 16.4626 9.47564 16.6409 9.61922 16.7844C9.76281 16.928 9.94101 16.9998 10.1538 16.9998C10.3666 16.9998 10.5448 16.928 10.6884 16.7844C10.832 16.6409 10.9038 16.4626 10.9038 16.2498V8.74978C10.9038 8.53697 10.832 8.35877 10.6884 8.21518C10.5448 8.0716 10.3666 7.99981 10.1538 7.99981C9.94101 7.99981 9.76281 8.0716 9.61922 8.21518C9.47564 8.35877 9.40385 8.53697 9.40385 8.74978V16.2498ZM13.0961 16.2498C13.0961 16.4626 13.1679 16.6409 13.3115 16.7844C13.4551 16.928 13.6333 16.9998 13.8461 16.9998C14.0589 16.9998 14.2371 16.928 14.3807 16.7844C14.5243 16.6409 14.5961 16.4626 14.5961 16.2498V8.74978C14.5961 8.53697 14.5243 8.35877 14.3807 8.21518C14.2371 8.0716 14.0589 7.99981 13.8461 7.99981C13.6333 7.99981 13.4551 8.0716 13.3115 8.21518C13.1679 8.35877 13.0961 8.53697 13.0961 8.74978V16.2498ZM6.99997 5.99981V18.6921C6.99997 18.7818 7.02883 18.8556 7.08652 18.9133C7.14422 18.971 7.21795 18.9998 7.3077 18.9998H6.99997V5.99981Z"
-                                                fill="#D44769" />
-                                        </g>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
+              </div>
+              <div
+                class="h-[46px] w-[100%] rounded-[12px] border flex justify-between items-center pl-[14px] pr-[14px] mt-[8px] hover:bg-[#DEEAF5]"
+              >
+                <div class="text-[16px] text-custom">อาคาร A</div>
+                <div class="cursor-pointer">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <mask
+                      id="mask0_1373_22414"
+                      style="mask-type: alpha"
+                      maskUnits="userSpaceOnUse"
+                      x="0"
+                      y="0"
+                      width="24"
+                      height="24"
+                    >
+                      <rect width="24" height="24" fill="#D9D9D9" />
+                    </mask>
+                    <g mask="url(#mask0_1373_22414)">
+                      <path
+                        d="M7.3077 20.4998C6.80257 20.4998 6.375 20.3248 6.025 19.9748C5.675 19.6248 5.5 19.1972 5.5 18.6921V5.99981H5.25C5.03718 5.99981 4.85898 5.92802 4.7154 5.78443C4.5718 5.64085 4.5 5.46265 4.5 5.24983C4.5 5.03702 4.5718 4.85882 4.7154 4.71523C4.85898 4.57163 5.03718 4.49983 5.25 4.49983H8.99997C8.99997 4.24857 9.08779 4.03832 9.26342 3.86908C9.43907 3.69985 9.65254 3.61523 9.90382 3.61523H14.0961C14.3474 3.61523 14.5609 3.69985 14.7365 3.86908C14.9122 4.03832 15 4.24857 15 4.49983H18.75C18.9628 4.49983 19.141 4.57163 19.2845 4.71523C19.4281 4.85882 19.5 5.03702 19.5 5.24983C19.5 5.46265 19.4281 5.64085 19.2845 5.78443C19.141 5.92802 18.9628 5.99981 18.75 5.99981H18.5V18.6921C18.5 19.1972 18.325 19.6248 17.975 19.9748C17.625 20.3248 17.1974 20.4998 16.6922 20.4998H7.3077ZM6.99997 5.99981V18.6921C6.99997 18.7818 7.02883 18.8556 7.08652 18.9133C7.14422 18.971 7.21795 18.9998 7.3077 18.9998H16.6922C16.782 18.9998 16.8557 18.971 16.9134 18.9133C16.9711 18.8556 17 18.7818 17 18.6921V5.99981H6.99997ZM9.40385 16.2498C9.40385 16.4626 9.47564 16.6409 9.61922 16.7844C9.76281 16.928 9.94101 16.9998 10.1538 16.9998C10.3666 16.9998 10.5448 16.928 10.6884 16.7844C10.832 16.6409 10.9038 16.4626 10.9038 16.2498V8.74978C10.9038 8.53697 10.832 8.35877 10.6884 8.21518C10.5448 8.0716 10.3666 7.99981 10.1538 7.99981C9.94101 7.99981 9.76281 8.0716 9.61922 8.21518C9.47564 8.35877 9.40385 8.53697 9.40385 8.74978V16.2498ZM13.0961 16.2498C13.0961 16.4626 13.1679 16.6409 13.3115 16.7844C13.4551 16.928 13.6333 16.9998 13.8461 16.9998C14.0589 16.9998 14.2371 16.928 14.3807 16.7844C14.5243 16.6409 14.5961 16.4626 14.5961 16.2498V8.74978C14.5961 8.53697 14.5243 8.35877 14.3807 8.21518C14.2371 8.0716 14.0589 7.99981 13.8461 7.99981C13.6333 7.99981 13.4551 8.0716 13.3115 8.21518C13.1679 8.35877 13.0961 8.53697 13.0961 8.74978V16.2498ZM6.99997 5.99981V18.6921C6.99997 18.7818 7.02883 18.8556 7.08652 18.9133C7.14422 18.971 7.21795 18.9998 7.3077 18.9998H6.99997V5.99981Z"
+                        fill="#D44769"
+                      />
+                    </g>
+                  </svg>
                 </div>
-                <div class="flex justify-end mt-[30px]">
-                    <div>
-                        <vs-button dark shadow @click="create = false">
-                            <div class="text-custom">ยกเลิก</div>
-                        </vs-button>
-                    </div>
-                    <div>
-                        <vs-button @click="type" color="#003765">
-                            <div class="text-custom">บันทึก</div>
-                        </vs-button>
-                    </div>
-                </div>
+              </div>
             </div>
-        </b-modal>
 
-        <b-modal centered v-model="type" size="l" hide-backdrop hide-header-close hide-header hide-footer
-            class="p-[-20px] text-custom">
-            <div>
-                <div class="flex justify-between">
-                    <div class="text-custom flex justify-center items-center text-[16px] font-bold">
-                        กำหนดประเภทห้องและค่าเช่า</div>
-                    <div @click="type = false" class="cursor-pointer">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-                                width="24" height="24">
-                                <rect width="24" height="24" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_417_4814)">
-                                <path
-                                    d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
-                                    fill="#5C6B79" />
-                            </g>
-                        </svg>
-                    </div>
+            <div
+              class="w-[1px] h-[100%] ml-[18px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700 flex justify-center items-center"
+            ></div>
+          </div>
+          <div class="flex">
+            <div class="w-[100%]">
+              <div
+                class="h-[46px] w-[100%] rounded-[12px] bg-[#008EF4] flex justify-between items-center pl-[14px] pr-[14px]"
+              >
+                <div class="text-white text-[16px] text-custom">เพิ่มชั้น</div>
+                <div>
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 22 22"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <mask
+                      id="mask0_1373_22419"
+                      style="mask-type: alpha"
+                      maskUnits="userSpaceOnUse"
+                      x="0"
+                      y="0"
+                      width="22"
+                      height="22"
+                    >
+                      <rect
+                        y="22"
+                        width="22"
+                        height="22"
+                        transform="rotate(-90 0 22)"
+                        fill="#D9D9D9"
+                      />
+                    </mask>
+                    <g mask="url(#mask0_1373_22419)">
+                      <path
+                        d="M17.1875 11.0003C17.1875 11.1952 17.1216 11.3585 16.9898 11.4901C16.8581 11.6217 16.6948 11.6875 16.5 11.6875H11.6875V16.5C11.6875 16.6948 11.6215 16.8581 11.4897 16.9898C11.3579 17.1216 11.1945 17.1875 10.9997 17.1875C10.8048 17.1875 10.6415 17.1216 10.5099 16.9898C10.3783 16.8581 10.3125 16.6948 10.3125 16.5V11.6875H5.49998C5.30519 11.6875 5.1419 11.6216 5.01013 11.4898C4.87838 11.3579 4.8125 11.1946 4.8125 10.9997C4.8125 10.8048 4.87838 10.6416 5.01013 10.51C5.1419 10.3784 5.30519 10.3125 5.49998 10.3125H10.3125V5.50002C10.3125 5.30523 10.3784 5.14195 10.5102 5.01018C10.6421 4.87842 10.8054 4.81254 11.0003 4.81254C11.1952 4.81254 11.3584 4.87842 11.49 5.01018C11.6216 5.14195 11.6875 5.30523 11.6875 5.50002V10.3125H16.5C16.6948 10.3125 16.8581 10.3785 16.9898 10.5103C17.1216 10.6421 17.1875 10.8055 17.1875 11.0003Z"
+                        fill="white"
+                      />
+                    </g>
+                  </svg>
                 </div>
-                <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
-                <div class="text-custom  text-[14px]">รายการห้องที่กำหนด</div>
-                <div class="grid grid-cols-4 w-[100%] gap-2 mt-[14px] ">
-                    <div
-                        class="text-custom  h-[36px] bg-[#003765] rounded-[12px] flex justify-between items-center text-[white] pl-[8px] pr-[8px]">
-                        <div>ห้อง 101</div>
-                        <div class="cursor-pointer">
-                            <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <rect x="0.5" width="18" height="18" rx="9" fill="#003765" />
-                                <mask id="mask0_902_18142" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                    y="0" width="19" height="18">
-                                    <rect x="0.5" width="18" height="18" fill="#D9D9D9" />
-                                </mask>
-                                <g mask="url(#mask0_902_18142)">
-                                    <path
-                                        d="M9.50036 9.79073L5.69553 13.5955C5.59169 13.6994 5.46117 13.7525 5.30396 13.7549C5.14676 13.7573 5.01383 13.7042 4.90518 13.5955C4.79652 13.4869 4.74219 13.3552 4.74219 13.2004C4.74219 13.0456 4.79652 12.9138 4.90518 12.8052L8.70999 9.00036L4.90518 5.19553C4.80133 5.09169 4.74821 4.96117 4.74581 4.80396C4.74339 4.64676 4.79652 4.51383 4.90518 4.40518C5.01383 4.29652 5.14556 4.24219 5.30036 4.24219C5.45516 4.24219 5.58688 4.29652 5.69553 4.40518L9.50036 8.20999L13.3052 4.40518C13.409 4.30133 13.5395 4.24821 13.6968 4.24581C13.854 4.24339 13.9869 4.29652 14.0955 4.40518C14.2042 4.51383 14.2585 4.64556 14.2585 4.80036C14.2585 4.95516 14.2042 5.08688 14.0955 5.19553L10.2907 9.00036L14.0955 12.8052C14.1994 12.909 14.2525 13.0395 14.2549 13.1968C14.2573 13.354 14.2042 13.4869 14.0955 13.5955C13.9869 13.7042 13.8552 13.7585 13.7004 13.7585C13.5456 13.7585 13.4138 13.7042 13.3052 13.5955L9.50036 9.79073Z"
-                                        fill="white" />
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
-                    <div
-                        class="text-custom  h-[36px] bg-[#003765] rounded-[12px] flex justify-between items-center text-[white] pl-[8px] pr-[8px]">
-                        <div>ห้อง 102</div>
-                        <div class="cursor-pointer">
-                            <svg width="19" height="18" viewBox="0 0 19 18" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <rect x="0.5" width="18" height="18" rx="9" fill="#003765" />
-                                <mask id="mask0_902_18142" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                    y="0" width="19" height="18">
-                                    <rect x="0.5" width="18" height="18" fill="#D9D9D9" />
-                                </mask>
-                                <g mask="url(#mask0_902_18142)">
-                                    <path
-                                        d="M9.50036 9.79073L5.69553 13.5955C5.59169 13.6994 5.46117 13.7525 5.30396 13.7549C5.14676 13.7573 5.01383 13.7042 4.90518 13.5955C4.79652 13.4869 4.74219 13.3552 4.74219 13.2004C4.74219 13.0456 4.79652 12.9138 4.90518 12.8052L8.70999 9.00036L4.90518 5.19553C4.80133 5.09169 4.74821 4.96117 4.74581 4.80396C4.74339 4.64676 4.79652 4.51383 4.90518 4.40518C5.01383 4.29652 5.14556 4.24219 5.30036 4.24219C5.45516 4.24219 5.58688 4.29652 5.69553 4.40518L9.50036 8.20999L13.3052 4.40518C13.409 4.30133 13.5395 4.24821 13.6968 4.24581C13.854 4.24339 13.9869 4.29652 14.0955 4.40518C14.2042 4.51383 14.2585 4.64556 14.2585 4.80036C14.2585 4.95516 14.2042 5.08688 14.0955 5.19553L10.2907 9.00036L14.0955 12.8052C14.1994 12.909 14.2525 13.0395 14.2549 13.1968C14.2573 13.354 14.2042 13.4869 14.0955 13.5955C13.9869 13.7042 13.8552 13.7585 13.7004 13.7585C13.5456 13.7585 13.4138 13.7042 13.3052 13.5955L9.50036 9.79073Z"
-                                        fill="white" />
-                                </g>
-                            </svg>
-                        </div>
-                    </div>
+              </div>
+              <div
+                class="h-[46px] w-[100%] rounded-[12px] border flex justify-between items-center pl-[14px] pr-[14px] mt-[8px] hover:bg-[#DEEAF5]"
+              >
+                <div class="text-[16px] text-custom">ชั้น 1</div>
+                <div class="cursor-pointer">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <mask
+                      id="mask0_1373_22414"
+                      style="mask-type: alpha"
+                      maskUnits="userSpaceOnUse"
+                      x="0"
+                      y="0"
+                      width="24"
+                      height="24"
+                    >
+                      <rect width="24" height="24" fill="#D9D9D9" />
+                    </mask>
+                    <g mask="url(#mask0_1373_22414)">
+                      <path
+                        d="M7.3077 20.4998C6.80257 20.4998 6.375 20.3248 6.025 19.9748C5.675 19.6248 5.5 19.1972 5.5 18.6921V5.99981H5.25C5.03718 5.99981 4.85898 5.92802 4.7154 5.78443C4.5718 5.64085 4.5 5.46265 4.5 5.24983C4.5 5.03702 4.5718 4.85882 4.7154 4.71523C4.85898 4.57163 5.03718 4.49983 5.25 4.49983H8.99997C8.99997 4.24857 9.08779 4.03832 9.26342 3.86908C9.43907 3.69985 9.65254 3.61523 9.90382 3.61523H14.0961C14.3474 3.61523 14.5609 3.69985 14.7365 3.86908C14.9122 4.03832 15 4.24857 15 4.49983H18.75C18.9628 4.49983 19.141 4.57163 19.2845 4.71523C19.4281 4.85882 19.5 5.03702 19.5 5.24983C19.5 5.46265 19.4281 5.64085 19.2845 5.78443C19.141 5.92802 18.9628 5.99981 18.75 5.99981H18.5V18.6921C18.5 19.1972 18.325 19.6248 17.975 19.9748C17.625 20.3248 17.1974 20.4998 16.6922 20.4998H7.3077ZM6.99997 5.99981V18.6921C6.99997 18.7818 7.02883 18.8556 7.08652 18.9133C7.14422 18.971 7.21795 18.9998 7.3077 18.9998H16.6922C16.782 18.9998 16.8557 18.971 16.9134 18.9133C16.9711 18.8556 17 18.7818 17 18.6921V5.99981H6.99997ZM9.40385 16.2498C9.40385 16.4626 9.47564 16.6409 9.61922 16.7844C9.76281 16.928 9.94101 16.9998 10.1538 16.9998C10.3666 16.9998 10.5448 16.928 10.6884 16.7844C10.832 16.6409 10.9038 16.4626 10.9038 16.2498V8.74978C10.9038 8.53697 10.832 8.35877 10.6884 8.21518C10.5448 8.0716 10.3666 7.99981 10.1538 7.99981C9.94101 7.99981 9.76281 8.0716 9.61922 8.21518C9.47564 8.35877 9.40385 8.53697 9.40385 8.74978V16.2498ZM13.0961 16.2498C13.0961 16.4626 13.1679 16.6409 13.3115 16.7844C13.4551 16.928 13.6333 16.9998 13.8461 16.9998C14.0589 16.9998 14.2371 16.928 14.3807 16.7844C14.5243 16.6409 14.5961 16.4626 14.5961 16.2498V8.74978C14.5961 8.53697 14.5243 8.35877 14.3807 8.21518C14.2371 8.0716 14.0589 7.99981 13.8461 7.99981C13.6333 7.99981 13.4551 8.0716 13.3115 8.21518C13.1679 8.35877 13.0961 8.53697 13.0961 8.74978V16.2498ZM6.99997 5.99981V18.6921C6.99997 18.7818 7.02883 18.8556 7.08652 18.9133C7.14422 18.971 7.21795 18.9998 7.3077 18.9998H6.99997V5.99981Z"
+                        fill="#D44769"
+                      />
+                    </g>
+                  </svg>
                 </div>
-                <div class="mt-[14px]">
-                    <div class="text-custom">ประเภทห้องพัก</div>
-                    <div>
-                        <select placeholder="Select" v-model="value"
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]">
-                            <option label="เลือก" value="0" disabled>
-                                เลือก
-                            </option>
-                            <option label="ห้องพร้อมเฟอร์นิเจอร์" value="1">
-                                ห้องพร้อมเฟอร์นิเจอร์
-                            </option>
-                        </select>
-                    </div>
-                </div>
-                <div class="mt-[14px]">
-                    <div class="text-custom">ค่าเช่าห้อง/เดือน</div>
-                    <div>
-                        <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" />
-                    </div>
-                </div>
-                <div class="flex justify-end mt-[30px]">
-                    <div>
-                        <vs-button dark shadow @click="type = false">
-                            <div class="text-custom">ยกเลิก</div>
-                        </vs-button>
-                    </div>
-                    <div>
-                        <vs-button @click="type" color="#003765">
-                            <div class="text-custom">บันทึก</div>
-                        </vs-button>
-                    </div>
-                </div>
+              </div>
             </div>
-        </b-modal>
 
-        <b-modal centered v-model="create_type" size="l" hide-backdrop hide-header-close hide-header hide-footer
-            class="p-[-20px] text-custom">
-            <div>
-                <div class="flex justify-between">
-                    <div class="text-custom flex justify-center items-center text-[16px] font-bold">
-                        สร้างประเภทห้องและค่าเช่า</div>
-                    <div @click="create_type = false" class="cursor-pointer">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-                                width="24" height="24">
-                                <rect width="24" height="24" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_417_4814)">
-                                <path
-                                    d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
-                                    fill="#5C6B79" />
-                            </g>
-                        </svg>
-                    </div>
+            <div
+              class="w-[1px] h-[100%] ml-[18px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700 flex justify-center items-center"
+            ></div>
+          </div>
+          <div class="flex">
+            <div class="w-[100%]">
+              <div
+                class="h-[46px] w-[100%] rounded-[12px] bg-[#9A77FF] flex justify-between items-center pl-[14px] pr-[14px]"
+              >
+                <div class="text-white text-[16px] text-custom">เพิ่มห้อง</div>
+                <div>
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 22 22"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <mask
+                      id="mask0_1373_22419"
+                      style="mask-type: alpha"
+                      maskUnits="userSpaceOnUse"
+                      x="0"
+                      y="0"
+                      width="22"
+                      height="22"
+                    >
+                      <rect
+                        y="22"
+                        width="22"
+                        height="22"
+                        transform="rotate(-90 0 22)"
+                        fill="#D9D9D9"
+                      />
+                    </mask>
+                    <g mask="url(#mask0_1373_22419)">
+                      <path
+                        d="M17.1875 11.0003C17.1875 11.1952 17.1216 11.3585 16.9898 11.4901C16.8581 11.6217 16.6948 11.6875 16.5 11.6875H11.6875V16.5C11.6875 16.6948 11.6215 16.8581 11.4897 16.9898C11.3579 17.1216 11.1945 17.1875 10.9997 17.1875C10.8048 17.1875 10.6415 17.1216 10.5099 16.9898C10.3783 16.8581 10.3125 16.6948 10.3125 16.5V11.6875H5.49998C5.30519 11.6875 5.1419 11.6216 5.01013 11.4898C4.87838 11.3579 4.8125 11.1946 4.8125 10.9997C4.8125 10.8048 4.87838 10.6416 5.01013 10.51C5.1419 10.3784 5.30519 10.3125 5.49998 10.3125H10.3125V5.50002C10.3125 5.30523 10.3784 5.14195 10.5102 5.01018C10.6421 4.87842 10.8054 4.81254 11.0003 4.81254C11.1952 4.81254 11.3584 4.87842 11.49 5.01018C11.6216 5.14195 11.6875 5.30523 11.6875 5.50002V10.3125H16.5C16.6948 10.3125 16.8581 10.3785 16.9898 10.5103C17.1216 10.6421 17.1875 10.8055 17.1875 11.0003Z"
+                        fill="white"
+                      />
+                    </g>
+                  </svg>
                 </div>
-                <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
-                <div class="mt-[14px]">
-                    <div class="text-custom">ประเภทห้องพัก</div>
-                    <div>
-                        <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" />
-                    </div>
+              </div>
+              <div
+                class="h-[46px] w-[100%] rounded-[12px] border flex justify-between items-center pl-[14px] pr-[14px] mt-[8px] hover:bg-[#DEEAF5]"
+              >
+                <div class="text-[16px] text-custom">ห้อง 101</div>
+                <div class="cursor-pointer">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <mask
+                      id="mask0_1373_22414"
+                      style="mask-type: alpha"
+                      maskUnits="userSpaceOnUse"
+                      x="0"
+                      y="0"
+                      width="24"
+                      height="24"
+                    >
+                      <rect width="24" height="24" fill="#D9D9D9" />
+                    </mask>
+                    <g mask="url(#mask0_1373_22414)">
+                      <path
+                        d="M7.3077 20.4998C6.80257 20.4998 6.375 20.3248 6.025 19.9748C5.675 19.6248 5.5 19.1972 5.5 18.6921V5.99981H5.25C5.03718 5.99981 4.85898 5.92802 4.7154 5.78443C4.5718 5.64085 4.5 5.46265 4.5 5.24983C4.5 5.03702 4.5718 4.85882 4.7154 4.71523C4.85898 4.57163 5.03718 4.49983 5.25 4.49983H8.99997C8.99997 4.24857 9.08779 4.03832 9.26342 3.86908C9.43907 3.69985 9.65254 3.61523 9.90382 3.61523H14.0961C14.3474 3.61523 14.5609 3.69985 14.7365 3.86908C14.9122 4.03832 15 4.24857 15 4.49983H18.75C18.9628 4.49983 19.141 4.57163 19.2845 4.71523C19.4281 4.85882 19.5 5.03702 19.5 5.24983C19.5 5.46265 19.4281 5.64085 19.2845 5.78443C19.141 5.92802 18.9628 5.99981 18.75 5.99981H18.5V18.6921C18.5 19.1972 18.325 19.6248 17.975 19.9748C17.625 20.3248 17.1974 20.4998 16.6922 20.4998H7.3077ZM6.99997 5.99981V18.6921C6.99997 18.7818 7.02883 18.8556 7.08652 18.9133C7.14422 18.971 7.21795 18.9998 7.3077 18.9998H16.6922C16.782 18.9998 16.8557 18.971 16.9134 18.9133C16.9711 18.8556 17 18.7818 17 18.6921V5.99981H6.99997ZM9.40385 16.2498C9.40385 16.4626 9.47564 16.6409 9.61922 16.7844C9.76281 16.928 9.94101 16.9998 10.1538 16.9998C10.3666 16.9998 10.5448 16.928 10.6884 16.7844C10.832 16.6409 10.9038 16.4626 10.9038 16.2498V8.74978C10.9038 8.53697 10.832 8.35877 10.6884 8.21518C10.5448 8.0716 10.3666 7.99981 10.1538 7.99981C9.94101 7.99981 9.76281 8.0716 9.61922 8.21518C9.47564 8.35877 9.40385 8.53697 9.40385 8.74978V16.2498ZM13.0961 16.2498C13.0961 16.4626 13.1679 16.6409 13.3115 16.7844C13.4551 16.928 13.6333 16.9998 13.8461 16.9998C14.0589 16.9998 14.2371 16.928 14.3807 16.7844C14.5243 16.6409 14.5961 16.4626 14.5961 16.2498V8.74978C14.5961 8.53697 14.5243 8.35877 14.3807 8.21518C14.2371 8.0716 14.0589 7.99981 13.8461 7.99981C13.6333 7.99981 13.4551 8.0716 13.3115 8.21518C13.1679 8.35877 13.0961 8.53697 13.0961 8.74978V16.2498ZM6.99997 5.99981V18.6921C6.99997 18.7818 7.02883 18.8556 7.08652 18.9133C7.14422 18.971 7.21795 18.9998 7.3077 18.9998H6.99997V5.99981Z"
+                        fill="#D44769"
+                      />
+                    </g>
+                  </svg>
                 </div>
-                <div class="mt-[14px]">
-                    <div class="text-custom">ค่าเช่าห้อง/เดือน</div>
-                    <div>
-                        <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" />
-                    </div>
-                </div>
-                <div class="flex justify-end mt-[30px]">
-                    <div>
-                        <vs-button dark shadow @click="create_type = false">
-                            <div class="text-custom">ยกเลิก</div>
-                        </vs-button>
-                    </div>
-                    <div>
-                        <vs-button @click="create_type = false" color="#003765">
-                            <div class="text-custom">บันทึก</div>
-                        </vs-button>
-                    </div>
-                </div>
+              </div>
             </div>
-        </b-modal>
+          </div>
+        </div>
+        <div class="flex justify-end mt-[30px]">
+          <div>
+            <vs-button dark shadow @click="create = false">
+              <div class="text-custom">ยกเลิก</div>
+            </vs-button>
+          </div>
+          <div>
+            <vs-button @click="type" color="#003765">
+              <div class="text-custom">บันทึก</div>
+            </vs-button>
+          </div>
+        </div>
+      </div>
+    </b-modal>
 
-        <b-modal centered v-model="create_service" size="l" hide-backdrop hide-header-close hide-header hide-footer
-            class="p-[-20px] text-custom">
-            <div>
-                <div class="flex justify-between">
-                    <div class="text-custom flex justify-center items-center text-[16px] font-bold">
-                        สร้างบริการเสริม</div>
-                    <div @click="create_service = false" class="cursor-pointer">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <mask id="mask0_417_4814" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
-                                width="24" height="24">
-                                <rect width="24" height="24" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_417_4814)">
-                                <path
-                                    d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
-                                    fill="#5C6B79" />
-                            </g>
-                        </svg>
-                    </div>
-                </div>
-                <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div>
-                <div class="mt-[14px]">
-                    <div class="text-custom">ชื่อบริการ</div>
-                    <div>
-                        <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
-                            v-model="title" />
-                    </div>
-                </div>
-                <!-- <div class="mt-[14px]">
+    <b-modal
+      centered
+      v-model="type"
+      size="l"
+      hide-backdrop
+      hide-header-close
+      hide-header
+      hide-footer
+      class="p-[-20px] text-custom"
+    >
+      <div>
+        <div class="flex justify-between">
+          <div
+            class="text-custom flex justify-center items-center text-[16px] font-bold"
+          >
+            กำหนดประเภทห้องและค่าเช่า
+          </div>
+          <div @click="type = false" class="cursor-pointer">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <mask
+                id="mask0_417_4814"
+                style="mask-type: alpha"
+                maskUnits="userSpaceOnUse"
+                x="0"
+                y="0"
+                width="24"
+                height="24"
+              >
+                <rect width="24" height="24" fill="#D9D9D9" />
+              </mask>
+              <g mask="url(#mask0_417_4814)">
+                <path
+                  d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                  fill="#5C6B79"
+                />
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div
+          class="w-[100%] h-[1px] mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"
+        ></div>
+        <div class="text-custom text-[14px]">รายการห้องที่กำหนด</div>
+        <div class="grid grid-cols-4 w-[100%] gap-2 mt-[14px]">
+          <div
+            class="text-custom h-[36px] bg-[#003765] rounded-[12px] flex justify-between items-center text-[white] pl-[8px] pr-[8px]"
+          >
+            <div>ห้อง 101</div>
+            <div class="cursor-pointer">
+              <svg
+                width="19"
+                height="18"
+                viewBox="0 0 19 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect x="0.5" width="18" height="18" rx="9" fill="#003765" />
+                <mask
+                  id="mask0_902_18142"
+                  style="mask-type: alpha"
+                  maskUnits="userSpaceOnUse"
+                  x="0"
+                  y="0"
+                  width="19"
+                  height="18"
+                >
+                  <rect x="0.5" width="18" height="18" fill="#D9D9D9" />
+                </mask>
+                <g mask="url(#mask0_902_18142)">
+                  <path
+                    d="M9.50036 9.79073L5.69553 13.5955C5.59169 13.6994 5.46117 13.7525 5.30396 13.7549C5.14676 13.7573 5.01383 13.7042 4.90518 13.5955C4.79652 13.4869 4.74219 13.3552 4.74219 13.2004C4.74219 13.0456 4.79652 12.9138 4.90518 12.8052L8.70999 9.00036L4.90518 5.19553C4.80133 5.09169 4.74821 4.96117 4.74581 4.80396C4.74339 4.64676 4.79652 4.51383 4.90518 4.40518C5.01383 4.29652 5.14556 4.24219 5.30036 4.24219C5.45516 4.24219 5.58688 4.29652 5.69553 4.40518L9.50036 8.20999L13.3052 4.40518C13.409 4.30133 13.5395 4.24821 13.6968 4.24581C13.854 4.24339 13.9869 4.29652 14.0955 4.40518C14.2042 4.51383 14.2585 4.64556 14.2585 4.80036C14.2585 4.95516 14.2042 5.08688 14.0955 5.19553L10.2907 9.00036L14.0955 12.8052C14.1994 12.909 14.2525 13.0395 14.2549 13.1968C14.2573 13.354 14.2042 13.4869 14.0955 13.5955C13.9869 13.7042 13.8552 13.7585 13.7004 13.7585C13.5456 13.7585 13.4138 13.7042 13.3052 13.5955L9.50036 9.79073Z"
+                    fill="white"
+                  />
+                </g>
+              </svg>
+            </div>
+          </div>
+          <div
+            class="text-custom h-[36px] bg-[#003765] rounded-[12px] flex justify-between items-center text-[white] pl-[8px] pr-[8px]"
+          >
+            <div>ห้อง 102</div>
+            <div class="cursor-pointer">
+              <svg
+                width="19"
+                height="18"
+                viewBox="0 0 19 18"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect x="0.5" width="18" height="18" rx="9" fill="#003765" />
+                <mask
+                  id="mask0_902_18142"
+                  style="mask-type: alpha"
+                  maskUnits="userSpaceOnUse"
+                  x="0"
+                  y="0"
+                  width="19"
+                  height="18"
+                >
+                  <rect x="0.5" width="18" height="18" fill="#D9D9D9" />
+                </mask>
+                <g mask="url(#mask0_902_18142)">
+                  <path
+                    d="M9.50036 9.79073L5.69553 13.5955C5.59169 13.6994 5.46117 13.7525 5.30396 13.7549C5.14676 13.7573 5.01383 13.7042 4.90518 13.5955C4.79652 13.4869 4.74219 13.3552 4.74219 13.2004C4.74219 13.0456 4.79652 12.9138 4.90518 12.8052L8.70999 9.00036L4.90518 5.19553C4.80133 5.09169 4.74821 4.96117 4.74581 4.80396C4.74339 4.64676 4.79652 4.51383 4.90518 4.40518C5.01383 4.29652 5.14556 4.24219 5.30036 4.24219C5.45516 4.24219 5.58688 4.29652 5.69553 4.40518L9.50036 8.20999L13.3052 4.40518C13.409 4.30133 13.5395 4.24821 13.6968 4.24581C13.854 4.24339 13.9869 4.29652 14.0955 4.40518C14.2042 4.51383 14.2585 4.64556 14.2585 4.80036C14.2585 4.95516 14.2042 5.08688 14.0955 5.19553L10.2907 9.00036L14.0955 12.8052C14.1994 12.909 14.2525 13.0395 14.2549 13.1968C14.2573 13.354 14.2042 13.4869 14.0955 13.5955C13.9869 13.7042 13.8552 13.7585 13.7004 13.7585C13.5456 13.7585 13.4138 13.7042 13.3052 13.5955L9.50036 9.79073Z"
+                    fill="white"
+                  />
+                </g>
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div class="mt-[14px]">
+          <div class="text-custom">ประเภทห้องพัก</div>
+          <div>
+            <select
+              placeholder="Select"
+              v-model="value"
+              class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+            >
+              <option label="เลือก" value="0" disabled>เลือก</option>
+              <option label="ห้องพร้อมเฟอร์นิเจอร์" value="1">
+                ห้องพร้อมเฟอร์นิเจอร์
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="mt-[14px]">
+          <div class="text-custom">ค่าเช่าห้อง/เดือน</div>
+          <div>
+            <input
+              class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+            />
+          </div>
+        </div>
+        <div class="flex justify-end mt-[30px]">
+          <div>
+            <vs-button dark shadow @click="type = false">
+              <div class="text-custom">ยกเลิก</div>
+            </vs-button>
+          </div>
+          <div>
+            <vs-button @click="type" color="#003765">
+              <div class="text-custom">บันทึก</div>
+            </vs-button>
+          </div>
+        </div>
+      </div>
+    </b-modal>
+
+    <b-modal
+      centered
+      v-model="create_type"
+      size="l"
+      hide-backdrop
+      hide-header-close
+      hide-header
+      hide-footer
+      class="p-[-20px] text-custom"
+    >
+      <div>
+        <div class="flex justify-between">
+          <div
+            class="text-custom flex justify-center items-center text-[16px] font-bold"
+          >
+            สร้างประเภทห้องและค่าเช่า
+          </div>
+          <div @click="create_type = false" class="cursor-pointer">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <mask
+                id="mask0_417_4814"
+                style="mask-type: alpha"
+                maskUnits="userSpaceOnUse"
+                x="0"
+                y="0"
+                width="24"
+                height="24"
+              >
+                <rect width="24" height="24" fill="#D9D9D9" />
+              </mask>
+              <g mask="url(#mask0_417_4814)">
+                <path
+                  d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                  fill="#5C6B79"
+                />
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div
+          class="w-[100%] h-[1px] mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"
+        ></div>
+        <div class="mt-[14px]">
+          <div class="text-custom">ประเภทห้องพัก</div>
+          <div>
+            <input
+              class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+            />
+          </div>
+        </div>
+        <div class="mt-[14px]">
+          <div class="text-custom">ค่าเช่าห้อง/เดือน</div>
+          <div>
+            <input
+              class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+            />
+          </div>
+        </div>
+        <div class="flex justify-end mt-[30px]">
+          <div>
+            <vs-button dark shadow @click="create_type = false">
+              <div class="text-custom">ยกเลิก</div>
+            </vs-button>
+          </div>
+          <div>
+            <vs-button @click="create_type = false" color="#003765">
+              <div class="text-custom">บันทึก</div>
+            </vs-button>
+          </div>
+        </div>
+      </div>
+    </b-modal>
+
+    <b-modal
+      centered
+      v-model="create_service"
+      size="l"
+      hide-backdrop
+      hide-header-close
+      hide-header
+      hide-footer
+      class="p-[-20px] text-custom"
+    >
+      <div>
+        <div class="flex justify-between">
+          <div
+            class="text-custom flex justify-center items-center text-[16px] font-bold"
+          >
+            สร้างบริการเสริม
+          </div>
+          <div @click="create_service = false" class="cursor-pointer">
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <mask
+                id="mask0_417_4814"
+                style="mask-type: alpha"
+                maskUnits="userSpaceOnUse"
+                x="0"
+                y="0"
+                width="24"
+                height="24"
+              >
+                <rect width="24" height="24" fill="#D9D9D9" />
+              </mask>
+              <g mask="url(#mask0_417_4814)">
+                <path
+                  d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                  fill="#5C6B79"
+                />
+              </g>
+            </svg>
+          </div>
+        </div>
+        <div
+          class="w-[100%] h-[1px] mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"
+        ></div>
+        <div class="mt-[14px]">
+          <div class="text-custom">ชื่อบริการ</div>
+          <div>
+            <input
+              class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+              v-model="title"
+            />
+          </div>
+        </div>
+        <!-- <div class="mt-[14px]">
                     <div class="text-custom">ราคา/เดือน</div>
                     <div>
                         <input
                             class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]" v-model="price" />
                     </div>
                 </div> -->
-                <div class="mt-[14px]">
-                    <div class="text-custom">ราคา/เดือน</div>
-                    <div>
-                        <input
-                            class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
-                            v-model="price" />
-                    </div>
-                </div>
-                <!-- <div class="mt-[14px]">
+        <div class="mt-[14px]">
+          <div class="text-custom">ราคาต่อเดือน</div>
+          <div>
+            <input
+              class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+              v-model="price"
+            />
+          </div>
+        </div>
+        <!-- <div class="mt-[14px]">
                     <div class="text-custom">ส่วนลด</div>
                     <div>
                         <input class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
                             v-model="discountAmount" />
                     </div>
                 </div> -->
-                <div class=" flex justify-end mt-[30px]">
-                    <!-- <div>
+        <div class="flex justify-end mt-[30px]">
+          <!-- <div>
                         <div>
                             <vs-button @click="delectFacilities(id_Facilities)" color="#D44769">
                                 <div class="text-custom">ลบรายการนี้</div>
                             </vs-button>
                         </div>
                     </div> -->
-                    <div class="flex justify-end">
-                        <div>
-                            <vs-button dark shadow @click="create_service = false">
-                                <div class="text-custom">ยกเลิก</div>
-                            </vs-button>
-                        </div>
-                        <div>
-                            <vs-button @click="is_edit == true ? editFacilities() : createOtherOfBuilding()"
-                                color="#003765">
-                                <div class="text-custom">บันทึก</div>
-                            </vs-button>
-                        </div>
-                    </div>
-
-                </div>
+          <div class="flex justify-end">
+            <div>
+              <vs-button dark shadow @click="create_service = false">
+                <div class="text-custom">ยกเลิก</div>
+              </vs-button>
             </div>
-        </b-modal>
-    </div>
+            <div>
+              <vs-button
+                @click="
+                  is_edit == true ? editFacilities() : createOtherOfBuilding()
+                "
+                color="#003765"
+              >
+                <div class="text-custom">บันทึก</div>
+              </vs-button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </b-modal>
+  </div>
 </template>
 <script>
-
-import axios from 'axios'
+import axios from "axios";
 export default {
-    data() {
-        return {
-            tab: 1,
-            value: 0,
-            create: false,
-            type: false,
-            create_type: false,
-            create_service: false,
-            is_edit: false,
-            building: [],
-            otherOfBuilding: [],
-            title: "",
-            price: 0,
-            discountAmount: 0,
-            id_Facilities: ''
-        }
+  data() {
+    return {
+      tab: 1,
+      value: 0,
+      create: false,
+      type: false,
+      create_type: false,
+      create_service: false,
+      is_edit: false,
+      building: [],
+      otherOfBuilding: [],
+      title: "",
+      price: 0,
+      discountAmount: 0,
+      id_Facilities: "",
+    };
+  },
+  created() {
+    const loading = this.$vs.loading({});
+    setTimeout(() => {
+      loading.close();
+    }, 1000);
+  },
+  mounted() {
+    this.getUserBuilding();
+    this.getOtherBuilding();
+  },
+  methods: {
+    getUserBuilding() {
+      const loading = this.$vs.loading();
+      fetch(
+        "https://api.resguru.app/api" +
+          "/buildings?filters[id][$eq]=" +
+          this.$store.state.building
+      )
+        .then((response) => response.json())
+        .then((resp) => {
+          console.log("Return from getRoom()", resp.data);
+          this.building = resp.data;
+        })
+        .finally(() => {
+          loading.close();
+        });
     },
-    created() {
-        const loading = this.$vs.loading({})
-        setTimeout(() => {
-            loading.close()
-        }, 1000)
+    getOtherBuilding() {
+      const loading = this.$vs.loading();
+      fetch(
+        "https://api.resguru.app/api" +
+          "/other-of-buildings?filters[building][id][$eq]=" +
+          this.$store.state.building
+      )
+        .then((response) => response.json())
+        .then((resp) => {
+          console.log("Return from getOther()", resp.data);
+          this.otherOfBuilding = resp.data;
+        })
+        .finally(() => {
+          loading.close();
+        });
     },
-    mounted() {
-        this.getUserBuilding();
-        this.getOtherBuilding();
+    getDetailFacilities(id) {
+      this.is_edit = true;
+      const loading = this.$vs.loading();
+      fetch("https://api.resguru.app/api" + "/other-of-buildings/" + id)
+        .then((response) => response.json())
+        .then((resp) => {
+          console.log(resp);
+          (this.id_Facilities = resp.data.id),
+            (this.title = resp.data.attributes.title),
+            (this.price = resp.data.attributes.price);
+          //this.discountAmount = resp.data.attributes.discountAmount
+        })
+        .finally(() => {
+          this.getUserBuilding();
+          this.getOtherBuilding();
+          (this.create_service = true), loading.close();
+        });
     },
-    methods: {
-        getUserBuilding() {
-            const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/buildings?filters[id][$eq]=' + this.$store.state.building)
-                .then(response => response.json())
-                .then((resp) => {
-                    console.log("Return from getRoom()", resp.data);
-                    this.building = resp.data
-                }).finally(() => {
-                    loading.close()
-                })
-        },
-        getOtherBuilding() {
-            const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/other-of-buildings?filters[building][id][$eq]=' + this.$store.state.building)
-                .then(response => response.json())
-                .then((resp) => {
-                    console.log("Return from getOther()", resp.data);
-                    this.otherOfBuilding = resp.data
-                }).finally(() => {
-                    loading.close()
-                })
-        },
-        getDetailFacilities(id) {
-            this.is_edit = true
-            const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/other-of-buildings/' + id)
-                .then(response => response.json())
-                .then((resp) => {
-                    console.log(resp);
-                    this.id_Facilities = resp.data.id,
-                        this.title = resp.data.attributes.title,
-                        this.price = resp.data.attributes.price
-                    //this.discountAmount = resp.data.attributes.discountAmount
-                }).finally(() => {
-                    this.getUserBuilding();
-                    this.getOtherBuilding();
-                    this.create_service = true,
-                        loading.close()
-                })
-        },
-        editFacilities() {
-            const loading = this.$vs.loading()
-            axios.put('https://api.resguru.app/api' + '/other-of-buildings/' + this.id_Facilities, {
-                data: {
-                    title: this.title,
-                    price: this.price,
-                    //discountAmount: this.discountAmount,
-                }
-            })
-                .finally(() => {
-                    this.getUserBuilding();
-                    this.getOtherBuilding();
-                    this.create_service = false,
-                        this.getOtherBuilding()
-                    loading.close()
-                })
-        },
-        delectFacilities(id) {
-            const loading = this.$vs.loading()
-            axios.delete('https://api.resguru.app/api' + '/other-of-buildings/' + id)
-                .finally(() => {
-                    this.getUserBuilding();
-                    this.getOtherBuilding();
-                    this.create_service = false,
-                        this.getOtherBuilding()
-                    loading.close()
-                })
-        },
-        createOtherOfBuilding() {
-            axios.post(`https://api.resguru.app/api/other-of-buildings/`, {
-                data: {
-                    title: this.title,
-                    price: this.price,
-                    //discountAmount: this.discountAmount,
-                    building: this.$store.state.building
-                }
-            })
-                .then((resp) => {
-                    console.log(resp)
-                })
-                .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage);
-                })
-                .finally(() => {
-                    this.create_service = false,
-                        this.getOtherBuilding()
-                    this.$showNotification('#3A89CB', 'Create Other Success')
-                })
-
-        },
-        updateUserBuildingWater() {
-            axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`, {
-                data: {
-                    waterUnitPrice: this.building[0].attributes.waterUnitPrice
-                }
-            })
-                .then((resp) => {
-                    console.log(resp)
-                })
-                .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage);
-                })
-                .finally(() => {
-                    this.getUserBuilding();
-                    this.$showNotification('#3A89CB', 'Update Water Unit Success')
-                })
-
-        },
-        updateUserBuildingElectric() {
-            axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`, {
-                data: {
-                    electricUnitPrice: this.building[0].attributes.electricUnitPrice
-                }
-            })
-                .then((resp) => {
-                    console.log(resp)
-                })
-                .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage);
-                })
-                .finally(() => {
-                    this.getUserBuilding();
-                    this.$showNotification('#3A89CB', 'Update Electric Unit Success')
-                })
-
-        },
-        updateUserBuildingCommunual() {
-            axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`, {
-                data: {
-                    communalUnitPrice: this.building[0].attributes.communalUnitPrice
-                }
-            })
-                .then((resp) => {
-                    console.log(resp)
-                })
-                .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage);
-                })
-                .finally(() => {
-                    this.getUserBuilding();
-                    this.$showNotification('#3A89CB', 'Update Building Communual Success')
-                })
-
-        },
-        changeotherPrice(id, price) {
-            axios.put(`https://api.resguru.app/api/other-of-buildings/${id}`, {
-                data: {
-                    price: price
-                }
-            })
-                .then((resp) => {
-                    console.log(resp)
-                })
-                .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage);
-                })
-                .finally(() => {
-                    this.getOtherBuilding();
-                    this.$showNotification('#3A89CB', 'Update Other Price Success')
-                })
-        },
-        changeotherDiscountPrice(id, discountAmount) {
-            axios.put(`https://api.resguru.app/api/other-of-buildings/${id}`, {
-                data: {
-                    discountAmount: discountAmount
-                }
-            })
-                .then((resp) => {
-                    console.log(resp)
-                })
-                .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage);
-                })
-                .finally(() => {
-                    this.getOtherBuilding();
-                    this.$showNotification('#3A89CB', 'Update Success')
-                })
-        },
+    editFacilities() {
+      const loading = this.$vs.loading();
+      axios
+        .put(
+          "https://api.resguru.app/api" +
+            "/other-of-buildings/" +
+            this.id_Facilities,
+          {
+            data: {
+              title: this.title,
+              price: this.price,
+              //discountAmount: this.discountAmount,
+            },
+          }
+        )
+        .finally(() => {
+          this.getUserBuilding();
+          this.getOtherBuilding();
+          (this.create_service = false), this.getOtherBuilding();
+          loading.close();
+        });
     },
-}
-
+    delectFacilities(id) {
+      const loading = this.$vs.loading();
+      axios
+        .delete("https://api.resguru.app/api" + "/other-of-buildings/" + id)
+        .finally(() => {
+          this.getUserBuilding();
+          this.getOtherBuilding();
+          (this.create_service = false), this.getOtherBuilding();
+          loading.close();
+        });
+    },
+    createOtherOfBuilding() {
+      if (!this.price) {
+        this.$showNotification("danger", "Error, ไม่สามารถบันทึกค่าว่างได้");
+      } else {
+        axios
+          .post(`https://api.resguru.app/api/other-of-buildings/`, {
+            data: {
+              title: this.title,
+              price: this.price,
+              //discountAmount: this.discountAmount,
+              building: this.$store.state.building,
+            },
+          })
+          .then((resp) => {
+            console.log(resp);
+          })
+          .catch((error) => {
+            const errorMessage = error.message
+              ? error.message
+              : "Error updating information";
+            this.$showNotification("danger", errorMessage);
+          })
+          .finally(() => {
+            (this.create_service = false), this.getOtherBuilding();
+            this.$showNotification("#3A89CB", "Create Other Success");
+          });
+      }
+    },
+    updateUserBuildingWater() {
+      if (!this.building[0].attributes.waterUnitPrice) {
+        this.$showNotification("danger", "Error, ไม่สามารถบันทึกค่าว่างได้");
+      } else {
+        axios
+          .put(
+            `https://api.resguru.app/api/buildings/${this.$store.state.building}`,
+            {
+              data: {
+                waterUnitPrice: this.building[0].attributes.waterUnitPrice,
+              },
+            }
+          )
+          .then((resp) => {
+            console.log(resp);
+          })
+          .catch((error) => {
+            const errorMessage = error.message
+              ? error.message
+              : "Error updating information";
+            this.$showNotification("danger", errorMessage);
+          })
+          .finally(() => {
+            this.getUserBuilding();
+            this.$showNotification("#3A89CB", "Update Water Unit Success");
+          });
+      }
+    },
+    updateUserBuildingElectric() {
+      if (!this.building[0].attributes.electricUnitPrice) {
+        this.$showNotification("danger", "Error, ไม่สามารถบันทึกค่าว่างได้");
+      } else {
+        axios
+          .put(
+            `https://api.resguru.app/api/buildings/${this.$store.state.building}`,
+            {
+              data: {
+                electricUnitPrice:
+                  this.building[0].attributes.electricUnitPrice,
+              },
+            }
+          )
+          .then((resp) => {
+            console.log(resp);
+          })
+          .catch((error) => {
+            const errorMessage = error.message
+              ? error.message
+              : "Error updating information";
+            this.$showNotification("danger", errorMessage);
+          })
+          .finally(() => {
+            this.getUserBuilding();
+            this.$showNotification("#3A89CB", "Update Electric Unit Success");
+          });
+      }
+    },
+    updateUserBuildingCommunual() {
+      if (!this.building[0].attributes.communalUnitPrice) {
+        this.$showNotification("danger", "Error, ไม่สามารถบันทึกค่าว่างได้");
+      } else {
+        axios
+          .put(
+            `https://api.resguru.app/api/buildings/${this.$store.state.building}`,
+            {
+              data: {
+                communalUnitPrice:
+                  this.building[0].attributes.communalUnitPrice,
+              },
+            }
+          )
+          .then((resp) => {
+            console.log(resp);
+          })
+          .catch((error) => {
+            const errorMessage = error.message
+              ? error.message
+              : "Error updating information";
+            this.$showNotification("danger", errorMessage);
+          })
+          .finally(() => {
+            this.getUserBuilding();
+            this.$showNotification(
+              "#3A89CB",
+              "Update Building Communual Success"
+            );
+          });
+      }
+    },
+    changeotherPrice(id, price) {
+      if (!price) {
+        this.$showNotification("danger", "Error, ไม่สามารถบันทึกค่าว่างได้");
+      } else {
+        axios
+          .put(`https://api.resguru.app/api/other-of-buildings/${id}`, {
+            data: {
+              price: price,
+            },
+          })
+          .then((resp) => {
+            console.log(resp);
+          })
+          .catch((error) => {
+            const errorMessage = error.message
+              ? error.message
+              : "Error updating information";
+            this.$showNotification("danger", errorMessage);
+          })
+          .finally(() => {
+            this.getOtherBuilding();
+            this.$showNotification("#3A89CB", "Update Other Price Success");
+          });
+      }
+    },
+    changeotherDiscountPrice(id, discountAmount) {
+      axios
+        .put(`https://api.resguru.app/api/other-of-buildings/${id}`, {
+          data: {
+            discountAmount: discountAmount,
+          },
+        })
+        .then((resp) => {
+          console.log(resp);
+        })
+        .catch((error) => {
+          const errorMessage = error.message
+            ? error.message
+            : "Error updating information";
+          this.$showNotification("danger", errorMessage);
+        })
+        .finally(() => {
+          this.getOtherBuilding();
+          this.$showNotification("#3A89CB", "Update Success");
+        });
+    },
+  },
+};
 </script>
 <style>
 .vs-input {
-    width: 100% !important;
+  width: 100% !important;
 }
 </style>
