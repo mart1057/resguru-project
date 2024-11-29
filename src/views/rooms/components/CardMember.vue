@@ -252,7 +252,7 @@
                   <div class="col-span-2">
                     <div class="">
                       <span class="text-[red] mr-[2px]">*</span
-                      >ค้นหาผู้เช่าด้วยรหัสบัตรประชาชน
+                      >ค้นหาผู้เช่าด้วยรหัสบัตรประชาชน/หนังสือเดินทาง
                     </div>
                     <div>
                       <div>
@@ -462,7 +462,7 @@
               <div class="col-span-2 ml-[8px]">
                 <div class="text-custom">
                   <span class="text-[red] mr-[2px] text-custom">*</span
-                  >หมายเลขบัตรประชาชน
+                  >หมายเลขบัตรประชาชน/หนังสือเดินทาง
                 </div>
                 <input
                   type="input"
@@ -497,7 +497,8 @@
               </div>
               <div class="col-span-2 mt-[6px] ml-[8px]">
                 <div class="text-custom">
-                  <span class="text-[red] mr-[2px]">*</span>แนบรูปบัตรประชาชน
+                  <span class="text-[red] mr-[2px]">*</span
+                  >แนบรูปบัตรประชาชน/หนังสือเดินทาง
                 </div>
                 <div
                   class="flex mt-[4px]"
@@ -557,7 +558,7 @@
                 </div>
               </div>
               <div class="grid grid-cols-8 text-custom w-[100%] mt-[6px]">
-                <div class="col-span-4">
+                <!-- <div class="col-span-4">
                   <div>สถาบันการศึกษา / สถานที่ทำงานปัจจุบัน</div>
                   <input
                     type="input"
@@ -574,10 +575,10 @@
                     v-model="room_detail.faculty"
                     :disabled="is_edit == true"
                   />
-                </div>
+                </div> -->
               </div>
               <div class="grid grid-cols-8 gap-2 text-custom w-[100%] mt-[6px]">
-                <div class="col-span-2">
+                <!-- <div class="col-span-2">
                   <div>ชั้นปี / ตำแหน่ง</div>
                   <input
                     type="input"
@@ -585,8 +586,8 @@
                     v-model="room_detail.rank"
                     :disabled="is_edit == true"
                   />
-                </div>
-                <div class="col-span-2">
+                </div> -->
+                <!-- <div class="col-span-2">
                   <div>รหัสนักศึกษา / รหัสพนักงาน</div>
                   <input
                     type="input"
@@ -594,7 +595,9 @@
                     v-model="room_detail.idEmployee"
                     :disabled="is_edit == true"
                   />
-                </div>
+                </div> -->
+              </div>
+              <div class="grid grid-cols-8 gap-2 text-custom w-[100%] mt-[6px]">
                 <div class="col-span-4">
                   <div>บุคคลที่สามารถติดต่อได้กรณีฉุกเฉิน</div>
                   <input
@@ -604,8 +607,6 @@
                     :disabled="is_edit == true"
                   />
                 </div>
-              </div>
-              <div class="grid grid-cols-8 gap-2 text-custom w-[100%] mt-[6px]">
                 <div class="col-span-2">
                   <div>ความสัมพันธ์</div>
                   <input
@@ -624,6 +625,26 @@
                     :disabled="is_edit == true"
                   />
                 </div>
+              </div>
+              <div class="grid grid-cols-8 gap-2 text-custom w-[100%] mt-[6px]">
+                <!-- <div class="col-span-2">
+                  <div>ความสัมพันธ์</div>
+                  <input
+                    type="input"
+                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                    v-model="room_detail.relation"
+                    :disabled="is_edit == true"
+                  />
+                </div>
+                <div class="col-span-2">
+                  <div>เบอร์โทรศัพท์ผู้ติดต่อฉุกเฉิน</div>
+                  <input
+                    type="input"
+                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                    v-model="room_detail.emergencyPhone"
+                    :disabled="is_edit == true"
+                  />
+                </div> -->
               </div>
             </div>
             <div class="w-[100%] flex mt-[14px]">
@@ -1088,10 +1109,10 @@ export default {
         contract_duration: "",
         room_deposit: "",
         type_room: "",
-        workplace: "",
-        faculty: "",
-        rank: "",
-        idEmployee: "",
+        // workplace: "",
+        // faculty: "",
+        // rank: "",
+        // idEmployee: "",
         emergencyPerson: "",
         relation: "",
         emergencyPhone: "",
@@ -1127,10 +1148,10 @@ export default {
       this.room_detail.address = "";
       this.room_detail.birth = "";
       this.room_detail.date_sign = "";
-      (this.room_detail.workplace = ""),
-        (this.room_detail.faculty = ""),
-        (this.room_detail.rank = "");
-      this.room_detail.idEmployee = "";
+      // (this.room_detail.workplace = ""),
+      //   (this.room_detail.faculty = ""),
+      //   (this.room_detail.rank = "");
+      // this.room_detail.idEmployee = "";
       this.room_detail.emergencyPerson = "";
       this.room_detail.relation = "";
       (this.room_detail.emergencyPhone = ""), (this.room_detail.lineID = "");
@@ -1151,10 +1172,10 @@ export default {
         (this.room_detail.address = ""),
         (this.room_detail.birth = ""),
         (this.room_detail.date_sign = ""),
-        (this.room_detail.workplace = ""),
-        (this.room_detail.faculty = ""),
-        (this.room_detail.rank = ""),
-        (this.room_detail.idEmployee = ""),
+        // (this.room_detail.workplace = ""),
+        // (this.room_detail.faculty = ""),
+        // (this.room_detail.rank = ""),
+        // (this.room_detail.idEmployee = ""),
         (this.room_detail.emergencyPerson = ""),
         (this.room_detail.relation = ""),
         (this.room_detail.emergencyPhone = ""),
@@ -1179,10 +1200,10 @@ export default {
         (this.room_detail.address = ""),
         (this.room_detail.birth = ""),
         (this.room_detail.date_sign = ""),
-        (this.room_detail.workplace = ""),
-        (this.room_detail.faculty = ""),
-        (this.room_detail.rank = ""),
-        (this.room_detail.idEmployee = ""),
+        // (this.room_detail.workplace = ""),
+        // (this.room_detail.faculty = ""),
+        // (this.room_detail.rank = ""),
+        // (this.room_detail.idEmployee = ""),
         (this.room_detail.emergencyPerson = ""),
         (this.room_detail.relation = ""),
         (this.room_detail.emergencyPhone = ""),
@@ -1333,11 +1354,11 @@ export default {
             this.room_detail.sex = resp[0].sex;
             this.room_detail.birth = resp[0].dateOfBirth;
             this.room_detail.date_sign = resp[0].checkInDate;
-            (this.room_detail.workplace = resp[0].workplace),
-              (this.room_detail.faculty = resp[0].faculty),
-              (this.room_detail.rank = resp[0].rank),
-              (this.room_detail.idEmployee = resp[0].idEmployee),
-              (this.room_detail.emergencyPerson = resp[0].emergencyPerson),
+            // (this.room_detail.workplace = resp[0].workplace),
+            //   (this.room_detail.faculty = resp[0].faculty),
+            //   (this.room_detail.rank = resp[0].rank),
+            //   (this.room_detail.idEmployee = resp[0].idEmployee),
+            (this.room_detail.emergencyPerson = resp[0].emergencyPerson),
               (this.room_detail.relation = resp[0].relation),
               (this.room_detail.emergencyPhone = resp[0].emergencyPhone),
               (this.room_detail.lineID = resp[0].lineID);
@@ -1355,10 +1376,10 @@ export default {
             this.room_detail.sex = "";
             this.room_detail.birth = "";
             this.room_detail.date_sign = "";
-            (this.room_detail.workplace = ""),
-              (this.room_detail.faculty = ""),
-              (this.room_detail.rank = "");
-            this.room_detail.idEmployee = "";
+            // (this.room_detail.workplace = ""),
+            //   (this.room_detail.faculty = ""),
+            //   (this.room_detail.rank = "");
+            // this.room_detail.idEmployee = "";
             this.room_detail.emergencyPerson = "";
             this.room_detail.relation = "";
             (this.room_detail.emergencyPhone = ""),
@@ -1424,16 +1445,16 @@ export default {
             resp.data[0]?.attributes.user_sign_contract.data?.attributes.roomInsuranceDeposit;
           this.room_detail.room_deposit =
             resp.data[0]?.attributes.user_sign_contract.data?.attributes.roomDeposit;
-          (this.room_detail.workplace =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.workplace),
-            (this.room_detail.faculty =
-              resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.faculty),
-            (this.room_detail.rank =
-              resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.rank),
-            (this.room_detail.idEmployee =
-              resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.idEmployee),
-            (this.room_detail.emergencyPerson =
-              resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.emergencyPerson),
+          // (this.room_detail.workplace =
+          //   resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.workplace),
+          //   (this.room_detail.faculty =
+          //     resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.faculty),
+          //   (this.room_detail.rank =
+          //     resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.rank),
+          //   (this.room_detail.idEmployee =
+          //     resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.idEmployee),
+          (this.room_detail.emergencyPerson =
+            resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.emergencyPerson),
             (this.room_detail.relation =
               resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.relation),
             (this.room_detail.emergencyPhone =
@@ -1565,10 +1586,10 @@ export default {
                           contactAddress: this.room_detail.address,
                           sex: this.room_detail.sex,
                           dateOfBirth: this.room_detail.birth,
-                          workplace: this.room_detail.workplace,
-                          faculty: this.room_detail.faculty,
-                          rank: this.room_detail.rank,
-                          idEmployee: this.room_detail.idEmployee,
+                          // workplace: this.room_detail.workplace,
+                          // faculty: this.room_detail.faculty,
+                          // rank: this.room_detail.rank,
+                          // idEmployee: this.room_detail.idEmployee,
                           emergencyPerson: this.room_detail.emergencyPerson,
                           relation: this.room_detail.relation,
                           emergencyPhone: this.room_detail.emergencyPhone,
@@ -1651,10 +1672,10 @@ export default {
                 // "dateOfBirth": this.room_detail.birth,
                 password: this.room_detail.id_card,
                 building: this.$store.state.building,
-                workplace: this.room_detail.workplace,
-                faculty: this.room_detail.faculty,
-                rank: this.room_detail.rank,
-                " idEmployee": this.room_detail.idEmployee,
+                // workplace: this.room_detail.workplace,
+                // faculty: this.room_detail.faculty,
+                // rank: this.room_detail.rank,
+                // " idEmployee": this.room_detail.idEmployee,
                 emergencyPerson: this.room_detail.emergencyPerson,
                 relation: this.room_detail.relation,
                 emergencyPhone: this.room_detail.emergencyPhone,
