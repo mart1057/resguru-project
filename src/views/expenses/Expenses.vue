@@ -794,7 +794,7 @@ export default {
                     this.$showNotification('danger', errorMessage); 
                 })
                 .finally(()=>{
-                    this.$showNotification('#3A89CB', 'Expense is created Successfully')
+                    this.$showNotification('#3A89CB', 'สร้างรายจ่ายสำเร็จ')
                 })
         },
         getIncome() {

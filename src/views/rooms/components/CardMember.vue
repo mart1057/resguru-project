@@ -483,7 +483,7 @@
                   :disabled="is_edit == true"
                 />
               </div>
-              <div class="col-span-2 ml-[8px]">
+              <div class="ml-[8px]">
                 <div class="text-custom">วัน/เดือน/ปีเกิด (ค.ศ.)</div>
                 <input
                   type="date"

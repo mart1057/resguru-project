@@ -341,7 +341,7 @@ export default {
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
-          this.$showNotification("#3A89CB", "Update Electricity Fee Success");
+          this.$showNotification("#3A89CB", "แก้ไขค่าไฟสำเร็จ");
           this.getElectricityFee(this.id, this.month, this.year);
         });
     },

@@ -1299,11 +1299,11 @@ export default {
           const errorMessage = error.message
             ? error.message
             : "Error updating information";
-          this.$showNotification("danger", "Fail to Create Payment ");
+          this.$showNotification("danger", "พบปัญหาระหว่างการแก้ไข");
         })
         .finally(() => {
           this.getfloor();
-          this.$showNotification("#3A89CB", "Update Service Success");
+          this.$showNotification("#3A89CB", "แก้ไขสำเร็จ");
         });
       this.createFullpayment = false;
     },
@@ -1376,17 +1376,17 @@ export default {
                 console.log(error);
               });
           }
-          this.$showNotification("#3A89CB", "Update Service Success");
+          this.$showNotification("#3A89CB", "แก้ไขการชำระเงินสำเร็จ");
         })
         .finally(() => {
           this.getfloor();
-          this.$showNotification("#3A89CB", "Create Payment Success");
+          this.$showNotification("#3A89CB", "สร้างการชำระเงินสำเร็จ");
         })
         .catch((error) => {
           const errorMessage = error.message
             ? error.message
             : "Error updating information";
-          this.$showNotification("danger", "Fail to Create New Payment");
+          this.$showNotification("danger", "พบปัญหาระหว่างสร้างการชำระเงินใหม่");
         });
       this.createPartialPayment = false;
     },

@@ -159,7 +159,7 @@ export default {
             this.$showNotification('danger', errorMessage); 
             })
             .finally(()=>{
-                    this.$showNotification('#3A89CB', 'Update Communal Fee Success')
+                    this.$showNotification('#3A89CB', 'แก้ไขค่าส่วนกลางสำเร็จ')
             })
         },
         updateMeterAll() {
