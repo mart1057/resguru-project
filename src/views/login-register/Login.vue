@@ -126,7 +126,7 @@
                             class="h-[36px] w-[100%] pl-[18px] pr-[18px] rounded-[12px] bg-[#F3F7FA]"
                             v-model="dataRegister.birth" />
                         <div class="mt-[10px]">
-                            <div class="font-bold">Citicen ID</div>
+                            <div class="font-bold">หมายเลขบัตรประชาชน หรือ พาสปอร์ต</div>
                             <div class="">
                                 <input type="input" placeholder="CID" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                     v-model="dataRegister.CID" />
@@ -392,7 +392,7 @@ export default {
                 email: '',
                 pass: '',
                 pass_con: '',
-                sex: null,
+                sex: true,
                 check: false,
                 err: ''
             }
@@ -451,7 +451,7 @@ export default {
             loading.close()
         },
         registerSubmit() {
-            if (this.dataRegister.email != '' & this.dataRegister.name != '' & this.dataRegister.last != '' & this.dataRegister.phone != '' & this.dataRegister.pass != '' & this.dataRegister.pass_con != '' & this.dataRegister.sex != '' & this.dataRegister.birth!= '' & this.dataRegister.sex !=null) {
+            if (this.dataRegister.email != '' & this.dataRegister.name != '' & this.dataRegister.last != '' & this.dataRegister.phone != '' & this.dataRegister.pass != '' & this.dataRegister.pass_con != '' & this.dataRegister.birth!= '') {
                 if (this.dataRegister.pass == this.dataRegister.pass_con) {
                     if (this.dataRegister.check) {
                         const loading = this.$vs.loading()
@@ -464,7 +464,7 @@ export default {
                             "lastName": this.dataRegister.last,
                             "firstName": this.dataRegister.name,
                             "role":6,
-                            "sex": this.dataRegister.sex,
+                            "sex": this.dataRegister.sex ?? true,
                             "idCard": this.dataRegister.CID,
                             "dateOfBirth" : this.dataRegister.birth
                             // "filePath": this.dataRegister.filePath,
@@ -477,7 +477,7 @@ export default {
                                 this.dataRegister.pass = '',
                                 this.dataRegister.last = '',
                                 this.dataRegister.name = '',
-                                this.dataRegister.sex = null,
+                                this.dataRegister.sex = true,
                                 this.dataRegister.check = null,
                                 this.dataRegister.CID = ''
                                 this.dataRegister.birth = ''

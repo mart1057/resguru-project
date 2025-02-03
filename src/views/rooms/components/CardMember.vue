@@ -1675,6 +1675,8 @@ export default {
             this.room_detail.address != "" &&
             this.img_arr_card.length != 0
           ) {
+            const date = new Date(this.room_detail.birth);
+            const isoString = date.toISOString();
             const loading = this.$vs.loading();
             axios
               .post("https://api.resguru.app/api" + "/users", {
@@ -1689,7 +1691,7 @@ export default {
                 idCard: this.room_detail.id_card,
                 contactAddress: this.room_detail.address,
                 sex: this.room_detail.sex,
-                // "dateOfBirth": this.room_detail.birth,
+                dateOfBirth: isoString,
                 password: this.room_detail.id_card,
                 building: this.$store.state.building,
                 // workplace: this.room_detail.workplace,

@@ -212,7 +212,7 @@
                             </div>
                             <div class="grid grid-cols-2 w-[100%]  gap-4 mt-[10px] ">
                                 <div>
-                                    <div class="font-bold text-[1vw]">อัตราภาษีหอพัก</div>
+                                    <div class="font-bold text-[1vw]">หอพักเก็บภาษีหรือไม่</div>
                                     <div class="mt-[5px]">
                                         <vs-input v-model="buildingTax" />
                                     </div>
@@ -221,7 +221,7 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="font-bold text-[1vw]">DueDate</div>
+                                    <div class="font-bold text-[1vw]">วันครบรอบชำระเงิน</div>
                                     <div class="mt-[5px]">
                                         <vs-input v-model="buildingDueDate" />
                                     </div>
@@ -294,8 +294,8 @@ export default {
         },
         createBuilding() {
             this.validateField()
-            console.log("errorFieldMessage", this.errorFieldMessage)
-            if (this.buildingName != '' && this.buildingAddress != '' && this.buildingPhone != '' && this.buildingEmail != '' && this.buildingLine !='' && this.buildingTax !='' && this.buildingDueDate != '') {
+            // console.log("errorFieldMessage", this.errorFieldMessage)  && this.buildingLine !=''
+            if (this.buildingName != '' && this.buildingAddress != '' && this.buildingPhone != '' && this.buildingEmail != '' && this.buildingTax !='' && this.buildingDueDate != '') {
                 // console.log("test v model", this.buildingName)
                 axios.post('https://api.resguru.app/api' + '/buildings', {
                     data: {
