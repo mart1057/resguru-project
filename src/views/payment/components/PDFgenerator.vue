@@ -109,6 +109,7 @@
 </template>
   
 <script>
+
 import html2pdf from 'html2pdf.js';
 import Res_Guru_Logo_create06 from '@/assets/img/Res_Guru_Logo_create-06.png'
 import Res_Guru_Logo_create12 from '@/assets/img/Res_Guru_Logo_create-12.png'
