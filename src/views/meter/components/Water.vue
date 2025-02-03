@@ -334,7 +334,7 @@ export default {
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
-          this.$showNotification("#3A89CB", "แก้ไขค่าน้ำสำเร็จ");
+          this.$showNotification("#3A89CB", "Update Water Fee Success");
           this.getWaterFee(this.id, this.month, this.year);
         });
     },
@@ -359,7 +359,7 @@ export default {
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
-          this.$showNotification("#3A89CB", "แก้ไขค่าน้ำสำเร็จ");
+          this.$showNotification("#3A89CB", "Update Water Fee Success");
           this.getWaterFee(this.id, this.month, this.year);
         });
     },
@@ -386,7 +386,7 @@ export default {
               .then(() => {
                 // if (this.WaterFee.length == i + 1) {
                 //   loading.close();
-                //   this.$showNotification("#3A89CB", "แก้ไขค่าน้ำสำเร็จ");
+                //   this.$showNotification("#3A89CB", "Update Water Fee Success");
                 // }
               });
           } else if (data.water_fees[0]) {

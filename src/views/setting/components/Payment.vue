@@ -530,7 +530,7 @@ export default {
           })
           .finally(() => {
             this.create = false;
-            this.$showNotification("#3A89CB", "สร้างการชำระเงินสำเร็จ");
+            this.$showNotification("#3A89CB", "Create Payment Success");
           });
       } else {
         this.$showNotification("danger", "Please fill this form");
@@ -554,7 +554,7 @@ export default {
         })
         .finally(() => {
           this.getPaymentBuilding();
-          this.$showNotification("#3A89CB", "แก้ไขการชำระเงินสำเร็จ");
+          this.$showNotification("#3A89CB", "Update Building Payment Success");
         });
     },
     editPaymentImagewithUpload(Editid) {

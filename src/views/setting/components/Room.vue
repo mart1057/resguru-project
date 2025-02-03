@@ -1286,7 +1286,7 @@
               class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
             >
               <option v-for="data in roomType" :value="data.id">
-                {{ data.attributes.roomTypeName }} ({{ data.attributes.roomPrice }} บาท)
+                {{ data.attributes.roomTypeName }}
               </option>
             </select>
           </div>

@@ -974,119 +974,11 @@
         </div>
         <div class="mt-[14px]">
           <div class="text-custom">ชื่อธนาคาร</div>
-          <!-- <div>
+          <div>
             <input
               class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
               v-model="partialPaymentForm.bankName"
             />
-          </div> -->
-          <div>
-            <select
-              placeholder="Select"
-              v-model="partialPaymentForm.bankName"
-              class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
-            >
-              <option label="เลือก" value="0" disabled>เลือก</option>
-              <option label="ธนาคารกรุงเทพ" value="ธนาคารกรุงเทพ">
-                ธนาคารกรุงเทพ
-              </option>
-              <option label="ธนาคารกสิกรไทย" value="ธนาคารกสิกรไทย">
-                ธนาคารกสิกรไทย
-              </option>
-              <option label="ธนาคารกรุงไทย" value="ธนาคารกรุงไทย">
-                ธนาคารกรุงไทย
-              </option>
-              <option label="ธนาคารทหารไทย" value="ธนาคารทหารไทย">
-                ธนาคารทหารไทย
-              </option>
-              <option label="ธนาคารไทยพาณิชย์" value="ธนาคารไทยพาณิชย์">
-                ธนาคารไทยพาณิชย์
-              </option>
-              <option label="ธนาคารกรุงศรีอยุธยา" value="ธนาคารกรุงศรีอยุธยา">
-                ธนาคารกรุงศรีอยุธยา
-              </option>
-              <option label="ธนาคารเกียรตินาคิน" value="ธนาคารเกียรตินาคิน">
-                ธนาคารเกียรตินาคิน
-              </option>
-              <option label="ธนาคารซีไอเอ็มบีไทย" value="ธนาคารซีไอเอ็มบีไทย">
-                ธนาคารซีไอเอ็มบีไทย
-              </option>
-              <option label="ธนาคารทิสโก้" value="ธนาคารทิสโก้">
-                ธนาคารทิสโก้
-              </option>
-              <option label="ธนาคารธนชาต" value="ธนาคารธนชาต">
-                ธนาคารธนชาต
-              </option>
-              <option label="ธนาคารยูโอบี" value="ธนาคารยูโอบี">
-                ธนาคารยูโอบี
-              </option>
-              <option
-                label="ธนาคารสแตนดาร์ดชาร์เตอร์ด"
-                value="ธนาคารสแตนดาร์ดชาร์เตอร์ด"
-              >
-                ธนาคารสแตนดาร์ดชาร์เตอร์ด (ไทย)
-              </option>
-              <option
-                label="ธนาคารไทยเครดิตเพื่อรายย่อย"
-                value="ธนาคารไทยเครดิตเพื่อรายย่อย"
-              >
-                ธนาคารไทยเครดิตเพื่อรายย่อย
-              </option>
-              <option
-                label="ธนาคารแลนด์แอนด์เฮาส์ "
-                value="ธนาคารแลนด์แอนด์เฮาส์"
-              >
-                ธนาคารแลนด์ แอนด์ เฮาส์
-              </option>
-              <option label="ธนาคารไอซีบีซี" value="ธนาคารไอซีบีซี">
-                ธนาคารไอซีบีซี (ไทย)
-              </option>
-              <option
-                label="ธนาคารพัฒนาวิสาหกิจขนาดกลางและขนาดย่อมแห่งประเทศไทย"
-                value="ธนาคารพัฒนาวิสาหกิจขนาดกลางและขนาดย่อมแห่งประเทศไทย"
-              >
-                ธนาคารพัฒนาวิสาหกิจขนาดกลางและขนาดย่อมแห่งประเทศไทย
-              </option>
-              <option
-                label="ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร"
-                value="ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร"
-              >
-                ธนาคารเพื่อการเกษตรและสหกรณ์การเกษตร
-              </option>
-              <option
-                label="ธนาคารเพื่อการส่งออกและนำเข้าแห่งประเทศไทย"
-                value="ธนาคารเพื่อการส่งออกและนำเข้าแห่งประเทศไทย"
-              >
-                ธนาคารเพื่อการส่งออกและนำเข้าแห่งประเทศไทย
-              </option>
-              <option label="ธนาคารออมสิน" value="ธนาคารออมสิน">
-                ธนาคารออมสิน
-              </option>
-              <option label="ธนาคารอาคารสงเคราะห์" value="ธนาคารอาคารสงเคราะห์">
-                ธนาคารอาคารสงเคราะห์
-              </option>
-              <option
-                label="ธนาคารอิสลามแห่งประเทศไทย"
-                value="ธนาคารอิสลามแห่งประเทศไทย"
-              >
-                ธนาคารอิสลามแห่งประเทศไทย
-              </option>
-              <option label="ธนาคารแห่งประเทศจีน" value="ธนาคารแห่งประเทศจีน">
-                ธนาคารแห่งประเทศจีน
-              </option>
-              <option
-                label="ธนาคารซูมิโตโมมิตซุยทรัสต์"
-                value="ธนาคารซูมิโตโมมิตซุยทรัสต์"
-              >
-                ธนาคารซูมิโตโม มิตซุย ทรัสต์ (ไทย)
-              </option>
-              <option
-                label="ธนาคารฮ่องกงและเซี้ยงไฮ้แบงกิ้งคอร์ปอเรชั่น"
-                value="ธนาคารฮ่องกงและเซี้ยงไฮ้แบงกิ้งคอร์ปอเรชั่น"
-              >
-                ธนาคารฮ่องกงและเซี้ยงไฮ้แบงกิ้งคอร์ปอเรชั่น จำกัด
-              </option>
-            </select>
           </div>
         </div>
         <div class="mt-[14px]">
@@ -1465,7 +1357,7 @@ export default {
           },
         })
         .then((res) => {
-          this.$showNotification("#3A89CB", "แก้ไขราคาห้องสำเร็จ");
+          this.$showNotification("#3A89CB", "Update Room Price Success");
         })
         .catch((error) => {
           const errorMessage = error.message
@@ -1482,7 +1374,7 @@ export default {
           },
         })
         .then((res) => {
-          this.$showNotification("#3A89CB", "แก้ไขค่าน้ำสำเร็จ");
+          this.$showNotification("#3A89CB", "Update Water Price Success");
         })
         .catch((error) => {
           const errorMessage = error.message
@@ -1499,7 +1391,7 @@ export default {
           },
         })
         .then((res) => {
-          this.$showNotification("#3A89CB", "แก้ไขค่าไปสำเร็จ");
+          this.$showNotification("#3A89CB", "Update Electric Price Success");
         })
         .catch((error) => {
           const errorMessage = error.message
@@ -1516,7 +1408,7 @@ export default {
           },
         })
         .then((res) => {
-          this.$showNotification("#3A89CB", "แก้ไขค่าส่วนกลางสำเร็จ");
+          this.$showNotification("#3A89CB", "Update Communal Price Success");
         })
         .catch((error) => {
           const errorMessage = error.message
@@ -1533,7 +1425,7 @@ export default {
           },
         })
         .then((res) => {
-          this.$showNotification("#3A89CB", "แก้ไขสำเร็จ"); //other price
+          this.$showNotification("#3A89CB", "Update Other Price Success");
         })
         .catch((error) => {
           const errorMessage = error.message
@@ -1692,7 +1584,7 @@ export default {
         .finally(() => {
           this.getInvoice();
           this.getEvidence();
-          this.$showNotification("#3A89CB", "สร้างการชำระเงินสำเร็จ");
+          this.$showNotification("#3A89CB", "Create Full Payment Success");
         });
       this.createFullpayment = false;
       // alert("Full payment is created")
@@ -1738,7 +1630,7 @@ export default {
         })
         .then((res) => {
           this.getInvoice();
-          this.$showNotification("#3A89CB", "แก้ไขค่าห้องสำเร็จ");
+          this.$showNotification("#3A89CB", "Update Room Price Success");
         })
         .catch((error) => {
           const errorMessage = error.message
@@ -1830,7 +1722,7 @@ export default {
         .finally(() => {
           this.getInvoice();
           this.getEvidence();
-          this.$showNotification("#3A89CB", "สร้างการชำระเงินสำเร็จ");
+          this.$showNotification("#3A89CB", "Create Payment Success");
         })
         .catch((error) => {
           const errorMessage = error.message
@@ -2019,12 +1911,12 @@ export default {
           },
         })
         .then((res) => {
-          this.$showNotification("#3A89CB", "อนุมัติการชำระเงินสำเร็จ");
+          this.$showNotification("#3A89CB", "Approve Evident Success");
         })
         .catch((error) => {
           const errorMessage = error.message
             ? error.message
-            : "พบปัญหาระหว่างการแก้ไข";
+            : "Error updating information";
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -2086,7 +1978,7 @@ export default {
           }
         )
         .then((res) => {
-          this.$showNotification("#3A89CB", "ยกเลิกการชำระเงินสำเร็จ");
+          this.$showNotification("#3A89CB", "Reject Evident Success");
         })
         .catch((error) => {
           const errorMessage = error.message
