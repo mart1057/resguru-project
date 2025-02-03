@@ -2,12 +2,12 @@
   <div class="mt-[14px] bg-[white] rounded-[12px] p-[24px]">
     <div class="flex justify-between">
       <div class="font-bold text-[18px]">ชั้น {{ tab }}</div>
-      <div
+      <!-- <div
         @click="updateMeterAll(ElectricityFee.map((data) => data.newElec))"
         :disabled="ElectricityFee.length < 1"
       >
         <vs-button>บันทึกทั้งหมด</vs-button>
-      </div>
+      </div> -->
     </div>
 
     <div class="mt-[14px]">
