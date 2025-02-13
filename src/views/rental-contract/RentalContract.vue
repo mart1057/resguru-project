@@ -1074,6 +1074,7 @@ export default {
         contract_duration: "",
         room_deposit: "",
         type_room: "",
+
       },
       room_type: [],
       floorRoom: [],
@@ -1354,6 +1355,8 @@ export default {
               users_permissions_user: this.room_detail_create.id,
               checkInDate: this.room_detail_create.date_sign,
               contractEndDate: this.room_detail_create.exp_date,
+              startElectric: this.room_detail_create.ele,
+              startWater: this.room_detail_create.water,
               roomDeposit: parseInt(this.room_detail_create.room_deposit),
               roomInsuranceDeposit: parseInt(
                 this.room_detail_create.roomInsuranceDeposit
@@ -1389,6 +1392,7 @@ export default {
                 meterUnit: this.room_detail_create.water,
                 user_sign_contract: resp.data.data.id,
                 room: this.room_detail_create.id_room,
+                usageMeter: this.room_detail_create.water,
               },
             });
             axios.post("https://api.resguru.app/api" + "/electric-fees", {
@@ -1396,6 +1400,7 @@ export default {
                 electicUnit: this.room_detail_create.ele,
                 user_sign_contract: resp.data.data.id,
                 room: this.room_detail_create.id_room,
+                usageMeter: this.room_detail_create.ele,
               },
             });
           })
