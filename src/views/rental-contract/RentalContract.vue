@@ -687,7 +687,7 @@
                 <div class="col-span-4 mt-[16px]">
                   <div>
                     <span class="text-[red] mr-[2px]">*</span
-                    >เลขมิเตอร์ค่าน้ำเริ่มต้น
+                    >เลขมิเตอร์ค่าน้ำเดือนล่าสุด
                   </div>
                   <input
                     type="number"
@@ -702,7 +702,7 @@
                 <div class="col-span-4 mt-[16px] ml-[8px]">
                   <div>
                     <span class="text-[red] mr-[2px]">*</span
-                    >เลขมิเตอร์ค่าไฟเริ่มต้น
+                    >เลขมิเตอร์ค่าไฟเดือนล่าสุด
                   </div>
                   <input
                     type="number"

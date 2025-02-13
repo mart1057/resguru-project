@@ -85,7 +85,8 @@
                   </vs-input>
                 </div>
                 <div v-else>
-                  <vs-input disabled value="0">
+                  <!-- <vs-input disabled value="12"> -->
+                    <vs-input disabled :value="tr.user_sign_contract?.startWater ?? '0'">
                     <template #icon>
                       <svg
                         width="24"
