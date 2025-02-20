@@ -324,8 +324,8 @@ export default {
         },
         getBuilding() {
             const loading = this.$vs.loading()
-            fetch('https://api.resguru.app/api' + '/buildings?filters[user_owner][id][$eq]='+this.$store.state.userInfo.id+'&publicationState=live&populate=*')
-                .then(response => response.json())
+            fetch(`https://api.resguru.app/api/buildings?filters[$or][0][user_owner][id][$eq]=${this.$store.state.userInfo.id}&filters[$or][1][users_admin][id][$in]=${this.$store.state.userInfo.id}&publicationState=live&populate=*`)
+            .then(response => response.json())
                 .then((resp) => {
                     console.log(resp.data);
                     this.building = resp.data
