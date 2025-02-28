@@ -60,13 +60,13 @@
                         <td class="w-[150px] flex justify-end border-r ">{{ formatNumber(data_bill.tenant_bills[0]?.roomPrice) }}</td>
                     </tr>
                     <tr  class="border-b-[1px] flex justify-between">
-                        <td class="w-[150px] border-l">ค่าน้ำ</td>
+                        <td class="w-[150px] border-l">ค่าน้ำ (0-0)</td>
                         <td  class="w-[150px] flex justify-end border-r border-l">{{ data_bill.tenant_bills[0]?.usageWater }}</td>
                         <td  class="w-[150px] flex justify-end border-r ">{{ formatNumber(data_bill.tenant_bills[0]?.waterPrice) }}</td>
                         <td  class="w-[150px] flex justify-end border-r ">{{ formatNumber(data_bill.tenant_bills[0]?.waterPrice * data_bill.tenant_bills[0]?.usageWater) }}</td>
                     </tr>
                     <tr class="border-b-[1px] flex justify-between">
-                        <td class="w-[150px] border-l">ค่าไฟ</td>
+                        <td class="w-[150px] border-l">ค่าไฟ (0-0)</td>
                         <td  class="w-[150px] flex justify-end border-r border-l">{{ data_bill.tenant_bills[0]?.usageElectric }} </td>
                         <td  class="w-[150px] flex justify-end border-r "> {{ formatNumber(data_bill.tenant_bills[0]?.electricPrice) }}</td>
                         <td  class="w-[150px] flex justify-end border-r ">{{ formatNumber(data_bill.tenant_bills[0]?.electricPrice * data_bill.tenant_bills[0]?.usageElectric) }}
@@ -101,7 +101,7 @@
             </div>
             <div>
                 <p class="flex flex-col items-left">
-                    <span>กรุณาชำระและแจ้งภายในวันที่กำหนด ล่าช้ารับวันละ บาท</span>
+                    <span>กรุณาชำระและแจ้งภายในวันที่กำหนด ล่าช้ารับวันละ 100 บาท</span>
                     <span style="height: 0px; display: block;"></span>
                 </p>
             </div>
@@ -126,6 +126,8 @@ import Res_Guru_Logo_create06 from '@/assets/img/Res_Guru_Logo_create-06.png'
 import Res_Guru_Logo_create12 from '@/assets/img/Res_Guru_Logo_create-12.png'
 import { convertDateNoTime } from '@/components/hook/hook'
 import THBText from 'thai-baht-text'
+import download from 'downloadjs';
+import axios from 'axios';
 export default {
     data() {
         return {
@@ -240,49 +242,150 @@ export default {
             return `${day}/${month}/${thaiYear}`;
         },
         formatNumber(value) {
-        if (value === null || value === undefined) return '0.00';
-            let num = parseFloat(value).toFixed(2); // Ensure two decimal places
-            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            if (value === null || value === undefined) return '0.00';
+                let num = parseFloat(value).toFixed(2); // Ensure two decimal places
+                return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
-        generatePDF(data) {
-        console.log("PDFdata", data);
-        this.data_bill = data;
+        async generatePDF(data) {
+            console.log("PDFdata", data);
+            this.data_bill = data;
+            
+            try {
+                // Get building ID from store
+                const buildingId = this.$store.state.building;
+                let qrCodeUrl = null;
+                
+                // Fetch QR code from building-pay-methods endpoint
+                try {
+                const response = await axios.get(
+                    `https://api.resguru.app/api/building-pay-methods?filters[building][id][$eq]=${buildingId}&populate=QRCode`
+                );
+                
+                console.log("Building pay methods response:", response.data);
+                
+                if (response.data && 
+                    response.data.data && 
+                    response.data.data.length > 0 && 
+                    response.data.data[0].attributes && 
+                    response.data.data[0].attributes.QRCode && 
+                    response.data.data[0].attributes.QRCode.data && 
+                    response.data.data[0].attributes.QRCode.data.attributes) {
+                    qrCodeUrl = `https://api.resguru.app${response.data.data[0].attributes.QRCode.data.attributes.url}`;
+                }
+                console.log("QR Code URL:", qrCodeUrl);
+                } catch (error) {
+                console.error("Error fetching QR code:", error);
+                // Continue without QR code if there's an error
+                }
 
-        this.$nextTick(() => {
-            const content = this.$refs.pdfContent;
-            if (!content) {
-            console.error("PDF content not found");
-            return; // Exit if content is not found
+                this.$nextTick(() => {
+                const content = this.$refs.pdfContent;
+                if (!content) {
+                    console.error("PDF content not found");
+                    return; // Exit if content is not found
+                }
+
+                // Add QR code to the content if we have it
+                if (qrCodeUrl) {
+                    // First check if we already have a QR code container
+                    let qrContainer = content.querySelector('.qr-code-container');
+                    if (!qrContainer) {
+                    qrContainer = document.createElement('div');
+                    qrContainer.className = 'qr-code-container';
+                    qrContainer.style.width = '100%';
+                    qrContainer.style.textAlign = 'center';
+                    qrContainer.style.marginTop = '30px';
+                    qrContainer.style.marginBottom = '20px';
+                    
+                    const qrImage = document.createElement('img');
+                    qrImage.src = qrCodeUrl;
+                    qrImage.style.width = '500px';
+                    qrImage.style.height = '500px';
+                    qrImage.style.objectFit = 'contain';
+                    qrImage.style.maxWidth = '100%';
+                    qrImage.alt = 'Payment QR Code';
+                    qrImage.crossOrigin = 'anonymous'; // Handle cross-origin images
+                    
+                    const qrLabel = document.createElement('div');
+                    qrLabel.textContent = 'สแกนเพื่อชำระเงิน';
+                    qrLabel.style.marginTop = '10px';
+                    qrLabel.style.fontSize = '18px';
+                    qrLabel.style.fontWeight = 'bold';
+                    
+                    qrContainer.appendChild(qrImage);
+                    qrContainer.appendChild(qrLabel);
+                    content.appendChild(qrContainer);
+                    }
+                }
+
+                const opt = {
+                    margin: 10,
+                    filename: `Invoice-${data.RoomNumber}.pdf`,
+                    image: { 
+                    type: "jpeg", 
+                    quality: 0.98 
+                    },
+                    html2canvas: { 
+                    scale: 2,
+                    useCORS: true, // Enable CORS for images
+                    logging: false, // Disable logging for better performance
+                    allowTaint: true // Allow cross-origin images
+                    },
+                    jsPDF: { 
+                    unit: "mm", 
+                    format: "a4", 
+                    orientation: "portrait" 
+                    }
+                };
+
+                // Generate the PDF and open in a new tab using the direct approach
+                html2pdf()
+                    .from(content)
+                    .set(opt)
+                    .toPdf()
+                    .get("pdf")
+                    .then(function (pdf) {
+                    console.log("PDF generated successfully");
+                    // This works in most browsers to open in a new tab
+                    window.open(pdf.output("bloburl"), "_blank");
+                    
+                    // Clean up - remove QR code container if we added it
+                    if (qrCodeUrl) {
+                        const qrContainer = content.querySelector('.qr-code-container');
+                        if (qrContainer) {
+                        content.removeChild(qrContainer);
+                        }
+                    }
+                    })
+                    .catch(function (error) {
+                    console.error("Error generating PDF:", error);
+                    
+                    // Clean up - remove QR code container if we added it
+                    if (qrCodeUrl) {
+                        const qrContainer = content.querySelector('.qr-code-container');
+                        if (qrContainer) {
+                        content.removeChild(qrContainer);
+                        }
+                    }
+                    });
+                });
+            } catch (error) {
+                console.error("Error in PDF generation process:", error);
             }
-
-            console.log("PDF Content:", content.innerHTML);
-
-            const opt = {
-            margin: 10,
-            filename: "generated.pdf",
-            image: { type: "jpeg", quality: 0.98 },
-            html2canvas: { scale: 2 },
-            jsPDF: { unit: "mm", format: "a4", orientation: "portrait" },
-            };
-
-            html2pdf()
-            .from(content)
-            .set(opt)
-            .toPdf()
-            .get("pdf")
-            .then(function (pdf) {
-                console.log("PDF generated successfully");
-                window.open(pdf.output("bloburl"), "_blank");
-            })
-            .catch(function (error) {
-                console.error("Error generating PDF:", error);
-            });
-        });
-        },
+        }
     },
 };
 </script>
 <style>
+.qr-code-container img {
+  width: 500px !important;
+  height: 500px !important;
+  min-width: 500px !important;
+  min-height: 500px !important;
+  max-width: 500px !important;
+  max-height: 500px !important;
+  object-fit: none !important; /* Prevents aspect ratio preservation */
+}
 /* Styling for the bill table */
 .bill-table {
     width: 100%;
