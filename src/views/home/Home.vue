@@ -286,13 +286,27 @@ export default {
                 path: '/create_building',
             })
         },
-        routeToMain(buidingId) {
+        // routeToMain(buidingId) {
+        //     this.$store.commit('setMain', true);
+        //     this.$store.commit('setBuilding', buidingId);
+        //     router.push({
+        //         path: '/dashboard',
+        //     })
+        //     this.$store.state.main = true
+        // },
+        routeToMain(buildingId) {
             this.$store.commit('setMain', true);
-            this.$store.commit('setBuilding', buidingId);
+            this.$store.commit('setBuilding', buildingId);
+
+            // Find selected building from the list
+            const selectedBuilding = this.building.find(b => b.id === buildingId);
+            if (selectedBuilding) {
+                this.$store.commit('setBuildingInfo', [selectedBuilding]); // Update buildingInfo in Vuex
+            }
+
             router.push({
                 path: '/dashboard',
-            })
-            this.$store.state.main = true
+            });
         },
         routeToEditBuilding(buidingId) {
             this.$store.commit('setMain', true);
