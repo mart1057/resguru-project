@@ -116,7 +116,7 @@
                         <div class="flex flex-col justify-center items-center w-[100%]">
                             <div class="grid grid-cols-1 w-[100%]  gap-4 mt-[10px] ">
                                 <div>
-                                    <div class="font-bold text-[1vw]">ชื่อหอพัก</div>
+                                    <div class="font-bold text-[1vw]">ชื่อหอพัก *</div>
                                     <div class="">
                                         <input type="input" v-model="buildingName"
                                             class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
@@ -212,23 +212,30 @@
                             </div>
                             <div class="grid grid-cols-2 w-[100%]  gap-4 mt-[10px] ">
                                 <div>
-                                    <div class="font-bold text-[1vw]">หอพักเก็บภาษีหรือไม่</div>
+                                <div class="font-bold text-[1vw]">หอพักเก็บภาษีหรือไม่ *</div>
                                     <div class="mt-[5px]">
-                                        <vs-input v-model="buildingTax" />
+                                        <vs-select v-model="buildingTax">
+                                            <vs-option label="0%" value="0">0%</vs-option>
+                                            <vs-option label="7%" value="7">7%</vs-option>
+                                        </vs-select>
                                     </div>
                                     <div v-if="errorFieldMessage !== ''" class="text-danger">
                                         {{ errorFieldMessage }}
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="font-bold text-[1vw]">วันครบรอบชำระเงิน</div>
-                                    <div class="mt-[5px]">
-                                        <vs-input v-model="buildingDueDate" />
-                                    </div>
-                                    <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div>
+                            <div class="font-bold text-[1vw]">วันครบรอบชำระเงิน *</div>
+                                <div class="mt-[5px]">
+                                    <vs-select v-model="buildingDueDate">
+                                        <vs-option v-for="day in 29" :key="day-1" :label="`${day-1}`" :value="day-1">
+                                            {{ day-1 }}
+                                        </vs-option>
+                                    </vs-select>
                                 </div>
+                                <div v-if="errorFieldMessage !== ''" class="text-danger">
+                                    {{ errorFieldMessage }}
+                                </div>
+                            </div>
                             </div>
 
                         </div>
@@ -295,8 +302,9 @@ export default {
         createBuilding() {
             this.validateField()
             // console.log("errorFieldMessage", this.errorFieldMessage)  && this.buildingLine !=''
-            if (this.buildingName != '' && this.buildingAddress != '' && this.buildingPhone != '' && this.buildingEmail != '' && this.buildingTax !='' && this.buildingDueDate != '') {
-                // console.log("test v model", this.buildingName)
+            // if (this.buildingName != '' && this.buildingAddress != '' && this.buildingPhone != '' && this.buildingEmail != '' && this.buildingTax !='' && this.buildingDueDate != '') {
+            if (this.buildingName != '' && this.buildingTax !='' && this.buildingDueDate != '') {
+            // console.log("test v model", this.buildingName)
                 axios.post('https://api.resguru.app/api' + '/buildings', {
                     data: {
                         buildingName: this.buildingName,
