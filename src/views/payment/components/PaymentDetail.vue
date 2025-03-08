@@ -715,9 +715,9 @@
                                 Ref: Invoice Number
                             </vs-th> -->
               <vs-th> ธนาคาร </vs-th>
-              <vs-th> Image </vs-th>
+              <vs-th> หลักฐาน </vs-th>
               <vs-th> จำนวนเงิน </vs-th>
-              <vs-th> Status </vs-th>
+              <vs-th> สถานะ </vs-th>
               <vs-th> Receipt </vs-th>
               <vs-th> Action </vs-th>
             </vs-tr>
@@ -1180,128 +1180,229 @@
     </b-modal>
 
     <b-modal
-      centered
-      v-model="createApprovePayment"
-      size="l"
-      hide-backdrop
-      hide-header-close
-      hide-header
-      hide-footer
-      class="p-[-20px] text-custom"
+  centered
+  v-model="createApprovePayment"
+  size="xl"
+  hide-backdrop
+  hide-header-close
+  hide-header
+  hide-footer
+  class="p-[-20px] text-custom"
+>
+  <div>
+    <div class="flex justify-between">
+      <div class="mt-[14px]">
+  <div class="text-custom">อัตราภาษีมูลค่าเพิ่ม (VAT)</div>
+  <div>
+    <select
+      class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+      v-model="approvePaymentForm.vatRate"
+      @change="recalculateVat()"
     >
-      <div>
-        <div class="flex justify-between">
-          <div
-            class="text-custom flex justify-center items-center text-[16px] font-bold"
+      <option value="0">0%</option>
+      <option value="7">7%</option>
+    </select>
+  </div>
+</div>
+      <div
+        class="text-custom flex justify-center items-center text-[16px] font-bold"
+      >
+        อนุมัติการชำระเงิน
+      </div>
+      <div @click="createApprovePayment = false" class="cursor-pointer">
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <mask
+            id="mask0_417_4814"
+            style="mask-type: alpha"
+            maskUnits="userSpaceOnUse"
+            x="0"
+            y="0"
+            width="24"
+            height="24"
           >
-            อนุมัติการชำระเงิน
-          </div>
-          <div @click="createApprovePayment = false" class="cursor-pointer">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <mask
-                id="mask0_417_4814"
-                style="mask-type: alpha"
-                maskUnits="userSpaceOnUse"
-                x="0"
-                y="0"
-                width="24"
-                height="24"
-              >
-                <rect width="24" height="24" fill="#D9D9D9" />
-              </mask>
-              <g mask="url(#mask0_417_4814)">
-                <path
-                  d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
-                  fill="#5C6B79"
-                />
-              </g>
-            </svg>
-          </div>
-        </div>
-        <div
-          class="w-[100%] h-[1px] mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"
-        ></div>
+            <rect width="24" height="24" fill="#D9D9D9" />
+          </mask>
+          <g mask="url(#mask0_417_4814)">
+            <path
+              d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+              fill="#5C6B79"
+            />
+          </g>
+        </svg>
+      </div>
+    </div>
+    <div
+      class="w-[100%] h-[1px] mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"
+    ></div>
 
-        <div class="mt-[14px]">
-          <div class="text-custom">ยอดที่ชำระมา</div>
-          <div>
-            <input
-              class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
-              v-model="approvePaymentForm.amount"
-              v-on:change="calAfterFine()"
-            />
-          </div>
-        </div>
-        <div class="mt-[14px]">
-          <div class="text-custom">ค่าปรับ</div>
-          <div>
-            <input
-              class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
-              v-model="approvePaymentForm.fineamount"
-              v-on:change="calAfterFine()"
-            />
-          </div>
-        </div>
-        <div class="mt-[14px]">
-          <div class="text-custom">สรุปยอดหลังหักค่าปรับ</div>
-          <div>
-            <input
-              id="afterFine"
-              class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
-              disabled
-              v-model="approvePaymentForm.afterFine"
-            />
-          </div>
-        </div>
-        <!-- <div class="mt-[14px]">
-                    <div class="text-custom">อนุมัติโดย</div>
-                    <div>
-                        <input disabled class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
-                            v-model="approvePaymentForm.approveBy" />
-                            
-                    </div>
-                </div> -->
-        <div class="mt-[14px]">
-          <div class="text-custom">วันที่</div>
-          <div>
-            <input
-              type="date"
-              class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
-              v-model="approvePaymentForm.paymentDate"
-            />
-          </div>
-        </div>
+    <div class="mt-[14px]">
+      <table class="w-full border-collapse">
+        <thead>
+          <tr class="bg-[#F3F7FA]">
+            <th class="p-2 border text-left">ลำดับ<br>No.</th>
+            <th class="p-2 border text-left">รายการ<br>Desc</th>
+            <!-- <th class="p-2 border text-center">จำนวน<br>Qty</th> -->
+            <th class="p-2 border text-right">ราคา<br>Unit Price</th>
+            <!-- <th class="p-2 border text-right">จำนวนเงิน<br>Amount</th> -->
+            <th class="p-2 border text-right">ภาษี<br>Vat</th>
+            <th class="p-2 border text-right">รวมเงิน<br>Total Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="p-2 border text-center">1</td>
+            <td class="p-2 border">ค่าห้อง</td>
+            <!-- <td class="p-2 border text-center">1.00</td> -->
+            <!-- <td class="p-2 border text-right">0.00</td> -->
+            <td class="p-2 border text-right">{{ $formatNumber(approvePaymentForm.roomPrice) }}</td>
+            <td class="p-2 border text-right">-</td>
+            <td class="p-2 border text-right">
+              <input 
+                class="w-full h-[36px] rounded-[8px] pl-[8px] pr-[8px] text-custom text-right bg-white" 
+                v-model="approvePaymentForm.roomPrice" 
+                @change="calculateTotal()"
+              />
+            </td>
+          </tr>
+          
+          <tr>
+            <td class="p-2 border text-center">2</td>
+            <td class="p-2 border">ค่าน้ำ</td>
+            <!-- <td class="p-2 border text-center">-</td> -->
+            <!-- <td class="p-2 border text-right">-</td> -->
+            <td class="p-2 border text-right">{{ $formatNumber((approvePaymentForm.waterPrice-approvePaymentForm.waterPriceVat).toFixed(2)) }}</td>
+            <td class="p-2 border text-right">{{ $formatNumber(approvePaymentForm.waterPriceVat) }}</td>
+            <td class="p-2 border text-right">
+              <input 
+                class="w-full h-[36px] rounded-[8px] pl-[8px] pr-[8px] text-custom text-right bg-white" 
+                v-model="approvePaymentForm.waterPrice" 
+                @change="calculateTotal()"
+              />
+            </td>
+          </tr>
+          
+          <tr>
+            <td class="p-2 border text-center">3</td>
+            <td class="p-2 border">ค่าไฟ</td>
+            <!-- <td class="p-2 border text-center">-</td> -->
+            <!-- <td class="p-2 border text-right">-</td> -->
+            <td class="p-2 border text-right">{{ $formatNumber((approvePaymentForm.electricPrice-approvePaymentForm.electricPriceVat).toFixed(2)) }}</td>
+            <td class="p-2 border text-right">{{ $formatNumber(approvePaymentForm.electricPriceVat) }}</td>
+            <td class="p-2 border text-right">
+              <input 
+                class="w-full h-[36px] rounded-[8px] pl-[8px] pr-[8px] text-custom text-right bg-white" 
+                v-model="approvePaymentForm.electricPrice" 
+                @change="calculateTotal()"
+              />
+            </td>
+          </tr>
+          
+          <tr>
+            <td class="p-2 border text-center">4</td>
+            <td class="p-2 border">ค่าบริการ</td>
+            <!-- <td class="p-2 border text-center">1.00</td> -->
+            <!-- <td class="p-2 border text-right">{{ $formatNumber(approvePaymentForm.communalPrice) }}</td> -->
+            <td class="p-2 border text-right">{{ $formatNumber((approvePaymentForm.communalPrice-approvePaymentForm.communalPriceVat).toFixed(2)) }}</td>
+            <td class="p-2 border text-right">{{ $formatNumber(approvePaymentForm.communalPriceVat) }}</td>
+            <td class="p-2 border text-right">
+              <input 
+                class="w-full h-[36px] rounded-[8px] pl-[8px] pr-[8px] text-custom text-right bg-white" 
+                v-model="approvePaymentForm.communalPrice" 
+                @change="calculateTotal()"
+              />
+            </td>
+          </tr>
+          
+          <tr class="bg-[#F3F7FA]">
+            <td colspan="2" class="p-2 border text-right font-bold">รวม</td>
+            <td class="p-2 border text-right">{{ $formatNumber(approvePaymentForm.subtotal) }}</td>
+            <td class="p-2 border text-right">{{ $formatNumber(approvePaymentForm.vat) }}</td>
+            <td class="p-2 border text-right font-bold">{{ $formatNumber(approvePaymentForm.total) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-        <div class="mt-[14px]">
-          <div class="text-custom">เวลา</div>
-          <div>
-            <input
-              type="time"
-              class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
-              v-model="approvePaymentForm.paymentTime"
-            />
-          </div>
-        </div>
-        <div class="flex justify-end mt-[30px]">
-          <div>
-            <vs-button dark shadow @click="createApprovePayment = false">
-              <div class="text-custom">ยกเลิก</div>
-            </vs-button>
-          </div>
-          <div>
-            <vs-button @click="createReceipt(tr)" color="#003765">
-              <div class="text-custom">บันทึก</div>
-            </vs-button>
-          </div>
+    <div class="flex mt-[30px]">
+      <div class="w-1/2 pr-4">
+        <div class="text-custom">ยอดที่ชำระมา</div>
+        <div>
+          <input
+            class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+            v-model="approvePaymentForm.amount"
+            @change="calAfterFine()"
+          />
         </div>
       </div>
-    </b-modal>
+      
+      <div class="w-1/2 pl-4">
+        <div class="text-custom">ค่าปรับ</div>
+        <div>
+          <input
+            class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+            v-model="approvePaymentForm.fineAmount"
+            @change="calAfterFine()"
+          />
+        </div>
+      </div>
+    </div>
+    
+    <div class="mt-[14px]">
+      <div class="text-custom">สรุปยอดหลังหักค่าปรับ</div>
+      <div>
+        <input
+          id="afterFine"
+          class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px] font-bold"
+          disabled
+          v-model="approvePaymentForm.afterFine"
+        />
+      </div>
+    </div>
+
+    <div class="flex mt-[14px]">
+      <div class="w-1/2 pr-4">
+        <div class="text-custom">วันที่</div>
+        <div>
+          <input
+            type="date"
+            class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+            v-model="approvePaymentForm.paymentDate"
+          />
+        </div>
+      </div>
+      
+      <div class="w-1/2 pl-4">
+        <div class="text-custom">เวลา</div>
+        <div>
+          <input
+            type="time"
+            class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+            v-model="approvePaymentForm.paymentTime"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div class="flex justify-end mt-[30px]">
+      <div>
+        <vs-button dark shadow class="mr-[10px]" @click="createApprovePayment = false">
+          <div class="text-custom">ยกเลิก</div>
+        </vs-button>
+      </div>
+      <div>
+        <vs-button @click="createReceipt()" color="#003765">
+          <div class="text-custom text-white">บันทึก</div>
+        </vs-button>
+      </div>
+    </div>
+  </div>
+</b-modal>
   </div>
 </template>
 <script>
@@ -1321,6 +1422,7 @@ export default {
       createPartialPayment: false,
       createApprovePayment: false,
       tab: 1,
+      active: 0,
       allCheck: false,
       selected: [],
       users: [
@@ -1404,21 +1506,52 @@ export default {
         paymentTime: "",
         building: "",
       },
+      // approvePaymentForm: {
+      //   invoiceID: "",
+      //   invoiceName: "",
+      //   roomName: "",
+      //   userID: "",
+      //   bankName: "",
+      //   accountBankName: "",
+      //   amount: 0,
+      //   paymentDate: "",
+      //   paymentTime: "",
+      //   building: "",
+      //   approver: "",
+      //   fineamount: "",
+      //   afterFine: "",
+      //   building: "",
+      // },
       approvePaymentForm: {
         invoiceID: "",
-        invoiceName: "",
+        invoiceNumber: "",
         roomName: "",
         userID: "",
-        bankName: "",
-        accountBankName: "",
+        roomPrice: 0,
+        waterPrice: 0,
+        electricPrice: 0,
+        communalPrice: 0,
+        waterPriceVat: 0,
+        electricPriceVat: 0,
+        communalPriceVat:0,
+        otherPrice: 0,
+        subtotal: 0,
+        vat: 0,
+        vatRate: 0,
+        total: 0,
         amount: 0,
+        fineAmount: 0,
+        afterFine: 0,
         paymentDate: "",
         paymentTime: "",
         building: "",
-        approver: "",
-        fineamount: "",
-        afterFine: "",
-        building: "",
+        room: "",
+        receiptNumber: "",
+        tenant_evidence_payment: "",
+        user_sign_contract: "",
+        evidenceStatus: "",
+        evidenceUrl: "",
+        evidenceName: ""
       },
       convertDateNoTime,
     };
@@ -1602,6 +1735,69 @@ export default {
         // this.fullPaymentForm.accountBankName = "test"
         this.createPartialPayment = true;
       } else if (menu_option == "Approve Payment") {
+  console.log("Payment approval for evidence ID:", trID);
+  
+  // For tenant evidence payments, we need to find the associated invoice
+  // The evidence might not have a direct tenant_bill reference
+  
+  // First, get the full evidence payment details
+  const evidencePayment = this.userEvidencePayment.find(ep => ep.id === trID);
+  console.log("Found evidence payment:", evidencePayment);
+  
+  if (evidencePayment) {
+    // Set evidence data
+    this.approvePaymentForm.amount = evidencePayment.attributes.amount;
+    this.approvePaymentForm.fineAmount = 0;
+    this.approvePaymentForm.afterFine = evidencePayment.attributes.amount;
+    this.approvePaymentForm.evidenceStatus = evidencePayment.attributes.evidenceStatus;
+    
+    // Find the invoice that's related (you might need to adjust this logic based on your data structure)
+    // Option 1: If they share the same room/building/user
+    let relatedInvoice = null;
+    if (this.userInvoice.length > 0) {
+      // Just use the first unpaid invoice for this room
+      relatedInvoice = this.userUnpaidInvoice.length > 0 ? 
+                       this.userUnpaidInvoice[0] : 
+                       this.userInvoice[0];
+    }
+    
+    if (relatedInvoice) {
+      console.log("Using related invoice:", relatedInvoice);
+      
+      // Copy invoice details to the payment form
+      this.approvePaymentForm.roomPrice = relatedInvoice.attributes.roomPrice || 0;
+      this.approvePaymentForm.waterPrice = relatedInvoice.attributes.waterPrice || 0;
+      this.approvePaymentForm.electricPrice = relatedInvoice.attributes.electricPrice || 0;
+      this.approvePaymentForm.communalPrice = relatedInvoice.attributes.communalPrice || 0;
+      this.approvePaymentForm.otherPrice = relatedInvoice.attributes.otherPrice || 0;
+      this.approvePaymentForm.subtotal = relatedInvoice.attributes.subtotal || 0;
+      this.approvePaymentForm.vat = relatedInvoice.attributes.vat || 0;
+      this.approvePaymentForm.total = relatedInvoice.attributes.total || 0;
+      this.approvePaymentForm.invoiceNumber = relatedInvoice.attributes.invoiceNumber;
+      this.approvePaymentForm.invoiceID = relatedInvoice.id; // Store the invoice ID
+    }
+    
+    // Set evidence details
+    if (evidencePayment.attributes.evidence && evidencePayment.attributes.evidence.data) {
+      this.approvePaymentForm.evidenceUrl = 'https://api.resguru.app' + evidencePayment.attributes.evidence.data.attributes.url;
+      this.approvePaymentForm.evidenceName = evidencePayment.attributes.evidence.data.attributes.name;
+    }
+    
+    // Set payment date from evidence
+    if (evidencePayment.attributes.createdAt) {
+      this.approvePaymentForm.paymentDate = this.convertDateNoTime(evidencePayment.attributes.createdAt);
+    }
+    
+    this.approvePaymentForm.building = evidencePayment.attributes.building.data.id;
+    this.approvePaymentForm.userID = evidencePayment.attributes.user_sign_contract.data.id;
+    this.approvePaymentForm.tenant_evidence_payment = trID; // Store the evidence ID
+    this.approvePaymentForm.accountBankName = this.userProfile.firstName + " " + this.userProfile.lastName;
+    
+    this.createApprovePayment = true;
+  } else {
+    this.$showNotification("danger", "Cannot find payment evidence details");
+  }
+}else if (menu_option == "Old Approve Payment") {
         this.approvePaymentForm.amount = tr.attributes.amount;
         this.approvePaymentForm.fineamount = 0;
         // this.approvePaymentForm.fineamount = tr.attributes.fineamount?tr.attributes.fineamount:0
@@ -2002,6 +2198,53 @@ export default {
     //     });
     // },
     createReceipt() {
+      let today = new Date();
+      
+      axios
+        .post("https://api.resguru.app/api/tenant-receipts", {
+          data: {
+            tenant_bill: this.approvePaymentForm.invoiceID,
+            user_sign_contract: this.approvePaymentForm.userID || this.partialPaymentForm.userID,
+            receiptNumber: "RE-" + this.approvePaymentForm.invoiceNumber,
+            roomPrice: this.approvePaymentForm.roomPrice,
+            waterPrice: this.approvePaymentForm.waterPrice,
+            electricPrice: this.approvePaymentForm.electricPrice,
+            communalPrice: this.approvePaymentForm.communalPrice,
+            otherPrice: this.approvePaymentForm.otherPrice,
+            subTotal: this.approvePaymentForm.subtotal,
+            vat: this.approvePaymentForm.vat,
+            total: this.approvePaymentForm.total,
+            paidAmount: this.approvePaymentForm.afterFine || this.approvePaymentForm.amount,
+            building: this.approvePaymentForm.building,
+            room: this.$route.query.roomID,
+            tenant_evidence_payment: this.approvePaymentForm.invoiceID,
+            receiptDate: this.approvePaymentForm.paymentDate || today.toISOString().split('T')[0]
+          },
+        })
+        .then((res) => {
+          // Update the evidence to "Approve" status
+          axios.put(`https://api.resguru.app/api/tenant-evidence-payments/${this.approvePaymentForm.invoiceID}`, {
+            data: {
+              evidenceStatus: "Approve"
+            }
+          });
+          
+          this.$showNotification("#3A89CB", "อนุมัติการชำระเงินสำเร็จ");
+        })
+        .catch((error) => {
+          const errorMessage = error.message
+            ? error.message
+            : "พบปัญหาระหว่างการแก้ไข";
+          this.$showNotification("danger", errorMessage);
+        })
+        .finally(() => {
+          this.getInvoice();
+          this.getReceipt();
+          this.getEvidence();
+          this.createApprovePayment = false;
+        });
+    },
+    OldcreateReceipt() {
       //ส่งบอกว่า evident ถูก approve แล้ว หลังบ้านจะไป update invoice, current evident, และ สร้าง reciept ตามจำเป็น
       let today = new Date();
       axios
@@ -2036,12 +2279,105 @@ export default {
     },
 
     //cal afterFine in approve popup
-    calAfterFine() {
+    OldcalAfterFine() {
       let result;
       result =
         this.approvePaymentForm.amount - this.approvePaymentForm.fineamount;
       document.getElementById("afterFine").value = result;
     },
+    calAfterFine() {
+      const fineAmount = parseFloat(this.approvePaymentForm.fineAmount) || 0;
+      const amount = parseFloat(this.approvePaymentForm.amount) || 0;
+      const afterFine = amount - fineAmount;
+      
+      this.approvePaymentForm.afterFine = afterFine;
+      // No need to set DOM value as we're using v-model binding with formatting
+    },
+  recalculateVat() {
+    // Get the VAT rate (0 or 7)
+      const vatRate = parseFloat(this.approvePaymentForm.vatRate);
+      
+      const roomPrice = parseFloat(this.approvePaymentForm.roomPrice) || 0;
+      const waterPrice = parseFloat(this.approvePaymentForm.waterPrice) || 0;
+      const electricPrice = parseFloat(this.approvePaymentForm.electricPrice) || 0;
+      const communalPrice = parseFloat(this.approvePaymentForm.communalPrice) || 0;
+      
+      // Calculate subtotal without VAT
+      const subtotalNoRoom = waterPrice + electricPrice + communalPrice;
+      const subtotal = roomPrice + subtotalNoRoom;
+      
+      if (vatRate === 0) {
+        // If VAT is 0%, set all VAT values to 0
+        this.approvePaymentForm.vat = 0.00.toFixed(2);
+        this.approvePaymentForm.waterPriceVat = 0.00.toFixed(2);
+        this.approvePaymentForm.electricPriceVat = 0.00.toFixed(2);
+        this.approvePaymentForm.communalPriceVat = 0.00.toFixed(2);
+        this.approvePaymentForm.subtotal = subtotal.toFixed(2);
+        this.approvePaymentForm.total = subtotal.toFixed(2);
+      } else {
+        // If VAT is 7%, calculate VAT for each component except room price
+        const waterPriceVat = waterPrice * (vatRate / 100);
+        const electricPriceVat = electricPrice * (vatRate / 100);
+        const communalPriceVat = communalPrice * (vatRate / 100);
+        
+        // Total VAT amount
+        const totalVat = waterPriceVat + electricPriceVat + communalPriceVat;
+        
+        // Update VAT values
+        this.approvePaymentForm.waterPriceVat = waterPriceVat.toFixed(2);
+        this.approvePaymentForm.electricPriceVat = electricPriceVat.toFixed(2);
+        this.approvePaymentForm.communalPriceVat = communalPriceVat.toFixed(2);
+        this.approvePaymentForm.vat = totalVat.toFixed(2);
+        
+        // Update subtotal and total
+        this.approvePaymentForm.subtotal = (subtotal - totalVat).toFixed(2);
+        this.approvePaymentForm.total = (subtotalNoRoom + totalVat + roomPrice).toFixed(2);
+      }
+    },
+    
+    // Modify the existing calculateTotal method
+    calculateTotal() {
+      const roomPrice = parseFloat(this.approvePaymentForm.roomPrice) || 0;
+      const waterPrice = parseFloat(this.approvePaymentForm.waterPrice) || 0;
+      const electricPrice = parseFloat(this.approvePaymentForm.electricPrice) || 0;
+      const communalPrice = parseFloat(this.approvePaymentForm.communalPrice) || 0;
+      
+      // Calculate subtotal
+      const subtotal = roomPrice + waterPrice + electricPrice + communalPrice;
+      const subtotalNoRoom = waterPrice + electricPrice + communalPrice;
+      
+      // Get VAT rate
+      const vatRate = parseFloat(this.approvePaymentForm.vatRate);
+      
+      if (vatRate === 0) {
+        this.approvePaymentForm.subtotal = subtotal.toFixed(2);
+        // If VAT is 0%, just set total = subtotal
+        this.approvePaymentForm.vat = 0.00.toFixed(2);
+        this.approvePaymentForm.total = subtotal.toFixed(2);
+        this.approvePaymentForm.waterPriceVat = 0.00.toFixed(2);
+        this.approvePaymentForm.electricPriceVat = 0.00.toFixed(2);
+        this.approvePaymentForm.communalPriceVat = 0.00.toFixed(2);
+      } else {
+        // If VAT is 7%, calculate VAT amount
+        const waterPriceVat = waterPrice * (vatRate / 100);
+        const electricPriceVat = electricPrice * (vatRate / 100);
+        const communalPriceVat = communalPrice * (vatRate / 100);
+        const vatAmount = waterPriceVat + electricPriceVat + communalPriceVat;
+        
+        this.approvePaymentForm.vat = vatAmount.toFixed(2);
+        this.approvePaymentForm.total = (subtotalNoRoom + vatAmount + roomPrice).toFixed(2);
+        this.approvePaymentForm.waterPriceVat = waterPriceVat.toFixed(2);
+        this.approvePaymentForm.electricPriceVat = electricPriceVat.toFixed(2);
+        this.approvePaymentForm.communalPriceVat = communalPriceVat.toFixed(2);
+        this.approvePaymentForm.subtotal = (subtotal - vatAmount).toFixed(2);
+      }
+    },
+    // Add a new method to your component
+    formatDecimal(value) {
+      const num = parseFloat(value);
+      return num ? num.toFixed(2) : '0.00';
+    },
+
 
     // createReceipt(currentEvident) { //ส่งบอกว่า evident ถูก approve แล้ว หลังบ้านจะไป update invoice, current evident, และ สร้าง reciept ตามจำเป็น
     //     let today = new Date()
