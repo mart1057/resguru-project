@@ -182,7 +182,7 @@
                 <div class="h-[110px] p-[18px] flex flex-col justify-between bg-[#003765] rounded-[22px] text-[white]">
                     <div class="flex justify-between">
                         <div class="text-[24px] flex justify-center items-center">{{ data.occuRoom }} ({{
-                        data.occuRoomPer }}%)
+                        Math.round(data.occuRoomPer) }}%)
                         </div>
                         <div>
                             <svg width="34" height="30" viewBox="0 0 34 30" fill="none"
@@ -254,7 +254,7 @@
                     class="h-[110px] p-[18px] flex flex-col justify-between bg-[#F5D65E] rounded-[22px] text-[#003765]  ">
                     <div class="flex justify-between">
                         <div class="text-[24px] flex justify-center items-center">{{ data.availableRoom }} ({{
-                        data.availableRoomPer
+                        Math.round(data.availableRoomPer)
                     }}%)</div>
                         <div>
                             <!-- <svg width="34" height="30" viewBox="0 0 34 30" fill="none"
@@ -296,7 +296,7 @@
                 <div class="h-[110px] p-[18px] flex flex-col justify-between bg-[#47d45e] rounded-[22px] text-[white]">
                     <div class="flex justify-between">
                         <div class="text-[24px] flex justify-center items-center">{{ data.makePayment }} ({{
-                            data.makePaymentPer
+                            Math.round(data.makePaymentPer)
                             }}%)</div>
 
                         <div>
@@ -335,7 +335,7 @@
                 <div class="h-[110px] p-[18px] flex flex-col justify-between bg-[#D44769] rounded-[22px] text-[white]">
                     <div class="flex justify-between">
                         <div class="text-[24px] flex justify-center items-center">{{ data.latePayment }} ({{
-                            data.latePaymentPer
+                            Math.round(data.latePaymentPer)
                             }}%)</div>
 
                         <div>

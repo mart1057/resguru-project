@@ -174,7 +174,7 @@
             <div class="text-[12px]">คงเหลือ</div>
             <div class="flex justify-between">
               <div class="text-[28px] font-bold flex items-center">
-                {{ this.userPayRemain }}
+                {{ this.userPayRemain.toFixed(2) }} บาท
               </div>
               <!-- <div class="flex pt-[4px] pb-[4px] pl-[12px] pr-[12px] border rounded-[12px]  ">
                                 <div>
@@ -1588,7 +1588,8 @@ export default {
         remainPaid += num.attributes.remainPaid;
       });
 
-      return remainPaid;
+      // Format to 2 decimal places
+      return parseFloat(remainPaid.toFixed(2));
     },
     updateRoomPriceInvoice(invoiceid, value) {
       axios
