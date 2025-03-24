@@ -395,9 +395,9 @@
                             <vs-th>
                                 ประเภท
                             </vs-th>
-                            <vs-th>
+                            <!-- <vs-th>
                                 หัวข้อ
-                            </vs-th>
+                            </vs-th> -->
                             <vs-th>
                                 หมายเหตุ
                             </vs-th>
@@ -414,25 +414,35 @@
                     </template>
                     <template #tbody>
                         <vs-tr :key="i" v-for="(tr, i) in expense" :data="tr">
-
                             <vs-td>
                                 {{ tr.attributes.date }}
                             </vs-td>
                             <vs-td>
                                 {{ tr.attributes.building_expense_type.data ? tr.attributes.building_expense_type.data.attributes.expenseTypeName : "" }}
                             </vs-td>
-                            <vs-td>
+                            <!-- <vs-td>
                                 {{ tr.attributes.title }}
-                            </vs-td>
+                            </vs-td> -->
                             <vs-td>
                                 {{ tr.attributes.remark }}
                             </vs-td>
-                            <vs-td>
-                                <img :scr="tr.attributes.evidence.data ? 'https://api.resguru.app'+tr.attributes.evidence.data.attributes.url : ''"/>
+                            <vs-td class="image-cell">
+                                <img 
+                                    :src="tr.attributes.evidence.data ? 'https://api.resguru.app'+tr.attributes.evidence.data.attributes.url : ''" 
+                                    class="cell-image"
+                                    v-if="tr.attributes.evidence.data"
+                                    @click="openImagePreview(tr.attributes.evidence.data.attributes.url)"
+                                />
+                                <span v-else>-</span>
                             </vs-td>
-                            <vs-td>
-                                <!-- {{ tr.attributes.receipt.data ? tr.attributes.receipt.data.attributes.url : "" }} -->
-                                <img :scr=" tr.attributes.receipt.data ? 'https://api.resguru.app'+ tr.attributes.receipt.data.attributes.url : ''"/>
+                            <vs-td class="image-cell">
+                                <img 
+                                    :src="tr.attributes.receipt.data ? 'https://api.resguru.app'+ tr.attributes.receipt.data.attributes.url : ''" 
+                                    class="cell-image"
+                                    v-if="tr.attributes.receipt.data"
+                                    @click="openImagePreview(tr.attributes.receipt.data.attributes.url)"
+                                />
+                                <span v-else>-</span>
                             </vs-td>
                             <vs-td>
                                 {{ $formatNumber(tr.attributes.amount) }}
@@ -751,52 +761,111 @@ export default {
                     // receipt: this.receipt
                 }
             })
-                .then((resp) => {
+            .then((resp) => {
+                if (this.fileEvidenceForm.length != 0) {
+                    let formData = new FormData();
+                    formData.append("files", this.fileEvidenceForm);
+                    formData.append("refId", String(resp.data.data.id));
+                    formData.append("ref", "api::building-expense.building-expense");
+                    formData.append("field", "evidence");
 
-                    if (this.fileEvidenceForm.length != 0) {
-                        let formData = new FormData();
-                        formData.append("files", this.fileEvidenceForm);
-                        formData.append("refId", String(resp.data.data.id));
-                        formData.append("ref", "api::building-expense.building-expense");
-                        formData.append("field", "evidence");
-
-                        axios.post("https://api.resguru.app/api/upload", formData, {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                            },
-                        }).then((result) => { console.log("Upload file", result) })
-                            .catch((error) => {
-                                console.log(error);
-                            })
-                    }
-
-                    if (this.fileReceiptForm.length != 0) {
-                        let formDataReceipt = new FormData();
-                        formDataReceipt.append("files", this.fileReceiptForm);
-                        formDataReceipt.append("refId", String(resp.data.data.id));
-                        formDataReceipt.append("ref", "api::building-expense.building-expense");
-                        formDataReceipt.append("field", "receipt");
-
-                        axios.post("https://api.resguru.app/api/upload", formData, {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                            },
-                        }).then((result) => { console.log("Upload file", result) })
-                            .catch((error) => {
-                                console.log(error);
-                            })
-                    }
-                    
+                    axios.post("https://api.resguru.app/api/upload", formData, {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }).then((result) => { console.log("Upload file", result) })
+                    .catch((error) => {
+                        console.log(error);
+                    });
                 }
-                )
-                .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage); 
-                })
-                .finally(()=>{
-                    this.$showNotification('#3A89CB', 'Expense is created Successfully')
-                })
+
+                if (this.fileReceiptForm.length != 0) {
+                    let formDataReceipt = new FormData();
+                    formDataReceipt.append("files", this.fileReceiptForm);
+                    formDataReceipt.append("refId", String(resp.data.data.id));
+                    formDataReceipt.append("ref", "api::building-expense.building-expense");
+                    formDataReceipt.append("field", "receipt");
+
+                    // Here's the fix: using formDataReceipt instead of formData
+                    axios.post("https://api.resguru.app/api/upload", formDataReceipt, {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    }).then((result) => { console.log("Upload file", result) })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+                }
+            })
+            .catch(error => {
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage); 
+            })
+            .finally(() => {
+                this.$showNotification('#3A89CB', 'Expense is created Successfully');
+                this.create = false; // Close the modal after creation
+                this.getExpense(this.filter.selectedMonth, this.filter.selectedYear); // Refresh the expense list
+            });
         },
+        // createExpense() {
+        //     axios.post(`https://api.resguru.app/api/building-expenses`, {
+        //         data: {
+        //             title: this.title,
+        //             building_expense_type: this.expenseTypeValue,
+        //             amount: this.amount,
+        //             date: this.date,
+        //             remark: this.remark,
+        //             building: this.$store.state.building,
+        //             // evidence: this.evidence,
+        //             // receipt: this.receipt
+        //         }
+        //     })
+        //         .then((resp) => {
+
+        //             if (this.fileEvidenceForm.length != 0) {
+        //                 let formData = new FormData();
+        //                 formData.append("files", this.fileEvidenceForm);
+        //                 formData.append("refId", String(resp.data.data.id));
+        //                 formData.append("ref", "api::building-expense.building-expense");
+        //                 formData.append("field", "evidence");
+
+        //                 axios.post("https://api.resguru.app/api/upload", formData, {
+        //                     headers: {
+        //                         "Content-Type": "multipart/form-data",
+        //                     },
+        //                 }).then((result) => { console.log("Upload file", result) })
+        //                     .catch((error) => {
+        //                         console.log(error);
+        //                     })
+        //             }
+
+        //             if (this.fileReceiptForm.length != 0) {
+        //                 let formDataReceipt = new FormData();
+        //                 formDataReceipt.append("files", this.fileReceiptForm);
+        //                 formDataReceipt.append("refId", String(resp.data.data.id));
+        //                 formDataReceipt.append("ref", "api::building-expense.building-expense");
+        //                 formDataReceipt.append("field", "receipt");
+
+        //                 axios.post("https://api.resguru.app/api/upload", formData, {
+        //                     headers: {
+        //                         "Content-Type": "multipart/form-data",
+        //                     },
+        //                 }).then((result) => { console.log("Upload file", result) })
+        //                     .catch((error) => {
+        //                         console.log(error);
+        //                     })
+        //             }
+                    
+        //         }
+        //         )
+        //         .catch(error => {
+        //             const errorMessage = error.message ? error.message : 'Error updating information';
+        //             this.$showNotification('danger', errorMessage); 
+        //         })
+        //         .finally(()=>{
+        //             this.$showNotification('#3A89CB', 'Expense is created Successfully')
+        //         })
+        // },
         getIncome() {
             const loading = this.$vs.loading()
             fetch(`https://api.resguru.app/api/tenant-receipts?populate=*?populate=building&filters[building][id][$eq]=${this.$store.state.building}&sort[0]=id:desc`)
@@ -807,20 +876,40 @@ export default {
                 }).finally(() => {
                     loading.close()
                 })
-        }
+        },
+        openImagePreview(imageUrl) {
+        // You could implement an image preview functionality here
+        // For example, opening a modal with the full-size image
+        window.open('https://api.resguru.app' + imageUrl, '_blank');
+    }
     }
 
 
 }
 </script>
 <style>
-.text-custom {
-    font-family: 'Prompt';
-}
+    .text-custom {
+        font-family: 'Prompt';
+    }
 
-#mr {
-    width: 90px;
-}
+    #mr {
+        width: 90px;
+    }
+
+    /* Add these new styles */
+    .image-cell {
+        width: 120px;  /* Set a fixed width for the image cells */
+        text-align: center;
+    }
+
+    .cell-image {
+        max-width: 100%;
+        max-height: 80px;
+        object-fit: contain;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
 
 /* .vs-select__input{
     height: 36px !important;
