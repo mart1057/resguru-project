@@ -58,13 +58,13 @@
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.roomPrice) }}</td>
                         </tr>
                         <tr class="row-odd">
-                            <td class="py-2 px-3 border">ค่าน้ำ (0-0)</td>
+                            <td class="py-2 px-3 border">ค่าน้ำ ({{ data_bill.tenant_bills[0]?.lastWaterUnit }}-{{ data_bill.tenant_bills[0]?.lastWaterUnit + data_bill.tenant_bills[0]?.usageWater }})</td>
                             <td class="py-2 px-3 text-right border">{{ data_bill.tenant_bills[0]?.usageWater }}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.waterPrice) }}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.waterPrice * data_bill.tenant_bills[0]?.usageWater) }}</td>
                         </tr>
                         <tr class="row-even">
-                            <td class="py-2 px-3 border">ค่าไฟ (0-0)</td>
+                            <td class="py-2 px-3 border">ค่าไฟ ({{ data_bill.tenant_bills[0]?.lastElectricUnit }}-{{ data_bill.tenant_bills[0]?.lastElectricUnit + data_bill.tenant_bills[0]?.usageElectric }})</td>
                             <td class="py-2 px-3 text-right border">{{ data_bill.tenant_bills[0]?.usageElectric }}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.electricPrice) }}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.electricPrice * data_bill.tenant_bills[0]?.usageElectric) }}</td>

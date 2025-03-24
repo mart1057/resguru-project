@@ -582,32 +582,37 @@
                                 </vs-select> -->
               </vs-td>
               <vs-td>
-                <svg
-                  @click="PDFPrint()"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+                <button 
+                  @click="PDFPrintInvoice(tr)"
+                  class="p-2 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 flex items-center justify-center border border-gray-200"
                 >
-                  <mask
-                    id="mask0_2691_23279"
-                    style="mask-type: alpha"
-                    maskUnits="userSpaceOnUse"
-                    x="0"
-                    y="0"
+                  <svg
                     width="24"
                     height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    class="text-gray-500 hover:text-gray-700"
                   >
-                    <rect width="24" height="24" fill="#D9D9D9" />
-                  </mask>
-                  <g mask="url(#mask0_2691_23279)">
-                    <path
-                      d="M12 15.2386C11.8795 15.2386 11.7673 15.2194 11.6634 15.1809C11.5596 15.1425 11.4609 15.0765 11.3673 14.9829L8.2577 11.8733C8.11925 11.7348 8.04842 11.5608 8.04522 11.3512C8.04201 11.1416 8.11283 10.9643 8.2577 10.8195C8.40257 10.6746 8.58077 10.5996 8.7923 10.5945C9.00383 10.5893 9.18204 10.6592 9.32692 10.8041L11.25 12.7272V5.07712C11.25 4.86431 11.3218 4.68611 11.4654 4.54252C11.609 4.39894 11.7872 4.32715 12 4.32715C12.2128 4.32715 12.391 4.39894 12.5346 4.54252C12.6782 4.68611 12.7499 4.86431 12.7499 5.07712V12.7272L14.673 10.8041C14.8115 10.6656 14.9881 10.5974 15.2028 10.5993C15.4176 10.6012 15.5974 10.6746 15.7422 10.8195C15.8871 10.9643 15.9595 11.14 15.9595 11.3464C15.9595 11.5528 15.8871 11.7284 15.7422 11.8733L12.6327 14.9829C12.5391 15.0765 12.4403 15.1425 12.3365 15.1809C12.2327 15.2194 12.1205 15.2386 12 15.2386ZM6.3077 19.5002C5.80257 19.5002 5.375 19.3252 5.025 18.9752C4.675 18.6252 4.5 18.1976 4.5 17.6925V15.7502C4.5 15.5374 4.5718 15.3592 4.7154 15.2156C4.85898 15.072 5.03718 15.0002 5.25 15.0002C5.46282 15.0002 5.64102 15.072 5.7846 15.2156C5.92818 15.3592 5.99997 15.5374 5.99997 15.7502V17.6925C5.99997 17.7694 6.03202 17.8399 6.09612 17.904C6.16024 17.9681 6.23077 18.0002 6.3077 18.0002H17.6922C17.7692 18.0002 17.8397 17.9681 17.9038 17.904C17.9679 17.8399 18 17.7694 18 17.6925V15.7502C18 15.5374 18.0718 15.3592 18.2154 15.2156C18.3589 15.072 18.5371 15.0002 18.75 15.0002C18.9628 15.0002 19.141 15.072 19.2845 15.2156C19.4281 15.3592 19.5 15.5374 19.5 15.7502V17.6925C19.5 18.1976 19.325 18.6252 18.975 18.9752C18.625 19.3252 18.1974 19.5002 17.6922 19.5002H6.3077Z"
-                      fill="#8396A6"
-                    />
-                  </g>
-                </svg>
+                    <mask
+                      id="mask0_2691_23279"
+                      style="mask-type: alpha"
+                      maskUnits="userSpaceOnUse"
+                      x="0"
+                      y="0"
+                      width="24"
+                      height="24"
+                    >
+                      <rect width="24" height="24" fill="#D9D9D9" />
+                    </mask>
+                    <g mask="url(#mask0_2691_23279)">
+                      <path
+                        d="M12 15.2386C11.8795 15.2386 11.7673 15.2194 11.6634 15.1809C11.5596 15.1425 11.4609 15.0765 11.3673 14.9829L8.2577 11.8733C8.11925 11.7348 8.04842 11.5608 8.04522 11.3512C8.04201 11.1416 8.11283 10.9643 8.2577 10.8195C8.40257 10.6746 8.58077 10.5996 8.7923 10.5945C9.00383 10.5893 9.18204 10.6592 9.32692 10.8041L11.25 12.7272V5.07712C11.25 4.86431 11.3218 4.68611 11.4654 4.54252C11.609 4.39894 11.7872 4.32715 12 4.32715C12.2128 4.32715 12.391 4.39894 12.5346 4.54252C12.6782 4.68611 12.7499 4.86431 12.7499 5.07712V12.7272L14.673 10.8041C14.8115 10.6656 14.9881 10.5974 15.2028 10.5993C15.4176 10.6012 15.5974 10.6746 15.7422 10.8195C15.8871 10.9643 15.9595 11.14 15.9595 11.3464C15.9595 11.5528 15.8871 11.7284 15.7422 11.8733L12.6327 14.9829C12.5391 15.0765 12.4403 15.1425 12.3365 15.1809C12.2327 15.2194 12.1205 15.2386 12 15.2386ZM6.3077 19.5002C5.80257 19.5002 5.375 19.3252 5.025 18.9752C4.675 18.6252 4.5 18.1976 4.5 17.6925V15.7502C4.5 15.5374 4.5718 15.3592 4.7154 15.2156C4.85898 15.072 5.03718 15.0002 5.25 15.0002C5.46282 15.0002 5.64102 15.072 5.7846 15.2156C5.92818 15.3592 5.99997 15.5374 5.99997 15.7502V17.6925C5.99997 17.7694 6.03202 17.8399 6.09612 17.904C6.16024 17.9681 6.23077 18.0002 6.3077 18.0002H17.6922C17.7692 18.0002 17.8397 17.9681 17.9038 17.904C17.9679 17.8399 18 17.7694 18 17.6925V15.7502C18 15.5374 18.0718 15.3592 18.2154 15.2156C18.3589 15.072 18.5371 15.0002 18.75 15.0002C18.9628 15.0002 19.141 15.072 19.2845 15.2156C19.4281 15.3592 19.5 15.5374 19.5 15.7502V17.6925C19.5 18.1976 19.325 18.6252 18.975 18.9752C18.625 19.3252 18.1974 19.5002 17.6922 19.5002H6.3077Z"
+                        fill="currentColor"
+                      />
+                    </g>
+                  </svg>
+                </button>
               </vs-td>
             </vs-tr>
           </template>
@@ -795,6 +800,7 @@
       </div>
       <div>
         <PDFgenerator ref="childComponentPDFReceipt" />
+        <PDFgenerator ref="childComponentPDF" />
       </div>
     </div>
 
@@ -1410,7 +1416,9 @@ import axios from "axios";
 import { degrees, PDFDocument, rgb, StandardFonts } from "pdf-lib";
 import { convertDateNoTime } from "@/components/hook/hook";
 import download from "downloadjs";
-import PDFgenerator from "@/views/payment/components/PDFgeneratorReceipt";
+// import PDFgenerator from "@/views/payment/components/PDFgeneratorReceipt";
+import PDFgenerator from "@/views/payment/components/PDFgenerator";
+
 
 export default {
   components: { PDFgenerator },
@@ -2441,42 +2449,73 @@ export default {
     async PDFPrintReceipt(tr) {
       this.$refs.childComponentPDFReceipt.generatePDF(tr);
     },
+    // Method for the "Download Invoice" button at the top of the page
     async PDFPrint() {
-      // Fetch an existing PDF document
-      const url =
-        "https://api.resguru.app/uploads/Res_Guru_Invoice_958f9f65e6.pdf";
-      const existingPdfBytes = await fetch(url).then((res) =>
-        res.arrayBuffer()
-      );
-      // Load a PDFDocument from the existing PDF bytes
-      const pdfDoc = await PDFDocument.load(existingPdfBytes);
-
-      // Embed the Helvetica font
-      const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
-
-      // Get the first page of the document
-      const pages = pdfDoc.getPages();
-      const firstPage = pages[0];
-
-      // Get the width and height of the first page
-      const { width, height } = firstPage.getSize();
-
-      // Draw a string of text diagonally across the first page
-      firstPage.drawText("Work in progress", {
-        x: 5,
-        y: height / 2 + 300,
-        size: 50,
-        font: helveticaFont,
-        color: rgb(0.95, 0.1, 0.1),
-        rotate: degrees(-45),
-      });
-
-      // Serialize the PDFDocument to bytes (a Uint8Array)
-      const pdfBytes = await pdfDoc.save();
-
-      // Trigger the browser to download the PDF document
-      download(pdfBytes, "pdf-lib_modification_example.pdf", "application/pdf");
+      if (this.selected.length > 0) {
+        // Get the first selected invoice from the table
+        const selectedInvoice = this.selected[0];
+        
+        // Create a data structure expected by the PDFgenerator
+        const data = {
+          RoomNumber: this.roomDetail.data.attributes.RoomNumber,
+          user_sign_contract: this.contractProfile.data,
+          tenant_bills: [selectedInvoice],
+          room_type: this.roomDetail.data.attributes.room_type.data
+        };
+        
+        // Call the generatePDF method of the PDFgenerator component
+        this.$refs.childComponentPDF.generatePDF(data);
+      } else {
+        this.$showNotification("warning", "กรุณาเลือกรายการที่ต้องการพิมพ์");
+      }
     },
+    async PDFPrintInvoice(invoice) {
+      // Create data structure that we know works
+      const data = {
+        RoomNumber: this.roomDetail.data.attributes.RoomNumber,
+        user_sign_contract: this.contractProfile.data,
+        tenant_bills: [{
+          invoiceNumber: invoice.attributes.invoiceNumber || "N/A",
+          roomPrice: parseFloat(invoice.attributes.roomPrice) || 0,
+          waterPrice: parseFloat(invoice.attributes.waterPrice/invoice.attributes.usageWater) || 0,
+          electricPrice: parseFloat(invoice.attributes.electricPrice/invoice.attributes.usageElectric) || 0,
+          communalPrice: parseFloat(invoice.attributes.communalPrice) || 0,
+          otherPrice: parseFloat(invoice.attributes.otherPrice) || 0,
+          vat: parseFloat(invoice.attributes.vat) || 0,
+          total: parseFloat(invoice.attributes.total) || 0,
+          createdAt: invoice.attributes.createdAt || new Date().toISOString(),
+          lastWaterUnit: invoice.attributes.lastWaterUnit || 0,
+          usageWater: invoice.attributes.usageWater || 0,
+          lastElectricUnit: invoice.attributes.lastElectricUnit || 0,
+          usageElectric: invoice.attributes.usageElectric || 0,
+          subtotal: parseFloat(invoice.attributes.subtotal) || 0
+        }],
+        room_type: this.roomDetail.data.attributes.room_type.data
+      };
+      
+      this.$refs.childComponentPDF.generatePDF(data);
+    }
+    // Method for the download button in each table row
+    // async PDFPrintInvoice(invoice) {
+    //   // Check if invoice has actual data
+    //   console.log("Invoice room price:", invoice.attributes.roomPrice);
+    //   console.log("Invoice total:", invoice.attributes.total);
+      
+    //   if (!invoice.attributes.roomPrice && !invoice.attributes.total) {
+    //     this.$showNotification("warning", "ข้อมูลใบแจ้งหนี้ไม่ครบถ้วน กรุณาตรวจสอบ");
+    //     return;
+    //   }
+      
+    //   // Proceed with PDF generation if data exists
+    //   const data = {
+    //     RoomNumber: this.roomDetail.data.attributes.RoomNumber,
+    //     user_sign_contract: this.contractProfile.data,
+    //     tenant_bills: [invoice],
+    //     room_type: this.roomDetail.data.attributes.room_type.data
+    //   };
+      
+    //   this.$refs.childComponentPDF.generatePDF(data);
+    // }
   },
 };
 </script>
