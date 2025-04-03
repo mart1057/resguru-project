@@ -60,12 +60,12 @@
                 </div>
             </div>
             <div class="mt-[24px]">
-                <table class="">
+                <table class="custom-table">
                     <tr class="border-b-[1px] flex justify-between ">
-                        <td class="w-[150px]">ITEM</td>
-                        <td class="w-[150px] flex justify-end">QTY</td>
-                        <td class="w-[150px] flex justify-end">PRICE</td>
-                        <td class="w-[150px] flex justify-end">AMOUNT</td>
+                        <td class="w-[150px]">รายการ</td>
+                        <td class="w-[150px] flex justify-end border-r">จำนวน</td>
+                        <td class="w-[150px] flex justify-end border-r">ราคาต่อหน่วย</td>
+                        <td class="w-[150px] flex justify-end border-r">ราคา</td>
                     </tr>
                     <tr class="border-b-[1px] flex justify-between ">
                         <td class="w-[150px]">ค่าห้อง</td>

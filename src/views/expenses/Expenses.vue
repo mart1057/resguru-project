@@ -17,10 +17,33 @@
                     </div>
                     <div class="text-[24px] font-bold flex items-center ml-[8px]">ภาพรวมรายรับ-รายจ่าย</div>
                 </div>
-                <div class="flex items-center mt-[-10px]">
-                    <input v-model="selectedDate" type="month" placeholder="ค้นหาตามหมายเลขห้อง" id="datepicker"
-                        @input="filterByDate()"
-                        v-bind:class="{ 'h-[36px] pl-[8px] text-[center] pr-[8px] bg-[#003765] flex cursor-pointer text-[white]  justify-center  rounded-[12px] mt-[12px]': true }" />
+                <div class="flex items-center mt-[-10px] w-[250px]">
+                    <div class="relative w-full">
+                    <button 
+                        @click="showDatePicker = !showDatePicker" 
+                        class="h-9 px-2 text-center bg-blue-900 flex cursor-pointer text-white justify-center items-center rounded-xl mt-3 w-full"
+                    >
+                        {{ formatMonthYear(selectedDate) }}
+                    </button>
+                    <div v-if="showDatePicker" class="absolute top-full left-0 z-10 mt-1 bg-white shadow-lg rounded-lg p-4">
+                        <div class="flex justify-between mb-2">
+                        <button @click="changeYear(-1)" class="px-2 py-1 bg-gray-200 rounded">&lt;</button>
+                        <div class="font-bold">{{ currentYear }}</div>
+                        <button @click="changeYear(1)" class="px-2 py-1 bg-gray-200 rounded">&gt;</button>
+                        </div>
+                        <div class="grid grid-cols-3 gap-2">
+                        <div
+                            v-for="(month, index) in monthNames" 
+                            :key="index"
+                            @click="selectMonth(index)"
+                            class="p-2 text-center cursor-pointer rounded hover:bg-gray-100"
+                            :class="{'bg-blue-500 text-white': isSelectedMonth(index)}"
+                        >
+                            {{ month.substring(0, 3) }}
+                        </div>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -462,11 +485,23 @@
                             <vs-th>
                                 วันที่ออกใบเสร็จ
                             </vs-th>
-                            <vs-th>
+                            <!-- <vs-th>
                                 ห้อง
+                            </vs-th> -->
+                            <vs-th>
+                                ค่าห้อง
                             </vs-th>
                             <vs-th>
-                                หลักฐานการชำระเงิน
+                                ค่าน้ำ
+                            </vs-th>
+                            <vs-th>
+                                ค่าไฟ
+                            </vs-th>
+                            <vs-th>
+                                ค่าส่วนกลาง
+                            </vs-th>
+                            <vs-th>
+                                อื่นๆ
                             </vs-th>
                             <vs-th>
                                 ยอดรวมรายรับ
@@ -481,11 +516,23 @@
                             <vs-td>
                                 {{ convertDateNoTime(tr.attributes.createdAt) }}
                             </vs-td>
-                            <vs-td>
+                            <!-- <vs-td>
                                 Room Number
+                            </vs-td> -->
+                            <vs-td>
+                                {{ $formatNumber(tr.attributes.roomPrice) }}
                             </vs-td>
                             <vs-td>
-                                Image.png
+                                {{ $formatNumber(tr.attributes.waterPrice) }}
+                            </vs-td>
+                            <vs-td>
+                                {{ $formatNumber(tr.attributes.electricPrice) }}
+                            </vs-td>
+                            <vs-td>
+                                {{ $formatNumber(tr.attributes.communalPrice) }}
+                            </vs-td>
+                            <vs-td>
+                                {{ $formatNumber(tr.attributes.otherPrice) }}
                             </vs-td>
                             <vs-td>
                                 {{ $formatNumber(tr.attributes.total) }}
@@ -634,6 +681,12 @@ export default {
                 selectedYear: '',
             },
             convertDateNoTime,
+            showDatePicker: false,
+            currentYear: new Date().getFullYear(),
+            monthNames: [
+                'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+                'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+            ],
         }
 
     },
@@ -878,10 +931,33 @@ export default {
                 })
         },
         openImagePreview(imageUrl) {
-        // You could implement an image preview functionality here
-        // For example, opening a modal with the full-size image
-        window.open('https://api.resguru.app' + imageUrl, '_blank');
-    }
+            // You could implement an image preview functionality here
+            // For example, opening a modal with the full-size image
+            window.open('https://api.resguru.app' + imageUrl, '_blank');
+        },
+        changeYear(amount) {
+            this.currentYear += amount;
+        },
+        
+        selectMonth(monthIndex) {
+            const month = String(monthIndex + 1).padStart(2, '0');
+            this.selectedDate = `${this.currentYear}-${month}`;
+            this.getDashboard(this.selectedDate);
+            this.showDatePicker = false;
+        },
+        
+        isSelectedMonth(monthIndex) {
+            if (!this.selectedDate) return false;
+            const [year, month] = this.selectedDate.split('-');
+            return parseInt(year) === this.currentYear && parseInt(month) === monthIndex + 1;
+        },
+        
+        formatMonthYear(dateString) {
+            if (!dateString) return '';
+            
+            const [year, month] = dateString.split('-');
+            return `${this.monthNames[parseInt(month) - 1]} ${year}`;
+        },
     }
 
 
@@ -909,6 +985,30 @@ export default {
         border-radius: 4px;
         cursor: pointer;
     }
+
+    .z-10 {
+        z-index: 10;
+        }
+
+        .relative {
+        position: relative;
+        }
+
+        .absolute {
+        position: absolute;
+        }
+
+        .grid {
+        display: grid;
+        }
+
+        .grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .gap-2 {
+        gap: 0.5rem;
+        }
 
 
 /* .vs-select__input{

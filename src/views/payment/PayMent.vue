@@ -42,7 +42,7 @@
         </div>
         <div class="flex justify-between">
           <div class="flex">
-            <input
+            <!-- <input
               v-model="selectedDate"
               type="month"
               placeholder="ค้นหาตามหมายเลขห้อง"
@@ -51,7 +51,37 @@
               v-bind:class="{
                 'h-[36px] pl-[8px] text-[center] pr-[8px] bg-[#003765] flex cursor-pointer text-[white]  justify-center  rounded-[12px] mt-[12px]': true,
               }"
-            />
+            /> -->
+            <div class="date-picker-container">
+            <!-- Custom month picker that works in all browsers including Safari -->
+            <div 
+              v-bind:class="{
+                'h-[36px] pl-[8px] pr-[8px] bg-[#003765] flex cursor-pointer text-[white] justify-center rounded-[12px] mt-[12px]': true,
+              }"
+              @click="showDatePicker = true"
+            >
+              {{ displayDate }}
+            </div>
+            
+            <!-- Custom overlay dropdown for month/year selection -->
+            <div v-if="showDatePicker" class="date-picker-dropdown">
+              <div class="date-picker-header">
+                <div class="year-selector">
+                  <select v-model="selectedYear" @change="updateSelectedDate">
+                    <option v-for="year in yearOptions" :key="year" :value="year">{{ year }}</option>
+                  </select>
+                </div>
+                <div class="month-selector">
+                  <select v-model="selectedMonth" @change="updateSelectedDate">
+                    <option v-for="(month, index) in monthOptions" :key="index" :value="index + 1">
+                      {{ month }}
+                    </option>
+                  </select>
+                </div>
+                <button class="close-button" @click="showDatePicker = false">✓</button>
+              </div>
+            </div>
+          </div>
             <div class="flex justify-start items-center mt-[5px] ml-[14px]">
               <input
                 class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]"
@@ -1190,6 +1220,18 @@ export default {
       },
       name_floor: "",
       selectedDate: null,
+      persistentFilters: {
+        month: '',
+        year: '',
+        floor: ''
+      },
+      showDatePicker: false,
+      selectedMonth: new Date().getMonth() + 1, // 1-12
+      selectedYear: new Date().getFullYear(),
+      monthOptions: [
+        'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 
+        'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+      ],
     };
   },
   created() {
@@ -1199,16 +1241,66 @@ export default {
       loading.close();
     }, 1000);
   },
+  // mounted() {
+  //   (this.selectedDate = new Date().toISOString().substr(0, 7)), // Set the default to current month
+  //     this.getfloor();
+  // },
   mounted() {
-    (this.selectedDate = new Date().toISOString().substr(0, 7)), // Set the default to current month
-      this.getfloor();
+    // Set default date
+    this.selectedDate = new Date().toISOString().substr(0, 7);
+    
+    // Check for saved filters
+    const savedFilters = localStorage.getItem('paymentFilters');
+    if (savedFilters) {
+      const filters = JSON.parse(savedFilters);
+      this.filter.selectedMonth = filters.month;
+      this.filter.selectedYear = filters.year;
+      this.filter.floor = filters.floor;
+      
+      // Update selectedDate to match
+      this.selectedDate = `${filters.year}-${filters.month}`;
+    }
+    
+    // Now load data
+    this.getfloor();
+  },
+  computed: {
+    yearOptions() {
+      const currentYear = new Date().getFullYear();
+      // Generate a range of years (current year -2 to current year +2)
+      return Array.from({length: 5}, (_, i) => currentYear - 2 + i);
+    },
+    
+    displayDate() {
+      // Format the date for display (e.g., "2025-02")
+      return `${this.selectedYear}-${String(this.selectedMonth).padStart(2, '0')}`;
+    }
   },
   methods: {
+    // filterByDate() {
+    //   const dateStr = this.selectedDate;
+    //   const [a, b] = dateStr.split("-");
+    //   this.filter.selectedMonth = b;
+    //   this.filter.selectedYear = a;
+    //   this.getRoomBill(
+    //     this.filter.floor,
+    //     0,
+    //     this.filter.selectedMonth,
+    //     this.filter.selectedYear
+    //   );
+    // },
+    updateSelectedDate() {
+      // Set the selectedDate in the format YYYY-MM
+      this.selectedDate = `${this.selectedYear}-${String(this.selectedMonth).padStart(2, '0')}`;
+      // Call your existing filter function
+      this.filterByDate();
+      // Hide the picker after selection
+      this.showDatePicker = false;
+    },
     filterByDate() {
-      const dateStr = this.selectedDate;
-      const [a, b] = dateStr.split("-");
-      this.filter.selectedMonth = b;
-      this.filter.selectedYear = a;
+      this.filter.selectedMonth = String(this.selectedMonth).padStart(2, '0');
+      this.filter.selectedYear = String(this.selectedYear);
+      
       this.getRoomBill(
         this.filter.floor,
         0,
