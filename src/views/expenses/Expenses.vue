@@ -48,117 +48,35 @@
             </div>
         </div>
         <div class="grid grid-cols-2 w-[100%] gap-4 mt-[24px]">
+            <!-- In your rายรับ section -->
             <div class="bg-[white] h-[246px] rounded-[22px] pl-[24px] pr-[24px] pt-[18px] pb-[18px]">
-                <div class=" font-bold text-[18px]">รายรับ</div>
+                <div class="font-bold text-[18px]">รายรับ</div>
                 <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px]">
                     <div class="flex mt-[4px] w-[70%]">
                         <div class="mt-[8px]">
-                            <div class="flex items-center">
-                                <div class="w-[12px] h-[12px] bg-[#F5D65E] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">รายรับ</div>
+                            <div v-for="(label, index) in incomeLabels" :key="index" class="flex items-center mt-[2px]">
+                                <div class="w-[12px] h-[12px] rounded-[100px] mr-[8px]" :style="{ 'background-color': incomeColors[index] }"></div>
+                                <div class="text-[12px] text-[#5C6B79]">{{ label }}</div>
                             </div>
-                            <!-- <div class="flex items-center mt-[2px]">
-                                <div class="w-[12px] h-[12px] bg-[#008EF4] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">ค่ามัดจำห้องพัก</div>
-                            </div>
-                            <div class="flex items-center mt-[2px]">
-                                <div class="w-[12px] h-[12px] bg-[#D44769] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">ค่าประกันความเสียหาย</div>
-                            </div>
-                            <div class="flex items-center mt-[2px]">
-                                <div class="w-[12px] h-[12px] bg-[#9A77FF] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">อื่น ๆ</div>
-                            </div> -->
                         </div>
                     </div>
                     <div class="w-[50%]">
                         <div class="w-[300px] flex justify-start items-start ml-[-90px] mt-[-40px]">
-                            <apexchart :options="options" :series="data"></apexchart>
+                            <apexchart :options="incomeChartOptions" :series="incomeData"></apexchart>
                         </div>
                     </div>
                     <div class="grid grid-cols-2 w-[100%] gap-2 content-start mt-[14px]">
-                        <!-- <div class="h-[52px] border rounded-[12px] p-[4px]">
+                        <div v-for="(value, index) in incomeData" :key="index" class="h-[52px] border rounded-[12px] p-[4px]" v-if="value > 0">
                             <div class="flex justify-between">
                                 <div class="flex items-center">
-                                    <svg width="33" height="33" viewBox="0 0 33 33" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1413_30554" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="33" height="33">
-                                            <rect width="33" height="33" fill="#D9D9D9" />
-                                        </mask>
-                                        <g mask="url(#mask0_1413_30554)">
-                                            <path
-                                                d="M18.9067 17.4778C17.946 17.4778 17.1329 17.1451 16.4675 16.4797C15.802 15.8142 15.4693 15.0011 15.4693 14.0404C15.4693 13.0797 15.802 12.2666 16.4675 11.6011C17.1329 10.9357 17.946 10.6029 18.9067 10.6029C19.8675 10.6029 20.6805 10.9357 21.346 11.6011C22.0115 12.2666 22.3442 13.0797 22.3442 14.0404C22.3442 15.0011 22.0115 15.8142 21.346 16.4797C20.6805 17.1451 19.8675 17.4778 18.9067 17.4778ZM9.83705 21.735C9.15353 21.735 8.56839 21.4917 8.08162 21.0049C7.59487 20.5182 7.35149 19.933 7.35149 19.2495V8.83126C7.35149 8.14774 7.59487 7.5626 8.08162 7.07583C8.56839 6.58908 9.15353 6.3457 9.83705 6.3457H27.9764C28.6599 6.3457 29.2451 6.58908 29.7318 7.07583C30.2186 7.5626 30.4619 8.14774 30.4619 8.83126V19.2495C30.4619 19.933 30.2186 20.5182 29.7318 21.0049C29.2451 21.4917 28.6599 21.735 27.9764 21.735H9.83705ZM11.8995 19.6726H25.914C25.914 18.9869 26.1573 18.4012 26.6441 17.9155C27.1308 17.4299 27.716 17.187 28.3995 17.187V10.8937C27.7138 10.8937 27.1281 10.6503 26.6424 10.1636C26.1568 9.67682 25.914 9.09168 25.914 8.40817H11.8995C11.8995 9.0939 11.6561 9.6796 11.1694 10.1652C10.6826 10.6509 10.0975 10.8937 9.41396 10.8937V17.187C10.0997 17.187 10.6854 17.4304 11.171 17.9172C11.6567 18.4039 11.8995 18.9891 11.8995 19.6726ZM5.02462 26.5475C4.34108 26.5475 3.75594 26.3041 3.26919 25.8174C2.78244 25.3306 2.53906 24.7455 2.53906 24.062V11.4755C2.53906 11.1833 2.63792 10.9384 2.83565 10.7408C3.0334 10.5431 3.27842 10.4443 3.57073 10.4443C3.86305 10.4443 4.10793 10.5431 4.30535 10.7408C4.50278 10.9384 4.60149 11.1833 4.60149 11.4755V24.062C4.60149 24.1677 4.64557 24.2647 4.73373 24.3528C4.82187 24.441 4.91883 24.485 5.02462 24.485H25.3322C25.6244 24.485 25.8693 24.5839 26.0669 24.7817C26.2646 24.9794 26.3634 25.2244 26.3634 25.5167C26.3634 25.809 26.2646 26.0539 26.0669 26.2513C25.8693 26.4488 25.6244 26.5475 25.3322 26.5475H5.02462ZM9.83705 19.6726H9.41396V8.40817H9.83705C9.72246 8.40817 9.6233 8.45004 9.53957 8.53378C9.45583 8.61751 9.41396 8.71667 9.41396 8.83126V19.2495C9.41396 19.3641 9.45583 19.4632 9.53957 19.547C9.6233 19.6307 9.72246 19.6726 9.83705 19.6726Z"
-                                                fill="#F5D65E" />
-                                        </g>
-                                    </svg>
+                                    <div class="w-[12px] h-[12px] rounded-[100px] mr-[8px]" :style="{ 'background-color': incomeColors[index] }"></div>
                                 </div>
                                 <div class="flex flex-col justify-around">
-                                    <div class="text-[12px] text-[#B9CCDC]">60%</div>
-                                    <div class="text-[#F5D65E] font-bold text-[16px]">{{ data[0] }}</div>
-                                </div>
-                            </div>
-                        </div> -->
-                        <!-- <div class="h-[52px] border rounded-[12px] p-[4px]">
-                            <div class="flex justify-between">
-                                <div class="flex items-center">
-                                    <svg width="29" height="21" viewBox="0 0 29 21" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <path
-                                            d="M16.9067 11.4778C15.946 11.4778 15.1329 11.1451 14.4675 10.4797C13.802 9.81421 13.4693 9.00111 13.4693 8.04037C13.4693 7.07966 13.802 6.26658 14.4675 5.60113C15.1329 4.93567 15.946 4.60294 16.9067 4.60294C17.8675 4.60294 18.6805 4.93567 19.346 5.60113C20.0115 6.26658 20.3442 7.07966 20.3442 8.04037C20.3442 9.00111 20.0115 9.81421 19.346 10.4797C18.6805 11.1451 17.8675 11.4778 16.9067 11.4778ZM7.83705 15.735C7.15353 15.735 6.56839 15.4917 6.08162 15.0049C5.59487 14.5182 5.35149 13.933 5.35149 13.2495V2.83126C5.35149 2.14774 5.59487 1.5626 6.08162 1.07583C6.56839 0.589078 7.15353 0.345703 7.83705 0.345703H25.9764C26.6599 0.345703 27.2451 0.589078 27.7318 1.07583C28.2186 1.5626 28.4619 2.14774 28.4619 2.83126V13.2495C28.4619 13.933 28.2186 14.5182 27.7318 15.0049C27.2451 15.4917 26.6599 15.735 25.9764 15.735H7.83705ZM9.89951 13.6726H23.914C23.914 12.9869 24.1573 12.4012 24.6441 11.9155C25.1308 11.4299 25.716 11.187 26.3995 11.187V4.89372C25.7138 4.89372 25.1281 4.65035 24.6424 4.1636C24.1568 3.67682 23.914 3.09168 23.914 2.40817H9.89951C9.89951 3.0939 9.65614 3.6796 9.16939 4.16525C8.68261 4.6509 8.09747 4.89372 7.41396 4.89372V11.187C8.0997 11.187 8.68539 11.4304 9.17104 11.9172C9.65669 12.4039 9.89951 12.9891 9.89951 13.6726ZM3.02462 20.5475C2.34108 20.5475 1.75594 20.3041 1.26919 19.8174C0.782437 19.3306 0.539062 18.7455 0.539062 18.062V5.47548C0.539062 5.1833 0.637925 4.93839 0.83565 4.74075C1.0334 4.5431 1.27842 4.44427 1.57073 4.44427C1.86305 4.44427 2.10793 4.5431 2.30535 4.74075C2.50278 4.93839 2.60149 5.1833 2.60149 5.47548V18.062C2.60149 18.1677 2.64557 18.2647 2.73373 18.3528C2.82187 18.441 2.91883 18.485 3.02462 18.485H23.3322C23.6244 18.485 23.8693 18.5839 24.0669 18.7817C24.2646 18.9794 24.3634 19.2244 24.3634 19.5167C24.3634 19.809 24.2646 20.0539 24.0669 20.2513C23.8693 20.4488 23.6244 20.5475 23.3322 20.5475H3.02462ZM7.83705 13.6726H7.41396V2.40817H7.83705C7.72246 2.40817 7.6233 2.45004 7.53957 2.53378C7.45583 2.61751 7.41396 2.71667 7.41396 2.83126V13.2495C7.41396 13.3641 7.45583 13.4632 7.53957 13.547C7.6233 13.6307 7.72246 13.6726 7.83705 13.6726Z"
-                                            fill="#008EF4" />
-                                    </svg>
-                                </div>
-                                <div class="flex flex-col justify-around">
-                                    <div class="text-[12px] text-[#B9CCDC]">60%</div>
-                                    <div class="text-[#008EF4] font-bold text-[16px]">8,000</div>
+                                    <div class="text-[12px] text-[#B9CCDC]">{{ Math.round((value / incomeData.reduce((a, b) => a + b, 0)) * 100) }}%</div>
+                                    <div class="font-bold text-[16px]" :style="{ color: incomeColors[index] }">{{ $formatNumber(value) }}</div>
                                 </div>
                             </div>
                         </div>
-                        <div class="h-[52px] border rounded-[12px] p-[4px]">
-                            <div class="flex justify-between">
-                                <div class="flex items-center">
-                                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1413_30560" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="32" height="32">
-                                            <rect width="32" height="32" fill="#D9D9D9" />
-                                        </mask>
-                                        <g mask="url(#mask0_1413_30560)">
-                                            <path
-                                                d="M7.56533 24.6666L6.87047 26.6358C6.836 26.7325 6.77568 26.8131 6.6895 26.8775C6.6033 26.942 6.50236 26.9743 6.3867 26.9743H6.238C6.1058 26.9743 5.99013 26.9243 5.891 26.8243C5.79186 26.7243 5.7423 26.6076 5.7423 26.4743V24.6666C5.07948 24.6666 4.51206 24.4306 4.04006 23.9586C3.56804 23.4866 3.33203 22.9192 3.33203 22.2563V8.41027C3.33203 7.74745 3.56804 7.18003 4.04006 6.70803C4.51206 6.23601 5.07948 6 5.7423 6H26.255C26.9179 6 27.4853 6.23601 27.9573 6.70803C28.4293 7.18003 28.6653 7.74745 28.6653 8.41027V22.2563C28.6653 22.9197 28.4293 23.4875 27.9573 23.9599C27.4853 24.4322 26.9179 24.6684 26.255 24.6684V26.5076C26.255 26.6386 26.21 26.7491 26.12 26.8392C26.0299 26.9292 25.9194 26.9743 25.7884 26.9743H25.6089C25.5063 26.9743 25.4123 26.9457 25.3269 26.8887C25.2414 26.8316 25.1816 26.7541 25.1474 26.6563L24.4782 24.6666H7.56533ZM5.7423 22.6666H26.255C26.3747 22.6666 26.473 22.6282 26.5499 22.5512C26.6269 22.4743 26.6653 22.376 26.6653 22.2563V8.41027C26.6653 8.2906 26.6269 8.1923 26.5499 8.11537C26.473 8.03843 26.3747 7.99997 26.255 7.99997H5.7423C5.62263 7.99997 5.52433 8.03843 5.4474 8.11537C5.37046 8.1923 5.332 8.2906 5.332 8.41027V22.2563C5.332 22.376 5.37046 22.4743 5.4474 22.5512C5.52433 22.6282 5.62263 22.6666 5.7423 22.6666Z"
-                                                fill="#D44769" />
-                                        </g>
-                                    </svg>
-                                </div>
-                                <div class="flex flex-col justify-around">
-                                    <div class="text-[12px] text-[#B9CCDC]">60%</div>
-                                    <div class="text-[#D44769] font-bold text-[16px]">8,000</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="h-[52px] border rounded-[12px] p-[4px]">
-                            <div class="flex justify-between">
-                                <div class="flex items-center">
-                                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1413_30563" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="32" height="32">
-                                            <rect width="32" height="32" fill="#D9D9D9" />
-                                        </mask>
-                                        <g mask="url(#mask0_1413_30563)">
-                                            <path
-                                                d="M5.15228 27.4368C4.60699 27.4368 4.13734 27.2398 3.74334 26.8458C3.34934 26.4518 3.15234 25.9821 3.15234 25.4368V6.10348C3.15234 5.55819 3.34934 5.08854 3.74334 4.69452C4.13734 4.30052 4.60699 4.10352 5.15228 4.10352H13.819C14.3643 4.10352 14.8339 4.30052 15.2279 4.69452C15.6219 5.08854 15.8189 5.55819 15.8189 6.10348V9.43685H26.8446C27.3899 9.43685 27.8595 9.63385 28.2535 10.0278C28.6476 10.4219 28.8446 10.8915 28.8446 11.4368V25.4368C28.8446 25.9821 28.6476 26.4518 28.2535 26.8458C27.8595 27.2398 27.3899 27.4368 26.8446 27.4368H5.15228ZM5.15228 25.4368H8.48564V22.1035H5.15228V25.4368ZM5.15228 20.1035H8.48564V16.7701H5.15228V20.1035ZM5.15228 14.7702H8.48564V11.4368H5.15228V14.7702ZM5.15228 9.43685H8.48564V6.10348H5.15228V9.43685ZM10.4856 25.4368H13.819V22.1035H10.4856V25.4368ZM10.4856 20.1035H13.819V16.7701H10.4856V20.1035ZM10.4856 14.7702H13.819V11.4368H10.4856V14.7702ZM10.4856 9.43685H13.819V6.10348H10.4856V9.43685ZM15.8189 25.4368H26.8446V11.4368H15.8189V14.7702H18.742V16.7701H15.8189V20.1035H18.742V22.1035H15.8189V25.4368ZM21.6651 16.7701V14.7702H23.6651V16.7701H21.6651ZM21.6651 22.1035V20.1035H23.6651V22.1035H21.6651Z"
-                                                fill="#9A77FF" />
-                                        </g>
-                                    </svg>
-                                </div>
-                                <div class="flex flex-col justify-around">
-                                    <div class="text-[12px] text-[#B9CCDC]">60%</div>
-                                    <div class="text-[#9A77FF] font-bold text-[16px]">8,000</div>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </div>
@@ -180,7 +98,7 @@
                                 <div class="text-[12px] text-[#5C6B79]">{{ label2[2] }}</div>
                             </div>
                             <div class="flex items-center mt-[2px]">
-                                <div class="w-[12px] h-[12px] bg-[#9A77FF] rounded-[100px] mr-[8px]"></div>
+                                <div class="w-[12px] h-[12px] bg-[#a1a1a1] rounded-[100px] mr-[8px]"></div>
                                 <div class="text-[12px] text-[#5C6B79]">{{ label2[3] }}</div>
                             </div>
                         </div>
@@ -264,7 +182,7 @@
                                         xmlns="http://www.w3.org/2000/svg">
                                         <mask id="mask0_1373_19086" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                             y="0" width="32" height="32">
-                                            <rect width="32" height="32" fill="#D9D9D9" />
+                                            <rect width="32" height="32" fill="#a1a1a1" />
                                         </mask>
                                         <g mask="url(#mask0_1373_19086)">
                                             <path
@@ -687,6 +605,9 @@ export default {
                 'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
                 'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
             ],
+            incomeData: [],
+            incomeLabels: ['ค่าห้อง', 'ค่าน้ำ', 'ค่าไฟ', 'ค่าส่วนกลาง', 'อื่นๆ'],
+            incomeColors: ['#11d17e', '#3630a6', '#27d111', '#ac6eeb', '#a1a1a1'],
         }
 
     },
@@ -739,6 +660,39 @@ export default {
                 // },
             };
         },
+        // New options for the income chart
+        incomeChartOptions() {
+            return {
+                chart: {
+                    type: "donut",
+                },
+                dataLabels: {
+                    enabled: false,
+                },
+                legend: {
+                    show: false,
+                },
+                labels: this.incomeLabels,
+                plotOptions: {
+                    pie: {
+                        donut: {
+                            labels: {
+                                show: true,
+                                total: {
+                                    show: true,
+                                    label: "ทั้งหมด",
+                                    fontSize: "14px",
+                                    fontWeight: "bold",
+                                    color: "#6B7490",
+                                    fontFamily: "Prompt",
+                                },
+                            },
+                        },
+                    },
+                },
+                colors: this.incomeColors
+            };
+        }
     },
     mounted() {
         this.filterByDate()
@@ -920,15 +874,36 @@ export default {
         //         })
         // },
         getIncome() {
-            const loading = this.$vs.loading()
+            const loading = this.$vs.loading();
             fetch(`https://api.resguru.app/api/tenant-receipts?populate=*?populate=building&filters[building][id][$eq]=${this.$store.state.building}&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getReceipt()", resp.data);
-                    this.income = resp.data
+                    this.income = resp.data;
+                    this.processIncomeData(); // Process the data after fetching
                 }).finally(() => {
-                    loading.close()
-                })
+                    loading.close();
+                });
+        },
+        processIncomeData() {
+            // Initialize values for each category
+            let roomTotal = 0;
+            let waterTotal = 0;
+            let electricTotal = 0;
+            let commonTotal = 0;
+            let othersTotal = 0;
+            
+            // Process each income record
+            this.income.forEach(item => {
+                roomTotal += parseFloat(item.attributes.roomPrice || 0);
+                waterTotal += parseFloat(item.attributes.waterPrice || 0);
+                electricTotal += parseFloat(item.attributes.electricPrice || 0);
+                commonTotal += parseFloat(item.attributes.communalPrice || 0);
+                othersTotal += parseFloat(item.attributes.otherPrice || 0);
+            });
+            
+            // Update the income data for the chart
+            this.incomeData = [roomTotal, waterTotal, electricTotal, commonTotal, othersTotal];
         },
         openImagePreview(imageUrl) {
             // You could implement an image preview functionality here
