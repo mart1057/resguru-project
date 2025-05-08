@@ -264,176 +264,257 @@
                 </div>
                 <div class="w-[100%] ml-[24px] mt-[8px]" v-if="tabSetting == 2">
                     <div class="grid grid-cols-4 w-[100%] gap-2 ">
+                        <!-- Basic Building Information Section -->
+                        <div class="mt-[8px] col-span-4">
+                            <div class="text-custom text-[16px] font-semibold text-[#003765]">ข้อมูลหอพัก</div>
+                        </div>
+                        
                         <div class="mt-[8px] col-span-4">
                             <div class="text-custom text-[14px] text-[#003765]">ชื่อหอพัก</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingName" />
                         </div>
                         <div class="mt-[8px] col-span-4">
                             <div class="text-custom text-[14px] text-[#003765]">ที่อยู่</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingAddress" />
                         </div>
                         <div class="mt-[8px] col-span-1">
                             <div class="text-custom text-[14px] text-[#003765]">เขต</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingSubDistrict" />
                         </div>
                         <div class="mt-[8px] col-span-1">
                             <div class="text-custom text-[14px] text-[#003765]">แขวง/อำเภอ</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingDistrict" />
                         </div>
                         <div class="mt-[8px] col-span-1">
                             <div class="text-custom text-[14px] text-[#003765]">จังหวัด</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingProvince" />
                         </div>
                         <div class="mt-[8px] col-span-1">
                             <div class="text-custom text-[14px] text-[#003765]">รหัสไปรษณี</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingPostcode" />
                         </div>
-                        <!-- <div class="">
-                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">เขต</div>
-                            <vs-select state="primary">
-                                <vs-option label="อาคาร A" value="1">
-                                    อาคาร A
-                                </vs-option>
-                                <vs-option label="อาคาร B" value="2">
-                                    อาคาร B
-                                </vs-option>
-                            </vs-select>
-                        </div> -->
-                        <!-- <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">แขวง</div>
-                            <vs-select state="primary">
-                                <vs-option label="อาคาร A" value="1">
-                                    อาคาร A
-                                </vs-option>
-                                <vs-option label="อาคาร B" value="2">
-                                    อาคาร B
-                                </vs-option>
-                            </vs-select>
+                        
+                        <div class="col-span-2">
+                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">อัตราภาษี</div>
+                            <select class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] px-[10px]"
+                                v-model="buildingData.attributes.vat_rate">
+                                <option value="0">0%</option>
+                                <option value="7">7%</option>
+                            </select>
                         </div>
-                        <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">จังหวัด</div>
-                            <vs-select state="primary">
-                                <vs-option label="อาคาร A" value="1">
-                                    อาคาร A
-                                </vs-option>
-                                <vs-option label="อาคาร B" value="2">
-                                    อาคาร B
-                                </vs-option>
-                            </vs-select>
+
+                        <div class="col-span-2">
+                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">วันครบกำหนดชำระ (กรุณาเลือกวันที่ 1-31)</div>
+                            <select class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] px-[10px]"
+                                v-model="buildingData.attributes.dueDate">
+                                <option v-for="day in 31" :key="day" :value="day">{{ day }}</option>
+                            </select>
                         </div>
-                        <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">รหัสไปรษณีย์</div>
-                            <vs-select state="primary">
-                                <vs-option label="อาคาร A" value="1">
-                                    อาคาร A
-                                </vs-option>
-                                <vs-option label="อาคาร B" value="2">
-                                    อาคาร B
-                                </vs-option>
-                            </vs-select>
-                        </div> -->
-
-                        <!-- <ThailandAutoComplete v-model="buildingData.attributes.buildingDistrict" type="district"
-                            @select="selectBuild" label="ตำบล" size="small" placeholder="ตำบล..." />
-                        <ThailandAutoComplete v-model="buildingData.attributes.buildingSubDistrict" type="amphoe"
-                            @select="selectBuild" label="อำเภอ" size="small" placeholder="อำเภอ..." />
-                        <ThailandAutoComplete v-model="buildingData.attributes.buildingProvince" type="province"
-                            @select="selectBuild" label="จังหวัด" size="small" placeholder="จังหวัด..." />
-                        <ThailandAutoComplete v-model="buildingData.attributes.buildingPostcode" type="zipcode"
-                            @select="selectBuild" label="รหัสไปรษณีย์" size="small" placeholder="รหัสไปรษณีย์..." /> -->
-
+                        
+                        <!-- Separator Line -->
+                        <div class="mt-[20px] mb-[10px] col-span-4">
+                            <hr class="border-t border-gray-300">
+                        </div>
+                        
+                        <!-- Map Information Section -->
+                        <div class="mt-[8px] col-span-4">
+                            <div class="text-custom text-[16px] font-semibold text-[#003765]">ข้อมูลแสดงในแผนที่</div>
+                        </div>
+                        
                         <div class="mt-[8px] col-span-2">
-                            <div class="text-custom text-[14px] text-[#003765]">ข้อมูลแสดงในแผนที่: เบอร์ติดต่อ</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                            <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingPhone" />
                         </div>
                         <div class="mt-[8px] col-span-2">
-                            <div class="text-custom text-[14px] text-[#003765]">ข้อมูลแสดงในแผนที่: Email</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                            <div class="text-custom text-[14px] text-[#003765]">Email</div>
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingEmail" />
                         </div>
                         <div class="mt-[8px] col-span-2">
-                            <div class="text-custom text-[14px] text-[#003765]">ข้อมูลแสดงในแผนที่: ไลน์ติดต่อ</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                            <div class="text-custom text-[14px] text-[#003765]">ไลน์ติดต่อ</div>
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingLine" />
                         </div>
                         <div class="mt-[8px] col-span-2">
-                            <div class="text-custom text-[14px] text-[#003765]">ข้อมูลแสดงในแผนที่: เฟสบุ๊ค</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                            <div class="text-custom text-[14px] text-[#003765]">เฟสบุ๊ค</div>
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingFacebook" />
                         </div>
-                        <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">อัตราภาษี</div>
-                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                v-model="buildingData.attributes.vat_rate">
+                        
+                        <div class="mt-[8px] col-span-2">
+                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">ช่วงราคาห้อง (ใส่ตัวเลขและ - ได้)</div>
+                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
+                                v-model="buildingData.attributes.buildingPrice" placeholder="เช่น 4,000 - 8,000">
                         </div>
-                        <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">วันครบกำหนดชำระ (กรุณาใส่ตัวเลข
-                                1-28)</div>
-                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                v-model="buildingData.attributes.dueDate">
+                        <!-- <div class="mt-[8px] col-span-2">
+                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">จำนวนห้องนอน</div>
+                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
+                                v-model="buildingData.attributes.buildingBed" placeholder="เช่น 1">
                         </div>
-                        <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">ข้อมูลแสดงในแผนที่: ช่วงราคาห้อง (ใส่ตัวเลขและ - ได้)</div>
-                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                v-model="buildingData.attributes.buildingPrice">
-                        </div>
-                        <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">ข้อมูลแสดงในแผนที่: จำนวนห้องนอน</div>
-                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                v-model="buildingData.attributes.buildingBed">
-                        </div>
-                        <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">ข้อมูลแสดงในแผนที่: จำนวนห้องน้ำ</div>
-                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
+                        <div class="mt-[8px] col-span-2">
+                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">จำนวนห้องน้ำ</div>
+                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
                                 v-model="buildingData.attributes.buildingBath">
+                        </div> -->
+                        <div class="mt-[8px] col-span-2">
+                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">ขนาดห้อง (ใส่ตัวเลขและ - ได้)</div>
+                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
+                                v-model="buildingData.attributes.buildingArea" placeholder="เช่น 23 - 40">
                         </div>
-                        <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">ข้อมูลแสดงในแผนที่: ขนาดห้อง (ใส่ตัวเลขและ - ได้)</div>
-                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                v-model="buildingData.attributes.buildingArea">
+                        <div class="mt-[8px] col-span-2">
+                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">ราคาต่อตารางเมตร</div>
+                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
+                                v-model="buildingData.attributes.buildingPriceArea" >
                         </div>
-                        <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">ข้อมูลแสดงในแผนที่: ราคาต่อตารางเมตร</div>
-                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                v-model="buildingData.attributes.buildingPriceArea">
+                        <div class="mt-[20px] mb-[10px] col-span-4">
+                            <hr class="border-t border-gray-300">
                         </div>
 
-                        <!-- <form class="max-w-xs mx-auto">
-    <label for="quantity-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Choose quantity:</label>
-    <div class="relative flex items-center max-w-[8rem]">
-        <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
-            <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
-            </svg>
-        </button>
-        <input type="text" id="quantity-input" data-input-counter data-input-counter-min="1" data-input-counter-max="50" aria-describedby="helper-text-explanation" class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="999" value="5" required>
-        <button type="button" id="increment-button" data-input-counter-increment="quantity-input" class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
-            <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
-                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
-            </svg>
-        </button>
-    </div>
-    <p id="helper-text-explanation" class="mt-2 text-sm text-gray-500 dark:text-gray-400">Please select a 5 digit number from 0 to 9.</p>
-</form> -->
-
-                        <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">หมุดแผนที่: Latitude
+                        <!-- Building Image Upload Section -->
+                        <div class="mt-[8px] col-span-4">
+                            <div class="text-custom text-[16px] font-semibold text-[#003765]">รูปภาพหอพัก</div>
+                            <div class="text-[13px] text-gray-500 mb-[10px]">
+                                อัพโหลดรูปภาพหอพักเพื่อแสดงในแผนที่ (สามารถอัพโหลดได้หลายรูป)
                             </div>
-                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                v-model="buildingData.attributes.lat">
                         </div>
-                        <div class="">
-                            <div class="text-custom text-[14px] text-[#003765]  mb-[6px]">หมุดแผนที่: Longitude 
+
+                        <!-- Updated Preview Images Area -->
+                        <!-- This component shows both existing and newly uploaded images together -->
+                        <div class="mt-[8px] col-span-4">
+                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">รูปภาพหอพัก</div>
+                            
+                            <!-- File Upload Area -->
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 mb-4 bg-gray-50">
+                                <div class="flex flex-col items-center justify-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                    </svg>
+                                    <p class="text-sm text-gray-500 mb-1">ลากไฟล์มาวางที่นี่ หรือ</p>
+                                    <label for="file-upload" class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">
+                                        เลือกไฟล์
+                                        <input id="file-upload" type="file" multiple accept="image/*" @change="handleFileUpload" class="hidden" />
+                                    </label>
+                                    <p class="text-xs text-gray-400 mt-2">รองรับไฟล์: JPG, PNG, GIF (ขนาดไม่เกิน 5MB)</p>
+                                </div>
                             </div>
-                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                v-model="buildingData.attributes.long">
+                            
+                            <!-- Combined Preview - Show both existing and newly uploaded images -->
+                            <div v-if="(buildingData.attributes.buildingPic && buildingData.attributes.buildingPic.data && buildingData.attributes.buildingPic.data.length > 0) || (uploadedFiles.length > 0)">
+                                <!-- Helper text for deletion -->
+                                <div class="text-[13px] text-gray-500 mb-[10px]">
+                                    คลิกที่รูปเพื่อลบ (กดบันทึกเพื่อยืนยันการลบ)
+                                </div>
+                                
+                                <!-- Grid layout for the images -->
+                                <div class="grid grid-cols-4 gap-4">
+                                    <!-- Show existing images -->
+                                    <div v-for="(image, index) in buildingData.attributes.buildingPic.data" :key="'existing-'+index" class="relative group">
+                                        <img :src="getImageUrl(image)" class="w-full h-24 object-cover rounded-lg" />
+                                        <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
+                                            <button @click="removeImage(index)" class="text-white bg-red-500 hover:bg-red-600 rounded-full p-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Show newly uploaded files -->
+                                    <div v-for="(file, index) in uploadedFiles" :key="'new-'+index" class="relative group">
+                                        <img :src="getFilePreview(file)" class="w-full h-24 object-cover rounded-lg" />
+                                        <div class="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 rounded-lg flex items-center justify-center">
+                                            <button @click="removeUploadedFile(index)" class="text-white bg-red-500 hover:bg-red-600 rounded-full p-1">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <div class="absolute top-0 right-0 bg-blue-500 text-white text-xs px-1 rounded-bl">ใหม่</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Separator Line -->
+                        <div class="mt-[20px] mb-[10px] col-span-4">
+                            <hr class="border-t border-gray-300">
+                        </div>
+                        
+                        <!-- Map Coordinates Section -->
+                        <div class="mt-[8px] col-span-4">
+                            <div class="text-custom text-[16px] font-semibold text-[#003765]">ข้อมูลหมุดแผนที่</div>
+                            <div class="text-[13px] text-gray-500 mb-[10px] flex items-center">
+                                <span>วิธีหาพิกัด Latitude/Longitude จาก Google Maps</span>
+                                <button @click="showLatLongHelp = true" class="ml-2 text-blue-500 hover:underline flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    ดูคำแนะนำ
+                                </button>
+                                <a href="https://youtu.be/YOUR_VIDEO_ID" target="_blank" class="ml-4 text-blue-500 hover:underline flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                    ดูวิดีโอสอน
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-[8px] col-span-2">
+                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">Latitude</div>
+                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
+                                v-model="buildingData.attributes.lat" placeholder="เช่น 13.7563">
+                        </div>
+                        <div class="mt-[8px] col-span-2">
+                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">Longitude</div>
+                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
+                                v-model="buildingData.attributes.long" placeholder="เช่น 100.5333">
+                        </div>
+                    </div>
+                    <!-- Popup for Lat/Long Help -->
+                    <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" v-if="showLatLongHelp">
+                        <div class="bg-white rounded-lg p-6 max-w-md w-full">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-lg font-medium">วิธีหาพิกัด Latitude/Longitude จาก Google Maps</h3>
+                                <button @click="showLatLongHelp = false" class="text-gray-500 hover:text-gray-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <div class="space-y-3 text-sm">
+                                <p><strong>วิธีที่ 1: คลิกขวาบนแผนที่</strong></p>
+                                <ol class="list-decimal list-inside pl-4 space-y-2">
+                                    <li>เปิด Google Maps ในเบราว์เซอร์</li>
+                                    <li>ค้นหาตำแหน่งที่ต้องการหรือซูมไปยังตำแหน่งบนแผนที่</li>
+                                    <li>คลิกขวาที่ตำแหน่งที่ต้องการ</li>
+                                    <li>พิกัดตัวเลขจะปรากฏในเมนูที่ปรากฏขึ้น (เช่น 13.7563, 100.5333)</li>
+                                    <li>คลิกที่ตัวเลขพิกัดเพื่อคัดลอก</li>
+                                </ol>
+                                <p><strong>วิธีที่ 2: ใช้ URL ของ Google Maps</strong></p>
+                                <ol class="list-decimal list-inside pl-4 space-y-2">
+                                    <li>เปิด Google Maps และค้นหาสถานที่ที่ต้องการ</li>
+                                    <li>คลิกที่หมุดหรือตำแหน่งบนแผนที่</li>
+                                    <li>สังเกตที่ URL ในเบราว์เซอร์ จะมีตัวเลขในรูปแบบ "@13.7563,100.5333,15z"</li>
+                                    <li>ตัวเลขแรกคือ Latitude ตัวเลขที่สองคือ Longitude</li>
+                                </ol>
+                                <div class="mt-6 text-center">
+                                    <a href="https://youtu.be/YOUR_VIDEO_ID" target="_blank" class="text-blue-500 hover:underline flex items-center justify-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
+                                        ดูวิดีโอสอนวิธีหาพิกัด
+                                    </a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="mt-[44px] mb-[50px]">
@@ -463,6 +544,8 @@ export default {
             zipcode: '',
             fileBanner: [],
             fileProfile: [],
+            showLatLongHelp: false,
+            uploadedFiles: [],
         }
     },
     components: {
@@ -521,7 +604,21 @@ export default {
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getBuilding()", resp);
-                    this.buildingData = resp.data
+                    this.buildingData = resp.data;
+                    
+                    // Convert string values to numbers where needed
+                    if (this.buildingData.attributes.vat_rate) {
+                        this.buildingData.attributes.vat_rate = parseInt(this.buildingData.attributes.vat_rate);
+                    } else {
+                        // Set default value if not set
+                        this.buildingData.attributes.vat_rate = 7; // Default to 7%
+                    }
+                    
+                    // Convert BuildingDueDate to dueDate if needed
+                    if (this.buildingData.attributes.BuildingDueDate && !this.buildingData.attributes.dueDate) {
+                        this.buildingData.attributes.dueDate = parseInt(this.buildingData.attributes.BuildingDueDate);
+                    }
+                    
                 }).finally(() => {
                     loading.close()
                 })
@@ -537,9 +634,10 @@ export default {
                     loading.close()
                 })
         },
-        updateBuildingData() {
-            axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`, {
-                data: {
+        async updateBuildingData() {
+            try {
+                // Create complete building data object with ALL fields
+                let buildingData = {
                     buildingName: this.buildingData.attributes.buildingName,
                     buildingAddress: this.buildingData.attributes.buildingAddress,
                     buildingProvince: this.buildingData.attributes.buildingProvince,
@@ -558,25 +656,166 @@ export default {
                     buildingBed: this.buildingData.attributes.buildingBed,
                     buildingBath: this.buildingData.attributes.buildingBath,
                     buildingArea: this.buildingData.attributes.buildingArea,
-                    buildingPriceArea: this.buildingData.attributes.buildingPriceArea   
+                    buildingPriceArea: this.buildingData.attributes.buildingPriceArea
+                };
+                
+                // CRITICAL CHANGE: Only process images if we're actually modifying them
+                if (this.uploadedFiles.length > 0 || 
+                    (this.buildingData.attributes.buildingPic && 
+                    this.buildingData.attributes.buildingPic.data && 
+                    Array.isArray(this.buildingData.attributes.buildingPic.data))) {
+                    
+                    // Initialize buildingPic as an empty array (for when all images are deleted)
+                    buildingData.buildingPic = [];
+                    
+                    // Add IDs of existing images (if any)
+                    if (this.buildingData.attributes.buildingPic && 
+                        this.buildingData.attributes.buildingPic.data && 
+                        this.buildingData.attributes.buildingPic.data.length > 0) {
+                        
+                        buildingData.buildingPic = this.buildingData.attributes.buildingPic.data.map(item => item.id);
+                    }
+                    
+                    // Handle new uploads
+                    if (this.uploadedFiles && this.uploadedFiles.length > 0) {
+                        const formData = new FormData();
+                        this.uploadedFiles.forEach(file => {
+                            formData.append('files', file);
+                        });
+                        
+                        const uploadResponse = await axios.post(
+                            'https://api.resguru.app/api/upload',
+                            formData,
+                            {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data',
+                                }
+                            }
+                        );
+                        
+                        const newMediaIds = uploadResponse.data.map(file => file.id);
+                        
+                        // Add new media IDs to existing IDs (if any)
+                        buildingData.buildingPic = [...buildingData.buildingPic, ...newMediaIds];
+                    }
                 }
-            })
-                .then((resp) => {
-                    console.log("Result from", resp)
-
-                })
-                .catch(error => {
-                    console.log("Err", error)
-                    const errorMessage = error.message ? error.message : 'Error updating information';
-                    this.$showNotification('danger', errorMessage);
-                })
-                .finally(() => {
-                    this.getBuildingData();
-                    this.queryTabSetting();
-                    this.$showNotification('#3A89CB', 'Upload Building Success')
-                })
-
+                
+                console.log("Final data to be sent:", buildingData);
+                
+                // Make the update request
+                const updateResponse = await axios.put(
+                    `https://api.resguru.app/api/buildings/${this.$store.state.building}`, 
+                    { data: buildingData }
+                );
+                
+                console.log("Update response:", updateResponse);
+                
+                // Clear uploaded files after successful update
+                this.uploadedFiles = [];
+                
+                console.log("Building updated successfully");
+                this.$showNotification('#3A89CB', 'Update Building Success');
+            } catch (error) {
+                console.log("Error:", error);
+                if (error.response) {
+                    console.log("Error response data:", error.response.data);
+                    console.log("Error response status:", error.response.status);
+                }
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage);
+            } finally {
+                this.getBuildingData();
+                this.queryTabSetting();
+            }
         },
+        // Handle file upload
+        handleFileUpload(event) {
+            const files = event.target.files;
+            if (!files.length) return;
+            
+            // Check file size and type
+            for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            
+            // Check file size (5MB limit)
+            if (file.size > 5 * 1024 * 1024) {
+                alert(`ไฟล์ ${file.name} มีขนาดใหญ่เกินไป (ขนาดสูงสุด 5MB)`);
+                continue;
+            }
+            
+            // Check file type
+            if (!file.type.match('image.*')) {
+                alert(`ไฟล์ ${file.name} ไม่ใช่ไฟล์รูปภาพที่รองรับ`);
+                continue;
+            }
+            
+            // Add to uploaded files
+            this.uploadedFiles.push(file);
+            }
+            
+            // Reset the input to allow selecting the same file again
+            event.target.value = '';
+        },
+        
+        // Get preview URL for uploaded file
+        getFilePreview(file) {
+            return URL.createObjectURL(file);
+        },
+        
+        // Get image URL from Strapi media
+        getImageUrl(image) {
+            return `https://api.resguru.app${image.attributes.url}`;
+        },
+        
+        // Remove uploaded file
+        removeUploadedFile(index) {
+            this.uploadedFiles.splice(index, 1);
+        },
+        
+        // Remove existing image
+        removeImage(index) {
+            this.buildingData.attributes.buildingPic.data.splice(index, 1);
+        },
+        // updateBuildingData() {
+        //     axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`, {
+        //         data: {
+        //             buildingName: this.buildingData.attributes.buildingName,
+        //             buildingAddress: this.buildingData.attributes.buildingAddress,
+        //             buildingProvince: this.buildingData.attributes.buildingProvince,
+        //             buildingDistrict: this.buildingData.attributes.buildingDistrict,
+        //             buildingSubDistrict: this.buildingData.attributes.buildingSubDistrict,
+        //             buildingPostcode: this.buildingData.attributes.buildingPostcode,
+        //             buildingPhone: this.buildingData.attributes.buildingPhone,
+        //             buildingEmail: this.buildingData.attributes.buildingEmail,
+        //             buildingLine: this.buildingData.attributes.buildingLine,
+        //             buildingFacebook: this.buildingData.attributes.buildingFacebook,
+        //             vat_rate: this.buildingData.attributes.vat_rate,
+        //             buildingLat: this.buildingData.attributes.lat,
+        //             buildingLong: this.buildingData.attributes.long,
+        //             BuildingDueDate: this.buildingData.attributes.dueDate,
+        //             buildingPrice: this.buildingData.attributes.buildingPrice,
+        //             buildingBed: this.buildingData.attributes.buildingBed,
+        //             buildingBath: this.buildingData.attributes.buildingBath,
+        //             buildingArea: this.buildingData.attributes.buildingArea,
+        //             buildingPriceArea: this.buildingData.attributes.buildingPriceArea   
+        //         }
+        //     })
+        //         .then((resp) => {
+        //             console.log("Result from", resp)
+
+        //         })
+        //         .catch(error => {
+        //             console.log("Err", error)
+        //             const errorMessage = error.message ? error.message : 'Error updating information';
+        //             this.$showNotification('danger', errorMessage);
+        //         })
+        //         .finally(() => {
+        //             this.getBuildingData();
+        //             this.queryTabSetting();
+        //             this.$showNotification('#3A89CB', 'Upload Building Success')
+        //         })
+
+        // },
         openNotificationBuilding(position = null, color) {
             const noti = this.$vs.notification({
                 sticky: true,
@@ -732,6 +971,23 @@ export default {
                        
                     })
             }
+        },
+        getBuildingData() {
+            const loading = this.$vs.loading()
+            fetch(`https://api.resguru.app/api/buildings/${this.$store.state.building}?populate=*`)
+                .then(response => response.json())
+                .then((resp) => {
+                    console.log("Return from getBuilding()", resp);
+                    this.buildingData = resp.data;
+                    
+                    // Convert BuildingDueDate to dueDate if needed
+                    if (this.buildingData.attributes.BuildingDueDate && !this.buildingData.attributes.dueDate) {
+                        this.buildingData.attributes.dueDate = parseInt(this.buildingData.attributes.BuildingDueDate);
+                    }
+                    
+                }).finally(() => {
+                    loading.close()
+                })
         },
 
 
