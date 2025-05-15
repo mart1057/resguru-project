@@ -90,8 +90,10 @@
 
                     </div>
                 </div>
-                <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer items-center justify-center "
-                    @click="profile_admin = true, NewProfileAdmin.firstName = '', NewProfileAdmin.lastName = '', NewProfileAdmin.contactAddress = '', NewProfileAdmin.phone = '', NewProfileAdmin.email = '', NewProfileAdmin.line = '', NewProfileAdmin.password = '', this.fileAdminProfileForm = [], fileAdminCoverForm = []">
+                <!-- Modify the "Add Admin" card to check if more admins can be added -->
+                <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer items-center justify-center"
+                    v-if="canAddMoreAdmins" 
+                    @click="profile_admin = true, NewProfileAdmin.firstName = '', NewProfileAdmin.lastName = '', NewProfileAdmin.contactAddress = '', NewProfileAdmin.phone = '', NewProfileAdmin.email = '', NewProfileAdmin.line = '', NewProfileAdmin.password = '', this.fileAdminProfileForm = [], fileAdminCoverForm = [], is_edit = false">
                     <div class="flex flex-col items-center justify-center">
                         <div>
                             <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -108,6 +110,27 @@
                             </svg>
                         </div>
                         <div class="text-[#5C6B79] font-bold mt-[4px]">เพิ่มแอดมิน</div>
+                    </div>
+                </div>
+                <!-- Display a message when the admin limit is reached for Business package -->
+                <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] items-center justify-center opacity-60"
+                    v-if="!canAddMoreAdmins">
+                    <div class="flex flex-col items-center justify-center">
+                        <div>
+                            <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="34" cy="34.457" r="34" fill="#F3F7FA" />
+                                <mask id="mask0_1373_22044" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="6" y="7"
+                                    width="56" height="55">
+                                    <rect x="6.80078" y="7.25586" width="54.4" height="54.4" fill="#D9D9D9" />
+                                </mask>
+                                <!-- Lock icon or similar -->
+                                <g mask="url(#mask0_1373_22044)">
+                                    <path d="M34 25C36.2 25 38 26.8 38 29V33H40V43H28V33H30V29C30 26.8 31.8 25 34 25ZM34 27C32.9 27 32 27.9 32 29V33H36V29C36 27.9 35.1 27 34 27Z" fill="#B9CCDC"/>
+                                </g>
+                            </svg>
+                        </div>
+                        <div class="text-[#8396A6] font-bold mt-[4px]">แอดมินถึงจำกัดแล้ว</div>
+                        <div class="text-[#8396A6] text-sm text-center mt-[4px]">แพ็กเกจ Business จำกัดจำนวนแอดมิน 3 คน</div>
                     </div>
                 </div>
             </div>
@@ -382,6 +405,22 @@ export default {
         this.getEmployer();
         this.getUser();
     },
+    computed: {
+        isBusinessPackage() {
+            return this.$store.state.buildingInfo[0].attributes.package.data?.id === 1;
+        },
+        adminCount() {
+            return this.UserBuilding.length;
+        },
+        canAddMoreAdmins() {
+            // Business package (ID = 1) is limited to 3 admins
+            if (this.isBusinessPackage) {
+                return this.adminCount < 3;
+            }
+            // Professional package has no limit
+            return true;
+        }
+    },
     methods: {
         getEmployer() {
             const loading = this.$vs.loading()
@@ -463,22 +502,20 @@ export default {
             if (confirm("Do you really want to delete this Admin?")) {
                 axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`, {
                     data: {
-                        users: { disconnect: [adminID] }
+                        users_admin: { disconnect: [adminID] } // Changed from users to users_admin
                     }
                 })
-                    .then((resp) => {
-                        console.log(resp)
-                    })
-                    .catch(error => {
-                        const errorMessage = error.message ? error.message : 'Error updating information';
-                        this.$showNotification('danger', errorMessage);
-                    })
-                    .finally(() => {
-                        this.getUser();
-                        this.$showNotification('#3A89CB', 'Update Success')
-                    })
+                .then((resp) => {
+                    console.log("Admin removed successfully:", resp);
+                    this.$showNotification('#3A89CB', 'Admin removed successfully');
+                    this.getUser(); // Refresh the user list
+                })
+                .catch(error => {
+                    console.error("Error removing admin:", error);
+                    const errorMessage = error.message ? error.message : 'Error removing admin';
+                    this.$showNotification('danger', errorMessage);
+                });
             }
-
         },
         deleteEmployee(employeeID) {
             if (confirm("Do you really want to delete this employee?")) {
