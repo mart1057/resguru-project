@@ -350,7 +350,22 @@
                                 :disabled="$store.state.buildingInfo[0].attributes.package.data?.id === 1"
                                 :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
                         </div>
-
+                        <div class="col-span-2">
+                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">อินเตอร์เน็ต</div>
+                            <select class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] px-[10px]"
+                                v-model="buildingData.attributes.internet">
+                                <option value="1">มี</option>
+                                <option value="0">ไม่มี</option>
+                            </select>
+                        </div>
+                        <div class="col-span-2">
+                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">ที่จอดรถ</div>
+                            <select class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] px-[10px]"
+                                v-model="buildingData.attributes.parking">
+                                <option value="1">มี</option>
+                                <option value="0">ไม่มี</option>
+                            </select>
+                        </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">ช่วงราคาห้อง (ใส่ตัวเลขและ - ได้)</div>
                             <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
@@ -631,100 +646,102 @@ export default {
         // },
         // Modify the updateBuildingData method to check package ID before processing map-related fields
         async updateBuildingData() {
-            try {
-                // Start with common fields that are always editable
-                let buildingData = {
-                    buildingName: this.buildingData.attributes.buildingName,
-                    buildingAddress: this.buildingData.attributes.buildingAddress,
-                    buildingProvince: this.buildingData.attributes.buildingProvince,
-                    buildingDistrict: this.buildingData.attributes.buildingDistrict,
-                    buildingSubDistrict: this.buildingData.attributes.buildingSubDistrict,
-                    buildingPostcode: this.buildingData.attributes.buildingPostcode,
-                    buildingPhone: this.buildingData.attributes.buildingPhone,
-                    buildingEmail: this.buildingData.attributes.buildingEmail,
-                    vat_rate: this.buildingData.attributes.vat_rate,
-                    BuildingDueDate: this.buildingData.attributes.dueDate
-                };
+        try {
+            // Create complete building data object with ALL fields
+            let buildingData = {
+                buildingName: this.buildingData.attributes.buildingName,
+                buildingAddress: this.buildingData.attributes.buildingAddress,
+                buildingProvince: this.buildingData.attributes.buildingProvince,
+                buildingDistrict: this.buildingData.attributes.buildingDistrict,
+                buildingSubDistrict: this.buildingData.attributes.buildingSubDistrict,
+                buildingPostcode: this.buildingData.attributes.buildingPostcode,
+                buildingPhone: this.buildingData.attributes.buildingPhone,
+                buildingEmail: this.buildingData.attributes.buildingEmail,
+                buildingLine: this.buildingData.attributes.buildingLine,
+                buildingFacebook: this.buildingData.attributes.buildingFacebook,
+                vat_rate: this.buildingData.attributes.vat_rate,
+                buildingLat: this.buildingData.attributes.lat,
+                buildingLong: this.buildingData.attributes.long,
+                BuildingDueDate: this.buildingData.attributes.dueDate,
+                buildingPrice: this.buildingData.attributes.buildingPrice,
+                buildingBed: this.buildingData.attributes.buildingBed,
+                buildingBath: this.buildingData.attributes.buildingBath,
+                buildingArea: this.buildingData.attributes.buildingArea,
+                buildingPriceArea: this.buildingData.attributes.buildingPriceArea,
+                // Convert string values to boolean for internet and parking
+                internet: this.buildingData.attributes.internet === "1",
+            parking: this.buildingData.attributes.parking === "1"
+            };
+            
+            // Process images code remains the same...
+            if (this.uploadedFiles.length > 0 || 
+                (this.buildingData.attributes.buildingPic && 
+                this.buildingData.attributes.buildingPic.data && 
+                Array.isArray(this.buildingData.attributes.buildingPic.data))) {
                 
-                // For both packages, include the restricted fields exactly as they are in the current data
-                // This ensures we don't lose any data when saving
-                buildingData.buildingLine = this.buildingData.attributes.buildingLine;
-                buildingData.buildingFacebook = this.buildingData.attributes.buildingFacebook;
-                buildingData.buildingPrice = this.buildingData.attributes.buildingPrice;
-                buildingData.buildingBed = this.buildingData.attributes.buildingBed;
-                buildingData.buildingBath = this.buildingData.attributes.buildingBath;
-                buildingData.buildingArea = this.buildingData.attributes.buildingArea;
-                buildingData.buildingPriceArea = this.buildingData.attributes.buildingPriceArea;
-                buildingData.buildingLat = this.buildingData.attributes.lat;
-                buildingData.buildingLong = this.buildingData.attributes.long;
+                // Initialize buildingPic as an empty array (for when all images are deleted)
+                buildingData.buildingPic = [];
                 
-                // Handle images - for both packages, preserve existing images
+                // Add IDs of existing images (if any)
                 if (this.buildingData.attributes.buildingPic && 
                     this.buildingData.attributes.buildingPic.data && 
-                    Array.isArray(this.buildingData.attributes.buildingPic.data) && 
                     this.buildingData.attributes.buildingPic.data.length > 0) {
+                    
                     buildingData.buildingPic = this.buildingData.attributes.buildingPic.data.map(item => item.id);
                 }
                 
-                // Only for Professional package, process new uploads and image changes
-                if (this.$store.state.buildingInfo[0].attributes.package.data?.id === 2) {
-                    // Process new image uploads only for Professional package
-                    if (this.uploadedFiles && this.uploadedFiles.length > 0) {
-                        const formData = new FormData();
-                        this.uploadedFiles.forEach(file => {
-                            formData.append('files', file);
-                        });
-                        
-                        const uploadResponse = await axios.post(
-                            'https://api.resguru.app/api/upload',
-                            formData,
-                            {
-                                headers: {
-                                    'Content-Type': 'multipart/form-data',
-                                }
+                // Handle new uploads
+                if (this.uploadedFiles && this.uploadedFiles.length > 0) {
+                    const formData = new FormData();
+                    this.uploadedFiles.forEach(file => {
+                        formData.append('files', file);
+                    });
+                    
+                    const uploadResponse = await axios.post(
+                        'https://api.resguru.app/api/upload',
+                        formData,
+                        {
+                            headers: {
+                                'Content-Type': 'multipart/form-data',
                             }
-                        );
-                        
-                        const newMediaIds = uploadResponse.data.map(file => file.id);
-                        
-                        // If buildingPic is already defined, add new images to it
-                        if (buildingData.buildingPic) {
-                            buildingData.buildingPic = [...buildingData.buildingPic, ...newMediaIds];
-                        } else {
-                            // Otherwise, initialize it with just the new images
-                            buildingData.buildingPic = [...newMediaIds];
                         }
-                    }
+                    );
+                    
+                    const newMediaIds = uploadResponse.data.map(file => file.id);
+                    
+                    // Add new media IDs to existing IDs (if any)
+                    buildingData.buildingPic = [...buildingData.buildingPic, ...newMediaIds];
                 }
-                
-                console.log("Final data to be sent:", buildingData);
-                
-                // Make the update request
-                const updateResponse = await axios.put(
-                    `https://api.resguru.app/api/buildings/${this.$store.state.building}`, 
-                    { data: buildingData }
-                );
-                
-                console.log("Update response:", updateResponse);
-                
-                // Clear uploaded files after successful update
-                this.uploadedFiles = [];
-                
-                console.log("Building updated successfully");
-                this.$showNotification('#3A89CB', 'Update Building Success');
-            } catch (error) {
-                console.log("Error:", error);
-                if (error.response) {
-                    console.log("Error response data:", error.response.data);
-                    console.log("Error response status:", error.response.status);
-                }
-                const errorMessage = error.message ? error.message : 'Error updating information';
-                this.$showNotification('danger', errorMessage);
-            } finally {
-                this.getBuildingData();
-                this.queryTabSetting();
             }
-        },
+            
+            console.log("Final data to be sent:", buildingData);
+            
+            // Make the update request
+            const updateResponse = await axios.put(
+                `https://api.resguru.app/api/buildings/${this.$store.state.building}`, 
+                { data: buildingData }
+            );
+            
+            console.log("Update response:", updateResponse);
+            
+            // Clear uploaded files after successful update
+            this.uploadedFiles = [];
+            
+            console.log("Building updated successfully");
+            this.$showNotification('#3A89CB', 'Update Building Success');
+        } catch (error) {
+            console.log("Error:", error);
+            if (error.response) {
+                console.log("Error response data:", error.response.data);
+                console.log("Error response status:", error.response.status);
+            }
+            const errorMessage = error.message ? error.message : 'Error updating information';
+            this.$showNotification('danger', errorMessage);
+        } finally {
+            this.getBuildingData();
+            this.queryTabSetting();
+        }
+    },
         getBuildingStat() {
             const loading = this.$vs.loading()
             fetch(`https://api.resguru.app/api/getbuildingstat?buildingid=${this.$store.state.building}`)
@@ -1086,13 +1103,35 @@ export default {
                     if (this.buildingData.attributes.BuildingDueDate && !this.buildingData.attributes.dueDate) {
                         this.buildingData.attributes.dueDate = parseInt(this.buildingData.attributes.BuildingDueDate);
                     }
+                    // Assign lat and long from buildingLat and buildingLong
+                    if (this.buildingData.attributes.buildingLat && !this.buildingData.attributes.lat) {
+                        this.buildingData.attributes.lat = this.buildingData.attributes.buildingLat;
+                    }
+                    
+                    if (this.buildingData.attributes.buildingLong && !this.buildingData.attributes.long) {
+                        this.buildingData.attributes.long = this.buildingData.attributes.buildingLong;
+                    }
+
+                    // Convert internet and parking to string values for the dropdowns
+                    // If they're boolean, convert to string "1" or "0"
+                    if (typeof this.buildingData.attributes.internet === 'boolean') {
+                        this.buildingData.attributes.internet = this.buildingData.attributes.internet ? "1" : "0";
+                    } else if (this.buildingData.attributes.internet === null || this.buildingData.attributes.internet === undefined) {
+                        // Set default value if not defined
+                        this.buildingData.attributes.internet = "1";
+                    }
+                    
+                    if (typeof this.buildingData.attributes.parking === 'boolean') {
+                        this.buildingData.attributes.parking = this.buildingData.attributes.parking ? "1" : "0";
+                    } else if (this.buildingData.attributes.parking === null || this.buildingData.attributes.parking === undefined) {
+                        // Set default value if not defined
+                        this.buildingData.attributes.parking = "1";
+                    }
                     
                 }).finally(() => {
                     loading.close()
                 })
         },
-
-
     },
 }
 
