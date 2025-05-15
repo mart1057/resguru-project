@@ -274,6 +274,16 @@
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingName" />
                         </div>
+                        <div class="mt-[8px] col-span-2">
+                            <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
+                                v-model="buildingData.attributes.buildingPhone" />
+                        </div>
+                        <div class="mt-[8px] col-span-2">
+                            <div class="text-custom text-[14px] text-[#003765]">Email</div>
+                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
+                                v-model="buildingData.attributes.buildingEmail" />
+                        </div>
                         <div class="mt-[8px] col-span-4">
                             <div class="text-custom text-[14px] text-[#003765]">ที่อยู่</div>
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
@@ -326,53 +336,36 @@
                         <div class="mt-[8px] col-span-4">
                             <div class="text-custom text-[16px] font-semibold text-[#003765]">ข้อมูลแสดงในแผนที่</div>
                         </div>
-                        
-                        <div class="mt-[8px] col-span-2">
-                            <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
-                                v-model="buildingData.attributes.buildingPhone" />
-                        </div>
-                        <div class="mt-[8px] col-span-2">
-                            <div class="text-custom text-[14px] text-[#003765]">Email</div>
-                            <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
-                                v-model="buildingData.attributes.buildingEmail" />
-                        </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">ไลน์ติดต่อ</div>
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
-                                v-model="buildingData.attributes.buildingLine" />
+                                v-model="buildingData.attributes.buildingLine" 
+                                :disabled="$store.state.buildingInfo[0].attributes.package.data?.id === 1"
+                                :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
                         </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">เฟสบุ๊ค</div>
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
-                                v-model="buildingData.attributes.buildingFacebook" />
+                                v-model="buildingData.attributes.buildingFacebook" 
+                                :disabled="$store.state.buildingInfo[0].attributes.package.data?.id === 1"
+                                :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
                         </div>
-                        
+
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">ช่วงราคาห้อง (ใส่ตัวเลขและ - ได้)</div>
                             <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
-                                v-model="buildingData.attributes.buildingPrice" placeholder="เช่น 4,000 - 8,000">
+                                v-model="buildingData.attributes.buildingPrice" placeholder="เช่น 4,000 - 8,000"
+                                :disabled="$store.state.buildingInfo[0].attributes.package.data?.id === 1"
+                                :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
                         </div>
-                        <!-- <div class="mt-[8px] col-span-2">
-                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">จำนวนห้องนอน</div>
-                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
-                                v-model="buildingData.attributes.buildingBed" placeholder="เช่น 1">
-                        </div>
-                        <div class="mt-[8px] col-span-2">
-                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">จำนวนห้องน้ำ</div>
-                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
-                                v-model="buildingData.attributes.buildingBath">
-                        </div> -->
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">ขนาดห้อง (ใส่ตัวเลขและ - ได้)</div>
                             <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
-                                v-model="buildingData.attributes.buildingArea" placeholder="เช่น 23 - 40">
+                                v-model="buildingData.attributes.buildingArea" placeholder="เช่น 23 - 40"
+                                :disabled="$store.state.buildingInfo[0].attributes.package.data?.id === 1"
+                                :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
                         </div>
-                        <div class="mt-[8px] col-span-2">
-                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">ราคาต่อตารางเมตร</div>
-                            <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
-                                v-model="buildingData.attributes.buildingPriceArea" >
-                        </div>
+                        <!-- Separator Line -->
                         <div class="mt-[20px] mb-[10px] col-span-4">
                             <hr class="border-t border-gray-300">
                         </div>
@@ -385,25 +378,34 @@
                             </div>
                         </div>
 
+
+
+                        <!-- Building Image Upload Section -->
+
+                        <div class="mt-[8px] col-span-4" :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'opacity-60 pointer-events-none' : ''">
+                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">รูปภาพหอพัก</div>
+
+
                         <!-- Updated Preview Images Area -->
                         <!-- This component shows both existing and newly uploaded images together -->
-                        <div class="mt-[8px] col-span-4">
-                            <div class="text-custom text-[14px] text-[#003765] mb-[6px]">รูปภาพหอพัก</div>
                             
-                            <!-- File Upload Area -->
-                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 mb-4 bg-gray-50">
-                                <div class="flex flex-col items-center justify-center">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                    </svg>
-                                    <p class="text-sm text-gray-500 mb-1">ลากไฟล์มาวางที่นี่ หรือ</p>
-                                    <label for="file-upload" class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm">
-                                        เลือกไฟล์
-                                        <input id="file-upload" type="file" multiple accept="image/*" @change="handleFileUpload" class="hidden" />
-                                    </label>
-                                    <p class="text-xs text-gray-400 mt-2">รองรับไฟล์: JPG, PNG, GIF (ขนาดไม่เกิน 5MB)</p>
-                                </div>
+                        <!-- File Upload Area -->
+                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 mb-4" 
+                            :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'bg-gray-200' : 'bg-gray-50'">
+                            <div class="flex flex-col items-center justify-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                </svg>
+                                <p class="text-sm text-gray-500 mb-1">ลากไฟล์มาวางที่นี่ หรือ</p>
+                                <label for="file-upload" class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm" 
+                                    :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'opacity-60 pointer-events-none' : ''">
+                                    เลือกไฟล์
+                                    <input id="file-upload" type="file" multiple accept="image/*" @change="handleFileUpload" class="hidden" 
+                                        :disabled="$store.state.buildingInfo[0].attributes.package.data?.id === 1" />
+                                </label>
+                                <p class="text-xs text-gray-400 mt-2">รองรับไฟล์: JPG, PNG, GIF (ขนาดไม่เกิน 5MB)</p>
                             </div>
+                        </div>
                             
                             <!-- Combined Preview - Show both existing and newly uploaded images -->
                             <div v-if="(buildingData.attributes.buildingPic && buildingData.attributes.buildingPic.data && buildingData.attributes.buildingPic.data.length > 0) || (uploadedFiles.length > 0)">
@@ -470,12 +472,16 @@
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">Latitude</div>
                             <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
-                                v-model="buildingData.attributes.lat" placeholder="เช่น 13.7563">
+                                v-model="buildingData.attributes.lat" placeholder="เช่น 13.7563"
+                                :disabled="$store.state.buildingInfo[0].attributes.package.data?.id === 1"
+                                :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
                         </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">Longitude</div>
                             <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
-                                v-model="buildingData.attributes.long" placeholder="เช่น 100.5333">
+                                v-model="buildingData.attributes.long" placeholder="เช่น 100.5333"
+                                :disabled="$store.state.buildingInfo[0].attributes.package.data?.id === 1"
+                                :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
                         </div>
                     </div>
                     <!-- Popup for Lat/Long Help -->
@@ -598,30 +604,126 @@ export default {
                 })
 
         },
-        getBuildingData() {
-            const loading = this.$vs.loading()
-            fetch(`https://api.resguru.app/api/buildings/${this.$store.state.building}?populate=*`)
-                .then(response => response.json())
-                .then((resp) => {
-                    console.log("Return from getBuilding()", resp);
-                    this.buildingData = resp.data;
+        // getBuildingData() {
+        //     const loading = this.$vs.loading()
+        //     fetch(`https://api.resguru.app/api/buildings/${this.$store.state.building}?populate=*`)
+        //         .then(response => response.json())
+        //         .then((resp) => {
+        //             console.log("Return from getBuilding()", resp);
+        //             this.buildingData = resp.data;
                     
-                    // Convert string values to numbers where needed
-                    if (this.buildingData.attributes.vat_rate) {
-                        this.buildingData.attributes.vat_rate = parseInt(this.buildingData.attributes.vat_rate);
-                    } else {
-                        // Set default value if not set
-                        this.buildingData.attributes.vat_rate = 7; // Default to 7%
+        //             // Convert string values to numbers where needed
+        //             if (this.buildingData.attributes.vat_rate) {
+        //                 this.buildingData.attributes.vat_rate = parseInt(this.buildingData.attributes.vat_rate);
+        //             } else {
+        //                 // Set default value if not set
+        //                 this.buildingData.attributes.vat_rate = 7; // Default to 7%
+        //             }
+                    
+        //             // Convert BuildingDueDate to dueDate if needed
+        //             if (this.buildingData.attributes.BuildingDueDate && !this.buildingData.attributes.dueDate) {
+        //                 this.buildingData.attributes.dueDate = parseInt(this.buildingData.attributes.BuildingDueDate);
+        //             }
+                    
+        //         }).finally(() => {
+        //             loading.close()
+        //         })
+        // },
+        // Modify the updateBuildingData method to check package ID before processing map-related fields
+        async updateBuildingData() {
+            try {
+                // Start with common fields that are always editable
+                let buildingData = {
+                    buildingName: this.buildingData.attributes.buildingName,
+                    buildingAddress: this.buildingData.attributes.buildingAddress,
+                    buildingProvince: this.buildingData.attributes.buildingProvince,
+                    buildingDistrict: this.buildingData.attributes.buildingDistrict,
+                    buildingSubDistrict: this.buildingData.attributes.buildingSubDistrict,
+                    buildingPostcode: this.buildingData.attributes.buildingPostcode,
+                    buildingPhone: this.buildingData.attributes.buildingPhone,
+                    buildingEmail: this.buildingData.attributes.buildingEmail,
+                    vat_rate: this.buildingData.attributes.vat_rate,
+                    BuildingDueDate: this.buildingData.attributes.dueDate
+                };
+                
+                // For both packages, include the restricted fields exactly as they are in the current data
+                // This ensures we don't lose any data when saving
+                buildingData.buildingLine = this.buildingData.attributes.buildingLine;
+                buildingData.buildingFacebook = this.buildingData.attributes.buildingFacebook;
+                buildingData.buildingPrice = this.buildingData.attributes.buildingPrice;
+                buildingData.buildingBed = this.buildingData.attributes.buildingBed;
+                buildingData.buildingBath = this.buildingData.attributes.buildingBath;
+                buildingData.buildingArea = this.buildingData.attributes.buildingArea;
+                buildingData.buildingPriceArea = this.buildingData.attributes.buildingPriceArea;
+                buildingData.buildingLat = this.buildingData.attributes.lat;
+                buildingData.buildingLong = this.buildingData.attributes.long;
+                
+                // Handle images - for both packages, preserve existing images
+                if (this.buildingData.attributes.buildingPic && 
+                    this.buildingData.attributes.buildingPic.data && 
+                    Array.isArray(this.buildingData.attributes.buildingPic.data) && 
+                    this.buildingData.attributes.buildingPic.data.length > 0) {
+                    buildingData.buildingPic = this.buildingData.attributes.buildingPic.data.map(item => item.id);
+                }
+                
+                // Only for Professional package, process new uploads and image changes
+                if (this.$store.state.buildingInfo[0].attributes.package.data?.id === 2) {
+                    // Process new image uploads only for Professional package
+                    if (this.uploadedFiles && this.uploadedFiles.length > 0) {
+                        const formData = new FormData();
+                        this.uploadedFiles.forEach(file => {
+                            formData.append('files', file);
+                        });
+                        
+                        const uploadResponse = await axios.post(
+                            'https://api.resguru.app/api/upload',
+                            formData,
+                            {
+                                headers: {
+                                    'Content-Type': 'multipart/form-data',
+                                }
+                            }
+                        );
+                        
+                        const newMediaIds = uploadResponse.data.map(file => file.id);
+                        
+                        // If buildingPic is already defined, add new images to it
+                        if (buildingData.buildingPic) {
+                            buildingData.buildingPic = [...buildingData.buildingPic, ...newMediaIds];
+                        } else {
+                            // Otherwise, initialize it with just the new images
+                            buildingData.buildingPic = [...newMediaIds];
+                        }
                     }
-                    
-                    // Convert BuildingDueDate to dueDate if needed
-                    if (this.buildingData.attributes.BuildingDueDate && !this.buildingData.attributes.dueDate) {
-                        this.buildingData.attributes.dueDate = parseInt(this.buildingData.attributes.BuildingDueDate);
-                    }
-                    
-                }).finally(() => {
-                    loading.close()
-                })
+                }
+                
+                console.log("Final data to be sent:", buildingData);
+                
+                // Make the update request
+                const updateResponse = await axios.put(
+                    `https://api.resguru.app/api/buildings/${this.$store.state.building}`, 
+                    { data: buildingData }
+                );
+                
+                console.log("Update response:", updateResponse);
+                
+                // Clear uploaded files after successful update
+                this.uploadedFiles = [];
+                
+                console.log("Building updated successfully");
+                this.$showNotification('#3A89CB', 'Update Building Success');
+            } catch (error) {
+                console.log("Error:", error);
+                if (error.response) {
+                    console.log("Error response data:", error.response.data);
+                    console.log("Error response status:", error.response.status);
+                }
+                const errorMessage = error.message ? error.message : 'Error updating information';
+                this.$showNotification('danger', errorMessage);
+            } finally {
+                this.getBuildingData();
+                this.queryTabSetting();
+            }
         },
         getBuildingStat() {
             const loading = this.$vs.loading()
