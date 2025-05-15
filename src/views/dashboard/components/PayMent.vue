@@ -17,13 +17,15 @@
                 </div>
 
                 <div class="text-[20px] font-bold flex items-center ml-[4px]">การจ่ายเงิน</div>
-                <!-- <div class="text-[1.125rem] font-bold flex items-center ml-[4px]">การจ่ายเงิน</div> -->
-                <div class="flex items-center justify-start  pl-2">
-                                <!-- <div class=" w-[auto] pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#FFE1E8] text-[#EA2F5C]">
-                                    ! รออนุมัติ  {{data.length}} รายการ</div> -->
-                                    <div class=" w-[auto] pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#FFE1E8] text-[#EA2F5C]">
-                                    ! ดูรายการรออนุมัติ</div>
-                </div>
+                <button 
+                    @click="navigateToPaymentPage" 
+                    class="ml-2 px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-xs hover:bg-blue-200 flex items-center"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                    ดูเพิ่มเติม
+                </button>
             </div>
             <div class="flex">
                 <div></div>
@@ -99,6 +101,10 @@ export default {
         childFunction2: {
             type: Function,
         },
+        routeLink: {
+            type: String,
+            default: '/payment'
+        },
     },
     data() {
         return {
@@ -132,6 +138,11 @@ export default {
                 }, 300)
 
             }
+        },
+        navigateToPaymentPage() {
+            // Use the routeLink prop if provided, otherwise use a default path
+            const path = this.routeLink || '/payment';
+            this.$router.push(path);
         },
         // async created() {
         //     this.attributes = await axios.get('user/get-profile?access-token=1');

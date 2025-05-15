@@ -16,9 +16,15 @@
                     </svg>
                 </div>
                 <div class="text-[20px] font-bold flex items-center ml-[4px]">แจ้งเตือน</div>
-            </div>
-            <div class="flex justify-center items-center">
-                <div class="flex justify-center items-center">ดูทั้งหมด</div>
+                <button 
+                    @click="navigateToStaffPage" 
+                    class="ml-2 px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-xs hover:bg-blue-200 flex items-center"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                    ดูเพิ่มเติม
+                </button>
             </div>
         </div>
         <div  class="grid grid-flow-col auto-cols-auto  gap-2 mt-[18px]">
@@ -111,9 +117,13 @@
 </template>
 <script>
 export default {
-    // props: {
-    //     data: { type: Array },
-    // },
+    props: {
+        data: { type: Array },
+        routeLink: {
+            type: String,
+            default: '/staff'
+        }
+    },
     data() {
         return {
             tab: 1,
@@ -124,8 +134,6 @@ export default {
             data_maintenace: [],
             data: [],
             screenW:0,
-
-
         }
     },
     beforeCreate() {
@@ -188,7 +196,12 @@ export default {
                 return secondsDiff + " วินาทีที่แล้ว";
             }
 
-        }
+        },
+        navigateToStaffPage() {
+            // Use the routeLink prop if provided, otherwise use a default path
+            const path = this.routeLink || '/staff';
+            this.$router.push(path);
+        },
     }
 }
 </script>

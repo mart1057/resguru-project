@@ -14,25 +14,33 @@
                                 fill="#003765" />
                         </g>
                     </svg>
-
                 </div>
                 <div class="text-[20px] font-bold flex items-center ml-[4px]">มิเตอร์</div>
+                <button 
+                    @click="navigateToFeePage" 
+                    class="ml-2 px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-xs hover:bg-blue-200 flex items-center"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                    ดูเพิ่มเติม
+                </button>
             </div>
-            <div class="grid grid-flow-col auto-cols-auto  gap-2 mt-[8px] ml-[8px] w-[80%]">
-                <div class="flex justify-center items-center">
-                    <div @click="tab = 1" class="cursor-pointer text-[#8396A6] flex justify-center items-center text-[1rem] w-[100%]"
-                        :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
-                        น้ำ</div>
-                    <div @click="tab = 2" class="cursor-pointer text-[#8396A6] ml-[8px] flex justify-center items-center text-[1rem] w-[100%]"
-                        :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
-                        ไฟฟ้า</div>
-                    <div @click="tab = 3" class="cursor-pointer text-[#8396A6] ml-[8px] flex justify-center items-center text-[1rem] w-[100%]"
-                        :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
-                        ค่าส่วนกลาง</div>
-                    <div @click="tab = 4" class="cursor-pointer text-[#8396A6] ml-[8px] flex justify-center items-center text-[1rem] w-[100%]"
-                        :class="tab == 4 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
-                        ค่าบริการเสริม</div>
-                </div>
+        </div>
+        <div class="mt-4">
+            <div class="flex justify-center items-center">
+                <div @click="tab = 1" class="cursor-pointer text-[#8396A6] flex justify-center items-center text-[1rem] w-[100%]"
+                    :class="tab == 1 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
+                    น้ำ</div>
+                <div @click="tab = 2" class="cursor-pointer text-[#8396A6] ml-[8px] flex justify-center items-center text-[1rem] w-[100%]"
+                    :class="tab == 2 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
+                    ไฟฟ้า</div>
+                <div @click="tab = 3" class="cursor-pointer text-[#8396A6] ml-[8px] flex justify-center items-center text-[1rem] w-[100%]"
+                    :class="tab == 3 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
+                    ค่าส่วนกลาง</div>
+                <div @click="tab = 4" class="cursor-pointer text-[#8396A6] ml-[8px] flex justify-center items-center text-[1rem] w-[100%]"
+                    :class="tab == 4 ? 'bg-[#003765] pl-[9px] pr-[9px] pt-[8px] pb-[8px] rounded-[8px] text-[white]' : 'flex justify-center items-center'">
+                    ค่าบริการเสริม</div>
             </div>
         </div>
         <div class="mt-[18px]" :class="data.length > 5 ? 'table-container' : ''" v-if="tab == 1 || tab == 2 || tab == 3">
@@ -152,10 +160,21 @@
 export default {
     props: {
         data: { type: Object },
+        routeLink: {
+            type: String,
+            default: '/fee'
+        },
     },
     data() {
         return {
             tab: 1,
+        }
+    },
+    methods: {
+        navigateToFeePage() {
+            // Use the routeLink prop if provided, otherwise use a default path
+            const path = this.routeLink || '/fee';
+            this.$router.push(path);
         }
     },
     computed: {

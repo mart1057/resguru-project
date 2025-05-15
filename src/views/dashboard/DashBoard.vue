@@ -20,13 +20,29 @@
         <div class="w-[55%]">
           <UserPlan :data="count_user" :childFunction="getDashboard" />
           <Meters2 :data="db_meter2" />
-          <PayMent :data="db_payment" :childFunction2="getDashboard" />
-          <Notification :data="db_services" />
+          <PayMent 
+              :data="db_payment" 
+              :childFunction2="getDashboard" 
+              :routeLink="'/payment'" 
+          />
+          <Notification 
+              :data="db_services" 
+              :routeLink="'/staff'" 
+          />
         </div>
         <div class="w-[44%]">
-          <Expenses :data="db_expense" />
-          <Meters :data="db_meter" />
-          <News :data="db_annocment" />
+          <Expenses 
+              :data="db_expense" 
+              :routeLink="'/expenses'" 
+          />
+          <Meters 
+              :data="db_meter" 
+              :routeLink="'/fee'" 
+          />
+          <News 
+              :data="db_annocment" 
+              :routeLink="'/announcement'" 
+          />
         </div>
       </div>
     </div>

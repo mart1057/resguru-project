@@ -1,5 +1,6 @@
 <template>
     <div id="payment" class="p-4 rounded-lg">
+        <!-- Header with title and tabs -->
         <div class="flex justify-between">
             <div class="flex">
                 <div class="flex items-center">
@@ -16,19 +17,36 @@
                     </svg>
                 </div>
                 <div class="text-xl font-bold flex items-center ml-1">รายรับ-รายจ่าย</div>
+                
+                <!-- Add this navigation button -->
+                <button 
+                    @click="navigateToExpensesPage" 
+                    class="ml-2 px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-xs hover:bg-blue-200 flex items-center"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                    ดูเพิ่มเติม
+                </button>
             </div>
-            <div class="flex justify-center items-center">
-                <div class="flex justify-center items-center">
-                    <div @click="tab = 1" class="cursor-pointer text-gray-500"
-                        :class="tab == 1 ? 'bg-blue-900 px-2 py-2 rounded-lg text-white' : 'flex justify-center items-center'">
-                        รายรับ</div>
-                    <div @click="tab = 2" class="cursor-pointer text-gray-500 ml-2"
-                        :class="tab == 2 ? 'bg-blue-900 px-2 py-2 rounded-lg text-white' : 'flex justify-center items-center'">
-                        รายจ่าย</div>
+        </div>
+        <div class="mt-4 w-full">
+            <div class="flex w-full">
+                <!-- Full width tab controls -->
+                <div class="flex w-full">
+                    <div @click="tab = 1" 
+                        class="cursor-pointer text-center flex-1 py-2 transition-all"
+                        :class="tab == 1 ? 'bg-blue-900 rounded-lg text-white' : 'text-gray-500'">
+                        รายรับ
+                    </div>
+                    <div @click="tab = 2" 
+                        class="cursor-pointer text-center flex-1 py-2 ml-2 transition-all"
+                        :class="tab == 2 ? 'bg-blue-900 rounded-lg text-white' : 'text-gray-500'">
+                        รายจ่าย
+                    </div>
                 </div>
             </div>
         </div>
-        <div>
             <div class="mt-1 w-full">
                 <div class="flex w-full">
                     <div class="relative w-full">
@@ -99,8 +117,9 @@
                                                 fill="#008EF4" />
                                         </svg>
                                     </div>
-                                    <div class="ml-2 text-blue-500 text-xs font-bold">{{ formatNumber(data1[0]) }}</div>
-                                </div>
+                                    <div class="ml-2 text-blue-500 text-xs font-bold">
+                                        {{ formatNumber(data1[0]) }} ({{ calculatePercentage(data1[0], 0, data1) }})
+                                    </div>                                </div>
                             </div>
                             <!-- Employee costs -->
                             <div class="flex items-center justify-between border h-7 rounded-lg px-3">
@@ -115,7 +134,9 @@
                                             </g>
                                         </svg>
                                     </div>
-                                    <div class="ml-2 text-yellow-400 font-bold">{{ formatNumber(data1[1] || 0) }}</div>
+                                    <div class="ml-2 text-yellow-400 text-xs font-bold">
+                                        {{ formatNumber(data1[1]) }} ({{ calculatePercentage(data1[1], 1, data1) }})
+                                    </div>  
                                 </div>
                             </div>
                             <!-- Contract costs -->
@@ -126,7 +147,9 @@
                                             <path d="M12.7514 8.71133C12.0527 8.71133 11.4614 8.46935 10.9774 7.98538C10.4934 7.50142 10.2515 6.91007 10.2515 6.21136C10.2515 5.51266 10.4934 4.92133 10.9774 4.43736C11.4614 3.95339 12.0527 3.71141 12.7514 3.71141C13.4501 3.71141 14.0415 3.95339 14.5254 4.43736C15.0094 4.92133 15.2514 5.51266 15.2514 6.21136C15.2514 6.91007 15.0094 7.50142 14.5254 7.98538C14.0415 8.46935 13.4501 8.71133 12.7514 8.71133ZM6.15528 11.8075C5.65818 11.8075 5.23262 11.6305 4.87861 11.2765C4.52461 10.9225 4.34761 10.4969 4.34761 9.99981V2.42291C4.34761 1.92581 4.52461 1.50025 4.87861 1.14623C5.23262 0.792234 5.65818 0.615234 6.15528 0.615234H19.3475C19.8446 0.615234 20.2702 0.792234 20.6242 1.14623C20.9782 1.50025 21.1552 1.92581 21.1552 2.42291V9.99981C21.1552 10.4969 20.9782 10.9225 20.6242 11.2765C20.2702 11.6305 19.8446 11.8075 19.3475 11.8075H6.15528ZM7.65526 10.3075H17.8476C17.8476 9.80882 18.0246 9.38286 18.3786 9.02966C18.7326 8.67644 19.1581 8.49983 19.6553 8.49983V3.92288C19.1565 3.92288 18.7306 3.74588 18.3774 3.39188C18.0242 3.03787 17.8476 2.61231 17.8476 2.11521H7.65526C7.65526 2.61393 7.47826 3.03988 7.12426 3.39308C6.77024 3.74628 6.34468 3.92288 5.84758 3.92288V8.49983C6.3463 8.49983 6.77226 8.67684 7.12546 9.03086C7.47866 9.38486 7.65526 9.81042 7.65526 10.3075ZM2.65533 15.3075C2.15821 15.3075 1.73266 15.1305 1.37866 14.7764C1.02466 14.4224 0.847656 13.9969 0.847656 13.4998V4.34598C0.847656 4.13348 0.919556 3.95537 1.06336 3.81163C1.20717 3.66788 1.38537 3.59601 1.59796 3.59601C1.81056 3.59601 1.98865 3.66788 2.13223 3.81163C2.27581 3.95537 2.34761 4.13348 2.34761 4.34598V13.4998C2.34761 13.5767 2.37966 13.6472 2.44378 13.7113C2.50788 13.7754 2.5784 13.8075 2.65533 13.8075H17.4245C17.637 13.8075 17.8151 13.8794 17.9588 14.0232C18.1026 14.167 18.1745 14.3452 18.1745 14.5578C18.1745 14.7704 18.1026 14.9485 17.9588 15.0921C17.8151 15.2357 17.637 15.3075 17.4245 15.3075H2.65533ZM6.15528 10.3075H5.84758V2.11521H6.15528C6.07195 2.11521 5.99983 2.14566 5.93893 2.20656C5.87803 2.26746 5.84758 2.33958 5.84758 2.42291V9.99981C5.84758 10.0831 5.87803 10.1553 5.93893 10.2162C5.99983 10.2771 6.07195 10.3075 6.15528 10.3075Z" fill="#008EF4" />
                                         </svg>
                                     </div>
-                                    <div class="ml-2 text-blue-500 font-bold">{{ formatNumber(data1[2] || 0) }}</div>
+                                    <div class="ml-2 text-blue-500 text-xs font-bold">
+                                        {{ formatNumber(data1[2]) }} ({{ calculatePercentage(data1[2], 2, data1) }})
+                                    </div>  
                                 </div>
                             </div>
                             
@@ -143,7 +166,9 @@
                                             </g>
                                         </svg>
                                     </div>
-                                    <div class="ml-2 text-red-500 font-bold">{{ formatNumber(data1[3] || 0) }}</div>
+                                    <div class="ml-2 text-red-500 text-xs font-bold">
+                                        {{ formatNumber(data1[3]) }} ({{ calculatePercentage(data1[3], 3, data1) }})
+                                    </div>  
                                 </div>
                             </div>
                             
@@ -155,7 +180,9 @@
                                             <path d="M1.86323 17.5771C1.45426 17.5771 1.10203 17.4294 0.806531 17.1339C0.511031 16.8384 0.363281 16.4861 0.363281 16.0772V1.57712C0.363281 1.16816 0.511031 0.815915 0.806531 0.520399C1.10203 0.224899 1.45426 0.0771484 1.86323 0.0771484H8.36326C8.77222 0.0771484 9.12446 0.224899 9.41998 0.520399C9.71548 0.815915 9.86323 1.16816 9.86323 1.57712V4.07715H18.1325C18.5414 4.07715 18.8937 4.2249 19.1892 4.5204C19.4847 4.81592 19.6325 5.16816 19.6325 5.57712V16.0772C19.6325 16.4861 19.4847 16.8384 19.1892 17.1339C18.8937 17.4294 18.5414 17.5771 18.1325 17.5771H1.86323ZM1.86323 16.0772H4.36326V13.5771H1.86323V16.0772ZM1.86323 12.0772H4.36326V9.57712H1.86323V12.0772ZM1.86323 8.07715H4.36326V5.57712H1.86323V8.07715ZM1.86323 4.07715H4.36326V1.57712H1.86323V4.07715ZM5.86323 16.0772H8.36326V13.5771H5.86323V16.0772ZM5.86323 12.0772H8.36326V9.57712H5.86323V12.0772ZM5.86323 8.07715H8.36326V5.57712H5.86323V8.07715ZM5.86323 4.07715H8.36326V1.57712H5.86323V4.07715ZM9.86323 16.0772H18.1325V5.57712H9.86323V8.07715H12.0556V9.57712H9.86323V12.0772H12.0556V13.5771H9.86323V16.0772ZM14.2479 9.57712V8.07715H15.7478V9.57712H14.2479ZM14.2479 13.5771V12.0772H15.7478V13.5771H14.2479Z" fill="#9A77FF" />
                                         </svg>
                                     </div>
-                                    <div class="ml-2 text-purple-500 font-bold">{{ formatNumber(data1[4] || 0) }}</div>
+                                    <div class="ml-2 text-purple-500 text-xs font-bold">
+                                        {{ formatNumber(data1[4]) }} ({{ calculatePercentage(data1[4], 4, data1) }})
+                                    </div>  
                                 </div>
                             </div>
                         </div>
@@ -191,6 +218,10 @@
                                 <div class="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
                                 <div class="text-sm text-gray-600">{{ label2[4] }}</div>
                             </div>
+                            <div class="flex items-center mt-1">
+                                <div class="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
+                                <div class="text-sm text-gray-600">{{ label2[5] }}</div>
+                            </div>
                         </div>
                     </div>
                     <div class="flex mt-1 w-full">
@@ -208,7 +239,9 @@
                                             </g>
                                         </svg>
                                     </div>
-                                    <div class="ml-2 text-yellow-400 font-bold">{{ formatNumber(data2[0] || 0) }}</div>
+                                    <div class="ml-2 text-yellow-400 font-bold">
+                                        {{ formatNumber(data2[0] || 0) }} ({{ calculatePercentage(data2[0], 0, data2) }})
+                                    </div>
                                 </div>
                             </div>
                             
@@ -220,7 +253,9 @@
                                             <path d="M12.7514 8.71133C12.0527 8.71133 11.4614 8.46935 10.9774 7.98538C10.4934 7.50142 10.2515 6.91007 10.2515 6.21136C10.2515 5.51266 10.4934 4.92133 10.9774 4.43736C11.4614 3.95339 12.0527 3.71141 12.7514 3.71141C13.4501 3.71141 14.0415 3.95339 14.5254 4.43736C15.0094 4.92133 15.2514 5.51266 15.2514 6.21136C15.2514 6.91007 15.0094 7.50142 14.5254 7.98538C14.0415 8.46935 13.4501 8.71133 12.7514 8.71133ZM6.15528 11.8075C5.65818 11.8075 5.23262 11.6305 4.87861 11.2765C4.52461 10.9225 4.34761 10.4969 4.34761 9.99981V2.42291C4.34761 1.92581 4.52461 1.50025 4.87861 1.14623C5.23262 0.792234 5.65818 0.615234 6.15528 0.615234H19.3475C19.8446 0.615234 20.2702 0.792234 20.6242 1.14623C20.9782 1.50025 21.1552 1.92581 21.1552 2.42291V9.99981C21.1552 10.4969 20.9782 10.9225 20.6242 11.2765C20.2702 11.6305 19.8446 11.8075 19.3475 11.8075H6.15528ZM7.65526 10.3075H17.8476C17.8476 9.80882 18.0246 9.38286 18.3786 9.02966C18.7326 8.67644 19.1581 8.49983 19.6553 8.49983V3.92288C19.1565 3.92288 18.7306 3.74588 18.3774 3.39188C18.0242 3.03787 17.8476 2.61231 17.8476 2.11521H7.65526C7.65526 2.61393 7.47826 3.03988 7.12426 3.39308C6.77024 3.74628 6.34468 3.92288 5.84758 3.92288V8.49983C6.3463 8.49983 6.77226 8.67684 7.12546 9.03086C7.47866 9.38486 7.65526 9.81042 7.65526 10.3075ZM2.65533 15.3075C2.15821 15.3075 1.73266 15.1305 1.37866 14.7764C1.02466 14.4224 0.847656 13.9969 0.847656 13.4998V4.34598C0.847656 4.13348 0.919556 3.95537 1.06336 3.81163C1.20717 3.66788 1.38537 3.59601 1.59796 3.59601C1.81056 3.59601 1.98865 3.66788 2.13223 3.81163C2.27581 3.95537 2.34761 4.13348 2.34761 4.34598V13.4998C2.34761 13.5767 2.37966 13.6472 2.44378 13.7113C2.50788 13.7754 2.5784 13.8075 2.65533 13.8075H17.4245C17.637 13.8075 17.8151 13.8794 17.9588 14.0232C18.1026 14.167 18.1745 14.3452 18.1745 14.5578C18.1745 14.7704 18.1026 14.9485 17.9588 15.0921C17.8151 15.2357 17.637 15.3075 17.4245 15.3075H2.65533ZM6.15528 10.3075H5.84758V2.11521H6.15528C6.07195 2.11521 5.99983 2.14566 5.93893 2.20656C5.87803 2.26746 5.84758 2.33958 5.84758 2.42291V9.99981C5.84758 10.0831 5.87803 10.1553 5.93893 10.2162C5.99983 10.2771 6.07195 10.3075 6.15528 10.3075Z" fill="#008EF4" />
                                         </svg>
                                     </div>
-                                    <div class="ml-2 text-blue-500 font-bold">{{ formatNumber(data2[1] || 0) }}</div>
+                                    <div class="ml-2 text-blue-500 font-bold">
+                                        {{ formatNumber(data2[1] || 0) }} ({{ calculatePercentage(data2[1], 1, data2) }})
+                                    </div>
                                 </div>
                             </div>
                             
@@ -237,11 +272,13 @@
                                             </g>
                                         </svg>
                                     </div>
-                                    <div class="ml-2 text-red-500 font-bold">{{ formatNumber(data2[2] || 0) }}</div>
+                                    <div class="ml-2 text-yellow-400 font-bold">
+                                        {{ formatNumber(data2[2] || 0) }} ({{ calculatePercentage(data2[2], 2, data2) }})
+                                    </div>
                                 </div>
                             </div>
                             
-                            <!-- Util costs -->
+                            <!-- water costs -->
                             <div class="mt-2 flex items-center justify-between border h-7 rounded-lg px-3">
                                 <div class="flex justify-center items-center">
                                     <div>
@@ -249,10 +286,25 @@
                                             <path d="M1.86323 17.5771C1.45426 17.5771 1.10203 17.4294 0.806531 17.1339C0.511031 16.8384 0.363281 16.4861 0.363281 16.0772V1.57712C0.363281 1.16816 0.511031 0.815915 0.806531 0.520399C1.10203 0.224899 1.45426 0.0771484 1.86323 0.0771484H8.36326C8.77222 0.0771484 9.12446 0.224899 9.41998 0.520399C9.71548 0.815915 9.86323 1.16816 9.86323 1.57712V4.07715H18.1325C18.5414 4.07715 18.8937 4.2249 19.1892 4.5204C19.4847 4.81592 19.6325 5.16816 19.6325 5.57712V16.0772C19.6325 16.4861 19.4847 16.8384 19.1892 17.1339C18.8937 17.4294 18.5414 17.5771 18.1325 17.5771H1.86323ZM1.86323 16.0772H4.36326V13.5771H1.86323V16.0772ZM1.86323 12.0772H4.36326V9.57712H1.86323V12.0772ZM1.86323 8.07715H4.36326V5.57712H1.86323V8.07715ZM1.86323 4.07715H4.36326V1.57712H1.86323V4.07715ZM5.86323 16.0772H8.36326V13.5771H5.86323V16.0772ZM5.86323 12.0772H8.36326V9.57712H5.86323V12.0772ZM5.86323 8.07715H8.36326V5.57712H5.86323V8.07715ZM5.86323 4.07715H8.36326V1.57712H5.86323V4.07715ZM9.86323 16.0772H18.1325V5.57712H9.86323V8.07715H12.0556V9.57712H9.86323V12.0772H12.0556V13.5771H9.86323V16.0772ZM14.2479 9.57712V8.07715H15.7478V9.57712H14.2479ZM14.2479 13.5771V12.0772H15.7478V13.5771H14.2479Z" fill="#9A77FF" />
                                         </svg>
                                     </div>
-                                    <div class="ml-2 text-purple-500 font-bold">{{ formatNumber(data2[3] || 0) }}</div>
+                                    <div class="ml-2 text-red-500 font-bold">
+                                        {{ formatNumber(data2[3] || 0) }} ({{ calculatePercentage(data2[3], 3, data2) }})
+                                    </div>
                                 </div>
                             </div>
 
+                            <!-- elec costs -->
+                            <div class="mt-2 flex items-center justify-between border h-7 rounded-lg px-3">
+                                <div class="flex justify-center items-center">
+                                    <div>
+                                        <svg width="20" height="18" viewBox="0 0 20 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1.86323 17.5771C1.45426 17.5771 1.10203 17.4294 0.806531 17.1339C0.511031 16.8384 0.363281 16.4861 0.363281 16.0772V1.57712C0.363281 1.16816 0.511031 0.815915 0.806531 0.520399C1.10203 0.224899 1.45426 0.0771484 1.86323 0.0771484H8.36326C8.77222 0.0771484 9.12446 0.224899 9.41998 0.520399C9.71548 0.815915 9.86323 1.16816 9.86323 1.57712V4.07715H18.1325C18.5414 4.07715 18.8937 4.2249 19.1892 4.5204C19.4847 4.81592 19.6325 5.16816 19.6325 5.57712V16.0772C19.6325 16.4861 19.4847 16.8384 19.1892 17.1339C18.8937 17.4294 18.5414 17.5771 18.1325 17.5771H1.86323ZM1.86323 16.0772H4.36326V13.5771H1.86323V16.0772ZM1.86323 12.0772H4.36326V9.57712H1.86323V12.0772ZM1.86323 8.07715H4.36326V5.57712H1.86323V8.07715ZM1.86323 4.07715H4.36326V1.57712H1.86323V4.07715ZM5.86323 16.0772H8.36326V13.5771H5.86323V16.0772ZM5.86323 12.0772H8.36326V9.57712H5.86323V12.0772ZM5.86323 8.07715H8.36326V5.57712H5.86323V8.07715ZM5.86323 4.07715H8.36326V1.57712H5.86323V4.07715ZM9.86323 16.0772H18.1325V5.57712H9.86323V8.07715H12.0556V9.57712H9.86323V12.0772H12.0556V13.5771H9.86323V16.0772ZM14.2479 9.57712V8.07715H15.7478V9.57712H14.2479ZM14.2479 13.5771V12.0772H15.7478V13.5771H14.2479Z" fill="#9A77FF" />
+                                        </svg>
+                                    </div>
+                                    <div class="ml-2 text-purple-500 font-bold">
+                                        {{ formatNumber(data2[4] || 0) }} ({{ calculatePercentage(data2[4], 4, data2) }})
+                                    </div>
+                                </div>
+                            </div>
                             <!-- Other costs -->
                             <div class="mt-2 flex items-center justify-between border h-7 rounded-lg px-3">
                                 <div class="flex justify-center items-center">
@@ -261,7 +313,9 @@
                                             <path d="M1.86323 17.5771C1.45426 17.5771 1.10203 17.4294 0.806531 17.1339C0.511031 16.8384 0.363281 16.4861 0.363281 16.0772V1.57712C0.363281 1.16816 0.511031 0.815915 0.806531 0.520399C1.10203 0.224899 1.45426 0.0771484 1.86323 0.0771484H8.36326C8.77222 0.0771484 9.12446 0.224899 9.41998 0.520399C9.71548 0.815915 9.86323 1.16816 9.86323 1.57712V4.07715H18.1325C18.5414 4.07715 18.8937 4.2249 19.1892 4.5204C19.4847 4.81592 19.6325 5.16816 19.6325 5.57712V16.0772C19.6325 16.4861 19.4847 16.8384 19.1892 17.1339C18.8937 17.4294 18.5414 17.5771 18.1325 17.5771H1.86323ZM1.86323 16.0772H4.36326V13.5771H1.86323V16.0772ZM1.86323 12.0772H4.36326V9.57712H1.86323V12.0772ZM1.86323 8.07715H4.36326V5.57712H1.86323V8.07715ZM1.86323 4.07715H4.36326V1.57712H1.86323V4.07715ZM5.86323 16.0772H8.36326V13.5771H5.86323V16.0772ZM5.86323 12.0772H8.36326V9.57712H5.86323V12.0772ZM5.86323 8.07715H8.36326V5.57712H5.86323V8.07715ZM5.86323 4.07715H8.36326V1.57712H5.86323V4.07715ZM9.86323 16.0772H18.1325V5.57712H9.86323V8.07715H12.0556V9.57712H9.86323V12.0772H12.0556V13.5771H9.86323V16.0772ZM14.2479 9.57712V8.07715H15.7478V9.57712H14.2479ZM14.2479 13.5771V12.0772H15.7478V13.5771H14.2479Z" fill="#9A77FF" />
                                         </svg>
                                     </div>
-                                    <div class="ml-2 text-purple-500 font-bold">{{ formatNumber(data2[4] || 0) }}</div>
+                                    <div class="ml-2 text-purple-500 font-bold">
+                                        {{ formatNumber(data2[5] || 0) }} ({{ calculatePercentage(data2[5], 5, data2) }})
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -289,6 +343,10 @@ export default {
         childFunction2: {
             type: Function,
             default: null
+        },
+        routeLink: {
+            type: String,
+            default: '/expenses'
         }
     },
     data() {
@@ -298,9 +356,9 @@ export default {
             years: [],
             months: [...Array(12).keys()].map((month) => month + 1),
             data1: [0, 0, 0, 0, 0],// Initialize with 0 for income
-            data2: [0, 0, 0, 0, 0], // Initialize with zeros for all expense categories
+            data2: [0, 0, 0, 0, 0, 0], // Initialize with zeros for all expense categories
             label1: ['ค่าห้อง', 'ค่าน้ำ', 'ค่าไฟ', 'ค่าส่วนกลาง', 'ค่าอื่นๆ'],
-            label2: ["ค่าจ้างพนักงาน", "ค่าจ้างทำของ", "ค่าซ่อมบำรุง", "ค่าสาธารณูปโภค", "ค่าอื่นๆ"],
+            label2: ["ค่าจ้างพนักงาน", "ค่าจ้างทำของ", "ค่าซ่อมบำรุง", 'ค่าน้ำ', 'ค่าไฟ', "ค่าอื่นๆ"],
             series1: [], // For income chart
             series2: [], // For expense chart
             showDatePicker: false,
@@ -388,8 +446,8 @@ export default {
                         expenseByType["ค่าจ้างทำของ"] || 0,
                         expenseByType["ค่าซ่อมบำรุง"] || 0,
                         // Combine remaining expenses as "util"
-                        (expenseByType["ค่าน้ำ"] || 0) + 
-                        (expenseByType["ค่าไฟ"] || 0),
+                        expenseByType["ค่าน้ำ"] || 0,
+                        expenseByType["ค่าไฟ"] || 0,
                         // Combine remaining expenses as "others"
                         (expenseByType["ค่าอื่นๆ"] || 0) + 
                         (expenseByType["ค่าอินเตอร์เน็ต"] || 0) + 
@@ -516,6 +574,17 @@ export default {
             
             const [year, month] = dateString.split('-');
             return `${this.monthNames[parseInt(month) - 1]} ${year}`;
+        },
+        calculatePercentage(value, index, dataArray) {
+            const total = dataArray.reduce((sum, item) => sum + (Number(item) || 0), 0);
+            if (total === 0) return '0%';
+            const percentage = ((value / total) * 100).toFixed(1);
+            return `${percentage}%`;
+        },
+        navigateToExpensesPage() {
+            // Use the routeLink prop if provided, otherwise use a default path
+            const path = this.routeLink || '/expenses';
+            this.$router.push(path);
         },
     },
     computed: {

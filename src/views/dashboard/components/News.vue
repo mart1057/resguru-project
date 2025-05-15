@@ -10,9 +10,15 @@
                     </svg>
                 </div>
                 <div class="text-[20px] font-bold flex items-center ml-[4px]">ข่าวสารประจำหอพัก</div>
-            </div>
-            <div class="flex justify-center items-center">
-                <div class="flex justify-center items-center cursor-pointer" @click=" routerTo('/announcement')">ดูทั้งหมด</div>
+                <button 
+                    @click="navigateToAnnouncementPage" 
+                    class="ml-2 px-2 py-1 bg-blue-100 text-blue-800 rounded-md text-xs hover:bg-blue-200 flex items-center"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-3 w-3 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    </svg>
+                    ดูเพิ่มเติม
+                </button>
             </div>
         </div>
         <!-- <div class="mt-[18px]">
@@ -67,6 +73,10 @@ import { convertDateNoTime} from '@/components/hook/hook'
 export default {
     props: {
         data: { type: Object },
+        routeLink: {
+            type: String,
+            default: '/announcement'
+        },
     },
     data(props) {
         return {
@@ -75,12 +85,11 @@ export default {
         }
     },
     methods:{
-        routerTo(path) {
-            this.$router.push({
-                path: path,
-            })
-            
-        },
+        navigateToAnnouncementPage() {
+            // Use the routeLink prop if provided, otherwise use a default path
+            const path = this.routeLink || '/announcement';
+            this.$router.push(path);
+        }
     }
 }
 </script>
