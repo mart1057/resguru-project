@@ -55,7 +55,12 @@
             <vs-td>
               <div>
                 <div v-if="tr.water_fees[1]">
-                  <vs-input disabled v-model="tr.water_fees[1].meterUnit">
+                  <vs-input v-model="tr.water_fees[1].meterUnit" 
+                    @blur="updatePreviousWaterfee(
+                      tr.water_fees[1].id,
+                      tr.water_fees[1].meterUnit,
+                      calculateUsageMeter(tr.water_fees[0].meterUnit, tr.water_fees[1].meterUnit)
+                    )">
                     <template #icon>
                       <svg
                         width="24"
@@ -86,7 +91,13 @@
                   </vs-input>
                 </div>
                 <div v-else>
-                  <vs-input disabled :value="tr.user_sign_contract?.startWater ?? '0'">
+                  <vs-input v-model="tr.previousWaterValue" 
+                    @blur="createPreviousMonthWaterfee(
+                      tr.id, 
+                      tr.user_sign_contract ? tr.user_sign_contract.id : null,
+                      tr.previousWaterValue,
+                      tr.water_fees[0] ? calculateUsageMeter(tr.water_fees[0].meterUnit, tr.previousWaterValue) : 0
+                    )">
                     <template #icon>
                       <svg
                         width="24"
@@ -125,7 +136,7 @@
                 @blur="updateWaterfee(
                   tr.water_fees[0].id,
                   tr.water_fees[0].meterUnit,
-                  tr.water_fees[0].meterUnit - (tr.water_fees[1] ? tr.water_fees[1].meterUnit : 0)
+                  tr.water_fees[0].meterUnit - (tr.water_fees[1] ? tr.water_fees[1].meterUnit : tr.previousWaterValue || 0)
                 )"
               >
                 <template #icon>
@@ -166,7 +177,7 @@
                   tr.id, 
                   tr.user_sign_contract ? tr.user_sign_contract.id : null,
                   tr.newWater,
-                  tr.newWater
+                  tr.newWater - (tr.previousWaterValue || 0)
                 )"
               >
                 <template #icon>
@@ -207,12 +218,10 @@
                 }}
               </div>
               <div v-else-if="!tr.water_fees[1] && tr.water_fees[0]">
-                {{ tr.water_fees[0].meterUnit }}
+                {{ tr.water_fees[0].meterUnit - (tr.previousWaterValue || 0) }}
               </div>
               <div v-else>
-                {{
-                  tr.water_fees[0] ? tr.water_fees[0].usageMeter : tr.newWater
-                }}
+                {{ tr.newWater - (tr.previousWaterValue || 0) }}
               </div>
             </vs-td>
             <vs-td>
@@ -238,7 +247,7 @@
                       updateWaterfee(
                         tr.water_fees[0].id,
                         tr.water_fees[0].meterUnit,
-                        tr.water_fees[0].meterUnit
+                        tr.water_fees[0].meterUnit - (tr.previousWaterValue || 0)
                       )
                     "
                     >บันทึก</vs-button
@@ -253,7 +262,7 @@
                         tr.id, // roomID
                         tr.user_sign_contract ? tr.user_sign_contract.id : null,
                         tr.newWater,
-                        tr.newWater
+                        tr.newWater - (tr.previousWaterValue || 0)
                       )
                     "
                     >บันทึก</vs-button
@@ -314,19 +323,167 @@ export default {
         .then((response) => response.json())
         .then((resp) => {
           console.log("Return from getCommonFeeRoom()", resp.data);
+          
+          // Process the data and initialize previousWaterValue for each entry
+          const processedData = resp.data.map(item => {
+            // Initialize the previousWaterValue for entries without water_fees[1]
+            if (!item.water_fees[1]) {
+              // Default to starting water value or 0
+              item.previousWaterValue = item.user_sign_contract?.startWater || 0;
+            }
+            return item;
+          });
+          
           if (this.code == 8) {
-            this.WaterFee = resp.data.filter((item) =>
+            this.WaterFee = processedData.filter((item) =>
               item.RoomNumber.toLowerCase().includes(this.text.toLowerCase())
             );
           } else {
-            this.WaterFee = resp.data;
+            this.WaterFee = processedData;
           }
         })
         .finally(() => {
           loading.close();
         });
     },
-    createNewWaterfee(room, user_sign_contract, waterUnit, usageMeter) {
+    
+    // Helper method to calculate usage meter
+    calculateUsageMeter(currentReading, previousReading) {
+      // Ensure readings are treated as numbers
+      const current = Number(currentReading) || 0;
+      const previous = Number(previousReading) || 0;
+      
+      // Calculate usage and ensure it's not negative
+      return Math.max(0, current - previous);
+    },
+    
+    /**
+     * Creates a water fee record for the previous month
+     * @param {number} roomId - The room ID
+     * @param {number} contractId - The contract ID
+     * @param {number} meterUnit - The meter reading for previous month
+     * @param {number} currentUsageMeter - The usage meter for current month (to update)
+     */
+    createPreviousMonthWaterfee(roomId, contractId, meterUnit, currentUsageMeter) {
+      // Skip if invalid data
+      if (!roomId || !contractId || !meterUnit) {
+        console.warn("Cannot create previous month water fee: Missing required data");
+        return;
+      }
+      
+      const loading = this.$vs.loading();
+      
+      // Convert to number and ensure it's not negative
+      const numericValue = Math.max(0, Number(meterUnit));
+      
+      // Calculate previous month date (for createDate)
+      const currentDate = new Date();
+      // Go back one month
+      let prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+      // Format date for API (YYYY-MM-DD format)
+      const prevMonthFormatted = prevMonth.toISOString().split('T')[0];
+      
+      // Create the water fee for the previous month
+      axios
+        .post(`https://api.resguru.app/api/water-fees/`, {
+          data: {
+            room: roomId,
+            user_sign_contract: contractId,
+            meterUnit: numericValue,
+            usageMeter: 0, // Previous month doesn't have usage since we're creating it now
+            createdAt: prevMonthFormatted, // Set creation date to previous month
+          },
+        })
+        .then((response) => {
+          // If there is a current month reading, update its usage calculation
+          const roomData = this.WaterFee.find(item => item.id === roomId);
+          if (roomData && roomData.water_fees[0]) {
+            // Get current month reading
+            const currentMeterReading = Number(roomData.water_fees[0].meterUnit);
+            
+            // Calculate new usage for current month based on current reading minus previous month value
+            const newUsage = Math.max(0, currentMeterReading - numericValue);
+            
+            return axios.put(`https://api.resguru.app/api/water-fees/${roomData.water_fees[0].id}`, {
+              data: {
+                usageMeter: newUsage,
+              },
+            });
+          }
+        })
+        .catch((error) => {
+          const errorMessage = error.message
+            ? error.message
+            : "Error creating previous month water meter record";
+          this.$showNotification("danger", errorMessage);
+        })
+        .finally(() => {
+          loading.close();
+          this.$showNotification("#3A89CB", "Created Previous Month Water Meter Record");
+          // Refresh the data to show the new record
+          this.getWaterFee(this.id, this.month, this.year);
+        });
+    },
+    
+    /**
+     * Updates an existing previous month water fee
+     * @param {number} waterFeeId - The water fee ID
+     * @param {number} waterUnit - The meter reading
+     * @param {number} currentUsageMeter - The usage meter for current month (to update)
+     */
+    updatePreviousWaterfee(waterFeeId, waterUnit, currentUsageMeter) {
+      // Skip if invalid data
+      if (!waterFeeId || !waterUnit) {
+        console.warn("Cannot update previous month water fee: Missing required data");
+        return;
+      }
+      
+      const loading = this.$vs.loading();
+      
+      // Convert to number and ensure it's not negative
+      const numericValue = Math.max(0, Number(waterUnit));
+      
+      // Update the previous month water fee
+      axios
+        .put(`https://api.resguru.app/api/water-fees/${waterFeeId}`, {
+          data: {
+            meterUnit: numericValue,
+          },
+        })
+        .then(() => {
+          // Find the room data for this water fee
+          const roomData = this.WaterFee.find(item => 
+            item.water_fees[1] && item.water_fees[1].id === waterFeeId
+          );
+          
+          // If there is a current month reading, update its usage calculation
+          if (roomData && roomData.water_fees[0]) {
+            // Get current month reading
+            const currentMeterReading = Number(roomData.water_fees[0].meterUnit);
+            
+            // Calculate new usage for current month based on current reading minus updated previous month value
+            const newUsage = Math.max(0, currentMeterReading - numericValue);
+            
+            return axios.put(`https://api.resguru.app/api/water-fees/${roomData.water_fees[0].id}`, {
+              data: {
+                usageMeter: newUsage,
+              },
+            });
+          }
+        })
+        .catch((error) => {
+          const errorMessage = error.message
+            ? error.message
+            : "Error updating previous month water meter reading";
+          this.$showNotification("danger", errorMessage);
+        })
+        .finally(() => {
+          loading.close();
+          this.$showNotification("#3A89CB", "Updated Previous Month Water Meter Reading");
+          // Refresh the data to show the updated record
+          this.getWaterFee(this.id, this.month, this.year);
+        });
+    },createNewWaterfee(room, user_sign_contract, waterUnit, usageMeter) {
       // Skip if not ready to save
       if (!waterUnit || !user_sign_contract) {
         return;
@@ -338,13 +495,18 @@ export default {
       console.log("usageMeter", usageMeter);
       
       const loading = this.$vs.loading();
+      
+      // Ensure values are numeric
+      const numericWaterUnit = Number(waterUnit) || 0;
+      const numericUsageMeter = Math.max(0, Number(usageMeter) || 0);
+      
       axios
         .post(`https://api.resguru.app/api/water-fees/`, {
           data: {
             room: room,
             user_sign_contract: user_sign_contract,
-            meterUnit: waterUnit,
-            usageMeter: usageMeter,
+            meterUnit: numericWaterUnit,
+            usageMeter: numericUsageMeter,
           },
         })
         .then((resp) => {})
@@ -360,27 +522,30 @@ export default {
           this.getWaterFee(this.id, this.month, this.year);
         });
     },
+    
     updateWaterfee(waterFeeId, waterUnit, usageMeter) {
       // Skip if empty values
       if (!waterUnit) {
         return;
       }
       
+      // Ensure numeric values
+      const numericWaterUnit = Number(waterUnit) || 0;
       // Ensure usageMeter is not negative
-      usageMeter = Math.max(0, usageMeter);
+      const numericUsageMeter = Math.max(0, Number(usageMeter) || 0);
       
       console.log("Updating water fee:", {
         waterFeeId,
-        waterUnit,
-        usageMeter
+        waterUnit: numericWaterUnit,
+        usageMeter: numericUsageMeter
       });
       
       const loading = this.$vs.loading();
       axios
         .put(`https://api.resguru.app/api/water-fees/${waterFeeId}`, {
           data: {
-            meterUnit: waterUnit,
-            usageMeter: usageMeter,
+            meterUnit: numericWaterUnit,
+            usageMeter: numericUsageMeter,
           },
         })
         .then((resp) => {})
@@ -396,102 +561,257 @@ export default {
           this.getWaterFee(this.id, this.month, this.year);
         });
     },
+    
     updateMeterAll(newWaterArray) {
       if (this.WaterFee.length > 0) {
-        // console.log(this.WaterFee.length);
         const loading = this.$vs.loading();
-        // Collect all newWater values into an array
-
+        
+        // Create a promise array to track all updates
+        const updatePromises = [];
+        
         this.WaterFee.forEach((data, i) => {
-          console.log("data", i, data);
-
+          console.log("Processing room data:", i, data);
+          
           if (data.water_fees[0] && data.water_fees[0].meterUnit) {
-            console.log("RESD", i, data);
-            axios
-              .put(
+            // Calculate usage meter based on whether there's a previous reading
+            let usageMeter = 0;
+            if (data.water_fees[1]) {
+              usageMeter = Math.max(0, Number(data.water_fees[0].meterUnit) - Number(data.water_fees[1].meterUnit));
+            } else if (data.previousWaterValue) {
+              usageMeter = Math.max(0, Number(data.water_fees[0].meterUnit) - Number(data.previousWaterValue));
+            } else {
+              usageMeter = Number(data.water_fees[0].meterUnit);
+            }
+            
+            // Add promise to array
+            updatePromises.push(
+              axios.put(
                 `https://api.resguru.app/api/water-fees/${data.water_fees[0].id}`,
                 {
                   data: {
-                    meterUnit: parseInt(data.newWater),
+                    meterUnit: Number(data.water_fees[0].meterUnit),
+                    usageMeter: usageMeter
                   },
                 }
               )
-              .then(() => {
-                // if (this.WaterFee.length == i + 1) {
-                //   loading.close();
-                //   this.$showNotification("#3A89CB", "Update Water Fee Success");
-                // }
-              });
-          } else if (data.water_fees[0]) {
-            console.log("data2 else", i, data.water_fees[0].meterUnit);
-            axios
-              .post(`https://api.resguru.app/api/water-fees/`, {
-                data: {
-                  room: data.id,
-                  user_sign_contract: data.user_sign_contract.id,
-                  meterUnit: parseInt(data.water_fees[0].meterUnit),
-                  usageMeter: parseInt(data.water_fees[0].meterUnit),
-                },
-              })
-              .then(() => {})
-              .catch((error) => {
-                const errorMessage = error.message
-                  ? error.message
-                  : "Error updating information";
-                this.$showNotification("danger", errorMessage);
-              });
+            );
+          } else if (data.newWater) {
+            // Calculate usage for new entries
+            let usageMeter = 0;
+            if (data.previousWaterValue) {
+              usageMeter = Math.max(0, Number(data.newWater) - Number(data.previousWaterValue));
+            } else {
+              usageMeter = Number(data.newWater);
+            }
+            
+            // Create new water fee if we have the required data
+            if (data.id && data.user_sign_contract && data.user_sign_contract.id) {
+              updatePromises.push(
+                axios.post(`https://api.resguru.app/api/water-fees/`, {
+                  data: {
+                    room: data.id,
+                    user_sign_contract: data.user_sign_contract.id,
+                    meterUnit: Number(data.newWater),
+                    usageMeter: usageMeter,
+                  },
+                })
+              );
+            }
           }
         });
-        loading.close();
-        this.$showNotification("#3A89CB", "Update Water Fee Success");
+        
+        // Wait for all updates to complete
+        Promise.all(updatePromises)
+          .then(() => {
+            this.$showNotification("#3A89CB", "All Water Fees Updated Successfully");
+            this.getWaterFee(this.id, this.month, this.year);
+          })
+          .catch((error) => {
+            const errorMessage = error.message
+              ? error.message
+              : "Error updating some water fees";
+            this.$showNotification("danger", errorMessage);
+          })
+          .finally(() => {
+            loading.close();
+          });
       }
     },
+    
     filterData(text, code) {
       this.text = text;
-      console.log("filter", text);
-      this.WaterFee = this.WaterFee.filter((item) =>
-        item.RoomNumber.toLowerCase().includes(text.toLowerCase())
-      );
-      if (text == "") {
+      console.log("Filtering by text:", text);
+      
+      if (text === "") {
+        // If text is empty, reset to full data
         this.getWaterFee(this.id, this.month, this.year);
+      } else {
+        // Filter the current dataset
+        this.WaterFee = this.WaterFee.filter((item) =>
+          item.RoomNumber.toLowerCase().includes(text.toLowerCase())
+        );
       }
+      
+      // Handle backspace code (code 8)
       if (code == 8) {
         this.code = 8;
         this.getWaterFee(this.id, this.month, this.year);
       }
     },
-    // importWater(){
-    //             this.importExcel = this.$refs.importExcel.files[0]
-    //             if(this.importExcel.length != 0){
-    //                         let formData = new FormData();
-    //                         formData.append("file", this.fileBanner);
-    //                         formData.append("building", String(this.$store.state.building));
-    //                         axios.put("https://api.resguru.app/api/importWater", formData, {
-    //                             headers: {
-    //                             "Content-Type": "multipart/form-data",
-    //                             },
-    //                         })
-    //                         .then( (resp) =>{
-    //                             console.log(resp)
-    //                         })
-    //                         .catch(error => {
-    //                         const errorMessage = error.message ? error.message : 'Error updating information';
-    //                         this.$showNotification('danger', errorMessage);
-    //                         })
-    //                         .finally(()=>{
-    //                             this.getBuildingData();
-    //                             this.$showNotification('#3A89CB', 'Import Excel Success')
-    //                         })
-    //             }
-    // }
+    
+    /**
+     * Export water meter readings to Excel
+     */
+    exportToExcel() {
+      const loading = this.$vs.loading();
+      
+      try {
+        // Prepare data for export
+        const exportData = this.WaterFee.map(item => {
+          const previousReading = item.water_fees[1] ? 
+            Number(item.water_fees[1].meterUnit) : 
+            Number(item.previousWaterValue || 0);
+            
+          const currentReading = item.water_fees[0] ? 
+            Number(item.water_fees[0].meterUnit) : 
+            Number(item.newWater || 0);
+            
+          const usage = Math.max(0, currentReading - previousReading);
+          
+          return {
+            'Room Number': item.RoomNumber,
+            'Status': item.user_sign_contract ? 'มีผู้เข้าพัก' : 'ห้องว่าง',
+            'Tenant Name': item.user_sign_contract ? 
+              `${item.user_sign_contract.users_permissions_user.firstName} ${item.user_sign_contract.users_permissions_user.lastName}` : 
+              '',
+            'Previous Reading': previousReading,
+            'Current Reading': currentReading,
+            'Usage': usage
+          };
+        });
+        
+        // Convert data to CSV format
+        let csvContent = 'Room Number,Status,Tenant Name,Previous Reading,Current Reading,Usage\n';
+        
+        exportData.forEach(row => {
+          const values = Object.values(row).map(value => 
+            typeof value === 'string' ? `"${value.replace(/"/g, '""')}"` : value
+          );
+          csvContent += values.join(',') + '\n';
+        });
+        
+        // Create and download the file
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        
+        link.setAttribute('href', url);
+        link.setAttribute('download', `WaterMeter_Floor${this.tab}_${this.year}_${this.month}.csv`);
+        link.style.visibility = 'hidden';
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        this.$showNotification("#3A89CB", "Water Meter Data Exported Successfully");
+      } catch (error) {
+        console.error('Export error:', error);
+        this.$showNotification("danger", "Error exporting water meter data");
+      } finally {
+        loading.close();
+      }
+    },
+    
+    /**
+     * Calculate water bill amount for a specific room
+     * @param {Object} roomData - The room data object
+     * @returns {number} - The calculated bill amount
+     */
+    calculateWaterBill(roomData) {
+      // Skip if no contract or no water fee data
+      if (!roomData.user_sign_contract) return 0;
+      
+      const waterRate = roomData.user_sign_contract.waterRate || 0;
+      let usage = 0;
+      
+      if (roomData.water_fees[0]) {
+        // Calculate usage based on current and previous readings
+        const currentReading = Number(roomData.water_fees[0].meterUnit) || 0;
+        const previousReading = roomData.water_fees[1] ? 
+          Number(roomData.water_fees[1].meterUnit) : 
+          Number(roomData.previousWaterValue || 0);
+          
+        usage = Math.max(0, currentReading - previousReading);
+      } else if (roomData.newWater) {
+        // Calculate usage for new water meter entries
+        const currentReading = Number(roomData.newWater) || 0;
+        const previousReading = Number(roomData.previousWaterValue || 0);
+        
+        usage = Math.max(0, currentReading - previousReading);
+      }
+      
+      // Calculate the bill amount
+      return usage * waterRate;
+    },
+    
+    /**
+     * Generate water bills for all rooms
+     */
+    generateWaterBills() {
+      if (this.WaterFee.length === 0) {
+        this.$showNotification("warning", "No water meter data available");
+        return;
+      }
+      
+      const loading = this.$vs.loading();
+      const billPromises = [];
+      
+      // Process each room
+      this.WaterFee.forEach(room => {
+        // Skip rooms without contracts
+        if (!room.user_sign_contract) return;
+        
+        // Calculate the bill amount
+        const billAmount = this.calculateWaterBill(room);
+        
+        // Skip if bill amount is zero
+        if (billAmount <= 0) return;
+        
+        // Prepare bill data
+        const billData = {
+          data: {
+            room: room.id,
+            user_sign_contract: room.user_sign_contract.id,
+            amount: billAmount,
+            billType: 'water',
+            billMonth: this.month,
+            billYear: this.year,
+            isPaid: false,
+            description: `Water usage bill for ${this.month}/${this.year}`
+          }
+        };
+        
+        // Create the bill
+        billPromises.push(
+          axios.post('https://api.resguru.app/api/bills', billData)
+        );
+      });
+      
+      // Wait for all bills to be created
+      Promise.all(billPromises)
+        .then(responses => {
+          this.$showNotification("#3A89CB", `Created ${responses.length} water bills successfully`);
+        })
+        .catch(error => {
+          const errorMessage = error.message
+            ? error.message
+            : "Error generating water bills";
+          this.$showNotification("danger", errorMessage);
+        })
+        .finally(() => {
+          loading.close();
+        });
+    }
   },
-  // watch: {
-  //   WaterFee: {
-  //     handler(newVal) {
-  //       console.log("Updated WaterFee:", newVal);
-  //     },
-  //     deep: true,
-  //   },
-  // },
 };
 </script>
