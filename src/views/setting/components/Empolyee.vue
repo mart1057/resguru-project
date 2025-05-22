@@ -278,60 +278,98 @@
                         </div>
                     </div>
                     <div class="w-[100%] ml-[24px] mt-[8px] pl-[18px] pr-[18px] col-span-2">
-                        <div class="grid grid-cols-4 w-[100%] gap-2 ">
-                            <div class="mt-[8px] col-span-2" v-if="tab == 1">
-                                <div class="text-custom text-[14px] text-[#003765]">อีเมลล์</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    v-model="NewProfileAdmin.email" type="input" />
-                            </div>
-                            <div class="mt-[8px] col-span-2" v-if="tab == 1">
-                                <div class="text-custom text-[14px] text-[#003765]">รหัสผ่าน</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    v-model="NewProfileAdmin.password" type="password" />
-                            </div>
-                            <div class="mt-[8px] col-span-2">
-                                <div class="text-custom text-[14px] text-[#003765]">ชื่อ</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    v-model="NewProfileAdmin.firstName" type="input" />
-                            </div>
-                            <div class="mt-[8px] col-span-2">
-                                <div class="text-custom text-[14px] text-[#003765]">นามสกุล</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    v-model="NewProfileAdmin.lastName" type="input" />
-                            </div>
-                            <div class="mt-[8px] col-span-4">
-                                <div class="text-custom text-[14px] text-[#003765]">ที่อยู่</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    v-model="NewProfileAdmin.contactAddress" type="input" />
-                            </div>
-                            <!-- <div class="">
-                                <ThailandAutoCompleteAdmin v-model="NewProfileAdmin.district" type="district"
-                                    @select="selectAddressAdmin" label="ตำบล" size="small" placeholder="ตำบล..." />
-                            </div>
-                            <div class="">
-                                <ThailandAutoCompleteAdmin v-model="NewProfileAdmin.amphoe" type="amphoe"
-                                    @select="selectAddressAdmin" label="อำเภอ" size="small" placeholder="อำเภอ..." />
-                            </div>
-                            <div class="">
-                                <ThailandAutoCompleteAdmin v-model="NewProfileAdmin.province" type="province"
-                                    @select="selectAddressAdmin" label="จังหวัด" size="small" placeholder="จังหวัด..." />
-                            </div>
-                            <div class="">
-                                <ThailandAutoCompleteAdmin v-model="NewProfileAdmin.zipcode" type="zipcode"
-                                    @select="selectAddressAdmin" label="รหัสไปรษณีย์" size="small"
-                                    placeholder="รหัสไปรษณีย์..." />
-                            </div> -->
-                            <div class="mt-[8px] col-span-2">
-                                <div class="text-custom text-[14px] text-[#003765]">เบอร์ติดต่อ</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    v-model="NewProfileAdmin.phone" type="input" />
-                            </div>
-                            <div class="mt-[8px] col-span-2">
-                                <div class="text-custom text-[14px] text-[#003765]">ไลน์ติดต่อ</div>
-                                <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
-                                    v-model="NewProfileAdmin.line" type="input" />
-                            </div>
-                        </div>
+                        <!-- Replace the form section in your template with this -->
+<div class="grid grid-cols-4 w-[100%] gap-2 ">
+    <div class="mt-[8px] col-span-2" v-if="tab == 1">
+        <div class="text-custom text-[14px] text-[#003765]">
+            อีเมลล์ <span class="text-red-500">*</span>
+        </div>
+        <input 
+            class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start border"
+            :class="{'border-red-500': !NewProfileAdmin.email.trim()}"
+            v-model="NewProfileAdmin.email" 
+            type="email" 
+            placeholder="กรุณากรอกอีเมลล์"
+            required
+        />
+    </div>
+    
+    <div class="mt-[8px] col-span-2" v-if="tab == 1">
+        <div class="text-custom text-[14px] text-[#003765]">
+            รหัสผ่าน <span class="text-red-500" v-if="!is_edit">*</span>
+        </div>
+        <input 
+            class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start border"
+            :class="{'border-red-500': !is_edit && !NewProfileAdmin.password.trim()}"
+            v-model="NewProfileAdmin.password" 
+            type="password" 
+            :placeholder="is_edit ? 'เว้นว่างไว้หากไม่ต้องการเปลี่ยน' : 'กรุณากรอกรหัสผ่าน'"
+            :required="!is_edit"
+        />
+    </div>
+    
+    <div class="mt-[8px] col-span-2">
+        <div class="text-custom text-[14px] text-[#003765]">
+            ชื่อ <span class="text-red-500">*</span>
+        </div>
+        <input 
+            class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start border"
+            :class="{'border-red-500': !NewProfileAdmin.firstName.trim()}"
+            v-model="NewProfileAdmin.firstName" 
+            type="text" 
+            placeholder="กรุณากรอกชื่อ"
+            required
+        />
+    </div>
+    
+    <div class="mt-[8px] col-span-2">
+        <div class="text-custom text-[14px] text-[#003765]">
+            นามสกุล <span class="text-red-500">*</span>
+        </div>
+        <input 
+            class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start border"
+            :class="{'border-red-500': !NewProfileAdmin.lastName.trim()}"
+            v-model="NewProfileAdmin.lastName" 
+            type="text" 
+            placeholder="กรุณากรอกนามสกุล"
+            required
+        />
+    </div>
+    
+    <div class="mt-[8px] col-span-4">
+        <div class="text-custom text-[14px] text-[#003765]">ที่อยู่</div>
+        <input 
+            class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start border"
+            v-model="NewProfileAdmin.contactAddress" 
+            type="text" 
+            placeholder="กรุณากรอกที่อยู่"
+        />
+    </div>
+    
+    <div class="mt-[8px] col-span-2">
+        <div class="text-custom text-[14px] text-[#003765]">
+            เบอร์ติดต่อ <span class="text-red-500">*</span>
+        </div>
+        <input 
+            class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start border"
+            :class="{'border-red-500': !NewProfileAdmin.phone.trim()}"
+            v-model="NewProfileAdmin.phone" 
+            type="tel" 
+            placeholder="กรุณากรอกเบอร์ติดต่อ"
+            required
+        />
+    </div>
+    
+    <div class="mt-[8px] col-span-2">
+        <div class="text-custom text-[14px] text-[#003765]">ไลน์ติดต่อ</div>
+        <input 
+            class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start border"
+            v-model="NewProfileAdmin.line" 
+            type="text" 
+            placeholder="กรุณากรอกไลน์ติดต่อ"
+        />
+    </div>
+</div>
                         <div class="mt-[44px] mb-[50px]">
                             <vs-button dark shadow @click="addAdmin(NewProfileAdmin.id)">
                                 <div class="font-bold  text-custom">บันทึก</div>
@@ -390,6 +428,7 @@ export default {
                 password: ''
 
             },
+            is_edit: false,
         }
     },
     components: {
@@ -602,269 +641,317 @@ export default {
             this.fileAdminCoverForm = this.$refs.fileUploadAdminCoverForm.files[0]
             console.log(this.fileAdminCoverForm);
         },
-        addAdmin(id) {
-            // Handling existing record updates
-            if (this.is_edit) {
-                if (this.tab == 1) {
-                    // Update existing admin user
-                    axios.put('https://api.resguru.app/api/users/'+id, {
-                        firstName: this.NewProfileAdmin.firstName,
-                        lastName: this.NewProfileAdmin.lastName,
-                        contactAddress: this.NewProfileAdmin.contactAddress,
-                        phone: this.NewProfileAdmin.phone,
-                        email: this.NewProfileAdmin.email,
-                        line: this.NewProfileAdmin.line,
-                    }).then((resp) => {
+        // Add these validation methods to your Vue component
+        // Validation method for mandatory fields
+        validateAdminForm() {
+            const errors = [];
+            
+            if (this.tab === 1) { // Admin tab
+                if (!this.NewProfileAdmin.firstName.trim()) {
+                    errors.push('ชื่อจำเป็นต้องกรอก');
+                }
+                if (!this.NewProfileAdmin.lastName.trim()) {
+                    errors.push('นามสกุลจำเป็นต้องกรอก');
+                }
+                if (!this.NewProfileAdmin.email.trim()) {
+                    errors.push('อีเมลล์จำเป็นต้องกรอก');
+                } else if (!this.isValidEmail(this.NewProfileAdmin.email)) {
+                    errors.push('รูปแบบอีเมลล์ไม่ถูกต้อง');
+                }
+                if (!this.is_edit && !this.NewProfileAdmin.password.trim()) {
+                    errors.push('รหัสผ่านจำเป็นต้องกรอก');
+                }
+                if (!this.NewProfileAdmin.phone.trim()) {
+                    errors.push('เบอร์ติดต่อจำเป็นต้องกรอก');
+                }
+            } else { // Employee tab
+                if (!this.NewProfileAdmin.firstName.trim()) {
+                    errors.push('ชื่อจำเป็นต้องกรอก');
+                }
+                if (!this.NewProfileAdmin.lastName.trim()) {
+                    errors.push('นามสกุลจำเป็นต้องกรอก');
+                }
+                if (!this.NewProfileAdmin.phone.trim()) {
+                    errors.push('เบอร์ติดต่อจำเป็นต้องกรอก');
+                }
+            }
+            
+            return errors;
+        },
+
+        // Email validation helper
+        isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        },
+
+        // Check for duplicate email
+        async checkDuplicateEmail(email, excludeUserId = null) {
+            try {
+                const response = await fetch(`https://api.resguru.app/api/users?filters[email][$eq]=${encodeURIComponent(email)}`);
+                const data = await response.json();
+                
+                if (excludeUserId) {
+                    // Filter out the current user when editing
+                    const otherUsers = data.data.filter(user => user.id !== excludeUserId);
+                    return otherUsers.length > 0;
+                }
+                
+                return data.data && data.data.length > 0;
+            } catch (error) {
+                console.error('Error checking duplicate email:', error);
+                return false; // Assume no duplicate on error
+            }
+        },
+
+        // Improved addAdmin method
+        async addAdmin(id) {
+            // Validate mandatory fields
+            const validationErrors = this.validateAdminForm();
+            if (validationErrors.length > 0) {
+                this.$showNotification('danger', validationErrors.join(', '));
+                return;
+            }
+
+            // Check for duplicate email when creating new admin or editing email
+            if (this.tab === 1) { // Only for admin tab
+                const isDuplicate = await this.checkDuplicateEmail(
+                    this.NewProfileAdmin.email, 
+                    this.is_edit ? id : null
+                );
+                
+                if (isDuplicate) {
+                    this.$showNotification('danger', 'อีเมลล์นี้มีอยู่ในระบบแล้ว');
+                    return;
+                }
+            }
+
+            // Show loading
+            const loading = this.$vs.loading({
+                text: 'กำลังบันทึกข้อมูล...'
+            });
+
+            try {
+                // Handling existing record updates
+                if (this.is_edit) {
+                    if (this.tab == 1) {
+                        // Update existing admin user
+                        const resp = await axios.put('https://api.resguru.app/api/users/' + id, {
+                            firstName: this.NewProfileAdmin.firstName,
+                            lastName: this.NewProfileAdmin.lastName,
+                            contactAddress: this.NewProfileAdmin.contactAddress,
+                            phone: this.NewProfileAdmin.phone,
+                            email: this.NewProfileAdmin.email,
+                            line: this.NewProfileAdmin.line,
+                        });
+                        
                         console.log("User updated:", resp);
                         
                         // Upload profile image if one was selected
                         if (this.fileAdminProfileForm) {
-                            console.log('Uploading profile image for existing user');
-                            let formData = new FormData();
-                            formData.append("files", this.fileAdminProfileForm);
-                            formData.append("refId", String(resp.data.id));
-                            formData.append("ref", "plugin::users-permissions.user");
-                            formData.append("field", "imageProfile");
-
-                            axios.post("https://api.resguru.app/api/upload", formData, {
-                                headers: {
-                                    "Content-Type": "multipart/form-data",
-                                },
-                            }).then((result) => { 
-                                console.log("Profile image uploaded:", result);
-                            }).catch((error) => {
-                                console.error("Error uploading profile image:", error);
-                            });
+                            await this.uploadImage(
+                                this.fileAdminProfileForm,
+                                resp.data.id,
+                                "plugin::users-permissions.user",
+                                "imageProfile"
+                            );
                         }
                         
                         // Upload cover image if one was selected
                         if (this.fileAdminCoverForm) {
-                            console.log('Uploading cover image for existing user');
-                            let formData = new FormData();
-                            formData.append("files", this.fileAdminCoverForm);
-                            formData.append("refId", String(resp.data.id));
-                            formData.append("ref", "plugin::users-permissions.user");
-                            formData.append("field", "imageBanner");
-
-                            axios.post("https://api.resguru.app/api/upload", formData, {
-                                headers: {
-                                    "Content-Type": "multipart/form-data",
-                                },
-                            }).then((result) => { 
-                                console.log("Cover image uploaded:", result);
-                            }).catch((error) => {
-                                console.error("Error uploading cover image:", error);
-                            });
+                            await this.uploadImage(
+                                this.fileAdminCoverForm,
+                                resp.data.id,
+                                "plugin::users-permissions.user",
+                                "imageBanner"
+                            );
                         }
                         
-                        this.$showNotification('#3A89CB', 'Update Admin Success');
-                    }).catch(error => {
-                        console.error("Error updating admin:", error);
-                        const errorMessage = error.message ? error.message : 'Error updating information';
-                        this.$showNotification('danger', errorMessage);
-                    }).finally(() => {
+                        this.$showNotification('#3A89CB', 'อัพเดทข้อมูลแอดมินสำเร็จ');
                         this.getUser();
-                        this.profile_admin = false;
-                    });
-                } else {
-                    // Update existing employee
-                    axios.put('https://api.resguru.app/api/building-employees/'+id, {
-                        data: {
-                            name: this.NewProfileAdmin.firstName,
-                            lastname: this.NewProfileAdmin.lastName,
-                            address: this.NewProfileAdmin.contactAddress,
-                            phone: this.NewProfileAdmin.phone,
-                            line: this.NewProfileAdmin.line,
-                            position: 'Technician',
-                        }
-                    }).then((resp) => {
+                    } else {
+                        // Update existing employee
+                        const resp = await axios.put('https://api.resguru.app/api/building-employees/' + id, {
+                            data: {
+                                name: this.NewProfileAdmin.firstName,
+                                lastname: this.NewProfileAdmin.lastName,
+                                address: this.NewProfileAdmin.contactAddress,
+                                phone: this.NewProfileAdmin.phone,
+                                line: this.NewProfileAdmin.line,
+                                position: 'Technician',
+                            }
+                        });
+                        
                         console.log("Employee updated:", resp);
                         
                         // Upload employee profile image if one was selected
                         if (this.fileAdminProfileForm) {
-                            console.log('Uploading profile image for existing employee');
-                            let formData = new FormData();
-                            formData.append("files", this.fileAdminProfileForm);
-                            formData.append("refId", String(resp.data.data.id));
-                            formData.append("ref", "api::building-employee.building-employee");
-                            formData.append("field", "employeeImage");
-
-                            axios.post("https://api.resguru.app/api/upload", formData, {
-                                headers: {
-                                    "Content-Type": "multipart/form-data",
-                                },
-                            }).then((result) => { 
-                                console.log("Employee image uploaded:", result);
-                            }).catch((error) => {
-                                console.error("Error uploading employee image:", error);
-                            });
+                            await this.uploadImage(
+                                this.fileAdminProfileForm,
+                                resp.data.data.id,
+                                "api::building-employee.building-employee",
+                                "employeeImage"
+                            );
                         }
                         
-                        this.$showNotification('#3A89CB', 'Update Employee Success');
-                    }).catch(error => {
-                        console.error("Error updating employee:", error);
-                        const errorMessage = error.message ? error.message : 'Error updating information';
-                        this.$showNotification('danger', errorMessage);
-                    }).finally(() => {
+                        this.$showNotification('#3A89CB', 'อัพเดทข้อมูลพนักงานสำเร็จ');
                         this.getEmployer();
-                        this.profile_admin = false;
-                    });
-                }
-            } else {
-                // Creating new records
-                if (this.tab == 1) {
-                    // Create new admin user
-                    axios.post(`https://api.resguru.app/api/users/`, {
-                        firstName: this.NewProfileAdmin.firstName,
-                        lastName: this.NewProfileAdmin.lastName,
-                        contactAddress: this.NewProfileAdmin.contactAddress,
-                        phone: this.NewProfileAdmin.phone,
-                        email: this.NewProfileAdmin.email,
-                        line: this.NewProfileAdmin.line,
-                        role: 6,
-                        username: this.NewProfileAdmin.email,
-                        password: this.NewProfileAdmin.password
-                    }).then((resp) => {
+                    }
+                } else {
+                    // Creating new records
+                    if (this.tab == 1) {
+                        // Create new admin user
+                        const resp = await axios.post(`https://api.resguru.app/api/users/`, {
+                            firstName: this.NewProfileAdmin.firstName,
+                            lastName: this.NewProfileAdmin.lastName,
+                            contactAddress: this.NewProfileAdmin.contactAddress,
+                            phone: this.NewProfileAdmin.phone,
+                            email: this.NewProfileAdmin.email,
+                            line: this.NewProfileAdmin.line,
+                            role: 6,
+                            username: this.NewProfileAdmin.email,
+                            password: this.NewProfileAdmin.password
+                        });
+                        
                         console.log("User created:", resp);
                         const newUserId = resp.data.id;
-                        
-                        // Skip image uploads if no files exist and directly connect user to building
-                        if (!this.fileAdminProfileForm && !this.fileAdminCoverForm) {
-                            console.log('No images to upload, connecting user directly to building');
-                            return axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`, {
-                                data: {
-                                    users_admin: { 
-                                        connect: [newUserId] 
-                                    }
-                                }
-                            });
-                        }
                         
                         // Handle image uploads if files exist
                         const uploadPromises = [];
                         
                         if (this.fileAdminProfileForm) {
-                            console.log('Uploading profile image for new user');
-                            let formData = new FormData();
-                            formData.append("files", this.fileAdminProfileForm);
-                            formData.append("refId", String(newUserId));
-                            formData.append("ref", "plugin::users-permissions.user");
-                            formData.append("field", "imageProfile");
-
-                            const profileUploadPromise = axios.post("https://api.resguru.app/api/upload", formData, {
-                                headers: {
-                                    "Content-Type": "multipart/form-data",
-                                },
-                            }).catch(error => {
-                                console.error("Profile image upload failed:", error);
-                                // Continue even if upload fails
-                                return null;
-                            });
-                            uploadPromises.push(profileUploadPromise);
+                            uploadPromises.push(
+                                this.uploadImage(
+                                    this.fileAdminProfileForm,
+                                    newUserId,
+                                    "plugin::users-permissions.user",
+                                    "imageProfile"
+                                )
+                            );
                         }
                         
                         if (this.fileAdminCoverForm) {
-                            console.log('Uploading cover image for new user');
-                            let formData = new FormData();
-                            formData.append("files", this.fileAdminCoverForm);
-                            formData.append("refId", String(newUserId));
-                            formData.append("ref", "plugin::users-permissions.user");
-                            formData.append("field", "imageBanner");
-
-                            const coverUploadPromise = axios.post("https://api.resguru.app/api/upload", formData, {
-                                headers: {
-                                    "Content-Type": "multipart/form-data",
-                                },
-                            }).catch(error => {
-                                console.error("Cover image upload failed:", error);
-                                // Continue even if upload fails
-                                return null;
-                            });
-                            uploadPromises.push(coverUploadPromise);
+                            uploadPromises.push(
+                                this.uploadImage(
+                                    this.fileAdminCoverForm,
+                                    newUserId,
+                                    "plugin::users-permissions.user",
+                                    "imageBanner"
+                                )
+                            );
                         }
                         
-                        // Wait for all uploads to complete (or fail), then connect user to building
-                        return Promise.all(uploadPromises)
-                            .then(() => {
-                                console.log('Image uploads processed, connecting user to building');
-                                return axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`, {
-                                    data: {
-                                        users_admin: { 
-                                            connect: [newUserId] 
-                                        }
-                                    }
-                                });
-                            })
-                            .catch(error => {
-                                console.error("Error during image upload process:", error);
-                                // Try to connect user to building even if uploads failed
-                                return axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`, {
-                                    data: {
-                                        users_admin: { 
-                                            connect: [newUserId] 
-                                        }
-                                    }
-                                });
-                            });
-                    }).then((buildingResp) => {
-                        console.log("User connected to building:", buildingResp);
-                        this.$showNotification('#3A89CB', 'Create Admin Success');
+                        // Wait for uploads to complete
+                        await Promise.allSettled(uploadPromises);
+                        
+                        // Connect user to building
+                        await axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`, {
+                            data: {
+                                users_admin: { 
+                                    connect: [newUserId] 
+                                }
+                            }
+                        });
+                        
+                        this.$showNotification('#3A89CB', 'สร้างแอดมินสำเร็จ');
                         this.getUser();
-                        this.profile_admin = false;
-                    }).catch(error => {
-                        console.error("Error in admin creation process:", error);
-                        const errorMessage = error.message ? error.message : 'Error creating/connecting admin';
-                        this.$showNotification('danger', errorMessage);
-                    });
-                } else {
-                    // Create new employee
-                    axios.post(`https://api.resguru.app/api/building-employees/`, {
-                        data: {
-                            name: this.NewProfileAdmin.firstName,
-                            lastname: this.NewProfileAdmin.lastName,
-                            address: this.NewProfileAdmin.contactAddress,
-                            phone: this.NewProfileAdmin.phone,
-                            line: this.NewProfileAdmin.line,
-                            position: 'Technician',
-                            building: this.$store.state.building
-                        }
-                    }).then((resp) => {
+                    } else {
+                        // Create new employee
+                        const resp = await axios.post(`https://api.resguru.app/api/building-employees/`, {
+                            data: {
+                                name: this.NewProfileAdmin.firstName,
+                                lastname: this.NewProfileAdmin.lastName,
+                                address: this.NewProfileAdmin.contactAddress,
+                                phone: this.NewProfileAdmin.phone,
+                                line: this.NewProfileAdmin.line,
+                                position: 'Technician',
+                                building: this.$store.state.building
+                            }
+                        });
+                        
                         console.log("Employee created:", resp);
                         
-                        // Upload employee image only if a file was selected
+                        // Upload employee image if selected
                         if (this.fileAdminProfileForm) {
-                            console.log('Uploading profile image for new employee');
-                            let formData = new FormData();
-                            formData.append("files", this.fileAdminProfileForm);
-                            formData.append("refId", String(resp.data.data.id));
-                            formData.append("ref", "api::building-employee.building-employee");
-                            formData.append("field", "employeeImage");
-
-                            return axios.post("https://api.resguru.app/api/upload", formData, {
-                                headers: {
-                                    "Content-Type": "multipart/form-data",
-                                },
-                            }).catch(error => {
-                                console.error("Employee image upload failed:", error);
-                                // Continue even if upload fails
-                                return resp;
-                            });
+                            await this.uploadImage(
+                                this.fileAdminProfileForm,
+                                resp.data.data.id,
+                                "api::building-employee.building-employee",
+                                "employeeImage"
+                            );
                         }
                         
-                        return resp;
-                    }).then((result) => { 
-                        console.log("Employee creation completed:", result);
-                        this.$showNotification('#3A89CB', 'Create Employee Success');
+                        this.$showNotification('#3A89CB', 'สร้างพนักงานสำเร็จ');
                         this.getEmployer();
-                        this.profile_admin = false;
-                    }).catch(error => {
-                        console.error("Error in employee creation process:", error);
-                        const errorMessage = error.message ? error.message : 'Error creating employee';
-                        this.$showNotification('danger', errorMessage);
-                    });
+                    }
                 }
+            } catch (error) {
+                console.error("Error in admin/employee process:", error);
+                
+                // Handle specific Strapi errors
+                let errorMessage = 'เกิดข้อผิดพลาดในการบันทึกข้อมูล';
+                
+                if (error.response?.data?.error?.message) {
+                    const strapiError = error.response.data.error.message;
+                    if (strapiError.includes('email') && strapiError.includes('unique')) {
+                        errorMessage = 'อีเมลล์นี้มีอยู่ในระบบแล้ว';
+                    } else if (strapiError.includes('username') && strapiError.includes('unique')) {
+                        errorMessage = 'ชื่อผู้ใช้นี้มีอยู่ในระบบแล้ว';
+                    } else {
+                        errorMessage = strapiError;
+                    }
+                }
+                
+                this.$showNotification('danger', errorMessage);
+            } finally {
+                loading.close();
+                this.profile_admin = false;
+            }
+        },
+
+        // Helper method for image uploads
+        async uploadImage(file, refId, ref, field) {
+            try {
+                const formData = new FormData();
+                formData.append("files", file);
+                formData.append("refId", String(refId));
+                formData.append("ref", ref);
+                formData.append("field", field);
+
+                const result = await axios.post("https://api.resguru.app/api/upload", formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                });
+                
+                console.log(`${field} uploaded successfully:`, result);
+                return result;
+            } catch (error) {
+                console.error(`Error uploading ${field}:`, error);
+                throw error;
             }
         }
     }
 }
 </script>
+
+<style scoped>
+.border-red-500 {
+    border-color: #ef4444 !important;
+}
+
+.text-red-500 {
+    color: #ef4444;
+}
+
+/* Optional: Add animation for validation errors */
+.shake {
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+</style>
