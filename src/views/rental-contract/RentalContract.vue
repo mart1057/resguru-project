@@ -151,7 +151,7 @@
                     val="Maintenance"
                     @input="getRentalContract()"
                   >
-                    <div class="text-custom">ห้องรอซ่อม</div>
+                    <div class="text-custom">ห้องรอดำเนินการ</div>
                   </vs-checkbox>
                 </div>
               </div>
@@ -357,7 +357,7 @@
                     : data.roomStatus == "Checked In"
                     ? "มีผู้เข้าพัก"
                     : data.roomStatus == "Maintenance"
-                    ? "รอซ่อม"
+                    ? "รอดำเนินการ"
                     : "ห้องว่าง"
                 }}
               </div>

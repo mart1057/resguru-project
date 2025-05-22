@@ -543,7 +543,7 @@
                                         type="input" v-model="item.remark"
                                         @change="item.remark == 'ไม่เสียหาย' ? item.price = 0 : item.price = item.price"
                                         disabled>
-                                        <option value="รอซ่อม">รอซ่อม</option>
+                                        <option value="รอดำเนินการ">รอดำเนินการ</option>
                                         <option value="เสียหาย">เสียหาย</option>
                                         <option value="ไม่เสียหาย">ไม่เสียหาย</option>
                                     </select>

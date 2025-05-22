@@ -85,7 +85,7 @@
                                 </div>
                                 <div class="center">
                                     <vs-checkbox v-model="filter.select" val="Maintenance" @input="getRoom()">
-                                        <div class="text-custom">ห้องรอซ่อม</div>
+                                        <div class="text-custom">ห้องรอดำเนินการ</div>
                                     </vs-checkbox>
                                 </div>
                             </div>
@@ -177,7 +177,7 @@
                         <!-- {{ data.user_sign_contract ? "มีผู้เข้าพัก" : "ห้องว่าง" }} -->
                         {{ data.roomStatus == 'Reserved' ? 'ห้องจอง' :
                             data.roomStatus == 'Checked In' ? "มีผู้เข้าพัก" :
-                                data.roomStatus == 'Maintenance' ? "รอซ่อม" : "ห้องว่าง" }}<span
+                                data.roomStatus == 'Maintenance' ? "รอดำเนินการ" : "ห้องว่าง" }}<span
                             v-if="data.roomStatus == 'Maintenance'" class="ml-[4px]">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <mask id="mask0_2584_33960" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"

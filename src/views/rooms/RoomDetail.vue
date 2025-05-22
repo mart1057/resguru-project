@@ -47,7 +47,7 @@
             : $route.query.status == "Reserved"
             ? "ห้องจอง"
             : $route.query.status == "Maintenance"
-            ? "รอซ่อม"
+            ? "รอดำเนินการ"
             : "ห้องว่าง"
         }}
       </div>
