@@ -451,7 +451,7 @@
           </div>
         </div>
         <div class="flex justify-end">
-          <div v-if="tab == 1" class="flex">
+          <!-- <div v-if="tab == 1" class="flex">
             <div>
               <input
                 class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
@@ -597,7 +597,7 @@
                 </div>
               </div>
             </label>
-          </div>
+          </div> -->
         </div>
         <div class="flex items-center mb-[8px] mt-[14px] table-container">
           <!-- <div v-for="(data, i) in floor " class="flex-initial flex-nowrap w-32 p-2 border-1 rounded-t-lg" -->
