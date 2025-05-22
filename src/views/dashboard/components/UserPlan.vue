@@ -60,7 +60,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-2 w-[100%] gap-2 mt-[10px]">
+            <div class="grid grid-cols-1 w-[100%] gap-2 mt-[10px]">
                 <div class="h-[110px] p-[18px] flex flex-col justify-between bg-[#003765] rounded-[22px] text-[white]">
                     <div class="flex justify-between">
                         <div class="text-[24px] flex justify-center items-center">{{ data.countRoom }}</div>
@@ -77,10 +77,14 @@
                         <div class="text-[20px] flex justify-start items-center">ห้องทั้งหมด</div>
                     </div>
                 </div>
+                
+            </div>
+
+            <div class="grid grid-cols-3 w-[100%] gap-2 mt-[10px]">
                 <div class="h-[110px] p-[18px] flex flex-col justify-between bg-[#003765] rounded-[22px] text-[white]">
                     <div class="flex justify-between">
-                        <div class="text-[24px] flex justify-center items-center">{{ data.occuRoom }} ({{
-                        Math.round(data.occuRoomPer) }}%)
+                        <div class="text-[24px] flex justify-center items-center">{{ data.occuRoom-data.reservedRoom }} ({{
+                        Math.round(data.occuRoomPer-data.reservedRoom) }}%)
                         </div>
                         <div>
                             <svg width="34" height="30" viewBox="0 0 34 30" fill="none"
@@ -95,13 +99,11 @@
                         <div class="text-[20px] flex justify-start items-center">ห้องมีผู้เช่า</div>
                     </div>
                 </div>
-            </div>
-
-            <div class="grid grid-cols-2 w-[100%] gap-2 mt-[10px]">
                 <div
                     class="h-[110px] p-[18px] flex flex-col justify-between bg-[#F5D65E] rounded-[22px] text-[#003765]  ">
                     <div class="flex justify-between">
-                        <div class="text-[24px] flex justify-center items-center">{{ data.reservedRoom }}</div>
+                        <div class="text-[24px] flex justify-center items-center">{{ data.reservedRoom }} ({{
+                        Math.round(data.reservedRoom) }}%)</div>
                         <div>
                             <template>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256">
