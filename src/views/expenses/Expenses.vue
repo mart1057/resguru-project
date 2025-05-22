@@ -47,182 +47,126 @@
                 </div>
             </div>
         </div>
-        <div class="grid grid-cols-2 w-[100%] gap-4 mt-[24px]">
-            <!-- In your rายรับ section -->
-            <div class="bg-[white] h-[246px] rounded-[22px] pl-[24px] pr-[24px] pt-[18px] pb-[18px]">
-                <div class="font-bold text-[18px]">รายรับ</div>
-                <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px]">
-                    <div class="flex mt-[4px] w-[70%]">
-                        <div class="mt-[8px]">
-                            <div v-for="(label, index) in incomeLabels" :key="index" class="flex items-center mt-[2px]">
-                                <div class="w-[12px] h-[12px] rounded-[100px] mr-[8px]" :style="{ 'background-color': incomeColors[index] }"></div>
-                                <div class="text-[12px] text-[#5C6B79]">{{ label }}</div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="w-[50%]">
-                        <div class="w-[300px] flex justify-start items-start ml-[-90px] mt-[-40px]">
-                            <apexchart :options="incomeChartOptions" :series="incomeData"></apexchart>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 w-[100%] gap-2 content-start mt-[14px]">
-                        <div v-for="(value, index) in incomeData" :key="index" class="h-[52px] border rounded-[12px] p-[4px]" v-if="value > 0">
-                            <div class="flex justify-between">
-                                <div class="flex items-center">
-                                    <div class="w-[12px] h-[12px] rounded-[100px] mr-[8px]" :style="{ 'background-color': incomeColors[index] }"></div>
-                                </div>
-                                <div class="flex flex-col justify-around">
-                                    <div class="text-[12px] text-[#B9CCDC]">{{ Math.round((value / incomeData.reduce((a, b) => a + b, 0)) * 100) }}%</div>
-                                    <div class="font-bold text-[16px]" :style="{ color: incomeColors[index] }">{{ $formatNumber(value) }}</div>
-                                </div>
-                            </div>
+
+
+
+
+
+<!-- Replace your existing grid with รายรับ and รายจ่าย sections with this: -->
+<div class="grid grid-cols-2 w-[100%] gap-4 mt-[24px]">
+    <!-- รายรับ section with conditional blur -->
+    <div class="relative">
+        <div class="bg-[white] h-[246px] rounded-[22px] pl-[24px] pr-[24px] pt-[18px] pb-[18px]" 
+             :class="{ 'blur-sm pointer-events-none': isPackageBasic }">
+            <div class="font-bold text-[18px]">รายรับ</div>
+            <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px]">
+                <!-- ... your existing รายรับ content ... -->
+                <div class="flex mt-[4px] w-[70%]">
+                    <div class="mt-[8px]">
+                        <div v-for="(label, index) in incomeLabels" :key="index" class="flex items-center mt-[2px]">
+                            <div class="w-[12px] h-[12px] rounded-[100px] mr-[8px]" :style="{ 'background-color': incomeColors[index] }"></div>
+                            <div class="text-[12px] text-[#5C6B79]">{{ label }}</div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="bg-[white] h-[246px] rounded-[22px] pl-[24px] pr-[24px] pt-[18px] pb-[18px]">
-                <div class=" font-bold text-[18px]">รายจ่าย</div>
-                <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px]">
-                    <div class="flex mt-[4px] w-[70%]">
-                        <div class="mt-[8px]">
+                <div class="w-[50%]">
+                    <div class="w-[300px] flex justify-start items-start ml-[-90px] mt-[-40px]">
+                        <apexchart :options="incomeChartOptions" :series="incomeData"></apexchart>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 w-[100%] gap-2 content-start mt-[14px]">
+                    <div v-for="(value, index) in incomeData" :key="index" class="h-[52px] border rounded-[12px] p-[4px]" v-if="value > 0">
+                        <div class="flex justify-between">
                             <div class="flex items-center">
-                                <div class="w-[12px] h-[12px] bg-[#F1B826] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">{{ label2[0] }}</div>
+                                <div class="w-[12px] h-[12px] rounded-[100px] mr-[8px]" :style="{ 'background-color': incomeColors[index] }"></div>
                             </div>
-                            <div class="flex items-center mt-[2px]">
-                                <div class="w-[12px] h-[12px] bg-[#008EF4] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">{{ label2[1] }}</div>
-                            </div>
-                            <div class="flex items-center mt-[2px]">
-                                <div class="w-[12px] h-[12px] bg-[#D44769] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">{{ label2[2] }}</div>
-                            </div>
-                            <div class="flex items-center mt-[2px]">
-                                <div class="w-[12px] h-[12px] bg-[#a1a1a1] rounded-[100px] mr-[8px]"></div>
-                                <div class="text-[12px] text-[#5C6B79]">{{ label2[3] }}</div>
+                            <div class="flex flex-col justify-around">
+                                <div class="text-[12px] text-[#B9CCDC]">{{ Math.round((value / incomeData.reduce((a, b) => a + b, 0)) * 100) }}%</div>
+                                <div class="font-bold text-[16px]" :style="{ color: incomeColors[index] }">{{ $formatNumber(value) }}</div>
                             </div>
                         </div>
-                    </div>
-                    <div class="w-[50%]">
-                        <div class="w-[300px] flex justify-start items-start ml-[-90px] mt-[-40px]">
-                            <apexchart :options="options" :series="data2"></apexchart>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 w-[100%] gap-2 content-start">
-                        <div class="h-[52px] border rounded-[12px] p-[4px]">
-                            <div class="flex justify-between">
-                                <div class="flex items-center">
-                                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1373_19047" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="36" height="36">
-                                            <rect width="36" height="36" fill="#D9D9D9" />
-                                        </mask>
-                                        <g mask="url(#mask0_1373_19047)">
-                                            <path
-                                                d="M17.4964 25.65L21.8862 18.2019C21.9271 18.1249 21.9312 18.0456 21.8985 17.9639C21.8658 17.8821 21.8085 17.8412 21.7267 17.8412H18.1516L20.3845 8.72595C20.4172 8.61057 20.4009 8.5024 20.3354 8.40142C20.27 8.30045 20.1882 8.24996 20.09 8.24996H14.3065C14.192 8.24996 14.098 8.29324 14.0243 8.37979C13.9507 8.46634 13.9139 8.57692 13.9139 8.71155V19.7884C13.9139 19.923 13.9507 20.0336 14.0243 20.1201C14.098 20.2067 14.192 20.25 14.3065 20.25H17.4964V25.65ZM23.8639 18.7701L17.1652 30.196C17.0458 30.4017 16.8973 30.5373 16.7198 30.6027C16.5423 30.6681 16.3661 30.6681 16.191 30.6027C16.016 30.5373 15.8708 30.4181 15.7555 30.245C15.6402 30.0719 15.5825 29.8623 15.5825 29.6162V22.4999H14.3065C13.6702 22.4999 13.1267 22.235 12.676 21.7052C12.2253 21.1754 12 20.5364 12 19.7884V8.71155C12 7.96347 12.2253 7.32454 12.676 6.79474C13.1267 6.26491 13.6702 6 14.3065 6H20.4826C21.114 6 21.6269 6.28125 22.0211 6.84375C22.4154 7.40625 22.5315 8.02885 22.3695 8.71155L20.6863 15.5913H22.4285C23.1204 15.5913 23.6321 15.9504 23.9633 16.6687C24.2946 17.3869 24.2614 18.0874 23.8639 18.7701Z"
-                                                fill="#F5D65E" />
-                                        </g>
-                                    </svg>
-                                </div>
-                                <div class="flex flex-col justify-around">
-                                    <div class="text-[12px] text-[#B9CCDC]"></div>
-                                    <div class="text-[#F5D65E] font-bold text-[16px]">{{ $formatNumber(data2[0]) }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="h-[52px] border rounded-[12px] p-[4px]">
-                            <div class="flex justify-between">
-                                <div class="flex items-center">
-                                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1373_19060" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="36" height="36">
-                                            <rect width="36" height="36" fill="#D9D9D9" />
-                                        </mask>
-                                        <g mask="url(#mask0_1373_19060)">
-                                            <path
-                                                d="M18 32.2507C15.0234 32.2507 12.4043 31.2118 10.1426 29.1341C7.88086 27.0564 6.75 24.245 6.75 20.7C6.75 18.4697 7.59952 16.044 9.29857 13.4228C10.9976 10.8017 13.5659 7.94805 17.0034 4.86193C17.1447 4.7423 17.3009 4.6498 17.4721 4.58443C17.6432 4.51903 17.8192 4.48633 18 4.48633C18.1807 4.48633 18.3567 4.51903 18.5278 4.58443C18.699 4.6498 18.8552 4.7423 18.9965 4.86193C22.434 7.94805 25.0023 10.8017 26.7014 13.4228C28.4004 16.044 29.2499 18.4697 29.2499 20.7C29.2499 24.245 28.1191 27.0564 25.8573 29.1341C23.5956 31.2118 20.9765 32.2507 18 32.2507ZM18 30.0007C20.5153 30.0007 22.6442 29.1358 24.3865 27.406C26.1288 25.6762 27 23.4411 27 20.7007C27 18.9257 26.2625 16.8944 24.7875 14.6069C23.3125 12.3194 21.05 9.77569 18 6.97569C14.95 9.77569 12.6875 12.3194 11.2125 14.6069C9.73746 16.8944 8.99996 18.9257 8.99996 20.7007C8.99996 23.4411 9.87111 25.6762 11.6134 27.406C13.3557 29.1358 15.4846 30.0007 18 30.0007ZM18.3692 28.2699C18.6307 28.2449 18.8461 28.1471 19.0154 27.9764C19.1846 27.8057 19.2692 27.5999 19.2692 27.3589C19.2692 27.0778 19.177 26.855 18.9925 26.6906C18.8081 26.5262 18.5724 26.4565 18.2855 26.4815C17.2605 26.5565 16.1442 26.256 14.9365 25.58C13.7288 24.9041 12.975 23.7286 12.675 22.0536C12.625 21.7978 12.5177 21.5968 12.3533 21.4507C12.1889 21.3045 11.9932 21.2315 11.7663 21.2315C11.4932 21.2315 11.2658 21.3339 11.0841 21.5387C10.9024 21.7435 10.8442 22.0065 10.9096 22.3276C11.3154 24.5065 12.2961 26.0641 13.8519 27.0007C15.4077 27.9372 16.9134 28.3603 18.3692 28.2699Z"
-                                                fill="#008EF4" />
-                                        </g>
-                                    </svg>
-                                </div>
-                                <div class="flex flex-col justify-around">
-                                    <div class="text-[12px] text-[#B9CCDC]"></div>
-                                    <div class="text-[#008EF4] text-[16px] font-bold">{{$formatNumber(data2[1])  }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="h-[52px] border rounded-[12px] p-[4px]">
-                            <div class="flex justify-between">
-                                <div class="flex items-center">
-                                    <svg width="36" height="36" viewBox="0 0 36 36" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1373_19078" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="36" height="36">
-                                            <rect width="36" height="36" fill="#D9D9D9" />
-                                        </mask>
-                                        <g mask="url(#mask0_1373_19078)">
-                                            <path
-                                                d="M18 17.539C16.5562 17.539 15.3203 17.0249 14.2922 15.9968C13.2641 14.9687 12.75 13.7328 12.75 12.289C12.75 10.8453 13.2641 9.60935 14.2922 8.58125C15.3203 7.55313 16.5562 7.03906 18 7.03906C19.4437 7.03906 20.6796 7.55313 21.7077 8.58125C22.7359 9.60935 23.2499 10.8453 23.2499 12.289C23.2499 13.7328 22.7359 14.9687 21.7077 15.9968C20.6796 17.0249 19.4437 17.539 18 17.539ZM8.10577 28.962C7.72165 28.962 7.39966 28.8321 7.13981 28.5722C6.87994 28.3124 6.75 27.9904 6.75 27.6062V25.6274C6.75 24.8852 6.94809 24.2031 7.34426 23.5809C7.74041 22.9588 8.27501 22.4794 8.94806 22.1429C10.3711 21.4506 11.8418 20.914 13.3599 20.5333C14.8781 20.1525 16.4257 19.9621 18.0027 19.9621C19.5797 19.9621 21.1264 20.1525 22.6427 20.5333C24.1591 20.914 25.6288 21.4506 27.0519 22.1429C27.7249 22.4794 28.2595 22.9588 28.6557 23.5809C29.0518 24.2031 29.2499 24.8852 29.2499 25.6274V27.6062C29.2499 27.9904 29.12 28.3124 28.8601 28.5722C28.6003 28.8321 28.2783 28.962 27.8941 28.962H8.10577ZM18 15.289C18.825 15.289 19.5312 14.9953 20.1187 14.4078C20.7062 13.8203 21 13.114 21 12.289C21 11.464 20.7062 10.7578 20.1187 10.1703C19.5312 9.58278 18.825 9.28903 18 9.28903C17.175 9.28903 16.4687 9.58278 15.8812 10.1703C15.2937 10.7578 15 11.464 15 12.289C15 13.114 15.2937 13.8203 15.8812 14.4078C16.4687 14.9953 17.175 15.289 18 15.289ZM23.5672 23.1322V26.7121H27V25.6274C27 25.3044 26.9086 25.0159 26.7259 24.7621C26.5432 24.5082 26.3076 24.3044 26.0192 24.1505C25.6307 23.9409 25.2283 23.7524 24.812 23.5851C24.3956 23.4178 23.9807 23.2669 23.5672 23.1322ZM14.6826 22.5467V24.4621H21.3173V22.5467C20.7692 22.4274 20.2175 22.3419 19.6622 22.2899C19.107 22.238 18.5517 22.2121 17.9964 22.2121C17.4411 22.2121 16.887 22.238 16.3341 22.2899C15.7812 22.3419 15.2307 22.4274 14.6826 22.5467ZM8.99996 26.7121H12.4327V23.1322C12.0192 23.2669 11.6043 23.4178 11.188 23.5851C10.7716 23.7524 10.3692 23.9409 9.98074 24.1505C9.69229 24.3044 9.45671 24.5082 9.27401 24.7621C9.09131 25.0159 8.99996 25.3044 8.99996 25.6274V26.7121Z"
-                                                fill="#D44769" />
-                                        </g>
-                                    </svg>
-                                </div>
-                                <div class="flex flex-col justify-around">
-                                    <div class="text-[12px] text-[#B9CCDC]"></div>
-                                    <div class="text-[#D44769] font-bold text-[16px]">{{ $formatNumber(data2[2] )}}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="h-[52px] border rounded-[12px] p-[4px]">
-                            <div class="flex justify-between">
-                                <div class="flex items-center">
-                                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1373_19086" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="32" height="32">
-                                            <rect width="32" height="32" fill="#a1a1a1" />
-                                        </mask>
-                                        <g mask="url(#mask0_1373_19086)">
-                                            <path
-                                                d="M18.3326 16.9491C17.401 16.9491 16.6126 16.6265 15.9673 15.9812C15.322 15.3359 14.9993 14.5474 14.9993 13.6158C14.9993 12.6842 15.322 11.8958 15.9673 11.2505C16.6126 10.6052 17.401 10.2825 18.3326 10.2825C19.2642 10.2825 20.0527 10.6052 20.698 11.2505C21.3433 11.8958 21.6659 12.6842 21.6659 13.6158C21.6659 14.5474 21.3433 15.3359 20.698 15.9812C20.0527 16.6265 19.2642 16.9491 18.3326 16.9491ZM9.53777 21.0773C8.87497 21.0773 8.30756 20.8413 7.83554 20.3693C7.36354 19.8973 7.12754 19.3299 7.12754 18.6671V8.56453C7.12754 7.90173 7.36354 7.33432 7.83554 6.8623C8.30756 6.3903 8.87497 6.1543 9.53777 6.1543H27.1274C27.7903 6.1543 28.3577 6.3903 28.8297 6.8623C29.3017 7.33432 29.5377 7.90173 29.5377 8.56453V18.6671C29.5377 19.3299 29.3017 19.8973 28.8297 20.3693C28.3577 20.8413 27.7903 21.0773 27.1274 21.0773H9.53777ZM11.5377 19.0774H25.1275C25.1275 18.4124 25.3635 17.8445 25.8355 17.3735C26.3075 16.9026 26.8749 16.6671 27.5377 16.6671V10.5645C26.8728 10.5645 26.3048 10.3285 25.8339 9.8565C25.363 9.38447 25.1275 8.81706 25.1275 8.15426H11.5377C11.5377 8.81922 11.3017 9.38716 10.8297 9.8581C10.3577 10.329 9.7903 10.5645 9.1275 10.5645V16.6671C9.79246 16.6671 10.3604 16.9031 10.8313 17.3751C11.3023 17.8471 11.5377 18.4145 11.5377 19.0774ZM4.87117 25.7439C4.20835 25.7439 3.64094 25.5079 3.16894 25.0359C2.69694 24.5639 2.46094 23.9965 2.46094 23.3337V11.1286C2.46094 10.8453 2.5568 10.6078 2.74854 10.4162C2.94029 10.2245 3.17789 10.1287 3.46134 10.1287C3.7448 10.1287 3.98226 10.2245 4.1737 10.4162C4.36515 10.6078 4.46087 10.8453 4.46087 11.1286V23.3337C4.46087 23.4363 4.50362 23.5303 4.5891 23.6158C4.67457 23.7012 4.76859 23.744 4.87117 23.744H24.5633C24.8467 23.744 25.0842 23.8398 25.2758 24.0316C25.4675 24.2233 25.5633 24.4609 25.5633 24.7444C25.5633 25.0278 25.4675 25.2653 25.2758 25.4567C25.0842 25.6482 24.8467 25.7439 24.5633 25.7439H4.87117ZM9.53777 19.0774H9.1275V8.15426H9.53777C9.42666 8.15426 9.3305 8.19486 9.2493 8.27606C9.1681 8.35726 9.1275 8.45342 9.1275 8.56453V18.6671C9.1275 18.7782 9.1681 18.8743 9.2493 18.9555C9.3305 19.0368 9.42666 19.0774 9.53777 19.0774Z"
-                                                fill="#CC00FF" />
-                                        </g>
-                                    </svg>
-                                </div>
-                                <div class="flex flex-col justify-around">
-                                    <div class="text-[12px] text-[#B9CCDC]"></div>
-                                    <div class="text-[#CC00FF  ] font-bold text-[16px]">{{ $formatNumber(data2[3]) }}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- <div class="h-[52px] border rounded-[12px] p-[4px]">
-                            <div class="flex justify-between">
-                                <div class="flex items-center">
-                                    <svg width="32" height="32" viewBox="0 0 32 32" fill="none"
-                                        xmlns="http://www.w3.org/2000/svg">
-                                        <mask id="mask0_1373_19097" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
-                                            y="0" width="32" height="32">
-                                            <rect width="32" height="32" fill="#D9D9D9" />
-                                        </mask>
-                                        <g mask="url(#mask0_1373_19097)">
-                                            <path
-                                                d="M5.15228 27.4368C4.60699 27.4368 4.13734 27.2398 3.74334 26.8458C3.34934 26.4518 3.15234 25.9821 3.15234 25.4368V6.10348C3.15234 5.55819 3.34934 5.08854 3.74334 4.69452C4.13734 4.30052 4.60699 4.10352 5.15228 4.10352H13.819C14.3643 4.10352 14.8339 4.30052 15.2279 4.69452C15.6219 5.08854 15.8189 5.55819 15.8189 6.10348V9.43685H26.8446C27.3899 9.43685 27.8595 9.63385 28.2535 10.0278C28.6476 10.4219 28.8446 10.8915 28.8446 11.4368V25.4368C28.8446 25.9821 28.6476 26.4518 28.2535 26.8458C27.8595 27.2398 27.3899 27.4368 26.8446 27.4368H5.15228ZM5.15228 25.4368H8.48564V22.1035H5.15228V25.4368ZM5.15228 20.1035H8.48564V16.7701H5.15228V20.1035ZM5.15228 14.7702H8.48564V11.4368H5.15228V14.7702ZM5.15228 9.43685H8.48564V6.10348H5.15228V9.43685ZM10.4856 25.4368H13.819V22.1035H10.4856V25.4368ZM10.4856 20.1035H13.819V16.7701H10.4856V20.1035ZM10.4856 14.7702H13.819V11.4368H10.4856V14.7702ZM10.4856 9.43685H13.819V6.10348H10.4856V9.43685ZM15.8189 25.4368H26.8446V11.4368H15.8189V14.7702H18.742V16.7701H15.8189V20.1035H18.742V22.1035H15.8189V25.4368ZM21.6651 16.7701V14.7702H23.6651V16.7701H21.6651ZM21.6651 22.1035V20.1035H23.6651V22.1035H21.6651Z"
-                                                fill="#9A77FF" />
-                                        </g>
-                                    </svg>
-                                </div>
-                                <div class="flex flex-col justify-around">
-                                    <div class="text-[12px] text-[#B9CCDC]">60%</div>
-                                    <div class="text-[#9A77FF] font-bold text-[16px]">{{ data2[4] }}</div>
-                                </div>
-                            </div>
-                        </div> -->
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Package upgrade overlay for รายรับ -->
+        <div v-if="isPackageBasic" class="absolute inset-0 flex items-center justify-center bg-gray-500 bg-opacity-40 rounded-lg">
+            <div class="text-center p-4 bg-white rounded-lg shadow-lg">
+                <div class="text-lg font-bold text-gray-700 mb-2">
+                    อัพเกรดแพ็คเกจ
+                </div>
+                <div class="text-sm text-gray-600 mb-4">
+                    ฟีเจอร์นี้ใช้ได้กับแพ็คเกจ Professional เท่านั้น
+                </div>
+                <button 
+                    @click="routeTo('/pricing')" 
+                    class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                >
+                    อัพเกรดแพ็คเกจ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- รายจ่าย section with conditional blur -->
+    <div class="relative">
+        <div class="bg-[white] h-[246px] rounded-[22px] pl-[24px] pr-[24px] pt-[18px] pb-[18px]"
+             :class="{ 'blur-sm pointer-events-none': isPackageBasic }">
+            <div class=" font-bold text-[18px]">รายจ่าย</div>
+            <div class="grid grid-cols-3 w-[100%] gap-4 mt-[14px]">
+                <!-- ... your existing รายจ่าย content ... -->
+                <div class="flex mt-[4px] w-[70%]">
+                    <div class="mt-[8px]">
+                        <div class="flex items-center">
+                            <div class="w-[12px] h-[12px] bg-[#F1B826] rounded-[100px] mr-[8px]"></div>
+                            <div class="text-[12px] text-[#5C6B79]">{{ label2[0] }}</div>
+                        </div>
+                        <div class="flex items-center mt-[2px]">
+                            <div class="w-[12px] h-[12px] bg-[#008EF4] rounded-[100px] mr-[8px]"></div>
+                            <div class="text-[12px] text-[#5C6B79]">{{ label2[1] }}</div>
+                        </div>
+                        <div class="flex items-center mt-[2px]">
+                            <div class="w-[12px] h-[12px] bg-[#D44769] rounded-[100px] mr-[8px]"></div>
+                            <div class="text-[12px] text-[#5C6B79]">{{ label2[2] }}</div>
+                        </div>
+                        <div class="flex items-center mt-[2px]">
+                            <div class="w-[12px] h-[12px] bg-[#a1a1a1] rounded-[100px] mr-[8px]"></div>
+                            <div class="text-[12px] text-[#5C6B79]">{{ label2[3] }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="w-[50%]">
+                    <div class="w-[300px] flex justify-start items-start ml-[-90px] mt-[-40px]">
+                        <apexchart :options="options" :series="data2"></apexchart>
+                    </div>
+                </div>
+                <!-- ... rest of your existing รายจ่าย cards ... -->
+            </div>
+        </div>
+        <!-- Package upgrade overlay for รายจ่าย -->
+        <div v-if="isPackageBasic" class="absolute inset-0 flex items-center justify-center bg-gray-500 bg-opacity-40 rounded-lg">
+            <div class="text-center p-4 bg-white rounded-lg shadow-lg">
+                <div class="text-lg font-bold text-gray-700 mb-2">
+                    อัพเกรดแพ็คเกจ
+                </div>
+                <div class="text-sm text-gray-600 mb-4">
+                    ฟีเจอร์นี้ใช้ได้กับแพ็คเกจ Professional เท่านั้น
+                </div>
+                <button 
+                    @click="routeTo('/pricing')" 
+                    class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                >
+                    อัพเกรดแพ็คเกจ
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
         <div
             class="h-[auto] mt-[24px] bg-[white] rounded-[12px] pt-[8px] pb-[8px] pl-[28px] pr-[28px] flex flex-col justify-end">
             <div class="">
@@ -692,7 +636,12 @@ export default {
                 },
                 colors: this.incomeColors
             };
-        }
+        },
+        isPackageBasic() {
+        // Check if package ID is 1 (Basic package)
+        const packageId = this.$store.state.buildingInfo[0]?.attributes?.package?.data?.id;
+        return packageId === 1;
+        },
     },
     mounted() {
         this.filterByDate()
@@ -985,7 +934,29 @@ export default {
         gap: 0.5rem;
         }
 
+    /* Add these new styles to your existing styles */
+    .blur-sm {
+    filter: blur(4px);
+    }
 
+    .pointer-events-none {
+    pointer-events: none;
+    }
+
+    .relative {
+    position: relative;
+    }
+
+    .absolute {
+    position: absolute;
+    }
+
+    .inset-0 {
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    }
 /* .vs-select__input{
     height: 36px !important;
     width: 350px !important;

@@ -39,8 +39,8 @@
                 :class="{ 'blur-sm pointer-events-none': isPackageBasic }"
             />
             <!-- Package upgrade overlay for basic package -->
-            <div v-if="isPackageBasic" class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-90 rounded-lg">
-              <div class="text-center p-4">
+            <div v-if="isPackageBasic" class="absolute inset-0 flex items-center justify-center bg-gray-500 bg-opacity-40 rounded-lg">
+              <div class="text-center p-4 bg-white rounded-lg shadow-lg">
                 <div class="text-lg font-bold text-gray-700 mb-2">
                   อัพเกรดแพ็คเกจ
                 </div>
