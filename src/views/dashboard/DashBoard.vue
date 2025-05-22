@@ -31,10 +31,32 @@
           />
         </div>
         <div class="w-[44%]">
-          <Expenses 
-              :data="db_expense" 
-              :routeLink="'/expenses'" 
-          />
+          <!-- Expenses component with conditional blur wrapper -->
+          <div class="relative">
+            <Expenses 
+                :data="db_expense" 
+                :routeLink="'/expenses'"
+                :class="{ 'blur-sm pointer-events-none': isPackageBasic }"
+            />
+            <!-- Package upgrade overlay for basic package -->
+            <div v-if="isPackageBasic" class="absolute inset-0 flex items-center justify-center bg-white bg-opacity-90 rounded-lg">
+              <div class="text-center p-4">
+                <div class="text-lg font-bold text-gray-700 mb-2">
+                  อัพเกรดแพ็คเกจ
+                </div>
+                <div class="text-sm text-gray-600 mb-4">
+                  ฟีเจอร์นี้ใช้ได้กับแพ็คเกจ Professional เท่านั้น
+                </div>
+                <button 
+                  @click="routerTo('/pricing')" 
+                  class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
+                >
+                  อัพเกรดแพ็คเกจ
+                </button>
+              </div>
+            </div>
+          </div>
+          
           <Meters 
               :data="db_meter" 
               :routeLink="'/fee'" 
@@ -84,6 +106,11 @@ export default {
     isCountUserEmpty() {
       // Check if count_user is an empty object
       return Object.keys(this.count_user).length === 0;
+    },
+    isPackageBasic() {
+      // Check if package ID is 1 (Basic package)
+      const packageId = this.$store.state.buildingInfo[0]?.attributes?.package?.data?.id;
+      return packageId === 1;
     },
   },
   created() {
@@ -174,5 +201,30 @@ export default {
   border: none;
   border-radius: 5px;
   cursor: pointer;
+}
+
+/* Blur effect */
+.blur-sm {
+  filter: blur(4px);
+}
+
+.pointer-events-none {
+  pointer-events: none;
+}
+
+/* Relative positioning for overlay */
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.inset-0 {
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 </style>
