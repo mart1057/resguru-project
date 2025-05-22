@@ -120,40 +120,127 @@
     </div>
     <div class="mt-[14px]">
       <!-- /////////////////////////////////// items ///////////////////////////////// -->
-      <div class="grid md:grid-cols-2 gap-1">
-        <div v-for="(item, i) in list_items">
-          <div class="flex items-center">
-            <div class="flex justify-center h-[100%] items-center">
-              {{ item.name }}
+     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <!-- First Column -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-4 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">
+            รายการ
+          </th>
+          <th class="px-6 py-4 text-center text-sm font-medium text-gray-700 uppercase tracking-wider border-b">
+            สถานะ
+          </th>
+          <th class="px-6 py-4 text-center text-sm font-medium text-gray-700 uppercase tracking-wider border-b">
+            ราคา (บาท)
+          </th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr v-for="(item, i) in list_items.slice(0, Math.ceil(list_items.length / 2))" :key="i" class="hover:bg-gray-50">
+          <td class="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900">
+            {{ item.name }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-center">
+            <div class="flex justify-center space-x-4">
+              <label class="flex items-center cursor-pointer">
+                <vs-checkbox
+                  :val="true"
+                  v-model="item.check"
+                  @input="
+                    (item.checked = false),
+                      item.check == true ? addOptions(item) : removeOptions(item)
+                  "
+                  class="mr-2"
+                />
+                <span class="text-base text-red-600">เสียหาย</span>
+              </label>
+              <label class="flex items-center cursor-pointer">
+                <vs-checkbox
+                  :val="false"
+                  v-model="item.checked"
+                  @input="(item.check = false), removeOptions(item)"
+                  class="mr-2"
+                />
+                <span class="text-base text-green-600">ไม่เสียหาย</span>
+              </label>
             </div>
-            <div class="flex ml-[8px]">
-              <vs-checkbox
-                :val="true"
-                v-model="item.check"
-                @input="
-                  (item.checked = false),
-                    item.check == true ? addOptions(item) : removeOptions(item)
-                "
-              >
-                เสียหาย
-              </vs-checkbox>
-              <vs-checkbox
-                :val="false"
-                v-model="item.checked"
-                @input="(item.check = false), removeOptions(item)"
-              >
-                ไม่เสียหาย
-              </vs-checkbox>
-            </div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-center">
             <input
-              class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
+              class="h-10 w-24 bg-gray-50 border border-gray-300 rounded-lg text-center text-base focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
               type="number"
               v-model="item.price"
               :disabled="item.checked == true"
+              placeholder="0"
             />
-          </div>
-        </div>
-      </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Second Column -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-4 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">
+            รายการ
+          </th>
+          <th class="px-6 py-4 text-center text-sm font-medium text-gray-700 uppercase tracking-wider border-b">
+            สถานะ
+          </th>
+          <th class="px-6 py-4 text-center text-sm font-medium text-gray-700 uppercase tracking-wider border-b">
+            ราคา (บาท)
+          </th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <tr v-for="(item, i) in list_items.slice(Math.ceil(list_items.length / 2))" :key="i + Math.ceil(list_items.length / 2)" class="hover:bg-gray-50">
+          <td class="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900">
+            {{ item.name }}
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-center">
+            <div class="flex justify-center space-x-4">
+              <label class="flex items-center cursor-pointer">
+                <vs-checkbox
+                  :val="true"
+                  v-model="item.check"
+                  @input="
+                    (item.checked = false),
+                      item.check == true ? addOptions(item) : removeOptions(item)
+                  "
+                  class="mr-2"
+                />
+                <span class="text-base text-red-600">เสียหาย</span>
+              </label>
+              <label class="flex items-center cursor-pointer">
+                <vs-checkbox
+                  :val="false"
+                  v-model="item.checked"
+                  @input="(item.check = false), removeOptions(item)"
+                  class="mr-2"
+                />
+                <span class="text-base text-green-600">ไม่เสียหาย</span>
+              </label>
+            </div>
+          </td>
+          <td class="px-6 py-4 whitespace-nowrap text-center">
+            <input
+              class="h-10 w-24 bg-gray-50 border border-gray-300 rounded-lg text-center text-base focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+              type="number"
+              v-model="item.price"
+              :disabled="item.checked == true"
+              placeholder="0"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
 
       <!-- <div class="mt-[12px]">
                 <select class="h-[40px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt" type="input"
