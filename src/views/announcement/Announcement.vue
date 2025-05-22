@@ -20,9 +20,11 @@
                     </div>
                     <div class="flex justify-between mt-[8px]">
                         <div class="flex justify-between w-[100%]">
-                            <div class="flex">
-                                <div
-                                    class="h-[36px] pl-[12px] pr-[12px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px] mt-[12px]">
+                            <div class="flex items-start">
+                                <!-- Create announcement button with package limits -->
+                                <div class="h-[36px] pl-[12px] pr-[12px] flex cursor-pointer justify-center rounded-[12px] mt-[12px]"
+                                     :class="canCreateAnnouncement ? 'bg-[#003765]' : 'bg-gray-400 cursor-not-allowed'"
+                                     @click="handleCreateAnnouncement">
                                     <div class="flex justify-center items-center">
                                         <svg width="14" height="13" viewBox="0 0 14 13" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
@@ -31,27 +33,31 @@
                                                 fill="white" />
                                         </svg>
                                     </div>
-                                    <div class="text-white font-bold ml-[8px]   flex justify-center items-center"
-                                        @click="create_ann = true">
+                                    <div class="text-white font-bold ml-[8px] flex justify-center items-center">
                                         สร้างประกาศ
                                     </div>
                                 </div>
-                                <div v-if="selected.length > 0" @click="delete_popup = true"
-                                    class="h-[36px] pl-[12px] pr-[12px] bg-[#D44769] flex cursor-pointer  justify-center rounded-[12px] mt-[12px] ml-[14px]">
-                                    <!-- <div class="flex justify-center items-center">
-                                        <svg width="14" height="13" viewBox="0 0 14 13" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M6.99968 12.6875C6.8048 12.6875 6.64155 12.6216 6.50993 12.4898C6.37831 12.3581 6.3125 12.1948 6.3125 12V7.18746H1.49998C1.30519 7.18746 1.14191 7.12155 1.01016 6.98973C0.878385 6.8579 0.8125 6.69455 0.8125 6.49968C0.8125 6.3048 0.878385 6.14155 1.01016 6.00993C1.14191 5.87831 1.30519 5.8125 1.49998 5.8125H6.3125V0.999977C6.3125 0.805185 6.37841 0.641904 6.51023 0.510133C6.64206 0.378378 6.80541 0.3125 7.00028 0.3125C7.19516 0.3125 7.35841 0.378378 7.49003 0.510133C7.62165 0.641904 7.68745 0.805185 7.68745 0.999977V5.8125H12.5C12.6948 5.8125 12.8581 5.87841 12.9898 6.01023C13.1216 6.14206 13.1875 6.30541 13.1875 6.50028C13.1875 6.69516 13.1216 6.85841 12.9898 6.99003C12.8581 7.12164 12.6948 7.18746 12.5 7.18746H7.68745V12C7.68745 12.1948 7.62155 12.3581 7.48973 12.4898C7.3579 12.6216 7.19455 12.6875 6.99968 12.6875Z"
-                                                fill="white" />
-                                        </svg>
-                                    </div> -->
-                                    <div class="text-white font-bold flex justify-center items-center">ลบประกาศ
+                                
+                                <!-- Package limit indicator -->
+                                <div class="ml-4 flex flex-col justify-center mt-[12px]">
+                                    <div v-if="isBusinessPackage" class="text-xs text-gray-600">
+                                        {{ currentMonthAnnouncementCount }}/{{ BUSINESS_PACKAGE_ANNOUNCEMENT_LIMIT }} ประกาศในเดือนนี้
+                                    </div>
+                                    <div v-if="isProPackage" class="text-xs text-green-600">
+                                        ไม่จำกัดจำนวนประกาศ
                                     </div>
                                 </div>
+                                
+                                <!-- Delete button -->
+                                <div v-if="selected.length > 0" @click="delete_popup = true"
+                                    class="h-[36px] pl-[12px] pr-[12px] bg-[#D44769] flex cursor-pointer justify-center rounded-[12px] mt-[12px] ml-[14px]">
+                                    <div class="text-white font-bold flex justify-center items-center">ลบประกาศ</div>
+                                </div>
                             </div>
+                            
+                            <!-- History button -->
                             <div @click="history_ann = true"
-                                class="flex justify-center items-center border mt-[12px] h-[36px] pl-[12px] pr-[12px]  rounded-[12px] cursor-pointer ">
+                                class="flex justify-center items-center border mt-[12px] h-[36px] pl-[12px] pr-[12px] rounded-[12px] cursor-pointer ">
                                 <div class="flex justify-center items-center">
                                     <svg width="16" height="17" viewBox="0 0 16 17" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -59,14 +65,14 @@
                                             d="M8.0104 16.2923C6.92874 16.2923 5.9156 16.0878 4.97096 15.6788C4.02632 15.2698 3.20261 14.714 2.49983 14.0112C1.79705 13.3084 1.24118 12.4848 0.832206 11.5402C0.423235 10.5957 0.21875 9.58266 0.21875 8.50113C0.21875 7.4196 0.423235 6.4064 0.832206 5.46154C1.24118 4.51667 1.79705 3.69284 2.49983 2.99006C3.20261 2.2873 4.02632 1.73143 4.97096 1.32246C5.9156 0.913478 6.92874 0.708984 8.0104 0.708984C9.16327 0.708984 10.2586 0.951374 11.2963 1.43615C12.334 1.92093 13.2248 2.60226 13.9687 3.48014V1.99582C13.9687 1.80103 14.0346 1.63775 14.1664 1.50598C14.2983 1.37421 14.4616 1.30832 14.6565 1.30832C14.8513 1.30832 15.0146 1.37421 15.1462 1.50598C15.2779 1.63775 15.3437 1.80103 15.3437 1.99582V5.1336C15.3437 5.36834 15.2643 5.56511 15.1055 5.72391C14.9466 5.88272 14.7499 5.96213 14.5151 5.96213H11.3774C11.1826 5.96213 11.0193 5.89621 10.8875 5.76438C10.7557 5.63255 10.6899 5.4692 10.6899 5.27433C10.6899 5.07945 10.7557 4.91619 10.8875 4.78458C11.0193 4.65296 11.1826 4.58715 11.3774 4.58715H13.0873C12.455 3.80798 11.7011 3.19599 10.8256 2.75118C9.95007 2.30637 9.01167 2.08396 8.0104 2.08396C6.22289 2.08396 4.70657 2.70653 3.46144 3.95167C2.2163 5.19681 1.59373 6.71313 1.59373 8.50063C1.59373 10.2881 2.2163 11.8044 3.46144 13.0496C4.70657 14.2947 6.22289 14.9173 8.0104 14.9173C9.49116 14.9173 10.8089 14.4628 11.9635 13.5538C13.1182 12.6447 13.87 11.4821 14.219 10.066C14.2778 9.87445 14.3815 9.72931 14.5302 9.63058C14.6788 9.53187 14.8469 9.49485 15.0344 9.51953C15.2335 9.54422 15.3875 9.63295 15.4962 9.78573C15.6049 9.93849 15.6345 10.1059 15.5852 10.2881C15.1892 12.0415 14.2884 13.4806 12.8828 14.6052C11.4773 15.7299 9.85312 16.2923 8.0104 16.2923ZM8.69787 8.2221L11.2187 10.743C11.3456 10.8699 11.4106 11.0294 11.4135 11.2215C11.4164 11.4137 11.3515 11.5762 11.2187 11.709C11.0859 11.8418 10.9249 11.9082 10.7357 11.9082C10.5465 11.9082 10.3855 11.8418 10.2527 11.709L7.57145 9.02771C7.48566 8.94191 7.4228 8.84843 7.38284 8.74726C7.34288 8.64609 7.32289 8.54155 7.32289 8.43364V4.60477C7.32289 4.41 7.38881 4.24672 7.52064 4.11495C7.65247 3.98318 7.81582 3.9173 8.01069 3.9173C8.20558 3.9173 8.36883 3.98318 8.50044 4.11495C8.63206 4.24672 8.69787 4.41 8.69787 4.60477V8.2221Z"
                                             fill="#003765" />
                                     </svg>
-
                                 </div>
-                                <div class="text-[14px] font-bold ml-[8px] flex justify-center items-center">ประวัติย้อยหลัง
-                                </div>
+                                <div class="text-[14px] font-bold ml-[8px] flex justify-center items-center">ประวัติย้อยหลัง</div>
                             </div>
                         </div>
                     </div>
                 </div>
+                
+                <!-- Main table -->
                 <div class="center mt-[24px]">
                     <vs-table v-model="selected">
                         <template #thead>
@@ -81,18 +87,10 @@
                                         <div class="ml-[24px]">วันที่ประกาศ</div>
                                     </div>
                                 </vs-th>
-                                <vs-th>
-                                    วันที่สิ้นสุด
-                                </vs-th>
-                                <vs-th>
-                                    หัวข้อ
-                                </vs-th>
-                                <vs-th>
-                                    เรื่องที่ประกาศ
-                                </vs-th>
-                                <vs-th>
-                                    ผู้สร้างประกาศ
-                                </vs-th>
+                                <vs-th>วันที่สิ้นสุด</vs-th>
+                                <vs-th>หัวข้อ</vs-th>
+                                <vs-th>เรื่องที่ประกาศ</vs-th>
+                                <vs-th>ผู้สร้างประกาศ</vs-th>
                             </vs-tr>
                         </template>
                         <template #tbody>
@@ -102,12 +100,11 @@
                                         <div>
                                             <vs-checkbox :val="tr" v-model="selected" />
                                         </div>
-                                        <div class="text-custom ml-[24px]">{{ convertDateNoTime(tr.attributes.createdAt) }}
-                                        </div>
+                                        <div class="text-custom ml-[24px]">{{ convertDateNoTime(tr.attributes.createdAt) }}</div>
                                     </div>
                                 </vs-td>
                                 <vs-td>
-                                    <div class="text-custom"> {{ convertDateNoTime(tr.attributes.date_execute) }}</div>
+                                    <div class="text-custom">{{ convertDateNoTime(tr.attributes.date_execute) }}</div>
                                 </vs-td>
                                 <vs-td>
                                     <div class="text-custom">{{ tr.attributes.topic }}</div>
@@ -123,9 +120,10 @@
                                                     alt="">
                                             </vs-avatar>
                                         </div>
-                                        <div class="flex justify-center items-center ml-[8px]">{{
-                                            tr.attributes.users_created.data.attributes.firstName }} {{
-        tr.attributes.users_created.data.attributes.lastName }}</div>
+                                        <div class="flex justify-center items-center ml-[8px]">
+                                            {{ tr.attributes.users_created.data.attributes.firstName }} 
+                                            {{ tr.attributes.users_created.data.attributes.lastName }}
+                                        </div>
                                     </div>
                                 </vs-td>
                             </vs-tr>
@@ -134,6 +132,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- Create Announcement Modal -->
         <b-modal centered v-model="create_ann" size="l" hide-backdrop hide-header-close hide-header hide-footer
             class="p-[-20px] text-custom">
             <div>
@@ -153,26 +153,24 @@
                         </svg>
                     </div>
                 </div>
-                <!-- <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
                 <div class="pl-[20px] pr-[20px] mt-[24px]">
                     <div>
-                        <div class="text-custom text-[14px] text-[#003765]">เรื่องที่ประกาศ</div>
-                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                        <div class="text-custom text-[14px] text-[#003765]">เรื่องที่ประกาศ *</div>
+                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[12px] pr-[12px] flex justify-start" type="input"
                             v-model="topic" />
                     </div>
                     <div class="mt-[14px]">
-                        <div class="text-custom text-[14px] text-[#003765]">รายละเอียดการแจ้ง</div>
-                        <textarea class="h-[60px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                        <div class="text-custom text-[14px] text-[#003765]">รายละเอียดการแจ้ง *</div>
+                        <textarea class="h-[60px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[12px] pr-[12px] pt-[8px] flex justify-start" type="input"
                             v-model="description" />
                     </div>
                     <div class="mt-[14px]">
-
-                        <div class="text-custom text-[14px] text-[#003765]">วันที่สิ้นสุด</div>
+                        <div class="text-custom text-[14px] text-[#003765]">วันที่สิ้นสุด *</div>
                         <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[12px] pr-[12px] flex justify-start"
                             type="date" v-model="date_execute" />
                     </div>
                     <div class="mt-[14px]">
-                        <div class="text-custom text-[14px] text-[#003765]">รูปภาพ</div>
+                        <div class="text-custom text-[14px] text-[#003765]">รูปภาพ *</div>
                         <div class="flex mt-[4px]" v-if="image == ''">
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start" id="upload"
                                 @change="previewImage" type="file" accept="image/*" hidden />
@@ -190,7 +188,6 @@
                                 {{ image_name }}</div>
                         </div>
                     </div>
-
                 </div>
                 <div class="flex justify-end mt-[30px]">
                     <div>
@@ -206,6 +203,8 @@
                 </div>
             </div>
         </b-modal>
+
+        <!-- History Modal -->
         <b-modal centered v-model="history_ann" size="xl" hide-backdrop hide-header-close hide-header hide-footer
             class=" text-custom">
             <div>
@@ -225,27 +224,16 @@
                         </svg>
                     </div>
                 </div>
-                <!-- <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
                 <div class="pl-[20px] pr-[20px] mt-[24px]">
                     <div class="center mt-[14px]">
                         <vs-table>
                             <template #thead>
                                 <vs-tr>
-                                    <vs-th>
-                                        <div class="text-custom">วันที่ประกาศ</div>
-                                    </vs-th>
-                                    <vs-th>
-                                        <div class="text-custom">วันที่สิ้นสุด</div>
-                                    </vs-th>
-                                    <vs-th>
-                                        <div class="text-custom">เรื่องที่ประกาศ</div>
-                                    </vs-th>
-                                    <vs-th>
-                                        <div class="text-custom">รายละเอียด</div>
-                                    </vs-th>
-                                    <vs-th>
-                                        <div class="text-custom">ผู้สร้างประกาศ</div>
-                                    </vs-th>
+                                    <vs-th><div class="text-custom">วันที่ประกาศ</div></vs-th>
+                                    <vs-th><div class="text-custom">วันที่สิ้นสุด</div></vs-th>
+                                    <vs-th><div class="text-custom">เรื่องที่ประกาศ</div></vs-th>
+                                    <vs-th><div class="text-custom">รายละเอียด</div></vs-th>
+                                    <vs-th><div class="text-custom">ผู้สร้างประกาศ</div></vs-th>
                                 </vs-tr>
                             </template>
                             <template #tbody>
@@ -254,7 +242,7 @@
                                         <div class="text-custom">{{ convertDateNoTime(tr.attributes.createdAt) }}</div>
                                     </vs-td>
                                     <vs-td>
-                                        <div class="text-custom"> {{ tr.attributes.date_execute }}</div>
+                                        <div class="text-custom">{{ tr.attributes.date_execute }}</div>
                                     </vs-td>
                                     <vs-td>
                                         <div class="text-custom">{{ tr.attributes.topic }}</div>
@@ -270,9 +258,10 @@
                                                         alt="">
                                                 </vs-avatar>
                                             </div>
-                                            <div class="flex justify-center items-center ml-[8px]">{{
-                                                tr.attributes.users_created.data.attributes.firstName }} {{
-        tr.attributes.users_created.data.attributes.lastName }}</div>
+                                            <div class="flex justify-center items-center ml-[8px]">
+                                                {{ tr.attributes.users_created.data.attributes.firstName }} 
+                                                {{ tr.attributes.users_created.data.attributes.lastName }}
+                                            </div>
                                         </div>
                                     </vs-td>
                                 </vs-tr>
@@ -282,6 +271,8 @@
                 </div>
             </div>
         </b-modal>
+
+        <!-- Delete Confirmation Dialog -->
         <vs-dialog width="550px" not-center v-model="delete_popup">
             <div class="flex justify-center items-center text-[24px] h-[100%] mt-[5%]">
                 <p class="fle justify-center items-center">
@@ -293,18 +284,17 @@
                     <vs-button @click="delete_popup = false" dark transparent>
                         <div class="flex items-center">ยกเลิก</div>
                     </vs-button>
-                    <div
-                        class="h-[36px] pl-[12px] pr-[12px] bg-[#003765] flex cursor-pointer  justify-center rounded-[12px]">
+                    <div class="h-[36px] pl-[12px] pr-[12px] bg-[#003765] flex cursor-pointer justify-center rounded-[12px]">
                         <div class="text-white font-bold flex justify-center items-center" @click="deleteAnnouncement()">
                             ยืนยัน
                         </div>
                     </div>
-
                 </div>
             </template>
         </vs-dialog>
     </div>
 </template>
+
 <script>
 import axios from 'axios'
 import router from '@/router'
@@ -327,9 +317,12 @@ export default {
             create_ann: false,
             history_ann: false,
             delete_popup: false,
-            convertDateNoTime
+            convertDateNoTime,
+            currentMonthAnnouncementCount: 0,
+            BUSINESS_PACKAGE_ANNOUNCEMENT_LIMIT: 5,
         }
     },
+    
     created() {
         this.$store.state.main = true
         const loading = this.$vs.loading({
@@ -340,44 +333,127 @@ export default {
             loading.close()
         }, 1000)
     },
+    
+    computed: {
+        packageId() {
+            return this.$store.state.buildingInfo[0]?.attributes?.package?.data?.id;
+        },
+        
+        isBusinessPackage() {
+            return this.packageId === 1; // Business package - 5 announcements per month
+        },
+        
+        isProPackage() {
+            return this.packageId === 2; // Pro package - unlimited announcements
+        },
+        
+        canCreateAnnouncement() {
+            if (this.isProPackage) {
+                return true; // No limit for Pro package
+            }
+            
+            if (this.isBusinessPackage) {
+                return this.currentMonthAnnouncementCount < this.BUSINESS_PACKAGE_ANNOUNCEMENT_LIMIT;
+            }
+            
+            // If user doesn't have package ID 1 or 2, they can't create announcements
+            return false;
+        },
+        
+        remainingAnnouncements() {
+            if (this.isProPackage) {
+                return null; // No limit
+            }
+            
+            if (this.isBusinessPackage) {
+                return Math.max(0, this.BUSINESS_PACKAGE_ANNOUNCEMENT_LIMIT - this.currentMonthAnnouncementCount);
+            }
+            
+            return 0;
+        }
+    },
+    
     mounted() {
         this.getAnnouncement();
     },
+    
     methods: {
-        previewImage(event) {
-            const file = event.target.files[0];
-            this.image = event.target.files[0]
-            this.image_name = event.target.files[0].name
-            if (file) {
-
-                // Read the file as a URL
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    this.image_e = e.target.result; // Set the image URL for preview
-                };
-                reader.readAsDataURL(file);
-            }
+        getCurrentMonthAnnouncementCount() {
+            const now = new Date();
+            const currentMonth = now.getMonth() + 1;
+            const currentYear = now.getFullYear();
+            
+            const currentMonthAnnouncements = this.announcement.filter(announcement => {
+                const createdDate = new Date(announcement.attributes.createdAt);
+                return createdDate.getMonth() + 1 === currentMonth && 
+                       createdDate.getFullYear() === currentYear;
+            });
+            
+            this.currentMonthAnnouncementCount = currentMonthAnnouncements.length;
+            return this.currentMonthAnnouncementCount;
         },
+        
+        checkAnnouncementLimit() {
+            if (!this.canCreateAnnouncement) {
+                if (this.isBusinessPackage) {
+                    this.$vs.notification({
+                        title: 'จำกัดการสร้างประกาศ',
+                        text: `คุณสร้างประกาศได้เพียง ${this.BUSINESS_PACKAGE_ANNOUNCEMENT_LIMIT} ครั้งต่อเดือน (เหลือ ${this.remainingAnnouncements} ครั้ง)`,
+                        color: 'warning',
+                        position: 'top-right'
+                    });
+                    return false;
+                } else {
+                    this.$vs.notification({
+                        title: 'อัพเกรดแพ็คเกจ',
+                        text: 'ฟีเจอร์นี้ใช้ได้กับแพ็คเกจ Business และ Professional เท่านั้น',
+                        color: 'danger',
+                        position: 'top-right'
+                    });
+                    return false;
+                }
+            }
+            return true;
+        },
+        
+        handleCreateAnnouncement() {
+            if (!this.checkAnnouncementLimit()) {
+                return;
+            }
+            // Clear form fields
+            this.topic = "";
+            this.description = "";
+            this.date_execute = "";
+            this.image = [];
+            this.image_name = "";
+            this.image_e = [];
+            // Show create announcement modal
+            this.create_ann = true;
+        },
+        
         getAnnouncement() {
             const loading = this.$vs.loading()
-            // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
             fetch(`https://api.resguru.app/api/announcements?filters[building][id][$eq]=${this.$store.state.building}&populate=*&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getAnnouncement()", resp.data);
-                    this.announcement = resp.data
+                    this.announcement = resp.data;
+                    // Calculate current month count after fetching
+                    this.getCurrentMonthAnnouncementCount();
                 }).finally(() => {
                     loading.close()
                 })
         },
-        tempUploadFileAnnouncement() {
-            this.fileAnnounce = this.$refs.AnnounceForm.files[0]
-        },
+        
         createAnnouncement() {
+            // Check limit before creating
+            if (!this.checkAnnouncementLimit()) {
+                return;
+            }
+            
             if (this.date_execute && this.topic && this.image.length != 0) {
-                axios.post('https://api.resguru.app/api' + '/announcements', {
+                axios.post('https://api.resguru.app/api/announcements', {
                     data: {
-                        // date_execute: this.date_execute,
                         topic: this.topic,
                         description: this.description,
                         date_execute: this.date_execute,
@@ -385,62 +461,62 @@ export default {
                         building: this.$store.state.building
                     }
                 })
-                    .then((resp) => {
-                        if (this.image.length != 0) {
-                            let formData = new FormData();
-                            formData.append("files", this.image);
-                            formData.append("refId", String(resp.data.data.id));
-                            formData.append("ref", "api::announcement.announcement");
-                            formData.append("field", "image");
+                .then((resp) => {
+                    if (this.image.length != 0) {
+                        let formData = new FormData();
+                        formData.append("files", this.image);
+                        formData.append("refId", String(resp.data.data.id));
+                        formData.append("ref", "api::announcement.announcement");
+                        formData.append("field", "image");
 
-                            axios.post("https://api.resguru.app/api/upload", formData, {
-                                headers: {
-                                    "Content-Type": "multipart/form-data",
-                                },
-                            }).then((result) => { console.log("Upload file", result) })
-                                .catch((error) => {
-                                    console.log(error);
-                                })
-                        }
-                        this.$showNotification('#3A89CB', 'Create Announcement Success')
+                        axios.post("https://api.resguru.app/api/upload", formData, {
+                            headers: {
+                                "Content-Type": "multipart/form-data",
+                            },
+                        }).then((result) => { 
+                            console.log("Upload file", result) 
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        })
                     }
-                    ).catch(error => {
-                        const errorMessage = error.response ? error.response.data.message : 'Error updating information';
-                        this.$showNotification('danger', errorMessage);
-                    }).finally(() => {
-                        this.getAnnouncement()
-                        this.create_ann = false
-                    })
-            }
-            else {
+                    this.$showNotification('#3A89CB', 'Create Announcement Success');
+                })
+                .catch(error => {
+                    const errorMessage = error.response ? error.response.data.message : 'Error updating information';
+                    this.$showNotification('danger', errorMessage);
+                }).finally(() => {
+                    this.getAnnouncement();
+                    this.create_ann = false;
+                })
+            } else {
                 this.$showNotification('danger', 'กรุณากรอกข้อมูลให้ครบถ้วน');
             }
-
         },
-        // editAnnouncement(postID) {
-        //     axios.put(`https://api.resguru.app/api/announcements/${postID}`, {
-        //         data: {
-        //             topic: this.topic,
-        //             description: this.description,
-        //             date_execute: this.date_execute,
-        //             users_created: this.$store.state.userInfo.id
-        //         }
-        //     })
-        //         .then(this.$showNotification('#3A89CB', 'Edit Announcement Success'))
-        //         .catch(error => {
-        //         const errorMessage = error.response ? error.response.data.message : 'Error updating information';
-        //         this.$showNotification('danger', errorMessage); 
-        //         })
-        // },
+        
+        previewImage(event) {
+            const file = event.target.files[0];
+            this.image = event.target.files[0]
+            this.image_name = event.target.files[0].name
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    this.image_e = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        },
+        
         deleteAnnouncement() {
             const loading = this.$vs.loading({
                 color: '#003765'
             })
             this.selected.forEach(element => {
                 console.log(element.id);
-                axios.delete('https://api.resguru.app/api' + '/announcements/' + element.id)
-                    .then(() => { this.$showNotification('warn', 'Delete Announcement Success') }
-                    )
+                axios.delete('https://api.resguru.app/api/announcements/' + element.id)
+                    .then(() => { 
+                        this.$showNotification('warn', 'Delete Announcement Success') 
+                    })
                     .catch(error => {
                         const errorMessage = error.response ? error.response.data.message : 'Error updating information';
                         this.$showNotification('danger', errorMessage);
@@ -451,8 +527,21 @@ export default {
                 this.delete_popup = false
                 loading.close()
             }, 1000)
-        },
+        }
     }
-
 }
 </script>
+
+<style>
+.text-custom {
+    font-family: 'Prompt';
+}
+
+.cursor-not-allowed {
+    cursor: not-allowed !important;
+}
+
+.bg-gray-400 {
+    background-color: #9CA3AF;
+}
+</style>
