@@ -54,7 +54,14 @@
             <vs-td>
               <div>
                 <div v-if="tr.electric_fees[1]">
-                  <vs-input disabled v-model="tr.electric_fees[1].electicUnit">
+                  <vs-input 
+                    v-model="tr.electric_fees[1].electicUnit"
+                    @blur="updatePreviousElectricfee(
+                      tr.electric_fees[1].id,
+                      tr.electric_fees[1].electicUnit,
+                      calculateUsageMeter(tr.electric_fees[0].electicUnit, tr.electric_fees[1].electicUnit)
+                    )"
+                  >
                     <template #icon>
                       <svg
                         width="24"
@@ -76,7 +83,7 @@
                         </mask>
                         <g mask="url(#mask0_3354_881)">
                           <path
-                            d="M34.4999 61.8126C28.7949 61.8126 23.7749 59.8215 19.44 55.8392C15.105 51.8569 12.9375 46.4685 12.9375 39.6739C12.9375 35.3991 14.5658 30.7498 17.8223 25.726C21.0787 20.7021 26.0013 15.2326 32.5899 9.31756C32.8607 9.08827 33.1601 8.91098 33.4881 8.78568C33.8162 8.66033 34.1534 8.59766 34.4999 8.59766C34.8464 8.59766 35.1837 8.66033 35.5117 8.78568C35.8397 8.91098 36.1392 9.08827 36.4099 9.31756C42.9986 15.2326 47.9211 20.7021 51.1776 25.726C54.4341 30.7498 56.0624 35.3991 56.0624 39.6739C56.0624 46.4685 53.8949 51.8569 49.5599 55.8392C45.225 59.8215 40.205 61.8126 34.4999 61.8126ZM34.4999 57.5002C39.3211 57.5002 43.4014 55.8425 46.7408 52.527C50.0802 49.2115 51.7499 44.9276 51.7499 39.6752C51.7499 36.2731 50.3364 32.3799 47.5093 27.9955C44.6822 23.6111 40.3458 18.7356 34.4999 13.3689C28.6541 18.7356 24.3176 23.6111 21.4906 27.9955C18.6635 32.3799 17.2499 36.2731 17.2499 39.6752C17.2499 44.9276 18.9196 49.2115 22.259 52.527C25.5985 55.8425 29.6788 57.5002 34.4999 57.5002ZM35.2076 54.1829C35.7089 54.1349 36.1217 53.9474 36.4461 53.6202C36.7704 53.2931 36.9326 52.8986 36.9326 52.4368C36.9326 51.898 36.7558 51.471 36.4023 51.1559C36.0488 50.8407 35.5971 50.7071 35.0473 50.755C33.0827 50.8988 30.943 50.3228 28.6282 49.0273C26.3135 47.7317 24.8687 45.4786 24.2937 42.2682C24.1978 41.778 23.9924 41.3928 23.6772 41.1127C23.3621 40.8326 22.987 40.6925 22.5521 40.6925C22.0287 40.6925 21.5928 40.8888 21.2445 41.2813C20.8962 41.6739 20.7847 42.1779 20.9101 42.7935C21.6878 46.9696 23.5676 49.9551 26.5495 51.7502C29.5314 53.5452 32.4174 54.3561 35.2076 54.1829Z"
+                            d="M11.5 6.5L15.25 10.5H13V16.5H10V10.5H7.75L11.5 6.5ZM5 18.5V20.5H18V18.5H5Z"
                             :fill="tab == 1 ? 'white' : '#003765'"
                           />
                         </g>
@@ -85,7 +92,15 @@
                   </vs-input>
                 </div>
                 <div v-else>
-                  <vs-input disabled value="0">
+                  <vs-input 
+                    v-model="tr.previousElectricValue"
+                    @blur="createPreviousMonthElectricfee(
+                      tr.id, 
+                      tr.user_sign_contract ? tr.user_sign_contract.id : null,
+                      tr.previousElectricValue,
+                      tr.electric_fees[0] ? calculateUsageMeter(tr.electric_fees[0].electicUnit, tr.previousElectricValue) : 0
+                    )"
+                  >
                     <template #icon>
                       <svg
                         width="24"
@@ -107,7 +122,7 @@
                         </mask>
                         <g mask="url(#mask0_3354_881)">
                           <path
-                            d="M34.4999 61.8126C28.7949 61.8126 23.7749 59.8215 19.44 55.8392C15.105 51.8569 12.9375 46.4685 12.9375 39.6739C12.9375 35.3991 14.5658 30.7498 17.8223 25.726C21.0787 20.7021 26.0013 15.2326 32.5899 9.31756C32.8607 9.08827 33.1601 8.91098 33.4881 8.78568C33.8162 8.66033 34.1534 8.59766 34.4999 8.59766C34.8464 8.59766 35.1837 8.66033 35.5117 8.78568C35.8397 8.91098 36.1392 9.08827 36.4099 9.31756C42.9986 15.2326 47.9211 20.7021 51.1776 25.726C54.4341 30.7498 56.0624 35.3991 56.0624 39.6739C56.0624 46.4685 53.8949 51.8569 49.5599 55.8392C45.225 59.8215 40.205 61.8126 34.4999 61.8126ZM34.4999 57.5002C39.3211 57.5002 43.4014 55.8425 46.7408 52.527C50.0802 49.2115 51.7499 44.9276 51.7499 39.6752C51.7499 36.2731 50.3364 32.3799 47.5093 27.9955C44.6822 23.6111 40.3458 18.7356 34.4999 13.3689C28.6541 18.7356 24.3176 23.6111 21.4906 27.9955C18.6635 32.3799 17.2499 36.2731 17.2499 39.6752C17.2499 44.9276 18.9196 49.2115 22.259 52.527C25.5985 55.8425 29.6788 57.5002 34.4999 57.5002ZM35.2076 54.1829C35.7089 54.1349 36.1217 53.9474 36.4461 53.6202C36.7704 53.2931 36.9326 52.8986 36.9326 52.4368C36.9326 51.898 36.7558 51.471 36.4023 51.1559C36.0488 50.8407 35.5971 50.7071 35.0473 50.755C33.0827 50.8988 30.943 50.3228 28.6282 49.0273C26.3135 47.7317 24.8687 45.4786 24.2937 42.2682C24.1978 41.778 23.9924 41.3928 23.6772 41.1127C23.3621 40.8326 22.987 40.6925 22.5521 40.6925C22.0287 40.6925 21.5928 40.8888 21.2445 41.2813C20.8962 41.6739 20.7847 42.1779 20.9101 42.7935C21.6878 46.9696 23.5676 49.9551 26.5495 51.7502C29.5314 53.5452 32.4174 54.3561 35.2076 54.1829Z"
+                            d="M11.5 6.5L15.25 10.5H13V16.5H10V10.5H7.75L11.5 6.5ZM5 18.5V20.5H18V18.5H5Z"
                             :fill="tab == 1 ? 'white' : '#003765'"
                           />
                         </g>
@@ -119,7 +134,14 @@
             </vs-td>
             <vs-td v-if="tr.electric_fees[0]">
               <!-- case HAVE last month elec -->
-              <vs-input v-model="tr.electric_fees[0].electicUnit">
+              <vs-input 
+                v-model="tr.electric_fees[0].electicUnit"
+                @blur="updateElectfee(
+                  tr.electric_fees[0].id,
+                  tr.electric_fees[0].electicUnit,
+                  tr.electric_fees[0].electicUnit - (tr.electric_fees[1] ? tr.electric_fees[1].electicUnit : tr.previousElectricValue || 0)
+                )"
+              >
                 <template #icon>
                   <svg
                     width="24"
@@ -141,7 +163,7 @@
                     </mask>
                     <g mask="url(#mask0_3354_881)">
                       <path
-                        d="M34.4999 61.8126C28.7949 61.8126 23.7749 59.8215 19.44 55.8392C15.105 51.8569 12.9375 46.4685 12.9375 39.6739C12.9375 35.3991 14.5658 30.7498 17.8223 25.726C21.0787 20.7021 26.0013 15.2326 32.5899 9.31756C32.8607 9.08827 33.1601 8.91098 33.4881 8.78568C33.8162 8.66033 34.1534 8.59766 34.4999 8.59766C34.8464 8.59766 35.1837 8.66033 35.5117 8.78568C35.8397 8.91098 36.1392 9.08827 36.4099 9.31756C42.9986 15.2326 47.9211 20.7021 51.1776 25.726C54.4341 30.7498 56.0624 35.3991 56.0624 39.6739C56.0624 46.4685 53.8949 51.8569 49.5599 55.8392C45.225 59.8215 40.205 61.8126 34.4999 61.8126ZM34.4999 57.5002C39.3211 57.5002 43.4014 55.8425 46.7408 52.527C50.0802 49.2115 51.7499 44.9276 51.7499 39.6752C51.7499 36.2731 50.3364 32.3799 47.5093 27.9955C44.6822 23.6111 40.3458 18.7356 34.4999 13.3689C28.6541 18.7356 24.3176 23.6111 21.4906 27.9955C18.6635 32.3799 17.2499 36.2731 17.2499 39.6752C17.2499 44.9276 18.9196 49.2115 22.259 52.527C25.5985 55.8425 29.6788 57.5002 34.4999 57.5002ZM35.2076 54.1829C35.7089 54.1349 36.1217 53.9474 36.4461 53.6202C36.7704 53.2931 36.9326 52.8986 36.9326 52.4368C36.9326 51.898 36.7558 51.471 36.4023 51.1559C36.0488 50.8407 35.5971 50.7071 35.0473 50.755C33.0827 50.8988 30.943 50.3228 28.6282 49.0273C26.3135 47.7317 24.8687 45.4786 24.2937 42.2682C24.1978 41.778 23.9924 41.3928 23.6772 41.1127C23.3621 40.8326 22.987 40.6925 22.5521 40.6925C22.0287 40.6925 21.5928 40.8888 21.2445 41.2813C20.8962 41.6739 20.7847 42.1779 20.9101 42.7935C21.6878 46.9696 23.5676 49.9551 26.5495 51.7502C29.5314 53.5452 32.4174 54.3561 35.2076 54.1829Z"
+                        d="M11.5 6.5L15.25 10.5H13V16.5H10V10.5H7.75L11.5 6.5ZM5 18.5V20.5H18V18.5H5Z"
                         :fill="tab == 1 ? 'white' : '#003765'"
                       />
                     </g>
@@ -151,7 +173,16 @@
             </vs-td>
             <vs-td v-else>
               <!-- case no last month elec -->
-              <vs-input class="newElec" v-model="tr.newElec">
+              <vs-input 
+                class="newElec" 
+                v-model="tr.newElec"
+                @blur="createNewElectricityfee(
+                  tr.id, 
+                  tr.user_sign_contract ? tr.user_sign_contract.id : null,
+                  tr.newElec,
+                  tr.newElec - (tr.previousElectricValue || 0)
+                )"
+              >
                 <template #icon>
                   <svg
                     width="24"
@@ -173,7 +204,7 @@
                     </mask>
                     <g mask="url(#mask0_3354_881)">
                       <path
-                        d="M34.4999 61.8126C28.7949 61.8126 23.7749 59.8215 19.44 55.8392C15.105 51.8569 12.9375 46.4685 12.9375 39.6739C12.9375 35.3991 14.5658 30.7498 17.8223 25.726C21.0787 20.7021 26.0013 15.2326 32.5899 9.31756C32.8607 9.08827 33.1601 8.91098 33.4881 8.78568C33.8162 8.66033 34.1534 8.59766 34.4999 8.59766C34.8464 8.59766 35.1837 8.66033 35.5117 8.78568C35.8397 8.91098 36.1392 9.08827 36.4099 9.31756C42.9986 15.2326 47.9211 20.7021 51.1776 25.726C54.4341 30.7498 56.0624 35.3991 56.0624 39.6739C56.0624 46.4685 53.8949 51.8569 49.5599 55.8392C45.225 59.8215 40.205 61.8126 34.4999 61.8126ZM34.4999 57.5002C39.3211 57.5002 43.4014 55.8425 46.7408 52.527C50.0802 49.2115 51.7499 44.9276 51.7499 39.6752C51.7499 36.2731 50.3364 32.3799 47.5093 27.9955C44.6822 23.6111 40.3458 18.7356 34.4999 13.3689C28.6541 18.7356 24.3176 23.6111 21.4906 27.9955C18.6635 32.3799 17.2499 36.2731 17.2499 39.6752C17.2499 44.9276 18.9196 49.2115 22.259 52.527C25.5985 55.8425 29.6788 57.5002 34.4999 57.5002ZM35.2076 54.1829C35.7089 54.1349 36.1217 53.9474 36.4461 53.6202C36.7704 53.2931 36.9326 52.8986 36.9326 52.4368C36.9326 51.898 36.7558 51.471 36.4023 51.1559C36.0488 50.8407 35.5971 50.7071 35.0473 50.755C33.0827 50.8988 30.943 50.3228 28.6282 49.0273C26.3135 47.7317 24.8687 45.4786 24.2937 42.2682C24.1978 41.778 23.9924 41.3928 23.6772 41.1127C23.3621 40.8326 22.987 40.6925 22.5521 40.6925C22.0287 40.6925 21.5928 40.8888 21.2445 41.2813C20.8962 41.6739 20.7847 42.1779 20.9101 42.7935C21.6878 46.9696 23.5676 49.9551 26.5495 51.7502C29.5314 53.5452 32.4174 54.3561 35.2076 54.1829Z"
+                        d="M11.5 6.5L15.25 10.5H13V16.5H10V10.5H7.75L11.5 6.5ZM5 18.5V20.5H18V18.5H5Z"
                         :fill="tab == 1 ? 'white' : '#003765'"
                       />
                     </g>
@@ -185,20 +216,15 @@
               <div v-if="tr.electric_fees[1]">
                 {{
                   tr.electric_fees[0]
-                    ? tr.electric_fees[0].electicUnit -
-                      tr.electric_fees[1].electicUnit
+                    ? tr.electric_fees[0].electicUnit - tr.electric_fees[1].electicUnit
                     : 0
                 }}
               </div>
               <div v-else-if="!tr.electric_fees[1] && tr.electric_fees[0]">
-                {{ tr.electric_fees[0].electicUnit }}
+                {{ tr.electric_fees[0].electicUnit - (tr.previousElectricValue || 0) }}
               </div>
               <div v-else>
-                {{
-                  tr.electric_fees[0]
-                    ? tr.electric_fees[0].usageMeter
-                    : tr.newElec
-                }}
+                {{ tr.newElec - (tr.previousElectricValue || 0) }}
               </div>
             </vs-td>
             <vs-td>
@@ -210,11 +236,10 @@
                       updateElectfee(
                         tr.electric_fees[0].id,
                         tr.electric_fees[0].electicUnit,
-                        tr.electric_fees[0].electicUnit -
-                          tr.electric_fees[1].electicUnit
+                        tr.electric_fees[0].electicUnit - tr.electric_fees[1].electicUnit
                       )
                     "
-                    >บันทึก1</vs-button
+                    >บันทึก</vs-button
                   >
                 </div>
                 <div v-else-if="tr.electric_fees[0]">
@@ -224,7 +249,7 @@
                       updateElectfee(
                         tr.electric_fees[0].id,
                         tr.electric_fees[0].electicUnit,
-                        tr.electric_fees[0].electicUnit
+                        tr.electric_fees[0].electicUnit - (tr.previousElectricValue || 0)
                       )
                     "
                     >บันทึก</vs-button
@@ -237,9 +262,9 @@
                     @click="
                       createNewElectricityfee(
                         tr.id, // roomID
-                        tr.user_sign_contract.id,
+                        tr.user_sign_contract ? tr.user_sign_contract.id : null,
                         tr.newElec,
-                        tr.newElec
+                        tr.newElec - (tr.previousElectricValue || 0)
                       )
                     "
                     >บันทึก</vs-button
@@ -253,6 +278,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import axios from "axios";
 
@@ -272,17 +298,6 @@ export default {
       year: "",
       importExcel: [],
     };
-
-    // return {
-    //   users: [
-
-    //   ElectricityFee: [],
-    //   electicUnit: 0,
-    //   code: 0,
-    //   text: "",
-    //   month: "",
-    //   year: "",
-    // };
   },
   created() {
     const loading = this.$vs.loading({});
@@ -299,6 +314,8 @@ export default {
   },
   methods: {
     getElectricityFee(id, m, y) {
+      console.log("month", m);
+      console.log("year", y);
       this.ElectricityFee = [];
       const loading = this.$vs.loading();
       fetch(
@@ -307,30 +324,192 @@ export default {
         .then((response) => response.json())
         .then((resp) => {
           console.log("Return from getElecFeeRoom()", resp.data);
+          
+          // Process the data and initialize previousElectricValue for each entry
+          const processedData = resp.data.map(item => {
+            // Initialize the previousElectricValue for entries without electric_fees[1]
+            if (!item.electric_fees[1]) {
+              // Default to starting electric value or 0
+              item.previousElectricValue = item.user_sign_contract?.startElectric || 0;
+            }
+            return item;
+          });
+          
           if (this.code == 8) {
-            this.ElectricityFee = resp.data.filter((item) =>
+            this.ElectricityFee = processedData.filter((item) =>
               item.RoomNumber.toLowerCase().includes(this.text.toLowerCase())
             );
           } else {
-            this.ElectricityFee = resp.data;
+            this.ElectricityFee = processedData;
           }
         })
         .finally(() => {
           loading.close();
         });
     },
+    
+    // Helper method to calculate usage meter
+    calculateUsageMeter(currentReading, previousReading) {
+      // Ensure readings are treated as numbers
+      const current = Number(currentReading) || 0;
+      const previous = Number(previousReading) || 0;
+      
+      // Calculate usage and ensure it's not negative
+      return Math.max(0, current - previous);
+    },
+    
+    /**
+     * Creates an electric fee record for the previous month
+     * @param {number} roomId - The room ID
+     * @param {number} contractId - The contract ID
+     * @param {number} electicUnit - The meter reading for previous month
+     * @param {number} currentUsageMeter - The usage meter for current month (to update)
+     */
+    createPreviousMonthElectricfee(roomId, contractId, electicUnit, currentUsageMeter) {
+      // Skip if invalid data
+      if (!roomId || !contractId || !electicUnit) {
+        console.warn("Cannot create previous month electric fee: Missing required data");
+        return;
+      }
+      
+      const loading = this.$vs.loading();
+      
+      // Convert to number and ensure it's not negative
+      const numericValue = Math.max(0, Number(electicUnit));
+      
+      // Calculate previous month date (for createDate)
+      const currentDate = new Date();
+      // Go back one month
+      let prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+      // Format date for API (YYYY-MM-DD format)
+      const prevMonthFormatted = prevMonth.toISOString().split('T')[0];
+      
+      // Create the electric fee for the previous month
+      axios
+        .post(`https://api.resguru.app/api/electric-fees/`, {
+          data: {
+            room: roomId,
+            user_sign_contract: contractId,
+            electicUnit: numericValue,
+            usageMeter: 0, // Previous month doesn't have usage since we're creating it now
+            createdAt: prevMonthFormatted, // Set creation date to previous month
+          },
+        })
+        .then((response) => {
+          // If there is a current month reading, update its usage calculation
+          const roomData = this.ElectricityFee.find(item => item.id === roomId);
+          if (roomData && roomData.electric_fees[0]) {
+            // Get current month reading
+            const currentMeterReading = Number(roomData.electric_fees[0].electicUnit);
+            
+            // Calculate new usage for current month based on current reading minus previous month value
+            const newUsage = Math.max(0, currentMeterReading - numericValue);
+            
+            return axios.put(`https://api.resguru.app/api/electric-fees/${roomData.electric_fees[0].id}`, {
+              data: {
+                usageMeter: newUsage,
+              },
+            });
+          }
+        })
+        .catch((error) => {
+          const errorMessage = error.message
+            ? error.message
+            : "Error creating previous month electric meter record";
+          this.$showNotification("danger", errorMessage);
+        })
+        .finally(() => {
+          loading.close();
+          this.$showNotification("#3A89CB", "Created Previous Month Electric Meter Record");
+          // Refresh the data to show the new record
+          this.getElectricityFee(this.id, this.month, this.year);
+        });
+    },
+    
+    /**
+     * Updates an existing previous month electric fee
+     * @param {number} electricFeeId - The electric fee ID
+     * @param {number} electricUnit - The meter reading
+     * @param {number} currentUsageMeter - The usage meter for current month (to update)
+     */
+    updatePreviousElectricfee(electricFeeId, electricUnit, currentUsageMeter) {
+      // Skip if invalid data
+      if (!electricFeeId || !electricUnit) {
+        console.warn("Cannot update previous month electric fee: Missing required data");
+        return;
+      }
+      
+      const loading = this.$vs.loading();
+      
+      // Convert to number and ensure it's not negative
+      const numericValue = Math.max(0, Number(electricUnit));
+      
+      // Update the previous month electric fee
+      axios
+        .put(`https://api.resguru.app/api/electric-fees/${electricFeeId}`, {
+          data: {
+            electicUnit: numericValue,
+          },
+        })
+        .then(() => {
+          // Find the room data for this electric fee
+          const roomData = this.ElectricityFee.find(item => 
+            item.electric_fees[1] && item.electric_fees[1].id === electricFeeId
+          );
+          
+          // If there is a current month reading, update its usage calculation
+          if (roomData && roomData.electric_fees[0]) {
+            // Get current month reading
+            const currentMeterReading = Number(roomData.electric_fees[0].electicUnit);
+            
+            // Calculate new usage for current month based on current reading minus updated previous month value
+            const newUsage = Math.max(0, currentMeterReading - numericValue);
+            
+            return axios.put(`https://api.resguru.app/api/electric-fees/${roomData.electric_fees[0].id}`, {
+              data: {
+                usageMeter: newUsage,
+              },
+            });
+          }
+        })
+        .catch((error) => {
+          const errorMessage = error.message
+            ? error.message
+            : "Error updating previous month electric meter reading";
+          this.$showNotification("danger", errorMessage);
+        })
+        .finally(() => {
+          loading.close();
+          this.$showNotification("#3A89CB", "Updated Previous Month Electric Meter Reading");
+          // Refresh the data to show the updated record
+          this.getElectricityFee(this.id, this.month, this.year);
+        });
+    },
+    
     createNewElectricityfee(room, user_sign_contract, electicUnit, usageMeter) {
+      // Skip if not ready to save
+      if (!electicUnit || !user_sign_contract) {
+        return;
+      }
+      
       console.log("room", room);
       console.log("user_sign_contract", user_sign_contract);
       console.log("electicUnit", electicUnit);
       console.log("usageMeter", usageMeter);
+      
+      const loading = this.$vs.loading();
+      
+      // Ensure values are numeric
+      const numericElectricUnit = Number(electicUnit) || 0;
+      const numericUsageMeter = Math.max(0, Number(usageMeter) || 0);
+      
       axios
         .post(`https://api.resguru.app/api/electric-fees/`, {
           data: {
             room: room,
             user_sign_contract: user_sign_contract,
-            electicUnit: electicUnit,
-            usageMeter: usageMeter,
+            electicUnit: numericElectricUnit,
+            usageMeter: numericUsageMeter,
           },
         })
         .then((resp) => {})
@@ -341,17 +520,35 @@ export default {
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
+          loading.close();
           this.$showNotification("#3A89CB", "Update Electricity Fee Success");
           this.getElectricityFee(this.id, this.month, this.year);
         });
     },
+    
     updateElectfee(electFeeId, electicUnit, usageMeter) {
-      console.log("test", usageMeter);
+      // Skip if empty values
+      if (!electicUnit) {
+        return;
+      }
+      
+      // Ensure numeric values
+      const numericElectricUnit = Number(electicUnit) || 0;
+      // Ensure usageMeter is not negative
+      const numericUsageMeter = Math.max(0, Number(usageMeter) || 0);
+      
+      console.log("Updating electric fee:", {
+        electFeeId,
+        electicUnit: numericElectricUnit,
+        usageMeter: numericUsageMeter
+      });
+      
+      const loading = this.$vs.loading();
       axios
         .put(`https://api.resguru.app/api/electric-fees/${electFeeId}`, {
           data: {
-            electicUnit: electicUnit,
-            usageMeter: usageMeter,
+            electicUnit: numericElectricUnit,
+            usageMeter: numericUsageMeter,
           },
         })
         .then((resp) => {})
@@ -362,74 +559,262 @@ export default {
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
+          loading.close();
           this.$showNotification("#3A89CB", "Update Electric Fee Success");
           this.getElectricityFee(this.id, this.month, this.year);
         });
     },
+    
     updateMeterAll(newElecArray) {
       if (this.ElectricityFee.length > 0) {
-        // console.log(this.ElectricityFee.length);
         const loading = this.$vs.loading();
-        // Collect all newElec values into an array
-
+        
+        // Create a promise array to track all updates
+        const updatePromises = [];
+        
         this.ElectricityFee.forEach((data, i) => {
-          console.log("data", i, data);
-
+          console.log("Processing room data:", i, data);
+          
           if (data.electric_fees[0] && data.electric_fees[0].electicUnit) {
-            console.log("RESD", i, data);
-            axios
-              .put(
+            // Calculate usage meter based on whether there's a previous reading
+            let usageMeter = 0;
+            if (data.electric_fees[1]) {
+              usageMeter = Math.max(0, Number(data.electric_fees[0].electicUnit) - Number(data.electric_fees[1].electicUnit));
+            } else if (data.previousElectricValue) {
+              usageMeter = Math.max(0, Number(data.electric_fees[0].electicUnit) - Number(data.previousElectricValue));
+            } else {
+              usageMeter = Number(data.electric_fees[0].electicUnit);
+            }
+            
+            // Add promise to array
+            updatePromises.push(
+              axios.put(
                 `https://api.resguru.app/api/electric-fees/${data.electric_fees[0].id}`,
                 {
                   data: {
-                    electicUnit: parseInt(data.newElec),
+                    electicUnit: Number(data.electric_fees[0].electicUnit),
+                    usageMeter: usageMeter
                   },
                 }
               )
-              .then(() => {
-                // if (this.ElectricityFee.length == i + 1) {
-                //   loading.close();
-                //   this.$showNotification("#3A89CB", "Update Electricity Fee Success");
-                // }
-              });
-          } else if (data.electric_fees[0]) {
-            console.log("data2 else", i, data.electric_fees[0].electicUnit);
-            axios
-              .post(`https://api.resguru.app/api/electric-fees/`, {
-                data: {
-                  room: data.id,
-                  user_sign_contract: data.user_sign_contract.id,
-                  electicUnit: parseInt(data.electric_fees[0].electicUnit),
-                  usageMeter: parseInt(data.electric_fees[0].electicUnit),
-                },
-              })
-              .then(() => {})
-              .catch((error) => {
-                const errorMessage = error.message
-                  ? error.message
-                  : "Error updating information";
-                this.$showNotification("danger", errorMessage);
-              });
+            );
+          } else if (data.newElec) {
+            // Calculate usage for new entries
+            let usageMeter = 0;
+            if (data.previousElectricValue) {
+              usageMeter = Math.max(0, Number(data.newElec) - Number(data.previousElectricValue));
+            } else {
+              usageMeter = Number(data.newElec);
+            }
+            
+            // Create new electric fee if we have the required data
+            if (data.id && data.user_sign_contract && data.user_sign_contract.id) {
+              updatePromises.push(
+                axios.post(`https://api.resguru.app/api/electric-fees/`, {
+                  data: {
+                    room: data.id,
+                    user_sign_contract: data.user_sign_contract.id,
+                    electicUnit: Number(data.newElec),
+                    usageMeter: usageMeter,
+                  },
+                })
+              );
+            }
           }
         });
-        loading.close();
-        this.$showNotification("#3A89CB", "Update Electric Fee Success");
+        
+        // Wait for all updates to complete
+        Promise.all(updatePromises)
+          .then(() => {
+            this.$showNotification("#3A89CB", "All Electric Fees Updated Successfully");
+            this.getElectricityFee(this.id, this.month, this.year);
+          })
+          .catch((error) => {
+            const errorMessage = error.message
+              ? error.message
+              : "Error updating some electric fees";
+            this.$showNotification("danger", errorMessage);
+          })
+          .finally(() => {
+            loading.close();
+          });
       }
     },
+    
     filterData(text, code) {
       this.text = text;
-      console.log("filter", text);
-      this.ElectricityFee = this.ElectricityFee.filter((item) =>
-        item.RoomNumber.toLowerCase().includes(text.toLowerCase())
-      );
-      if (text == "") {
+      console.log("Filtering by text:", text);
+      
+      if (text === "") {
+        // If text is empty, reset to full data
         this.getElectricityFee(this.id, this.month, this.year);
+      } else {
+        // Filter the current dataset
+        this.ElectricityFee = this.ElectricityFee.filter((item) =>
+          item.RoomNumber.toLowerCase().includes(text.toLowerCase())
+        );
       }
+      
+      // Handle backspace code (code 8)
       if (code == 8) {
         this.code = 8;
         this.getElectricityFee(this.id, this.month, this.year);
       }
     },
+    
+    /**
+     * Export electric meter readings to Excel
+     */
+    exportToExcel() {
+      const loading = this.$vs.loading();
+      
+      try {
+        // Prepare data for export
+        const exportData = this.ElectricityFee.map(item => {
+          const previousReading = item.electric_fees[1] ? 
+            Number(item.electric_fees[1].electicUnit) : 
+            Number(item.previousElectricValue || 0);
+            
+          const currentReading = item.electric_fees[0] ? 
+            Number(item.electric_fees[0].electicUnit) : 
+            Number(item.newElec || 0);
+            
+          const usage = Math.max(0, currentReading - previousReading);
+          
+          return {
+            'Room Number': item.RoomNumber,
+            'Status': item.user_sign_contract ? 'มีผู้เข้าพัก' : 'ห้องว่าง',
+            'Tenant Name': item.user_sign_contract ? 
+              `${item.user_sign_contract.users_permissions_user.firstName} ${item.user_sign_contract.users_permissions_user.lastName}` : 
+              '',
+            'Previous Reading': previousReading,
+            'Current Reading': currentReading,
+            'Usage': usage
+          };
+        });
+        
+        // Convert data to CSV format
+        let csvContent = 'Room Number,Status,Tenant Name,Previous Reading,Current Reading,Usage\n';
+        
+        exportData.forEach(row => {
+          const values = Object.values(row).map(value => 
+            typeof value === 'string' ? `"${value.replace(/"/g, '""')}"` : value
+          );
+          csvContent += values.join(',') + '\n';
+        });
+        
+        // Create and download the file
+        const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        const url = URL.createObjectURL(blob);
+        
+        link.setAttribute('href', url);
+        link.setAttribute('download', `ElectricMeter_Floor${this.tab}_${this.year}_${this.month}.csv`);
+        link.style.visibility = 'hidden';
+        
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        this.$showNotification("#3A89CB", "Electric Meter Data Exported Successfully");
+      } catch (error) {
+        console.error('Export error:', error);
+        this.$showNotification("danger", "Error exporting electric meter data");
+      } finally {
+        loading.close();
+      }
+    },
+    
+    /**
+     * Calculate electric bill amount for a specific room
+     * @param {Object} roomData - The room data object
+     * @returns {number} - The calculated bill amount
+     */
+    calculateElectricBill(roomData) {
+      // Skip if no contract or no electric fee data
+      if (!roomData.user_sign_contract) return 0;
+      
+      const electricRate = roomData.user_sign_contract.electricRate || 0;
+      let usage = 0;
+      
+      if (roomData.electric_fees[0]) {
+        // Calculate usage based on current and previous readings
+        const currentReading = Number(roomData.electric_fees[0].electicUnit) || 0;
+        const previousReading = roomData.electric_fees[1] ? 
+          Number(roomData.electric_fees[1].electicUnit) : 
+          Number(roomData.previousElectricValue || 0);
+          
+        usage = Math.max(0, currentReading - previousReading);
+      } else if (roomData.newElec) {
+        // Calculate usage for new electric meter entries
+        const currentReading = Number(roomData.newElec) || 0;
+        const previousReading = Number(roomData.previousElectricValue || 0);
+        
+        usage = Math.max(0, currentReading - previousReading);
+      }
+      
+      // Calculate the bill amount
+      return usage * electricRate;
+    },
+    
+    /**
+     * Generate electric bills for all rooms
+     */
+    generateElectricBills() {
+      if (this.ElectricityFee.length === 0) {
+        this.$showNotification("warning", "No electric meter data available");
+        return;
+      }
+      
+      const loading = this.$vs.loading();
+      const billPromises = [];
+      
+      // Process each room
+      this.ElectricityFee.forEach(room => {
+        // Skip rooms without contracts
+        if (!room.user_sign_contract) return;
+        
+        // Calculate the bill amount
+        const billAmount = this.calculateElectricBill(room);
+        
+        // Skip if bill amount is zero
+        if (billAmount <= 0) return;
+        
+        // Prepare bill data
+        const billData = {
+          data: {
+            room: room.id,
+            user_sign_contract: room.user_sign_contract.id,
+            amount: billAmount,
+            billType: 'electric',
+            billMonth: this.month,
+            billYear: this.year,
+            isPaid: false,
+            description: `Electric usage bill for ${this.month}/${this.year}`
+          }
+        };
+        
+        // Create the bill
+        billPromises.push(
+          axios.post('https://api.resguru.app/api/bills', billData)
+        );
+      });
+      
+      // Wait for all bills to be created
+      Promise.all(billPromises)
+        .then(responses => {
+          this.$showNotification("#3A89CB", `Created ${responses.length} electric bills successfully`);
+        })
+        .catch(error => {
+          const errorMessage = error.message
+            ? error.message
+            : "Error generating electric bills";
+          this.$showNotification("danger", errorMessage);
+        })
+        .finally(() => {
+          loading.close();
+        });
+    }
   },
 };
 </script>
