@@ -174,7 +174,7 @@
             <div class="text-[12px]">คงเหลือ</div>
             <div class="flex justify-between">
               <div class="text-[28px] font-bold flex items-center">
-                {{ $formatNumber(this.userPayRemain.toFixed(2)) }} บาท
+                {{ this.userPayRemain.toLocaleString('th-TH', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) }} บาท
               </div>
               <!-- <div class="flex pt-[4px] pb-[4px] pl-[12px] pr-[12px] border rounded-[12px]  ">
                                 <div>
@@ -2065,7 +2065,7 @@ export default {
             ) {
               this.userUnpaidInvoice.push(element);
               this.userPayRemain =
-                this.userPayRemain;
+                element.attributes.remainPaid;
               // console.log("in if " + element.id, this.userPayRemain)
             }
           });
