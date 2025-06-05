@@ -91,9 +91,10 @@
                     </div>
                 </div>
                 <!-- Modify the "Add Admin" card to check if more admins can be added -->
+                <!-- Modified Add Admin Card -->
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer items-center justify-center"
                     v-if="canAddMoreAdmins" 
-                    @click="profile_admin = true, NewProfileAdmin.firstName = '', NewProfileAdmin.lastName = '', NewProfileAdmin.contactAddress = '', NewProfileAdmin.phone = '', NewProfileAdmin.email = '', NewProfileAdmin.line = '', NewProfileAdmin.password = '', this.fileAdminProfileForm = [], fileAdminCoverForm = [], is_edit = false">
+                    @click="openAdminSelection">
                     <div class="flex flex-col items-center justify-center">
                         <div>
                             <svg width="60" height="60" viewBox="0 0 68 69" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -112,6 +113,117 @@
                         <div class="text-[#5C6B79] font-bold mt-[4px]">เพิ่มแอดมิน</div>
                     </div>
                 </div>
+
+                <!-- Admin Selection Modal -->
+                <b-modal centered v-model="adminSelectionModal" size="lg" hide-backdrop hide-header-close hide-header hide-footer>
+                    <div class="flex justify-end cursor-pointer" @click="adminSelectionModal = false">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <mask id="mask0_902_19192" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24">
+                                <rect width="24" height="24" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_902_19192)">
+                                <path d="M12.0005 13.0543L6.92737 18.1274C6.78892 18.2658 6.61489 18.3367 6.40527 18.3399C6.19567 18.3431 6.01844 18.2723 5.87357 18.1274C5.72869 17.9825 5.65625 17.8069 5.65625 17.6005C5.65625 17.3941 5.72869 17.2184 5.87357 17.0736L10.9466 12.0005L5.87357 6.92738C5.73511 6.78893 5.66427 6.61489 5.66107 6.40527C5.65786 6.19568 5.72869 6.01844 5.87357 5.87358C6.01844 5.72869 6.19407 5.65625 6.40047 5.65625C6.60687 5.65625 6.78251 5.72869 6.92737 5.87358L12.0005 10.9467L17.0736 5.87358C17.212 5.73511 17.3861 5.66428 17.5957 5.66108C17.8053 5.65786 17.9825 5.72869 18.1274 5.87358C18.2723 6.01844 18.3447 6.19408 18.3447 6.40048C18.3447 6.60688 18.2723 6.78251 18.1274 6.92738L13.0543 12.0005L18.1274 17.0736C18.2658 17.212 18.3367 17.3861 18.3399 17.5957C18.3431 17.8053 18.2723 17.9825 18.1274 18.1274C17.9825 18.2723 17.8069 18.3447 17.6005 18.3447C17.3941 18.3447 17.2184 18.2723 17.0736 18.1274L12.0005 13.0543Z" fill="#003765" />
+                            </g>
+                        </svg>
+                    </div>
+                    
+                    <div class="mt-[14px]">
+                        <h3 class="text-[20px] font-bold text-[#003765] mb-[20px]">เลือกวิธีเพิ่มแอดมิน</h3>
+                        
+                        <!-- Selection Options -->
+                        <div class="grid grid-cols-2 gap-4 mb-[20px]">
+                            <div class="border rounded-[12px] p-[16px] cursor-pointer" 
+                                :class="{'border-[#003765] bg-[#F0F8FF]': addAdminMode === 'existing', 'border-gray-300': addAdminMode !== 'existing'}"
+                                @click="addAdminMode = 'existing'">
+                                <div class="text-center">
+                                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="mx-auto mb-2">
+                                        <circle cx="24" cy="24" r="24" fill="#E3F2FD"/>
+                                        <path d="M24 12C28.42 12 32 15.58 32 20C32 24.42 28.42 28 24 28C19.58 28 16 24.42 16 20C16 15.58 19.58 12 24 12ZM24 30C30.33 30 36 32.67 36 36V38H12V36C12 32.67 17.67 30 24 30Z" fill="#1976D2"/>
+                                    </svg>
+                                    <div class="font-bold text-[#003765]">เลือกจากแอดมินที่มีอยู่</div>
+                                    <div class="text-sm text-gray-600 mt-1">เลือกแอดมินจากอาคารอื่นๆ</div>
+                                </div>
+                            </div>
+                            
+                            <div class="border rounded-[12px] p-[16px] cursor-pointer"
+                                :class="{'border-[#003765] bg-[#F0F8FF]': addAdminMode === 'new', 'border-gray-300': addAdminMode !== 'new'}"
+                                @click="addAdminMode = 'new'">
+                                <div class="text-center">
+                                    <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="mx-auto mb-2">
+                                        <circle cx="24" cy="24" r="24" fill="#E8F5E8"/>
+                                        <path d="M24 12C28.42 12 32 15.58 32 20C32 24.42 28.42 28 24 28C19.58 28 16 24.42 16 20C16 15.58 19.58 12 24 12ZM31 31V28H33V31H36V33H33V36H31V33H28V31H31ZM24 30C27.33 30 30.67 31.5 32 33.38V36H12V36C12 32.67 17.67 30 24 30Z" fill="#2E7D32"/>
+                                    </svg>
+                                    <div class="font-bold text-[#003765]">สร้างแอดมินใหม่</div>
+                                    <div class="text-sm text-gray-600 mt-1">กรอกข้อมูลแอดมินใหม่</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Existing Admin Selection -->
+                        <div v-if="addAdminMode === 'existing'">
+                            <div class="mb-[16px]">
+                                <label class="text-[14px] font-bold text-[#003765] mb-2 block">เลือกแอดมิน</label>
+                                <select v-model="selectedExistingAdmin" 
+                                        class="w-full h-[40px] border border-gray-300 rounded-[8px] px-3 bg-white"
+                                        :disabled="loadingExistingAdmins">
+                                    <option value="">-- เลือกแอดมิน --</option>
+                                    <optgroup v-for="building in otherBuildings" :key="building.id" :label="building.attributes.name || `อาคาร ${building.id}`">
+                                        <option v-for="admin in building.attributes.users_admin.data" 
+                                                :key="`${building.id}-${admin.id}`" 
+                                                :value="admin.id"
+                                                :disabled="isAdminAlreadyInCurrentBuilding(admin.id)">
+                                            {{ admin.attributes.firstName }} {{ admin.attributes.lastName }}
+                                            {{ isAdminAlreadyInCurrentBuilding(admin.id) ? '(อยู่ในอาคารนี้แล้ว)' : '' }}
+                                        </option>
+                                    </optgroup>
+                                </select>
+                                <div v-if="loadingExistingAdmins" class="text-sm text-gray-500 mt-1">กำลังโหลดรายชื่อแอดมิน...</div>
+                                <div v-if="!loadingExistingAdmins && otherBuildings.length === 0" class="text-sm text-gray-500 mt-1">
+                                    ไม่พบแอดมินจากอาคารอื่นๆ
+                                </div>
+                            </div>
+                            
+                            <!-- Selected Admin Preview -->
+                            <div v-if="selectedExistingAdmin && selectedAdminDetails" class="border rounded-[12px] p-[16px] bg-[#F8F9FA]">
+                                <h4 class="font-bold text-[#003765] mb-[12px]">แอดมินที่เลือก</h4>
+                                <div class="flex items-center">
+                                    <img class="w-[60px] h-[60px] rounded-[12px] object-cover"
+                                        :src="selectedAdminDetails.imageProfile ? 
+                                            'https://api.resguru.app' + selectedAdminDetails.imageProfile.url : 
+                                            'https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg'" />
+                                    <div class="ml-[12px]">
+                                        <div class="font-bold text-[16px]">{{ selectedAdminDetails.firstName }} {{ selectedAdminDetails.lastName }}</div>
+                                        <div class="text-sm text-gray-600">{{ selectedAdminDetails.email }}</div>
+                                        <div class="text-sm text-gray-600">{{ selectedAdminDetails.phone }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Confirm Button for Existing Admin -->
+                            <div class="mt-[20px] flex justify-end space-x-2">
+                                <button class="px-4 py-2 border border-gray-300 rounded-[8px] text-gray-700 hover:bg-gray-50"
+                                        @click="adminSelectionModal = false">
+                                    ยกเลิก
+                                </button>
+                                <button class="px-4 py-2 bg-[#003765] text-white rounded-[8px] hover:bg-[#002855]"
+                                        :disabled="!selectedExistingAdmin"
+                                        @click="addExistingAdmin">
+                                    เพิ่มแอดมิน
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- New Admin Creation -->
+                        <div v-if="addAdminMode === 'new'">
+                            <div class="text-center">
+                                <button class="px-6 py-3 bg-[#003765] text-white rounded-[8px] hover:bg-[#002855]"
+                                        @click="openNewAdminForm">
+                                    สร้างแอดมินใหม่
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </b-modal>
                 <!-- Display a message when the admin limit is reached for Business package -->
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] items-center justify-center opacity-60"
                     v-if="!canAddMoreAdmins">
@@ -429,6 +541,12 @@ export default {
 
             },
             is_edit: false,
+            adminSelectionModal: false,
+            addAdminMode: 'existing', // 'existing' or 'new'
+            loadingExistingAdmins: false,
+            otherBuildings: [],
+            selectedExistingAdmin: '',
+            selectedAdminDetails: null,
         }
     },
     components: {
@@ -444,6 +562,27 @@ export default {
         this.getEmployer();
         this.getUser();
     },
+    watch: {
+        selectedExistingAdmin(newValue) {
+            if (newValue) {
+                // Find selected admin details
+                this.selectedAdminDetails = null;
+                
+                for (const building of this.otherBuildings) {
+                    const admin = building.attributes.users_admin.data.find(admin => admin.id == newValue);
+                    if (admin) {
+                        this.selectedAdminDetails = {
+                            ...admin.attributes,
+                            imageProfile: admin.attributes.imageProfile?.data?.attributes
+                        };
+                        break;
+                    }
+                }
+            } else {
+                this.selectedAdminDetails = null;
+            }
+        }
+    },
     computed: {
         isBusinessPackage() {
             return this.$store.state.buildingInfo[0].attributes.package.data?.id === 1;
@@ -458,7 +597,10 @@ export default {
             }
             // Professional package has no limit
             return true;
-        }
+        },
+        currentBuildingAdminIds() {
+            return this.UserBuilding.map(admin => admin.id);
+        },
     },
     methods: {
         getEmployer() {
@@ -703,6 +845,112 @@ export default {
                 return false; // Assume no duplicate on error
             }
         },
+        async openAdminSelection() {
+                this.adminSelectionModal = true;
+                this.addAdminMode = 'existing';
+                this.selectedExistingAdmin = '';
+                this.selectedAdminDetails = null;
+                await this.loadExistingAdmins();
+            },
+            
+            async loadExistingAdmins() {
+                this.loadingExistingAdmins = true;
+                
+                try {
+                    // Get current building owner - adjust this based on your store structure
+                    const currentUserId = this.$store.state.userInfo?.id; // Adjust based on your store
+                    
+                    if (!currentUserId) {
+                        console.error('Current user ID not found');
+                        return;
+                    }
+                    
+                    // Fetch all buildings owned by the current user
+                    const response = await fetch(
+                        `https://api.resguru.app/api/buildings?filters[user_owner][id][$eq]=${currentUserId}&populate=users_admin.imageProfile&filters[id][$ne]=${this.$store.state.building}`
+                    );
+                    
+                    const data = await response.json();
+                    
+                    if (data.data) {
+                        // Filter out buildings that have no admins
+                        this.otherBuildings = data.data.filter(building => 
+                            building.attributes.users_admin?.data?.length > 0
+                        );
+                    }
+                } catch (error) {
+                    console.error('Error loading existing admins:', error);
+                    this.$showNotification('danger', 'เกิดข้อผิดพลาดในการโหลดรายชื่อแอดมิน');
+                } finally {
+                    this.loadingExistingAdmins = false;
+                }
+            },
+            
+            isAdminAlreadyInCurrentBuilding(adminId) {
+                return this.currentBuildingAdminIds.includes(adminId);
+            },
+            
+            openNewAdminForm() {
+                this.adminSelectionModal = false;
+                // Reset form data
+                this.NewProfileAdmin = {
+                    firstName: '',
+                    lastName: '',
+                    contactAddress: '',
+                    province: '',
+                    district: '',
+                    amphoe: '',
+                    zipcode: '',
+                    phone: '',
+                    email: '',
+                    line: '',
+                    position: '',
+                    building: '',
+                    password: ''
+                };
+                this.fileAdminProfileForm = [];
+                this.fileAdminCoverForm = [];
+                this.is_edit = false;
+                this.profile_admin = true;
+            },
+            
+            async addExistingAdmin() {
+                if (!this.selectedExistingAdmin) {
+                    this.$showNotification('danger', 'กรุณาเลือกแอดมิน');
+                    return;
+                }
+                
+                const loading = this.$vs.loading({
+                    text: 'กำลังเพิ่มแอดมิน...'
+                });
+                
+                try {
+                    // Connect existing admin to current building
+                    await axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`, {
+                        data: {
+                            users_admin: { 
+                                connect: [this.selectedExistingAdmin] 
+                            }
+                        }
+                    });
+                    
+                    this.$showNotification('#3A89CB', 'เพิ่มแอดมินสำเร็จ');
+                    this.adminSelectionModal = false;
+                    this.getUser(); // Refresh the admin list
+                    
+                } catch (error) {
+                    console.error('Error adding existing admin:', error);
+                    
+                    let errorMessage = 'เกิดข้อผิดพลาดในการเพิ่มแอดมิน';
+                    if (error.response?.data?.error?.message) {
+                        errorMessage = error.response.data.error.message;
+                    }
+                    
+                    this.$showNotification('danger', errorMessage);
+                } finally {
+                    loading.close();
+                }
+            },
 
         // Improved addAdmin method
         async addAdmin(id) {
