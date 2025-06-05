@@ -297,6 +297,7 @@ export default {
       month: "",
       year: "",
       importExcel: [],
+      savedScrollPosition: 0, 
     };
   },
   created() {
@@ -313,40 +314,7 @@ export default {
     this.getElectricityFee(this.id, this.month, this.year);
   },
   methods: {
-    getElectricityFee(id, m, y) {
-      console.log("month", m);
-      console.log("year", y);
-      this.ElectricityFee = [];
-      const loading = this.$vs.loading();
-      fetch(
-        `https://api.resguru.app/api/getelectriclist?buildingid=${this.$store.state.building}&buildingFloor=${id}&month=${m}&year=${y}`
-      )
-        .then((response) => response.json())
-        .then((resp) => {
-          console.log("Return from getElecFeeRoom()", resp.data);
-          
-          // Process the data and initialize previousElectricValue for each entry
-          const processedData = resp.data.map(item => {
-            // Initialize the previousElectricValue for entries without electric_fees[1]
-            if (!item.electric_fees[1]) {
-              // Default to starting electric value or 0
-              item.previousElectricValue = item.user_sign_contract?.startElectric || 0;
-            }
-            return item;
-          });
-          
-          if (this.code == 8) {
-            this.ElectricityFee = processedData.filter((item) =>
-              item.RoomNumber.toLowerCase().includes(this.text.toLowerCase())
-            );
-          } else {
-            this.ElectricityFee = processedData;
-          }
-        })
-        .finally(() => {
-          loading.close();
-        });
-    },
+
     
     // Helper method to calculate usage meter
     calculateUsageMeter(currentReading, previousReading) {
@@ -357,213 +325,291 @@ export default {
       // Calculate usage and ensure it's not negative
       return Math.max(0, current - previous);
     },
-    
-    /**
-     * Creates an electric fee record for the previous month
-     * @param {number} roomId - The room ID
-     * @param {number} contractId - The contract ID
-     * @param {number} electicUnit - The meter reading for previous month
-     * @param {number} currentUsageMeter - The usage meter for current month (to update)
-     */
-    createPreviousMonthElectricfee(roomId, contractId, electicUnit, currentUsageMeter) {
-      // Skip if invalid data
-      if (!roomId || !contractId || !electicUnit) {
-        console.warn("Cannot create previous month electric fee: Missing required data");
-        return;
-      }
-      
-      const loading = this.$vs.loading();
-      
-      // Convert to number and ensure it's not negative
-      const numericValue = Math.max(0, Number(electicUnit));
-      
-      // Calculate previous month date (for createDate)
-      const currentDate = new Date();
-      // Go back one month
-      let prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
-      // Format date for API (YYYY-MM-DD format)
-      const prevMonthFormatted = prevMonth.toISOString().split('T')[0];
-      
-      // Create the electric fee for the previous month
-      axios
-        .post(`https://api.resguru.app/api/electric-fees/`, {
-          data: {
-            room: roomId,
-            user_sign_contract: contractId,
-            electicUnit: numericValue,
-            usageMeter: 0, // Previous month doesn't have usage since we're creating it now
-            createdAt: prevMonthFormatted, // Set creation date to previous month
-          },
-        })
-        .then((response) => {
-          // If there is a current month reading, update its usage calculation
-          const roomData = this.ElectricityFee.find(item => item.id === roomId);
-          if (roomData && roomData.electric_fees[0]) {
-            // Get current month reading
-            const currentMeterReading = Number(roomData.electric_fees[0].electicUnit);
-            
-            // Calculate new usage for current month based on current reading minus previous month value
-            const newUsage = Math.max(0, currentMeterReading - numericValue);
-            
-            return axios.put(`https://api.resguru.app/api/electric-fees/${roomData.electric_fees[0].id}`, {
-              data: {
-                usageMeter: newUsage,
-              },
-            });
-          }
-        })
-        .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error creating previous month electric meter record";
-          this.$showNotification("danger", errorMessage);
-        })
-        .finally(() => {
-          loading.close();
-          this.$showNotification("#3A89CB", "Created Previous Month Electric Meter Record");
-          // Refresh the data to show the new record
-          this.getElectricityFee(this.id, this.month, this.year);
-        });
-    },
-    
-    /**
-     * Updates an existing previous month electric fee
-     * @param {number} electricFeeId - The electric fee ID
-     * @param {number} electricUnit - The meter reading
-     * @param {number} currentUsageMeter - The usage meter for current month (to update)
-     */
-    updatePreviousElectricfee(electricFeeId, electricUnit, currentUsageMeter) {
-      // Skip if invalid data
-      if (!electricFeeId || !electricUnit) {
-        console.warn("Cannot update previous month electric fee: Missing required data");
-        return;
-      }
-      
-      const loading = this.$vs.loading();
-      
-      // Convert to number and ensure it's not negative
-      const numericValue = Math.max(0, Number(electricUnit));
-      
-      // Update the previous month electric fee
-      axios
-        .put(`https://api.resguru.app/api/electric-fees/${electricFeeId}`, {
-          data: {
-            electicUnit: numericValue,
-          },
-        })
-        .then(() => {
-          // Find the room data for this electric fee
-          const roomData = this.ElectricityFee.find(item => 
-            item.electric_fees[1] && item.electric_fees[1].id === electricFeeId
-          );
-          
-          // If there is a current month reading, update its usage calculation
-          if (roomData && roomData.electric_fees[0]) {
-            // Get current month reading
-            const currentMeterReading = Number(roomData.electric_fees[0].electicUnit);
-            
-            // Calculate new usage for current month based on current reading minus updated previous month value
-            const newUsage = Math.max(0, currentMeterReading - numericValue);
-            
-            return axios.put(`https://api.resguru.app/api/electric-fees/${roomData.electric_fees[0].id}`, {
-              data: {
-                usageMeter: newUsage,
-              },
-            });
-          }
-        })
-        .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating previous month electric meter reading";
-          this.$showNotification("danger", errorMessage);
-        })
-        .finally(() => {
-          loading.close();
-          this.$showNotification("#3A89CB", "Updated Previous Month Electric Meter Reading");
-          // Refresh the data to show the updated record
-          this.getElectricityFee(this.id, this.month, this.year);
-        });
-    },
-    
-    createNewElectricityfee(room, user_sign_contract, electicUnit, usageMeter) {
-      // Skip if not ready to save
-      if (!electicUnit || !user_sign_contract) {
-        return;
-      }
-      
-      console.log("room", room);
-      console.log("user_sign_contract", user_sign_contract);
-      console.log("electicUnit", electicUnit);
-      console.log("usageMeter", usageMeter);
-      
-      const loading = this.$vs.loading();
-      
-      // Ensure values are numeric
-      const numericElectricUnit = Number(electicUnit) || 0;
-      const numericUsageMeter = Math.max(0, Number(usageMeter) || 0);
-      
-      axios
-        .post(`https://api.resguru.app/api/electric-fees/`, {
-          data: {
-            room: room,
-            user_sign_contract: user_sign_contract,
-            electicUnit: numericElectricUnit,
-            usageMeter: numericUsageMeter,
-          },
-        })
-        .then((resp) => {})
-        .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
-          this.$showNotification("danger", errorMessage);
-        })
-        .finally(() => {
-          loading.close();
-          this.$showNotification("#3A89CB", "Update Electricity Fee Success");
-          this.getElectricityFee(this.id, this.month, this.year);
-        });
-    },
-    
-    updateElectfee(electFeeId, electicUnit, usageMeter) {
-      // Skip if empty values
-      if (!electicUnit) {
-        return;
-      }
-      
-      // Ensure numeric values
-      const numericElectricUnit = Number(electicUnit) || 0;
-      // Ensure usageMeter is not negative
-      const numericUsageMeter = Math.max(0, Number(usageMeter) || 0);
-      
-      console.log("Updating electric fee:", {
-        electFeeId,
-        electicUnit: numericElectricUnit,
-        usageMeter: numericUsageMeter
+    saveScrollPosition() {
+    this.savedScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+  },
+  
+  // Helper method to restore scroll position
+  restoreScrollPosition() {
+    if (this.savedScrollPosition !== undefined) {
+      // Use setTimeout to ensure DOM is updated first
+      this.$nextTick(() => {
+        setTimeout(() => {
+          window.scrollTo(0, this.savedScrollPosition);
+        }, 100);
       });
-      
-      const loading = this.$vs.loading();
-      axios
-        .put(`https://api.resguru.app/api/electric-fees/${electFeeId}`, {
-          data: {
-            electicUnit: numericElectricUnit,
-            usageMeter: numericUsageMeter,
-          },
-        })
-        .then((resp) => {})
-        .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
-          this.$showNotification("danger", errorMessage);
-        })
-        .finally(() => {
-          loading.close();
-          this.$showNotification("#3A89CB", "Update Electric Fee Success");
-          this.getElectricityFee(this.id, this.month, this.year);
+    }
+  },
+
+  // 3. UPDATE getElectricityFee METHOD:
+  getElectricityFee(id, m, y, preserveScroll = false) {
+    // Save scroll position if we want to preserve it
+    if (preserveScroll) {
+      this.saveScrollPosition();
+    }
+    
+    console.log("month", m);
+    console.log("year", y);
+    this.ElectricityFee = [];
+    const loading = this.$vs.loading();
+    fetch(
+      `https://api.resguru.app/api/getelectriclist?buildingid=${this.$store.state.building}&buildingFloor=${id}&month=${m}&year=${y}`
+    )
+      .then((response) => response.json())
+      .then((resp) => {
+        console.log("Return from getElecFeeRoom()", resp.data);
+        
+        // Process the data and initialize previousElectricValue for each entry
+        const processedData = resp.data.map(item => {
+          // Initialize the previousElectricValue for entries without electric_fees[1]
+          if (!item.electric_fees[1]) {
+            // Default to starting electric value or 0
+            item.previousElectricValue = item.user_sign_contract?.startElectric || 0;
+          }
+          return item;
         });
-    },
+        
+        if (this.code == 8) {
+          this.ElectricityFee = processedData.filter((item) =>
+            item.RoomNumber.toLowerCase().includes(this.text.toLowerCase())
+          );
+        } else {
+          this.ElectricityFee = processedData;
+        }
+        
+        // Restore scroll position if preserved
+        if (preserveScroll) {
+          this.restoreScrollPosition();
+        }
+      })
+      .finally(() => {
+        loading.close();
+      });
+  },
+
+  // 4. UPDATE createPreviousMonthElectricfee METHOD:
+  createPreviousMonthElectricfee(roomId, contractId, electicUnit) {
+    // Skip if invalid data
+    if (!roomId || !contractId || !electicUnit) {
+      console.warn("Cannot create electric fees: Missing required data");
+      this.$showNotification("warning", "Please provide all required meter readings");
+      return;
+    }
+    
+    // Save scroll position before API call
+    this.saveScrollPosition();
+    
+    const loading = this.$vs.loading();
+    
+    // Convert to number and ensure it's not negative
+    const numericPreviousValue = Math.max(0, Number(electicUnit));
+    
+    // Calculate previous month date (for createDate)
+    const currentDate = new Date();
+    const prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+    const prevMonthFormatted = prevMonth.toISOString().split('T')[0];
+    
+    // Current month date
+    const currentMonthFormatted = currentDate.toISOString().split('T')[0];
+    
+    // First API call: Create previous month electric fee
+    const createPreviousMonth = axios.post(`https://api.resguru.app/api/electric-fees/`, {
+      data: {
+        room: roomId,
+        user_sign_contract: contractId,
+        electicUnit: numericPreviousValue,
+        usageMeter: 0, // Previous month doesn't have usage calculation
+        createdAt: prevMonthFormatted, // Set creation date to previous month
+      },
+    });
+    
+    // Second API call: Create current month electric fee
+    const createCurrentMonth = axios.post(`https://api.resguru.app/api/electric-fees/`, {
+      data: {
+        room: roomId,
+        user_sign_contract: contractId,
+        electicUnit: numericPreviousValue, // Set current month meter reading to 0
+        usageMeter: 0, // Set current month usage to 0
+        createdAt: currentMonthFormatted, // Set creation date to current month
+      },
+    });
+    
+    // Execute both API calls
+    Promise.all([createPreviousMonth, createCurrentMonth])
+      .then((responses) => {
+        const [prevResponse, currentResponse] = responses;
+        
+        console.log("Previous month electric fee created:", prevResponse.data);
+        console.log("Current month electric fee created:", currentResponse.data);
+        
+        this.$showNotification("#3A89CB", "Created both previous and current month electric meter records successfully");
+        
+        // Refresh the data to show the new records but preserve scroll position
+        this.getElectricityFee(this.id, this.month, this.year, true);
+      })
+      .catch((error) => {
+        console.error("Error creating electric fees:", error);
+        
+        let errorMessage = "Error creating electric meter records";
+        if (error.response && error.response.data && error.response.data.error) {
+          errorMessage = error.response.data.error.message || errorMessage;
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+        
+        this.$showNotification("danger", errorMessage);
+      })
+      .finally(() => {
+        loading.close();
+      });
+  },
+
+  // 5. UPDATE updatePreviousElectricfee METHOD:
+  updatePreviousElectricfee(electricFeeId, electricUnit, currentUsageMeter) {
+    // Skip if invalid data
+    if (!electricFeeId || !electricUnit) {
+      console.warn("Cannot update previous month electric fee: Missing required data");
+      return;
+    }
+    
+    // Save scroll position before API call
+    this.saveScrollPosition();
+    
+    const loading = this.$vs.loading();
+    
+    // Convert to number and ensure it's not negative
+    const numericValue = Math.max(0, Number(electricUnit));
+    
+    // Update the previous month electric fee
+    axios
+      .put(`https://api.resguru.app/api/electric-fees/${electricFeeId}`, {
+        data: {
+          electicUnit: numericValue,
+        },
+      })
+      .then(() => {
+        // Find the room data for this electric fee
+        const roomData = this.ElectricityFee.find(item => 
+          item.electric_fees[1] && item.electric_fees[1].id === electricFeeId
+        );
+        
+        // If there is a current month reading, update its usage calculation
+        if (roomData && roomData.electric_fees[0]) {
+          // Get current month reading
+          const currentMeterReading = Number(roomData.electric_fees[0].electicUnit);
+          
+          // Calculate new usage for current month based on current reading minus updated previous month value
+          const newUsage = Math.max(0, currentMeterReading - numericValue);
+          
+          return axios.put(`https://api.resguru.app/api/electric-fees/${roomData.electric_fees[0].id}`, {
+            data: {
+              usageMeter: newUsage,
+            },
+          });
+        }
+      })
+      .catch((error) => {
+        const errorMessage = error.message
+          ? error.message
+          : "Error updating previous month electric meter reading";
+        this.$showNotification("danger", errorMessage);
+      })
+      .finally(() => {
+        loading.close();
+        this.$showNotification("#3A89CB", "Updated Previous Month Electric Meter Reading");
+        // Refresh the data to show the updated record but preserve scroll position
+        this.getElectricityFee(this.id, this.month, this.year, true);
+      });
+  },
+
+  // 6. UPDATE createNewElectricityfee METHOD:
+  createNewElectricityfee(room, user_sign_contract, electicUnit, usageMeter) {
+    // Skip if not ready to save
+    if (!electicUnit || !user_sign_contract) {
+      return;
+    }
+    
+    // Save scroll position before API call
+    this.saveScrollPosition();
+    
+    console.log("room", room);
+    console.log("user_sign_contract", user_sign_contract);
+    console.log("electicUnit", electicUnit);
+    console.log("usageMeter", usageMeter);
+    
+    const loading = this.$vs.loading();
+    
+    // Ensure values are numeric
+    const numericElectricUnit = Number(electicUnit) || 0;
+    const numericUsageMeter = Math.max(0, Number(usageMeter) || 0);
+    
+    axios
+      .post(`https://api.resguru.app/api/electric-fees/`, {
+        data: {
+          room: room,
+          user_sign_contract: user_sign_contract,
+          electicUnit: numericElectricUnit,
+          usageMeter: numericUsageMeter,
+        },
+      })
+      .then((resp) => {})
+      .catch((error) => {
+        const errorMessage = error.message
+          ? error.message
+          : "Error updating information";
+        this.$showNotification("danger", errorMessage);
+      })
+      .finally(() => {
+        loading.close();
+        this.$showNotification("#3A89CB", "Update Electricity Fee Success");
+        // Refresh data but preserve scroll position
+        this.getElectricityFee(this.id, this.month, this.year, true);
+      });
+  },
+
+  // 7. UPDATE updateElectfee METHOD:
+  updateElectfee(electFeeId, electicUnit, usageMeter) {
+    // Skip if empty values
+    if (!electicUnit) {
+      return;
+    }
+    
+    // Save scroll position before API call
+    this.saveScrollPosition();
+    
+    // Ensure numeric values
+    const numericElectricUnit = Number(electicUnit) || 0;
+    // Ensure usageMeter is not negative
+    const numericUsageMeter = Math.max(0, Number(usageMeter) || 0);
+    
+    console.log("Updating electric fee:", {
+      electFeeId,
+      electicUnit: numericElectricUnit,
+      usageMeter: numericUsageMeter
+    });
+    
+    const loading = this.$vs.loading();
+    axios
+      .put(`https://api.resguru.app/api/electric-fees/${electFeeId}`, {
+        data: {
+          electicUnit: numericElectricUnit,
+          usageMeter: numericUsageMeter,
+        },
+      })
+      .then((resp) => {})
+      .catch((error) => {
+        const errorMessage = error.message
+          ? error.message
+          : "Error updating information";
+        this.$showNotification("danger", errorMessage);
+      })
+      .finally(() => {
+        loading.close();
+        this.$showNotification("#3A89CB", "Update Electric Fee Success");
+        // Refresh data but preserve scroll position
+        this.getElectricityFee(this.id, this.month, this.year, true);
+      });
+  },
     
     updateMeterAll(newElecArray) {
       if (this.ElectricityFee.length > 0) {

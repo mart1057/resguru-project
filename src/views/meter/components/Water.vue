@@ -296,6 +296,7 @@ export default {
       month: "",
       year: "",
       importExcel: [],
+      savedScrollPosition: 0, 
     };
   },
   created() {
@@ -312,40 +313,292 @@ export default {
     this.getWaterFee(this.id, this.month, this.year);
   },
   methods: {
-    getWaterFee(id, m, y) {
-      console.log("month", m);
-      console.log("year", y);
-      this.WaterFee = [];
-      const loading = this.$vs.loading();
-      fetch(
-        `https://api.resguru.app/api/getwaterlist?buildingid=${this.$store.state.building}&buildingFloor=${id}&month=${m}&year=${y}`
-      )
-        .then((response) => response.json())
-        .then((resp) => {
-          console.log("Return from getCommonFeeRoom()", resp.data);
-          
-          // Process the data and initialize previousWaterValue for each entry
-          const processedData = resp.data.map(item => {
-            // Initialize the previousWaterValue for entries without water_fees[1]
-            if (!item.water_fees[1]) {
-              // Default to starting water value or 0
-              item.previousWaterValue = item.user_sign_contract?.startWater || 0;
-            }
-            return item;
-          });
-          
-          if (this.code == 8) {
-            this.WaterFee = processedData.filter((item) =>
-              item.RoomNumber.toLowerCase().includes(this.text.toLowerCase())
-            );
-          } else {
-            this.WaterFee = processedData;
+  // Helper method to save current scroll position
+  saveScrollPosition() {
+    this.savedScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
+  },
+  
+  // Helper method to restore scroll position
+  restoreScrollPosition() {
+    if (this.savedScrollPosition !== undefined) {
+      // Use setTimeout to ensure DOM is updated first
+      this.$nextTick(() => {
+        setTimeout(() => {
+          window.scrollTo(0, this.savedScrollPosition);
+        }, 100);
+      });
+    }
+  },
+
+  // Updated getWaterFee method - preserve scroll position
+  getWaterFee(id, m, y, preserveScroll = false) {
+    // Save scroll position if we want to preserve it
+    if (preserveScroll) {
+      this.saveScrollPosition();
+    }
+    
+    console.log("month", m);
+    console.log("year", y);
+    this.WaterFee = [];
+    const loading = this.$vs.loading();
+    fetch(
+      `https://api.resguru.app/api/getwaterlist?buildingid=${this.$store.state.building}&buildingFloor=${id}&month=${m}&year=${y}`
+    )
+      .then((response) => response.json())
+      .then((resp) => {
+        console.log("Return from getCommonFeeRoom()", resp.data);
+        
+        // Process the data and initialize previousWaterValue for each entry
+        const processedData = resp.data.map(item => {
+          // Initialize the previousWaterValue for entries without water_fees[1]
+          if (!item.water_fees[1]) {
+            // Default to starting water value or 0
+            item.previousWaterValue = item.user_sign_contract?.startWater || 0;
           }
-        })
-        .finally(() => {
-          loading.close();
+          return item;
         });
-    },
+        
+        if (this.code == 8) {
+          this.WaterFee = processedData.filter((item) =>
+            item.RoomNumber.toLowerCase().includes(this.text.toLowerCase())
+          );
+        } else {
+          this.WaterFee = processedData;
+        }
+        
+        // Restore scroll position if preserved
+        if (preserveScroll) {
+          this.restoreScrollPosition();
+        }
+      })
+      .finally(() => {
+        loading.close();
+      });
+  },
+
+  // Updated createNewWaterfee method
+  createNewWaterfee(room, user_sign_contract, waterUnit, usageMeter) {
+    // Skip if not ready to save
+    if (!waterUnit || !user_sign_contract) {
+      return;
+    }
+    
+    // Save scroll position before API call
+    this.saveScrollPosition();
+    
+    console.log("room", room);
+    console.log("user_sign_contract", user_sign_contract);
+    console.log("waterUnit", waterUnit);
+    console.log("usageMeter", usageMeter);
+    
+    const loading = this.$vs.loading();
+    
+    // Ensure values are numeric
+    const numericWaterUnit = Number(waterUnit) || 0;
+    const numericUsageMeter = Math.max(0, Number(usageMeter) || 0);
+    
+    axios
+      .post(`https://api.resguru.app/api/water-fees/`, {
+        data: {
+          room: room,
+          user_sign_contract: user_sign_contract,
+          meterUnit: numericWaterUnit,
+          usageMeter: numericUsageMeter,
+        },
+      })
+      .then((resp) => {})
+      .catch((error) => {
+        const errorMessage = error.message
+          ? error.message
+          : "Error updating information";
+        this.$showNotification("danger", errorMessage);
+      })
+      .finally(() => {
+        loading.close();
+        this.$showNotification("#3A89CB", "Update Water Fee Success");
+        // Refresh data but preserve scroll position
+        this.getWaterFee(this.id, this.month, this.year, true);
+      });
+  },
+  
+  // Updated updateWaterfee method
+  updateWaterfee(waterFeeId, waterUnit, usageMeter) {
+    // Skip if empty values
+    if (!waterUnit) {
+      return;
+    }
+    
+    // Save scroll position before API call
+    this.saveScrollPosition();
+    
+    // Ensure numeric values
+    const numericWaterUnit = Number(waterUnit) || 0;
+    // Ensure usageMeter is not negative
+    const numericUsageMeter = Math.max(0, Number(usageMeter) || 0);
+    
+    console.log("Updating water fee:", {
+      waterFeeId,
+      waterUnit: numericWaterUnit,
+      usageMeter: numericUsageMeter
+    });
+    
+    const loading = this.$vs.loading();
+    axios
+      .put(`https://api.resguru.app/api/water-fees/${waterFeeId}`, {
+        data: {
+          meterUnit: numericWaterUnit,
+          usageMeter: numericUsageMeter,
+        },
+      })
+      .then((resp) => {})
+      .catch((error) => {
+        const errorMessage = error.message
+          ? error.message
+          : "Error updating information";
+        this.$showNotification("danger", errorMessage);
+      })
+      .finally(() => {
+        loading.close();
+        this.$showNotification("#3A89CB", "Update Water Fee Success");
+        // Refresh data but preserve scroll position
+        this.getWaterFee(this.id, this.month, this.year, true);
+      });
+  },
+
+  // Updated createPreviousMonthWaterfee method
+  createPreviousMonthWaterfee(roomId, contractId, previousMeterUnit) {
+    // Skip if invalid data
+    if (!roomId || !contractId || !previousMeterUnit) {
+      console.warn("Cannot create water fees: Missing required data");
+      this.$showNotification("warning", "Please provide all required meter readings");
+      return;
+    }
+    
+    // Save scroll position before API call
+    this.saveScrollPosition();
+    
+    const loading = this.$vs.loading();
+    
+    // Convert to number and ensure it's not negative
+    const numericPreviousValue = Math.max(0, Number(previousMeterUnit));
+    
+    // Calculate previous month date (for createDate)
+    const currentDate = new Date();
+    const prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
+    const prevMonthFormatted = prevMonth.toISOString().split('T')[0];
+    
+    // Current month date
+    const currentMonthFormatted = currentDate.toISOString().split('T')[0];
+    
+    // First API call: Create previous month water fee
+    const createPreviousMonth = axios.post(`https://api.resguru.app/api/water-fees/`, {
+      data: {
+        room: roomId,
+        user_sign_contract: contractId,
+        meterUnit: numericPreviousValue,
+        usageMeter: 0, // Previous month doesn't have usage calculation
+        createdAt: prevMonthFormatted, // Set creation date to previous month
+      },
+    });
+    
+    // Second API call: Create current month water fee
+    const createCurrentMonth = axios.post(`https://api.resguru.app/api/water-fees/`, {
+      data: {
+        room: roomId,
+        user_sign_contract: contractId,
+        meterUnit: numericPreviousValue, // Set current month meter reading to 0
+        usageMeter: 0, // Set current month usage to 0
+        createdAt: currentMonthFormatted, // Set creation date to current month
+      },
+    });
+    
+    // Execute both API calls
+    Promise.all([createPreviousMonth, createCurrentMonth])
+      .then((responses) => {
+        const [prevResponse, currentResponse] = responses;
+        
+        console.log("Previous month water fee created:", prevResponse.data);
+        console.log("Current month water fee created:", currentResponse.data);
+        
+        this.$showNotification("#3A89CB", "Created both previous and current month water meter records successfully");
+        
+        // Refresh the data to show the new records but preserve scroll position
+        this.getWaterFee(this.id, this.month, this.year, true);
+      })
+      .catch((error) => {
+        console.error("Error creating water fees:", error);
+        
+        let errorMessage = "Error creating water meter records";
+        if (error.response && error.response.data && error.response.data.error) {
+          errorMessage = error.response.data.error.message || errorMessage;
+        } else if (error.message) {
+          errorMessage = error.message;
+        }
+        
+        this.$showNotification("danger", errorMessage);
+      })
+      .finally(() => {
+        loading.close();
+      });
+  },
+
+  // Updated updatePreviousWaterfee method
+  updatePreviousWaterfee(waterFeeId, waterUnit, currentUsageMeter) {
+    // Skip if invalid data
+    if (!waterFeeId || !waterUnit) {
+      console.warn("Cannot update previous month water fee: Missing required data");
+      return;
+    }
+    
+    // Save scroll position before API call
+    this.saveScrollPosition();
+    
+    const loading = this.$vs.loading();
+    
+    // Convert to number and ensure it's not negative
+    const numericValue = Math.max(0, Number(waterUnit));
+    
+    // Update the previous month water fee
+    axios
+      .put(`https://api.resguru.app/api/water-fees/${waterFeeId}`, {
+        data: {
+          meterUnit: numericValue,
+        },
+      })
+      .then(() => {
+        // Find the room data for this water fee
+        const roomData = this.WaterFee.find(item => 
+          item.water_fees[1] && item.water_fees[1].id === waterFeeId
+        );
+        
+        // If there is a current month reading, update its usage calculation
+        if (roomData && roomData.water_fees[0]) {
+          // Get current month reading
+          const currentMeterReading = Number(roomData.water_fees[0].meterUnit);
+          
+          // Calculate new usage for current month based on current reading minus updated previous month value
+          const newUsage = Math.max(0, currentMeterReading - numericValue);
+          
+          return axios.put(`https://api.resguru.app/api/water-fees/${roomData.water_fees[0].id}`, {
+            data: {
+              usageMeter: newUsage,
+            },
+          });
+        }
+      })
+      .catch((error) => {
+        const errorMessage = error.message
+          ? error.message
+          : "Error updating previous month water meter reading";
+        this.$showNotification("danger", errorMessage);
+      })
+      .finally(() => {
+        loading.close();
+        this.$showNotification("#3A89CB", "Updated Previous Month Water Meter Reading");
+        // Refresh the data to show the updated record but preserve scroll position
+        this.getWaterFee(this.id, this.month, this.year, true);
+      });
+  },
     
     // Helper method to calculate usage meter
     calculateUsageMeter(currentReading, previousReading) {
@@ -355,211 +608,6 @@ export default {
       
       // Calculate usage and ensure it's not negative
       return Math.max(0, current - previous);
-    },
-    
-    /**
-     * Creates a water fee record for the previous month
-     * @param {number} roomId - The room ID
-     * @param {number} contractId - The contract ID
-     * @param {number} meterUnit - The meter reading for previous month
-     * @param {number} currentUsageMeter - The usage meter for current month (to update)
-     */
-    createPreviousMonthWaterfee(roomId, contractId, meterUnit, currentUsageMeter) {
-      // Skip if invalid data
-      if (!roomId || !contractId || !meterUnit) {
-        console.warn("Cannot create previous month water fee: Missing required data");
-        return;
-      }
-      
-      const loading = this.$vs.loading();
-      
-      // Convert to number and ensure it's not negative
-      const numericValue = Math.max(0, Number(meterUnit));
-      
-      // Calculate previous month date (for createDate)
-      const currentDate = new Date();
-      // Go back one month
-      let prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
-      // Format date for API (YYYY-MM-DD format)
-      const prevMonthFormatted = prevMonth.toISOString().split('T')[0];
-      
-      // Create the water fee for the previous month
-      axios
-        .post(`https://api.resguru.app/api/water-fees/`, {
-          data: {
-            room: roomId,
-            user_sign_contract: contractId,
-            meterUnit: numericValue,
-            usageMeter: 0, // Previous month doesn't have usage since we're creating it now
-            createdAt: prevMonthFormatted, // Set creation date to previous month
-          },
-        })
-        .then((response) => {
-          // If there is a current month reading, update its usage calculation
-          const roomData = this.WaterFee.find(item => item.id === roomId);
-          if (roomData && roomData.water_fees[0]) {
-            // Get current month reading
-            const currentMeterReading = Number(roomData.water_fees[0].meterUnit);
-            
-            // Calculate new usage for current month based on current reading minus previous month value
-            const newUsage = Math.max(0, currentMeterReading - numericValue);
-            
-            return axios.put(`https://api.resguru.app/api/water-fees/${roomData.water_fees[0].id}`, {
-              data: {
-                usageMeter: newUsage,
-              },
-            });
-          }
-        })
-        .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error creating previous month water meter record";
-          this.$showNotification("danger", errorMessage);
-        })
-        .finally(() => {
-          loading.close();
-          this.$showNotification("#3A89CB", "Created Previous Month Water Meter Record");
-          // Refresh the data to show the new record
-          this.getWaterFee(this.id, this.month, this.year);
-        });
-    },
-    
-    /**
-     * Updates an existing previous month water fee
-     * @param {number} waterFeeId - The water fee ID
-     * @param {number} waterUnit - The meter reading
-     * @param {number} currentUsageMeter - The usage meter for current month (to update)
-     */
-    updatePreviousWaterfee(waterFeeId, waterUnit, currentUsageMeter) {
-      // Skip if invalid data
-      if (!waterFeeId || !waterUnit) {
-        console.warn("Cannot update previous month water fee: Missing required data");
-        return;
-      }
-      
-      const loading = this.$vs.loading();
-      
-      // Convert to number and ensure it's not negative
-      const numericValue = Math.max(0, Number(waterUnit));
-      
-      // Update the previous month water fee
-      axios
-        .put(`https://api.resguru.app/api/water-fees/${waterFeeId}`, {
-          data: {
-            meterUnit: numericValue,
-          },
-        })
-        .then(() => {
-          // Find the room data for this water fee
-          const roomData = this.WaterFee.find(item => 
-            item.water_fees[1] && item.water_fees[1].id === waterFeeId
-          );
-          
-          // If there is a current month reading, update its usage calculation
-          if (roomData && roomData.water_fees[0]) {
-            // Get current month reading
-            const currentMeterReading = Number(roomData.water_fees[0].meterUnit);
-            
-            // Calculate new usage for current month based on current reading minus updated previous month value
-            const newUsage = Math.max(0, currentMeterReading - numericValue);
-            
-            return axios.put(`https://api.resguru.app/api/water-fees/${roomData.water_fees[0].id}`, {
-              data: {
-                usageMeter: newUsage,
-              },
-            });
-          }
-        })
-        .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating previous month water meter reading";
-          this.$showNotification("danger", errorMessage);
-        })
-        .finally(() => {
-          loading.close();
-          this.$showNotification("#3A89CB", "Updated Previous Month Water Meter Reading");
-          // Refresh the data to show the updated record
-          this.getWaterFee(this.id, this.month, this.year);
-        });
-    },createNewWaterfee(room, user_sign_contract, waterUnit, usageMeter) {
-      // Skip if not ready to save
-      if (!waterUnit || !user_sign_contract) {
-        return;
-      }
-      
-      console.log("room", room);
-      console.log("user_sign_contract", user_sign_contract);
-      console.log("waterUnit", waterUnit);
-      console.log("usageMeter", usageMeter);
-      
-      const loading = this.$vs.loading();
-      
-      // Ensure values are numeric
-      const numericWaterUnit = Number(waterUnit) || 0;
-      const numericUsageMeter = Math.max(0, Number(usageMeter) || 0);
-      
-      axios
-        .post(`https://api.resguru.app/api/water-fees/`, {
-          data: {
-            room: room,
-            user_sign_contract: user_sign_contract,
-            meterUnit: numericWaterUnit,
-            usageMeter: numericUsageMeter,
-          },
-        })
-        .then((resp) => {})
-        .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
-          this.$showNotification("danger", errorMessage);
-        })
-        .finally(() => {
-          loading.close();
-          this.$showNotification("#3A89CB", "Update Water Fee Success");
-          this.getWaterFee(this.id, this.month, this.year);
-        });
-    },
-    
-    updateWaterfee(waterFeeId, waterUnit, usageMeter) {
-      // Skip if empty values
-      if (!waterUnit) {
-        return;
-      }
-      
-      // Ensure numeric values
-      const numericWaterUnit = Number(waterUnit) || 0;
-      // Ensure usageMeter is not negative
-      const numericUsageMeter = Math.max(0, Number(usageMeter) || 0);
-      
-      console.log("Updating water fee:", {
-        waterFeeId,
-        waterUnit: numericWaterUnit,
-        usageMeter: numericUsageMeter
-      });
-      
-      const loading = this.$vs.loading();
-      axios
-        .put(`https://api.resguru.app/api/water-fees/${waterFeeId}`, {
-          data: {
-            meterUnit: numericWaterUnit,
-            usageMeter: numericUsageMeter,
-          },
-        })
-        .then((resp) => {})
-        .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
-          this.$showNotification("danger", errorMessage);
-        })
-        .finally(() => {
-          loading.close();
-          this.$showNotification("#3A89CB", "Update Water Fee Success");
-          this.getWaterFee(this.id, this.month, this.year);
-        });
     },
     
     updateMeterAll(newWaterArray) {
