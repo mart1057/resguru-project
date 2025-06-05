@@ -1577,9 +1577,17 @@ export default {
           .then((response) => response.json())
           .then((resp) => {
             console.log("numberRoom", resp.data);
-            const found = resp.data.some(
+            
+            // Filter out the current room when editing
+            let roomsToCheck = resp.data;
+            if (this.is_edit && this.room_id) {
+              roomsToCheck = resp.data.filter(item => item.id != this.room_id);
+            }
+            
+            const found = roomsToCheck.some(
               (item) => item.attributes.RoomNumber === this.roomName
             );
+            
             console.log(found);
             if (found == false) {
               if (this.is_edit == true) {
@@ -1592,7 +1600,7 @@ export default {
                     },
                   })
                   .then((resp) => {
-                    this.$showNotification("#3A89CB", "Add Room Success");
+                    this.$showNotification("#3A89CB", "Edit Room Success");
                   })
                   .catch((error) => {
                     const errorMessage = error.message
