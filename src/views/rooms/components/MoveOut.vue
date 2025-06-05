@@ -113,142 +113,135 @@
     <div
       class="w-[100%] h-[1px] mt-[34px] mb-[34px] bg-gray-200 border-0 dark:bg-gray-700"
     ></div>
+
+    <!-- /////////////////////////////////// items ///////////////////////////////// -->
+<div class="mt-[14px]">
+    <!-- Equipment Inspection List -->
     <div class="mt-[24px]">
       <div class="text-[18px] text-[#141629] text-custom font-bold">
         รายการตรวจจับ
       </div>
     </div>
+    
     <div class="mt-[14px]">
-      <!-- /////////////////////////////////// items ///////////////////////////////// -->
-     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-  <!-- First Column -->
-  <div class="overflow-x-auto">
-    <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
-      <thead class="bg-gray-50">
-        <tr>
-          <th class="px-6 py-4 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">
-            รายการ
-          </th>
-          <th class="px-6 py-4 text-center text-sm font-medium text-gray-700 uppercase tracking-wider border-b">
-            สถานะ
-          </th>
-          <th class="px-6 py-4 text-center text-sm font-medium text-gray-700 uppercase tracking-wider border-b">
-            ราคา (บาท)
-          </th>
-        </tr>
-      </thead>
-      <tbody class="bg-white divide-y divide-gray-200">
-        <tr v-for="(item, i) in list_items.slice(0, Math.ceil(list_items.length / 2))" :key="i" class="hover:bg-gray-50">
-          <td class="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900">
-            {{ item.name }}
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-center">
-            <div class="flex justify-center space-x-4">
-              <label class="flex items-center cursor-pointer">
-                <vs-checkbox
-                  :val="true"
-                  v-model="item.check"
-                  @input="
-                    (item.checked = false),
-                      item.check == true ? addOptions(item) : removeOptions(item)
-                  "
-                  class="mr-2"
-                />
-                <span class="text-base text-red-600">เสียหาย</span>
-              </label>
-              <label class="flex items-center cursor-pointer">
-                <vs-checkbox
-                  :val="false"
-                  v-model="item.checked"
-                  @input="(item.check = false), removeOptions(item)"
-                  class="mr-2"
-                />
-                <span class="text-base text-green-600">ไม่เสียหาย</span>
-              </label>
+      <div id="app" class="p-6 bg-gray-50">
+        <div class="w-full">
+            <h1 class="text-2xl font-bold text-gray-800 mb-6">รายการตรวจสอบอุปกรณ์</h1>
+            <!-- Action buttons -->
+            <div class="mt-6 mb-6 flex justify-center space-x-4">
+                <button @click="expandAll" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+                    เปิดทั้งหมด
+                </button>
+                <button @click="collapseAll" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors">
+                    ปิดทั้งหมด
+                </button>
             </div>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-center">
-            <input
-              class="h-10 w-24 bg-gray-50 border border-gray-300 rounded-lg text-center text-base focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-              type="number"
-              v-model="item.price"
-              :disabled="item.checked == true"
-              placeholder="0"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+            
+            <!-- Collapsible Sections - 2 Columns -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div v-for="(section, sectionIndex) in sections" :key="sectionIndex" 
+                     class="bg-white rounded-lg shadow-sm border section-container h-fit">
+                    <!-- Section Header -->
+                    <div 
+                        @click="toggleSection(sectionIndex)"
+                        class="section-header flex items-center justify-between p-4 cursor-pointer border-b border-gray-200"
+                    >
+                        <div class="flex items-center">
+                            <h3 class="text-lg font-semibold text-gray-800">{{ section.name }}</h3>
+                            <span class="ml-3 text-sm text-gray-500 bg-gray-100 px-2 py-1 rounded-full">
+                                {{ getSectionItems(sectionIndex).length }} รายการ
+                            </span>
+                        </div>
+                        <div class="flex items-center space-x-3">
+                            <!-- Progress indicator -->
+                            <div class="text-sm text-gray-600">
+                                {{ getCompletedCount(sectionIndex) }}/{{ getSectionItems(sectionIndex).length }} เสร็จ
+                            </div>
+                            <!-- Chevron icon -->
+                            <svg 
+                                :class="['chevron w-5 h-5 text-gray-500 transition-transform duration-300', section.collapsed ? '' : 'rotate-180']"
+                                fill="none" 
+                                stroke="currentColor" 
+                                viewBox="0 0 24 24"
+                            >
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </div>
+                    </div>
 
-  <!-- Second Column -->
-  <div class="overflow-x-auto">
-    <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-sm">
-      <thead class="bg-gray-50">
-        <tr>
-          <th class="px-6 py-4 text-left text-sm font-medium text-gray-700 uppercase tracking-wider border-b">
-            รายการ
-          </th>
-          <th class="px-6 py-4 text-center text-sm font-medium text-gray-700 uppercase tracking-wider border-b">
-            สถานะ
-          </th>
-          <th class="px-6 py-4 text-center text-sm font-medium text-gray-700 uppercase tracking-wider border-b">
-            ราคา (บาท)
-          </th>
-        </tr>
-      </thead>
-      <tbody class="bg-white divide-y divide-gray-200">
-        <tr v-for="(item, i) in list_items.slice(Math.ceil(list_items.length / 2))" :key="i + Math.ceil(list_items.length / 2)" class="hover:bg-gray-50">
-          <td class="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900">
-            {{ item.name }}
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-center">
-            <div class="flex justify-center space-x-4">
-              <label class="flex items-center cursor-pointer">
-                <vs-checkbox
-                  :val="true"
-                  v-model="item.check"
-                  @input="
-                    (item.checked = false),
-                      item.check == true ? addOptions(item) : removeOptions(item)
-                  "
-                  class="mr-2"
-                />
-                <span class="text-base text-red-600">เสียหาย</span>
-              </label>
-              <label class="flex items-center cursor-pointer">
-                <vs-checkbox
-                  :val="false"
-                  v-model="item.checked"
-                  @input="(item.check = false), removeOptions(item)"
-                  class="mr-2"
-                />
-                <span class="text-base text-green-600">ไม่เสียหาย</span>
-              </label>
+                    <!-- Section Content -->
+                    <div 
+                        class="section-content overflow-hidden transition-all duration-300 ease-in-out"
+                        :style="{ maxHeight: section.collapsed ? '0px' : '1000px' }"
+                    >
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">รายการ</th>
+                                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">สถานะ</th>
+                                        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">ราคา</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="bg-white divide-y divide-gray-200">
+                                    <tr v-for="(item, i) in getSectionItems(sectionIndex)" :key="i" class="hover:bg-gray-50">
+                                        <td class="px-6 py-4 whitespace-nowrap text-base font-medium text-gray-900">
+                                            {{ item.name }}
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                                            <div class="flex justify-center space-x-6">
+                                                <label class="flex items-center cursor-pointer">
+                                                    <input
+                                                        type="checkbox"
+                                                        v-model="item.check"
+                                                        @change="
+                                                            item.checked = false;
+                                                            item.check ? addOptions(item) : removeOptions(item)
+                                                        "
+                                                        class="w-4 h-4 text-red-600 bg-gray-100 border-gray-300 rounded focus:ring-red-500 focus:ring-2 mr-2"
+                                                    />
+                                                    <span class="text-sm text-red-600 font-medium">เสียหาย</span>
+                                                </label>
+                                                <label class="flex items-center cursor-pointer">
+                                                    <input
+                                                        type="checkbox"
+                                                        v-model="item.checked"
+                                                        @change="
+                                                            item.check = false;
+                                                            removeOptions(item)
+                                                        "
+                                                        class="w-4 h-4 text-green-600 bg-gray-100 border-gray-300 rounded focus:ring-green-500 focus:ring-2 mr-2"
+                                                    />
+                                                    <span class="text-sm text-green-600 font-medium">ไม่เสียหาย</span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-center">
+                                            <input
+                                                class="h-10 w-24 bg-gray-50 border border-gray-300 rounded-lg text-center text-base focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
+                                                type="number"
+                                                v-model="item.price"
+                                                :disabled="item.checked == true"
+                                                placeholder="0"
+                                            />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-center">
-            <input
-              class="h-10 w-24 bg-gray-50 border border-gray-300 rounded-lg text-center text-base focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-              type="number"
-              v-model="item.price"
-              :disabled="item.checked == true"
-              placeholder="0"
-            />
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
 
-      <!-- <div class="mt-[12px]">
-                <select class="h-[40px] w-[280px] bg-[#F3F8FD] rounded-[12px]  flex justify-start select-opt" type="input"
-                    v-model="value_item" @change="addItem(value_item)">
-                    <option value="" disabled>เพิ่มรายการ</option>
-                    <option v-for="item in list_items" :value="item.name">{{ item.name }}</option>
-                </select>
-            </div> -->
+            
+        </div>
+      </div>
+    </div>
+  
+  
+
+
+<!-- รายละเอียด -->
       <div
         class="w-[100%] h-[1px] mt-[34px] mb-[34px] bg-gray-200 border-0 dark:bg-gray-700"
       ></div>
@@ -778,47 +771,52 @@ export default {
         deposit2: 0,
       },
       options: [],
+      sections: [
+          { name: 'ทำความสะอาด & สี', collapsed: true },
+          { name: 'ห้องนอน & เครื่องนอน', collapsed: true },
+          { name: 'ห้องน้ำ & สุขภัณฑ์', collapsed: true },
+          { name: 'เครื่องใช้ไฟฟ้า', collapsed: true }
+      ],
       list_items: [
-        { name: "ค่าทำความสะอาด", price: 0, check: false, checked: false },
-        { name: "ค่าทาสีผนัง", price: 0, check: false, checked: false },
-        { name: "ลูกบิดห้องน้ำ", price: 0, check: false, checked: false },
-        { name: "ประตูห้องน้ำ", price: 0, check: false, checked: false },
-        { name: "ประตูหน้าห้อง", price: 0, check: false, checked: false },
-        { name: "ลูกบิดหน้าห้อง", price: 0, check: false, checked: false },
-        { name: "กระจกห้องน้ำ", price: 0, check: false, checked: false },
-        {
-          name: "ชั้นวางหน้ากระจกในห้องน้ำ",
-          price: 0,
-          check: false,
-          checked: false,
-        },
-        { name: "รางแขวนผ้าในห้องน้ำ", price: 0, check: false, checked: false },
-        { name: "ก๊อกน้ำ", price: 0, check: false, checked: false },
-        { name: "สายฝักบัว", price: 0, check: false, checked: false },
-        { name: "ก๊อกฝักบัว", price: 0, check: false, checked: false },
-        { name: "ตะแกรงน้ำห้องน้ำ", price: 0, check: false, checked: false },
-        { name: "สายฉีดชำระ", price: 0, check: false, checked: false },
-        { name: "เครื่องทำน้ำอึ่น", price: 0, check: false, checked: false },
-        { name: "ที่เสียบทิชชู่", price: 0, check: false, checked: false },
-        { name: "ผนังห้องน้ำ", price: 0, check: false, checked: false },
-        { name: "ผนังห้องสีด้าน", price: 0, check: false, checked: false },
-        { name: "พื้นห้อง", price: 0, check: false, checked: false },
-        { name: "ตู้เสื้อผ้า", price: 0, check: false, checked: false },
-        { name: "โต๊ะเครื่องแป้ง", price: 0, check: false, checked: false },
-        { name: "โต๊ะวางของ", price: 0, check: false, checked: false },
-        { name: "เต้าเสียบปลั๊ก", price: 0, check: false, checked: false },
-        { name: "เต้าเสียบสายทีวี", price: 0, check: false, checked: false },
-        { name: "เตียงนอน", price: 0, check: false, checked: false },
-        { name: "ฟูกนอน", price: 0, check: false, checked: false },
-        { name: "หน้าต่าง", price: 0, check: false, checked: false },
-        { name: "มุ้งลวด", price: 0, check: false, checked: false },
-        { name: "ผ้าม่านใหญ่", price: 0, check: false, checked: false },
-        { name: "ราวม่าน", price: 0, check: false, checked: false },
-        { name: "หลอดไฟหัวนอน", price: 0, check: false, checked: false },
-        { name: "หลอดไฟห้องน้ำ", price: 0, check: false, checked: false },
-        { name: "ระเบียง+ราวระเบียง", price: 0, check: false, checked: false },
-        { name: "ตะแกรงน้ำระเบียง", price: 0, check: false, checked: false },
-        { name: "ชักโครก", price: 0, check: false, checked: false },
+        { name: "ค่าทำความสะอาด", price: 0, check: false, checked: true },
+        { name: "ค่าทาสีผนัง", price: 0, check: false, checked: true },
+        { name: "ผนังห้องสีด้าน", price: 0, check: false, checked: true },
+        { name: "พื้นห้อง", price: 0, check: false, checked: true },
+        { name: "หน้าต่าง", price: 0, check: false, checked: true },
+        { name: "มุ้งลวด", price: 0, check: false, checked: true },
+        
+        { name: "ระเบียง+ราวระเบียง", price: 0, check: false, checked: true },
+        { name: "ตะแกรงน้ำระเบียง", price: 0, check: false, checked: true },
+
+        { name: "ประตูหน้าห้อง", price: 0, check: false, checked: true },
+        { name: "ลูกบิดหน้าห้อง", price: 0, check: false, checked: true },
+        { name: "ตู้เสื้อผ้า", price: 0, check: false, checked: true },
+        { name: "โต๊ะเครื่องแป้ง", price: 0, check: false, checked: true },
+        { name: "โต๊ะวางของ", price: 0, check: false, checked: true },
+        { name: "เตียงนอน", price: 0, check: false, checked: true },
+        { name: "ฟูกนอน", price: 0, check: false, checked: true },
+        { name: "ผ้าม่านใหญ่", price: 0, check: false, checked: true },
+        { name: "ราวม่าน", price: 0, check: false, checked: true },
+
+        { name: "ลูกบิดห้องน้ำ", price: 0, check: false, checked: true },
+        { name: "ประตูห้องน้ำ", price: 0, check: false, checked: true },
+        { name: "กระจกห้องน้ำ", price: 0, check: false, checked: true },
+        { name: "ชั้นวางหน้ากระจกในห้องน้ำ",price: 0,check: false,checked: true},
+        { name: "รางแขวนผ้าในห้องน้ำ", price: 0, check: false, checked: true },
+        { name: "ก๊อกน้ำ", price: 0, check: false, checked: true },
+        { name: "สายฝักบัว", price: 0, check: false, checked: true },
+        { name: "ก๊อกฝักบัว", price: 0, check: false, checked: true },
+        { name: "ตะแกรงน้ำห้องน้ำ", price: 0, check: false, checked: true },
+        { name: "สายฉีดชำระ", price: 0, check: false, checked: true },
+        { name: "เครื่องทำน้ำอุ่น", price: 0, check: false, checked: true },
+        { name: "ที่เสียบทิชชู่", price: 0, check: false, checked: true },
+        { name: "ผนังห้องน้ำ", price: 0, check: false, checked: true },
+
+        { name: "เต้าเสียบปลั๊ก", price: 0, check: false, checked: true },
+        { name: "เต้าเสียบสายทีวี", price: 0, check: false, checked: true },
+        { name: "ชักโครก", price: 0, check: false, checked: true },
+        { name: "หลอดไฟหัวนอน", price: 0, check: false, checked: true },
+        { name: "หลอดไฟห้องน้ำ", price: 0, check: false, checked: true },
       ],
       items_other: [],
       bill_detail: {},
@@ -1382,6 +1380,69 @@ export default {
         parseInt(this.bill_detail.other) +
         parseInt(this.bill_detail.communalPrice);
     },
+    getSectionItems(sectionIndex) {
+        const customGroups = {
+            0: [0, 1, 2, 3, 4, 5, 6, 7],           // Cleaning & surfaces: items 0-7
+            1: [8, 9, 10, 11, 12, 13, 14, 15, 16], // Bedroom & furniture: items 8-16  
+            2: [17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], // Bathroom: items 17-29
+            3: [30, 31, 32, 33, 34]                // Electrical: items 30-34
+        };
+        
+        return customGroups[sectionIndex] ? 
+              customGroups[sectionIndex].map(index => this.list_items[index]).filter(item => item) : 
+              [];
+    },
+    toggleSection(sectionIndex) {
+        this.sections[sectionIndex].collapsed = !this.sections[sectionIndex].collapsed;
+    },
+    getCompletedCount(sectionIndex) {
+        const items = this.getSectionItems(sectionIndex);
+        return items.filter(item => item.check || item.checked).length;
+    },
+    expandAll() {
+        this.sections.forEach(section => section.collapsed = false);
+    },
+    collapseAll() {
+        this.sections.forEach(section => section.collapsed = true);
+    },
+    addOptions(item) {
+        this.options.push(item);
+    },
+    removeOptions(item) {
+        this.options = this.options.filter((items) => items.name !== item.name);
+    },
   },
 };
 </script>
+<style>
+    .section-header {
+        transition: all 0.3s ease;
+    }
+    .section-header:hover {
+        background-color: #f9fafb;
+    }
+    .section-content {
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+    .chevron {
+        transition: transform 0.3s ease;
+    }
+    .chevron.rotated {
+        transform: rotate(180deg);
+    }
+    .collapse-enter-active, .collapse-leave-active {
+        transition: all 0.3s ease;
+    }
+    .collapse-enter, .collapse-leave-to {
+        max-height: 0;
+        opacity: 0;
+    }
+    .collapse-enter-to, .collapse-leave {
+        max-height: 1000px;
+        opacity: 1;
+    }
+    .grid > div {
+        align-self: start;
+    }
+</style>
