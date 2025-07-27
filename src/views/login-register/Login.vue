@@ -740,13 +740,31 @@ export default {
                 this.dataLogin.user = resp.data.user.email;
                 this.resetForm();
                 this.tab = 1;
-            }).finally(() => {
-                loading.close()
             }).catch(error => {
-                console.log(error)
-                const errorMessage = error.response ? error.response.data.error.message : 'Error updating information';
-                this.$showNotification('danger', errorMessage);
-                loading.close()
+                console.log(error);
+                
+                // Handle specific error cases
+                if (error.response && error.response.data && error.response.data.error) {
+                    const serverError = error.response.data.error.message;
+                    
+                    if (serverError === 'Email or Username are already taken') {
+                        // Handle duplicate email specifically
+                        this.validationErrors.email = 'อีเมลนี้ถูกใช้งานแล้ว กรุณาใช้อีเมลอื่น';
+                        this.dataRegister.err = 'อีเมลนี้ถูกใช้งานแล้ว กรุณาใช้อีเมลอื่น';
+                        this.$showNotification('danger', 'อีเมลนี้ถูกใช้งานแล้ว กรุณาใช้อีเมลอื่น');
+                    } else {
+                        // Handle other server errors
+                        this.dataRegister.err = serverError;
+                        this.$showNotification('danger', serverError);
+                    }
+                } else {
+                    // Handle network or other errors
+                    const errorMessage = 'เกิดข้อผิดพลาดในการสร้างบัญชี กรุณาลองอีกครั้ง';
+                    this.dataRegister.err = errorMessage;
+                    this.$showNotification('danger', errorMessage);
+                }
+            }).finally(() => {
+                loading.close();
             })
         },
         resetForm() {
