@@ -615,7 +615,7 @@ export default {
                 })
                 .finally(() => {
                     this.getUserDetail();
-                    this.$showNotification('#3A89CB', 'Update Profile Success')
+                    this.$showNotification('#3A89CB', 'แก้ไขข้อมูลสำเร็จ');
                 })
 
         },
@@ -728,7 +728,7 @@ export default {
             this.uploadedFiles = [];
             
             console.log("Building updated successfully");
-            this.$showNotification('#3A89CB', 'Update Building Success');
+            this.$showNotification('#3A89CB', 'แก้ไขข้อมูลหอพักสำเร็จ');
         } catch (error) {
             console.log("Error:", error);
             if (error.response) {
@@ -833,7 +833,7 @@ export default {
                 this.uploadedFiles = [];
                 
                 console.log("Building updated successfully");
-                this.$showNotification('#3A89CB', 'Update Building Success');
+                this.$showNotification('#3A89CB', 'แก้ไขข้อมูลหอพักสำเร็จ');
             } catch (error) {
                 console.log("Error:", error);
                 if (error.response) {
@@ -992,7 +992,7 @@ export default {
                         this.$showNotification('danger', errorMessage);
                     })
                     .finally(() => { 
-                        this.$showNotification('#3A89CB', 'Upload Profile Success')
+                        this.$showNotification('#3A89CB', 'อัพโหลดโปรไฟล์สำเร็จ')
                         this.getBuildingData();
                         window.location.reload()
                        
@@ -1021,7 +1021,7 @@ export default {
                     })
                     .finally(() => {
                         this.getBuildingData();
-                        this.$showNotification('#3A89CB', 'Upload Profile Success')
+                        this.$showNotification('#3A89CB', 'อัพโหลดโลโก้หอพักสำเร็จ')
                     })
             }
         },
@@ -1060,7 +1060,7 @@ export default {
                     })
                     .finally(() => {
                         this.getBuildingData();
-                        this.$showNotification('#3A89CB', 'Upload Building Profile Success')
+                        this.$showNotification('#3A89CB', 'อัพโหลดสำเร็จ')
                     })
             }
         },
@@ -1078,7 +1078,7 @@ export default {
                     },
                 })
                     .then((resp) => { 
-                        this.$showNotification('#3A89CB', 'Upload Banner Success')
+                        this.$showNotification('#3A89CB', 'อัพโหลดแบนเนอร์สำเร็จ')
                         console.log(resp)
                     })
                     .catch(error => {

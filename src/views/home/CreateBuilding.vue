@@ -301,7 +301,7 @@ export default {
                 this.$showNotification('danger', errorMessage);
             })
             .finally(() => {
-                this.$showNotification('#3A89CB', 'Created Building Success')
+                this.$showNotification('#3A89CB', 'สร้างหอพักใหม่สำเร็จ');
             })
         },
         setTempUploadbuildingProfile() {

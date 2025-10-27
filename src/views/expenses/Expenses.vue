@@ -758,7 +758,7 @@ export default {
                 this.$showNotification('danger', errorMessage); 
             })
             .finally(() => {
-                this.$showNotification('#3A89CB', 'Expense is created Successfully');
+                this.$showNotification('#3A89CB', 'สร้างรายจ่ายสำเร็จ');
                 this.create = false; // Close the modal after creation
                 this.getExpense(this.filter.selectedMonth, this.filter.selectedYear); // Refresh the expense list
             });

@@ -480,7 +480,7 @@ export default {
                             console.log(error);
                         })
                     }
-                    this.$showNotification('#3A89CB', 'Create Announcement Success');
+                    this.$showNotification('#3A89CB', 'สร้างประกาศสำเร็จ');
                 })
                 .catch(error => {
                     const errorMessage = error.response ? error.response.data.message : 'Error updating information';
@@ -515,7 +515,7 @@ export default {
                 console.log(element.id);
                 axios.delete('https://api.resguru.app/api/announcements/' + element.id)
                     .then(() => { 
-                        this.$showNotification('warn', 'Delete Announcement Success') 
+                        this.$showNotification('warn', 'ลบประกาศสำเร็จ'); 
                     })
                     .catch(error => {
                         const errorMessage = error.response ? error.response.data.message : 'Error updating information';
