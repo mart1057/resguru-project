@@ -50,6 +50,7 @@
                             <th class="py-2 px-3 text-right border" style="width: 20%;">ราคารวม</th>
                         </tr>
                     </thead>
+                    <!-- Corrected table rows for water and electric -->
                     <tbody>
                         <tr class="row-even">
                             <td class="py-2 px-3 border">ค่าห้อง</td>
@@ -57,18 +58,34 @@
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.roomPrice) }}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.roomPrice) }}</td>
                         </tr>
+                        
+                        <!-- CORRECTED Water Row -->
                         <tr class="row-odd">
-                            <td class="py-2 px-3 border">ค่าน้ำ ({{ data_bill.tenant_bills[0]?.lastWaterUnit }}-{{ data_bill.tenant_bills[0]?.lastWaterUnit + data_bill.tenant_bills[0]?.usageWater }})</td>
-                            <td class="py-2 px-3 text-right border">{{ data_bill.tenant_bills[0]?.usageWater }}</td>
+                            <td class="py-2 px-3 border">ค่าน้ำ(
+{{ formatNumber(data_bill.tenant_bills[0]?.lastWaterUnit || 0) }} 
+- 
+{{ formatNumber(data_bill.tenant_bills[0].lastWaterUnit - formatNumber(data_bill.tenant_bills[0].usageWater)) }})                            </td>
+                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.usageWater || 0)}}</td>
+                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.waterRate || ($store.state.buildingInfo[0]?.attributes?.waterUnitPrice || 0)) }}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.waterPrice) }}</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.waterPrice * data_bill.tenant_bills[0]?.usageWater) }}</td>
                         </tr>
+                        
+                        <!-- CORRECTED Electric Row -->
                         <tr class="row-even">
-                            <td class="py-2 px-3 border">ค่าไฟ ({{ data_bill.tenant_bills[0]?.lastElectricUnit }}-{{ data_bill.tenant_bills[0]?.lastElectricUnit + data_bill.tenant_bills[0]?.usageElectric }})</td>
-                            <td class="py-2 px-3 text-right border">{{ data_bill.tenant_bills[0]?.usageElectric }}</td>
+                            <td class="py-2 px-3 border">
+ค่าไฟ ({{ 
+  formatNumber(data_bill.tenant_bills[0]?.lastElecUnit || 0) 
+}} - {{
+  formatNumber(
+    (data_bill.tenant_bills[0]?.lastElecUnit || 0) -
+    (data_bill.tenant_bills[0]?.usageElectric || 0)
+  )
+}})                            </td>
+                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.usageElectric || 0) }}</td>
+                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.electricRate || ($store.state.buildingInfo[0]?.attributes?.electricUnitPrice || 0)) }}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.electricPrice) }}</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.electricPrice * data_bill.tenant_bills[0]?.usageElectric) }}</td>
                         </tr>
+                        
                         <tr class="row-odd">
                             <td class="py-2 px-3 border">ค่าส่วนกลาง</td>
                             <td class="py-2 px-3 text-right border">1</td>
@@ -82,8 +99,7 @@
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.otherPrice) }}</td>
                         </tr>
                         
-                        <!-- Conditional rows for past month charges -->
-                        <!-- Modified rows for past month charges with Thai month name -->
+                        <!-- Past month charges remain the same -->
                         <tr class="row-odd" v-if="data_bill.tenant_bills[0]?.pastRoomPrice > 0">
                             <td class="py-2 px-3 border">ค่าห้อง (ยอดจากเดือน{{ getPreviousMonthThai(data_bill.tenant_bills[0]?.createdAt) }})</td>
                             <td class="py-2 px-3 text-right border">1</td>
@@ -114,7 +130,6 @@
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastOtherPrice) }}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastOtherPrice) }}</td>
                         </tr>
-                           
                     </tbody>
                     <tfoot>
                         <!-- Bottom rows with progressively larger text -->

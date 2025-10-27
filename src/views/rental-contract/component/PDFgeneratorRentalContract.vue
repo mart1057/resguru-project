@@ -8,8 +8,7 @@
             <div class="text-[16px] mt-[16px] pl-[14px] pr-[14px]">
                 <div><span class="ml-[42px]">สัญญานี้ทำที่ {{ $store.state.buildingInfo[0].attributes.buildingName }}</span>
                     เมื่อวันที่ {{ convertDateNoTime(detail.createdAt) }}
-                    ระหว่าง {{ $store.state.buildingInfo[0].attributes.buildingName + ' ' + 'และ' + '
-                    '+detail_sing.name +' '+detail_sing.last_name }}
+                    ระหว่าง {{ $store.state.buildingInfo[0].attributes.buildingName + ' ' + 'และ' + ' '+detail_sing.name +' '+detail_sing.last_name }}
                     <div>ที่อยู่ {{detail_sing.address }}
                         ซึ่งต่อไปในสัญญานี้จะเรียกว่า "ผู้เช่า" อีกฝ่ายหนึ่ง</div>
                 </div>
@@ -131,7 +130,7 @@
                     <div class="flex flex-col items-start">
                         <div class="flex justify-center flex-col items-center">
                             <div>ลงชื่อ...........................ผู้เช่า</div>
-                            <div class=" mt-[8px]">( {{ detail_sing.name +' '+detail_sing.lastName }} )</div>
+                            <div class=" mt-[8px]">( {{ (detail_sing && detail_sing.name ? detail_sing.name : '') + ' ' + (detail_sing && detail_sing.lastName ? detail_sing.lastName : '') }} )</div>
                         </div>
                         <div class="flex justify-center flex-col items-center mt-[8px]">
                             <div>ลงชื่อ...........................ผู้ให้เช่า</div>
@@ -172,49 +171,206 @@ export default {
     //     this.generatePDF()
     // },
     methods: {
-        generatePDF(data, check, id,data2) {
-            console.log(data2);
-            this.detail = data
-            this.detail_sing = data2
-            const content = this.$refs.pdfContent;
-            const opt = {
-                margin: 10,
-                filename: 'generated.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-            };
-            if (check) {
-                let formData = new FormData();
-                let data2 = null
-                html2pdf()
-                    .from(content)
-                    .set(opt)
-                    // .save()
-                    // .output('dataurlnewwindow')
-                    .output('blob').then((dataPDF) => {
-                        console.log(dataPDF);
-                        formData.append("files", dataPDF);
-                        formData.append("refId", String(id));
-                        formData.append("ref", "api::user-sign-contract.user-sign-contract");
-                        formData.append("field", "PDFfile");
-                        axios.post("https://api.resguru.app/api/upload", formData, {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                            },
-                        })
-                    }).finally(() => {
-
-                    })
-            }
-            else {
-                html2pdf()
-                    .from(content)
-                    .set(opt)
-                    .save()
-            }
-
+        getFullName(person) {
+        if (!person) return '';
+        return `${person.name || ''} ${person.lastName || ''}`.trim();
         },
+        
+        getAddress(person) {
+        return person && person.address ? person.address : '';
+        },
+        
+        getBuildingName() {
+        return this.$store.state.buildingInfo && 
+                this.$store.state.buildingInfo[0] && 
+                this.$store.state.buildingInfo[0].attributes ? 
+                this.$store.state.buildingInfo[0].attributes.buildingName : '';
+        },
+        
+        // Also fix the convertDateNoTime function call
+        formatDate(dateString) {
+        if (!dateString) return '';
+        try {
+            return convertDateNoTime(dateString);
+        } catch (error) {
+            console.error('Date formatting error:', error);
+            return dateString;
+        }
+        },
+        generatePDF(data, check, id, data2) {
+        console.log('PDF Generation Data:', { data, data2, check, id });
+        
+        // Validate required data
+        if (!data) {
+            console.error('Missing contract data');
+            this.$vs.notification({
+                title: 'Error',
+                text: 'Missing contract data for PDF generation',
+                color: 'danger'
+            });
+            return;
+        }
+        
+        // FIX: Create proper user data structure based on your store structure
+        let userData = null;
+        
+        // Option 1: If data2 is provided (from room_detail_create)
+        if (data2 && (data2.name || data2.firstName)) {
+            userData = {
+                name: data2.name || data2.firstName || '',
+                last_name: data2.last_name || data2.lastName || '',
+                address: data2.address || data2.contactAddress || ''
+            };
+        }
+        // Option 2: Extract from contract data (existing user)
+        else if (data.user_sign_contract?.users_permissions_user) {
+            const userInfo = data.user_sign_contract.users_permissions_user;
+            userData = {
+                name: userInfo.firstName || '',
+                last_name: userInfo.lastName || '',
+                address: userInfo.contactAddress || ''
+            };
+        }
+        // Option 3: Use current logged-in user as fallback
+        else if (this.$store.state.userInfo) {
+            const userInfo = this.$store.state.userInfo;
+            userData = {
+                name: userInfo.firstName || '',
+                last_name: userInfo.lastName || '',
+                address: userInfo.contactAddress || ''
+            };
+        }
+        
+        // Final validation
+        if (!userData || !userData.name) {
+            console.error('Unable to find user data for PDF generation:', {
+                data2,
+                contractUser: data.user_sign_contract?.users_permissions_user,
+                storeUser: this.$store.state.userInfo
+            });
+            
+            this.$vs.notification({
+                title: 'Error', 
+                text: 'Unable to find user information for PDF generation',
+                color: 'danger'
+            });
+            return;
+        }
+        
+        console.log('Using userData for PDF:', userData);
+        
+        // Set the data
+        this.detail = data;
+        this.detail_sing = userData;
+        
+        // Wait for Vue to update the DOM
+        this.$nextTick(() => {
+            try {
+                const content = this.$refs.pdfContent;
+                
+                if (!content) {
+                    console.error('PDF content element not found');
+                    return;
+                }
+                
+                // Temporarily show the hidden content for rendering
+                const parentElement = content.closest('[hidden]');
+                if (parentElement) {
+                    parentElement.removeAttribute('hidden');
+                }
+                
+                const opt = {
+                    margin: 10,
+                    filename: `contract_room_${data.RoomNumber || 'unknown'}.pdf`,
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { 
+                        scale: 2,
+                        useCORS: true,
+                        logging: true
+                    },
+                    jsPDF: { 
+                        unit: 'mm', 
+                        format: 'a4', 
+                        orientation: 'portrait' 
+                    },
+                };
+                
+                if (check) {
+                    // Upload to server
+                    let formData = new FormData();
+                    
+                    html2pdf()
+                        .from(content)
+                        .set(opt)
+                        .output('blob')
+                        .then((dataPDF) => {
+                            console.log('PDF blob generated:', dataPDF);
+                            
+                            formData.append("files", dataPDF, `contract_${id}.pdf`);
+                            formData.append("refId", String(id));
+                            formData.append("ref", "api::user-sign-contract.user-sign-contract");
+                            formData.append("field", "PDFfile");
+                            
+                            return axios.post("https://api.resguru.app/api/upload", formData, {
+                                headers: {
+                                    "Content-Type": "multipart/form-data",
+                                },
+                            });
+                        })
+                        .then((response) => {
+                            console.log('PDF uploaded successfully:', response);
+                            this.$vs.notification({
+                                title: 'Success',
+                                text: 'PDF generated and uploaded successfully',
+                                color: 'success'
+                            });
+                        })
+                        .catch((error) => {
+                            console.error('PDF generation/upload failed:', error);
+                            this.$vs.notification({
+                                title: 'Error',
+                                text: 'Failed to generate or upload PDF',
+                                color: 'danger'
+                            });
+                        })
+                        .finally(() => {
+                            // Hide the content again
+                            if (parentElement) {
+                                parentElement.setAttribute('hidden', '');
+                            }
+                        });
+                } else {
+                    // Download directly
+                    html2pdf()
+                        .from(content)
+                        .set(opt)
+                        .save()
+                        .catch((error) => {
+                            console.error('PDF download failed:', error);
+                            this.$vs.notification({
+                                title: 'Error',
+                                text: 'Failed to download PDF',
+                                color: 'danger'
+                            });
+                        })
+                        .finally(() => {
+                            // Hide the content again
+                            if (parentElement) {
+                                parentElement.setAttribute('hidden', '');
+                            }
+                        });
+                }
+                
+            } catch (error) {
+                console.error('PDF generation error:', error);
+                this.$vs.notification({
+                    title: 'Error',
+                    text: 'An error occurred during PDF generation',
+                    color: 'danger'
+                });
+            }
+        });
+    }
     },
 };
 </script>
