@@ -1054,7 +1054,7 @@ export default {
           })
           .finally(() => {
             (this.create_service = false), this.getOtherBuilding();
-            this.$showNotification("#3A89CB", "Create Other Success");
+            this.$showNotification("#3A89CB", "สร้างบริการเสริมสำเร็จ");
           });
       }
     },
@@ -1082,7 +1082,7 @@ export default {
           })
           .finally(() => {
             this.getUserBuilding();
-            this.$showNotification("#3A89CB", "Update Water Unit Success");
+            this.$showNotification("#3A89CB", "แก้ไขค่าน้ำสำเร็จ");
           });
       }
     },
@@ -1111,7 +1111,7 @@ export default {
           })
           .finally(() => {
             this.getUserBuilding();
-            this.$showNotification("#3A89CB", "Update Electric Unit Success");
+            this.$showNotification("#3A89CB", "แก้ไขค่าไฟสำเร็จ");
           });
       }
     },
@@ -1142,7 +1142,7 @@ export default {
             this.getUserBuilding();
             this.$showNotification(
               "#3A89CB",
-              "Update Building Communual Success"
+              "แก้ไขค่าบริการส่วนกลางสำเร็จ"
             );
           });
       }
@@ -1168,7 +1168,7 @@ export default {
           })
           .finally(() => {
             this.getOtherBuilding();
-            this.$showNotification("#3A89CB", "Update Other Price Success");
+            this.$showNotification("#3A89CB", "แก้ไขราคาบริการเสริมสำเร็จ");
           });
       }
     },
@@ -1190,7 +1190,7 @@ export default {
         })
         .finally(() => {
           this.getOtherBuilding();
-          this.$showNotification("#3A89CB", "Update Success");
+          this.$showNotification("#3A89CB", "แก้ไขส่วนลดบริการเสริมสำเร็จ");
         });
     },
   },

@@ -415,7 +415,7 @@ export default {
       })
       .finally(() => {
         loading.close();
-        this.$showNotification("#3A89CB", "Update Water Fee Success");
+        this.$showNotification("#3A89CB", "แก้ไขค่าน้ำสำเร็จ");
         // Refresh data but preserve scroll position
         this.getWaterFee(this.id, this.month, this.year, true);
       });
@@ -459,7 +459,7 @@ export default {
       })
       .finally(() => {
         loading.close();
-        this.$showNotification("#3A89CB", "Update Water Fee Success");
+        this.$showNotification("#3A89CB", "แก้ไขค่าน้ำสำเร็จ");
         // Refresh data but preserve scroll position
         this.getWaterFee(this.id, this.month, this.year, true);
       });
@@ -470,7 +470,7 @@ export default {
     // Skip if invalid data
     if (!roomId || !contractId || !previousMeterUnit) {
       console.warn("Cannot create water fees: Missing required data");
-      this.$showNotification("warning", "Please provide all required meter readings");
+      this.$showNotification("warning", "กรุณาใส่ค่ามิเตอร์น้ำก่อนบันทึก");
       return;
     }
     
@@ -520,7 +520,7 @@ export default {
         console.log("Previous month water fee created:", prevResponse.data);
         console.log("Current month water fee created:", currentResponse.data);
         
-        this.$showNotification("#3A89CB", "Created both previous and current month water meter records successfully");
+        this.$showNotification("#3A89CB", "สร้างบันทึกค่าน้ำสำเร็จ");
         
         // Refresh the data to show the new records but preserve scroll position
         this.getWaterFee(this.id, this.month, this.year, true);
@@ -594,7 +594,7 @@ export default {
       })
       .finally(() => {
         loading.close();
-        this.$showNotification("#3A89CB", "Updated Previous Month Water Meter Reading");
+        this.$showNotification("#3A89CB", "บันทึกค่าน้ำสำเร็จ");
         // Refresh the data to show the updated record but preserve scroll position
         this.getWaterFee(this.id, this.month, this.year, true);
       });
@@ -671,7 +671,7 @@ export default {
         // Wait for all updates to complete
         Promise.all(updatePromises)
           .then(() => {
-            this.$showNotification("#3A89CB", "All Water Fees Updated Successfully");
+            this.$showNotification("#3A89CB", "แก้ไขค่าน้ำสำเร็จ");
             this.getWaterFee(this.id, this.month, this.year);
           })
           .catch((error) => {
@@ -761,10 +761,10 @@ export default {
         link.click();
         document.body.removeChild(link);
         
-        this.$showNotification("#3A89CB", "Water Meter Data Exported Successfully");
+        this.$showNotification("#3A89CB", "นำออกข้อมูลค่าน้ำสำเร็จ");
       } catch (error) {
         console.error('Export error:', error);
-        this.$showNotification("danger", "Error exporting water meter data");
+        this.$showNotification("danger", "พบข้อผิดพลาดในการนำออกข้อมูลค่าน้ำ");
       } finally {
         loading.close();
       }
@@ -807,7 +807,7 @@ export default {
      */
     generateWaterBills() {
       if (this.WaterFee.length === 0) {
-        this.$showNotification("warning", "No water meter data available");
+        this.$showNotification("warning", "ไม่มีข้อมูลค่าน้ำสำหรับสร้างบิล");
         return;
       }
       
@@ -848,7 +848,7 @@ export default {
       // Wait for all bills to be created
       Promise.all(billPromises)
         .then(responses => {
-          this.$showNotification("#3A89CB", `Created ${responses.length} water bills successfully`);
+          this.$showNotification("#3A89CB", ` ${responses.length} สร้างบิลค่าน้ำสำเร็จ`);
         })
         .catch(error => {
           const errorMessage = error.message

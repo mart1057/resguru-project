@@ -1600,7 +1600,7 @@ export default {
                     },
                   })
                   .then((resp) => {
-                    this.$showNotification("#3A89CB", "Edit Room Success");
+                    this.$showNotification("#3A89CB", "แก้ไขห้องสำเร็จ");
                   })
                   .catch((error) => {
                     const errorMessage = error.message
@@ -1623,7 +1623,7 @@ export default {
                     },
                   })
                   .then((resp) => {
-                    this.$showNotification("#3A89CB", "Add Room Success");
+                    this.$showNotification("#3A89CB", "สร้างห้องสำเร็จ");
                   })
                   .catch((error) => {
                     const errorMessage = error.message
@@ -1657,7 +1657,7 @@ export default {
           },
         })
         .then((resp) => {
-          this.$showNotification("#3A89CB", "Edit Room Success");
+          this.$showNotification("#3A89CB", "แก้ไขห้องสำเร็จ");
         })
         .catch((error) => {
           const errorMessage = error.message
@@ -1680,7 +1680,7 @@ export default {
             },
           })
           .then((resp) => {
-            this.$showNotification("#3A89CB", "Add Room Type Success");
+            this.$showNotification("#3A89CB", "สร้างประเภทห้องสำเร็จ");
           })
           .catch((error) => {
             const errorMessage = error.message
@@ -1702,7 +1702,7 @@ export default {
             },
           })
           .then((resp) => {
-            this.$showNotification("#3A89CB", "Add Room Type Success");
+            this.$showNotification("#3A89CB", "สร้างประเภทห้องสำเร็จ");
           })
           .catch((error) => {
             const errorMessage = error.message
@@ -1724,7 +1724,7 @@ export default {
           },
         })
         .then((resp) => {
-          this.$showNotification("#3A89CB", "Edit Room Success");
+          this.$showNotification("#3A89CB", "แก้ไขประเภทห้องสำเร็จ");
         })
         .catch((error) => {
           const errorMessage = error.message
@@ -1745,7 +1745,7 @@ export default {
           },
         })
         .then((resp) => {
-          this.$showNotification("#3A89CB", "Create Floor Success");
+          this.$showNotification("#3A89CB", "สร้างชั้นสำเร็จ");
         })
         .catch((error) => {
           const errorMessage = error.message
@@ -1766,7 +1766,7 @@ export default {
           },
         })
         .then((resp) => {
-          this.$showNotification("#3A89CB", "Update Floor Success");
+          this.$showNotification("#3A89CB", "แก้ไขชั้นสำเร็จ");
         })
         .catch((error) => {
           const errorMessage = error.message
@@ -1786,7 +1786,7 @@ export default {
           // this.openNotificationDeleteFloor('top-right', '#3A89CB', 6000)
           ()
           .then((resp) => {
-            this.$showNotification("#3A89CB", "Delete Floor Success");
+            this.$showNotification("#3A89CB", "ลบชั้นสำเร็จ");
           })
           .catch((error) => {
             const errorMessage = error.message

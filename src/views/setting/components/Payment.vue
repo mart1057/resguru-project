@@ -530,7 +530,7 @@ export default {
           })
           .finally(() => {
             this.create = false;
-            this.$showNotification("#3A89CB", "Create Payment Success");
+            this.$showNotification("#3A89CB", "สร้างการชำระเงินสำเร็จ");
           });
       } else {
         this.$showNotification("danger", "Please fill this form");
@@ -554,7 +554,7 @@ export default {
         })
         .finally(() => {
           this.getPaymentBuilding();
-          this.$showNotification("#3A89CB", "Update Building Payment Success");
+          this.$showNotification("#3A89CB", "แก้ไขข้อมูลสำเร็จ");
         });
     },
     editPaymentImagewithUpload(Editid) {
@@ -597,7 +597,7 @@ export default {
           })
           .finally(() => {
             this.getPaymentBuilding();
-            this.$showNotification("#3A89CB", "Delete Payment Method Success");
+            this.$showNotification("#3A89CB", "ลบช่องทางการชำระเงินสำเร็จ");
           });
       }
     },

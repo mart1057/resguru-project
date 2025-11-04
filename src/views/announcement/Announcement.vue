@@ -483,7 +483,7 @@ export default {
                     this.$showNotification('#3A89CB', 'สร้างประกาศสำเร็จ');
                 })
                 .catch(error => {
-                    const errorMessage = error.response ? error.response.data.message : 'Error updating information';
+                    const errorMessage = error.response ? error.response.data.message : 'พบข้อผิดพลาดในการอัพเดทข้อมูล';
                     this.$showNotification('danger', errorMessage);
                 }).finally(() => {
                     this.getAnnouncement();

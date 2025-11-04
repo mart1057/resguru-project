@@ -754,12 +754,12 @@ export default {
                 })
                 .then((resp) => {
                     console.log("Admin removed successfully:", resp);
-                    this.$showNotification('#3A89CB', 'Admin removed successfully');
+                    this.$showNotification('#3A89CB', 'แอดมินถูกลบเรียบร้อยแล้ว');
                     this.getUser(); // Refresh the user list
                 })
                 .catch(error => {
                     console.error("Error removing admin:", error);
-                    const errorMessage = error.message ? error.message : 'Error removing admin';
+                    const errorMessage = error.message ? error.message : 'พบข้อผิดพลาดในการลบแอดมิน';
                     this.$showNotification('danger', errorMessage);
                 });
             }
@@ -771,12 +771,12 @@ export default {
                         console.log(resp)
                     })
                     .catch(error => {
-                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        const errorMessage = error.message ? error.message : 'พบข้อผิดพลาดในการลบพนักงาน';
                         this.$showNotification('danger', errorMessage);
                     })
                     .finally(() => {
                         this.getEmployer();
-                        this.$showNotification('warn', 'Delete Employee Success')
+                        this.$showNotification('warn', 'ลบพนักงานเรียบร้อยแล้ว')
                     })
             }
         },
@@ -830,7 +830,7 @@ export default {
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
-                    this.$showNotification('#3A89CB', 'Create Employee Success')
+                    this.$showNotification('#3A89CB', 'สร้างพนักงานเรียบร้อยแล้ว')
                     this.profile_em = false
                     this.getEmployer();
                 })

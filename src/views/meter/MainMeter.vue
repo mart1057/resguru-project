@@ -793,7 +793,7 @@ export default {
             this.$showNotification("danger", errorMessage);
           })
           .finally(() => {
-            this.$showNotification("#3A89CB", "Import Water Excel Success");
+            this.$showNotification("#3A89CB", "นำเข้ามิเตอร์น้ำผ่าน Excel สำเร็จ");
           });
       }
     },
@@ -819,7 +819,7 @@ export default {
             this.$showNotification("danger", errorMessage);
           })
           .finally(() => {
-            this.$showNotification("#3A89CB", "Import Electrict Excel Success");
+            this.$showNotification("#3A89CB", "นำเข้ามิเตอร์ไฟฟ้าผ่าน Excel สำเร็จ");
           });
       }
     },

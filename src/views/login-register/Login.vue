@@ -655,7 +655,7 @@ export default {
                 sticky: true,
                 color,
                 position,
-                title: 'Register success',
+                title: 'สมัครสมาชิกสำเร็จ',
             })
         },
         openNotification2(position = null, color) {
@@ -663,8 +663,8 @@ export default {
                 sticky: true,
                 color,
                 position,
-                title: 'Send code to your email',
-                text: 'Please check email.'
+                title: 'ส่งโคดรีเซ็ตรหัสผ่านสำเร็จ',
+                text: 'กรุณาตรวจสอบอีเมลของคุณ'
             })
         },
         openNotification3(position = null, color) {
@@ -672,8 +672,8 @@ export default {
                 sticky: true,
                 color,
                 position,
-                title: 'Reset password success',
-                text: 'Go to login.'
+                title: 'รีเซ็ตรหัสผ่านสำเร็จ',
+                text: 'ไปที่หน้าเข้าสู่ระบบ'
             })
         },
         openNotification5(position = null, color) {
@@ -681,8 +681,8 @@ export default {
                 sticky: true,
                 color,
                 position,
-                title: 'Email address not found',
-                text: 'Please again.'
+                title: 'ไม่พบอีเมลนี้',
+                text: 'กรุณาลองใหม่อีกครั้ง'
             })
         },
         loginSubmit() {
@@ -736,7 +736,7 @@ export default {
                 "idCard": this.dataRegister.CID,
                 "dateOfBirth": this.formattedBirthDate
             }).then((resp) => {
-                this.$showNotification('#3A89CB', "Register Successfully");
+                this.$showNotification('#3A89CB', "สมัครสมาชิกสำเร็จ");
                 this.dataLogin.user = resp.data.user.email;
                 this.resetForm();
                 this.tab = 1;

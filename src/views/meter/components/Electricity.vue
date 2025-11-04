@@ -442,7 +442,7 @@ export default {
         console.log("Previous month electric fee created:", prevResponse.data);
         console.log("Current month electric fee created:", currentResponse.data);
         
-        this.$showNotification("#3A89CB", "Created both previous and current month electric meter records successfully");
+        this.$showNotification("#3A89CB", "สร้างมิเตอร์ไฟฟ้าเดือนก่อนหน้าและเดือนปัจจุบันสำเร็จ");
         
         // Refresh the data to show the new records but preserve scroll position
         this.getElectricityFee(this.id, this.month, this.year, true);
@@ -561,7 +561,7 @@ export default {
       })
       .finally(() => {
         loading.close();
-        this.$showNotification("#3A89CB", "Update Electricity Fee Success");
+        this.$showNotification("#3A89CB", "แก้ไขค่าน้ำสำเร็จ");
         // Refresh data but preserve scroll position
         this.getElectricityFee(this.id, this.month, this.year, true);
       });
@@ -605,7 +605,7 @@ export default {
       })
       .finally(() => {
         loading.close();
-        this.$showNotification("#3A89CB", "Update Electric Fee Success");
+        this.$showNotification("#3A89CB", "แก้ไขค่าไฟสำเร็จ");
         // Refresh data but preserve scroll position
         this.getElectricityFee(this.id, this.month, this.year, true);
       });
@@ -672,7 +672,7 @@ export default {
         // Wait for all updates to complete
         Promise.all(updatePromises)
           .then(() => {
-            this.$showNotification("#3A89CB", "All Electric Fees Updated Successfully");
+            this.$showNotification("#3A89CB", "แก้ไขค่าไฟทั้งหมดสำเร็จ");
             this.getElectricityFee(this.id, this.month, this.year);
           })
           .catch((error) => {
@@ -762,10 +762,10 @@ export default {
         link.click();
         document.body.removeChild(link);
         
-        this.$showNotification("#3A89CB", "Electric Meter Data Exported Successfully");
+        this.$showNotification("#3A89CB", "นำออกข้อมูลมิเตอร์ไฟฟ้าเรียบร้อยแล้ว");
       } catch (error) {
         console.error('Export error:', error);
-        this.$showNotification("danger", "Error exporting electric meter data");
+        this.$showNotification("danger", "พบข้อผิดพลาดในการนำออกข้อมูล");
       } finally {
         loading.close();
       }
@@ -808,7 +808,7 @@ export default {
      */
     generateElectricBills() {
       if (this.ElectricityFee.length === 0) {
-        this.$showNotification("warning", "No electric meter data available");
+        this.$showNotification("warning", "ไม่มีข้อมูลค่าไฟฟ้าเพื่อสร้างบิล");
         return;
       }
       
@@ -849,7 +849,7 @@ export default {
       // Wait for all bills to be created
       Promise.all(billPromises)
         .then(responses => {
-          this.$showNotification("#3A89CB", `Created ${responses.length} electric bills successfully`);
+          this.$showNotification("#3A89CB", ` ${responses.length} ค่าไฟฟ้าถูกสร้างเรียบร้อยแล้ว`);
         })
         .catch(error => {
           const errorMessage = error.message

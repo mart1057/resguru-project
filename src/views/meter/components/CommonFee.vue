@@ -175,7 +175,7 @@ export default {
                         }).then(() => {
                             if (this.commonRoom.length == (i + 1)) {
                                 loading.close()
-                                this.$showNotification('#3A89CB', 'Update Electric Fee Success')
+                                this.$showNotification('#3A89CB', 'แก้ไขค่าส่วนกลางสำเร็จทั้งหมด')
                             }
                         })
                     }

@@ -211,7 +211,7 @@ export default {
             })
             .finally(()=>{
                 this.getContract()
-                this.$showNotification('#3A89CB', 'Set Default Success')
+                this.$showNotification('#3A89CB', 'ตั้งค่าสัญญาเริ่มต้นสำเร็จ')
             })
                
         }, 
@@ -220,7 +220,7 @@ export default {
                 sticky: true,
                 color,
                 position,
-                title: 'Update Contract Success',
+                title: 'แก้ไขสัญญาเช่าสำเร็จ',
             })
         },
         viewUploadFile(url){
@@ -259,7 +259,7 @@ export default {
                     })
                     .finally(()=>{
                         this.getContract()
-                        this.$showNotification('#3A89CB', 'Delete Contract Success')
+                        this.$showNotification('#3A89CB', 'ลบสัญญาเช่าสำเร็จ')
                     })
                 }
         },
@@ -299,7 +299,7 @@ export default {
                 })
                 .finally(()=>{
                     this.getContract()
-                    this.$showNotification('#3A89CB', 'Create Contract Template Success')
+                    this.$showNotification('#3A89CB', 'สร้างสัญญาเช่าสำเร็จ')
                 })
             this.create = false
         },

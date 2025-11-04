@@ -321,7 +321,7 @@ export default {
                             console.log('PDF uploaded successfully:', response);
                             this.$vs.notification({
                                 title: 'Success',
-                                text: 'PDF generated and uploaded successfully',
+                                text: 'สร้างและอัปโหลด PDF สำเร็จ',
                                 color: 'success'
                             });
                         })
@@ -329,7 +329,7 @@ export default {
                             console.error('PDF generation/upload failed:', error);
                             this.$vs.notification({
                                 title: 'Error',
-                                text: 'Failed to generate or upload PDF',
+                                text: 'พบข้อผิดพลาดในการสร้างหรืออัปโหลด PDF',
                                 color: 'danger'
                             });
                         })

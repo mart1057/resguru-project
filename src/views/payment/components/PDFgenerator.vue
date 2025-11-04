@@ -425,7 +425,7 @@ export default {
                     .toPdf()
                     .get("pdf")
                     .then(function (pdf) {
-                    console.log("PDF generated successfully");
+                    console.log("สร้าง PDF สำเร็จ");
                     // This works in most browsers to open in a new tab
                     window.open(pdf.output("bloburl"), "_blank");
                     

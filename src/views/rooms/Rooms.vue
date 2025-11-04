@@ -509,7 +509,7 @@ export default {
                 sticky: true,
                 color,
                 position,
-                title: 'Book Room Success',
+                title: 'สร้างการจองห้องสำเร็จ',
             }).then(
                 setTimeout(() => location.reload(), 1500)
             )

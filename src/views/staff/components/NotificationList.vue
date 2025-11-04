@@ -434,7 +434,7 @@ export default {
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
-                    this.$showNotification('#3A89CB', 'Update Service Success')
+                    this.$showNotification('#3A89CB', 'แก่ไข่ข้อมูลสำเร็จ')
 
                 })
 
@@ -467,11 +467,11 @@ export default {
                     console.log(resp)
                 })
                 .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    const errorMessage = error.message ? error.message : 'พบข้อผิดพลาดในการปิดงาน';
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
-                    this.$showNotification('#3A89CB', 'Closed Job Service Success')
+                    this.$showNotification('#3A89CB', 'ปิดงานสำเร็จ')
                     this.getService()
                 })
         },
