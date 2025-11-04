@@ -80,22 +80,21 @@
                             {{ tr.RoomNumber }}
                         </vs-td>
                         <vs-td v-if="tab == 1 || tab == 2">
-                            <div v-if="tab == 1">{{ tr.water_fees[1]?.meterUnit? tr.water_fees[1]?.meterUnit : '-' }}</div>
-                            <div v-else-if="tab == 2"> {{ tr.electric_fees[1]?.electicUnit ? tr.electric_fees[1]?.electicUnit
-                                : '-' }}</div>
-
-                        </vs-td>
-                        <vs-td v-if="tab == 1 || tab == 2">
-                            <div v-if="tab == 1"> {{ tr.water_fees[0]?.meterUnit? tr.water_fees[0]?.meterUnit : '-' }}</div>
+                            <div v-if="tab == 1">{{ tr.water_fees[0]?.meterUnit? tr.water_fees[0]?.meterUnit : '-' }}</div>
                             <div v-else-if="tab == 2"> {{ tr.electric_fees[0]?.electicUnit ? tr.electric_fees[0]?.electicUnit
                                 : '-' }}</div>
 
                         </vs-td>
                         <vs-td v-if="tab == 1 || tab == 2">
-                            <div v-if="tab == 1"> {{ tr.water_fees[0]?.usageMeter ? tr.water_fees[0]?.usageMeter : '-' }}
+                            <div v-if="tab == 1"> {{ tr.water_fees[1]?.meterUnit? tr.water_fees[1]?.meterUnit : '-' }}</div>
+                            <div v-else-if="tab == 2"> {{ tr.electric_fees[1]?.electicUnit ? tr.electric_fees[1]?.electicUnit
+                                : '-' }}</div>
+
+                        </vs-td>
+                        <vs-td v-if="tab == 1 || tab == 2">
+                            <div v-if="tab == 1"> {{ (tr.water_fees[0] && tr.water_fees[1]) ? (tr.water_fees[1].meterUnit - tr.water_fees[0].meterUnit) : '-' }}
                             </div>
-                            <div v-else-if="tab == 2"> {{ tr.electric_fees[0]?.usageMeter ? tr.electric_fees[0]?.usageMeter :
-                                '-' }}</div>
+                            <div v-else-if="tab == 2"> {{ (tr.electric_fees[0] && tr.electric_fees[1]) ? (tr.electric_fees[1].electicUnit - tr.electric_fees[0].electicUnit) : '-' }} </div>
                         </vs-td>
                         <vs-td v-if="tab == 3">
                             <div class="flex">
