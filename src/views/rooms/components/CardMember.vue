@@ -1408,7 +1408,7 @@ export default {
 
 <style>
 .text-custom {
-  color: #333333;
+  /* color: #333333; this cause all popup tex color problem*/
 }
 
 /* Improve input field appearance */

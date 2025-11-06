@@ -1806,7 +1806,7 @@ export default {
   } else {
     this.$showNotification("danger", "Cannot find payment evidence details");
   }
-}else if (menu_option == "Old Approve Payment") {
+      } else if (menu_option == "Old Approve Payment") {
         this.approvePaymentForm.amount = tr.attributes.amount;
         this.approvePaymentForm.fineamount = 0;
         // this.approvePaymentForm.fineamount = tr.attributes.fineamount?tr.attributes.fineamount:0
@@ -2214,7 +2214,7 @@ export default {
           data: {
             tenant_bill: this.approvePaymentForm.invoiceID,
             user_sign_contract: this.approvePaymentForm.userID || this.partialPaymentForm.userID,
-            receiptNumber: "RE-" + this.approvePaymentForm.invoiceNumber,
+            receiptNumber: this.getNextReceiptNumber("RE-" + this.approvePaymentForm.invoiceNumber),            
             roomPrice: this.approvePaymentForm.roomPrice,
             waterPrice: this.approvePaymentForm.waterPrice,
             electricPrice: this.approvePaymentForm.electricPrice,
@@ -2226,13 +2226,13 @@ export default {
             paidAmount: this.approvePaymentForm.afterFine || this.approvePaymentForm.amount,
             building: this.approvePaymentForm.building,
             room: this.$route.query.roomID,
-            tenant_evidence_payment: this.approvePaymentForm.invoiceID,
+            tenant_evidence_payment: this.approvePaymentForm.evidencePaymentId ?? null,
             receiptDate: this.approvePaymentForm.paymentDate || today.toISOString().split('T')[0]
           },
         })
         .then((res) => {
           // Update the evidence to "Approve" status
-          axios.put(`https://api.resguru.app/api/tenant-evidence-payments/${this.approvePaymentForm.invoiceID}`, {
+          axios.put(`https://api.resguru.app/api/tenant-evidence-payments/${this.approvePaymentForm.tenant_evidence_payment}`, {
             data: {
               evidenceStatus: "Approve"
             }
@@ -2302,7 +2302,23 @@ export default {
       this.approvePaymentForm.afterFine = afterFine;
       // No need to set DOM value as we're using v-model binding with formatting
     },
-  recalculateVat() {
+    
+    getNextReceiptNumber(baseNumber) {
+      baseNumber = String(baseNumber);
+
+      // Match if it already ends with "-number" after another "-number" block
+      const match = baseNumber.match(/-\d+-\d+$/);
+
+      if (match) {
+        // Example: IV25-00002-1 → increment last digit only
+        return baseNumber.replace(/-(\d+)$/, (_, n) => `-${parseInt(n, 10) + 1}`);
+      } else {
+        // Example: IV25-00002 → append -1
+        return `${baseNumber}-1`;
+      }
+    },
+
+    recalculateVat() {
     // Get the VAT rate (0 or 7)
       const vatRate = parseFloat(this.approvePaymentForm.vatRate);
       
