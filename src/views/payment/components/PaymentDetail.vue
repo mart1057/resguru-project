@@ -1781,9 +1781,13 @@ export default {
       this.approvePaymentForm.otherPrice = relatedInvoice.attributes.otherPrice || 0;
       this.approvePaymentForm.subtotal = relatedInvoice.attributes.subtotal || 0;
       this.approvePaymentForm.vat = relatedInvoice.attributes.vat || 0;
+      this.approvePaymentForm.vatRate = this.$store.state.buildingInfo[0].attributes.vat_rate || 7; // Get VAT rate from building settings
       this.approvePaymentForm.total = relatedInvoice.attributes.total || 0;
       this.approvePaymentForm.invoiceNumber = relatedInvoice.attributes.invoiceNumber;
       this.approvePaymentForm.invoiceID = relatedInvoice.id; // Store the invoice ID
+      
+      // Recalculate VAT after setting initial values
+      this.recalculateVat();
     }
     
     // Set evidence details
