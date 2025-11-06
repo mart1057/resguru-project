@@ -328,7 +328,7 @@
                 />
               </div>
               <div class="col-span-2">
-                <div class="mb-1">วัน/เดือน/ปีเกิด (ค.ศ.)</div>
+                <div class="mb-1">  <span class="text-red-500 mr-1">*</span>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
                 <input
                   type="date"
                   class="h-[36px] w-full rounded-[12px] bg-[#dadfe3] px-3"
