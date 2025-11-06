@@ -2210,53 +2210,37 @@ export default {
     //         }
     //     });
     // },
-    createReceipt() {
-      let today = new Date();
+createReceipt() {
+  let today = new Date();
       
-      axios
-        .post("https://api.resguru.app/api/tenant-receipts", {
-          data: {
-            tenant_bill: this.approvePaymentForm.invoiceID,
-            user_sign_contract: this.approvePaymentForm.userID || this.partialPaymentForm.userID,
-            receiptNumber: this.getNextReceiptNumber("RE-" + this.approvePaymentForm.invoiceNumber),            
-            roomPrice: this.approvePaymentForm.roomPrice,
-            waterPrice: this.approvePaymentForm.waterPrice,
-            electricPrice: this.approvePaymentForm.electricPrice,
-            communalPrice: this.approvePaymentForm.communalPrice,
-            otherPrice: this.approvePaymentForm.otherPrice,
-            subTotal: this.approvePaymentForm.subtotal,
-            vat: this.approvePaymentForm.vat,
-            total: this.approvePaymentForm.total,
-            paidAmount: this.approvePaymentForm.afterFine || this.approvePaymentForm.amount,
-            building: this.approvePaymentForm.building,
-            room: this.$route.query.roomID,
-            tenant_evidence_payment: this.approvePaymentForm.evidencePaymentId ?? null,
-            receiptDate: this.approvePaymentForm.paymentDate || today.toISOString().split('T')[0]
-          },
-        })
-        .then((res) => {
-          // Update the evidence to "Approve" status
-          axios.put(`https://api.resguru.app/api/tenant-evidence-payments/${this.approvePaymentForm.tenant_evidence_payment}`, {
-            data: {
-              evidenceStatus: "Approve"
-            }
-          });
-          
-          this.$showNotification("#3A89CB", "อนุมัติการชำระเงินสำเร็จ");
-        })
-        .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "พบปัญหาระหว่างการแก้ไข";
-          this.$showNotification("danger", errorMessage);
-        })
-        .finally(() => {
-          this.getInvoice();
-          this.getReceipt();
-          this.getEvidence();
-          this.createApprovePayment = false;
-        });
-    },
+  axios
+    .post("https://api.resguru.app/api/approvePayment", {
+      data: {
+        buildingid: this.approvePaymentForm.building,
+        roomid: parseInt(this.$route.query.roomID),
+        month: today.getMonth() + 1,
+        year: today.getFullYear(),
+        evidenceid: this.approvePaymentForm.tenant_evidence_payment,
+        paidAmount: this.approvePaymentForm.afterFine || this.approvePaymentForm.amount,
+        paidDate: this.approvePaymentForm.paymentDate || today.toISOString().split('T')[0]
+      }
+    })
+    .then((res) => {
+      this.$showNotification("#3A89CB", "อนุมัติการชำระเงินสำเร็จ");
+    })
+    .catch((error) => {
+      const errorMessage = error.message
+        ? error.message
+        : "พบปัญหาระหว่างการแก้ไข";
+      this.$showNotification("danger", errorMessage);
+    })
+    .finally(() => {
+      this.getInvoice();
+      this.getReceipt();
+      this.getEvidence();
+      this.createApprovePayment = false;
+    });
+},
     OldcreateReceipt() {
       //ส่งบอกว่า evident ถูก approve แล้ว หลังบ้านจะไป update invoice, current evident, และ สร้าง reciept ตามจำเป็น
       let today = new Date();
@@ -2362,6 +2346,7 @@ export default {
         this.approvePaymentForm.subtotal = (subtotal - totalVat).toFixed(2);
         this.approvePaymentForm.total = (subtotalNoRoom + totalVat + roomPrice).toFixed(2);
       }
+      console.log("Recalculated VAT and totals", vatRate, this.approvePaymentForm.vat);
     },
     
     // Modify the existing calculateTotal method
