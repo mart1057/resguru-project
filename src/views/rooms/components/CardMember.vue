@@ -1165,7 +1165,7 @@ export default {
                           firstName: this.room_detail.name,
                           lastName: this.room_detail.last_name,
                           nickName: this.room_detail.nick_name,
-                          role: 4,
+                          role: 2,
                           phone: this.room_detail.phone,
                           idCard: this.room_detail.id_card,
                           contactAddress: this.room_detail.address,
