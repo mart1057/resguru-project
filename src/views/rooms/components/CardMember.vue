@@ -318,7 +318,7 @@
               </div>
               <div class="col-span-2">
                 <div class="mb-1">
-                  <span class="text-red-500 mr-1">*</span>หมายเลขบัตรประชาชน/หนังสือเดินทาง
+                  หมายเลขบัตรประชาชน/หนังสือเดินทาง
                 </div>
                 <input
                   type="text"
@@ -341,7 +341,7 @@
             <!-- Address & ID Card Section -->
             <div class="grid grid-cols-6 gap-4 mt-4">
               <div class="col-span-4">
-                <div class="mb-1"><span class="text-red-500 mr-1">*</span>ที่อยู่</div>
+                <div class="mb-1">ที่อยู่</div>
                 <input
                   type="text"
                   class="h-[36px] w-full rounded-[12px] bg-[#dadfe3] px-3"
@@ -351,7 +351,7 @@
               </div>
               <div class="col-span-2">
                 <div class="mb-1">
-                  <span class="text-red-500 mr-1">*</span>แนบรูปบัตรประชาชน/หนังสือเดินทาง
+                  แนบรูปบัตรประชาชน/หนังสือเดินทาง
                 </div>
                 <div class="flex items-center" v-if="room_detail.image_card_name == ''">
                   <input
@@ -1105,10 +1105,7 @@ export default {
             this.room_detail.email != "" &&
             this.room_detail.name != "" &&
             this.room_detail.last_name != "" &&
-            this.room_detail.phone != "" &&
-            this.room_detail.id_card != "" &&
-            this.room_detail.address != "" &&
-            this.img_arr_card.length != 0
+            this.room_detail.phone != ""
           ) {
             const loading = this.$vs.loading();
             fetch(
@@ -1234,10 +1231,7 @@ export default {
             this.room_detail.email != "" &&
             this.room_detail.name != "" &&
             this.room_detail.last_name != "" &&
-            this.room_detail.phone != "" &&
-            this.room_detail.id_card &&
-            this.room_detail.address != "" &&
-            this.img_arr_card.length != 0
+            this.room_detail.phone != ""
           ) {
             const date = new Date(this.room_detail.birth);
             const isoString = date.toISOString();
