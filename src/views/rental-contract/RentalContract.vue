@@ -1269,7 +1269,7 @@ export default {
     },
     getUserDetail(id_room) {
       const loading = this.$vs.loading();
-      fetch(`https://api.resguru.app/api/users?filters[idCard][$eq]=${id_room}`)
+      fetch(`https://api.resguru.app/api/users?filters[email][$eq]=${encodeURIComponent(id_room)}`)
         .then((response) => response.json())
         .then((resp) => {
           if (resp.length > 0) {
@@ -1343,167 +1343,159 @@ export default {
         this.getUserDetail(idCard);
       }
     },
+    // Fix in your submitSign method - for existing user (check_user == true)
+
     submitSign(a, b) {
-      if (this.room_detail_create.check_user == true) {
+    if (this.room_detail_create.check_user == true) {
         console.log("1");
         const loading = this.$vs.loading();
         axios
-          .post("https://api.resguru.app/api" + "/user-sign-contracts", {
-            data: {
-              room: this.room_detail_create.id_room,
-              contractStatus: "rent",
-              users_permissions_user: this.room_detail_create.id,
-              checkInDate: this.room_detail_create.date_sign,
-              contractEndDate: this.room_detail_create.exp_date,
-              startElectric: this.room_detail_create.ele,
-              startWater: this.room_detail_create.water,
-              roomDeposit: parseInt(this.room_detail_create.room_deposit),
-              roomInsuranceDeposit: parseInt(
-                this.room_detail_create.roomInsuranceDeposit
-              ),
-              contractDuration: parseInt(
-                this.room_detail_create.contract_duration
-              ),
-            },
-          })
-          .then((resp) => {
-            this.id_sign = resp.data.data.id;
-            this.PDFPrintRental(
-              a,
-              b,
-              resp.data.data.id,
-              this.room_detail_create
-            );
-            axios.put(
-              "https://api.resguru.app/api" +
-                "/rooms/" +
-                this.room_detail_create.id_room,
-              {
+            .post("https://api.resguru.app/api" + "/user-sign-contracts", {
                 data: {
-                  // user_sign_contract: resp.data.id,
-                  room_type: this.room_detail_create.type_room,
-                  roomStatus: "Checked In",
+                    room: this.room_detail_create.id_room,
+                    contractStatus: "rent",
+                    users_permissions_user: this.room_detail_create.id,
+                    checkInDate: this.room_detail_create.date_sign,
+                    contractEndDate: this.room_detail_create.exp_date,
+                    startElectric: this.room_detail_create.ele,
+                    startWater: this.room_detail_create.water,
+                    roomDeposit: parseInt(this.room_detail_create.room_deposit),
+                    roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
+                    contractDuration: parseInt(this.room_detail_create.contract_duration),
                 },
-              }
-            );
-            axios.post("https://api.resguru.app/api" + "/water-fees", {
-              data: {
-                // "meterDate": "2023-12-18T09:44:25.621Z",
-                meterUnit: this.room_detail_create.water,
-                user_sign_contract: resp.data.data.id,
-                room: this.room_detail_create.id_room,
-                usageMeter: this.room_detail_create.water,
-              },
-            });
-            axios.post("https://api.resguru.app/api" + "/electric-fees", {
-              data: {
-                electicUnit: this.room_detail_create.ele,
-                user_sign_contract: resp.data.data.id,
-                room: this.room_detail_create.id_room,
-                usageMeter: this.room_detail_create.ele,
-              },
-            });
-          })
-          .finally(() => {})
-          .catch((err) => {
-            loading.close();
-            if (err.response?.data?.error?.message) {
-              this.openNotificationRenralPage(
-                "top-right",
-                "danger",
-                err.response?.data?.error?.message,
-                6000
-              );
-            }
-          })
-          .finally(() => {
-            // this.PDFPrintRental(a, b,this.id_sign)
-            loading.close();
-            this.create = false;
-            setTimeout(() => {
-              this.getRentalContract(0);
-            }, 500);
-          });
-      } else {
-        console.log("2");
-        const loading = this.$vs.loading();
-        axios
-          .post("https://api.resguru.app/api" + "/users", {
-            username: this.room_detail_create.email,
-            email: this.room_detail_create.email,
-            firstName: this.room_detail_create.name,
-            lastName: this.room_detail_create.last_name,
-            nickName: this.room_detail_create.nick_name,
-            role: 2,
-            phone: this.room_detail_create.phone,
-            email: this.room_detail_create.email,
-            idCard: this.room_detail_create.id_card,
-            contactAddress: this.room_detail_create.address,
-            // "sex": this.room_detail_create.sex,
-            // "dateOfBirth": this.room_detail_create.birth,
-            password: this.room_detail_create.id_card,
-            building: this.$store.state.building,
-          })
-          .then((resp) => {
-            axios
-              .post("https://api.resguru.app/api" + "/user-sign-contracts", {
-                data: {
-                  room: this.room_detail_create.id_room,
-                  contractStatus: "rent",
-                  users_permissions_user: resp.data.id,
-                  checkInDate: this.room_detail_create.date_sign,
-                  contractEndDate: this.room_detail_create.exp_date,
-                  roomDeposit: parseInt(this.room_detail_create.room_deposit),
-                  roomInsuranceDeposit: parseInt(
-                    this.room_detail_create.roomInsuranceDeposit
-                  ),
-                  contractDuration: parseInt(
-                    this.room_detail_create.contract_duration
-                  ),
-                },
-              })
-              .then((resp) => {
+            })
+            .then((resp) => {
                 this.id_sign = resp.data.data.id;
-                this.PDFPrintRental(
-                  a,
-                  b,
-                  resp.data.data.id,
-                  room_detail_create
-                );
-                axios.put(
-                  "https://api.resguru.app/api" +
-                    "/rooms/" +
-                    this.room_detail_create.id_room,
-                  {
+                
+                // FIX: Create proper user data structure
+                const userDataForPDF = {
+                    name: this.room_detail_create.name,
+                    last_name: this.room_detail_create.last_name,
+                    address: this.room_detail_create.address
+                };
+                
+                console.log('Calling PDFPrintRental with:', {
+                    contractData: a,
+                    userData: userDataForPDF
+                });
+                
+                this.PDFPrintRental(a, b, resp.data.data.id, userDataForPDF);
+                
+                // Update room status
+                axios.put("https://api.resguru.app/api/rooms/" + this.room_detail_create.id_room, {
                     data: {
-                      // user_sign_contract: resp.data.id,
-                      room_type: this.room_detail_create.type_room,
+                        room_type: this.room_detail_create.type_room,
+                        roomStatus: "Checked In",
                     },
-                  }
-                );
-              })
-              .finally(() => {
-                // this.PDFPrintRental(a, b,this.id_sign)
+                });
+                
+                // Create utility records
+                axios.post("https://api.resguru.app/api/water-fees", {
+                    data: {
+                        meterUnit: this.room_detail_create.water,
+                        user_sign_contract: resp.data.data.id,
+                        room: this.room_detail_create.id_room,
+                        usageMeter: this.room_detail_create.water,
+                    },
+                });
+                
+                axios.post("https://api.resguru.app/api/electric-fees", {
+                    data: {
+                        electicUnit: this.room_detail_create.ele,
+                        user_sign_contract: resp.data.data.id,
+                        room: this.room_detail_create.id_room,
+                        usageMeter: this.room_detail_create.ele,
+                    },
+                });
+            })
+            .catch((err) => {
+                loading.close();
+                if (err.response?.data?.error?.message) {
+                    this.openNotificationRenralPage(
+                        "top-right",
+                        "danger",
+                        err.response?.data?.error?.message,
+                        6000
+                    );
+                }
+            })
+            .finally(() => {
                 loading.close();
                 this.create = false;
                 setTimeout(() => {
-                  this.getRentalContract(0);
+                    this.getRentalContract(0);
                 }, 500);
-              });
-          })
-          .catch((err) => {
-            loading.close();
-            if (err.response?.data?.error?.message) {
-              this.openNotificationRenralPage(
-                "top-right",
-                "danger",
-                err.response?.data?.error?.message,
-                6000
-              );
-            }
-          });
-      }
-    },
+            });
+    } else {
+        // For new user creation
+        console.log("2");
+        const loading = this.$vs.loading();
+        axios
+            .post("https://api.resguru.app/api/users", {
+                username: this.room_detail_create.email,
+                email: this.room_detail_create.email,
+                firstName: this.room_detail_create.name,
+                lastName: this.room_detail_create.last_name,
+                nickName: this.room_detail_create.nick_name,
+                role: 2,
+                phone: this.room_detail_create.phone,
+                idCard: this.room_detail_create.id_card,
+                contactAddress: this.room_detail_create.address,
+                password: this.room_detail_create.id_card,
+                building: this.$store.state.building,
+            })
+            .then((resp) => {
+                return axios.post("https://api.resguru.app/api/user-sign-contracts", {
+                    data: {
+                        room: this.room_detail_create.id_room,
+                        contractStatus: "rent",
+                        users_permissions_user: resp.data.id,
+                        checkInDate: this.room_detail_create.date_sign,
+                        contractEndDate: this.room_detail_create.exp_date,
+                        roomDeposit: parseInt(this.room_detail_create.room_deposit),
+                        roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
+                        contractDuration: parseInt(this.room_detail_create.contract_duration),
+                    },
+                });
+            })
+            .then((resp) => {
+                this.id_sign = resp.data.data.id;
+                
+                // FIX: Create proper user data structure for new user
+                const userDataForPDF = {
+                    name: this.room_detail_create.name,
+                    last_name: this.room_detail_create.last_name,
+                    address: this.room_detail_create.address
+                };
+                
+                this.PDFPrintRental(a, b, resp.data.data.id, userDataForPDF);
+                
+                axios.put("https://api.resguru.app/api/rooms/" + this.room_detail_create.id_room, {
+                    data: {
+                        room_type: this.room_detail_create.type_room,
+                    },
+                });
+            })
+            .catch((err) => {
+                loading.close();
+                if (err.response?.data?.error?.message) {
+                    this.openNotificationRenralPage(
+                        "top-right",
+                        "danger",
+                        err.response?.data?.error?.message,
+                        6000
+                    );
+                }
+            })
+            .finally(() => {
+                loading.close();
+                this.create = false;
+                setTimeout(() => {
+                    this.getRentalContract(0);
+                }, 500);
+            });
+    }
+},
     filterData() {
       this.contract = this.contract.filter((item) =>
         item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase())

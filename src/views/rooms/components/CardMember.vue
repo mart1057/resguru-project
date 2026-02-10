@@ -175,13 +175,13 @@
                 >
                   <div class="col-span-2">
                     <div class="mb-1">
-                      <span class="text-red-500 mr-1">*</span>ค้นหาผู้เช่าด้วยรหัสบัตรประชาชน/หนังสือเดินทาง
+                      <span class="text-red-500 mr-1">*</span>ค้นหาผู้เช่าด้วยอีเมล
                     </div>
                     <div class="flex space-x-2">
                       <input
                         type="input"
                         class="h-[36px] flex-1 rounded-[12px] bg-[#dadfe3] px-3"
-                        v-model="id_card"
+                        v-model="searchEmail"
                       />
                       <vs-button primary @click="getUserDetail(id_card)">ค้นหา</vs-button>
                     </div>
@@ -719,6 +719,7 @@ export default {
         Number: "",
       },
       id_card: "",
+      searchEmail: "",
       room_detail: {
         id: "",
         sex: true,
@@ -761,6 +762,7 @@ export default {
   },
   methods: {
     cancleButton() {
+      this.searchEmail = "";
       this.id_card = "";
       this.id_user = "";
       this.room_detail.id = "";
@@ -782,6 +784,7 @@ export default {
       this.create = false;
     },
     clearButton1() {
+      this.searchEmail = "";
       this.id_card = "";
       this.id_user = "";
       this.room_detail.id = "";
@@ -804,6 +807,7 @@ export default {
       this.room_detail.check_user = true;
     },
     clearButton2() {
+      this.searchEmail = "";
       this.id_card = "";
       this.id_user = "";
       this.room_detail.id = "";
@@ -943,8 +947,8 @@ export default {
       this.img_arr_card = [];
       fetch(
         "https://api.resguru.app/api" +
-          "/users/?filters[idCard][$eq]=" +
-          this.id_card +
+          "/users/?filters[email][$eq]=" +
+          encodeURIComponent(this.searchEmail) +
           "&populate=deep"
       )
         .then((response) => response.json())
