@@ -234,7 +234,7 @@
                         @click="room_detail.sex = true"
                         class="h-[41px] w-[78px] rounded-[12px] border flex items-center justify-center space-x-2 cursor-pointer transition-colors"
                         :class="
-                          room_detail.sex
+                          room_detail.sex === true
                             ? 'bg-[#008EF4] text-white'
                             : 'bg-white text-[#008EF4]'
                         "
@@ -253,7 +253,7 @@
                         @click="room_detail.sex = false"
                         class="h-[41px] w-[78px] rounded-[12px] border flex items-center justify-center space-x-2 cursor-pointer transition-colors"
                         :class="
-                          room_detail.sex == false
+                          room_detail.sex === false
                             ? 'bg-[#CC00FF] text-white'
                             : 'bg-white text-[#CC00FF]'
                         "
@@ -963,7 +963,7 @@ export default {
             this.room_detail.email = resp[0].email;
             this.room_detail.id_card = resp[0].idCard;
             this.room_detail.address = resp[0].contactAddress;
-            this.room_detail.sex = resp[0].sex;
+            this.room_detail.sex = resp[0].sex === true || resp[0].sex === 1 || resp[0].sex === "true";
             this.room_detail.birth = resp[0].dateOfBirth;
             this.room_detail.date_sign = resp[0].checkInDate;
             this.room_detail.emergencyPerson = resp[0].emergencyPerson;
@@ -981,7 +981,7 @@ export default {
             this.room_detail.email = "";
             this.room_detail.id_card = "";
             this.room_detail.address = "";
-            this.room_detail.sex = "";
+            this.room_detail.sex = true;
             this.room_detail.birth = "";
             this.room_detail.date_sign = "";
             this.room_detail.emergencyPerson = "";
@@ -1032,7 +1032,7 @@ export default {
           this.room_detail.address =
             resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.contactAddress;
           this.room_detail.sex =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.sex;
+            resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.sex === true || resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.sex === 1 || resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.sex === "true";
           this.room_detail.birth =
             resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.dateOfBirth;
           this.room_detail.date_sign =
@@ -1172,7 +1172,7 @@ export default {
                           phone: this.room_detail.phone,
                           idCard: this.room_detail.id_card,
                           contactAddress: this.room_detail.address,
-                          sex: this.room_detail.sex,
+                          sex: this.room_detail.sex === true,
                           dateOfBirth: this.room_detail.birth,
                           emergencyPerson: this.room_detail.emergencyPerson,
                           relation: this.room_detail.relation,
@@ -1254,7 +1254,7 @@ export default {
                 email: this.room_detail.email,
                 idCard: this.room_detail.id_card,
                 contactAddress: this.room_detail.address,
-                sex: this.room_detail.sex,
+                sex: this.room_detail.sex === true,
                 dateOfBirth: isoString,
                 password: this.room_detail.id_card,
                 building: this.$store.state.building,

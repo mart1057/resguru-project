@@ -767,7 +767,7 @@ export default {
                     this.room_detail.email = resp.email
                     this.room_detail.id_card = resp.idCard
                     this.room_detail.address = resp.contactAddress
-                    this.room_detail.sex = resp.sex
+                    this.room_detail.sex = resp.sex === true || resp.sex === 1 || resp.sex === "true"
                     this.room_detail.birth = resp.dateOfBirth
                     this.room_detail.date_sign = resp.checkInDate
                     this.room_detail.workplace = resp.workplace,

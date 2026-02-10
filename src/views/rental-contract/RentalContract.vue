@@ -878,9 +878,9 @@
                     <div class="text-[#003765]">คำนำหน้า</div>
                     <div class="mt-[12px]">
                       {{
-                        room_detail.sex == true
+                        room_detail.sex === true
                           ? "นาย"
-                          : room_detail.sex == null
+                          : room_detail.sex === null
                           ? "-"
                           : "นาง/นางสาว"
                       }}
@@ -1222,7 +1222,7 @@ export default {
           this.room_detail.address =
             resp.data.attributes.users_permissions_user.data?.attributes.contactAddress;
           this.room_detail.sex =
-            resp.data.attributes.users_permissions_user.data?.attributes.sex;
+            resp.data.attributes.users_permissions_user.data?.attributes.sex === true || resp.data.attributes.users_permissions_user.data?.attributes.sex === 1 || resp.data.attributes.users_permissions_user.data?.attributes.sex === "true";
           this.room_detail.birth =
             resp.data.attributes.users_permissions_user.data?.attributes.dateOfBirth;
           this.room_detail.date_sign = resp.data.attributes.checkInDate;
