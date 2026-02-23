@@ -23,7 +23,6 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import notification from '@/components/hook/notify';
 import formatNumber from '@/components/hook/formatNumber';
-import formatDate from '@/components/hook/formatDate';
 
 
 
@@ -34,7 +33,6 @@ Vue.use(VueMaterial)
 Vue.use(VueAxios, axios)
 Vue.use(notification);
 Vue.use(formatNumber);
-Vue.use(formatDate);
 
 
 new Vue({

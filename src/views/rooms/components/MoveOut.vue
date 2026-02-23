@@ -541,9 +541,6 @@
                 type="date"
                 v-model="date_moveout"
               />
-              <div class="text-[12px] text-gray-600 mt-1">
-                {{ date_moveout ? $formatDate(date_moveout, 'dd/mm/yyyy') : '' }}
-              </div>
             </div>
             <div
               class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 mt-[14px]"

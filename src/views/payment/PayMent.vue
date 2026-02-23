@@ -831,9 +831,6 @@
                 class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
                 v-model="fullPaymentForm.paymentDate"
               />
-              <div class="text-[12px] text-gray-600 mt-1">
-                {{ fullPaymentForm.paymentDate ? $formatDate(fullPaymentForm.paymentDate, 'dd/mm/yyyy') : '' }}
-              </div>
             </div>
           </div>
           <div class="mt-[14px]">
@@ -988,9 +985,6 @@
                 class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
                 v-model="partialPaymentForm.paymentDate"
               />
-              <div class="text-[12px] text-gray-600 mt-1">
-                {{ partialPaymentForm.paymentDate ? $formatDate(partialPaymentForm.paymentDate, 'dd/mm/yyyy') : '' }}
-              </div>
             </div>
           </div>
           <div class="mt-[14px]">
@@ -1122,9 +1116,6 @@
                             <input type="date"
                                 class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
                                 v-model="partialPaymentForm.paymentDate" />
-                            <div class="text-[12px] text-gray-600 mt-1">
-                                {{ partialPaymentForm.paymentDate ? $formatDate(partialPaymentForm.paymentDate, 'dd/mm/yyyy') : '' }}
-                            </div>
                         </div>
                     </div>
                     <div class="mt-[14px]">

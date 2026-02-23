@@ -456,9 +456,6 @@
                         <div class="text-custom text-[14px] text-[#003765]">วันที่</div>
                         <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[14px] pr-[14px]  flex justify-start"
                             type="date" v-model="date" />
-                        <div class="text-[12px] text-gray-600 mt-1">
-                            {{ date ? $formatDate(date, 'dd/mm/yyyy') : '' }}
-                        </div>
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">หลักฐานการจ่ายเงิน</div>

@@ -927,7 +927,6 @@ export default {
                 })
                 .then( (resp) => {
                     console.log(resp)
-                    //payment-webhook #########
                     window.location.href = resp.data.session.url;
                     }
                 )

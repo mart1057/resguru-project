@@ -297,9 +297,6 @@
                                     <input type="date"
                                         class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
                                         v-model="birthDate" required>
-                                    <div class="text-[12px] text-gray-600 mt-1">
-                                        {{ birthDate ? $formatDate(birthDate, 'dd/mm/yyyy') : '' }}
-                                    </div>
                                 </div>
 
                             </div>
@@ -312,9 +309,6 @@
                                     <input type="date"
                                         class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
                                         v-model="checkInDate" required />
-                                    <div class="text-[12px] text-gray-600 mt-1">
-                                        {{ checkInDate ? $formatDate(checkInDate, 'dd/mm/yyyy') : '' }}
-                                    </div>
                                 </div>
                                 <div class="col-span-4  ml-[8px]">
                                     <div>เลือกห้อง</div>

@@ -29,16 +29,10 @@
           <div class="form-group">
             <label for="startDate">หอพักของคุณกำหนดวันเริ่มต้นการจ่ายเงินเมื่อไหร่?</label>
             <input type="date" id="startDate" v-model="startDate" />
-            <div class="text-[12px] text-gray-600 mt-1">
-              {{ startDate ? $formatDate(startDate, 'dd/mm/yyyy') : '' }}
-            </div>
           </div>
           <div class="form-group">
             <label for="endDate">กำหนดวันที่สิ้นสุดการจ่ายเงิน</label>
             <input type="date" id="endDate" v-model="endDate" />
-            <div class="text-[12px] text-gray-600 mt-1">
-              {{ endDate ? $formatDate(endDate, 'dd/mm/yyyy') : '' }}
-            </div>
           </div>
           <button type="submit">บันทึก</button>
         </form>
