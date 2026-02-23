@@ -501,15 +501,15 @@
                   <div>
                     <div class="">
                       <span class="text-[red] mr-[2px]">*</span
-                      >ค้นหาผู้เช่าด้วยรหัสบัตรประชาชน
+                      >ค้นหาผู้เช่าด้วยอีเมล
                     </div>
                     <div>
                       <input
                         type="input"
                         class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                        v-model="filter.Id_card"
+                        v-model="searchEmail"
                       />
-                      <vs-button primary @click="getUserDetail(filter.Id_card)"
+                      <vs-button primary @click="getUserDetail(searchEmail)"
                         >ค้นหา</vs-button
                       >
                     </div>
@@ -534,7 +534,7 @@
                     <input
                       type="input"
                       class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                      :disabled="room_detail_create.check_user == true"
+                      :disabled="room_detail_create.check_user == true && room_detail_create.name"
                       v-model="room_detail_create.name"
                       required
                     />
@@ -547,7 +547,7 @@
                     <input
                       type="input"
                       class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                      :disabled="room_detail_create.check_user == true"
+                      :disabled="room_detail_create.check_user == true && room_detail_create.last_name"
                       v-model="room_detail_create.last_name"
                       required
                     />
@@ -578,8 +578,8 @@
                     type="input"
                     class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                     v-model="room_detail_create.phone"
+                    :disabled="room_detail_create.check_user == true && room_detail_create.phone"
                     required
-                    :disabled="room_detail_create.check_user == true"
                   />
                 </div>
                 <div class="col-span-4 ml-[8px]">
@@ -591,8 +591,8 @@
                     type="input"
                     class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                     v-model="room_detail_create.id_card"
+                    :disabled="room_detail_create.check_user == true && room_detail_create.id_card"
                     required
-                    :disabled="room_detail_create.check_user == true"
                   />
                   <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
                                         {{ errorFieldMessage }}
@@ -614,8 +614,8 @@
                     type="email"
                     class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
                     v-model="room_detail_create.email"
+                    :disabled="room_detail_create.check_user == true && room_detail_create.email"
                     required
-                    :disabled="room_detail_create.check_user == true"
                   />
                   <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
                                         {{ errorFieldMessage }}
@@ -630,8 +630,8 @@
                     type="date"
                     class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
                     v-model="room_detail_create.birth"
+                    :disabled="room_detail_create.check_user == true && room_detail_create.birth"
                     required
-                    :disabled="room_detail_create.check_user == true"
                   />
                 </div>
               </div>
@@ -645,8 +645,8 @@
                     type="input"
                     class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
                     v-model="room_detail_create.address"
+                    :disabled="room_detail_create.check_user == true && room_detail_create.address"
                     required
-                    :disabled="room_detail_create.check_user == true"
                   />
                 </div>
               </div>
@@ -1037,6 +1037,7 @@ export default {
         floor: "",
         Id_card: "",
       },
+      searchEmail: "",
       room_detail: {
         sex: null,
         name: "",
@@ -1340,7 +1341,27 @@ export default {
       this.room_detail.exp_date = "";
       this.room_detail_create.check_user = true;
       if (idCard) {
-        this.getUserDetail(idCard);
+        // Fetch user by idCard to get email and populate form
+        fetch(`https://api.resguru.app/api/users?filters[idCard][$eq]=${encodeURIComponent(idCard)}`)
+          .then((response) => response.json())
+          .then((resp) => {
+            if (resp.length > 0) {
+              const u = resp[0];
+              this.searchEmail = u.email || "";
+              this.room_detail_create.id = u.id || "";
+              this.room_detail_create.name = u.firstName || "";
+              this.room_detail_create.last_name = u.lastName || "";
+              this.room_detail_create.nick_name = u.nickName || "";
+              this.room_detail_create.phone = u.phone || "";
+              this.room_detail_create.email = u.email || "";
+              this.room_detail_create.id_card = u.idCard || "";
+              this.room_detail_create.address = u.contactAddress || "";
+              this.room_detail_create.birth = u.dateOfBirth || "";
+            }
+          })
+          .catch(() => {
+            // Handle error if needed
+          });
       }
     },
     // Fix in your submitSign method - for existing user (check_user == true)

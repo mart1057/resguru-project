@@ -183,7 +183,7 @@
                         class="h-[36px] flex-1 rounded-[12px] bg-[#dadfe3] px-3"
                         v-model="searchEmail"
                       />
-                      <vs-button primary @click="getUserDetail(id_card)">ค้นหา</vs-button>
+                      <vs-button primary @click="getUserDetail()">ค้นหา</vs-button>
                     </div>
                   </div>
                   <div class="col-span-2">
@@ -333,7 +333,6 @@
                   type="date"
                   class="h-[36px] w-full rounded-[12px] bg-[#dadfe3] px-3"
                   v-model="room_detail.birth"
-                  :disabled="is_edit"
                 />
               </div>
             </div>
