@@ -335,6 +335,9 @@
                   v-model="room_detail.birth"
                   :disabled="is_edit"
                 />
+                <div class="text-[12px] text-gray-600 mt-1">
+                  {{ room_detail.birth ? $formatDate(room_detail.birth, 'dd/mm/yyyy') : '' }}
+                </div>
               </div>
             </div>
 

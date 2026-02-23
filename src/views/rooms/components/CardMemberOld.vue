@@ -180,6 +180,9 @@
                                     <input type="date"
                                         class="h-[36px] mt-[6px] pl-[8px] pr-[8px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="room_detail.birth" disabled />
+                                    <div class="text-[12px] text-gray-600 mt-1">
+                                        {{ room_detail.birth ? $formatDate(room_detail.birth, 'dd/mm/yyyy') : '' }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -661,6 +664,9 @@
                             <input
                                 class="h-[28px] w-[180px] bg-[#F3F8FD] rounded-[12px] mt-[4px]  flex justify-start pl-[8px] pr-[8px]"
                                 type="date" v-model="date_moveout" disabled />
+                            <div class="text-[12px] text-gray-600 mt-1">
+                                {{ date_moveout ? $formatDate(date_moveout, 'dd/mm/yyyy') : '' }}
+                            </div>
                         </div>
                         <div class="flex mt-[14px]">
                             <button @click="PDFPrint()"

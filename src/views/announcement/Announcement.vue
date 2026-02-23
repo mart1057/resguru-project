@@ -168,6 +168,9 @@
                         <div class="text-custom text-[14px] text-[#003765]">วันที่สิ้นสุด *</div>
                         <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[12px] pr-[12px] flex justify-start"
                             type="date" v-model="date_execute" />
+                        <div class="text-[12px] text-gray-600 mt-1">
+                            {{ date_execute ? $formatDate(date_execute, 'dd/mm/yyyy') : '' }}
+                        </div>
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">รูปภาพ *</div>

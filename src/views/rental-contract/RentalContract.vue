@@ -501,15 +501,15 @@
                   <div>
                     <div class="">
                       <span class="text-[red] mr-[2px]">*</span
-                      >ค้นหาผู้เช่าด้วยรหัสบัตรประชาชน
+                      >ค้นหาผู้เช่าด้วยอีเมล
                     </div>
                     <div>
                       <input
                         type="input"
                         class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                        v-model="filter.Id_card"
+                        v-model="searchEmail"
                       />
-                      <vs-button primary @click="getUserDetail(filter.Id_card)"
+                      <vs-button primary @click="getUserDetail(searchEmail)"
                         >ค้นหา</vs-button
                       >
                     </div>
@@ -633,6 +633,9 @@
                     required
                     :disabled="room_detail_create.check_user == true"
                   />
+                  <div class="text-[12px] text-gray-600 mt-1">
+                    {{ room_detail_create.birth ? $formatDate(room_detail_create.birth, 'dd/mm/yyyy') : '' }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -666,6 +669,9 @@
                     v-model="room_detail_create.date_sign"
                     required
                   />
+                  <div class="text-[12px] text-gray-600 mt-1">
+                    {{ room_detail_create.date_sign ? $formatDate(room_detail_create.date_sign, 'dd/mm/yyyy') : '' }}
+                  </div>
                   <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
                                         {{ errorFieldMessage }}
                                     </div> -->
@@ -680,6 +686,9 @@
                     v-model="room_detail_create.exp_date"
                     required
                   />
+                  <div class="text-[12px] text-gray-600 mt-1">
+                    {{ room_detail_create.exp_date ? $formatDate(room_detail_create.exp_date, 'dd/mm/yyyy') : '' }}
+                  </div>
                   <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
                                         {{ errorFieldMessage }}
                                     </div> -->
@@ -1037,6 +1046,7 @@ export default {
         floor: "",
         Id_card: "",
       },
+      searchEmail: "",
       room_detail: {
         sex: null,
         name: "",
@@ -1269,21 +1279,25 @@ export default {
     },
     getUserDetail(id_room) {
       const loading = this.$vs.loading();
-      fetch(`https://api.resguru.app/api/users?filters[email][$eq]=${encodeURIComponent(id_room)}`)
+      const isEmail = typeof id_room === "string" && id_room.includes("@");
+      const filter = isEmail
+        ? `filters[email][$eq]=${encodeURIComponent(id_room)}`
+        : `filters[idCard][$eq]=${encodeURIComponent(id_room)}`;
+      fetch(`https://api.resguru.app/api/users?${filter}&populate=deep`)
         .then((response) => response.json())
         .then((resp) => {
-          if (resp.length > 0) {
-            console.log("detail from get user", resp);
-            this.room_detail_create.id = resp[0].id;
-            this.room_detail_create.name = resp[0].firstName;
-            this.room_detail_create.last_name = resp[0].lastName;
-            this.room_detail_create.nick_name = resp[0].nickName;
-            this.room_detail_create.phone = resp[0].phone;
-            this.room_detail_create.email = resp[0].email;
-            this.room_detail_create.id_card = resp[0].idCard;
-            this.room_detail_create.address = resp[0].contactAddress;
-            // this.room_detail_create.sex = resp[0].sex
-            this.room_detail_create.birth = resp[0].dateOfBirth;
+          const users = resp && resp.data ? resp.data : [];
+          if (users.length > 0) {
+            const u = users[0].attributes ? users[0].attributes : users[0];
+            this.room_detail_create.id = users[0].id || "";
+            this.room_detail_create.name = u.firstName || u.first_name || "";
+            this.room_detail_create.last_name = u.lastName || u.last_name || "";
+            this.room_detail_create.nick_name = u.nickName || u.nick_name || "";
+            this.room_detail_create.phone = u.phone || "";
+            this.room_detail_create.email = u.email || "";
+            this.room_detail_create.id_card = u.idCard || u.id_card || "";
+            this.room_detail_create.address = u.contactAddress || u.address || "";
+            this.room_detail_create.birth = u.dateOfBirth || u.birth || "";
           } else {
             this.$showNotification("danger", "ไม่พบผู้ใช้");
             this.room_detail_create.id = "";
@@ -1294,7 +1308,6 @@ export default {
             this.room_detail_create.email = "";
             this.room_detail_create.id_card = "";
             this.room_detail_create.address = "";
-            // this.room_detail_create.sex = ''
             this.room_detail_create.birth = "";
           }
         })
@@ -1319,6 +1332,7 @@ export default {
       this.create_room_number = number;
       this.id_user = "";
       this.filter.Id_card = idCard;
+      this.searchEmail = idCard;
       this.room_detail_create.id = "";
       this.room_detail_create.name = "";
       this.room_detail_create.last_name = "";
