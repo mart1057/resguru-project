@@ -48,8 +48,25 @@
             </div>
         </div>
             <div class="mt-1 w-full">
-                <div class="flex w-full">
-                    <div class="relative w-full">
+                <div class="flex w-full gap-2">
+                    <div class="flex w-full">
+                        <div
+                            @click="setViewMode('monthly')"
+                            class="cursor-pointer text-center flex-1 py-2 rounded-lg"
+                            :class="viewMode === 'monthly' ? 'bg-blue-900 text-white' : 'bg-gray-100 text-gray-600'"
+                        >
+                            รายเดือน
+                        </div>
+                        <div
+                            @click="setViewMode('all')"
+                            class="cursor-pointer text-center flex-1 py-2 ml-2 rounded-lg"
+                            :class="viewMode === 'all' ? 'bg-blue-900 text-white' : 'bg-gray-100 text-gray-600'"
+                        >
+                            ทั้งหมด
+                        </div>
+                    </div>
+
+                    <div v-if="viewMode === 'monthly'" class="relative w-full">
                     <button 
                         @click="showDatePicker = !showDatePicker" 
                         class="h-9 px-2 text-center bg-blue-900 flex cursor-pointer text-white justify-center items-center rounded-xl mt-3 w-full"
@@ -74,6 +91,9 @@
                         </div>
                         </div>
                     </div>
+                    </div>
+                    <div v-else class="h-9 px-2 text-center bg-blue-900 flex text-white justify-center items-center rounded-xl mt-3 w-full">
+                        ข้อมูลทั้งหมด
                     </div>
                 </div>
             </div>
@@ -326,7 +346,6 @@
                 </div>
             </div>
         </div>
-    </div>
 </template>
 <script>
 import VueApexCharts from "vue-apexcharts";
@@ -347,13 +366,19 @@ export default {
         routeLink: {
             type: String,
             default: '/expenses'
+        },
+        allBuilding: {
+            type: Boolean,
+            default: false
         }
     },
     data() {
         return {
             tab: 1,
+            viewMode: 'monthly',
             selectedDate: '',
             dashboardData: null,
+            income: [],
             years: [],
             months: [...Array(12).keys()].map((month) => month + 1),
             data1: [0, 0, 0, 0, 0],// Initialize with 0 for income
@@ -375,18 +400,142 @@ export default {
         this.selectedDate = new Date().getFullYear() + '-' + (new Date().getMonth() + 1).toString().padStart(2, '0');
         this.processData();
     },
+    mounted() {
+        this.getIncome();
+    },
     watch: {
         data: {
             handler: function() {
                 this.processData();
             },
             deep: true
+        },
+        allBuilding() {
+            this.refreshWidgetData();
         }
     },
-    mounted() {
-        this.getIncome();
-    },
     methods: {
+        toNumber(value) {
+            const num = Number(value);
+            return Number.isFinite(num) ? num : 0;
+        },
+        async getBuildingIdsForAggregation() {
+            const buildingInfo = this.$store.state.buildingInfo;
+
+            if (Array.isArray(buildingInfo)) {
+                const ids = buildingInfo
+                    .map((item) => item?.id || item?.attributes?.id)
+                    .filter((id) => id !== undefined && id !== null);
+                if (ids.length > 1) return ids;
+            }
+
+            if (Array.isArray(buildingInfo?.data)) {
+                const ids = buildingInfo.data
+                    .map((item) => item?.id || item?.attributes?.id)
+                    .filter((id) => id !== undefined && id !== null);
+                if (ids.length > 1) return ids;
+            }
+
+            try {
+                const response = await fetch(
+                    `https://api.resguru.app/api/buildings?filters[$or][0][user_owner][id][$eq]=${this.$store.state.userInfo.id}&filters[$or][1][users_admin][id][$in]=${this.$store.state.userInfo.id}&publicationState=live&populate=*`
+                );
+                const resp = await response.json();
+                const ids = (resp?.data || [])
+                    .map((item) => item?.id || item?.attributes?.id)
+                    .filter((id) => id !== undefined && id !== null);
+
+                if (ids.length) {
+                    return ids;
+                }
+            } catch (error) {
+                console.error('getBuildingIdsForAggregation error:', error);
+            }
+
+            return [this.$store.state.building].filter(
+                (id) => id !== undefined && id !== null
+            );
+        },
+        async fetchDashboardByBuilding(buildingId, month, year) {
+            const response = await fetch(
+                `https://api.resguru.app/api/getdashboard?buildingid=${buildingId}&month=${month}&year=${year}&allBuilding=0&user_id=${this.$store.state.userInfo.id}`
+            );
+            return response.json();
+        },
+        mergeExpenseByType(expenseLists) {
+            const map = {};
+
+            expenseLists.forEach((expenseList) => {
+                if (!Array.isArray(expenseList)) return;
+
+                expenseList.forEach((item) => {
+                    const type = item?.type;
+                    if (!type) return;
+                    map[type] = this.toNumber(map[type]) + this.toNumber(item?.count);
+                });
+            });
+
+            return Object.keys(map).map((type) => ({ type, count: map[type] }));
+        },
+        async getAggregatedAccounting(month, year) {
+            if (!this.allBuilding) {
+                const resp = await this.fetchDashboardByBuilding(this.$store.state.building, month, year);
+                return {
+                    receive: this.toNumber(resp?.accounting?.receive),
+                    expense: Array.isArray(resp?.accounting?.expense) ? resp.accounting.expense : []
+                };
+            }
+
+            const buildingIds = await this.getBuildingIdsForAggregation();
+            const results = await Promise.allSettled(
+                buildingIds.map((buildingId) => this.fetchDashboardByBuilding(buildingId, month, year))
+            );
+
+            const successResponses = results
+                .filter((result) => result.status === 'fulfilled')
+                .map((result) => result.value);
+
+            if (!successResponses.length) {
+                return { receive: 0, expense: [] };
+            }
+
+            return {
+                receive: successResponses.reduce(
+                    (sum, resp) => sum + this.toNumber(resp?.accounting?.receive),
+                    0
+                ),
+                expense: this.mergeExpenseByType(
+                    successResponses.map((resp) => resp?.accounting?.expense || [])
+                )
+            };
+        },
+        setViewMode(mode) {
+            if (this.viewMode === mode) return;
+            this.viewMode = mode;
+            this.showDatePicker = false;
+            this.refreshWidgetData();
+        },
+        refreshWidgetData() {
+            this.getIncome();
+
+            if (this.viewMode === 'all') {
+                return;
+            }
+
+            this.getDashboard(this.selectedDate);
+        },
+        mapExpenseToSeries(expenseByType) {
+            return [
+                expenseByType["ค่าจ้างพนักงาน"] || 0,
+                expenseByType["ค่าจ้างทำของ"] || 0,
+                expenseByType["ค่าซ่อมบำรุง"] || 0,
+                expenseByType["ค่าน้ำ"] || 0,
+                expenseByType["ค่าไฟ"] || 0,
+                (expenseByType["ค่าอื่นๆ"] || 0) +
+                (expenseByType["ค่าอินเตอร์เน็ต"] || 0) +
+                (expenseByType["ค่าเคเบิล"] || 0)
+            ];
+        },
         generateYears() {
             const currentYear = new Date().getFullYear();
             for (let year = currentYear - 10; year <= currentYear; year++) {
@@ -403,22 +552,13 @@ export default {
                 const accountingData = sourceData.accounting;
                 
                 // Process expense data
-                if (accountingData.expense) {
+                if (Array.isArray(accountingData.expense)) {
                     let expenseByType = {};
                     accountingData.expense.forEach(item => {
                         expenseByType[item.type] = item.count || 0;
                     });
-                    
-                    const counts = [
-                        expenseByType["ค่าจ้างพนักงาน"] || 0,
-                        expenseByType["ค่าจ้างทำของ"] || 0,
-                        expenseByType["ค่าซ่อมบำรุง"] || 0,
-                        expenseByType["ค่าน้ำ"] || 0,
-                        expenseByType["ค่าไฟ"] || 0,
-                        (expenseByType["ค่าอื่นๆ"] || 0) +
-                        (expenseByType["ค่าอินเตอร์เน็ต"] || 0) +
-                        (expenseByType["ค่าเคเบิล"] || 0)
-                    ];
+
+                    const counts = this.mapExpenseToSeries(expenseByType);
                     
                     this.data2 = counts;
                     this.series2 = counts;
@@ -436,24 +576,13 @@ export default {
             // Method 2: Direct data structure without accounting wrapper
             else if (sourceData && (sourceData.expense || sourceData.receive !== undefined)) {
                 // Process expense data
-                if (sourceData.expense) {
+                if (Array.isArray(sourceData.expense)) {
                     let expenseByType = {};
                     sourceData.expense.forEach(item => {
                         expenseByType[item.type] = item.count || 0;
                     });
-                    
-                    const counts = [
-                        expenseByType["ค่าจ้างพนักงาน"] || 0,
-                        expenseByType["ค่าจ้างทำของ"] || 0,
-                        expenseByType["ค่าซ่อมบำรุง"] || 0,
-                        // Combine remaining expenses as "util"
-                        expenseByType["ค่าน้ำ"] || 0,
-                        expenseByType["ค่าไฟ"] || 0,
-                        // Combine remaining expenses as "others"
-                        (expenseByType["ค่าอื่นๆ"] || 0) + 
-                        (expenseByType["ค่าอินเตอร์เน็ต"] || 0) + 
-                        (expenseByType["ค่าเคเบิล"] || 0)
-                    ];
+
+                    const counts = this.mapExpenseToSeries(expenseByType);
                     
                     this.data2 = counts;
                     this.series2 = counts;
@@ -474,15 +603,96 @@ export default {
         },
         getIncome() {
             const loading = this.$vs.loading();
-            fetch(`https://api.resguru.app/api/tenant-receipts?populate=*&filters[building][id][$eq]=${this.$store.state.building}&sort[0]=id:desc`)
-                .then(response => response.json())
-                .then((resp) => {
-                    console.log("Return from getReceipt()", resp.data);
-                    this.income = resp.data;
-                    this.processIncomeData(); // Process the data after fetching
-                }).finally(() => {
+            const loadReceipts = async () => {
+                if (!this.allBuilding) {
+                    const response = await fetch(
+                        `https://api.resguru.app/api/tenant-receipts?populate=*&filters[building][id][$eq]=${this.$store.state.building}&sort[0]=id:desc`
+                    );
+                    const resp = await response.json();
+                    return resp?.data || [];
+                }
+
+                const buildingIds = await this.getBuildingIdsForAggregation();
+                const results = await Promise.allSettled(
+                    buildingIds.map((buildingId) =>
+                        fetch(
+                            `https://api.resguru.app/api/tenant-receipts?populate=*&filters[building][id][$eq]=${buildingId}&sort[0]=id:desc`
+                        ).then((response) => response.json())
+                    )
+                );
+
+                const merged = [];
+                results
+                    .filter((result) => result.status === 'fulfilled')
+                    .forEach((result) => {
+                        merged.push(...(result.value?.data || []));
+                    });
+
+                return merged;
+            };
+
+            loadReceipts()
+                .then((receiptData) => {
+                    console.log("Return from getReceipt()", receiptData);
+                    this.income = receiptData;
+                    this.processIncomeData();
+                    if (this.viewMode === 'all') {
+                        this.getAllTimeExpenseData();
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error fetching tenant receipts:', error);
+                    this.income = [];
+                    this.processIncomeData();
+                })
+                .finally(() => {
                     loading.close();
                 });
+        },
+        async getAllTimeExpenseData() {
+            const loading = this.$vs.loading();
+            try {
+                const now = new Date();
+                let startDate;
+
+                if (this.income.length > 0) {
+                    const minCreatedAt = this.income.reduce((minDate, item) => {
+                        const createdAt = new Date(item.attributes.createdAt);
+                        return createdAt < minDate ? createdAt : minDate;
+                    }, new Date(this.income[0].attributes.createdAt));
+                    startDate = new Date(minCreatedAt.getFullYear(), minCreatedAt.getMonth(), 1);
+                } else {
+                    startDate = new Date(now.getFullYear(), 0, 1);
+                }
+
+                const endDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                const expenseByType = {};
+                const cursor = new Date(startDate);
+
+                while (cursor <= endDate) {
+                    const year = String(cursor.getFullYear());
+                    const month = String(cursor.getMonth() + 1).padStart(2, '0');
+
+                    const accounting = await this.getAggregatedAccounting(month, year);
+                    const monthlyExpense = accounting?.expense || [];
+
+                    monthlyExpense.forEach((item) => {
+                        const type = item?.type;
+                        if (!type) return;
+                        expenseByType[type] = (expenseByType[type] || 0) + Number(item.count || 0);
+                    });
+
+                    cursor.setMonth(cursor.getMonth() + 1);
+                }
+
+                const counts = this.mapExpenseToSeries(expenseByType);
+                this.data2 = counts;
+                this.series2 = counts;
+            } catch (error) {
+                console.error('Error fetching all-time expense data:', error);
+            } finally {
+                loading.close();
+            }
         },
         processIncomeData() {
             // Initialize values for each category
@@ -502,7 +712,7 @@ export default {
                 const createdYear = createdAt.getFullYear();
                 const createdMonth = createdAt.getMonth() + 1;
 
-                if (selectedYear && selectedMonth) {
+                if (this.viewMode === 'monthly' && selectedYear && selectedMonth) {
                     if (createdYear !== selectedYear || createdMonth !== selectedMonth) {
                         return;
                     }
@@ -522,6 +732,8 @@ export default {
         },
         // And make sure the getDashboard method simply assigns the entire API response to this.data
         getDashboard(date_data) {
+            if (!date_data) return;
+
             let parts = date_data.split('-');
             let year = parts[0];
             let month = parts[1];
@@ -535,17 +747,15 @@ export default {
             this.series1 = [0, 0, 0, 0, 0];
             this.series2 = [0, 0, 0, 0, 0, 0];
             
-            fetch(`https://api.resguru.app/api/getdashboard?buildingid=${this.$store.state.building}&month=${month}&year=${year}`)
-                .then(response => response.json())
-                .then((resp) => {
-                    this.dashboardData = resp?.accounting || { receive: 0, expense: [] };
+            this.getAggregatedAccounting(month, year)
+                .then((accounting) => {
+                    this.dashboardData = accounting || { receive: 0, expense: [] };
                     this.processData();
+                    this.processIncomeData();
                 })
                 .catch(error => {
                     console.error("Error fetching dashboard data:", error);
                 });
-
-            this.getIncome();
         },
         // formatNumber(num) {
         //     if (num === undefined || num === null) return '0';

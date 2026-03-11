@@ -85,8 +85,8 @@
                 <a href="/rooms" class="block">
                     <div class="h-[110px] p-[18px] flex flex-col justify-between bg-[#F5D65E] rounded-[22px] text-[#003765]">
                         <div class="flex justify-between">
-                            <div class="text-[24px] flex justify-center items-center">{{ data.occuRoom-data.reservedRoom }} ({{
-                            Math.round(data.occuRoomPer-data.reservedRoom) }}%)
+                            <div class="text-[24px] flex justify-center items-center">{{ occupiedRoomCount }} ({{
+                            Math.round(occupiedRoomPercent) }}%)
                             </div>
                             <div>
                                 <svg width="34" height="30" viewBox="0 0 34 30" fill="none"
@@ -105,7 +105,7 @@
                 <a href="/rooms" class="block">
                     <div class="h-[110px] p-[18px] flex flex-col justify-between bg-[#F5D65E] rounded-[22px] text-[#003765] hover:bg-[#F2D24A] transition-colors cursor-pointer">
                         <div class="flex justify-between">
-                            <div class="text-[24px] flex justify-center items-center">{{ data.reservedRoom }} ({{ Math.round(data.reservedRoom) }}%)</div>
+                            <div class="text-[24px] flex justify-center items-center">{{ data.reservedRoom }} ({{ Math.round(reservedRoomPercent) }}%)</div>
                             <div>
                                 <template>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 256 256">
@@ -205,6 +205,22 @@ export default {
         isPackageBasic() {
             const packageId = this.$store.state.buildingInfo[0].attributes.package.data?.id;
             return packageId === 1; // Business package (ID = 1)
+        },
+        occupiedRoomCount() {
+            const occupied = Number(this.data?.occuRoom || 0);
+            const reserved = Number(this.data?.reservedRoom || 0);
+            return Math.max(occupied - reserved, 0);
+        },
+        occupiedRoomPercent() {
+            const total = Number(this.data?.countRoom || 0);
+            if (!total) return 0;
+            return (this.occupiedRoomCount / total) * 100;
+        },
+        reservedRoomPercent() {
+            const total = Number(this.data?.countRoom || 0);
+            const reserved = Number(this.data?.reservedRoom || 0);
+            if (!total) return 0;
+            return (reserved / total) * 100;
         }
     },
     methods: {

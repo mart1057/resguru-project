@@ -1,7 +1,7 @@
 <template>
   <div class="dashboard-wrapper" @click="hideOverlay()">
     <!-- Gray Overlay -->
-    <div v-if="isCountUserEmpty" class="overlay">
+    <div v-if="showOverlay && isCountUserEmpty" class="overlay">
       <div class="highlighted-menu">
         <p>
           Welcome to ResGuru, Please add Room and Utility cost in our setting
@@ -34,7 +34,8 @@
           <!-- Expenses component with conditional blur wrapper -->
           <div class="relative">
             <Expenses 
-                :data="db_expense" 
+                :data="safeExpenseData" 
+              :allBuilding="isAllBuildingView"
                 :routeLink="'/expenses'"
                 :class="{ 'blur-sm pointer-events-none': isPackageBasic }"
             />
@@ -97,9 +98,10 @@ export default {
       db_annocment: [],
       db_services: [],
       db_payment: [],
-      db_expense: [],
+      db_expense: { receive: 0, expense: [] },
       count_user: {},
       showOverlay: true,
+      isAllBuildingView: false,
     };
   },
   computed: {
@@ -111,6 +113,12 @@ export default {
       // Check if package ID is 1 (Basic package)
       const packageId = this.$store.state.buildingInfo[0]?.attributes?.package?.data?.id;
       return packageId === 1;
+    },
+    safeExpenseData() {
+      return {
+        receive: Number(this.db_expense?.receive || 0),
+        expense: Array.isArray(this.db_expense?.expense) ? this.db_expense.expense : [],
+      };
     },
   },
   created() {
@@ -126,6 +134,166 @@ export default {
     this.getDashboard(false);
   },
   methods: {
+    toNumber(value) {
+      const num = Number(value);
+      return Number.isFinite(num) ? num : 0;
+    },
+    async getBuildingIdsForAggregation() {
+      const buildingInfo = this.$store.state.buildingInfo;
+
+      if (Array.isArray(buildingInfo)) {
+        const ids = buildingInfo
+          .map((item) => item?.id || item?.attributes?.id)
+          .filter((id) => id !== undefined && id !== null);
+        if (ids.length > 1) return ids;
+      }
+
+      if (Array.isArray(buildingInfo?.data)) {
+        const ids = buildingInfo.data
+          .map((item) => item?.id || item?.attributes?.id)
+          .filter((id) => id !== undefined && id !== null);
+        if (ids.length > 1) return ids;
+      }
+
+      try {
+        const response = await fetch(
+          `https://api.resguru.app/api/buildings?filters[$or][0][user_owner][id][$eq]=${this.$store.state.userInfo.id}&filters[$or][1][users_admin][id][$in]=${this.$store.state.userInfo.id}&publicationState=live&populate=*`
+        );
+        const resp = await response.json();
+        const ids = (resp?.data || [])
+          .map((item) => item?.id || item?.attributes?.id)
+          .filter((id) => id !== undefined && id !== null);
+
+        if (ids.length) {
+          return ids;
+        }
+      } catch (error) {
+        console.error("getBuildingIdsForAggregation error:", error);
+      }
+
+      return [this.$store.state.building].filter(
+        (id) => id !== undefined && id !== null
+      );
+    },
+    async fetchDashboardByBuilding(buildingId, month, year) {
+      const response = await fetch(
+        `https://api.resguru.app/api/getdashboard?buildingid=${buildingId}&month=${month}&year=${year}&allBuilding=0&user_id=${this.$store.state.userInfo.id}`
+      );
+      return response.json();
+    },
+    mergeMeterSummary(items) {
+      const merged = {};
+
+      items.forEach((item) => {
+        if (!item || typeof item !== "object") return;
+
+        Object.keys(item).forEach((key) => {
+          merged[key] = this.toNumber(merged[key]) + this.toNumber(item[key]);
+        });
+      });
+
+      return merged;
+    },
+    mergeExpenseByType(expenseLists) {
+      const map = {};
+
+      expenseLists.forEach((expenseList) => {
+        if (!Array.isArray(expenseList)) return;
+
+        expenseList.forEach((item) => {
+          const type = item?.type;
+          if (!type) return;
+          map[type] = this.toNumber(map[type]) + this.toNumber(item?.count);
+        });
+      });
+
+      return Object.keys(map).map((type) => ({ type, count: map[type] }));
+    },
+    mergeRoomMeta(metaList) {
+      const merged = {};
+
+      metaList.forEach((meta) => {
+        if (!meta || typeof meta !== "object") return;
+
+        Object.keys(meta).forEach((key) => {
+          merged[key] = this.toNumber(merged[key]) + this.toNumber(meta[key]);
+        });
+      });
+
+      const countRoom = this.toNumber(merged.countRoom);
+      const occuRoom = this.toNumber(merged.occuRoom);
+      const reservedRoom = this.toNumber(merged.reservedRoom);
+
+      if (merged.availableRoom === undefined || merged.availableRoom === null) {
+        merged.availableRoom = Math.max(countRoom - occuRoom, 0);
+      }
+
+      const availableRoom = this.toNumber(merged.availableRoom);
+      merged.availableRoomPer =
+        countRoom > 0 ? ((availableRoom / countRoom) * 100).toFixed(2) : "0.00";
+      merged.occuRoom = occuRoom;
+      merged.reservedRoom = reservedRoom;
+      merged.countRoom = countRoom;
+
+      return merged;
+    },
+    aggregateDashboardResponses(responses) {
+      const roomData = [];
+      const announcements = [];
+      const services = [];
+      const payments = [];
+      const sumMeters = [];
+      const expenseLists = [];
+      const receives = [];
+      const metas = [];
+
+      responses.forEach((resp) => {
+        roomData.push(...(resp?.room?.roomData || []));
+        announcements.push(...(resp?.announcement?.announceData || []));
+        services.push(...(resp?.service?.notiData || []));
+        payments.push(...(resp?.paymentStatus?.paymentStatus || []));
+        sumMeters.push(resp?.sumMeter || {});
+        expenseLists.push(resp?.accounting?.expense || []);
+        receives.push(this.toNumber(resp?.accounting?.receive));
+        metas.push(resp?.room?.meta || {});
+      });
+
+      return {
+        room: {
+          roomData,
+          meta: this.mergeRoomMeta(metas),
+        },
+        sumMeter: this.mergeMeterSummary(sumMeters),
+        announcement: {
+          announceData: announcements,
+        },
+        service: {
+          notiData: services,
+        },
+        paymentStatus: {
+          paymentStatus: payments,
+        },
+        accounting: {
+          receive: receives.reduce((sum, value) => sum + this.toNumber(value), 0),
+          expense: this.mergeExpenseByType(expenseLists),
+        },
+      };
+    },
+    applyDashboardResponse(resp) {
+      this.db_meter = resp?.room?.roomData || [];
+      this.db_meter2 = resp?.sumMeter || {};
+      this.db_annocment = resp?.announcement?.announceData || [];
+      this.db_services = resp?.service?.notiData || [];
+      this.db_payment = resp?.paymentStatus?.paymentStatus || [];
+      this.db_expense = {
+        receive: Number(resp?.accounting?.receive || 0),
+        expense: Array.isArray(resp?.accounting?.expense)
+          ? resp.accounting.expense
+          : [],
+      };
+      this.count_user = resp?.room?.meta || {};
+      this.syncPaymentSummaryFromPaymentWidget();
+    },
     hasTenant(room) {
       return !!room?.user_sign_contract?.users_permissions_user?.id;
     },
@@ -189,29 +357,52 @@ export default {
     hideOverlay() {
       this.showOverlay = false; // Hide overlay when button is clicked
     },
-    getDashboard(check) {
+    async getDashboard(check) {
+      this.isAllBuildingView = check === true;
+
       const now = new Date();
       const month = String(now.getMonth() + 1).padStart(2, "0");
       const year = String(now.getFullYear());
 
-      fetch(
-        `https://api.resguru.app/api/getdashboard?buildingid=${
-          this.$store.state.building
-        }&month=${month}&year=${year}&allBuilding=${check == true ? "1" : "0"}&user_id=${
-          this.$store.state.userInfo.id
-        }`
-      )
-        .then((response) => response.json())
-        .then((resp) => {
-          this.db_meter = resp?.room?.roomData || [];
-          this.db_meter2 = resp?.sumMeter || {};
-          this.db_annocment = resp?.announcement?.announceData || [];
-          this.db_services = resp?.service?.notiData || [];
-          this.db_payment = resp?.paymentStatus?.paymentStatus || [];
-          this.db_expense = resp?.accounting || { receive: 0, expense: [] };
-          this.count_user = resp?.room?.meta || {};
-          this.syncPaymentSummaryFromPaymentWidget();
-        });
+      try {
+        let finalResponse = null;
+
+        if (this.isAllBuildingView) {
+          const buildingIds = await this.getBuildingIdsForAggregation();
+          const results = await Promise.allSettled(
+            buildingIds.map((buildingId) =>
+              this.fetchDashboardByBuilding(buildingId, month, year)
+            )
+          );
+
+          const successResponses = results
+            .filter((result) => result.status === "fulfilled")
+            .map((result) => result.value);
+
+          if (!successResponses.length) {
+            throw new Error("No dashboard responses for all-building mode");
+          }
+
+          finalResponse = this.aggregateDashboardResponses(successResponses);
+        } else {
+          finalResponse = await this.fetchDashboardByBuilding(
+            this.$store.state.building,
+            month,
+            year
+          );
+        }
+
+        this.applyDashboardResponse(finalResponse);
+      } catch (error) {
+        console.error("getDashboard error:", error);
+        this.db_meter = [];
+        this.db_meter2 = {};
+        this.db_annocment = [];
+        this.db_services = [];
+        this.db_payment = [];
+        this.db_expense = { receive: 0, expense: [] };
+        this.count_user = {};
+      }
     },
   },
 };
