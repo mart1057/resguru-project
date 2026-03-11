@@ -223,6 +223,47 @@
                       </button>
                     </div>
                   </div>
+
+                  <!-- Password Field -->
+                  <div class="grid grid-cols-2 text-custom mt-4 gap-4">
+                    <div class="col-span-1">
+                      <div class="mb-1">
+                        <span class="text-red-500 mr-1">*</span>รหัสผ่าน (อย่างน้อย 6 ตัว มีตัวอักษรและตัวเลข)
+                      </div>
+                      <input
+                        type="password"
+                        v-model="room_detail.password"
+                        class="h-[36px] w-full rounded-[12px] bg-[#dadfe3] px-3"
+                        placeholder="เช่น Password123"
+                      />
+                      <div class="text-[12px] text-[#8396A6] mt-1">
+                        <span v-if="room_detail.password.length < 6" class="text-red-500">❌ อย่างน้อย 6 ตัว</span>
+                        <span v-else class="text-green-600">✓ ความยาว OK</span>
+                        &nbsp;
+                        <span v-if="!/[a-zA-Z]/.test(room_detail.password)" class="text-red-500">❌ มีตัวอักษร</span>
+                        <span v-else class="text-green-600">✓ มีตัวอักษร</span>
+                        &nbsp;
+                        <span v-if="!/[0-9]/.test(room_detail.password)" class="text-red-500">❌ มีตัวเลข</span>
+                        <span v-else class="text-green-600">✓ มีตัวเลข</span>
+                      </div>
+                    </div>
+                    <div class="col-span-1">
+                      <div class="mb-1">
+                        <span class="text-red-500 mr-1">*</span>ยืนยันรหัสผ่าน
+                      </div>
+                      <input
+                        type="password"
+                        v-model="room_detail.password_confirm"
+                        class="h-[36px] w-full rounded-[12px] bg-[#dadfe3] px-3"
+                        placeholder="ยืนยันรหัสผ่าน"
+                      />
+                      <div class="text-[12px] text-[#8396A6] mt-1">
+                        <span v-if="room_detail.password_confirm === '' && room_detail.password !== ''" class="text-gray-500">⏳ กรุณากรอก</span>
+                        <span v-else-if="room_detail.password_confirm === room_detail.password && room_detail.password_confirm !== ''" class="text-green-600">✓ รหัสผ่านตรงกัน</span>
+                        <span v-else-if="room_detail.password_confirm !== room_detail.password && room_detail.password_confirm !== ''" class="text-red-500">❌ รหัสผ่านไม่ตรงกัน</span>
+                      </div>
+                    </div>
+                  </div>
                   
                   <!-- Gender Selection -->
                   <div class="mt-4">
@@ -724,6 +765,8 @@ export default {
         sex: true,
         check_user: true,
         email: "",
+        password: "",
+        password_confirm: "",
         name: "",
         last_name: "",
         nick_name: "",
@@ -771,6 +814,8 @@ export default {
       this.room_detail.nick_name = "";
       this.room_detail.phone = "";
       this.room_detail.email = "";
+      this.room_detail.password = "";
+      this.room_detail.password_confirm = "";
       this.room_detail.id_card = "";
       this.room_detail.address = "";
       this.room_detail.birth = "";
@@ -793,6 +838,8 @@ export default {
       this.room_detail.nick_name = "";
       this.room_detail.phone = "";
       this.room_detail.email = "";
+      this.room_detail.password = "";
+      this.room_detail.password_confirm = "";
       this.room_detail.id_card = "";
       this.room_detail.address = "";
       this.room_detail.birth = "";
@@ -816,6 +863,8 @@ export default {
       this.room_detail.nick_name = "";
       this.room_detail.phone = "";
       this.room_detail.email = "";
+      this.room_detail.password = "";
+      this.room_detail.password_confirm = "";
       this.room_detail.id_card = "";
       this.room_detail.address = "";
       this.room_detail.birth = "";
@@ -850,6 +899,15 @@ export default {
         .find((item) => item.id === this.$store.state.building)
         .attributes.buildingName.replace(/\s+/g, "");
       this.room_detail.email = ran + matchingBuilding + "@resguru.app";
+    },
+    validatePassword() {
+      const password = this.room_detail.password;
+      const passwordConfirm = this.room_detail.password_confirm;
+      const hasMinLength = password.length >= 6;
+      const hasLetters = /[a-zA-Z]/.test(password);
+      const hasNumbers = /[0-9]/.test(password);
+      const passwordsMatch = password === passwordConfirm && password !== "";
+      return hasMinLength && hasLetters && hasNumbers && passwordsMatch;
     },
     getFloorRoom() {
       const loading = this.$vs.loading();
@@ -1230,7 +1288,9 @@ export default {
             this.room_detail.email != "" &&
             this.room_detail.name != "" &&
             this.room_detail.last_name != "" &&
-            this.room_detail.phone != ""
+            this.room_detail.phone != "" &&
+            this.room_detail.password != "" &&
+            this.validatePassword()
           ) {
             const date = new Date(this.room_detail.birth);
             const isoString = date.toISOString();
@@ -1244,12 +1304,11 @@ export default {
                 nickName: this.room_detail.nick_name,
                 role: 2,
                 phone: this.room_detail.phone,
-                email: this.room_detail.email,
                 idCard: this.room_detail.id_card,
                 contactAddress: this.room_detail.address,
                 sex: this.room_detail.sex === true,
                 dateOfBirth: isoString,
-                password: this.room_detail.id_card,
+                password: this.room_detail.password,
                 building: this.$store.state.building,
                 emergencyPerson: this.room_detail.emergencyPerson,
                 relation: this.room_detail.relation,
@@ -1337,7 +1396,17 @@ export default {
                 loading.close();
               });
           } else {
-            this.$showNotification("danger", "กรุณากรอกข้อมูลให้ครบ");
+            if (!this.room_detail.password) {
+              this.$showNotification("danger", "กรุณากรอกรหัสผ่าน");
+            } else if (!this.room_detail.password_confirm) {
+              this.$showNotification("danger", "กรุณายืนยันรหัสผ่าน");
+            } else if (this.room_detail.password !== this.room_detail.password_confirm) {
+              this.$showNotification("danger", "รหัสผ่านไม่ตรงกัน");
+            } else if (!this.validatePassword()) {
+              this.$showNotification("danger", "รหัสผ่านต้องมีอย่างน้อย 6 ตัว และมีตัวอักษรและตัวเลข");
+            } else {
+              this.$showNotification("danger", "กรุณากรอกข้อมูลให้ครบ");
+            }
           }
         }
       }
