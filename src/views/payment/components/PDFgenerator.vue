@@ -62,9 +62,9 @@
                         <!-- CORRECTED Water Row -->
                         <tr class="row-odd">
                             <td class="py-2 px-3 border">ค่าน้ำ(
-{{ formatNumber(data_bill.tenant_bills[0]?.lastWaterUnit || 0) }} 
+{{ formatNumber(data_bill.user_sign_contract?.startWater || 0) }} 
 - 
-{{ formatNumber(data_bill.tenant_bills[0].lastWaterUnit - formatNumber(data_bill.tenant_bills[0].usageWater)) }})                            </td>
+{{ formatNumber(data_bill.tenant_bills[0]?.lastWaterUnit || 0) }})                            </td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.usageWater || 0)}}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.waterRate || ($store.state.buildingInfo[0]?.attributes?.waterUnitPrice || 0)) }}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.waterPrice) }}</td>
@@ -74,12 +74,9 @@
                         <tr class="row-even">
                             <td class="py-2 px-3 border">
 ค่าไฟ ({{ 
-  formatNumber(data_bill.tenant_bills[0]?.lastElecUnit || 0) 
+  formatNumber(data_bill.user_sign_contract?.startElectric || 0) 
 }} - {{
-  formatNumber(
-    (data_bill.tenant_bills[0]?.lastElecUnit || 0) -
-    (data_bill.tenant_bills[0]?.usageElectric || 0)
-  )
+  formatNumber(data_bill.tenant_bills[0]?.lastElecUnit || 0)
 }})                            </td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.usageElectric || 0) }}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.electricRate || ($store.state.buildingInfo[0]?.attributes?.electricUnitPrice || 0)) }}</td>
@@ -107,15 +104,15 @@
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastRoomPrice) }}</td>
                         </tr>
                         <tr class="row-even" v-if="data_bill.tenant_bills[0]?.pastWaterPrice > 0">
-                            <td class="py-2 px-3 border">ค่าน้ำ (ยอดจากเดือน{{ getPreviousMonthThai(data_bill.tenant_bills[0]?.createdAt) }})</td>
-                            <td class="py-2 px-3 text-right border">1</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastWaterPrice) }}</td>
+                            <td class="py-2 px-3 border">ค่าน้ำ (ยอดจากเดือน{{ getPreviousMonthThai(data_bill.tenant_bills[0]?.createdAt) }}{{ data_bill.tenant_bills[0]?.pastWaterStartUnit ? ` (${formatNumber(data_bill.tenant_bills[0]?.pastWaterStartUnit)} - ${formatNumber(data_bill.tenant_bills[0]?.pastWaterEndUnit)})` : '' }})</td>
+                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastWaterUsage || 1) }}</td>
+                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastWaterRate || (data_bill.tenant_bills[0]?.pastWaterPrice / (data_bill.tenant_bills[0]?.pastWaterUsage || 1))) }}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastWaterPrice) }}</td>
                         </tr>
                         <tr class="row-odd" v-if="data_bill.tenant_bills[0]?.pastElectricPrice > 0">
-                            <td class="py-2 px-3 border">ค่าไฟ (ยอดจากเดือน{{ getPreviousMonthThai(data_bill.tenant_bills[0]?.createdAt) }})</td>
-                            <td class="py-2 px-3 text-right border">1</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastElectricPrice) }}</td>
+                            <td class="py-2 px-3 border">ค่าไฟ (ยอดจากเดือน{{ getPreviousMonthThai(data_bill.tenant_bills[0]?.createdAt) }}{{ data_bill.tenant_bills[0]?.pastElectricStartUnit ? ` (${formatNumber(data_bill.tenant_bills[0]?.pastElectricStartUnit)} - ${formatNumber(data_bill.tenant_bills[0]?.pastElectricEndUnit)})` : '' }})</td>
+                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastElectricUsage || 1) }}</td>
+                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastElectricRate || (data_bill.tenant_bills[0]?.pastElectricPrice / (data_bill.tenant_bills[0]?.pastElectricUsage || 1))) }}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastElectricPrice) }}</td>
                         </tr>
                         <tr class="row-even" v-if="data_bill.tenant_bills[0]?.pastCommunalPrice > 0">
@@ -143,7 +140,7 @@
                             (data_bill.tenant_bills[0]?.pastOtherPrice || 0)) }}</td>
                     </tr>
                     <tr>                      
-                        <td colspan="3" class="py-2 px-3 text-right border text-xs">ภาษี</td>
+                        <td colspan="3" class="py-2 px-3 text-right border text-xs">ภาษี ({{ data_bill.room_building?.vat_rate || 0 }}%)</td>
                         <td class="py-2 px-3 text-right border text-xs">{{ formatNumber(data_bill.tenant_bills[0]?.vat) }}</td>
                     </tr>
                     <tr>                        

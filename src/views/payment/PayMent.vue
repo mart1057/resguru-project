@@ -1669,7 +1669,45 @@ export default {
       this.fileFullPayment = this.$refs.FullPayment.files[0];
     },
     async PDFPrint(tr) {
-      this.$refs.childComponentPDF.generatePDF(tr);
+      if (!tr || !tr.tenant_bills || tr.tenant_bills.length === 0) {
+        this.$showNotification("warning", "ไม่พบข้อมูลใบแจ้งหนี้");
+        return;
+      }
+
+      const invoice = tr.tenant_bills[0];
+      
+      // Create standardized data structure (matching PaymentDetail.vue)
+      const data = {
+        RoomNumber: tr.RoomNumber,
+        user_sign_contract: tr.user_sign_contract,
+        tenant_bills: [{
+          id: invoice.id,
+          invoiceNumber: invoice.invoiceNumber || "N/A",
+          roomPrice: parseFloat(invoice.roomPrice) || 0,
+          waterPrice: parseFloat(invoice.waterPrice) || 0,
+          electricPrice: parseFloat(invoice.electricPrice) || 0,
+          communalPrice: parseFloat(invoice.communalPrice) || 0,
+          otherPrice: parseFloat(invoice.otherPrice) || 0,
+          vat: parseFloat(invoice.vat) || 0,
+          total: parseFloat(invoice.total) || 0,
+          subtotal: parseFloat(invoice.subtotal) || 0,
+          createdAt: invoice.createdAt || new Date().toISOString(),
+          lastWaterUnit: invoice.lastWaterUnit || 0,
+          usageWater: invoice.usageWater || 0,
+          lastElectricUnit: invoice.lastElectricUnit || 0,
+          usageElectric: invoice.usageElectric || 0,
+          paymentStatus: invoice.paymentStatus || "ยังไม่ชำระ",
+          remainPaid: parseFloat(invoice.remainPaid) || 0,
+          pastRoomPrice: parseFloat(invoice.pastRoomPrice) || 0,
+          pastWaterPrice: parseFloat(invoice.pastWaterPrice) || 0,
+          pastElectricPrice: parseFloat(invoice.pastElectricPrice) || 0,
+          pastCommunalPrice: parseFloat(invoice.pastCommunalPrice) || 0,
+          pastOtherPrice: parseFloat(invoice.pastOtherPrice) || 0
+        }],
+        room_type: tr.room_type || {}
+      };
+      
+      this.$refs.childComponentPDF.generatePDF(data);
     },
     filterData() {
       this.payments = this.payments.filter((item) =>

@@ -537,11 +537,11 @@
                   <div
                     class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
                     :class="
-                      tr.status == 1
+                      tr.attributes.paymentStatus === 'Paid'
                         ? 'bg-[#CFFBDA] text-[#0B9A3C]'
-                        : tr.status == 'ยังไม่ชำระ'
+                        : tr.attributes.paymentStatus === 'ยังไม่ชำระ'
                         ? 'bg-[#FFE1E8] text-[#EA2F5C]'
-                        : ' bg-[#FFF2BC] text-[#D48C00] '
+                        : 'bg-[#FFF2BC] text-[#D48C00]'
                     "
                   >
                     {{ tr.attributes.paymentStatus }}
@@ -2068,7 +2068,7 @@ export default {
               element.attributes.remainPaid > 0
             ) {
               this.userUnpaidInvoice.push(element);
-              this.userPayRemain =
+              this.userPayRemain +=
                 element.attributes.remainPaid;
               // console.log("in if " + element.id, this.userPayRemain)
             }
@@ -2475,25 +2475,37 @@ createReceipt() {
       }
     },
     async PDFPrintInvoice(invoice) {
-      // Create data structure that we know works
+      if (!invoice || !invoice.attributes) {
+        this.$showNotification("warning", "ข้อมูลใบแจ้งหนี้ไม่ครบถ้วน");
+        return;
+      }
+
       const data = {
         RoomNumber: this.roomDetail.data.attributes.RoomNumber,
         user_sign_contract: this.contractProfile.data,
         tenant_bills: [{
+          id: invoice.id,
           invoiceNumber: invoice.attributes.invoiceNumber || "N/A",
           roomPrice: parseFloat(invoice.attributes.roomPrice) || 0,
-          waterPrice: parseFloat(invoice.attributes.waterPrice/invoice.attributes.usageWater) || 0,
-          electricPrice: parseFloat(invoice.attributes.electricPrice/invoice.attributes.usageElectric) || 0,
+          waterPrice: parseFloat(invoice.attributes.waterPrice) || 0,
+          electricPrice: parseFloat(invoice.attributes.electricPrice) || 0,
           communalPrice: parseFloat(invoice.attributes.communalPrice) || 0,
           otherPrice: parseFloat(invoice.attributes.otherPrice) || 0,
           vat: parseFloat(invoice.attributes.vat) || 0,
           total: parseFloat(invoice.attributes.total) || 0,
+          subtotal: parseFloat(invoice.attributes.subtotal) || 0,
           createdAt: invoice.attributes.createdAt || new Date().toISOString(),
           lastWaterUnit: invoice.attributes.lastWaterUnit || 0,
           usageWater: invoice.attributes.usageWater || 0,
           lastElectricUnit: invoice.attributes.lastElectricUnit || 0,
           usageElectric: invoice.attributes.usageElectric || 0,
-          subtotal: parseFloat(invoice.attributes.subtotal) || 0
+          paymentStatus: invoice.attributes.paymentStatus || "ยังไม่ชำระ",
+          remainPaid: parseFloat(invoice.attributes.remainPaid) || 0,
+          pastRoomPrice: parseFloat(invoice.attributes.pastRoomPrice) || 0,
+          pastWaterPrice: parseFloat(invoice.attributes.pastWaterPrice) || 0,
+          pastElectricPrice: parseFloat(invoice.attributes.pastElectricPrice) || 0,
+          pastCommunalPrice: parseFloat(invoice.attributes.pastCommunalPrice) || 0,
+          pastOtherPrice: parseFloat(invoice.attributes.pastOtherPrice) || 0
         }],
         room_type: this.roomDetail.data.attributes.room_type.data
       };
