@@ -353,6 +353,7 @@ export default {
         return {
             tab: 1,
             selectedDate: '',
+            dashboardData: null,
             years: [],
             months: [...Array(12).keys()].map((month) => month + 1),
             data1: [0, 0, 0, 0, 0],// Initialize with 0 for income
@@ -394,11 +395,12 @@ export default {
         },
         // Fixed processData method to correctly handle the API data structure
         processData() {
-            console.log("Processing data:", this.data);
+            const sourceData = this.dashboardData || this.data;
+            console.log("Processing data:", sourceData);
             
             // Method 1: API data has an accounting wrapper (which is the case with your data)
-            if (this.data && this.data.accounting) {
-                const accountingData = this.data.accounting;
+            if (sourceData && sourceData.accounting) {
+                const accountingData = sourceData.accounting;
                 
                 // Process expense data
                 if (accountingData.expense) {
@@ -411,11 +413,10 @@ export default {
                         expenseByType["ค่าจ้างพนักงาน"] || 0,
                         expenseByType["ค่าจ้างทำของ"] || 0,
                         expenseByType["ค่าซ่อมบำรุง"] || 0,
-                        // Combine remaining expenses as "others"
-                        (expenseByType["ค่าอื่นๆ"] || 0) + 
-                        (expenseByType["ค่าน้ำ"] || 0) + 
-                        (expenseByType["ค่าไฟ"] || 0) + 
-                        (expenseByType["ค่าอินเตอร์เน็ต"] || 0) + 
+                        expenseByType["ค่าน้ำ"] || 0,
+                        expenseByType["ค่าไฟ"] || 0,
+                        (expenseByType["ค่าอื่นๆ"] || 0) +
+                        (expenseByType["ค่าอินเตอร์เน็ต"] || 0) +
                         (expenseByType["ค่าเคเบิล"] || 0)
                     ];
                     
@@ -433,11 +434,11 @@ export default {
                 }
             } 
             // Method 2: Direct data structure without accounting wrapper
-            else if (this.data && (this.data.expense || this.data.receive !== undefined)) {
+            else if (sourceData && (sourceData.expense || sourceData.receive !== undefined)) {
                 // Process expense data
-                if (this.data.expense) {
+                if (sourceData.expense) {
                     let expenseByType = {};
-                    this.data.expense.forEach(item => {
+                    sourceData.expense.forEach(item => {
                         expenseByType[item.type] = item.count || 0;
                     });
                     
@@ -460,20 +461,20 @@ export default {
                 }
                 
                 // Process income data
-                getIncome() 
-                // if (this.data.receive !== undefined) {
-                //     const incomeValue = Math.floor(this.data.receive);
-                //     this.data1 = [incomeValue];
-                //     this.series1 = [incomeValue];
-                //     console.log("Processed direct income data:", incomeValue);
-                // }
+                if (sourceData.receive !== undefined) {
+                    const incomeValue = Math.floor(sourceData.receive || 0);
+                    if (this.series1.every((value) => value === 0)) {
+                        this.data1 = [incomeValue, 0, 0, 0, 0];
+                        this.series1 = [incomeValue, 0, 0, 0, 0];
+                    }
+                }
             } else {
-                console.warn("Data structure not recognized:", this.data);
+                console.warn("Data structure not recognized:", sourceData);
             }
         },
         getIncome() {
             const loading = this.$vs.loading();
-            fetch(`https://api.resguru.app/api/tenant-receipts?populate=*?populate=building&filters[building][id][$eq]=${this.$store.state.building}&sort[0]=id:desc`)
+            fetch(`https://api.resguru.app/api/tenant-receipts?populate=*&filters[building][id][$eq]=${this.$store.state.building}&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getReceipt()", resp.data);
@@ -492,7 +493,21 @@ export default {
             let othersTotal = 0;
             
             // Process each income record
+            const [selectedYear, selectedMonth] = this.selectedDate
+                ? this.selectedDate.split('-').map((value) => parseInt(value, 10))
+                : [null, null];
+
             this.income.forEach(item => {
+                const createdAt = new Date(item.attributes.createdAt);
+                const createdYear = createdAt.getFullYear();
+                const createdMonth = createdAt.getMonth() + 1;
+
+                if (selectedYear && selectedMonth) {
+                    if (createdYear !== selectedYear || createdMonth !== selectedMonth) {
+                        return;
+                    }
+                }
+
                 roomTotal += parseFloat(item.attributes.roomPrice || 0);
                 waterTotal += parseFloat(item.attributes.waterPrice || 0);
                 electricTotal += parseFloat(item.attributes.electricPrice || 0);
@@ -516,27 +531,21 @@ export default {
             
             // Reset data while fetching
             this.data1 = [0, 0, 0, 0, 0];
-            this.data2 = [0, 0, 0, 0, 0];
+            this.data2 = [0, 0, 0, 0, 0, 0];
             this.series1 = [0, 0, 0, 0, 0];
-            this.series2 = [0, 0, 0, 0, 0];
+            this.series2 = [0, 0, 0, 0, 0, 0];
             
-            // If parent component provided a function to get dashboard data, use it
-            if (this.childFunction2) {
-                this.childFunction2(false);
-            } else {
-                // Otherwise, fetch directly
-                fetch(`https://api.resguru.app/api/getdashboard?buildingid=${this.$store.state.building}&month=${month}&year=${year}`)
-                    .then(response => response.json())
-                    .then((resp) => {
-                        // Simply assign the entire response to this.data
-                        // Don't extract or modify it here
-                        this.data = resp;
-                        // The watcher will trigger processData()
-                    })
-                    .catch(error => {
-                        console.error("Error fetching dashboard data:", error);
-                    });
-            }
+            fetch(`https://api.resguru.app/api/getdashboard?buildingid=${this.$store.state.building}&month=${month}&year=${year}`)
+                .then(response => response.json())
+                .then((resp) => {
+                    this.dashboardData = resp?.accounting || { receive: 0, expense: [] };
+                    this.processData();
+                })
+                .catch(error => {
+                    console.error("Error fetching dashboard data:", error);
+                });
+
+            this.getIncome();
         },
         // formatNumber(num) {
         //     if (num === undefined || num === null) return '0';

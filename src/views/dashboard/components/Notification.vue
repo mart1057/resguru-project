@@ -47,7 +47,7 @@
         <div class="mt-[18px]" >
             <div class="table-container">
                 <div class="h-[78px] bg-[#F3F7FA] rounded-[22px] w-[100%] p-[4px] mb-[8px]"
-                    v-for="item in tab == 1 ? data : tab == 2 ? data_maintenacec : tab == 3 ? data_clean : tab == 4 ? data_move : data_emergency">
+                    v-for="item in filteredNotifications" :key="item.id">
                     <div class="flex items-center h-[100%]">
                         <div class="w-[54px]  h-[100%] flex justify-center items-center rounded-[19px]"
                             :class="item.Type == 'Move out' ? 'bg-[#2011D3]' : item.Type == 'Maintenance' ? 'bg-[#F5D65E]' : item.Type == 'Clean' ? 'bg-[#5FB3FA]' : 'bg-[#F4003B]'">
@@ -99,7 +99,7 @@
                                     <div class="text-[18px] font-bold truncate !w-[8.375rem]">ห้อง {{ item.user_sign_contract?.room?.RoomNumber }} {{ item.title }}</div>
                                     <div class="text-[16px] text-[#8396A6]">รายละเอียด</div>
                                 </div>
-                                <div class="truncate !w-[8.375rem]">{{ item.description }} {{ screenW }}}</div>
+                                <div class="truncate !w-[8.375rem]">{{ item.description }}</div>
                             </div>
                             <div class="flex flex-col justify-between items-end">
                                 <div class="pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[8px]"
@@ -112,11 +112,7 @@
                     </div>
                 </div>
                 <!-- Add the empty state message inside the table container -->
-                <div v-if="(tab == 1 && (!data || data.length === 0)) || 
-                        (tab == 2 && (!data_maintenacec || data_maintenacec.length === 0)) || 
-                        (tab == 3 && (!data_clean || data_clean.length === 0)) || 
-                        (tab == 4 && (!data_move || data_move.length === 0)) || 
-                        (tab == 5 && (!data_emergency || data_emergency.length === 0))"
+                <div v-if="filteredNotifications.length === 0"
                     class="flex flex-col items-center justify-center h-32 bg-gray-50 rounded-lg w-full">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
@@ -130,7 +126,10 @@
 <script>
 export default {
     props: {
-        data: { type: Array },
+        data: {
+            type: Array,
+            default: () => []
+        },
         routeLink: {
             type: String,
             default: '/staff'
@@ -139,53 +138,40 @@ export default {
     data() {
         return {
             tab: 1,
-            notiData: [],
-            data_move: [],
-            data_emergency: [],
-            data_clean: [],
-            data_maintenace: [],
-            data: [],
-            screenW:0,
+            screenW: 0,
         }
     },
-    beforeCreate() {
-        console.log('beforeCreate hook',);
-        
-    },
     created() {
-        this.getDashboard()
         this.screenW = window.innerWidth
-        console.log('created hook', this.data);
-
     },
-    beforeMount() {
-        console.log('beforeMount hook');
-    },
-    destroyed() {
+    computed: {
+        groupedNotifications() {
+            return this.data.reduce((acc, item) => {
+                const type = item?.Type || 'Unknown';
+                if (!acc[type]) {
+                    acc[type] = [];
+                }
+                acc[type].push(item);
+                return acc;
+            }, {});
+        },
+        filteredNotifications() {
+            if (this.tab === 1) {
+                return this.data;
+            }
+            if (this.tab === 2) {
+                return this.groupedNotifications['Maintenance'] || [];
+            }
+            if (this.tab === 3) {
+                return this.groupedNotifications['Clean'] || [];
+            }
+            if (this.tab === 4) {
+                return this.groupedNotifications['Move out'] || [];
+            }
+            return this.groupedNotifications['Emergency'] || [];
+        }
     },
     methods: {
-        getDashboard() {
-            fetch(`https://api.resguru.app/api/getdashboard?buildingid=${this.$store.state.building}&month=10&year=2023`)
-                .then(response => response.json())
-                .then((resp) => {
-                    console.log("Return from getRoom()", resp);
-                    // this.db_meter = resp.room.roomData  
-                    // this.db_annocment = resp.announcement.announceData
-                    this.data = resp.service.notiData
-                    this.notiData = this.data.reduce((acc, item) => {
-                        const { Type } = item;
-                        if (!acc[Type]) {
-                            acc[Type] = [];
-                        }
-                        acc[Type].push(item);
-                        return acc;
-                    }, {});
-                    this.data_emergency = this.notiData['Emergency'];
-                    this.data_move = this.notiData['Move out']
-                    this.data_clean = this.notiData['Clean']
-                    this.data_maintenace = this.notiData['Maintenance']
-                })
-        },
         timeDiff(timeCreate) {
             var currentDate = new Date();
             // Convert the given date string to a Date object
@@ -201,9 +187,9 @@ export default {
             if (daysDiff > 0) {
                 return daysDiff + " วันที่แล้ว";
             } else if (hoursDiff > 0) {
-                return hoursDiff + " ขั่วโมงที่แล้ว";
+                return hoursDiff + " ชั่วโมงที่แล้ว";
             } else if (minutesDiff > 0) {
-                return minutesDiff + " เดือนที่แล้ว";
+                return minutesDiff + " นาทีที่แล้ว";
             } else {
                 return secondsDiff + " วินาทีที่แล้ว";
             }

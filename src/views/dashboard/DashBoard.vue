@@ -126,6 +126,49 @@ export default {
     this.getDashboard(false);
   },
   methods: {
+    hasTenant(room) {
+      return !!room?.user_sign_contract?.users_permissions_user?.id;
+    },
+    getLatestBill(room) {
+      const bills = room?.tenant_bills || [];
+      if (!bills.length) {
+        return null;
+      }
+
+      return bills.reduce((latest, bill) => {
+        return new Date(bill.createdAt) > new Date(latest.createdAt) ? bill : latest;
+      }, bills[0]);
+    },
+    syncPaymentSummaryFromPaymentWidget() {
+      const paymentRows = Array.isArray(this.db_payment) ? this.db_payment : [];
+      const tenantRooms = paymentRows.filter((room) => this.hasTenant(room));
+      const total = tenantRooms.length;
+
+      let paidCount = 0;
+      let unpaidCount = 0;
+
+      tenantRooms.forEach((room) => {
+        const latestBill = this.getLatestBill(room);
+        const status = latestBill?.paymentStatus;
+
+        if (status === "Paid") {
+          paidCount += 1;
+        } else {
+          unpaidCount += 1;
+        }
+      });
+
+      const paidPercent = total > 0 ? ((paidCount / total) * 100).toFixed(2) : "0.00";
+      const unpaidPercent = total > 0 ? ((unpaidCount / total) * 100).toFixed(2) : "0.00";
+
+      this.count_user = {
+        ...this.count_user,
+        makePayment: paidCount,
+        makePaymentPer: paidPercent,
+        latePayment: unpaidCount,
+        latePaymentPer: unpaidPercent,
+      };
+    },
     async routerTo(path) {
       await setTimeout(() => {
         this.sidebar = false;
@@ -147,24 +190,27 @@ export default {
       this.showOverlay = false; // Hide overlay when button is clicked
     },
     getDashboard(check) {
-      console.log(check);
+      const now = new Date();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const year = String(now.getFullYear());
+
       fetch(
         `https://api.resguru.app/api/getdashboard?buildingid=${
           this.$store.state.building
-        }&month=10&year=2023&allBuilding=${check == true ? "1" : "0"}&user_id=${
+        }&month=${month}&year=${year}&allBuilding=${check == true ? "1" : "0"}&user_id=${
           this.$store.state.userInfo.id
         }`
       )
         .then((response) => response.json())
         .then((resp) => {
-          console.log("Return from getRoom()", resp.sumMeter);
-          this.db_meter = resp.room.roomData;
-          this.db_meter2 = resp.sumMeter;
-          this.db_annocment = resp.announcement.announceData;
-          this.db_services = resp.service.notiData;
-          this.db_payment = resp.paymentStatus.paymentStatus;
-          this.db_expense = resp.accounting;
-          this.count_user = resp.room.meta;
+          this.db_meter = resp?.room?.roomData || [];
+          this.db_meter2 = resp?.sumMeter || {};
+          this.db_annocment = resp?.announcement?.announceData || [];
+          this.db_services = resp?.service?.notiData || [];
+          this.db_payment = resp?.paymentStatus?.paymentStatus || [];
+          this.db_expense = resp?.accounting || { receive: 0, expense: [] };
+          this.count_user = resp?.room?.meta || {};
+          this.syncPaymentSummaryFromPaymentWidget();
         });
     },
   },

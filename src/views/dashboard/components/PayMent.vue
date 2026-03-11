@@ -38,16 +38,16 @@
                 </div> -->
                 <div class="flex justify-center items-center">
                     <input class="h-[40px] bg-[#F3F7FA] rounded-[12px]" placeholder="ค้นหาเลขห้อง" type="input"
-                        v-model="filter.search" @input="filterData" @keydown="handleKeyDown" />
+                        v-model="filter.search" />
                 </div>
 
             </div>
         </div>
-        <div class="mt-[14px]" :class="data.length > 5 ? 'table-container' : ''">
+        <div class="mt-[14px]" :class="filteredData.length > 5 ? 'table-container' : ''">
             <vs-table xl>
                 <template #thead>
                     <vs-tr>
-                        <vs-th class="text-[20px]" v-if="data[0]?.room_building">
+                        <vs-th class="text-[20px]" v-if="filteredData[0]?.room_building">
                             ชื่อหอพัก
                         </vs-th>
                         <vs-th >
@@ -65,7 +65,7 @@
                     </vs-tr>
                 </template>
                 <template #tbody>
-                    <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
+                    <vs-tr :key="i" v-for="(tr, i) in filteredData" :data="tr">
                         <vs-td v-if="tr?.room_building">
                             {{ tr.room_building?.buildingName }}
                         </vs-td>
@@ -78,13 +78,12 @@
                         </vs-td>
                         <vs-td>
                             {{ convertDateNoTime(tr.createdAt) }}
-                            {{ data.room }}
                         </vs-td>
                         <vs-td>
                             <div class="flex items-center justify-start">
                                 <div class=" w-[auto] pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
-                                    :class="tr.tenant_bills[0]?.paymentStatus == 'Paid' ? 'bg-[#CFFBDA] text-[#0B9A3C]' : tr.website == 2 ? 'bg-[#FFE1E8] text-[#EA2F5C]' : ' bg-[#FFF2BC] text-[#D48C00] '">
-                                    {{ tr.tenant_bills[0]?.paymentStatus == 'Paid' ? 'ชำระแล้ว' : 'ยังไม่ชำระ' }} </div>
+                                    :class="getPaymentStatusClass(tr)">
+                                    {{ getPaymentStatusLabel(tr) }} </div>
                             </div>
                         </vs-td>
                     </vs-tr>
@@ -97,7 +96,10 @@
 import { convertDateNoTime } from '@/components/hook/hook'
 export default {
     props: {
-        data: { type: Object },
+        data: {
+            type: Array,
+            default: () => []
+        },
         childFunction2: {
             type: Function,
         },
@@ -118,26 +120,65 @@ export default {
             },
         }
     },
-    methods: {
-        filterData() {
-            this.data = this.data.filter(item =>
-                item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase())
+    computed: {
+        filteredData() {
+            const keyword = (this.filter.search || '').toLowerCase().trim();
+            if (!keyword) {
+                return this.data;
+            }
+            return this.data.filter((item) =>
+                String(item?.RoomNumber || '').toLowerCase().includes(keyword)
             );
-            if (this.filter.search == '') {
-                this.childFunction2(false);
-            }
+        }
+    },
+    methods: {
+        hasTenant(room) {
+            return !!room?.user_sign_contract?.users_permissions_user?.id;
         },
-        async handleKeyDown(event) {
-            // Check if the pressed key is the backspace key
-            if (event.keyCode === 8) {
-                await this.childFunction2(false);
-                setTimeout(() => {
-                    this.data = this.data.filter(item =>
-                        item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase())
-                    );
-                }, 300)
-
+        getLatestBill(room) {
+            const bills = room?.tenant_bills || [];
+            if (!bills.length) {
+                return null;
             }
+            return bills.reduce((latest, bill) => {
+                return new Date(bill.createdAt) > new Date(latest.createdAt) ? bill : latest;
+            }, bills[0]);
+        },
+        getPaymentStatus(room) {
+            if (!this.hasTenant(room)) {
+                return 'VACANT';
+            }
+
+            const latestBill = this.getLatestBill(room);
+            if (!latestBill) {
+                return 'UNBILLED';
+            }
+
+            if (latestBill.paymentStatus === 'Paid') {
+                return 'PAID';
+            }
+
+            if (latestBill.paymentStatus === 'Waiting Review') {
+                return 'WAITING_REVIEW';
+            }
+
+            return 'UNPAID';
+        },
+        getPaymentStatusLabel(room) {
+            const status = this.getPaymentStatus(room);
+            if (status === 'PAID') return 'ชำระแล้ว';
+            if (status === 'WAITING_REVIEW') return 'รอตรวจสอบ';
+            if (status === 'VACANT') return 'ไม่มีผู้เช่า';
+            if (status === 'UNBILLED') return 'ยังไม่ออกบิล';
+            return 'ยังไม่ชำระ';
+        },
+        getPaymentStatusClass(room) {
+            const status = this.getPaymentStatus(room);
+            if (status === 'PAID') return 'bg-[#CFFBDA] text-[#0B9A3C]';
+            if (status === 'WAITING_REVIEW') return 'bg-[#FFF2BC] text-[#D48C00]';
+            if (status === 'VACANT') return 'bg-[#E5E7EB] text-[#4B5563]';
+            if (status === 'UNBILLED') return 'bg-[#DBEAFE] text-[#1D4ED8]';
+            return 'bg-[#FFE1E8] text-[#EA2F5C]';
         },
         navigateToPaymentPage() {
             // Use the routeLink prop if provided, otherwise use a default path
