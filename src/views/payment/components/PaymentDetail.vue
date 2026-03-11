@@ -1272,7 +1272,7 @@
               <input 
                 class="w-full h-[36px] rounded-[8px] pl-[8px] pr-[8px] text-custom text-right bg-white" 
                 v-model="approvePaymentForm.roomPrice" 
-                @change="calculateTotal()"
+                @change="recalculateVat()"
               />
             </td>
           </tr>
@@ -1288,7 +1288,7 @@
               <input 
                 class="w-full h-[36px] rounded-[8px] pl-[8px] pr-[8px] text-custom text-right bg-white" 
                 v-model="approvePaymentForm.waterPrice" 
-                @change="calculateTotal()"
+                @change="recalculateVat()"
               />
             </td>
           </tr>
@@ -1304,7 +1304,7 @@
               <input 
                 class="w-full h-[36px] rounded-[8px] pl-[8px] pr-[8px] text-custom text-right bg-white" 
                 v-model="approvePaymentForm.electricPrice" 
-                @change="calculateTotal()"
+                @change="recalculateVat()"
               />
             </td>
           </tr>
@@ -1320,7 +1320,7 @@
               <input 
                 class="w-full h-[36px] rounded-[8px] pl-[8px] pr-[8px] text-custom text-right bg-white" 
                 v-model="approvePaymentForm.communalPrice" 
-                @change="calculateTotal()"
+                @change="recalculateVat()"
               />
             </td>
           </tr>
