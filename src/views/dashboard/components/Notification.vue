@@ -96,7 +96,10 @@
                         <div class="flex justify-between w-[100%] p-[8px]">
                             <div class="flex-col justify-between">
                                 <div>
-                                    <div class="text-[18px] font-bold truncate !w-[8.375rem]">ห้อง {{ item.user_sign_contract?.room?.RoomNumber }} {{ item.title }}</div>
+                                    <div class="text-[18px] font-bold truncate !w-[8.375rem]">ห้อง {{ getRoomNumber(item) }} {{ item.title }}</div>
+                                    <div v-if="allBuilding" class="text-[13px] text-[#6B7280] truncate !w-[8.375rem]">
+                                        {{ getBuildingName(item) }}
+                                    </div>
                                     <div class="text-[16px] text-[#8396A6]">รายละเอียด</div>
                                 </div>
                                 <div class="truncate !w-[8.375rem]">{{ item.description }}</div>
@@ -129,6 +132,10 @@ export default {
         data: {
             type: Array,
             default: () => []
+        },
+        allBuilding: {
+            type: Boolean,
+            default: false,
         },
         routeLink: {
             type: String,
@@ -172,6 +179,16 @@ export default {
         }
     },
     methods: {
+        getRoomNumber(item) {
+            return item?.user_sign_contract?.room?.RoomNumber || item?.RoomNumber || '-';
+        },
+        getBuildingName(item) {
+            return (
+                item?.user_sign_contract?.room?.room_building?.buildingName ||
+                item?.room_building?.buildingName ||
+                '-'
+            );
+        },
         timeDiff(timeCreate) {
             var currentDate = new Date();
             // Convert the given date string to a Date object

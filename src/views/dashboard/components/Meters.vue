@@ -47,11 +47,11 @@
             <vs-table>
                 <template #thead>
                     <vs-tr>
-                        <vs-th v-if="(tab == 1 || tab == 2) && data[0]?.room_building">
-                            ชื่อหอพัก
-                        </vs-th>
                         <vs-th v-if="tab == 1 || tab == 2">
                             เลขห้อง
+                        </vs-th>
+                        <vs-th v-if="(tab == 1 || tab == 2) && allBuilding">
+                            ชื่อหอพัก
                         </vs-th>
                         <vs-th v-if="tab == 1 || tab == 2">
                             หน่วยจดเดือนก่อนหน้า
@@ -63,21 +63,23 @@
                             หน่วยที่ใช้
                         </vs-th>
                         <vs-th v-if="tab == 3">
-                            <div class=" flex">
-                                <div>เลขห้อง</div>
-                                <div class="ml-[44px]">ค่าส่วนกลาง</div>
-                            </div>
+                            เลขห้อง
+                        </vs-th>
+                        <vs-th v-if="tab == 3 && allBuilding">
+                            ชื่อหอพัก
+                        </vs-th>
+                        <vs-th v-if="tab == 3">
+                            ค่าส่วนกลาง
                         </vs-th>
                     </vs-tr>
                 </template>
                 <template #tbody>
                     <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
-                        <!-- {{ tr }} -->
-                        <vs-td v-if="(tab == 1 || tab == 2) && tr.room_building ">
-                            {{ tr.room_building?.buildingName }}
-                        </vs-td>
                         <vs-td v-if="tab == 1 || tab == 2">
                             {{ tr.RoomNumber }}
+                        </vs-td>
+                        <vs-td v-if="(tab == 1 || tab == 2) && allBuilding">
+                            {{ getBuildingName(tr) }}
                         </vs-td>
                         <vs-td v-if="tab == 1 || tab == 2">
                             <div v-if="tab == 1">{{ tr.water_fees[0]?.meterUnit? tr.water_fees[0]?.meterUnit : '-' }}</div>
@@ -97,11 +99,13 @@
                             <div v-else-if="tab == 2"> {{ (tr.electric_fees[0] && tr.electric_fees[1]) ? (tr.electric_fees[1].electicUnit - tr.electric_fees[0].electicUnit) : '-' }} </div>
                         </vs-td>
                         <vs-td v-if="tab == 3">
-                            <div class="flex">
-                                <div>{{ tr.RoomNumber }}</div>
-                                <div class="ml-[66px]"> {{ tr.communal_fees[0]?.communalUnit ?
-                                    tr.communal_fees[0]?.communalUnit : '-' }}</div>
-                            </div>
+                            {{ tr.RoomNumber }}
+                        </vs-td>
+                        <vs-td v-if="tab == 3 && allBuilding">
+                            {{ getBuildingName(tr) }}
+                        </vs-td>
+                        <vs-td v-if="tab == 3">
+                            {{ tr.communal_fees[0]?.communalUnit ? tr.communal_fees[0]?.communalUnit : '-' }}
                         </vs-td>
                     </vs-tr>
                 </template>
@@ -111,11 +115,11 @@
             <vs-table>
                 <template #thead>
                     <vs-tr>
-                        <vs-th v-if="data[0]?.room_building">
-                            ชื่อหอพัก
-                        </vs-th>
                         <vs-th>
                             เลขห้อง
+                        </vs-th>
+                        <vs-th v-if="allBuilding">
+                            ชื่อหอพัก
                         </vs-th>
                         <vs-th>
                             ประเภท
@@ -130,11 +134,11 @@
                 </template>
                 <template #tbody>
                     <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
-                         <vs-td v-if="tr.room_building ">
-                            {{ tr.room_building.buildingName }}
-                        </vs-td>
                         <vs-td>
                             {{ tr.RoomNumber }}
+                        </vs-td>
+                        <vs-td v-if="allBuilding">
+                            {{ getBuildingName(tr) }}
                         </vs-td>
                         <vs-td>
                             <div v-for="item in tr.other_of_buildings">
@@ -159,6 +163,10 @@
 export default {
     props: {
         data: { type: Object },
+        allBuilding: {
+            type: Boolean,
+            default: false,
+        },
         routeLink: {
             type: String,
             default: '/fee'
@@ -170,6 +178,13 @@ export default {
         }
     },
     methods: {
+        getBuildingName(room) {
+            return (
+                room?.room_building?.buildingName ||
+                room?.user_sign_contract?.room?.room_building?.buildingName ||
+                '-'
+            );
+        },
         navigateToFeePage() {
             // Use the routeLink prop if provided, otherwise use a default path
             const path = this.routeLink || '/fee';

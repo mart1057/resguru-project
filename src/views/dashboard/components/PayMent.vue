@@ -47,11 +47,11 @@
             <vs-table xl>
                 <template #thead>
                     <vs-tr>
-                        <vs-th class="text-[20px]" v-if="filteredData[0]?.room_building">
-                            ชื่อหอพัก
-                        </vs-th>
                         <vs-th >
                             เลขห้อง
+                        </vs-th>
+                        <vs-th class="text-[20px]" v-if="allBuilding">
+                            ชื่อหอพัก
                         </vs-th>
                         <vs-th>
                             ลูกบ้าน
@@ -66,11 +66,11 @@
                 </template>
                 <template #tbody>
                     <vs-tr :key="i" v-for="(tr, i) in filteredData" :data="tr">
-                        <vs-td v-if="tr?.room_building">
-                            {{ tr.room_building?.buildingName }}
-                        </vs-td>
                         <vs-td class="body-2 font-weight-bold">
                             {{ tr.RoomNumber }}
+                        </vs-td>
+                        <vs-td v-if="allBuilding">
+                            {{ getBuildingName(tr) }}
                         </vs-td>
                         <vs-td>
                             {{ tr.user_sign_contract?.users_permissions_user
@@ -99,6 +99,10 @@ export default {
         data: {
             type: Array,
             default: () => []
+        },
+        allBuilding: {
+            type: Boolean,
+            default: false,
         },
         childFunction2: {
             type: Function,
@@ -132,6 +136,13 @@ export default {
         }
     },
     methods: {
+        getBuildingName(room) {
+            return (
+                room?.room_building?.buildingName ||
+                room?.user_sign_contract?.room?.room_building?.buildingName ||
+                '-'
+            );
+        },
         hasTenant(room) {
             return !!room?.user_sign_contract?.users_permissions_user?.id;
         },

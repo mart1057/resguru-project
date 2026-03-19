@@ -22,11 +22,13 @@
           <Meters2 :data="db_meter2" />
           <PayMent 
               :data="db_payment" 
+              :allBuilding="isAllBuildingView"
               :childFunction2="getDashboard" 
               :routeLink="'/payment'" 
           />
           <Notification 
               :data="db_services" 
+              :allBuilding="isAllBuildingView"
               :routeLink="'/staff'" 
           />
         </div>
@@ -60,6 +62,7 @@
           
           <Meters 
               :data="db_meter" 
+              :allBuilding="isAllBuildingView"
               :routeLink="'/fee'" 
           />
           <News 
@@ -102,6 +105,7 @@ export default {
       count_user: {},
       showOverlay: true,
       isAllBuildingView: false,
+      buildingNameById: {},
     };
   },
   computed: {
@@ -175,6 +179,46 @@ export default {
         (id) => id !== undefined && id !== null
       );
     },
+    async getBuildingsForAggregation() {
+      const normalize = (item) => {
+        const id = item?.id || item?.attributes?.id;
+        const buildingName = item?.attributes?.buildingName || item?.buildingName || "-";
+        if (id === undefined || id === null) return null;
+        return { id, buildingName };
+      };
+
+      const buildingInfo = this.$store.state.buildingInfo;
+
+      if (Array.isArray(buildingInfo) && buildingInfo.length > 1) {
+        const mapped = buildingInfo.map(normalize).filter(Boolean);
+        if (mapped.length > 1) return mapped;
+      }
+
+      if (Array.isArray(buildingInfo?.data) && buildingInfo.data.length > 1) {
+        const mapped = buildingInfo.data.map(normalize).filter(Boolean);
+        if (mapped.length > 1) return mapped;
+      }
+
+      try {
+        const response = await fetch(
+          `https://api.resguru.app/api/buildings?filters[$or][0][user_owner][id][$eq]=${this.$store.state.userInfo.id}&filters[$or][1][users_admin][id][$in]=${this.$store.state.userInfo.id}&publicationState=live&populate=*&pagination[pageSize]=100`
+        );
+        const resp = await response.json();
+        const mapped = (resp?.data || []).map(normalize).filter(Boolean);
+
+        if (mapped.length) {
+          return mapped;
+        }
+      } catch (error) {
+        console.error("getBuildingsForAggregation error:", error);
+      }
+
+      const fallbackId = this.$store.state.building;
+      const fallbackName = buildingInfo?.[0]?.attributes?.buildingName || "-";
+      return [{ id: fallbackId, buildingName: fallbackName }].filter(
+        (item) => item.id !== undefined && item.id !== null
+      );
+    },
     async fetchDashboardByBuilding(buildingId, month, year) {
       const response = await fetch(
         `https://api.resguru.app/api/getdashboard?buildingid=${buildingId}&month=${month}&year=${year}&allBuilding=0&user_id=${this.$store.state.userInfo.id}`
@@ -237,6 +281,120 @@ export default {
 
       return merged;
     },
+    getBuildingNameById(buildingId) {
+      const id = Number(buildingId);
+      const mappedName = this.buildingNameById?.[id];
+      if (mappedName) return mappedName;
+
+      const buildingInfo = this.$store.state.buildingInfo;
+
+      if (Array.isArray(buildingInfo)) {
+        const matched = buildingInfo.find((item) => Number(item?.id || item?.attributes?.id) === id);
+        const name = matched?.attributes?.buildingName || matched?.buildingName;
+        if (name) return name;
+      }
+
+      if (Array.isArray(buildingInfo?.data)) {
+        const matched = buildingInfo.data.find(
+          (item) => Number(item?.id || item?.attributes?.id) === id
+        );
+        const name = matched?.attributes?.buildingName || matched?.buildingName;
+        if (name) return name;
+      }
+
+      if (Array.isArray(this.db_payment)) {
+        const existing = this.db_payment.find(
+          (item) => Number(item?.room_building?.id) === id && item?.room_building?.buildingName
+        );
+        if (existing?.room_building?.buildingName) {
+          return existing.room_building.buildingName;
+        }
+      }
+
+      return "-";
+    },
+    extractBuildingNameFromResponse(resp, buildingId) {
+      const roomRows = resp?.room?.roomData || [];
+      const paymentRows = resp?.paymentStatus?.paymentStatus || [];
+      const serviceRows = resp?.service?.notiData || [];
+      const announceRows = resp?.announcement?.announceData || [];
+
+      const id = Number(buildingId);
+
+      const roomName = roomRows.find((item) => Number(item?.room_building?.id) === id)
+        ?.room_building?.buildingName;
+      if (roomName) return roomName;
+
+      const paymentName = paymentRows.find((item) => Number(item?.room_building?.id) === id)
+        ?.room_building?.buildingName;
+      if (paymentName) return paymentName;
+
+      const serviceName = serviceRows.find(
+        (item) => Number(item?.user_sign_contract?.room?.room_building?.id || item?.room_building?.id) === id
+      )?.user_sign_contract?.room?.room_building?.buildingName ||
+        serviceRows.find((item) => Number(item?.room_building?.id) === id)?.room_building?.buildingName;
+      if (serviceName) return serviceName;
+
+      const announceName = announceRows.find((item) => Number(item?.building?.id) === id)
+        ?.building?.buildingName;
+      if (announceName) return announceName;
+
+      return this.getBuildingNameById(id);
+    },
+    attachBuildingToRoom(room, buildingId, buildingNameFromResponse) {
+      const buildingName = buildingNameFromResponse || this.getBuildingNameById(buildingId);
+      const existingBuilding = room?.room_building || {};
+
+      const normalizedBuilding = {
+        id: existingBuilding?.id || buildingId,
+        buildingName: existingBuilding?.buildingName || buildingName,
+      };
+
+      const clonedRoom = {
+        ...(room || {}),
+        room_building: normalizedBuilding,
+      };
+
+      if (clonedRoom?.user_sign_contract?.room) {
+        clonedRoom.user_sign_contract = {
+          ...clonedRoom.user_sign_contract,
+          room: {
+            ...clonedRoom.user_sign_contract.room,
+            room_building: clonedRoom.user_sign_contract.room?.room_building || normalizedBuilding,
+          },
+        };
+      }
+
+      return clonedRoom;
+    },
+    attachBuildingToService(service, buildingId, buildingNameFromResponse) {
+      const buildingName = buildingNameFromResponse || this.getBuildingNameById(buildingId);
+      const existingBuilding =
+        service?.room_building || service?.user_sign_contract?.room?.room_building || {};
+
+      const normalizedBuilding = {
+        id: existingBuilding?.id || buildingId,
+        buildingName: existingBuilding?.buildingName || buildingName,
+      };
+
+      const clonedService = {
+        ...(service || {}),
+        room_building: normalizedBuilding,
+      };
+
+      if (clonedService?.user_sign_contract?.room) {
+        clonedService.user_sign_contract = {
+          ...clonedService.user_sign_contract,
+          room: {
+            ...clonedService.user_sign_contract.room,
+            room_building:
+              clonedService.user_sign_contract.room?.room_building || normalizedBuilding,
+          },
+        };
+      }
+
+      return clonedService;
+    },
     aggregateDashboardResponses(responses) {
       const roomData = [];
       const announcements = [];
@@ -247,11 +405,33 @@ export default {
       const receives = [];
       const metas = [];
 
-      responses.forEach((resp) => {
-        roomData.push(...(resp?.room?.roomData || []));
+      responses.forEach((result) => {
+        const resp = result?.response || result;
+        const buildingId = result?.buildingId;
+        const extractedBuildingName =
+          result?.buildingName || this.extractBuildingNameFromResponse(resp, buildingId);
+
+        if (buildingId !== undefined && buildingId !== null && extractedBuildingName) {
+          this.buildingNameById = {
+            ...this.buildingNameById,
+            [Number(buildingId)]: extractedBuildingName,
+          };
+        }
+
+        const rooms = (resp?.room?.roomData || []).map((room) =>
+          this.attachBuildingToRoom(room, buildingId, extractedBuildingName)
+        );
+        const paymentRows = (resp?.paymentStatus?.paymentStatus || []).map((room) =>
+          this.attachBuildingToRoom(room, buildingId, extractedBuildingName)
+        );
+        const serviceRows = (resp?.service?.notiData || []).map((service) =>
+          this.attachBuildingToService(service, buildingId, extractedBuildingName)
+        );
+
+        roomData.push(...rooms);
         announcements.push(...(resp?.announcement?.announceData || []));
-        services.push(...(resp?.service?.notiData || []));
-        payments.push(...(resp?.paymentStatus?.paymentStatus || []));
+        services.push(...serviceRows);
+        payments.push(...paymentRows);
         sumMeters.push(resp?.sumMeter || {});
         expenseLists.push(resp?.accounting?.expense || []);
         receives.push(this.toNumber(resp?.accounting?.receive));
@@ -359,6 +539,9 @@ export default {
     },
     async getDashboard(check) {
       this.isAllBuildingView = check === true;
+      if (this.isAllBuildingView) {
+        this.buildingNameById = {};
+      }
 
       const now = new Date();
       const month = String(now.getMonth() + 1).padStart(2, "0");
@@ -368,11 +551,23 @@ export default {
         let finalResponse = null;
 
         if (this.isAllBuildingView) {
-          const buildingIds = await this.getBuildingIdsForAggregation();
+          const buildings = await this.getBuildingsForAggregation();
+
+          this.buildingNameById = buildings.reduce((acc, item) => {
+            acc[Number(item.id)] = item.buildingName || "-";
+            return acc;
+          }, {});
+
           const results = await Promise.allSettled(
-            buildingIds.map((buildingId) =>
-              this.fetchDashboardByBuilding(buildingId, month, year)
-            )
+            buildings.map(async ({ id: buildingId, buildingName }) => {
+              const response = await this.fetchDashboardByBuilding(buildingId, month, year);
+              const detectedName = this.extractBuildingNameFromResponse(response, buildingId);
+              return {
+                buildingId,
+                buildingName: buildingName || detectedName,
+                response,
+              };
+            })
           );
 
           const successResponses = results
