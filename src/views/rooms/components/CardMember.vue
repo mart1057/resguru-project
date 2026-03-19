@@ -503,7 +503,7 @@
               <div class="font-bold text-custom mb-3">ข้อมูลยานพหนะ</div>
               
               <!-- Existing Vehicles -->
-              <div v-if="room_detail.vehicles.length > 0">
+              <div v-if="Array.isArray(room_detail.vehicles) && room_detail.vehicles.length > 0">
                 <div 
                   v-for="(data, i) in room_detail.vehicles" 
                   :key="i"
@@ -527,7 +527,7 @@
                     >
                       <option value="" disabled>เลือกประเภท</option>
                       <option value="Car">รถยนต์</option>
-                      <option value="Motocycle">มอเตอร์ไซต์</option>
+                      <option value="Motorcycle">มอเตอร์ไซต์</option>
                     </select>
                   </div>
                   <div class="col-span-2">
@@ -552,7 +552,7 @@
               </div>
               
               <!-- Add Vehicle Button -->
-              <div v-if="room_detail.vehicles.length < 2" class="mt-4">
+              <div v-if="(Array.isArray(room_detail.vehicles) ? room_detail.vehicles.length : 0) < 2" class="mt-4">
                 <button
                   @click="addVehicles()"
                   class="bg-[#003765] text-white py-2 px-4 rounded-[12px] hover:bg-[#00284d] transition-colors"
@@ -835,6 +835,36 @@ export default {
     this.getFloorRoom();
   },
   methods: {
+    normalizeVehicleType(type) {
+      const normalized = (type || "").toString().trim();
+      if (normalized === "Motocycle") return "Motorcycle";
+      return normalized;
+    },
+    normalizeVehicles(list) {
+      if (!Array.isArray(list)) return [];
+      return list
+        .filter((item) => item && typeof item === "object")
+        .map((item) => ({
+          ...item,
+          Type: this.normalizeVehicleType(item.Type || item.type || item.attributes?.Type || item.attributes?.type || ""),
+          licensePlate: item.licensePlate || item.attributes?.licensePlate || "",
+          remark: item.remark || item.attributes?.remark || "",
+        }));
+    },
+    buildVehiclePayload(vehicle, userId) {
+      return {
+        Type: this.normalizeVehicleType(vehicle?.Type),
+        remark: (vehicle?.remark || "").toString().trim(),
+        licensePlate: (vehicle?.licensePlate || "").toString().trim(),
+        users_permissions_user: userId,
+      };
+    },
+    getNewVehiclesToCreate(userId) {
+      return this.normalizeVehicles(this.room_detail.vehicles)
+        .filter((item) => !Object.prototype.hasOwnProperty.call(item, "id"))
+        .map((item) => this.buildVehiclePayload(item, userId))
+        .filter((item) => item.Type !== "" && item.licensePlate !== "" && item.users_permissions_user);
+    },
     cancleButton() {
       this.searchEmail = "";
       this.id_card = "";
@@ -1096,7 +1126,7 @@ export default {
             )
               .then((response) => response.json())
               .then((resp) => {
-                this.room_detail.vehicles = resp.tenant_vehicles;
+                this.room_detail.vehicles = this.normalizeVehicles(resp.tenant_vehicles);
               });
           }
         });
@@ -1164,7 +1194,7 @@ export default {
           )
             .then((response) => response.json())
             .then((resp) => {
-              this.room_detail.vehicles = resp.tenant_vehicles;
+                this.room_detail.vehicles = this.normalizeVehicles(resp.tenant_vehicles);
             });
         })
         .finally(() => {
@@ -1173,12 +1203,11 @@ export default {
         });
     },
     createOrEdit() {
-      const newVehicles = this.room_detail.vehicles.filter(
-        (item) => !item.hasOwnProperty("id")
-      );
+      this.room_detail.vehicles = this.normalizeVehicles(this.room_detail.vehicles);
       const id_con = "";
       if (this.is_edit == true) {
         const loading = this.$vs.loading();
+        const newVehicles = this.getNewVehiclesToCreate(this.id_user);
         newVehicles.forEach((data) => {
           axios
             .post("https://api.resguru.app/api" + "/tenant-vehicles", {
@@ -1186,7 +1215,7 @@ export default {
                 Type: data.Type,
                 remark: data.remark,
                 licensePlate: data.licensePlate,
-                users_permissions_user: this.id_user,
+                users_permissions_user: data.users_permissions_user,
               },
             })
             .finally(() => {
@@ -1275,6 +1304,9 @@ export default {
                       );
                     })
                     .then(() => {
+                      const newVehicles = this.getNewVehiclesToCreate(
+                        this.room_detail.id || this.id_user
+                      );
                       newVehicles.forEach((data) => {
                         axios.post(
                           "https://api.resguru.app/api" + "/tenant-vehicles",
@@ -1283,7 +1315,7 @@ export default {
                               Type: data.Type,
                               remark: data.remark,
                               licensePlate: data.licensePlate,
-                              users_permissions_user: this.id_user,
+                              users_permissions_user: data.users_permissions_user,
                             },
                           }
                         );
@@ -1357,6 +1389,7 @@ export default {
               })
               .then((resp) => {
                 this.id_user = resp.data.id;
+                const newVehicles = this.getNewVehiclesToCreate(resp.data.id);
                 axios
                   .post(
                     "https://api.resguru.app/api" + "/user-sign-contracts",
@@ -1413,7 +1446,7 @@ export default {
                               Type: data.Type,
                               remark: data.remark,
                               licensePlate: data.licensePlate,
-                              users_permissions_user: this.id_user,
+                              users_permissions_user: data.users_permissions_user,
                             },
                           }
                         )
@@ -1452,6 +1485,7 @@ export default {
       }
     },
     addVehicles() {
+      this.room_detail.vehicles = this.normalizeVehicles(this.room_detail.vehicles);
       this.room_detail.vehicles.push({
         remark: "",
         licensePlate: "",
@@ -1459,6 +1493,7 @@ export default {
       });
     },
     removeVehicles(i, id) {
+      this.room_detail.vehicles = this.normalizeVehicles(this.room_detail.vehicles);
       this.room_detail.vehicles.splice(i, 1);
     },
     moveRoom() {
