@@ -230,12 +230,27 @@
                       <div class="mb-1">
                         <span class="text-red-500 mr-1">*</span>รหัสผ่าน (อย่างน้อย 6 ตัว มีตัวอักษรและตัวเลข)
                       </div>
-                      <input
-                        type="password"
-                        v-model="room_detail.password"
-                        class="h-[36px] w-full rounded-[12px] bg-[#dadfe3] px-3"
-                        placeholder="เช่น Password123"
-                      />
+                      <div class="relative">
+                        <input
+                          :type="showPassword ? 'text' : 'password'"
+                          v-model="room_detail.password"
+                          class="h-[36px] w-full rounded-[12px] bg-[#dadfe3] px-3 pr-10"
+                          placeholder="เช่น Password123"
+                        />
+                        <button
+                          type="button"
+                          @click="showPassword = !showPassword"
+                          class="absolute right-2 top-1/2 -translate-y-1/2 text-[#5C6B79] hover:text-[#003765]"
+                        >
+                          <svg v-if="!showPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7c-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                          <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.956 9.956 0 012.042-3.368M6.223 6.223A9.956 9.956 0 0112 5c4.478 0 8.268 2.943 9.542 7a9.964 9.964 0 01-4.132 5.411M15 12a3 3 0 00-3-3m0 0a2.99 2.99 0 00-2.121.879M12 9l0 0m0 0l-8 8m8-8l8 8" />
+                          </svg>
+                        </button>
+                      </div>
                       <div class="text-[12px] text-[#8396A6] mt-1">
                         <span v-if="room_detail.password.length < 6" class="text-red-500">❌ อย่างน้อย 6 ตัว</span>
                         <span v-else class="text-green-600">✓ ความยาว OK</span>
@@ -251,12 +266,27 @@
                       <div class="mb-1">
                         <span class="text-red-500 mr-1">*</span>ยืนยันรหัสผ่าน
                       </div>
-                      <input
-                        type="password"
-                        v-model="room_detail.password_confirm"
-                        class="h-[36px] w-full rounded-[12px] bg-[#dadfe3] px-3"
-                        placeholder="ยืนยันรหัสผ่าน"
-                      />
+                      <div class="relative">
+                        <input
+                          :type="showConfirmPassword ? 'text' : 'password'"
+                          v-model="room_detail.password_confirm"
+                          class="h-[36px] w-full rounded-[12px] bg-[#dadfe3] px-3 pr-10"
+                          placeholder="ยืนยันรหัสผ่าน"
+                        />
+                        <button
+                          type="button"
+                          @click="showConfirmPassword = !showConfirmPassword"
+                          class="absolute right-2 top-1/2 -translate-y-1/2 text-[#5C6B79] hover:text-[#003765]"
+                        >
+                          <svg v-if="!showConfirmPassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7c-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                          <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="w-5 h-5">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.542-7a9.956 9.956 0 012.042-3.368M6.223 6.223A9.956 9.956 0 0112 5c4.478 0 8.268 2.943 9.542 7a9.964 9.964 0 01-4.132 5.411M15 12a3 3 0 00-3-3m0 0a2.99 2.99 0 00-2.121.879M12 9l0 0m0 0l-8 8m8-8l8 8" />
+                          </svg>
+                        </button>
+                      </div>
                       <div class="text-[12px] text-[#8396A6] mt-1">
                         <span v-if="room_detail.password_confirm === '' && room_detail.password !== ''" class="text-gray-500">⏳ กรุณากรอก</span>
                         <span v-else-if="room_detail.password_confirm === room_detail.password && room_detail.password_confirm !== ''" class="text-green-600">✓ รหัสผ่านตรงกัน</span>
@@ -381,7 +411,7 @@
             <!-- Address & ID Card Section -->
             <div class="grid grid-cols-6 gap-4 mt-4">
               <div class="col-span-4">
-                <div class="mb-1">ที่อยู่</div>
+                <div class="mb-1"><span class="text-red-500 mr-1">*</span>ที่อยู่</div>
                 <input
                   type="text"
                   class="h-[36px] w-full rounded-[12px] bg-[#dadfe3] px-3"
@@ -760,6 +790,8 @@ export default {
       },
       id_card: "",
       searchEmail: "",
+      showPassword: false,
+      showConfirmPassword: false,
       room_detail: {
         id: "",
         sex: true,
@@ -825,6 +857,8 @@ export default {
       this.room_detail.emergencyPhone = "";
       this.room_detail.lineID = "";
       this.room_detail.vehicles = [];
+      this.showPassword = false;
+      this.showConfirmPassword = false;
       this.create = false;
     },
     clearButton1() {
@@ -851,6 +885,8 @@ export default {
       this.room_detail.image_card_name = "";
       this.room_detail.vehicles = [];
       this.room_detail.check_user = true;
+      this.showPassword = false;
+      this.showConfirmPassword = false;
     },
     clearButton2() {
       this.searchEmail = "";
@@ -876,6 +912,8 @@ export default {
       this.room_detail.image_card_name = "";
       this.room_detail.vehicles = [];
       this.room_detail.check_user = false;
+      this.showPassword = false;
+      this.showConfirmPassword = false;
     },
     previewImage(event) {
       const file = event.target.files[0];
@@ -1162,7 +1200,8 @@ export default {
             this.room_detail.email != "" &&
             this.room_detail.name != "" &&
             this.room_detail.last_name != "" &&
-            this.room_detail.phone != ""
+            this.room_detail.phone != "" &&
+            this.room_detail.address.trim() != ""
           ) {
             const loading = this.$vs.loading();
             fetch(
@@ -1289,6 +1328,7 @@ export default {
             this.room_detail.name != "" &&
             this.room_detail.last_name != "" &&
             this.room_detail.phone != "" &&
+            this.room_detail.address.trim() != "" &&
             this.room_detail.password != "" &&
             this.validatePassword()
           ) {
