@@ -1324,6 +1324,34 @@
               />
             </td>
           </tr>
+
+          <tr>
+            <td class="p-2 border text-center">5</td>
+            <td class="p-2 border">ค่าอื่นๆ</td>
+            <td class="p-2 border text-right">{{ $formatNumber(approvePaymentForm.otherPrice) }}</td>
+            <td class="p-2 border text-right">-</td>
+            <td class="p-2 border text-right">
+              <input
+                class="w-full h-[36px] rounded-[8px] pl-[8px] pr-[8px] text-custom text-right bg-white"
+                v-model="approvePaymentForm.otherPrice"
+                @change="recalculateVat()"
+              />
+            </td>
+          </tr>
+
+          <tr v-if="Number(approvePaymentForm.carryOverAmount) > 0">
+            <td class="p-2 border text-center">6</td>
+            <td class="p-2 border">{{ approvePaymentForm.carryOverLabel }}</td>
+            <td class="p-2 border text-right">{{ $formatNumber(approvePaymentForm.carryOverAmount) }}</td>
+            <td class="p-2 border text-right">-</td>
+            <td class="p-2 border text-right">
+              <input
+                class="w-full h-[36px] rounded-[8px] pl-[8px] pr-[8px] text-custom text-right bg-white"
+                v-model="approvePaymentForm.carryOverAmount"
+                @change="recalculateVat()"
+              />
+            </td>
+          </tr>
           
           <tr class="bg-[#F3F7FA]">
             <td colspan="2" class="p-2 border text-right font-bold">รวม</td>
@@ -1543,6 +1571,8 @@ export default {
         electricPriceVat: 0,
         communalPriceVat:0,
         otherPrice: 0,
+        carryOverAmount: 0,
+        carryOverLabel: "ค่าใช้จ่ายค้างจากเดือนก่อนหน้า",
         subtotal: 0,
         vat: 0,
         vatRate: 0,
@@ -1760,34 +1790,44 @@ export default {
     this.approvePaymentForm.afterFine = evidencePayment.attributes.amount;
     this.approvePaymentForm.evidenceStatus = evidencePayment.attributes.evidenceStatus;
     
-    // Find the invoice that's related (you might need to adjust this logic based on your data structure)
-    // Option 1: If they share the same room/building/user
-    let relatedInvoice = null;
-    if (this.userInvoice.length > 0) {
-      // Just use the first unpaid invoice for this room
-      relatedInvoice = this.userUnpaidInvoice.length > 0 ? 
-                       this.userUnpaidInvoice[0] : 
-                       this.userInvoice[0];
-    }
-    
-    if (relatedInvoice) {
-      console.log("Using related invoice:", relatedInvoice);
-      
-      // Copy invoice details to the payment form
-      this.approvePaymentForm.roomPrice = relatedInvoice.attributes.roomPrice || 0;
-      this.approvePaymentForm.waterPrice = relatedInvoice.attributes.waterPrice || 0;
-      this.approvePaymentForm.electricPrice = relatedInvoice.attributes.electricPrice || 0;
-      this.approvePaymentForm.communalPrice = relatedInvoice.attributes.communalPrice || 0;
-      this.approvePaymentForm.otherPrice = relatedInvoice.attributes.otherPrice || 0;
-      this.approvePaymentForm.subtotal = relatedInvoice.attributes.subtotal || 0;
-      this.approvePaymentForm.vat = relatedInvoice.attributes.vat || 0;
-      this.approvePaymentForm.vatRate = this.$store.state.buildingInfo[0].attributes.vat_rate || 7; // Get VAT rate from building settings
-      this.approvePaymentForm.total = relatedInvoice.attributes.total || 0;
-      this.approvePaymentForm.invoiceNumber = relatedInvoice.attributes.invoiceNumber;
-      this.approvePaymentForm.invoiceID = relatedInvoice.id; // Store the invoice ID
-      
-      // Recalculate VAT after setting initial values
-      this.recalculateVat();
+    const invoicesForApproval =
+      this.userUnpaidInvoice.length > 0
+        ? this.userUnpaidInvoice
+        : this.userInvoice.length > 0
+          ? [this.userInvoice[0]]
+          : [];
+
+    const primaryInvoice = invoicesForApproval[0] || null;
+
+    if (primaryInvoice) {
+      const paymentSummary = this.buildApprovePaymentSummary(invoicesForApproval);
+      console.log("Using invoice summary for approval:", paymentSummary, invoicesForApproval);
+
+      this.approvePaymentForm.roomPrice = paymentSummary.roomPrice.toFixed(2);
+      this.approvePaymentForm.waterPrice = paymentSummary.waterPrice.toFixed(2);
+      this.approvePaymentForm.electricPrice = paymentSummary.electricPrice.toFixed(2);
+      this.approvePaymentForm.communalPrice = paymentSummary.communalPrice.toFixed(2);
+      this.approvePaymentForm.otherPrice = paymentSummary.otherPrice.toFixed(2);
+      this.approvePaymentForm.carryOverAmount = paymentSummary.carryOverAmount.toFixed(2);
+      this.approvePaymentForm.carryOverLabel = paymentSummary.carryOverLabel;
+      this.approvePaymentForm.vat = paymentSummary.vat.toFixed(2);
+      this.approvePaymentForm.vatRate = this.getCurrentBuildingVatRate();
+      this.approvePaymentForm.subtotal = (
+        paymentSummary.roomPrice +
+        paymentSummary.waterPrice +
+        paymentSummary.electricPrice +
+        paymentSummary.communalPrice +
+        paymentSummary.otherPrice +
+        paymentSummary.carryOverAmount
+      ).toFixed(2);
+      this.approvePaymentForm.total = this.userPayRemain
+        ? this.userPayRemain.toFixed(2)
+        : paymentSummary.total.toFixed(2);
+      this.approvePaymentForm.invoiceNumber =
+        invoicesForApproval.length > 1
+          ? `${primaryInvoice.attributes.invoiceNumber} +${invoicesForApproval.length - 1}`
+          : primaryInvoice.attributes.invoiceNumber;
+      this.approvePaymentForm.invoiceID = primaryInvoice.id;
     }
     
     // Set evidence details
@@ -2306,6 +2346,83 @@ createReceipt() {
       }
     },
 
+    getCurrentBuildingVatRate() {
+      const buildingInfo = this.$store.state.buildingInfo;
+      const activeBuildingId = this.$store.state.building;
+
+      if (Array.isArray(buildingInfo)) {
+        const activeBuilding =
+          buildingInfo.find((building) => building.id === activeBuildingId) ||
+          buildingInfo[0];
+
+        const vatRate = activeBuilding?.attributes?.vat_rate;
+        return vatRate !== undefined && vatRate !== null ? Number(vatRate) : 7;
+      }
+
+      const vatRate = buildingInfo?.attributes?.vat_rate;
+      return vatRate !== undefined && vatRate !== null ? Number(vatRate) : 7;
+    },
+
+    formatCarryOverLabel(dateString) {
+      if (!dateString) {
+        return "ค่าใช้จ่ายค้างจากเดือนก่อนหน้า";
+      }
+
+      const date = new Date(dateString);
+      if (Number.isNaN(date.getTime())) {
+        return "ค่าใช้จ่ายค้างจากเดือนก่อนหน้า";
+      }
+
+      const formattedMonth = new Intl.DateTimeFormat("th-TH", {
+        month: "long",
+        year: "numeric",
+      }).format(date);
+
+      return `ค่าใช้จ่ายค้างจากเดือน${formattedMonth}`;
+    },
+
+    formatPreviousMonthCarryOverLabel(dateString) {
+      if (!dateString) {
+        return "ค่าใช้จ่ายค้างจากเดือนก่อนหน้า";
+      }
+
+      const date = new Date(dateString);
+      if (Number.isNaN(date.getTime())) {
+        return "ค่าใช้จ่ายค้างจากเดือนก่อนหน้า";
+      }
+
+      date.setMonth(date.getMonth() - 1);
+      return this.formatCarryOverLabel(date.toISOString());
+    },
+
+    buildApprovePaymentSummary(invoices) {
+      const primaryInvoice = invoices[0];
+      const primaryAttributes = primaryInvoice?.attributes || primaryInvoice || {};
+      const currentInvoiceAmount =
+        (parseFloat(primaryAttributes.roomPrice) || 0) +
+        (parseFloat(primaryAttributes.waterPrice) || 0) +
+        (parseFloat(primaryAttributes.electricPrice) || 0) +
+        (parseFloat(primaryAttributes.communalPrice) || 0) +
+        (parseFloat(primaryAttributes.otherPrice) || 0);
+      const totalOutstanding = this.userPayRemain || invoices.reduce((sum, invoice) => {
+        const attributes = invoice.attributes || invoice;
+        const remainPaid = parseFloat(attributes.remainPaid);
+        return sum + (Number.isNaN(remainPaid) ? (parseFloat(attributes.total) || 0) : remainPaid);
+      }, 0);
+      const carryOverAmount = Math.max(0, totalOutstanding - currentInvoiceAmount);
+      return {
+        roomPrice: parseFloat(primaryAttributes.roomPrice) || 0,
+        waterPrice: parseFloat(primaryAttributes.waterPrice) || 0,
+        electricPrice: parseFloat(primaryAttributes.electricPrice) || 0,
+        communalPrice: parseFloat(primaryAttributes.communalPrice) || 0,
+        otherPrice: parseFloat(primaryAttributes.otherPrice) || 0,
+        carryOverAmount,
+        carryOverLabel: this.formatPreviousMonthCarryOverLabel(primaryAttributes.createdAt),
+        vat: parseFloat(primaryAttributes.vat) || 0,
+        total: totalOutstanding,
+      };
+    },
+
     recalculateVat() {
     // Get the VAT rate (0 or 7)
       const vatRate = parseFloat(this.approvePaymentForm.vatRate);
@@ -2314,9 +2431,11 @@ createReceipt() {
       const waterPrice = parseFloat(this.approvePaymentForm.waterPrice) || 0;
       const electricPrice = parseFloat(this.approvePaymentForm.electricPrice) || 0;
       const communalPrice = parseFloat(this.approvePaymentForm.communalPrice) || 0;
+      const otherPrice = parseFloat(this.approvePaymentForm.otherPrice) || 0;
+      const carryOverAmount = parseFloat(this.approvePaymentForm.carryOverAmount) || 0;
       
       // Calculate subtotal without VAT
-      const subtotalNoRoom = waterPrice + electricPrice + communalPrice;
+      const subtotalNoRoom = waterPrice + electricPrice + communalPrice + otherPrice + carryOverAmount;
       const subtotal = roomPrice + subtotalNoRoom;
       
       if (vatRate === 0) {
@@ -2355,10 +2474,12 @@ createReceipt() {
       const waterPrice = parseFloat(this.approvePaymentForm.waterPrice) || 0;
       const electricPrice = parseFloat(this.approvePaymentForm.electricPrice) || 0;
       const communalPrice = parseFloat(this.approvePaymentForm.communalPrice) || 0;
+      const otherPrice = parseFloat(this.approvePaymentForm.otherPrice) || 0;
+      const carryOverAmount = parseFloat(this.approvePaymentForm.carryOverAmount) || 0;
       
       // Calculate subtotal
-      const subtotal = roomPrice + waterPrice + electricPrice + communalPrice;
-      const subtotalNoRoom = waterPrice + electricPrice + communalPrice;
+      const subtotal = roomPrice + waterPrice + electricPrice + communalPrice + otherPrice + carryOverAmount;
+      const subtotalNoRoom = waterPrice + electricPrice + communalPrice + otherPrice + carryOverAmount;
       
       // Get VAT rate
       const vatRate = parseFloat(this.approvePaymentForm.vatRate);
