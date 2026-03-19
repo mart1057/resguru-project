@@ -529,7 +529,6 @@
                     <input
                       type="input"
                       class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                      :disabled="room_detail_create.check_user == true && room_detail_create.name"
                       v-model="room_detail_create.name"
                       required
                     />
@@ -542,7 +541,6 @@
                     <input
                       type="input"
                       class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                      :disabled="room_detail_create.check_user == true && room_detail_create.last_name"
                       v-model="room_detail_create.last_name"
                       required
                     />
@@ -555,7 +553,6 @@
                     <input
                       type="input"
                       class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                      :disabled="room_detail_create.check_user == true"
                       v-model="room_detail_create.nick_name"
                     />
                   </div>
@@ -573,7 +570,6 @@
                     type="input"
                     class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                     v-model="room_detail_create.phone"
-                    :disabled="room_detail_create.check_user == true && room_detail_create.phone"
                     required
                   />
                 </div>
@@ -586,7 +582,6 @@
                     type="input"
                     class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                     v-model="room_detail_create.id_card"
-                    :disabled="room_detail_create.check_user == true && room_detail_create.id_card"
                     required
                   />
                   <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
@@ -609,7 +604,6 @@
                     type="email"
                     class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
                     v-model="room_detail_create.email"
-                    :disabled="room_detail_create.check_user == true && room_detail_create.email"
                     required
                   />
                   <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
@@ -625,7 +619,6 @@
                     type="date"
                     class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
                     v-model="room_detail_create.birth"
-                    :disabled="room_detail_create.check_user == true && room_detail_create.birth"
                     required
                   />
                 </div>
@@ -640,7 +633,6 @@
                     type="input"
                     class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
                     v-model="room_detail_create.address"
-                    :disabled="room_detail_create.check_user == true && room_detail_create.address"
                     required
                   />
                 </div>
@@ -1074,6 +1066,7 @@ export default {
       },
       room_type: [],
       floorRoom: [],
+      originalUserData: null,
       errorFieldMessage: "",
       id_sign: "",
     };
@@ -1152,6 +1145,58 @@ export default {
       this.$router.push({
         path: path,
       });
+    },
+    buildUserPayloadFromForm() {
+      return {
+        username: this.room_detail_create.email,
+        email: this.room_detail_create.email,
+        firstName: this.room_detail_create.name,
+        lastName: this.room_detail_create.last_name,
+        nickName: this.room_detail_create.nick_name,
+        phone: this.room_detail_create.phone,
+        idCard: this.room_detail_create.id_card,
+        contactAddress: this.room_detail_create.address,
+        dateOfBirth: this.room_detail_create.birth,
+      };
+    },
+    setOriginalUserData(user = {}) {
+      this.originalUserData = {
+        username: user.username || user.email || "",
+        email: user.email || "",
+        firstName: user.firstName || "",
+        lastName: user.lastName || "",
+        nickName: user.nickName || "",
+        phone: user.phone || "",
+        idCard: user.idCard || "",
+        contactAddress: user.contactAddress || "",
+        dateOfBirth: user.dateOfBirth || "",
+      };
+    },
+    hasUserDataChanged() {
+      if (!this.originalUserData) {
+        return false;
+      }
+      const currentPayload = this.buildUserPayloadFromForm();
+      return Object.keys(currentPayload).some(
+        (key) => (currentPayload[key] || "") !== (this.originalUserData[key] || "")
+      );
+    },
+    syncExistingUserIfNeeded() {
+      if (!this.room_detail_create.id || !this.room_detail_create.check_user) {
+        return Promise.resolve();
+      }
+      if (!this.hasUserDataChanged()) {
+        return Promise.resolve();
+      }
+      const payload = this.buildUserPayloadFromForm();
+      return axios
+        .put(
+          "https://api.resguru.app/api/users/" + this.room_detail_create.id,
+          payload
+        )
+        .then(() => {
+          this.setOriginalUserData(payload);
+        });
     },
     validateField(a, b) {
       // this.room_detail_create.id_card == '' ||
@@ -1329,6 +1374,7 @@ export default {
             this.room_detail_create.address = resp[0].contactAddress;
             // this.room_detail_create.sex = resp[0].sex
             this.room_detail_create.birth = resp[0].dateOfBirth;
+            this.setOriginalUserData(resp[0]);
           } else {
             this.$showNotification("danger", "ไม่พบผู้ใช้");
             this.room_detail_create.id = "";
@@ -1341,6 +1387,7 @@ export default {
             this.room_detail_create.address = "";
             // this.room_detail_create.sex = ''
             this.room_detail_create.birth = "";
+            this.originalUserData = null;
           }
         })
         .catch(() => {
@@ -1383,6 +1430,7 @@ export default {
       this.room_detail_create.type_room = room_type;
       this.room_detail.date_sign = "";
       this.room_detail.exp_date = "";
+      this.originalUserData = null;
       this.room_detail_create.check_user = true;
       if (idCard) {
         // Fetch user by idCard to get email and populate form
@@ -1401,6 +1449,7 @@ export default {
               this.room_detail_create.id_card = u.idCard || "";
               this.room_detail_create.address = u.contactAddress || "";
               this.room_detail_create.birth = u.dateOfBirth || "";
+              this.setOriginalUserData(u);
             }
           })
           .catch(() => {
@@ -1414,7 +1463,9 @@ export default {
     if (this.room_detail_create.check_user == true) {
         console.log("1");
         const loading = this.$vs.loading();
-        axios
+      this.syncExistingUserIfNeeded()
+        .then(() =>
+          axios
             .post("https://api.resguru.app/api" + "/user-sign-contracts", {
                 data: {
                     room: this.room_detail_create.id_room,
@@ -1429,6 +1480,7 @@ export default {
                     contractDuration: parseInt(this.room_detail_create.contract_duration),
                 },
             })
+                )
             .then((resp) => {
                 this.id_sign = resp.data.data.id;
                 
