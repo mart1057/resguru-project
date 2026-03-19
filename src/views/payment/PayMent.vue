@@ -248,17 +248,7 @@
           <div
             class="cursor-pointer whitespace-nowrap mr-[16px]"
             :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
-            @click="
-              (tab_floor = i),
-                (filter.floor = data.id),
-                getRoomBill(
-                  data.id,
-                  0,
-                  filter.selectedMonth,
-                  filter.selectedYear
-                ),
-                (name_floor = data.attributes.floorName)
-            "
+            @click="selectFloor(data, i)"
           >
             ชั้น {{ data.attributes.floorName }}
           </div>
@@ -1304,6 +1294,62 @@ export default {
     }
   },
   methods: {
+    getSavedPaymentFilters() {
+      try {
+        const savedFilters = localStorage.getItem("paymentFilters");
+        return savedFilters ? JSON.parse(savedFilters) : null;
+      } catch (error) {
+        return null;
+      }
+    },
+    toArabicDigits(value) {
+      const thaiDigits = "๐๑๒๓๔๕๖๗๘๙";
+      return String(value || "").replace(/[๐-๙]/g, (digit) =>
+        thaiDigits.indexOf(digit)
+      );
+    },
+    extractFloorNumber(floorName) {
+      const normalized = this.toArabicDigits(floorName);
+      const match = normalized.match(/-?\d+(\.\d+)?/);
+      return match ? Number(match[0]) : Number.POSITIVE_INFINITY;
+    },
+    sortFloorsByName(floors) {
+      return [...(floors || [])].sort((a, b) => {
+        const aName = a?.attributes?.floorName || "";
+        const bName = b?.attributes?.floorName || "";
+        const numDiff =
+          this.extractFloorNumber(aName) - this.extractFloorNumber(bName);
+        if (numDiff !== 0) {
+          return numDiff;
+        }
+        return aName.localeCompare(bName, "th", {
+          numeric: true,
+          sensitivity: "base",
+        });
+      });
+    },
+    savePaymentFilters() {
+      localStorage.setItem(
+        "paymentFilters",
+        JSON.stringify({
+          month: this.filter.selectedMonth || String(this.selectedMonth).padStart(2, "0"),
+          year: this.filter.selectedYear || String(this.selectedYear),
+          floor: this.filter.floor || "",
+        })
+      );
+    },
+    selectFloor(floorData, index) {
+      this.tab_floor = index;
+      this.filter.floor = floorData.id;
+      this.name_floor = floorData.attributes.floorName;
+      this.savePaymentFilters();
+      this.getRoomBill(
+        floorData.id,
+        0,
+        this.filter.selectedMonth,
+        this.filter.selectedYear
+      );
+    },
     // filterByDate() {
     //   const dateStr = this.selectedDate;
     //   const [a, b] = dateStr.split("-");
@@ -1327,6 +1373,7 @@ export default {
     filterByDate() {
       this.filter.selectedMonth = String(this.selectedMonth).padStart(2, '0');
       this.filter.selectedYear = String(this.selectedYear);
+      this.savePaymentFilters();
       
       this.getRoomBill(
         this.filter.floor,
@@ -1645,13 +1692,20 @@ export default {
         .then((response) => response.json())
         .then((resp) => {
           // console.log("Return from getfloor()", resp.data);
-          this.floor = resp.data;
-          // console.log("resp.data[0].id", resp.data[0].id)
-          // console.log("resp.data[0].attributes.floorName", resp.data[0].attributes.floorName)
-          // console.log("this.filter.floor", this.filter.floor)
-          if (resp.data[0]) {
-            this.filter.floor = resp.data[0].id;
-            this.name_floor = resp.data[0].attributes.floorName;
+          this.floor = this.sortFloorsByName(resp.data);
+          const savedFilters = this.getSavedPaymentFilters();
+          const preferredFloorId = this.filter.floor || savedFilters?.floor;
+          const selectedFloor =
+            this.floor.find(
+              (item) => String(item.id) === String(preferredFloorId)
+            ) || this.floor[0];
+          if (selectedFloor) {
+            this.filter.floor = selectedFloor.id;
+            this.name_floor = selectedFloor.attributes.floorName;
+            this.tab_floor = this.floor.findIndex(
+              (item) => String(item.id) === String(selectedFloor.id)
+            );
+            this.savePaymentFilters();
           }
         })
         .finally(() => {

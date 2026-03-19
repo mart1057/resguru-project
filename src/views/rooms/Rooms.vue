@@ -99,7 +99,7 @@
                 :class="tab_floor == i ? 'font-bold text-[16px] text-[white] bg-[#003765]' : 'text-[#8396A6]'">
                     <div class="cursor-pointer whitespace-nowrap"
                         :class="tab_floor == i ? 'font-bold text-[16px]' : 'text-[#8396A6]'"
-                        @click="tab_floor = i, filter.floor = data.id, getRoom(), name_floor = data.attributes.floorName">
+                        @click="selectFloor(data, i)">
                         ชั้น {{ data.attributes.floorName }}
                     </div>
                 </div>
@@ -428,6 +428,36 @@ export default {
         }, 1000)
     },
     methods: {
+        getFloorStorageKey() {
+            return `roomsSelectedFloor_${this.$store.state.building}`
+        },
+        toArabicDigits(value) {
+            const thaiDigits = '๐๑๒๓๔๕๖๗๘๙'
+            return String(value || '').replace(/[๐-๙]/g, (digit) => thaiDigits.indexOf(digit))
+        },
+        extractFloorNumber(floorName) {
+            const normalized = this.toArabicDigits(floorName)
+            const match = normalized.match(/-?\d+(\.\d+)?/)
+            return match ? Number(match[0]) : Number.POSITIVE_INFINITY
+        },
+        sortFloorsByName(floors) {
+            return [...(floors || [])].sort((a, b) => {
+                const aName = a?.attributes?.floorName || ''
+                const bName = b?.attributes?.floorName || ''
+                const numDiff = this.extractFloorNumber(aName) - this.extractFloorNumber(bName)
+                if (numDiff !== 0) {
+                    return numDiff
+                }
+                return aName.localeCompare(bName, 'th', { numeric: true, sensitivity: 'base' })
+            })
+        },
+        selectFloor(floorData, index) {
+            this.tab_floor = index
+            this.filter.floor = floorData.id
+            this.name_floor = floorData.attributes.floorName
+            localStorage.setItem(this.getFloorStorageKey(), String(floorData.id))
+            this.getRoom()
+        },
         routeTo(path) {
             this.$router.push({
                 path: path + '?tab=2'
@@ -464,10 +494,15 @@ export default {
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getRoomFloor()", resp.data);
-                    this.roomFloor = resp.data
-                    if (resp.data[0]) {
-                        this.filter.floor = resp.data[0].id
-                        this.name_floor = resp.data[0].attributes.floorName
+                    this.roomFloor = this.sortFloorsByName(resp.data)
+                    const savedFloorId = localStorage.getItem(this.getFloorStorageKey())
+                    const preferredFloorId = this.filter.floor || savedFloorId
+                    const selectedFloor = this.roomFloor.find((item) => String(item.id) === String(preferredFloorId)) || this.roomFloor[0]
+                    if (selectedFloor) {
+                        this.filter.floor = selectedFloor.id
+                        this.name_floor = selectedFloor.attributes.floorName
+                        this.tab_floor = this.roomFloor.findIndex((item) => String(item.id) === String(selectedFloor.id))
+                        localStorage.setItem(this.getFloorStorageKey(), String(selectedFloor.id))
                     }
                 }).finally(() => {
                     this.getRoom()

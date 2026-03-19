@@ -221,12 +221,7 @@
                 height="55"
               >
                 <rect
-                  x="6.80078"
-                  y="7.25586"
-                  width="54.4"
-                  height="54.4"
-                  fill="#D9D9D9"
-                />
+                  @click="selectFloor(data, i)"
               </mask>
               <g mask="url(#mask0_1373_22044)">
                 <path
@@ -1472,6 +1467,42 @@ export default {
     }, 1000);
   },
   methods: {
+    getFloorStorageKey() {
+      return `settingRoomSelectedFloor_${this.$store.state.building}`;
+    },
+    toArabicDigits(value) {
+      const thaiDigits = "๐๑๒๓๔๕๖๗๘๙";
+      return String(value || "").replace(/[๐-๙]/g, (digit) =>
+        thaiDigits.indexOf(digit)
+      );
+    },
+    extractFloorNumber(floorName) {
+      const normalized = this.toArabicDigits(floorName);
+      const match = normalized.match(/-?\d+(\.\d+)?/);
+      return match ? Number(match[0]) : Number.POSITIVE_INFINITY;
+    },
+    sortFloorsByName(floors) {
+      return [...(floors || [])].sort((a, b) => {
+        const aName = a?.attributes?.floorName || "";
+        const bName = b?.attributes?.floorName || "";
+        const numDiff =
+          this.extractFloorNumber(aName) - this.extractFloorNumber(bName);
+        if (numDiff !== 0) {
+          return numDiff;
+        }
+        return aName.localeCompare(bName, "th", {
+          numeric: true,
+          sensitivity: "base",
+        });
+      });
+    },
+    selectFloor(floorData, index) {
+      this.tab_floor = index;
+      this.filter.floor = floorData.id;
+      this.name_floor = floorData.attributes.floorName;
+      localStorage.setItem(this.getFloorStorageKey(), String(floorData.id));
+      this.getUserRoom();
+    },
     getUserRoom() {
       const loading = this.$vs.loading();
       this.room = [];
@@ -1551,10 +1582,23 @@ export default {
         .then((response) => response.json())
         .then((resp) => {
           console.log("Return from getRoomFloor()", resp.data);
-          this.roomFloor = resp.data;
-          if (resp.data[0]) {
-            this.filter.floor = resp.data[0].id;
-            this.name_floor = resp.data[0].attributes.floorName;
+          this.roomFloor = this.sortFloorsByName(resp.data);
+          const savedFloorId = localStorage.getItem(this.getFloorStorageKey());
+          const preferredFloorId = this.filter.floor || savedFloorId;
+          const selectedFloor =
+            this.roomFloor.find(
+              (item) => String(item.id) === String(preferredFloorId)
+            ) || this.roomFloor[0];
+          if (selectedFloor) {
+            this.filter.floor = selectedFloor.id;
+            this.name_floor = selectedFloor.attributes.floorName;
+            this.tab_floor = this.roomFloor.findIndex(
+              (item) => String(item.id) === String(selectedFloor.id)
+            );
+            localStorage.setItem(
+              this.getFloorStorageKey(),
+              String(selectedFloor.id)
+            );
           }
         })
         .finally(() => {
