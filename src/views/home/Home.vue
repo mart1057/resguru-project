@@ -66,6 +66,19 @@
             </div>
         </div>
         <div class="w-[55%] pt-[50px]">
+            <div class="flex justify-end pr-[50px] mb-[8px]">
+                <div class="flex items-center gap-[10px]">
+                    <vs-avatar size="40" v-if="$store.state.userInfo.imageProfile?.formats?.small?.url">
+                        <img :src="'https://api.resguru.app' + $store.state.userInfo.imageProfile?.formats?.small?.url" />
+                    </vs-avatar>
+                    <vs-avatar size="40" v-else>
+                        {{ ($store.state.userInfo.firstName || '?').charAt(0).toUpperCase() }}
+                    </vs-avatar>
+                    <div class="text-[14px] font-semibold text-[#003765]">
+                        {{ $store.state.userInfo.firstName }} {{ $store.state.userInfo.lastName }}
+                    </div>
+                </div>
+            </div>
             <div class="text-center text-[24px] font-bold">เลือกหอพักหอพักของคุณ</div>
             <div class="flex flex-col justify-between">
                 <div class=" text-[18px]  mt-[50px] grid grid-cols-2 gap-5">

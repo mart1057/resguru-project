@@ -135,29 +135,23 @@
                                     <vs-avatar size="40" v-if="$store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.url">
                                         <img 
                                             :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.url" />
-                                        <!-- <img v-else
-                                            :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.formats?.large?.url" /> -->
                                     </vs-avatar>
-                                    <vs-avatar size="40" v-else>
-                                        
-                                    </vs-avatar>
+                                    <div v-else class="w-[40px] h-[40px] rounded-full bg-[#003765] flex items-center justify-center overflow-hidden">
+                                        <img src="../assets/img/Logo-01.png" class="w-[26px] h-[26px] object-contain" />
+                                    </div>
 
                                 </div>
                                 <template #tooltip>
                                     <div class="content-tooltip p-[8px]">
                                         <div class="flex">
                                             <div>
-                                                <vs-avatar size="40">
-                                                    <template
-                                                        v-if="$store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.url">
-                                                        <img
-                                                            :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.url" />
-
-                                                    </template>
-                                                    <template v-else>
-
-                                                    </template>
+                                                <vs-avatar size="40" v-if="$store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.url">
+                                                    <img
+                                                        :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.url" />
                                                 </vs-avatar>
+                                                <div v-else class="w-[40px] h-[40px] rounded-full bg-[#003765] flex items-center justify-center overflow-hidden">
+                                                    <img src="../assets/img/Logo-01.png" class="w-[26px] h-[26px] object-contain" />
+                                                </div>
                                             </div>
                                             <div
                                                 class="flex items-center text-[16px] font-bold ml-[8px] text-custom w-[150px]">
@@ -277,13 +271,12 @@
                                 <!-- </vs-avatar> -->
                             </div>
                             <div>
-                                <vs-avatar size="40" v-if=" $store.state.userInfo.imageProfile?.formats?.small.url">
+                                <vs-avatar size="40" v-if="$store.state.userInfo.imageProfile?.formats?.small?.url">
                                     <img
-                                        :src="'https://api.resguru.app' + $store.state.userInfo.imageProfile?.formats?.small.url" />
+                                        :src="'https://api.resguru.app' + $store.state.userInfo.imageProfile?.formats?.small?.url" />
                                 </vs-avatar>
                                 <vs-avatar size="40" v-else>
-                                    <!-- <img
-                                        :src="'https://api.resguru.app' + $store.state.userInfo.imageProfile?.formats?.small.url" /> -->
+                                    {{ ($store.state.userInfo.firstName || '?').charAt(0).toUpperCase() }}
                                 </vs-avatar>
                             </div>
                             <div>
