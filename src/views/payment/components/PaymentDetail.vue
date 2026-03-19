@@ -1819,7 +1819,8 @@ export default {
       this.approvePaymentForm.carryOverAmount = paymentSummary.carryOverAmount.toFixed(2);
       this.approvePaymentForm.carryOverLabel = paymentSummary.carryOverLabel;
       this.approvePaymentForm.vat = paymentSummary.vat.toFixed(2);
-      this.approvePaymentForm.vatRate = this.getCurrentBuildingVatRate();
+      // Use the actual VAT from the primary invoice: if it's 0, rate is 0%; otherwise use building rate
+      this.approvePaymentForm.vatRate = paymentSummary.vat > 0 ? this.getCurrentBuildingVatRate() : 0;
       this.approvePaymentForm.subtotal = (
         paymentSummary.roomPrice +
         paymentSummary.waterPrice +
@@ -2642,6 +2643,7 @@ createReceipt() {
     },
 
     async PDFPrintReceipt(tr) {
+      this.$showNotification("#3A89CB", "กำลังสร้าง PDF หากไม่มีไฟล์เปิดขึ้นมา กรุณาตรวจสอบว่าเบราว์เซอร์บล็อก Popup อยู่หรือไม่");
       this.$refs.childComponentPDFReceipt.generatePDF(tr);
     },
     // Method for the "Download Invoice" button at the top of the page
@@ -2659,6 +2661,7 @@ createReceipt() {
         };
         
         // Call the generatePDF method of the PDFgenerator component
+        this.$showNotification("#3A89CB", "กำลังสร้าง PDF หากไม่มีไฟล์เปิดขึ้นมา กรุณาตรวจสอบว่าเบราว์เซอร์บล็อก Popup อยู่หรือไม่");
         this.$refs.childComponentPDF.generatePDF(data);
       } else {
         this.$showNotification("warning", "กรุณาเลือกรายการที่ต้องการพิมพ์");
@@ -2700,6 +2703,7 @@ createReceipt() {
         room_type: this.roomDetail.data.attributes.room_type.data
       };
       
+      this.$showNotification("#3A89CB", "กำลังสร้าง PDF หากไม่มีไฟล์เปิดขึ้นมา กรุณาตรวจสอบว่าเบราว์เซอร์บล็อก Popup อยู่หรือไม่");
       this.$refs.childComponentPDF.generatePDF(data);
     }
     // Method for the download button in each table row
