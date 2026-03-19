@@ -1125,6 +1125,7 @@
               type="date"
               class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
               v-model="partialPaymentForm.paymentDate"
+              required
             />
           </div>
         </div>
@@ -1135,6 +1136,7 @@
               type="time"
               class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
               v-model="partialPaymentForm.paymentTime"
+              required
             />
           </div>
         </div>
@@ -1760,6 +1762,7 @@ export default {
         // this.fullPaymentForm.accountBankName = "test"
         this.createFullpayment = true;
       } else if (menu_option == "Partial Payment") {
+        const now = new Date();
         this.partialPaymentForm.amount = this.userPayRemain;
         // this.partialPaymentForm.invoiceName = tr.attributes.invoiceNumber
         // this.fullPaymentForm.invoiceName = generateReNumber()
@@ -1771,6 +1774,11 @@ export default {
         // this.partialPaymentForm.invoiceID = tr.id
         this.partialPaymentForm.accountBankName =
           this.userProfile.firstName + " " + this.userProfile.lastName;
+        // Set default date/time to current (user can still change)
+        this.partialPaymentForm.paymentDate = now.toISOString().slice(0, 10); // YYYY-MM-DD
+        this.partialPaymentForm.paymentTime = now.toTimeString().slice(0, 8);  // HH:mm:ss
+        // Set default payment type to Bank transfer
+        this.partialPaymentForm.paymentType = "Bank";
         // this.fullPaymentForm.accountBankName = "test"
         this.createPartialPayment = true;
       } else if (menu_option == "Approve Payment") {
@@ -2004,9 +2012,20 @@ export default {
       // .removeAttribute('disabled');
     },
     createPartial() {
+      // Validate required fields
+      if (!this.partialPaymentForm.paymentDate || !this.partialPaymentForm.paymentTime) {
+        this.$showNotification("danger", "กรุณาระบุ วันที่ชำระ และ เวลา");
+        return;
+      }
+
       console.log("dateeeee", this.partialPaymentForm.paymentDate);
       console.log("timeeeee", this.partialPaymentForm.paymentTime);
-      let conTime = this.partialPaymentForm.paymentTime;
+      
+      // Format time to HH:mm:ss if needed
+      const paymentTime = this.partialPaymentForm.paymentTime.length === 5 
+        ? this.partialPaymentForm.paymentTime + ":00" 
+        : this.partialPaymentForm.paymentTime;
+
       axios
         .post("https://api.resguru.app/api/tenant-evidence-payments", {
           data: {
@@ -2015,14 +2034,8 @@ export default {
             bankName: this.partialPaymentForm.accountBankName,
             accountBankName: this.partialPaymentForm.bankName,
             amount: this.partialPaymentForm.amount,
-            paymentDate:
-              this.partialPaymentForm.paymentDate != ""
-                ? this.partialPaymentForm.paymentDate
-                : new Date(),
-            paymentTime:
-              this.partialPaymentForm.paymentTime != ""
-                ? this.partialPaymentForm.paymentTime
-                : new Date().toTimeString,
+            paymentDate: this.partialPaymentForm.paymentDate,
+            paymentTime: paymentTime,
             building: this.partialPaymentForm.building,
             fine: this.partialPaymentForm.fineamount,
             room: this.$route.query.roomID,
