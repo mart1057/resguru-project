@@ -2555,10 +2555,65 @@ createReceipt() {
     //         this.getEvidence();
     //     })
     // },
+    getLinkedInvoiceIdsFromEvidence(currentEvident) {
+      const directLinkedInvoiceId = currentEvident?.attributes?.tenant_bill?.data?.id;
+
+      if (directLinkedInvoiceId) {
+        return [directLinkedInvoiceId];
+      }
+
+      const legacyLinkedInvoiceId = currentEvident?.attributes?.tenant_bill?.id;
+      if (legacyLinkedInvoiceId) {
+        return [legacyLinkedInvoiceId];
+      }
+
+      return [];
+    },
+
+    async restoreInvoiceStatusesAfterReject(currentEvident) {
+      const linkedInvoiceIds = this.getLinkedInvoiceIdsFromEvidence(currentEvident);
+
+      const invoicesInReview = this.userInvoice.filter((invoice) => {
+        const isWaitingReview = invoice.attributes?.paymentStatus === "Waiting Review";
+
+        if (!isWaitingReview) {
+          return false;
+        }
+
+        // Prefer only invoices explicitly linked to this evidence payment.
+        // Fallback to room-level waiting invoices when relation is missing.
+        if (linkedInvoiceIds.length > 0) {
+          return linkedInvoiceIds.includes(invoice.id);
+        }
+
+        return true;
+      });
+
+      if (invoicesInReview.length === 0) {
+        return;
+      }
+
+      await Promise.all(
+        invoicesInReview.map((invoice) => {
+          const attributes = invoice.attributes || {};
+          const remainPaid = parseFloat(attributes.remainPaid) || 0;
+          const paid = parseFloat(attributes.paid) || 0;
+          const rollbackStatus = paid > 0 && remainPaid > 0 ? "Partial Paid" : "Not Paid";
+
+          return axios.put(
+            `https://api.resguru.app/api/tenant-bills/${invoice.id}`,
+            {
+              data: {
+                paymentStatus: rollbackStatus,
+              },
+            }
+          );
+        })
+      );
+    },
+
     cancelPayment(currentEvident) {
       //ส่งบอกว่า evident ถูก approve แล้ว หลังบ้านจะไป update invoice, current evident, และ สร้าง reciept ตามจำเป็น
-      let today = new Date();
-
       axios
         .put(
           "https://api.resguru.app/api/tenant-evidence-payments/" +
@@ -2569,7 +2624,8 @@ createReceipt() {
             },
           }
         )
-        .then((res) => {
+        .then(async () => {
+          await this.restoreInvoiceStatusesAfterReject(currentEvident);
           this.$showNotification("#3A89CB", "ยกเลิกการชำระเงินสำเร็จ");
         })
         .catch((error) => {

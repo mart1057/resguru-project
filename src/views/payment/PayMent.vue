@@ -503,7 +503,34 @@
                     </vs-option>
                   </vs-select>
                 </div>
-                <div v-else-if="tr.user_sign_contract">
+                <div
+                  v-else-if="
+                    tr.tenant_bills[0] &&
+                    tr.tenant_bills[0].paymentStatus === 'Waiting Review'
+                  "
+                >
+                  <vs-select
+                    placeholder="เมนู"
+                    v-model="tr.tenant_bills[0].lastEvent"
+                    @change="selectMenu(tr.tenant_bills[0].lastEvent, tr)"
+                  >
+                    <vs-option label="เลือกเมนู" value="">
+                      เลือกเมนู
+                    </vs-option>
+                    <vs-option label="ดูรายการใบแจ้งหนี้" value="View">
+                      ดูรายการใบแจ้งหนี้
+                    </vs-option>
+                  </vs-select>
+                </div>
+                <div v-else-if="tr.user_sign_contract && tr.tenant_bills[0] && (tr.tenant_bills[0].paymentStatus === 'Not Paid' || tr.tenant_bills[0].paymentStatus === 'Partial Paid' || tr.tenant_bills[0].paymentStatus === 'Over Due')">
+                  <vs-button
+                    color="rgb(59,222,200)"
+                    class="small"
+                    @click="generateInvoice(tr.id)"
+                    >สร้างใบแจ้งหนี้</vs-button
+                  >
+                </div>
+                <div v-else-if="tr.user_sign_contract && (!tr.tenant_bills[0])">
                   <vs-button
                     color="rgb(59,222,200)"
                     class="small"
@@ -1236,7 +1263,7 @@ export default {
   },
   created() {
     const loading = this.$vs.loading({});
-    this.filter.checkSelect = ["Not Paid", "Partial Paid", "Paid"];
+    this.filter.checkSelect = ["Not Paid", "Partial Paid", "Waiting Review", "Paid", "Over Due"];
     setTimeout(() => {
       loading.close();
     }, 1000);
