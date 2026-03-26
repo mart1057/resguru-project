@@ -383,17 +383,23 @@
               </vs-td>
 
               <vs-td>
-                <div class="flex items-center justify-start">
-                  <!-- <div class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
-                                        :class="tr.attributes.paymentStatus == 1 ? 'bg-[#CFFBDA] text-[#0B9A3C]' : tr.attributes.paymentStatus == 'ยังไม่ชำระ' ? 'bg-[#FFE1E8] text-[#EA2F5C]' : ' bg-[#FFF2BC] text-[#D48C00] '"> -->
+                <div class="flex items-center justify-start gap-[6px]">
+                  <!-- Payment status badge -->
                   <div
-                    class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
+                    v-if="tr.user_sign_contract && tr.tenant_bills[0]"
+                    class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] font-medium text-[13px] whitespace-nowrap"
+                    :class="paymentStatusClass(tr.tenant_bills[0].paymentStatus)"
                   >
-                    <div v-if="tr.user_sign_contract && tr.tenant_bills[0]">
-                      {{ tr.tenant_bills[0].paymentStatus }}
-                    </div>
-
-                    <div v-else>-</div>
+                    {{ thaiPaymentStatus(tr.tenant_bills[0].paymentStatus) }}
+                  </div>
+                  <div v-else class="text-gray-400">-</div>
+                  <!-- Old-debt warning badge -->
+                  <div
+                    v-if="tr.user_sign_contract && tr.tenant_bills[0] && hasOldDebt(tr.tenant_bills[0])"
+                    class="flex items-center justify-center h-[28px] px-[8px] rounded-[8px] bg-[#FFF2BC] text-[#D48C00] text-[11px] font-semibold whitespace-nowrap"
+                    title="มียอดค้างชำระจากบิลก่อนหน้า"
+                  >
+                    ⚠ ค้างเก่า
                   </div>
                 </div>
                 <!-- <div v-if="tr.attributes.paymentStatus == ชำระบางส่วน">
@@ -1789,6 +1795,40 @@ export default {
       };
       
       this.$refs.childComponentPDF.generatePDF(data);
+    },
+    hasOldDebt(bill) {
+      if (!bill) return false;
+      return (
+        parseFloat(bill.pastRoomPrice) > 0 ||
+        parseFloat(bill.pastWaterPrice) > 0 ||
+        parseFloat(bill.pastElectricPrice) > 0 ||
+        parseFloat(bill.pastCommunalPrice) > 0 ||
+        parseFloat(bill.pastOtherPrice) > 0
+      );
+    },
+    thaiPaymentStatus(status) {
+      const map = {
+        'Not Paid':          'ยังไม่ชำระ',
+        'Partial Paid':      'ชำระบางส่วน',
+        'Paid':              'ชำระแล้ว',
+        'Waiting Review':    'รอตรวจสอบ',
+        'In Review Progress':'กำลังตรวจสอบ',
+        'Over Due':          'เกินกำหนดชำระ',
+      };
+      return map[status] || status || '-';
+    },
+    paymentStatusClass(status) {
+      if (status === 'Paid') {
+        return 'bg-[#CFFBDA] text-[#0B9A3C]';
+      }
+      if (status === 'Not Paid' || status === 'Over Due') {
+        return 'bg-[#FFE1E8] text-[#EA2F5C]';
+      }
+      if (status === 'Waiting Review' || status === 'In Review Progress') {
+        return 'bg-[#DBEAFE] text-[#1D4ED8]';
+      }
+      // Partial Paid and any other
+      return 'bg-[#FFF2BC] text-[#D48C00]';
     },
     filterData() {
       this.payments = this.payments.filter((item) =>
