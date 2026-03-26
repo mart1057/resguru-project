@@ -1622,10 +1622,103 @@ export default {
         return text;
       }
     },
+    toMoney(value) {
+      const num = Number(value);
+      if (!Number.isFinite(num)) {
+        return 0;
+      }
+
+      return Math.round(num * 100) / 100;
+    },
+    getExpectedRemain(attributes = {}) {
+      const total = this.toMoney(attributes.total);
+      const paid = this.toMoney(attributes.paid);
+
+      return this.toMoney(Math.max(0, total - paid));
+    },
+    derivePaymentStatus(paid, remainPaid, currentStatus) {
+      // Keep review states unchanged to avoid interrupting approval flow.
+      if (
+        currentStatus === "Waiting Review" ||
+        currentStatus === "In Review Progress"
+      ) {
+        return currentStatus;
+      }
+
+      if (remainPaid <= 0) {
+        return "Paid";
+      }
+
+      if (paid > 0) {
+        return "Partial Paid";
+      }
+
+      return "Not Paid";
+    },
+    async reconcileTenantBillsForCurrentRoom() {
+      if (!Array.isArray(this.userInvoice) || this.userInvoice.length === 0) {
+        return;
+      }
+
+      const updateRequests = [];
+
+      this.userInvoice.forEach((invoice) => {
+        const attributes = invoice.attributes || {};
+        const paid = this.toMoney(attributes.paid);
+        const currentRemainPaid = this.toMoney(attributes.remainPaid);
+        const expectedRemainPaid = this.getExpectedRemain(attributes);
+        const expectedStatus = this.derivePaymentStatus(
+          paid,
+          expectedRemainPaid,
+          attributes.paymentStatus
+        );
+        const updatePayload = {};
+
+        if (Math.abs(currentRemainPaid - expectedRemainPaid) > 0.009) {
+          updatePayload.remainPaid = expectedRemainPaid;
+          invoice.attributes.remainPaid = expectedRemainPaid;
+        }
+
+        if ((attributes.paymentStatus || "") !== expectedStatus) {
+          updatePayload.paymentStatus = expectedStatus;
+          invoice.attributes.paymentStatus = expectedStatus;
+        }
+
+        if (Object.keys(updatePayload).length > 0) {
+          updateRequests.push(
+            axios.put(`https://api.resguru.app/api/tenant-bills/${invoice.id}`, {
+              data: updatePayload,
+            })
+          );
+        }
+      });
+
+      if (updateRequests.length > 0) {
+        await Promise.all(updateRequests);
+        this.$showNotification(
+          "#3A89CB",
+          `ซ่อมข้อมูลบิลแล้ว ${updateRequests.length} รายการ`
+        );
+      }
+    },
+    rebuildOutstandingFromLocalBills() {
+      this.userUnpaidInvoice = [];
+      this.userPayRemain = 0;
+
+      this.userInvoice.forEach((invoice) => {
+        const attributes = invoice.attributes || {};
+        const remainPaid = this.toMoney(attributes.remainPaid);
+
+        if (remainPaid > 0) {
+          this.userUnpaidInvoice.push(invoice);
+          this.userPayRemain = this.toMoney(this.userPayRemain + remainPaid);
+        }
+      });
+    },
     sumRemainPaid(remainPaidArray) {
       let remainPaid = 0;
       remainPaidArray.forEach((num) => {
-        remainPaid += num.attributes.remainPaid;
+        remainPaid += this.toMoney(num.attributes.remainPaid);
       });
 
       // Format to 2 decimal places
@@ -2111,22 +2204,18 @@ export default {
         `https://api.resguru.app/api/tenant-bills?filters[room][id][$eq]=${this.$route.query.roomID}&populate=*&sort[0]=id:desc&publicationState=preview`
       )
         .then((response) => response.json())
-        .then((resp) => {
-          this.userUnpaidInvoice = [];
+        .then(async (resp) => {
           console.log("Return from getInvoice()", resp.data);
-          this.userPayRemain = 0;
-          this.userInvoice = resp.data;
-          this.userInvoice.forEach((element) => {
-            if (
-              element.attributes.remainPaid != null &&
-              element.attributes.remainPaid > 0
-            ) {
-              this.userUnpaidInvoice.push(element);
-              this.userPayRemain +=
-                element.attributes.remainPaid;
-              // console.log("in if " + element.id, this.userPayRemain)
-            }
-          });
+          this.userInvoice = resp.data || [];
+
+          await this.reconcileTenantBillsForCurrentRoom();
+          this.rebuildOutstandingFromLocalBills();
+        })
+        .catch((error) => {
+          const errorMessage = error.message
+            ? error.message
+            : "Error loading invoice information";
+          this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
           loading.close();
