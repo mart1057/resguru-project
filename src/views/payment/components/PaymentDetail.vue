@@ -1891,12 +1891,13 @@ export default {
     this.approvePaymentForm.afterFine = evidencePayment.attributes.amount;
     this.approvePaymentForm.evidenceStatus = evidencePayment.attributes.evidenceStatus;
     
-    const invoicesForApproval =
+    const invoicesForApproval = (
       this.userUnpaidInvoice.length > 0
         ? this.userUnpaidInvoice
         : this.userInvoice.length > 0
           ? [this.userInvoice[0]]
-          : [];
+          : []
+    ).slice().sort((a, b) => a.id - b.id);
 
     const primaryInvoice = invoicesForApproval[0] || null;
 
@@ -2498,6 +2499,14 @@ createReceipt() {
       return this.formatCarryOverLabel(date.toISOString());
     },
 
+    formatNewerBillCarryOverLabel(dateString) {
+      if (!dateString) return "ยอดบิลล่าสุดที่ยังค้างชำระ";
+      const date = new Date(dateString);
+      if (Number.isNaN(date.getTime())) return "ยอดบิลล่าสุดที่ยังค้างชำระ";
+      const formattedMonth = new Intl.DateTimeFormat("th-TH", { month: "long", year: "numeric" }).format(date);
+      return `ยอดบิลเดือน${formattedMonth}`;
+    },
+
     buildApprovePaymentSummary(invoices) {
       const primaryInvoice = invoices[0];
       const primaryAttributes = primaryInvoice?.attributes || primaryInvoice || {};
@@ -2520,7 +2529,11 @@ createReceipt() {
         communalPrice: parseFloat(primaryAttributes.communalPrice) || 0,
         otherPrice: parseFloat(primaryAttributes.otherPrice) || 0,
         carryOverAmount,
-        carryOverLabel: this.formatPreviousMonthCarryOverLabel(primaryAttributes.createdAt),
+        carryOverLabel: invoices.length > 1
+          ? this.formatNewerBillCarryOverLabel(
+              (invoices[invoices.length - 1]?.attributes || {}).createdAt
+            )
+          : this.formatPreviousMonthCarryOverLabel(primaryAttributes.createdAt),
         vat: parseFloat(primaryAttributes.vat) || 0,
         total: totalOutstanding,
       };
