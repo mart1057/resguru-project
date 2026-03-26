@@ -62,9 +62,9 @@
                         <!-- CORRECTED Water Row -->
                         <tr class="row-odd">
                             <td class="py-2 px-3 border">ค่าน้ำ(
-{{ formatNumber(data_bill.user_sign_contract?.startWater || 0) }} 
+{{ formatNumber(getWaterBeforeUnit(data_bill.tenant_bills[0])) }} 
 - 
-{{ formatNumber(data_bill.tenant_bills[0]?.lastWaterUnit || 0) }})                            </td>
+{{ formatNumber(getWaterAfterUnit(data_bill.tenant_bills[0])) }})                            </td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.usageWater || 0)}}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.waterRate || ($store.state.buildingInfo[0]?.attributes?.waterUnitPrice || 0)) }}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.waterPrice) }}</td>
@@ -74,9 +74,9 @@
                         <tr class="row-even">
                             <td class="py-2 px-3 border">
 ค่าไฟ ({{ 
-  formatNumber(data_bill.user_sign_contract?.startElectric || 0) 
+    formatNumber(getElectricBeforeUnit(data_bill.tenant_bills[0])) 
 }} - {{
-  formatNumber(data_bill.tenant_bills[0]?.lastElecUnit || 0)
+    formatNumber(getElectricAfterUnit(data_bill.tenant_bills[0]))
 }})                            </td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.usageElectric || 0) }}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.electricRate || ($store.state.buildingInfo[0]?.attributes?.electricUnitPrice || 0)) }}</td>
@@ -96,69 +96,27 @@
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.otherPrice) }}</td>
                         </tr>
                         
-                        <!-- Past month charges remain the same -->
-                        <tr class="row-odd" v-if="data_bill.tenant_bills[0]?.pastRoomPrice > 0">
-                            <td class="py-2 px-3 border">ค่าห้อง (ยอดจากเดือน{{ getPreviousMonthThai(data_bill.tenant_bills[0]?.createdAt) }})</td>
+                        <tr class="row-odd" v-if="getPastUnpaidTotal(data_bill.tenant_bills[0]) > 0">
+                            <td class="py-2 px-3 border">ยอดค้างจากเดือน{{ getPreviousMonthThai(data_bill.tenant_bills[0]?.createdAt) }}</td>
                             <td class="py-2 px-3 text-right border">1</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastRoomPrice) }}</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastRoomPrice) }}</td>
-                        </tr>
-                        <tr class="row-even" v-if="data_bill.tenant_bills[0]?.pastWaterPrice > 0">
-                            <td class="py-2 px-3 border">ค่าน้ำ (ยอดจากเดือน{{ getPreviousMonthThai(data_bill.tenant_bills[0]?.createdAt) }}{{ data_bill.tenant_bills[0]?.pastWaterStartUnit ? ` (${formatNumber(data_bill.tenant_bills[0]?.pastWaterStartUnit)} - ${formatNumber(data_bill.tenant_bills[0]?.pastWaterEndUnit)})` : '' }})</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastWaterUsage || 1) }}</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastWaterRate || (data_bill.tenant_bills[0]?.pastWaterPrice / (data_bill.tenant_bills[0]?.pastWaterUsage || 1))) }}</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastWaterPrice) }}</td>
-                        </tr>
-                        <tr class="row-odd" v-if="data_bill.tenant_bills[0]?.pastElectricPrice > 0">
-                            <td class="py-2 px-3 border">ค่าไฟ (ยอดจากเดือน{{ getPreviousMonthThai(data_bill.tenant_bills[0]?.createdAt) }}{{ data_bill.tenant_bills[0]?.pastElectricStartUnit ? ` (${formatNumber(data_bill.tenant_bills[0]?.pastElectricStartUnit)} - ${formatNumber(data_bill.tenant_bills[0]?.pastElectricEndUnit)})` : '' }})</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastElectricUsage || 1) }}</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastElectricRate || (data_bill.tenant_bills[0]?.pastElectricPrice / (data_bill.tenant_bills[0]?.pastElectricUsage || 1))) }}</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastElectricPrice) }}</td>
-                        </tr>
-                        <tr class="row-even" v-if="data_bill.tenant_bills[0]?.pastCommunalPrice > 0">
-                            <td class="py-2 px-3 border">ค่าส่วนกลาง (ยอดจากเดือน{{ getPreviousMonthThai(data_bill.tenant_bills[0]?.createdAt) }})</td>
-                            <td class="py-2 px-3 text-right border">1</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastCommunalPrice) }}</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastCommunalPrice) }}</td>
-                        </tr>
-                        <tr class="row-odd" v-if="data_bill.tenant_bills[0]?.pastOtherPrice > 0">
-                            <td class="py-2 px-3 border">ค่าปรับ (ยอดจากเดือน{{ getPreviousMonthThai(data_bill.tenant_bills[0]?.createdAt) }})</td>
-                            <td class="py-2 px-3 text-right border">1</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastOtherPrice) }}</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.pastOtherPrice) }}</td>
+                            <td class="py-2 px-3 text-right border">{{ formatNumber(getPastUnpaidTotal(data_bill.tenant_bills[0])) }}</td>
+                            <td class="py-2 px-3 text-right border">{{ formatNumber(getPastUnpaidTotal(data_bill.tenant_bills[0])) }}</td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <!-- Bottom rows with progressively larger text -->
                     <tr>
                         <td colspan="3" class="py-2 px-3 text-right border text-xs">รวมค่าใช้จ่าย</td>
-                        <td class="py-2 px-3 text-right border text-xs">{{ formatNumber(data_bill.tenant_bills[0]?.subtotal + 
-                            (data_bill.tenant_bills[0]?.pastRoomPrice || 0) + 
-                            (data_bill.tenant_bills[0]?.pastWaterPrice || 0) + 
-                            (data_bill.tenant_bills[0]?.pastElectricPrice || 0) + 
-                            (data_bill.tenant_bills[0]?.pastCommunalPrice || 0) + 
-                            (data_bill.tenant_bills[0]?.pastOtherPrice || 0)) }}</td>
+                        <td class="py-2 px-3 text-right border text-xs">{{ formatNumber(getInvoiceChargeSubtotal(data_bill.tenant_bills[0])) }}</td>
                     </tr>
                     <tr>                      
                         <td colspan="3" class="py-2 px-3 text-right border text-xs">ภาษี ({{ data_bill.room_building?.vat_rate || 0 }}%)</td>
-                        <td class="py-2 px-3 text-right border text-xs">{{ formatNumber(data_bill.tenant_bills[0]?.vat) }}</td>
+                        <td class="py-2 px-3 text-right border text-xs">{{ formatNumber(getInvoiceVat(data_bill.tenant_bills[0])) }}</td>
                     </tr>
                     <tr>                        
-                        <td colspan="2" class="py-2 px-3 text-center border text-xs">( {{ numberToThaiText(data_bill.tenant_bills[0]?.subtotal + 
-                            (data_bill.tenant_bills[0]?.pastRoomPrice || 0) + 
-                            (data_bill.tenant_bills[0]?.pastWaterPrice || 0) + 
-                            (data_bill.tenant_bills[0]?.pastElectricPrice || 0) + 
-                            (data_bill.tenant_bills[0]?.pastCommunalPrice || 0) + 
-                            (data_bill.tenant_bills[0]?.pastOtherPrice || 0) +
-                            (data_bill.tenant_bills[0]?.vat || 0)) }} )</td>
+                        <td colspan="2" class="py-2 px-3 text-center border text-xs">( {{ numberToThaiText(getInvoiceGrandTotal(data_bill.tenant_bills[0])) }} )</td>
                         <td class="py-2 px-3 text-right font-bold border text-sm">รวม</td>
-                        <td class="py-2 px-3 text-right font-bold text-green-600 border text-sm">{{ formatNumber(data_bill.tenant_bills[0]?.subtotal + 
-                            (data_bill.tenant_bills[0]?.pastRoomPrice || 0) + 
-                            (data_bill.tenant_bills[0]?.pastWaterPrice || 0) + 
-                            (data_bill.tenant_bills[0]?.pastElectricPrice || 0) + 
-                            (data_bill.tenant_bills[0]?.pastCommunalPrice || 0) + 
-                            (data_bill.tenant_bills[0]?.pastOtherPrice || 0) +
-                            (data_bill.tenant_bills[0]?.vat || 0)) }}</td>
+                        <td class="py-2 px-3 text-right font-bold text-green-600 border text-sm">{{ formatNumber(getInvoiceGrandTotal(data_bill.tenant_bills[0])) }}</td>
                     </tr>
                     </tfoot>
                 </table>
@@ -322,6 +280,110 @@ export default {
             if (value === null || value === undefined) return '0.00';
                 let num = parseFloat(value).toFixed(2); // Ensure two decimal places
                 return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        },
+        toMoney(value) {
+            const num = Number(value);
+            if (!Number.isFinite(num)) return 0;
+            return Math.round(num * 100) / 100;
+        },
+        firstPositiveNumber(candidates = []) {
+            for (const candidate of candidates) {
+                const value = this.toMoney(candidate);
+                if (value > 0) return value;
+            }
+            return 0;
+        },
+        getPastUnpaidTotal(bill = {}) {
+            return this.toMoney(
+                this.toMoney(bill.pastRoomPrice) +
+                this.toMoney(bill.pastWaterPrice) +
+                this.toMoney(bill.pastElectricPrice) +
+                this.toMoney(bill.pastCommunalPrice) +
+                this.toMoney(bill.pastOtherPrice)
+            );
+        },
+        getWaterAfterUnit(bill = {}) {
+            const usage = this.firstPositiveNumber([
+                bill.usageWater,
+                bill.waterUsage,
+                bill.usageMeter,
+            ]);
+            const fallbackStart = this.toMoney(this.data_bill?.user_sign_contract?.startWater);
+            const afterUnit = this.firstPositiveNumber([
+                bill.lastWaterUnit,
+                bill.waterUnit,
+                bill.meterUnit,
+                bill.currentWaterUnit,
+            ]);
+            if (afterUnit > 0) return afterUnit;
+            if (fallbackStart > 0 && usage > 0) return this.toMoney(fallbackStart + usage);
+            return fallbackStart;
+        },
+        getWaterBeforeUnit(bill = {}) {
+            const afterUnit = this.getWaterAfterUnit(bill);
+            const usage = this.firstPositiveNumber([
+                bill.usageWater,
+                bill.waterUsage,
+                bill.usageMeter,
+            ]);
+            const fallbackStart = this.toMoney(this.data_bill?.user_sign_contract?.startWater);
+            if (afterUnit <= 0 && usage <= 0) {
+                return fallbackStart;
+            }
+            return this.toMoney(Math.max(0, afterUnit - usage));
+        },
+        getElectricAfterUnit(bill = {}) {
+            const usage = this.firstPositiveNumber([
+                bill.usageElectric,
+                bill.electricUsage,
+                bill.usageMeter,
+            ]);
+            const fallbackStart = this.toMoney(this.data_bill?.user_sign_contract?.startElectric);
+            const afterUnit = this.firstPositiveNumber([
+                bill.lastElectricUnit,
+                bill.lastElecUnit,
+                bill.electicUnit,
+                bill.electricUnit,
+                bill.currentElectricUnit,
+            ]);
+            if (afterUnit > 0) return afterUnit;
+            if (fallbackStart > 0 && usage > 0) return this.toMoney(fallbackStart + usage);
+            return fallbackStart;
+        },
+        getElectricBeforeUnit(bill = {}) {
+            const afterUnit = this.getElectricAfterUnit(bill);
+            const usage = this.firstPositiveNumber([
+                bill.usageElectric,
+                bill.electricUsage,
+                bill.usageMeter,
+            ]);
+            const fallbackStart = this.toMoney(this.data_bill?.user_sign_contract?.startElectric);
+            if (afterUnit <= 0 && usage <= 0) {
+                return fallbackStart;
+            }
+            return this.toMoney(Math.max(0, afterUnit - usage));
+        },
+        getCurrentChargeSubtotal(bill = {}) {
+            return this.toMoney(
+                this.toMoney(bill.roomPrice) +
+                this.toMoney(bill.waterPrice) +
+                this.toMoney(bill.electricPrice) +
+                this.toMoney(bill.communalPrice) +
+                this.toMoney(bill.otherPrice)
+            );
+        },
+        getInvoiceChargeSubtotal(bill = {}) {
+            return this.toMoney(this.getCurrentChargeSubtotal(bill) + this.getPastUnpaidTotal(bill));
+        },
+        getInvoiceVat(bill = {}) {
+            return this.toMoney(bill.vat);
+        },
+        getInvoiceGrandTotal(bill = {}) {
+            const totalField = this.toMoney(bill.total);
+            if (totalField > 0) {
+                return totalField;
+            }
+            return this.toMoney(this.getInvoiceChargeSubtotal(bill) + this.getInvoiceVat(bill));
         },
         async generatePDF(data) {
             console.log("PDFdata", data);
