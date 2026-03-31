@@ -129,17 +129,37 @@
                             {{ $store.state.buildingInfo[0].attributes.package.data?.attributes.title }}
                         </div>
 
+                        <!-- Profile popup: transparent overlay for outside-click-to-close -->
+                        <div v-if="profile_popup" class="fixed inset-0 z-[100]" @click="profile_popup = false"></div>
                         <div class="flex ml-[10px] items-center">
-                            <vs-tooltip bottom shadow interactivity not-arrow>
-                                <div class="cursor-pointer">
+                            <vs-tooltip bottom shadow not-hover not-arrow v-model="profile_popup">
+                                <div
+                                    class="flex items-center cursor-pointer rounded-[10px] px-[8px] py-[4px] transition-colors duration-150"
+                                    :class="profile_popup ? 'bg-black/10' : 'hover:bg-black/[0.06]'"
+                                    @click.stop="profile_popup = !profile_popup"
+                                >
                                     <vs-avatar size="40" v-if="$store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.url">
-                                        <img 
-                                            :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.url" />
+                                        <img :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.url" />
                                     </vs-avatar>
                                     <div v-else class="w-[40px] h-[40px] rounded-full bg-[#003765] flex items-center justify-center overflow-hidden">
                                         <img src="../assets/img/Logo-01.png" class="w-[26px] h-[26px] object-contain" />
                                     </div>
-
+                                    <div class="ml-[8px]">
+                                        <div class="text-[13px] font-bold text-[#003765] leading-tight">
+                                            {{ $store.state.buildingInfo[0].attributes.buildingName }}
+                                        </div>
+                                        <div class="text-[12px] text-[#8396A6]">
+                                            {{ $store.state.userInfo.firstName }} {{ $store.state.userInfo.lastName }}
+                                        </div>
+                                    </div>
+                                    <svg
+                                        class="ml-[6px] transition-transform duration-200"
+                                        :style="{ transform: profile_popup ? 'rotate(180deg)' : 'rotate(0deg)' }"
+                                        width="12" height="12" viewBox="0 0 12 12" fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path d="M2 4L6 8L10 4" stroke="#003765" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                    </svg>
                                 </div>
                                 <template #tooltip>
                                     <div class="content-tooltip p-[8px]">
@@ -481,7 +501,7 @@ export default {
         return {
             active: 'home',
             sidebar: false,
-            profile: true,
+            profile_popup: false,
             noti_popup: false,
             data_noti: []
         }
@@ -489,6 +509,8 @@ export default {
     },
     methods: {
         async routerTo(path) {
+            this.profile_popup = false
+            this.noti_popup = false
             await setTimeout(() => {
                 this.sidebar = false
             }, 1)
