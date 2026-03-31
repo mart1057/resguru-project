@@ -284,27 +284,6 @@
                                     </div>
                                 </template>
                             </vs-tooltip>
-                            <div class="ml-[8px]">
-                                <!-- <vs-avatar> -->
-                                {{ $store.state.buildingInfo[0].attributes.buildingName }}
-                                &nbsp;
-                                <!-- </vs-avatar> -->
-                            </div>
-                            <div>
-                                <vs-avatar size="40" v-if="$store.state.userInfo.imageProfile?.formats?.small?.url">
-                                    <img
-                                        :src="'https://api.resguru.app' + $store.state.userInfo.imageProfile?.formats?.small?.url" />
-                                </vs-avatar>
-                                <vs-avatar size="40" v-else>
-                                    {{ ($store.state.userInfo.firstName || '?').charAt(0).toUpperCase() }}
-                                </vs-avatar>
-                            </div>
-                            <div>
-                                <div class="ml-[8px]">
-                                    {{ $store.state.userInfo.firstName }} {{ }}
-                                    {{ $store.state.userInfo.lastName }}
-                                </div>
-                            </div>
                         </div>
                     </div>
                 </div>
