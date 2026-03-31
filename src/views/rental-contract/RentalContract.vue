@@ -1198,21 +1198,84 @@ export default {
           this.setOriginalUserData(payload);
         });
     },
+    isReservedContract() {
+      return this.check_rent == "reserved";
+    },
+    buildContractPayload(userId) {
+      const payload = {
+        room: this.room_detail_create.id_room,
+        contractStatus: this.isReservedContract() ? "reserved" : "rent",
+        users_permissions_user: userId,
+        checkInDate: this.room_detail_create.date_sign,
+        roomDeposit: parseInt(this.room_detail_create.room_deposit),
+      };
+
+      if (!this.isReservedContract()) {
+        payload.contractEndDate = this.room_detail_create.exp_date;
+        payload.startElectric = this.room_detail_create.ele;
+        payload.startWater = this.room_detail_create.water;
+        payload.roomInsuranceDeposit = parseInt(
+          this.room_detail_create.roomInsuranceDeposit
+        );
+        payload.contractDuration = parseInt(
+          this.room_detail_create.contract_duration
+        );
+      }
+
+      return payload;
+    },
+    updateRoomAfterContract() {
+      return axios.put(
+        "https://api.resguru.app/api/rooms/" + this.room_detail_create.id_room,
+        {
+          data: {
+            room_type: this.room_detail_create.type_room,
+            roomStatus: this.isReservedContract() ? "Reserved" : "Checked In",
+          },
+        }
+      );
+    },
+    createUtilityRecords(contractId) {
+      if (this.isReservedContract()) {
+        return Promise.resolve();
+      }
+
+      return Promise.all([
+        axios.post("https://api.resguru.app/api/water-fees", {
+          data: {
+            meterUnit: this.room_detail_create.water,
+            user_sign_contract: contractId,
+            room: this.room_detail_create.id_room,
+            usageMeter: this.room_detail_create.water,
+          },
+        }),
+        axios.post("https://api.resguru.app/api/electric-fees", {
+          data: {
+            electicUnit: this.room_detail_create.ele,
+            user_sign_contract: contractId,
+            room: this.room_detail_create.id_room,
+            usageMeter: this.room_detail_create.ele,
+          },
+        }),
+      ]);
+    },
     validateField(a, b) {
-      // this.room_detail_create.id_card == '' ||
-      if (
+      const missingBaseFields =
         this.room_detail_create.name == "" ||
-        this.room_detail_create.water == "" ||
-        this.room_detail_create.ele == "" ||
         this.room_detail_create.last_name == "" ||
         this.room_detail_create.email == "" ||
         this.room_detail_create.date_sign == "" ||
-        this.room_detail_create.exp_date == "" ||
-        this.room_detail_create.roomInsuranceDeposit == "" ||
-        this.room_detail_create.contract_duration == "" ||
-        this.room_detail_create.room_deposit == "" ||
-        this.room_detail_create.type_room == ""
-      ) {
+        this.room_detail_create.room_deposit == "";
+      const missingRentFields =
+        !this.isReservedContract() &&
+        (this.room_detail_create.water == "" ||
+          this.room_detail_create.ele == "" ||
+          this.room_detail_create.exp_date == "" ||
+          this.room_detail_create.roomInsuranceDeposit == "" ||
+          this.room_detail_create.contract_duration == "" ||
+          this.room_detail_create.type_room == "");
+
+      if (missingBaseFields || missingRentFields) {
         this.$showNotification("danger", "Please fill this form");
         this.errorFieldMessage = "Please fill this form";
       } else {
@@ -1457,8 +1520,6 @@ export default {
           });
       }
     },
-    // Fix in your submitSign method - for existing user (check_user == true)
-
     submitSign(a, b) {
     if (this.room_detail_create.check_user == true) {
         console.log("1");
@@ -1467,18 +1528,7 @@ export default {
         .then(() =>
           axios
             .post("https://api.resguru.app/api" + "/user-sign-contracts", {
-                data: {
-                    room: this.room_detail_create.id_room,
-                    contractStatus: "rent",
-                    users_permissions_user: this.room_detail_create.id,
-                    checkInDate: this.room_detail_create.date_sign,
-                    contractEndDate: this.room_detail_create.exp_date,
-                    startElectric: this.room_detail_create.ele,
-                    startWater: this.room_detail_create.water,
-                    roomDeposit: parseInt(this.room_detail_create.room_deposit),
-                    roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
-                    contractDuration: parseInt(this.room_detail_create.contract_duration),
-                },
+          data: this.buildContractPayload(this.room_detail_create.id),
             })
                 )
             .then((resp) => {
@@ -1497,36 +1547,13 @@ export default {
                 });
                 
                 this.PDFPrintRental(a, b, resp.data.data.id, userDataForPDF);
-                
-                // Update room status
-                axios.put("https://api.resguru.app/api/rooms/" + this.room_detail_create.id_room, {
-                    data: {
-                        room_type: this.room_detail_create.type_room,
-                        roomStatus: "Checked In",
-                    },
-                });
-                
-                // Create utility records
-                axios.post("https://api.resguru.app/api/water-fees", {
-                    data: {
-                        meterUnit: this.room_detail_create.water,
-                        user_sign_contract: resp.data.data.id,
-                        room: this.room_detail_create.id_room,
-                        usageMeter: this.room_detail_create.water,
-                    },
-                });
-                
-                axios.post("https://api.resguru.app/api/electric-fees", {
-                    data: {
-                        electicUnit: this.room_detail_create.ele,
-                        user_sign_contract: resp.data.data.id,
-                        room: this.room_detail_create.id_room,
-                        usageMeter: this.room_detail_create.ele,
-                    },
-                });
+
+                return Promise.all([
+                  this.updateRoomAfterContract(),
+                  this.createUtilityRecords(resp.data.data.id),
+                ]);
             })
             .catch((err) => {
-                loading.close();
                 if (err.response?.data?.error?.message) {
                     this.openNotificationRenralPage(
                         "top-right",
@@ -1563,16 +1590,7 @@ export default {
             })
             .then((resp) => {
                 return axios.post("https://api.resguru.app/api/user-sign-contracts", {
-                    data: {
-                        room: this.room_detail_create.id_room,
-                        contractStatus: "rent",
-                        users_permissions_user: resp.data.id,
-                        checkInDate: this.room_detail_create.date_sign,
-                        contractEndDate: this.room_detail_create.exp_date,
-                        roomDeposit: parseInt(this.room_detail_create.room_deposit),
-                        roomInsuranceDeposit: parseInt(this.room_detail_create.roomInsuranceDeposit),
-                        contractDuration: parseInt(this.room_detail_create.contract_duration),
-                    },
+                  data: this.buildContractPayload(resp.data.id),
                 });
             })
             .then((resp) => {
@@ -1586,15 +1604,13 @@ export default {
                 };
                 
                 this.PDFPrintRental(a, b, resp.data.data.id, userDataForPDF);
-                
-                axios.put("https://api.resguru.app/api/rooms/" + this.room_detail_create.id_room, {
-                    data: {
-                        room_type: this.room_detail_create.type_room,
-                    },
-                });
+
+                return Promise.all([
+                  this.updateRoomAfterContract(),
+                  this.createUtilityRecords(resp.data.data.id),
+                ]);
             })
             .catch((err) => {
-                loading.close();
                 if (err.response?.data?.error?.message) {
                     this.openNotificationRenralPage(
                         "top-right",
