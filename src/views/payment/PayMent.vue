@@ -218,6 +218,15 @@
                 ดาวน์โหลด
               </div>
             </div>
+            <div v-if="selected.length > 0" class="ml-[8px] mt-[12px]">
+              <vs-button
+                color="#003765"
+                :disabled="selectedGenerateableRoomIds.length === 0"
+                @click="generateSelectedInvoices"
+              >
+                สร้างบิลที่เลือก ({{ selectedGenerateableRoomIds.length }})
+              </vs-button>
+            </div>
           </div>
         </div>
       </div>
@@ -257,14 +266,27 @@
     </div>
     <div class="mt-[14px] bg-[white] rounded-[12px] p-[24px]">
       <div class="font-bold text-[20px]">ชั้น {{ name_floor }}</div>
+      <div
+        v-if="invoiceQueue.inProgress"
+        class="mt-[8px] text-[13px] text-[#5C6B79]"
+      >
+        {{ invoiceQueueStatusText }}
+      </div>
       <div class="mt-[14px]">
         <vs-table v-model="selected">
           <template #thead>
             <vs-tr>
-              <!-- <vs-th>
-                                <vs-checkbox :indeterminate="selected.length == payments.length" v-model="allCheck"
-                                    @change="selected = $vs.checkAll(selected, payments)" />
-                            </vs-th> -->
+              <vs-th>
+                <div class="inline-flex items-center justify-center bg-white rounded-[6px] p-[2px] border border-[#003765]">
+                  <vs-checkbox
+                    color="#003765"
+                    :disabled="selectableRows.length === 0"
+                    :indeterminate="selected.length > 0 && selected.length < selectableRows.length"
+                    :value="selected.length === selectableRows.length && selectableRows.length > 0"
+                    @change="selected = $event ? [...selectableRows] : []"
+                  />
+                </div>
+              </vs-th>
               <vs-th> ห้อง </vs-th>
               <vs-th> ชื่อผู้เช่า </vs-th>
               <vs-th> ประเภทห้อง </vs-th>
@@ -293,9 +315,16 @@
               :data="tr"
               :is-selected="!!selected.includes(tr)"
             >
-              <!-- <vs-td checkbox>
-                                <vs-checkbox :val="tr" v-model="selected" />
-                            </vs-td> -->
+              <vs-td checkbox>
+                <div class="inline-flex items-center justify-center bg-white rounded-[6px] p-[2px] border border-[#003765]">
+                  <vs-checkbox
+                    color="#003765"
+                    :val="tr"
+                    v-model="selected"
+                    :disabled="hasExistingBill(tr)"
+                  />
+                </div>
+              </vs-td>
               <vs-td>
                 <div
                   @click="
@@ -522,16 +551,18 @@
                   <vs-button
                     color="rgb(59,222,200)"
                     class="small"
+                    :disabled="isInvoiceLocked(tr.id)"
                     @click="generateInvoice(tr.id)"
-                    >สร้างใบแจ้งหนี้</vs-button
+                    >{{ invoiceActionLabel(tr.id) }}</vs-button
                   >
                 </div>
                 <div v-else-if="tr.user_sign_contract && (!tr.tenant_bills[0])">
                   <vs-button
                     color="rgb(59,222,200)"
                     class="small"
+                    :disabled="isInvoiceLocked(tr.id)"
                     @click="generateInvoice(tr.id)"
-                    >สร้างใบแจ้งหนี้</vs-button
+                    >{{ invoiceActionLabel(tr.id) }}</vs-button
                   >
                 </div>
                 <div v-else>
@@ -1255,6 +1286,17 @@ export default {
         'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 
         'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
       ],
+      invoiceRoomState: {},
+      invoiceMaxConcurrent: 2,
+      invoiceQueue: {
+        pending: [],
+        active: 0,
+        inProgress: false,
+        total: 0,
+        completed: 0,
+        success: 0,
+        failed: 0,
+      },
     };
   },
   created() {
@@ -1297,6 +1339,17 @@ export default {
     displayDate() {
       // Format the date for display (e.g., "2025-02")
       return `${this.selectedYear}-${String(this.selectedMonth).padStart(2, '0')}`;
+    },
+    selectedGenerateableRoomIds() {
+      return (this.selected || [])
+        .filter((room) => this.canRoomGenerateInvoice(room))
+        .map((room) => room.id);
+    },
+    selectableRows() {
+      return (this.payments || []).filter((room) => !this.hasExistingBill(room));
+    },
+    invoiceQueueStatusText() {
+      return `กำลังสร้างใบแจ้งหนี้ ${this.invoiceQueue.completed}/${this.invoiceQueue.total} | สำเร็จ ${this.invoiceQueue.success} | ไม่สำเร็จ ${this.invoiceQueue.failed}`;
     }
   },
   methods: {
@@ -1719,35 +1772,138 @@ export default {
           // loading.close()
         });
     },
-    generateInvoice(roomid) {
+    canRoomGenerateInvoice(room) {
+      if (!room || !room.user_sign_contract) {
+        return false;
+      }
+      if (!room.tenant_bills || !room.tenant_bills[0]) {
+        return true;
+      }
+      return ["Not Paid", "Partial Paid", "Over Due"].includes(
+        room.tenant_bills[0].paymentStatus
+      );
+    },
+    hasExistingBill(room) {
+      return !!(room && room.tenant_bills && room.tenant_bills[0]);
+    },
+    setInvoiceRoomState(roomid, state) {
+      this.$set(this.invoiceRoomState, String(roomid), state);
+    },
+    isInvoiceLocked(roomid) {
+      const state = this.invoiceRoomState[String(roomid)];
+      return state === "queued" || state === "generating";
+    },
+    invoiceActionLabel(roomid) {
+      const state = this.invoiceRoomState[String(roomid)];
+      if (state === "queued") {
+        return "รอคิว...";
+      }
+      if (state === "generating") {
+        return "กำลังสร้าง...";
+      }
+      return "สร้างใบแจ้งหนี้";
+    },
+    resetInvoiceQueueCounters() {
+      this.invoiceQueue.total = 0;
+      this.invoiceQueue.completed = 0;
+      this.invoiceQueue.success = 0;
+      this.invoiceQueue.failed = 0;
+    },
+    generateSelectedInvoices() {
+      const roomIds = this.selectedGenerateableRoomIds;
+      if (roomIds.length === 0) {
+        this.$showNotification("warning", "ไม่พบห้องที่สามารถสร้างใบแจ้งหนี้ได้");
+        return;
+      }
+      roomIds.forEach((roomid) => this.enqueueInvoiceGeneration(roomid));
+      this.$showNotification("#3A89CB", `เพิ่มเข้าคิว ${roomIds.length} ห้อง`);
+    },
+    enqueueInvoiceGeneration(roomid) {
+      if (!roomid || this.isInvoiceLocked(roomid)) {
+        return;
+      }
+
+      const roomId = String(roomid);
+      if (
+        this.invoiceQueue.pending.some((id) => String(id) === roomId) ||
+        this.invoiceRoomState[roomId] === "generating"
+      ) {
+        return;
+      }
+
+      this.invoiceQueue.pending.push(roomid);
+      this.setInvoiceRoomState(roomid, "queued");
+
+      if (!this.invoiceQueue.inProgress && this.invoiceQueue.active === 0) {
+        this.resetInvoiceQueueCounters();
+      }
+
+      this.invoiceQueue.total += 1;
+      this.processInvoiceQueue();
+    },
+    processInvoiceQueue() {
+      this.invoiceQueue.inProgress = true;
+
+      while (
+        this.invoiceQueue.active < this.invoiceMaxConcurrent &&
+        this.invoiceQueue.pending.length > 0
+      ) {
+        const roomid = this.invoiceQueue.pending.shift();
+        this.invoiceQueue.active += 1;
+        this.setInvoiceRoomState(roomid, "generating");
+
+        this.requestGenerateInvoice(roomid)
+          .then((response) => {
+            this.invoiceQueue.success += 1;
+            this.setInvoiceRoomState(roomid, "success");
+            this.$showNotification(
+              "#3A89CB",
+              response?.data?.meta?.message || "สร้างใบแจ้งหนี้สำเร็จ"
+            );
+          })
+          .catch(() => {
+            this.invoiceQueue.failed += 1;
+            this.setInvoiceRoomState(roomid, "failed");
+            this.$showNotification(
+              "danger",
+              "ไม่สามารถสร้างใบเรียกเก็บเงินใหม่ได้ กรุณาตรวจสอบค่าน้ำและค่าไฟเดือนปัจจุบันของห้องดังกล่าว"
+            );
+          })
+          .finally(() => {
+            this.invoiceQueue.active -= 1;
+            this.invoiceQueue.completed += 1;
+
+            if (
+              this.invoiceQueue.pending.length === 0 &&
+              this.invoiceQueue.active === 0
+            ) {
+              this.invoiceQueue.inProgress = false;
+              if (this.invoiceQueue.total > 1) {
+                this.$showNotification(
+                  "#3A89CB",
+                  `สร้างใบแจ้งหนี้เสร็จสิ้น สำเร็จ ${this.invoiceQueue.success}/${this.invoiceQueue.total} ห้อง`
+                );
+              }
+              this.filterByDate();
+              this.resetInvoiceQueueCounters();
+              this.invoiceRoomState = {};
+              return;
+            }
+
+            this.processInvoiceQueue();
+          });
+      }
+    },
+    requestGenerateInvoice(roomid) {
       const currentdate = new Date();
       const month = currentdate.getMonth() + 1;
       const year = currentdate.getFullYear();
-      // console.log("11111",this.$store.state.building)
-      // console.log("22222", roomid)
-      // console.log("22222", month)
-      // console.log("22222", year)
-      // console.log("22222", this.$store.state)
-      axios
-        .get(
-          `https://api.resguru.app/api/generateInvoice?buildingid=${this.$store.state.building}&roomid=${roomid}&month=${month}&year=${year}`
-        )
-        .then((response) => {
-          this.$showNotification("#3A89CB", response.data.meta.message);
-        })
-        .finally(() => {
-          this.filterByDate();
-        })
-        .catch((error) => {
-          const errorMessage = error.message
-            ? "ไม่สามารถสร้างใบเรียกเก็บเงินใหม่ได้ กรุณาตรวจสอบค่าน่ำและค่าไฟเดือนปัจจุบันของห้องดังกล่าว"
-            : "Error updating information";
-          // this.$showNotification("danger", errorMessage);
-          this.$showNotification(
-            "danger",
-            "ไม่สามารถสร้างใบเรียกเก็บเงินใหม่ได้ กรุณาตรวจสอบค่าน่ำและค่าไฟเดือนปัจจุบันของห้องดังกล่าว"
-          );
-        });
+      return axios.get(
+        `https://api.resguru.app/api/generateInvoice?buildingid=${this.$store.state.building}&roomid=${roomid}&month=${month}&year=${year}`
+      );
+    },
+    generateInvoice(roomid) {
+      this.enqueueInvoiceGeneration(roomid);
     },
     setUploadFilePayment() {
       this.file = this.$refs.PartialPayment.files[0];
@@ -1804,6 +1960,10 @@ export default {
     },
     hasOldDebt(bill) {
       if (!bill) return false;
+      // Do not show old-debt badge for fully paid/reviewed invoices.
+      if (["Paid", "In Review Progress"].includes(bill.paymentStatus)) {
+        return false;
+      }
       return (
         parseFloat(bill.pastRoomPrice) > 0 ||
         parseFloat(bill.pastWaterPrice) > 0 ||
