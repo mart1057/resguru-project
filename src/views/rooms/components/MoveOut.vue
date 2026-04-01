@@ -79,33 +79,36 @@
       class="w-[100%] h-[1px] mt-[34px] mb-[34px] bg-gray-200 border-0 dark:bg-gray-700"
     ></div>
     <div class="">
-      <div class="font-bold text-[16px]">ยอดค้างชำระสะสม</div>
-      <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2">
+      <div class="font-bold text-[16px] text-[#003765]">ยอดค้างชำระสะสม</div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-2">
         <div
-          class="flex flex-col justify-between h-[126px] rounded-[22px] border p-[16px] mt-[14px]"
+          class="flex flex-col justify-between min-h-[126px] rounded-[22px] border border-[#F8D4DE] bg-[#FFF8FA] p-[16px] mt-[14px]"
         >
-          <div>คงเหลือ</div>
-          <div
-            class="text-[#D44769] font-bold text-[16px]"
-            v-if="list_debt.total"
-          >
-            {{ list_debt.total }}
+          <div class="text-[#D44769] font-bold text-[18px] leading-[1.4]">
+            ยอดค้างชำระสะสม
+          </div>
+          <div class="text-[#D44769] font-bold text-[24px]">
+            {{ formatMoney(list_debt.total) }}
           </div>
         </div>
         <div
-          class="flex flex-col justify-between h-[126px] rounded-[22px] border p-[16px] mt-[14px]"
+          class="flex flex-col justify-between min-h-[126px] rounded-[22px] border border-[#D9F2E3] bg-[#F7FFFA] p-[16px] mt-[14px]"
         >
-          <div>เงินมัดจำ</div>
-          <div class="text-[#D44769] font-bold text-[16px]">
-            {{ list_debt.deposit }}
+          <div class="text-[#16803C] font-bold text-[18px] leading-[1.4]">
+            ค่าเช่าล่วงหน้า (จ่ายตอนทำสัญญา)
+          </div>
+          <div class="text-[#16803C] font-bold text-[24px]">
+            {{ formatMoney(list_debt.deposit) }}
           </div>
         </div>
         <div
-          class="flex flex-col justify-between h-[126px] rounded-[22px] border p-[16px] mt-[14px]"
+          class="flex flex-col justify-between min-h-[126px] rounded-[22px] border border-[#D9F2E3] bg-[#F7FFFA] p-[16px] mt-[14px]"
         >
-          <div>เงินประกัน</div>
-          <div class="text-[#D44769] font-bold text-[16px]">
-            {{ list_debt.deposit2 }}
+          <div class="text-[#16803C] font-bold text-[18px] leading-[1.4]">
+            เงินประกัน (จ่ายตอนทำสัญญา)
+          </div>
+          <div class="text-[#16803C] font-bold text-[24px]">
+            {{ formatMoney(list_debt.deposit2) }}
           </div>
         </div>
       </div>
@@ -446,88 +449,79 @@
             <div class="text-custom text-[18px] font-bold text-[#003765]">
               สรุปการย้ายออก
             </div>
-            <div class="w-[100%] mt-[14px]">
-              <div class="flex justify-between w-[100%]">
-                <div class="text-custom">ค้างชำระ</div>
-                <div
-                  class="text-custom"
-                  v-if="
-                    bill_detail.water || bill_detail.room || bill_detail.other
-                  "
-                >
-                  {{ total }} <span class="ml-[4px] text-custom">บาท</span>
+            <div class="w-[100%] mt-[14px] space-y-[12px]">
+              <div class="rounded-[16px] border border-[#CBEFD7] bg-[#F2FFF6] p-[14px]">
+                <div class="text-[16px] font-bold text-[#16803C] underline underline-offset-2">
+                  เงินที่ชำระไว้แล้ว
                 </div>
+                <div class="mt-[8px] flex justify-between w-[100%] text-[#16803C]">
+                  <div>ค่าเช่าล่วงหน้า (จ่ายตอนทำสัญญา)</div>
+                  <div class="font-semibold">
+                    {{ formatMoney(list_debt.deposit) }}
+                    <span class="ml-[4px]">บาท</span>
+                  </div>
+                </div>
+                <div class="mt-[4px] flex justify-between w-[100%] text-[#16803C]">
+                  <div>เงินประกัน (จ่ายตอนทำสัญญา)</div>
+                  <div class="font-semibold">
+                    {{ formatMoney(list_debt.deposit2) }}
+                    <span class="ml-[4px]">บาท</span>
+                  </div>
+                </div>
+                <div class="mt-[8px] flex justify-between w-[100%] font-bold text-[#16803C]">
+                  <div>ยอดรวม</div>
+                  <div>
+                    {{ formatMoney(getPaidTotal()) }}
+                    <span class="ml-[4px]">บาท</span>
+                  </div>
+                </div>
+              </div>
 
-                <div class="text-custom" v-else>
-                  -<span class="ml-[4px] text-custom">บาท</span>
+              <div class="rounded-[16px] border border-[#FFC9D6] bg-[#FFF5F7] p-[14px]">
+                <div class="text-[16px] font-bold text-[#D44769] underline underline-offset-2">
+                  ค่าใช้จ่ายที่เกิดขึ้น
                 </div>
-              </div>
-              <div
-                class="flex justify-between w-[100%] mt-[4px]"
-                v-for="item in options"
-              >
-                <div class="text-custom">
-                  ค่าปรับทรัพย์สินเสียหาย ({{ item.name }})
+                <div class="mt-[8px] flex justify-between w-[100%] text-[#D44769]">
+                  <div>ยอดค้างชำระสะสม</div>
+                  <div class="font-semibold">
+                    {{ formatMoney(getOutstandingTotal()) }}
+                    <span class="ml-[4px]">บาท</span>
+                  </div>
                 </div>
-                <div class="text-custom">
-                  {{ item.price }} <span class="ml-[4px] text-custom">บาท</span>
-                </div>
-              </div>
-              <div class="flex justify-between w-[100%] mt-[4px]">
-                <div class="text-custom">คืนค่ามัดจำ</div>
-                <div class="text-custom">
-                  -{{ list_debt.deposit }}
-                  <span class="ml-[4px] text-custom">บาท</span>
-                </div>
-              </div>
-              <div class="flex justify-between w-[100%] mt-[4px]">
-                <div class="text-custom">คืนเงินประกัน</div>
-                <div class="text-custom">
-                  -{{ list_debt.deposit2 }}
-                  <span class="ml-[4px] text-custom">บาท</span>
-                </div>
-              </div>
-              <div class="flex justify-between w-[100%] mt-[4px]">
-                <div class="text-custom text-[16px] font-bold">รวมทั้งสิ้น</div>
                 <div
-                  class="text-custom text-[16px] font-bold"
-                  v-if="list_debt.total"
+                  class="mt-[4px] flex justify-between w-[100%] text-[#D44769]"
+                  v-for="item in options"
+                  :key="item.name"
                 >
-                  {{
-                    totalBillItems() +
-                    -list_debt.deposit2 +
-                    -list_debt.deposit +
-                    parseInt(total)
-                  }}
-                  <span class="ml-[4px] text-custom">บาท</span>
+                  <div>ค่าปรับทรัพย์สินเสียหาย ({{ item.name }})</div>
+                  <div class="font-semibold">
+                    {{ formatMoney(item.price) }}
+                    <span class="ml-[4px]">บาท</span>
+                  </div>
                 </div>
-                <div class="text-custom text-[16px] font-bold" v-else>
-                  {{
-                    totalBillItems() + -list_debt.deposit2 + -list_debt.deposit
-                  }}
-                  <span class="ml-[4px] text-custom">บาท</span>
+                <div class="mt-[8px] flex justify-between w-[100%] font-bold text-[#D44769]">
+                  <div>ยอดรวม</div>
+                  <div>
+                    {{ formatMoney(getChargeTotal()) }}
+                    <span class="ml-[4px]">บาท</span>
+                  </div>
                 </div>
               </div>
-              <div
-                class="flex justify-between w-[100%] mt-[4px]"
-                v-if="tab == true"
-              >
-                <div class="text-custom text-[#D44769] font-bold text-[16px]">
-                  หนี้สูญ
-                  {{
-                    totalBillItems() +
-                      -list_debt.deposit2 +
-                      -list_debt.deposit +
-                      total <
-                    0
-                      ? 0
-                      : totalBillItems() +
-                        -list_debt.deposit2 +
-                        -list_debt.deposit +
-                        total
-                  }}
-                  บาท
+
+              <div class="rounded-[16px] border border-[#BFDBFE] bg-[#EFF6FF] p-[14px]">
+                <div class="flex items-center justify-between w-[100%] text-[#003765]">
+                  <div class="text-[16px] font-bold">
+                    รวมทั้งสิ้น ({{ getNetSettlementLabel() }})
+                  </div>
+                  <div class="text-[18px] font-bold">
+                    {{ formatMoney(getAbsoluteNetSettlement()) }}
+                    <span class="ml-[4px]">บาท</span>
+                  </div>
                 </div>
+              </div>
+
+              <div v-if="tab == true" class="w-[100%] text-[16px] font-bold text-[#D44769]">
+                หนี้สูญ {{ formatMoney(getBadDebtTotal()) }} บาท
               </div>
             </div>
             <div
@@ -844,10 +838,141 @@ export default {
   },
   methods: {
     addOptions(item) {
-      this.options.push(item);
+      item.remark = item.remark || "เสียหาย";
+      const optionIndex = this.options.findIndex(
+        (option) => option.name === item.name
+      );
+
+      if (optionIndex === -1) {
+        this.options.push(item);
+        return;
+      }
+
+      this.options.splice(optionIndex, 1, item);
     },
     removeOptions(item) {
-      this.options = this.options.filter((items) => item.name !== item.name);
+      this.options = this.options.filter((items) => items.name !== item.name);
+    },
+    resetInspectionState() {
+      this.options = [];
+      this.items_other = [];
+      this.list_items.forEach((item) => {
+        delete item.id;
+        item.price = 0;
+        item.check = false;
+        item.checked = true;
+        item.remark = "เสียหาย";
+      });
+    },
+    restoreDraftOptions(savedItems = []) {
+      this.resetInspectionState();
+
+      savedItems.forEach((item) => {
+        const restoredItem = {
+          id: item.id,
+          name: item.attributes?.name,
+          price: this.toNumber(item.attributes?.charge),
+          img_bf: "",
+          img_af: "",
+          remark: item.attributes?.remark || "เสียหาย",
+          check: true,
+          checked: false,
+        };
+        const matchedItem = this.list_items.find(
+          (listItem) => listItem.name === restoredItem.name
+        );
+
+        if (matchedItem) {
+          matchedItem.id = restoredItem.id;
+          matchedItem.price = restoredItem.price;
+          matchedItem.remark = restoredItem.remark;
+          matchedItem.check = true;
+          matchedItem.checked = false;
+          this.addOptions(matchedItem);
+          return;
+        }
+
+        this.items_other.push(restoredItem);
+        this.addOptions(restoredItem);
+      });
+    },
+    syncRoomDetectHistories(roomHistoryId, existingItems = []) {
+      const currentOptionNames = new Set(
+        this.options.map((item) => item.name)
+      );
+      const requests = this.options.map((element) => {
+        const payload = {
+          data: {
+            remark: element.remark || "เสียหาย",
+            charge: this.toNumber(element.price),
+            room_history: roomHistoryId,
+            name: element.name,
+          },
+        };
+
+        if (element.id) {
+          return axios
+            .put(
+              "https://api.resguru.app/api" +
+                "/room-detect-histories/" +
+                element.id,
+              payload
+            )
+            .then((response) => {
+              element.id = response.data?.data?.id || element.id;
+              return response;
+            });
+        }
+
+        return axios
+          .post(
+            "https://api.resguru.app/api" + "/room-detect-histories",
+            payload
+          )
+          .then((response) => {
+            element.id = response.data?.data?.id;
+            return response;
+          });
+      });
+
+      existingItems.forEach((item) => {
+        if (!currentOptionNames.has(item.attributes?.name)) {
+          requests.push(
+            axios.delete(
+              "https://api.resguru.app/api" +
+                "/room-detect-histories/" +
+                item.id
+            )
+          );
+        }
+      });
+
+      return Promise.all(requests);
+    },
+    getBillPayload(publishedAt) {
+      const roomPrice = this.toNumber(this.bill_detail.room);
+      const waterPrice = this.toNumber(this.bill_detail.water);
+      const electricPrice = this.toNumber(this.bill_detail.ele);
+      const otherPrice = this.toNumber(this.bill_detail.other);
+      const communalPrice = this.toNumber(this.bill_detail.communalPrice);
+      const subtotal = roomPrice + waterPrice + electricPrice + otherPrice;
+      const total =
+        subtotal + communalPrice + (subtotal + communalPrice) * 0.07;
+      const payload = {
+        roomPrice,
+        waterPrice,
+        electricPrice,
+        otherPrice,
+        communalPrice,
+        subtotal,
+        total,
+      };
+
+      if (publishedAt !== undefined) {
+        payload.publishedAt = publishedAt;
+      }
+
+      return payload;
     },
     getDetailRoom(id) {
       const loading = this.$vs.loading();
@@ -878,29 +1003,30 @@ export default {
                 this.generateInvoice();
                 //window.location.reload()
               }
-              console.log("bill", resp.data[0]);
-              this.list_debt.total = resp.data[0]?.attributes.total
-                ? resp.data[0]?.attributes.total
+              const bills = Array.isArray(resp.data) ? resp.data : [];
+              const currentBill = bills[0];
+
+              console.log("bill", currentBill);
+              this.list_debt.total = this.getAccumulatedOutstanding(bills);
+              this.bill_detail.id = currentBill?.id;
+              this.bill_detail.ele = currentBill?.attributes.electricPrice
+                ? currentBill?.attributes.electricPrice
                 : 0;
-              this.bill_detail.id = resp.data[0]?.id;
-              this.bill_detail.ele = resp.data[0]?.attributes.electricPrice
-                ? resp.data[0]?.attributes.electricPrice
+              this.bill_detail.water = currentBill?.attributes.waterPrice
+                ? currentBill?.attributes.waterPrice
                 : 0;
-              this.bill_detail.water = resp.data[0]?.attributes.waterPrice
-                ? resp.data[0]?.attributes.waterPrice
-                : 0;
-              this.bill_detail.communalPrice = resp.data[0]?.attributes
+              this.bill_detail.communalPrice = currentBill?.attributes
                 .communalPrice
-                ? resp.data[0]?.attributes.communalPrice
+                ? currentBill?.attributes.communalPrice
                 : 0;
               this.bill_detail.vat = 7;
               this.bill_detail.invoiceNumber =
-                resp.data[0]?.attributes.invoiceNumber;
-              this.bill_detail.room = resp.data[0]?.attributes.roomPrice
-                ? resp.data[0]?.attributes.roomPrice
+                currentBill?.attributes.invoiceNumber;
+              this.bill_detail.room = currentBill?.attributes.roomPrice
+                ? currentBill?.attributes.roomPrice
                 : 0;
-              this.bill_detail.other = resp.data[0]?.attributes.otherPrice
-                ? resp.data[0]?.attributes.roomPrice
+              this.bill_detail.other = currentBill?.attributes.otherPrice
+                ? currentBill?.attributes.otherPrice
                 : 0;
             })
             .finally(() => {
@@ -917,8 +1043,10 @@ export default {
                 .then((response) => response.json())
                 .then((resp) => {
                   console.log(resp?.data.length == 0);
+                  this.resetInspectionState();
+
                   if (resp?.data.length == 0) {
-                    console.log("1");
+                    this.tab = false;
                     fetch(
                       "https://api.resguru.app/api" +
                         "/rooms/" +
@@ -941,22 +1069,12 @@ export default {
                       })
                       .finally(() => {});
                   } else {
-                    (this.tab =
-                      resp.data[0]?.attributes.ExitType == "Missing"
-                        ? true
-                        : false),
-                      resp.data[0]?.attributes.room_detect_histories.data?.forEach(
-                        (item) => {
-                          this.items_other.push({
-                            id: item.id,
-                            name: item.attributes.name,
-                            price: item.attributes.charge,
-                            img_bf: "",
-                            img_af: "",
-                            remark: item.attributes.remark,
-                          });
-                        }
-                      );
+                    this.tab = resp.data[0]?.attributes.ExitType == "Missing";
+                    this.date_moveout =
+                      resp.data[0]?.attributes.date_moveout || this.date_moveout;
+                    this.restoreDraftOptions(
+                      resp.data[0]?.attributes.room_detect_histories.data || []
+                    );
                   }
                 });
               this.sumValue();
@@ -978,12 +1096,57 @@ export default {
       this.items_other.splice(i, 1);
     },
     totalBillItems() {
-      let totalPrice = 0;
-      // Loop through each item and add its price to totalPrice
-      this.options.forEach((item) => {
-        totalPrice += parseInt(item.price);
-      });
-      return parseInt(totalPrice);
+      return this.options.reduce((totalPrice, item) => {
+        return totalPrice + this.toNumber(item.price);
+      }, 0);
+    },
+    toNumber(value) {
+      const parsedValue = Number(value);
+      return Number.isFinite(parsedValue) ? parsedValue : 0;
+    },
+    formatMoney(value) {
+      return this.toNumber(value).toLocaleString("en-US");
+    },
+    getAccumulatedOutstanding(bills = []) {
+      return bills.reduce((sum, bill) => {
+        const attributes = bill?.attributes || {};
+        const remainPaid = this.toNumber(attributes.remainPaid);
+
+        if (remainPaid > 0) {
+          return sum + remainPaid;
+        }
+
+        const total = this.toNumber(attributes.total);
+        const paid = this.toNumber(attributes.paid);
+        return sum + Math.max(0, total - paid);
+      }, 0);
+    },
+    getOutstandingTotal() {
+      return this.toNumber(this.list_debt.total);
+    },
+    getPaidTotal() {
+      return (
+        this.toNumber(this.list_debt.deposit) +
+        this.toNumber(this.list_debt.deposit2)
+      );
+    },
+    getChargeTotal() {
+      return this.getOutstandingTotal() + this.totalBillItems();
+    },
+    getNetSettlement() {
+      return this.getChargeTotal() - this.getPaidTotal();
+    },
+    getAbsoluteNetSettlement() {
+      return Math.abs(this.getNetSettlement());
+    },
+    getBadDebtTotal() {
+      return Math.max(0, this.getNetSettlement());
+    },
+    getNetSettlementLabel() {
+      const netSettlement = this.getNetSettlement();
+      if (netSettlement > 0) return "ผู้เช่าต้องชำระเพิ่ม";
+      if (netSettlement < 0) return "หอพักต้องคืนเงิน";
+      return "ยอดพอดี";
     },
     darftBill() {
       fetch(
@@ -999,9 +1162,12 @@ export default {
         .then((response) => response.json())
         .then((resp) => {
           console.log(resp?.data.length == 0);
-          if (resp?.data.length == 0) {
-            //// draft ครั้งแรก
-            axios
+          const existingRoomHistory = resp?.data[0];
+          const existingDetectHistories =
+            existingRoomHistory?.attributes.room_detect_histories.data || [];
+
+          if (!existingRoomHistory) {
+            return axios
               .post("https://api.resguru.app/api" + "/room-histories", {
                 data: {
                   building: this.$store.state.building,
@@ -1010,129 +1176,58 @@ export default {
                   date_moveout: this.date_moveout,
                   user_sign_contract: this.$route.query.id_contract,
                   ExitType: this.tab ? "Missing" : "Move",
-                  // "publishedAt": null
                 },
               })
-              .then((resp) => {
-                this.options.forEach((element) => {
-                  axios.post(
-                    "https://api.resguru.app/api" + "/room-detect-histories",
-                    {
-                      data: {
-                        remark: element.remark,
-                        charge: element.price,
-                        room_history: resp.data.data.id,
-                        name: element.name,
-                      },
-                    }
-                  );
-                });
+              .then((response) => {
+                return this.syncRoomDetectHistories(response.data.data.id, []);
               })
-              .finally(() => {
-                axios.put(
+              .then(() => {
+                return axios.put(
                   "https://api.resguru.app/api" +
                     "/tenant-bills/" +
                     this.bill_detail.id,
                   {
-                    data: {
-                      roomPrice: this.bill_detail.room,
-                      waterPrice: this.bill_detail.water,
-                      electricPrice: this.bill_detail.ele,
-                      otherPrice: this.bill_detail.other,
-                      communalPrice: this.bill_detail.communalPrice,
-                      subtotal:
-                        parseInt(this.bill_detail.room) +
-                        parseInt(this.bill_detail.water) +
-                        parseInt(this.bill_detail.ele) +
-                        parseInt(this.bill_detail.other),
-                      total:
-                        parseInt(this.bill_detail.room) +
-                        parseInt(this.bill_detail.water) +
-                        parseInt(this.bill_detail.ele) +
-                        parseInt(this.bill_detail.other) +
-                        parseInt(this.bill_detail.communalPrice) +
-                        (parseInt(this.bill_detail.room) +
-                          parseInt(this.bill_detail.water) +
-                          parseInt(this.bill_detail.ele) +
-                          parseInt(this.bill_detail.other) +
-                          parseInt(this.bill_detail.communalPrice)) *
-                          0.07,
-                      // "publishedAt": null
-                    },
-                  }
-                );
-              });
-          } else {
-            ////แก้ไข draft และยังคง draft
-            axios
-              .put(
-                "https://api.resguru.app/api" +
-                  "/room-histories/" +
-                  resp?.data[0].id,
-                {
-                  data: {
-                    date_moveout: this.date_moveout,
-                    ExitType: this.tab ? "Missing" : "Move",
-                    // "publishedAt": null
-                  },
-                }
-              )
-              .then((resp) => {
-                //////////////// ไปแก้ไขตอนดึงมาแสดงด้วย
-                this.options.forEach((element) => {
-                  axios.put(
-                    "https://api.resguru.app/api" +
-                      "/room-detect-histories/" +
-                      element.id,
-                    {
-                      data: {
-                        remark: element.remark,
-                        charge: element.price,
-                        room_history: resp.data.data.id,
-                        name: element.name,
-                      },
-                    }
-                  );
-                });
-              })
-              .finally(() => {
-                axios.put(
-                  "https://api.resguru.app/api" +
-                    "/tenant-bills/" +
-                    this.bill_detail.id,
-                  {
-                    data: {
-                      roomPrice: this.bill_detail.room,
-                      waterPrice: this.bill_detail.water,
-                      electricPrice: this.bill_detail.ele,
-                      otherPrice: this.bill_detail.other,
-                      communalPrice: this.bill_detail.communalPrice,
-                      subtotal:
-                        parseInt(this.bill_detail.room) +
-                        parseInt(this.bill_detail.water) +
-                        parseInt(this.bill_detail.ele) +
-                        parseInt(this.bill_detail.other),
-                      total:
-                        parseInt(this.bill_detail.room) +
-                        parseInt(this.bill_detail.water) +
-                        parseInt(this.bill_detail.ele) +
-                        parseInt(this.bill_detail.other) +
-                        parseInt(this.bill_detail.communalPrice) +
-                        (parseInt(this.bill_detail.room) +
-                          parseInt(this.bill_detail.water) +
-                          parseInt(this.bill_detail.ele) +
-                          parseInt(this.bill_detail.other) +
-                          parseInt(this.bill_detail.communalPrice)) *
-                          0.07,
-                      // "publishedAt": null
-                    },
+                    data: this.getBillPayload(),
                   }
                 );
               });
           }
+
+          return axios
+            .put(
+              "https://api.resguru.app/api" +
+                "/room-histories/" +
+                existingRoomHistory.id,
+              {
+                data: {
+                  date_moveout: this.date_moveout,
+                  ExitType: this.tab ? "Missing" : "Move",
+                },
+              }
+            )
+            .then((response) => {
+              return this.syncRoomDetectHistories(
+                response.data.data.id,
+                existingDetectHistories
+              );
+            })
+            .then(() => {
+              return axios.put(
+                "https://api.resguru.app/api" +
+                  "/tenant-bills/" +
+                  this.bill_detail.id,
+                {
+                  data: this.getBillPayload(),
+                }
+              );
+            });
         })
-        .finally(() => {
+        .then(() => {
           this.$showNotification("#3A89CB", "บันทึกแบบร่างสำเร็จ");
+        })
+        .catch((error) => {
+          console.error(error);
+          this.$showNotification("danger", "บันทึกแบบร่างไม่สำเร็จ");
         });
     },
     submitBill() {
@@ -1149,10 +1244,23 @@ export default {
         .then((response) => response.json())
         .then((resp) => {
           console.log(resp?.data.length == 0);
-          if (resp?.data.length == 0) {
-            ///// ไม่มี draft สร้างแล้วจบ flow เลย
-            axios
-              .post("https://api.resguru.app/api" + "/room-histories", {
+          const existingRoomHistory = resp?.data[0];
+          const existingDetectHistories =
+            existingRoomHistory?.attributes.room_detect_histories.data || [];
+          const roomHistoryRequest = existingRoomHistory
+            ? axios.put(
+                "https://api.resguru.app/api" +
+                  "/room-histories/" +
+                  existingRoomHistory.id,
+                {
+                  data: {
+                    date_moveout: this.date_moveout,
+                    ExitType: this.tab ? "Missing" : "Move",
+                    publishedAt: Date.now(),
+                  },
+                }
+              )
+            : axios.post("https://api.resguru.app/api" + "/room-histories", {
                 data: {
                   building: this.$store.state.building,
                   room: this.$route.query.id_room,
@@ -1161,23 +1269,17 @@ export default {
                   date_moveout: this.date_moveout,
                   user_sign_contract: this.$route.query.id_contract,
                 },
-              })
-              .then((resp) => {
-                this.options.forEach((element) => {
-                  axios.post(
-                    "https://api.resguru.app/api" + "/room-detect-histories",
-                    {
-                      data: {
-                        remark: element.remark,
-                        charge: element.price,
-                        room_history: resp.data.data.id,
-                        name: element.name,
-                      },
-                    }
-                  );
-                });
-              })
-              .finally(() => {
+              });
+
+          return roomHistoryRequest
+            .then((response) => {
+              return this.syncRoomDetectHistories(
+                response.data.data.id,
+                existingDetectHistories
+              );
+            })
+            .then(() => {
+              return Promise.all([
                 axios.put(
                   "https://api.resguru.app/api" +
                     "/user-sign-contracts/" +
@@ -1187,43 +1289,15 @@ export default {
                       room: null,
                     },
                   }
-                );
-                axios
-                  .put(
-                    "https://api.resguru.app/api" +
-                      "/tenant-bills/" +
-                      this.bill_detail.id,
-                    {
-                      data: {
-                        roomPrice: this.bill_detail.room,
-                        waterPrice: this.bill_detail.water,
-                        electricPrice: this.bill_detail.ele,
-                        otherPrice: this.bill_detail.other,
-                        communalPrice: this.bill_detail.communalPrice,
-                        subtotal:
-                          parseInt(this.bill_detail.room) +
-                          parseInt(this.bill_detail.water) +
-                          parseInt(this.bill_detail.ele) +
-                          parseInt(this.bill_detail.other),
-                        total:
-                          parseInt(this.bill_detail.room) +
-                          parseInt(this.bill_detail.water) +
-                          parseInt(this.bill_detail.ele) +
-                          parseInt(this.bill_detail.other) +
-                          parseInt(this.bill_detail.communalPrice) +
-                          (parseInt(this.bill_detail.room) +
-                            parseInt(this.bill_detail.water) +
-                            parseInt(this.bill_detail.ele) +
-                            parseInt(this.bill_detail.other) +
-                            parseInt(this.bill_detail.communalPrice)) *
-                            0.07,
-                        publishedAt: Date.now(),
-                      },
-                    }
-                  )
-                  .then(() => {
-                    console.log(this.$route.query.id_contract);
-                  });
+                ),
+                axios.put(
+                  "https://api.resguru.app/api" +
+                    "/tenant-bills/" +
+                    this.bill_detail.id,
+                  {
+                    data: this.getBillPayload(Date.now()),
+                  }
+                ),
                 axios.put(
                   "https://api.resguru.app/api" +
                     "/rooms/" +
@@ -1233,113 +1307,21 @@ export default {
                       roomStatus: "Maintenance",
                     },
                   }
-                );
-                (this.move_confirm = !this.move_confirm),
-                  (this.move_done = true);
-                this.$router.push({
-                  path: "/rooms",
-                });
-              });
-          } else {
-            ////// มี draft แล้วจบ flow
-            axios
-              .put(
-                "https://api.resguru.app/api" +
-                  "/room-histories/" +
-                  resp?.data[0].id,
-                {
-                  data: {
-                    date_moveout: this.date_moveout,
-                    ExitType: this.tab ? "Missing" : "Move",
-                    publishedAt: Date.now(),
-                  },
-                }
-              )
-              .then((resp) => {
-                //////////////// ไปแก้ไขตอนดึงมาแสดงด้วย
-                this.options.forEach((element) => {
-                  axios.put(
-                    "https://api.resguru.app/api" +
-                      "/room-detect-histories/" +
-                      element.id,
-                    {
-                      data: {
-                        remark: element.remark,
-                        charge: element.price,
-                        room_history: resp.data.data.id,
-                        name: element.name,
-                      },
-                    }
-                  );
-                });
-              })
-              .finally(() => {
-                // axios.delete('https://api.resguru.app/api' + '/user-sign-contracts/' + this.$route.query.id_contract)
-                axios.put(
-                  "https://api.resguru.app/api" +
-                    "/user-sign-contracts/" +
-                    this.$route.query.id_contract,
-                  {
-                    data: {
-                      room: null,
-                    },
-                  }
-                );
-                axios
-                  .put(
-                    "https://api.resguru.app/api" +
-                      "/tenant-bills/" +
-                      this.bill_detail.id,
-                    {
-                      data: {
-                        roomPrice: this.bill_detail.room,
-                        waterPrice: this.bill_detail.water,
-                        electricPrice: this.bill_detail.ele,
-                        otherPrice: this.bill_detail.other,
-                        communalPrice: this.bill_detail.communalPrice,
-                        subtotal:
-                          parseInt(this.bill_detail.room) +
-                          parseInt(this.bill_detail.water) +
-                          parseInt(this.bill_detail.ele) +
-                          parseInt(this.bill_detail.other),
-                        total:
-                          parseInt(this.bill_detail.room) +
-                          parseInt(this.bill_detail.water) +
-                          parseInt(this.bill_detail.ele) +
-                          parseInt(this.bill_detail.other) +
-                          parseInt(this.bill_detail.communalPrice) +
-                          (parseInt(this.bill_detail.room) +
-                            parseInt(this.bill_detail.water) +
-                            parseInt(this.bill_detail.ele) +
-                            parseInt(this.bill_detail.other) +
-                            parseInt(this.bill_detail.communalPrice)) *
-                            0.07,
-                        publishedAt: Date.now(),
-                      },
-                    }
-                  )
-                  .then(() => {
-                    axios.put(
-                      "https://api.resguru.app/api" +
-                        "/rooms/" +
-                        this.$route.query.id_room,
-                      {
-                        data: {
-                          roomStatus: "Maintenance",
-                        },
-                      }
-                    );
-                    (this.move_confirm = !this.move_confirm),
-                      (this.move_done = true);
-                    this.$router.push({
-                      path: "/rooms",
-                    });
-                  });
-              });
-          }
+                ),
+              ]);
+            });
         })
-        .finally(() => {
+        .then(() => {
+          this.move_confirm = false;
+          this.move_done = true;
+          this.$router.push({
+            path: "/rooms",
+          });
           this.$showNotification("#3A89CB", "สำเร็จ");
+        })
+        .catch((error) => {
+          console.error(error);
+          this.$showNotification("danger", "บันทึกข้อมูลไม่สำเร็จ");
         });
     },
     PDFPrint() {
@@ -1374,11 +1356,11 @@ export default {
     },
     sumValue() {
       this.total =
-        parseInt(this.bill_detail.room) +
-        parseInt(this.bill_detail.water) +
-        parseInt(this.bill_detail.ele) +
-        parseInt(this.bill_detail.other) +
-        parseInt(this.bill_detail.communalPrice);
+        this.toNumber(this.bill_detail.room) +
+        this.toNumber(this.bill_detail.water) +
+        this.toNumber(this.bill_detail.ele) +
+        this.toNumber(this.bill_detail.other) +
+        this.toNumber(this.bill_detail.communalPrice);
     },
     getSectionItems(sectionIndex) {
         const customGroups = {
@@ -1404,12 +1386,6 @@ export default {
     },
     collapseAll() {
         this.sections.forEach(section => section.collapsed = true);
-    },
-    addOptions(item) {
-        this.options.push(item);
-    },
-    removeOptions(item) {
-        this.options = this.options.filter((items) => items.name !== item.name);
     },
   },
 };
