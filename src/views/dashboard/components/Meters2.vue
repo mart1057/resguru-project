@@ -3,8 +3,8 @@
         <div class="grid grid-cols-2 w-[100%] gap-2 mt-[10px]">
             <div class="h-[110px] p-[18px] flex flex-col justify-between bg-[#3ba7c4] rounded-[22px] text-[white]">
                 <div class="flex justify-between">
-                    <div v-if="data.sumWater" class="text-[24px] flex justify-center items-center" id="waterbox">{{
-                        data.sumWater }}</div>
+                    <div v-if="hasWaterValue" class="text-[24px] flex justify-center items-center" id="waterbox">{{
+                        waterValue }}</div>
                     <div v-else class="text-[24px] flex justify-center items-center" id="waterbox">ยังไม่จดมิเตอร์</div>
                     <div>
 
@@ -42,8 +42,7 @@
             </div>
             <div class="h-[110px] p-[18px] flex flex-col justify-between bg-[#F5D65E] rounded-[22px] text-[#003765]  ">
                 <div class="flex justify-between">
-                    <div v-if="data.sumWater" class="text-[24px] flex justify-center items-center">{{ data.sumElectric
-                        }}</div>
+                    <div v-if="hasElectricValue" class="text-[24px] flex justify-center items-center">{{ electricValue }}</div>
                     <div v-else class="text-[24px] flex justify-center items-center" id="waterbox">ยังไม่จดมิเตอร์</div>
                     <div>
 
@@ -112,6 +111,32 @@ export default {
             } else {
                 document.getElementById('contentcode').innerHTML = "Nothing to show";//if the original div is empty show this text
             }
+        },
+    },
+    computed: {
+        waterValue() {
+            const candidates = [
+                this.data?.sumWater,
+                this.data?.water,
+                this.data?.totalWater,
+                this.data?.sum_water,
+            ];
+            return candidates.find((value) => value !== undefined && value !== null);
+        },
+        electricValue() {
+            const candidates = [
+                this.data?.sumElectric,
+                this.data?.electric,
+                this.data?.totalElectric,
+                this.data?.sum_electric,
+            ];
+            return candidates.find((value) => value !== undefined && value !== null);
+        },
+        hasWaterValue() {
+            return this.waterValue !== undefined;
+        },
+        hasElectricValue() {
+            return this.electricValue !== undefined;
         },
     },
     name: 'PhBuildingsLight',

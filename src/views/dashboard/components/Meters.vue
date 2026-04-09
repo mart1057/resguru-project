@@ -43,7 +43,7 @@
                     ค่าบริการเสริม</div>
             </div>
         </div>
-        <div class="mt-[18px]" :class="data.length > 5 ? 'table-container' : ''" v-if="tab == 1 || tab == 2 || tab == 3">
+        <div class="mt-[18px]" :class="meterRows.length > 5 ? 'table-container' : ''" v-if="tab == 1 || tab == 2 || tab == 3">
             <vs-table>
                 <template #thead>
                     <vs-tr>
@@ -74,7 +74,7 @@
                     </vs-tr>
                 </template>
                 <template #tbody>
-                    <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
+                    <vs-tr :key="i" v-for="(tr, i) in meterRows" :data="tr">
                         <vs-td v-if="tab == 1 || tab == 2">
                             {{ tr.RoomNumber }}
                         </vs-td>
@@ -82,21 +82,18 @@
                             {{ getBuildingName(tr) }}
                         </vs-td>
                         <vs-td v-if="tab == 1 || tab == 2">
-                            <div v-if="tab == 1">{{ tr.water_fees[0]?.meterUnit? tr.water_fees[0]?.meterUnit : '-' }}</div>
-                            <div v-else-if="tab == 2"> {{ tr.electric_fees[0]?.electicUnit ? tr.electric_fees[0]?.electicUnit
-                                : '-' }}</div>
+                            <div v-if="tab == 1">{{ getWaterPreviousUnit(tr) }}</div>
+                            <div v-else-if="tab == 2">{{ getElectricPreviousUnit(tr) }}</div>
 
                         </vs-td>
                         <vs-td v-if="tab == 1 || tab == 2">
-                            <div v-if="tab == 1"> {{ tr.water_fees[1]?.meterUnit? tr.water_fees[1]?.meterUnit : '-' }}</div>
-                            <div v-else-if="tab == 2"> {{ tr.electric_fees[1]?.electicUnit ? tr.electric_fees[1]?.electicUnit
-                                : '-' }}</div>
+                            <div v-if="tab == 1">{{ getWaterCurrentUnit(tr) }}</div>
+                            <div v-else-if="tab == 2">{{ getElectricCurrentUnit(tr) }}</div>
 
                         </vs-td>
                         <vs-td v-if="tab == 1 || tab == 2">
-                            <div v-if="tab == 1"> {{ (tr.water_fees[0] && tr.water_fees[1]) ? (tr.water_fees[1].meterUnit - tr.water_fees[0].meterUnit) : '-' }}
-                            </div>
-                            <div v-else-if="tab == 2"> {{ (tr.electric_fees[0] && tr.electric_fees[1]) ? (tr.electric_fees[1].electicUnit - tr.electric_fees[0].electicUnit) : '-' }} </div>
+                            <div v-if="tab == 1">{{ getWaterUsage(tr) }}</div>
+                            <div v-else-if="tab == 2">{{ getElectricUsage(tr) }}</div>
                         </vs-td>
                         <vs-td v-if="tab == 3">
                             {{ tr.RoomNumber }}
@@ -105,13 +102,13 @@
                             {{ getBuildingName(tr) }}
                         </vs-td>
                         <vs-td v-if="tab == 3">
-                            {{ tr.communal_fees[0]?.communalUnit ? tr.communal_fees[0]?.communalUnit : '-' }}
+                            {{ getCommunalUnit(tr) }}
                         </vs-td>
                     </vs-tr>
                 </template>
             </vs-table>
         </div>
-        <div class="mt-[18px]" v-else-if="tab == 4" :class="data.length > 5 ? 'table-container' : ''">
+        <div class="mt-[18px]" v-else-if="tab == 4" :class="meterRows.length > 5 ? 'table-container' : ''">
             <vs-table>
                 <template #thead>
                     <vs-tr>
@@ -133,7 +130,7 @@
                     </vs-tr>
                 </template>
                 <template #tbody>
-                    <vs-tr :key="i" v-for="(tr, i) in data" :data="tr">
+                    <vs-tr :key="i" v-for="(tr, i) in meterRows" :data="tr">
                         <vs-td>
                             {{ tr.RoomNumber }}
                         </vs-td>
@@ -141,12 +138,12 @@
                             {{ getBuildingName(tr) }}
                         </vs-td>
                         <vs-td>
-                            <div v-for="item in tr.other_of_buildings">
+                            <div v-for="item in getOtherServices(tr)" :key="item.id || item.title">
                                 {{ item.title }}
                             </div>
                         </vs-td>
                         <vs-td>
-                            <div v-for="item in tr.other_of_buildings">
+                            <div v-for="item in getOtherServices(tr)" :key="item.id || item.title">
                                 {{ item.price }}
                             </div>
                         </vs-td>
@@ -162,7 +159,7 @@
 <script>
 export default {
     props: {
-        data: { type: Object },
+        data: { type: [Array, Object], default: () => [] },
         allBuilding: {
             type: Boolean,
             default: false,
@@ -178,6 +175,51 @@ export default {
         }
     },
     methods: {
+        toNumber(value) {
+            const num = Number(value);
+            return Number.isFinite(num) ? num : 0;
+        },
+        getWaterFees(room) {
+            return Array.isArray(room?.water_fees) ? room.water_fees : [];
+        },
+        getElectricFees(room) {
+            return Array.isArray(room?.electric_fees) ? room.electric_fees : [];
+        },
+        getWaterCurrentUnit(room) {
+            const fees = this.getWaterFees(room);
+            return fees[0]?.meterUnit ?? '-';
+        },
+        getWaterPreviousUnit(room) {
+            const fees = this.getWaterFees(room);
+            return fees[1]?.meterUnit ?? room?.previousWaterValue ?? '-';
+        },
+        getWaterUsage(room) {
+            const current = this.toNumber(this.getWaterCurrentUnit(room));
+            const previous = this.toNumber(this.getWaterPreviousUnit(room));
+            if (current <= 0 && previous <= 0) return '-';
+            return Math.max(0, current - previous);
+        },
+        getElectricCurrentUnit(room) {
+            const fees = this.getElectricFees(room);
+            return fees[0]?.electicUnit ?? '-';
+        },
+        getElectricPreviousUnit(room) {
+            const fees = this.getElectricFees(room);
+            return fees[1]?.electicUnit ?? room?.previousElectricValue ?? '-';
+        },
+        getElectricUsage(room) {
+            const current = this.toNumber(this.getElectricCurrentUnit(room));
+            const previous = this.toNumber(this.getElectricPreviousUnit(room));
+            if (current <= 0 && previous <= 0) return '-';
+            return Math.max(0, current - previous);
+        },
+        getCommunalUnit(room) {
+            const communalFees = Array.isArray(room?.communal_fees) ? room.communal_fees : [];
+            return communalFees[0]?.communalUnit ?? '-';
+        },
+        getOtherServices(room) {
+            return Array.isArray(room?.other_of_buildings) ? room.other_of_buildings : [];
+        },
         getBuildingName(room) {
             return (
                 room?.room_building?.buildingName ||
@@ -192,6 +234,17 @@ export default {
         }
     },
     computed: {
+        meterRows() {
+            if (Array.isArray(this.data)) {
+                return this.data;
+            }
+
+            if (Array.isArray(this.data?.roomData)) {
+                return this.data.roomData;
+            }
+
+            return [];
+        },
         // totalSum() {
         //     return this.data.other_of_buildings.reduce((acc, val) => acc + val,price, 0);
         // }

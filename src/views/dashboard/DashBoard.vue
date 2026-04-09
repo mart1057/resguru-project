@@ -97,7 +97,7 @@ export default {
   data() {
     return {
       db_meter: [],
-      db_meter2: [],
+      db_meter2: {},
       db_annocment: [],
       db_services: [],
       db_payment: [],
