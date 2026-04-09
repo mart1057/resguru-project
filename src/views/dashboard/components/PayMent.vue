@@ -165,13 +165,12 @@ export default {
                 return 'UNBILLED';
             }
 
-            if (latestBill.paymentStatus === 'Paid') {
-                return 'PAID';
-            }
-
-            if (latestBill.paymentStatus === 'Waiting Review') {
-                return 'WAITING_REVIEW';
-            }
+            const rawStatus = latestBill.paymentStatus;
+            if (rawStatus === 'Paid') return 'PAID';
+            if (rawStatus === 'Waiting Review') return 'WAITING_REVIEW';
+            if (rawStatus === 'In Review Progress') return 'IN_REVIEW_PROGRESS';
+            if (rawStatus === 'Partial Paid') return 'PARTIAL_PAID';
+            if (rawStatus === 'Not Paid') return 'UNPAID';
 
             return 'UNPAID';
         },
@@ -179,6 +178,8 @@ export default {
             const status = this.getPaymentStatus(room);
             if (status === 'PAID') return 'ชำระแล้ว';
             if (status === 'WAITING_REVIEW') return 'รอตรวจสอบ';
+            if (status === 'IN_REVIEW_PROGRESS') return 'กำลังตรวจสอบ';
+            if (status === 'PARTIAL_PAID') return 'ชำระบางส่วน';
             if (status === 'VACANT') return 'ไม่มีผู้เช่า';
             if (status === 'UNBILLED') return 'ยังไม่ออกบิล';
             return 'ยังไม่ชำระ';
@@ -187,6 +188,8 @@ export default {
             const status = this.getPaymentStatus(room);
             if (status === 'PAID') return 'bg-[#CFFBDA] text-[#0B9A3C]';
             if (status === 'WAITING_REVIEW') return 'bg-[#FFF2BC] text-[#D48C00]';
+            if (status === 'IN_REVIEW_PROGRESS') return 'bg-[#E6F4FF] text-[#0B69C7]';
+            if (status === 'PARTIAL_PAID') return 'bg-[#FFEBD6] text-[#C26A00]';
             if (status === 'VACANT') return 'bg-[#E5E7EB] text-[#4B5563]';
             if (status === 'UNBILLED') return 'bg-[#DBEAFE] text-[#1D4ED8]';
             return 'bg-[#FFE1E8] text-[#EA2F5C]';

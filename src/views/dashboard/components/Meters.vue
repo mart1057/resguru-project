@@ -179,38 +179,107 @@ export default {
             const num = Number(value);
             return Number.isFinite(num) ? num : 0;
         },
+        getNumericValue(source, keys = []) {
+            if (!source || typeof source !== 'object') return null;
+
+            for (const key of keys) {
+                const raw = source?.[key];
+                if (raw === null || raw === undefined || raw === '') continue;
+                const num = Number(raw);
+                if (Number.isFinite(num)) return num;
+            }
+
+            return null;
+        },
+        displayValue(value) {
+            return value === null || value === undefined ? '-' : value;
+        },
         getWaterFees(room) {
             return Array.isArray(room?.water_fees) ? room.water_fees : [];
         },
         getElectricFees(room) {
             return Array.isArray(room?.electric_fees) ? room.electric_fees : [];
         },
-        getWaterCurrentUnit(room) {
+        getWaterFeeCurrentNumeric(room) {
             const fees = this.getWaterFees(room);
-            return fees[0]?.meterUnit ?? '-';
+            return (
+                this.getNumericValue(fees[0], ['meterUnit']) ??
+                this.getNumericValue(room, ['newWater'])
+            );
+        },
+        getWaterFeePreviousNumeric(room) {
+            const fees = this.getWaterFees(room);
+            const explicitPrevious =
+                this.getNumericValue(fees[1], ['meterUnit']) ??
+                this.getNumericValue(room, ['previousWaterValue']) ??
+                this.getNumericValue(room?.user_sign_contract, ['startWater']);
+
+            if (explicitPrevious !== null) return explicitPrevious;
+
+            const current = this.getWaterFeeCurrentNumeric(room);
+            const usage = this.getNumericValue(fees[0], ['usageMeter']);
+            if (current !== null && usage !== null) {
+                return Math.max(0, current - usage);
+            }
+
+            return null;
+        },
+        getWaterCurrentUnit(room) {
+            return this.displayValue(this.getWaterFeeCurrentNumeric(room));
         },
         getWaterPreviousUnit(room) {
-            const fees = this.getWaterFees(room);
-            return fees[1]?.meterUnit ?? room?.previousWaterValue ?? '-';
+            return this.displayValue(this.getWaterFeePreviousNumeric(room));
         },
         getWaterUsage(room) {
-            const current = this.toNumber(this.getWaterCurrentUnit(room));
-            const previous = this.toNumber(this.getWaterPreviousUnit(room));
-            if (current <= 0 && previous <= 0) return '-';
+            const fees = this.getWaterFees(room);
+            const usageFromApi = this.getNumericValue(fees[0], ['usageMeter']);
+            if (usageFromApi !== null) return usageFromApi;
+
+            const current = this.getWaterFeeCurrentNumeric(room);
+            const previous = this.getWaterFeePreviousNumeric(room);
+            if (current === null || previous === null) return '-';
+
             return Math.max(0, current - previous);
         },
-        getElectricCurrentUnit(room) {
+        getElectricFeeCurrentNumeric(room) {
             const fees = this.getElectricFees(room);
-            return fees[0]?.electicUnit ?? '-';
+            return (
+                this.getNumericValue(fees[0], ['electicUnit', 'electricUnit', 'meterUnit']) ??
+                this.getNumericValue(room, ['newElec'])
+            );
+        },
+        getElectricFeePreviousNumeric(room) {
+            const fees = this.getElectricFees(room);
+            const explicitPrevious =
+                this.getNumericValue(fees[1], ['electicUnit', 'electricUnit', 'meterUnit']) ??
+                this.getNumericValue(room, ['previousElectricValue']) ??
+                this.getNumericValue(room?.user_sign_contract, ['startElectric']);
+
+            if (explicitPrevious !== null) return explicitPrevious;
+
+            const current = this.getElectricFeeCurrentNumeric(room);
+            const usage = this.getNumericValue(fees[0], ['usageMeter']);
+            if (current !== null && usage !== null) {
+                return Math.max(0, current - usage);
+            }
+
+            return null;
+        },
+        getElectricCurrentUnit(room) {
+            return this.displayValue(this.getElectricFeeCurrentNumeric(room));
         },
         getElectricPreviousUnit(room) {
-            const fees = this.getElectricFees(room);
-            return fees[1]?.electicUnit ?? room?.previousElectricValue ?? '-';
+            return this.displayValue(this.getElectricFeePreviousNumeric(room));
         },
         getElectricUsage(room) {
-            const current = this.toNumber(this.getElectricCurrentUnit(room));
-            const previous = this.toNumber(this.getElectricPreviousUnit(room));
-            if (current <= 0 && previous <= 0) return '-';
+            const fees = this.getElectricFees(room);
+            const usageFromApi = this.getNumericValue(fees[0], ['usageMeter']);
+            if (usageFromApi !== null) return usageFromApi;
+
+            const current = this.getElectricFeeCurrentNumeric(room);
+            const previous = this.getElectricFeePreviousNumeric(room);
+            if (current === null || previous === null) return '-';
+
             return Math.max(0, current - previous);
         },
         getCommunalUnit(room) {

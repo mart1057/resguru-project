@@ -533,8 +533,9 @@ export default {
             remark: "",
             evidence: "",
             receipt: "",
-            fileEvidenceForm: [],
-            fileReceiptForm: [],
+            fileEvidenceForm: null,
+            fileReceiptForm: null,
+            dashboard: {},
             selectedDate: null,
             filter: {
                 search: '',
@@ -557,6 +558,8 @@ export default {
     },
     created() {
         this.selectedDate = new Date().toISOString().substr(0, 7) // Set the default to current month
+        const [year] = this.selectedDate.split('-')
+        this.currentYear = parseInt(year)
         const loading = this.$vs.loading({
             opacity: 1,
         })
@@ -645,17 +648,18 @@ export default {
     },
     mounted() {
         this.filterByDate()
-        this.getIncome();
         this.getExpenseType();
     },
     methods: {
         filterByDate() {
-            const dateStr =  this.selectedDate;
-            const [a, b] = dateStr.split('-');
-            this.filter.selectedMonth = b
-            this.filter.selectedYear = a
-            this.getDashboard(this.filter.selectedMonth, this.filter.selectedYear);
-            this.getExpense(this.filter.selectedMonth, this.filter.selectedYear)
+            const dateStr = this.selectedDate;
+            if (!dateStr) return;
+            const [year, month] = dateStr.split('-');
+            this.filter.selectedMonth = month
+            this.filter.selectedYear = year
+            this.getDashboard(month, year);
+            this.getExpense(month, year)
+            this.getIncome(month, year)
         },
         routeTo(path) {
             this.$router.push({
@@ -663,29 +667,35 @@ export default {
             })
         },
         getDashboard(m,y) {
-            fetch(`https://api.resguru.app/api/getexpensedashboard?buildingid=${this.$store.state.building}`)
+            fetch(`https://api.resguru.app/api/getexpensedashboard?buildingid=${this.$store.state.building}&month=${m}&year=${y}`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getExpense()", resp.accounting.receive.toFixed(2));
+                    const receive = Number(resp?.accounting?.receive || 0);
                     const desiredOrder = ["ค่าจ้างพนักงาน", "ค่าจ้างทำของ", "ค่าซ่อมบำรุง", "ค่าอื่นๆ"];
+                    const countList = Array.isArray(resp?.expenseCategory?.counts)
+                        ? resp.expenseCategory.counts
+                        : [];
                     const counts = desiredOrder.map(type => {
-                        const item = resp.expenseCategory.counts.find(item => item.type === type);
+                        const item = countList.find(item => item.type === type);
                         return item ? item.count : 0;
                     });
                     this.label2 = desiredOrder
                     this.data2 = counts
-                    this.data.push(Math.floor(resp.accounting.receive))
-                    this.dashboard = resp
+                    this.data = [Math.floor(receive)]
+                    this.dashboard = resp || {}
                 })
         },
         getExpense(m,y) {
             const loading = this.$vs.loading()
-            // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`https://api.resguru.app/api/building-expenses?populate=*&filters[building][id][$eq]=${this.$store.state.building}&sort[0]=id:desc`)
+            const monthNum = parseInt(m);
+            const yearNum = parseInt(y);
+            const lastDay = new Date(yearNum, monthNum, 0).getDate();
+            const startDate = `${y}-${m}-01`;
+            const endDate = `${y}-${m}-${String(lastDay).padStart(2, '0')}`;
+            fetch(`https://api.resguru.app/api/building-expenses?populate=*&filters[building][id][$eq]=${this.$store.state.building}&filters[date][$gte]=${startDate}&filters[date][$lte]=${endDate}&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getExpense()", resp.data);
-                    this.expense = resp.data
+                    this.expense = Array.isArray(resp?.data) ? resp.data : []
                 }).finally(() => {
                     loading.close()
                 })
@@ -718,7 +728,7 @@ export default {
                 }
             })
             .then((resp) => {
-                if (this.fileEvidenceForm.length != 0) {
+                if (this.fileEvidenceForm) {
                     let formData = new FormData();
                     formData.append("files", this.fileEvidenceForm);
                     formData.append("refId", String(resp.data.data.id));
@@ -735,7 +745,7 @@ export default {
                     });
                 }
 
-                if (this.fileReceiptForm.length != 0) {
+                if (this.fileReceiptForm) {
                     let formDataReceipt = new FormData();
                     formDataReceipt.append("files", this.fileReceiptForm);
                     formDataReceipt.append("refId", String(resp.data.data.id));
@@ -760,7 +770,11 @@ export default {
             .finally(() => {
                 this.$showNotification('#3A89CB', 'สร้างรายจ่ายสำเร็จ');
                 this.create = false; // Close the modal after creation
-                this.getExpense(this.filter.selectedMonth, this.filter.selectedYear); // Refresh the expense list
+                this.filterByDate();
+                this.fileEvidenceForm = null;
+                this.fileReceiptForm = null;
+                if (this.$refs.fileEvidence) this.$refs.fileEvidence.value = null;
+                if (this.$refs.fileReceipt) this.$refs.fileReceipt.value = null;
             });
         },
         // createExpense() {
@@ -822,14 +836,19 @@ export default {
         //             this.$showNotification('#3A89CB', 'Expense is created Successfully')
         //         })
         // },
-        getIncome() {
+        getIncome(m, y) {
             const loading = this.$vs.loading();
-            fetch(`https://api.resguru.app/api/tenant-receipts?populate=*?populate=building&filters[building][id][$eq]=${this.$store.state.building}&sort[0]=id:desc`)
+            const monthNum = parseInt(m);
+            const yearNum = parseInt(y);
+            const lastDay = new Date(yearNum, monthNum, 0).getDate();
+            const startDateTime = `${y}-${m}-01T00:00:00.000Z`;
+            const endDateTime = `${y}-${m}-${String(lastDay).padStart(2, '0')}T23:59:59.999Z`;
+
+            fetch(`https://api.resguru.app/api/tenant-receipts?populate=*&filters[building][id][$eq]=${this.$store.state.building}&filters[createdAt][$gte]=${startDateTime}&filters[createdAt][$lte]=${endDateTime}&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getReceipt()", resp.data);
-                    this.income = resp.data;
-                    this.processIncomeData(); // Process the data after fetching
+                    this.income = Array.isArray(resp?.data) ? resp.data : [];
+                    this.processIncomeData();
                 }).finally(() => {
                     loading.close();
                 });
@@ -866,7 +885,7 @@ export default {
         selectMonth(monthIndex) {
             const month = String(monthIndex + 1).padStart(2, '0');
             this.selectedDate = `${this.currentYear}-${month}`;
-            this.getDashboard(this.selectedDate);
+            this.filterByDate();
             this.showDatePicker = false;
         },
         

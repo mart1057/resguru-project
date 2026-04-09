@@ -142,6 +142,93 @@ export default {
       const num = Number(value);
       return Number.isFinite(num) ? num : 0;
     },
+    getNumericValue(source, keys = []) {
+      if (!source || typeof source !== "object") return null;
+
+      for (const key of keys) {
+        const raw = source?.[key];
+        if (raw === null || raw === undefined || raw === "") continue;
+        const num = Number(raw);
+        if (Number.isFinite(num)) return num;
+      }
+
+      return null;
+    },
+    getRoomWaterUsage(room) {
+      const fees = Array.isArray(room?.water_fees) ? room.water_fees : [];
+      const usageFromApi = this.getNumericValue(fees[0], ["usageMeter"]);
+      if (usageFromApi !== null) return usageFromApi;
+
+      const current = this.getNumericValue(fees[0], ["meterUnit"]);
+      const previous =
+        this.getNumericValue(fees[1], ["meterUnit"]) ??
+        this.getNumericValue(room, ["previousWaterValue"]) ??
+        this.getNumericValue(room?.user_sign_contract, ["startWater"]);
+
+      if (current === null || previous === null) return 0;
+      return Math.max(0, current - previous);
+    },
+    getRoomElectricUsage(room) {
+      const fees = Array.isArray(room?.electric_fees) ? room.electric_fees : [];
+      const usageFromApi = this.getNumericValue(fees[0], ["usageMeter"]);
+      if (usageFromApi !== null) return usageFromApi;
+
+      const current = this.getNumericValue(fees[0], [
+        "electicUnit",
+        "electricUnit",
+        "meterUnit",
+      ]);
+      const previous =
+        this.getNumericValue(fees[1], ["electicUnit", "electricUnit", "meterUnit"]) ??
+        this.getNumericValue(room, ["previousElectricValue"]) ??
+        this.getNumericValue(room?.user_sign_contract, ["startElectric"]);
+
+      if (current === null || previous === null) return 0;
+      return Math.max(0, current - previous);
+    },
+    buildMeterSummaryFromRooms(roomRows) {
+      const rows = Array.isArray(roomRows) ? roomRows : [];
+      return rows.reduce(
+        (acc, room) => {
+          acc.sumWater += this.toNumber(this.getRoomWaterUsage(room));
+          acc.sumElectric += this.toNumber(this.getRoomElectricUsage(room));
+          return acc;
+        },
+        { sumWater: 0, sumElectric: 0 }
+      );
+    },
+    normalizeMeterSummary(sumMeter, roomRows) {
+      const source =
+        sumMeter && typeof sumMeter === "object" && !Array.isArray(sumMeter)
+          ? { ...sumMeter }
+          : {};
+
+      const normalizedWater =
+        this.getNumericValue(source, ["sumWater", "water", "totalWater", "sum_water"]) ??
+        0;
+      const normalizedElectric =
+        this.getNumericValue(source, [
+          "sumElectric",
+          "electric",
+          "totalElectric",
+          "sum_electric",
+        ]) ?? 0;
+
+      if (normalizedWater > 0 || normalizedElectric > 0) {
+        return {
+          ...source,
+          sumWater: normalizedWater,
+          sumElectric: normalizedElectric,
+        };
+      }
+
+      const derived = this.buildMeterSummaryFromRooms(roomRows);
+      return {
+        ...source,
+        sumWater: derived.sumWater,
+        sumElectric: derived.sumElectric,
+      };
+    },
     async getBuildingIdsForAggregation() {
       const buildingInfo = this.$store.state.buildingInfo;
 
@@ -459,12 +546,81 @@ export default {
         },
       };
     },
-    applyDashboardResponse(resp) {
+    getPaymentRowsForStatus(resp) {
+      const roomRows = Array.isArray(resp?.room?.roomData) ? resp.room.roomData : [];
+      const hasAnyBills = roomRows.some(
+        (room) => Array.isArray(room?.tenant_bills) && room.tenant_bills.length > 0
+      );
+
+      // Prefer room rows when they carry bill history, so status reflects the latest bill overall.
+      if (roomRows.length && hasAnyBills) {
+        return roomRows;
+      }
+
+      return Array.isArray(resp?.paymentStatus?.paymentStatus)
+        ? resp.paymentStatus.paymentStatus
+        : [];
+    },
+    normalizeTenantBillRecord(record) {
+      if (!record) return null;
+
+      if (record.attributes && typeof record.attributes === "object") {
+        return {
+          id: record.id,
+          ...record.attributes,
+        };
+      }
+
+      return record;
+    },
+    getPaymentRoomId(room) {
+      return room?.id || room?.room?.id || room?.user_sign_contract?.room?.id || null;
+    },
+    async fetchLatestBillByRoom(roomId) {
+      if (!roomId) return null;
+
+      try {
+        const response = await fetch(
+          `https://api.resguru.app/api/tenant-bills?filters[room][id][$eq]=${roomId}&populate=*&sort[0]=id:desc&publicationState=preview&pagination[pageSize]=1`
+        );
+        const resp = await response.json();
+        return this.normalizeTenantBillRecord(resp?.data?.[0]);
+      } catch (error) {
+        console.error("fetchLatestBillByRoom error:", error);
+        return null;
+      }
+    },
+    async enrichPaymentRowsWithLatestBills(rows) {
+      const sourceRows = Array.isArray(rows) ? rows : [];
+
+      const enriched = await Promise.all(
+        sourceRows.map(async (room) => {
+          const existingBills = Array.isArray(room?.tenant_bills) ? room.tenant_bills : [];
+          if (existingBills.length > 0 || !this.hasTenant(room)) {
+            return room;
+          }
+
+          const roomId = this.getPaymentRoomId(room);
+          const latestBill = await this.fetchLatestBillByRoom(roomId);
+          if (!latestBill) return room;
+
+          return {
+            ...room,
+            tenant_bills: [latestBill],
+          };
+        })
+      );
+
+      return enriched;
+    },
+    async applyDashboardResponse(resp) {
       this.db_meter = resp?.room?.roomData || [];
-      this.db_meter2 = resp?.sumMeter || {};
+      this.db_meter2 = this.normalizeMeterSummary(resp?.sumMeter, this.db_meter);
       this.db_annocment = resp?.announcement?.announceData || [];
       this.db_services = resp?.service?.notiData || [];
-      this.db_payment = resp?.paymentStatus?.paymentStatus || [];
+      this.db_payment = await this.enrichPaymentRowsWithLatestBills(
+        this.getPaymentRowsForStatus(resp)
+      );
       this.db_expense = {
         receive: Number(resp?.accounting?.receive || 0),
         expense: Array.isArray(resp?.accounting?.expense)
@@ -587,7 +743,7 @@ export default {
           );
         }
 
-        this.applyDashboardResponse(finalResponse);
+        await this.applyDashboardResponse(finalResponse);
       } catch (error) {
         console.error("getDashboard error:", error);
         this.db_meter = [];
