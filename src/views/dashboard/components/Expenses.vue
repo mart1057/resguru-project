@@ -462,6 +462,31 @@ export default {
             );
             return response.json();
         },
+        async fetchAllReceiptsByBuilding(buildingId) {
+            const pageSize = 100;
+            let page = 1;
+            let pageCount = 1;
+            const merged = [];
+
+            while (page <= pageCount) {
+                const response = await fetch(
+                    `https://api.resguru.app/api/tenant-receipts?populate=*&filters[building][id][$eq]=${buildingId}&sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`
+                );
+                const resp = await response.json();
+
+                merged.push(...(resp?.data || []));
+                pageCount = Number(resp?.meta?.pagination?.pageCount) || 1;
+                page += 1;
+            }
+
+            return merged;
+        },
+        getReceiptDate(item) {
+            const attributes = item?.attributes || {};
+            const dateValue = attributes.paymentDate || attributes.createdAt;
+            const date = new Date(dateValue);
+            return Number.isNaN(date.getTime()) ? null : date;
+        },
         mergeExpenseByType(expenseLists) {
             const map = {};
 
@@ -605,30 +630,29 @@ export default {
             const loading = this.$vs.loading();
             const loadReceipts = async () => {
                 if (!this.allBuilding) {
-                    const response = await fetch(
-                        `https://api.resguru.app/api/tenant-receipts?populate=*&filters[building][id][$eq]=${this.$store.state.building}&sort[0]=id:desc`
-                    );
-                    const resp = await response.json();
-                    return resp?.data || [];
+                    return this.fetchAllReceiptsByBuilding(this.$store.state.building);
                 }
 
                 const buildingIds = await this.getBuildingIdsForAggregation();
                 const results = await Promise.allSettled(
-                    buildingIds.map((buildingId) =>
-                        fetch(
-                            `https://api.resguru.app/api/tenant-receipts?populate=*&filters[building][id][$eq]=${buildingId}&sort[0]=id:desc`
-                        ).then((response) => response.json())
-                    )
+                    buildingIds.map((buildingId) => this.fetchAllReceiptsByBuilding(buildingId))
                 );
 
                 const merged = [];
                 results
                     .filter((result) => result.status === 'fulfilled')
                     .forEach((result) => {
-                        merged.push(...(result.value?.data || []));
+                        merged.push(...(result.value || []));
                     });
 
-                return merged;
+                // Prevent duplicate receipts in case APIs return overlapping data.
+                const uniqueById = new Map();
+                merged.forEach((receipt) => {
+                    if (receipt?.id != null) {
+                        uniqueById.set(receipt.id, receipt);
+                    }
+                });
+                return Array.from(uniqueById.values());
             };
 
             loadReceipts()
@@ -657,9 +681,10 @@ export default {
 
                 if (this.income.length > 0) {
                     const minCreatedAt = this.income.reduce((minDate, item) => {
-                        const createdAt = new Date(item.attributes.createdAt);
-                        return createdAt < minDate ? createdAt : minDate;
-                    }, new Date(this.income[0].attributes.createdAt));
+                        const receiptDate = this.getReceiptDate(item);
+                        if (!receiptDate) return minDate;
+                        return receiptDate < minDate ? receiptDate : minDate;
+                    }, this.getReceiptDate(this.income[0]) || new Date());
                     startDate = new Date(minCreatedAt.getFullYear(), minCreatedAt.getMonth(), 1);
                 } else {
                     startDate = new Date(now.getFullYear(), 0, 1);
@@ -708,9 +733,12 @@ export default {
                 : [null, null];
 
             this.income.forEach(item => {
-                const createdAt = new Date(item.attributes.createdAt);
-                const createdYear = createdAt.getFullYear();
-                const createdMonth = createdAt.getMonth() + 1;
+                const receiptDate = this.getReceiptDate(item);
+                if (!receiptDate) {
+                    return;
+                }
+                const createdYear = receiptDate.getFullYear();
+                const createdMonth = receiptDate.getMonth() + 1;
 
                 if (this.viewMode === 'monthly' && selectedYear && selectedMonth) {
                     if (createdYear !== selectedYear || createdMonth !== selectedMonth) {
@@ -718,11 +746,24 @@ export default {
                     }
                 }
 
-                roomTotal += parseFloat(item.attributes.roomPrice || 0);
-                waterTotal += parseFloat(item.attributes.waterPrice || 0);
-                electricTotal += parseFloat(item.attributes.electricPrice || 0);
-                commonTotal += parseFloat(item.attributes.communalPrice || 0);
-                othersTotal += parseFloat(item.attributes.otherPrice || 0);
+                const attributes = item.attributes || {};
+                const roomPrice = this.toNumber(attributes.roomPrice);
+                const waterPrice = this.toNumber(attributes.waterPrice);
+                const electricPrice = this.toNumber(attributes.electricPrice);
+                const communalPrice = this.toNumber(attributes.communalPrice);
+                const otherPrice = this.toNumber(attributes.otherPrice);
+                const categorizedTotal = roomPrice + waterPrice + electricPrice + communalPrice + otherPrice;
+
+                roomTotal += roomPrice;
+                waterTotal += waterPrice;
+                electricTotal += electricPrice;
+                commonTotal += communalPrice;
+                othersTotal += otherPrice;
+
+                if (categorizedTotal <= 0) {
+                    const fallbackPaid = this.toNumber(attributes.paidAmount || attributes.amount);
+                    othersTotal += fallbackPaid;
+                }
             });
             
             // Update the income data for the chart
