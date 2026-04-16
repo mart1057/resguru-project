@@ -313,6 +313,10 @@ export default {
     this.getWaterFee(this.id, this.month, this.year);
   },
   methods: {
+  sortByIdDesc(items = []) {
+    return [...(items || [])].sort((a, b) => (Number(b?.id) || 0) - (Number(a?.id) || 0));
+  },
+
   // Helper method to save current scroll position
   saveScrollPosition() {
     this.savedScrollPosition = window.pageYOffset || document.documentElement.scrollTop;
@@ -350,6 +354,7 @@ export default {
         
         // Process the data and initialize previousWaterValue for each entry
         const processedData = resp.data.map(item => {
+          item.water_fees = this.sortByIdDesc(item.water_fees || []);
           // Initialize the previousWaterValue for entries without water_fees[1]
           if (!item.water_fees[1]) {
             // Default to starting water value or 0
@@ -482,43 +487,30 @@ export default {
     // Convert to number and ensure it's not negative
     const numericPreviousValue = Math.max(0, Number(previousMeterUnit));
     
-    // Calculate previous month date (for createDate)
-    const currentDate = new Date();
-    const prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
-    const prevMonthFormatted = prevMonth.toISOString().split('T')[0];
-    
-    // Current month date
-    const currentMonthFormatted = currentDate.toISOString().split('T')[0];
-    
-    // First API call: Create previous month water fee
-    const createPreviousMonth = axios.post(`https://api.resguru.app/api/water-fees/`, {
+    // First create a baseline(previous) record, then create current record.
+    // Keeping this sequence ensures newest(id สูงสุด) is treated as current reading.
+    axios.post(`https://api.resguru.app/api/water-fees/`, {
       data: {
         room: roomId,
         user_sign_contract: contractId,
         meterUnit: numericPreviousValue,
         usageMeter: 0, // Previous month doesn't have usage calculation
-        createdAt: prevMonthFormatted, // Set creation date to previous month
       },
-    });
-    
-    // Second API call: Create current month water fee
-    const createCurrentMonth = axios.post(`https://api.resguru.app/api/water-fees/`, {
-      data: {
-        room: roomId,
-        user_sign_contract: contractId,
-        meterUnit: numericPreviousValue, // Set current month meter reading to 0
-        usageMeter: 0, // Set current month usage to 0
-        createdAt: currentMonthFormatted, // Set creation date to current month
-      },
-    });
-    
-    // Execute both API calls
-    Promise.all([createPreviousMonth, createCurrentMonth])
-      .then((responses) => {
-        const [prevResponse, currentResponse] = responses;
-        
-        console.log("Previous month water fee created:", prevResponse.data);
-        console.log("Current month water fee created:", currentResponse.data);
+    })
+      .then((prevResponse) => {
+        console.log("Baseline water fee created:", prevResponse.data);
+
+        return axios.post(`https://api.resguru.app/api/water-fees/`, {
+          data: {
+            room: roomId,
+            user_sign_contract: contractId,
+            meterUnit: numericPreviousValue,
+            usageMeter: 0,
+          },
+        });
+      })
+      .then((currentResponse) => {
+        console.log("Current water fee created:", currentResponse.data);
         
         this.$showNotification("#3A89CB", "สร้างบันทึกค่าน้ำสำเร็จ");
         

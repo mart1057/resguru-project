@@ -42,46 +42,11 @@
         </div>
         <div class="flex justify-between">
           <div class="flex">
-            <!-- <input
-              v-model="selectedDate"
-              type="month"
-              placeholder="ค้นหาตามหมายเลขห้อง"
-              id="datepicker"
-              @input="filterByDate()"
-              v-bind:class="{
-                'h-[36px] pl-[8px] text-[center] pr-[8px] bg-[#003765] flex cursor-pointer text-[white]  justify-center  rounded-[12px] mt-[12px]': true,
-              }"
-            /> -->
-            <div class="date-picker-container">
-            <!-- Custom month picker that works in all browsers including Safari -->
-            <div 
-              v-bind:class="{
-                'h-[36px] pl-[8px] pr-[8px] bg-[#003765] flex cursor-pointer text-[white] justify-center rounded-[12px] mt-[12px]': true,
-              }"
-              @click="showDatePicker = true"
+            <div
+              class="h-[36px] pl-[12px] pr-[12px] bg-[#003765] flex text-[white] justify-center items-center rounded-[12px] mt-[12px] text-[13px]"
             >
-              {{ displayDate }}
+              ข้อมูลล่าสุด
             </div>
-            
-            <!-- Custom overlay dropdown for month/year selection -->
-            <div v-if="showDatePicker" class="date-picker-dropdown">
-              <div class="date-picker-header">
-                <div class="year-selector">
-                  <select v-model="selectedYear" @change="updateSelectedDate">
-                    <option v-for="year in yearOptions" :key="year" :value="year">{{ year }}</option>
-                  </select>
-                </div>
-                <div class="month-selector">
-                  <select v-model="selectedMonth" @change="updateSelectedDate">
-                    <option v-for="(month, index) in monthOptions" :key="index" :value="index + 1">
-                      {{ month }}
-                    </option>
-                  </select>
-                </div>
-                <button class="close-button" @click="showDatePicker = false">✓</button>
-              </div>
-            </div>
-          </div>
             <div class="flex justify-start items-center mt-[5px] ml-[14px]">
               <input
                 class="h-[36px] w-[250px] bg-[#F3F7FA] rounded-[12px]"
@@ -136,14 +101,7 @@
                     <vs-checkbox
                       v-model="filter.select"
                       val="Not Paid"
-                      @input="
-                        getRoomBill(
-                          filter.floor,
-                          0,
-                          filter.selectedMonth,
-                          filter.selectedYear
-                        )
-                      "
+                      @input="refreshPayments()"
                     >
                       <div class="text-custom">ห้องค้างชำระ</div>
                     </vs-checkbox>
@@ -152,14 +110,7 @@
                     <vs-checkbox
                       v-model="filter.select"
                       val="Paid"
-                      @input="
-                        getRoomBill(
-                          filter.floor,
-                          0,
-                          filter.selectedMonth,
-                          filter.selectedYear
-                        )
-                      "
+                      @input="refreshPayments()"
                     >
                       <div class="text-custom">ห้องชำระเงินแล้ว</div>
                     </vs-checkbox>
@@ -168,14 +119,7 @@
                     <vs-checkbox
                       v-model="filter.select"
                       val="Partial Paid"
-                      @input="
-                        getRoomBill(
-                          filter.floor,
-                          0,
-                          filter.selectedMonth,
-                          filter.selectedYear
-                        )
-                      "
+                      @input="refreshPayments()"
                     >
                       <div class="text-custom">ห้องชำระบางส่วน</div>
                     </vs-checkbox>
@@ -300,8 +244,9 @@
                                 ค่าบริการเสริม
                             </vs-th> -->
               <vs-th> ยอดรวม </vs-th>
-              <vs-th> ค้างชำระ </vs-th>
               <vs-th> ชำระแล้ว </vs-th>
+                <vs-th> ค้างชำระ </vs-th>
+              <vs-th> วันที่สร้าง </vs-th>
               <vs-th> สถานะ </vs-th>
 
               <vs-th> Select Action </vs-th>
@@ -397,7 +342,7 @@
               <vs-td>
                 <div @click="routeTo(tr.id)">
                   <div v-if="tr.user_sign_contract && tr.tenant_bills[0]">
-                    {{ $formatNumber(tr.tenant_bills[0].remainPaid) }}
+                    {{ $formatNumber(tr.tenant_bills[0].paid) }}
                   </div>
                   <div v-else>-</div>
                 </div>
@@ -405,9 +350,22 @@
               <vs-td>
                 <div @click="routeTo(tr.id)">
                   <div v-if="tr.user_sign_contract && tr.tenant_bills[0]">
-                    {{ $formatNumber(tr.tenant_bills[0].paid) }}
+                    {{ $formatNumber(tr.tenant_bills[0].remainPaid) }}
                   </div>
                   <div v-else>-</div>
+                </div>
+              </vs-td>
+
+              <vs-td>
+                <div @click="routeTo(tr.id)">
+                  <div
+                    v-if="tr.user_sign_contract && tr.tenant_bills[0] && tr.tenant_bills[0].createdAt"
+                    class="inline-flex items-center justify-center h-[32px] px-[10px] rounded-[10px] text-[12px] font-semibold whitespace-nowrap"
+                    :class="billCreatedDateClass(tr.tenant_bills[0])"
+                  >
+                    {{ formatBillCreatedDate(tr.tenant_bills[0].createdAt) }}
+                  </div>
+                  <div v-else class="text-gray-400">-</div>
                 </div>
               </vs-td>
 
@@ -464,6 +422,13 @@
                     <vs-option label="ดูรายการใบแจ้งหนี้" value="View">
                       ดูรายการใบแจ้งหนี้
                     </vs-option>
+                    <vs-option
+                      v-if="canGenerateCurrentMonthInvoice(tr)"
+                      label="สร้างบิลเดือนนี้"
+                      value="CreateInvoice"
+                    >
+                      สร้างบิลเดือนนี้
+                    </vs-option>
                     <vs-option label="ชำระเงิน" value="Partial Payment">
                       ชำระเงิน
                     </vs-option>
@@ -501,6 +466,13 @@
                     <vs-option label="ดูรายการใบแจ้งหนี้" value="View">
                       ดูรายการใบแจ้งหนี้
                     </vs-option>
+                    <vs-option
+                      v-if="canGenerateCurrentMonthInvoice(tr)"
+                      label="สร้างบิลเดือนนี้"
+                      value="CreateInvoice"
+                    >
+                      สร้างบิลเดือนนี้
+                    </vs-option>
                     <vs-option label="ชำระเงิน" value="Partial Payment">
                       ชำระบางส่วน
                     </vs-option>
@@ -526,6 +498,13 @@
                     <vs-option label="ดูรายการใบแจ้งหนี้" value="View">
                       ดูรายการใบแจ้งหนี้
                     </vs-option>
+                    <vs-option
+                      v-if="canGenerateCurrentMonthInvoice(tr)"
+                      label="สร้างบิลเดือนนี้"
+                      value="CreateInvoice"
+                    >
+                      สร้างบิลเดือนนี้
+                    </vs-option>
                   </vs-select>
                 </div>
                 <div
@@ -544,6 +523,13 @@
                     </vs-option>
                     <vs-option label="ดูรายการใบแจ้งหนี้" value="View">
                       ดูรายการใบแจ้งหนี้
+                    </vs-option>
+                    <vs-option
+                      v-if="canGenerateCurrentMonthInvoice(tr)"
+                      label="สร้างบิลเดือนนี้"
+                      value="CreateInvoice"
+                    >
+                      สร้างบิลเดือนนี้
                     </vs-option>
                   </vs-select>
                 </div>
@@ -1262,6 +1248,7 @@ export default {
       },
       selected: [],
       payments: [],
+      allPayments: [],
       floor: [],
       tab_floor: "0",
       filter: {
@@ -1269,23 +1256,8 @@ export default {
         select: [],
         checkSelect: [],
         floor: "",
-        selectedMonth: "",
-        selectedYear: "",
       },
       name_floor: "",
-      selectedDate: null,
-      persistentFilters: {
-        month: '',
-        year: '',
-        floor: ''
-      },
-      showDatePicker: false,
-      selectedMonth: new Date().getMonth() + 1, // 1-12
-      selectedYear: new Date().getFullYear(),
-      monthOptions: [
-        'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน', 
-        'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
-      ],
       invoiceRoomState: {},
       invoiceMaxConcurrent: 2,
       invoiceQueue: {
@@ -1301,45 +1273,30 @@ export default {
   },
   created() {
     const loading = this.$vs.loading({});
-    this.filter.checkSelect = ["Not Paid", "Partial Paid", "Waiting Review", "Paid", "Over Due"];
+    this.filter.checkSelect = [
+      "Not Paid",
+      "Partial Paid",
+      "Waiting Review",
+      "In Review Progress",
+      "Paid",
+      "Over Due",
+    ];
     setTimeout(() => {
       loading.close();
     }, 1000);
   },
-  // mounted() {
-  //   (this.selectedDate = new Date().toISOString().substr(0, 7)), // Set the default to current month
-  //     this.getfloor();
-  // },
   mounted() {
-    // Set default date
-    this.selectedDate = new Date().toISOString().substr(0, 7);
-    
     // Check for saved filters
     const savedFilters = localStorage.getItem('paymentFilters');
     if (savedFilters) {
       const filters = JSON.parse(savedFilters);
-      this.filter.selectedMonth = filters.month;
-      this.filter.selectedYear = filters.year;
       this.filter.floor = filters.floor;
-      
-      // Update selectedDate to match
-      this.selectedDate = `${filters.year}-${filters.month}`;
     }
-    
+
     // Now load data
     this.getfloor();
   },
   computed: {
-    yearOptions() {
-      const currentYear = new Date().getFullYear();
-      // Generate a range of years (current year -2 to current year +2)
-      return Array.from({length: 5}, (_, i) => currentYear - 2 + i);
-    },
-    
-    displayDate() {
-      // Format the date for display (e.g., "2025-02")
-      return `${this.selectedYear}-${String(this.selectedMonth).padStart(2, '0')}`;
-    },
     selectedGenerateableRoomIds() {
       return (this.selected || [])
         .filter((room) => this.canRoomGenerateInvoice(room))
@@ -1391,55 +1348,27 @@ export default {
       localStorage.setItem(
         "paymentFilters",
         JSON.stringify({
-          month: this.filter.selectedMonth || String(this.selectedMonth).padStart(2, "0"),
-          year: this.filter.selectedYear || String(this.selectedYear),
           floor: this.filter.floor || "",
         })
       );
+    },
+    getCurrentBillingPeriod() {
+      const currentdate = new Date();
+      return {
+        month: String(currentdate.getMonth() + 1).padStart(2, "0"),
+        year: String(currentdate.getFullYear()),
+      };
+    },
+    refreshPayments(code = 0) {
+      const period = this.getCurrentBillingPeriod();
+      this.getRoomBill(this.filter.floor, code, period.month, period.year);
     },
     selectFloor(floorData, index) {
       this.tab_floor = index;
       this.filter.floor = floorData.id;
       this.name_floor = floorData.attributes.floorName;
       this.savePaymentFilters();
-      this.getRoomBill(
-        floorData.id,
-        0,
-        this.filter.selectedMonth,
-        this.filter.selectedYear
-      );
-    },
-    // filterByDate() {
-    //   const dateStr = this.selectedDate;
-    //   const [a, b] = dateStr.split("-");
-    //   this.filter.selectedMonth = b;
-    //   this.filter.selectedYear = a;
-    //   this.getRoomBill(
-    //     this.filter.floor,
-    //     0,
-    //     this.filter.selectedMonth,
-    //     this.filter.selectedYear
-    //   );
-    // },
-    updateSelectedDate() {
-      // Set the selectedDate in the format YYYY-MM
-      this.selectedDate = `${this.selectedYear}-${String(this.selectedMonth).padStart(2, '0')}`;
-      // Call your existing filter function
-      this.filterByDate();
-      // Hide the picker after selection
-      this.showDatePicker = false;
-    },
-    filterByDate() {
-      this.filter.selectedMonth = String(this.selectedMonth).padStart(2, '0');
-      this.filter.selectedYear = String(this.selectedYear);
-      this.savePaymentFilters();
-      
-      this.getRoomBill(
-        this.filter.floor,
-        0,
-        this.filter.selectedMonth,
-        this.filter.selectedYear
-      );
+      this.refreshPayments();
     },
     routeTo(roomID) {
       this.$router.push({
@@ -1483,6 +1412,18 @@ export default {
         this.partialPaymentForm.userID = roomdata.user_sign_contract.id;
         this.partialPaymentForm.building = roomdata.room_building.id;
         this.createPartialPayment = true;
+      } else if (menu_option === "CreateInvoice") {
+        if (!this.canGenerateCurrentMonthInvoice(roomdata)) {
+          this.$showNotification("warning", "ห้องนี้มีบิลเดือนปัจจุบันแล้ว");
+          if (roomdata?.tenant_bills?.[0]) {
+            roomdata.tenant_bills[0].lastEvent = "";
+          }
+          return;
+        }
+        this.generateInvoice(roomdata.id);
+        if (roomdata?.tenant_bills?.[0]) {
+          roomdata.tenant_bills[0].lastEvent = "";
+        }
       } else if (menu_option === "View") {
         this.routeTo(roomdata.id);
       } else if (menu_option === "Update") {
@@ -1712,31 +1653,158 @@ export default {
         }
       }
     },
-    getRoomBill(id, code, m, y) {
+    normalizeTenantBillRecord(record) {
+      if (!record) return null;
+
+      if (record.attributes && typeof record.attributes === "object") {
+        return {
+          id: record.id,
+          ...record.attributes,
+        };
+      }
+
+      return record;
+    },
+    normalizeRoomRecord(record) {
+      if (!record) return null;
+
+      if (!record.attributes || typeof record.attributes !== "object") {
+        return {
+          ...record,
+          tenant_bills: Array.isArray(record?.tenant_bills) ? record.tenant_bills : [],
+        };
+      }
+
+      const attrs = record.attributes;
+      const userSignContract = attrs?.user_sign_contract?.data;
+      const userData = userSignContract?.attributes?.users_permissions_user?.data;
+
+      return {
+        id: record.id,
+        RoomNumber: attrs.RoomNumber || "-",
+        room_type: attrs?.room_type?.data?.attributes || { roomTypeName: "-" },
+        room_building: attrs?.room_building?.data
+          ? {
+              id: attrs.room_building.data.id,
+              ...attrs.room_building.data.attributes,
+            }
+          : null,
+        user_sign_contract: userSignContract
+          ? {
+              id: userSignContract.id,
+              ...userSignContract.attributes,
+              users_permissions_user: userData
+                ? {
+                    id: userData.id,
+                    ...userData.attributes,
+                  }
+                : null,
+            }
+          : null,
+        tenant_bills: [],
+      };
+    },
+    async fetchRoomsByFloor(floorId) {
+      if (!floorId) return [];
+
+      try {
+        const response = await fetch(
+          `https://api.resguru.app/api/rooms?filters[room_building][id][$eq]=${this.$store.state.building}&filters[building_floor][id][$eq]=${floorId}&sort[0]=RoomNumber&populate=deep,3`
+        );
+        const resp = await response.json();
+        const rows = Array.isArray(resp?.data) ? resp.data : [];
+        return rows.map((item) => this.normalizeRoomRecord(item)).filter(Boolean);
+      } catch (error) {
+        console.error("fetchRoomsByFloor error:", error);
+        return [];
+      }
+    },
+    getPaymentRoomId(room) {
+      return room?.id || room?.room?.id || room?.user_sign_contract?.room?.id || null;
+    },
+    hasTenant(room) {
+      return !!room?.user_sign_contract;
+    },
+    async fetchLatestBillByRoom(roomId) {
+      if (!roomId) return null;
+
+      try {
+        const response = await fetch(
+          `https://api.resguru.app/api/tenant-bills?filters[room][id][$eq]=${roomId}&populate=*&sort[0]=id:desc&publicationState=preview&pagination[pageSize]=1`
+        );
+        const resp = await response.json();
+        return this.normalizeTenantBillRecord(resp?.data?.[0]);
+      } catch (error) {
+        console.error("fetchLatestBillByRoom error:", error);
+        return null;
+      }
+    },
+    async enrichRoomsWithLatestBills(rows) {
+      const sourceRows = Array.isArray(rows) ? rows : [];
+
+      return Promise.all(
+        sourceRows.map(async (room) => {
+          if (!this.hasTenant(room)) {
+            return room;
+          }
+
+          const roomId = this.getPaymentRoomId(room);
+          const latestBill = await this.fetchLatestBillByRoom(roomId);
+          if (!latestBill) {
+            return room;
+          }
+
+          return {
+            ...room,
+            tenant_bills: [latestBill],
+          };
+        })
+      );
+    },
+    applyClientFilters(code = 0) {
+      const selectedStatuses =
+        this.filter.select.length > 0 ? this.filter.select : this.filter.checkSelect;
+      const searchText = (this.filter.search || "").toLowerCase();
+
+      const filtered = (this.allPayments || []).filter((room) => {
+        const bill = Array.isArray(room?.tenant_bills) ? room.tenant_bills[0] : null;
+        const status = bill?.paymentStatus;
+
+        // Keep unbilled / no-tenant rows visible for invoice workflow.
+        const statusMatched = !status || selectedStatuses.includes(status);
+        const searchMatched =
+          code === 8
+            ? (room?.RoomNumber || "").toLowerCase().includes(searchText)
+            : !searchText ||
+              (room?.RoomNumber || "").toLowerCase().includes(searchText);
+
+        return statusMatched && searchMatched;
+      });
+
+      this.payments = filtered;
+    },
+    async getRoomBill(id, code, m, y) {
       // console.log("this.filter.floor",this.filter.floor)
       const loading = this.$vs.loading();
+      const period = this.getCurrentBillingPeriod();
+      const month = m || period.month;
+      const year = y || period.year;
       const output =
         this.filter.select.length > 0
           ? this.filter.select.join(",")
           : this.filter.checkSelect.join(",");
       // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
       fetch(
-        `https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}&floor=${id}&month=${m}&year=${y}&paymentStatus=` +
-          output
+        `https://api.resguru.app/api/getPayment?buildingid=${this.$store.state.building}&floor=${id}&month=${month}&year=${year}&paymentStatus=${output}`
       )
         .then((response) => response.json())
-        .then((resp) => {
-          // console.log("Return from getRoomBill()", resp.data);
-          if (code == 8) {
-            this.payments = resp.data.filter((item) =>
-              item.RoomNumber.toLowerCase().includes(
-                this.filter.search.toLowerCase()
-              )
-            );
-          } else {
-            this.payments = resp.data;
+        .then(async (resp) => {
+          let rows = Array.isArray(resp?.data) ? resp.data : [];
+          if (rows.length === 0) {
+            rows = await this.fetchRoomsByFloor(id);
           }
-          // this.payments = resp.data
+          this.allPayments = await this.enrichRoomsWithLatestBills(rows);
+          this.applyClientFilters(code);
         })
         .finally(() => {
           loading.close();
@@ -1782,6 +1850,37 @@ export default {
       return ["Not Paid", "Partial Paid", "Over Due"].includes(
         room.tenant_bills[0].paymentStatus
       );
+    },
+    isBillInCurrentMonth(bill) {
+      if (!bill?.createdAt) {
+        return false;
+      }
+
+      const billDate = new Date(bill.createdAt);
+      if (Number.isNaN(billDate.getTime())) {
+        return false;
+      }
+
+      const now = new Date();
+      return (
+        billDate.getMonth() === now.getMonth() &&
+        billDate.getFullYear() === now.getFullYear()
+      );
+    },
+    hasCurrentMonthBill(room) {
+      const bills = Array.isArray(room?.tenant_bills) ? room.tenant_bills : [];
+      return bills.some((bill) => this.isBillInCurrentMonth(bill));
+    },
+    canGenerateCurrentMonthInvoice(room) {
+      if (!room || !room.id || !room.user_sign_contract) {
+        return false;
+      }
+
+      if (this.isInvoiceLocked(room.id)) {
+        return false;
+      }
+
+      return !this.hasCurrentMonthBill(room);
     },
     hasExistingBill(room) {
       return !!(room && room.tenant_bills && room.tenant_bills[0]);
@@ -1983,6 +2082,30 @@ export default {
       };
       return map[status] || status || '-';
     },
+    formatBillCreatedDate(createdAt) {
+      if (!createdAt) {
+        return "-";
+      }
+
+      const billDate = new Date(createdAt);
+      if (Number.isNaN(billDate.getTime())) {
+        return "-";
+      }
+
+      const day = String(billDate.getDate()).padStart(2, "0");
+      const month = String(billDate.getMonth() + 1).padStart(2, "0");
+      const year = billDate.getFullYear();
+      return `${day}/${month}/${year}`;
+    },
+    billCreatedDateClass(bill) {
+      if (!bill?.createdAt) {
+        return "bg-[#F3F4F6] text-[#6B7280]";
+      }
+
+      return this.isBillInCurrentMonth(bill)
+        ? "bg-[#CFFBDA] text-[#0B9A3C]"
+        : "bg-[#FFE1E8] text-[#EA2F5C]";
+    },
     paymentStatusClass(status) {
       if (status === 'Paid') {
         return 'bg-[#CFFBDA] text-[#0B9A3C]';
@@ -1997,29 +2120,17 @@ export default {
       return 'bg-[#FFF2BC] text-[#D48C00]';
     },
     filterData() {
-      this.payments = this.payments.filter((item) =>
-        item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase())
-      );
-      if (this.filter.search == "") {
-        this.getRoomBill(
-          this.filter.floor,
-          0,
-          this.filter.selectedMonth,
-          this.filter.selectedYear
-        );
-      }
+      this.applyClientFilters();
     },
     handleKeyDown(event) {
       // Check if the pressed key is the backspace key
       if (event.keyCode === 8) {
-        this.getRoomBill(
-          this.filter.floor,
-          8,
-          this.filter.selectedMonth,
-          this.filter.selectedYear
-        );
+        this.applyClientFilters(8);
         // Perform your desired action here when backspace is pressed
       }
+    },
+    filterByDate() {
+      this.refreshPayments();
     },
   },
 };

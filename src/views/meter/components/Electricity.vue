@@ -315,6 +315,10 @@ export default {
   },
   methods: {
 
+    sortByIdDesc(items = []) {
+      return [...(items || [])].sort((a, b) => (Number(b?.id) || 0) - (Number(a?.id) || 0));
+    },
+
     
     // Helper method to calculate usage meter
     calculateUsageMeter(currentReading, previousReading) {
@@ -361,6 +365,7 @@ export default {
         
         // Process the data and initialize previousElectricValue for each entry
         const processedData = resp.data.map(item => {
+          item.electric_fees = this.sortByIdDesc(item.electric_fees || []);
           // Initialize the previousElectricValue for entries without electric_fees[1]
           if (!item.electric_fees[1]) {
             // Default to starting electric value or 0
@@ -404,43 +409,30 @@ export default {
     // Convert to number and ensure it's not negative
     const numericPreviousValue = Math.max(0, Number(electicUnit));
     
-    // Calculate previous month date (for createDate)
-    const currentDate = new Date();
-    const prevMonth = new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1);
-    const prevMonthFormatted = prevMonth.toISOString().split('T')[0];
-    
-    // Current month date
-    const currentMonthFormatted = currentDate.toISOString().split('T')[0];
-    
-    // First API call: Create previous month electric fee
-    const createPreviousMonth = axios.post(`https://api.resguru.app/api/electric-fees/`, {
+    // First create a baseline(previous) record, then create current record.
+    // Keeping this sequence ensures newest(id สูงสุด) is treated as current reading.
+    axios.post(`https://api.resguru.app/api/electric-fees/`, {
       data: {
         room: roomId,
         user_sign_contract: contractId,
         electicUnit: numericPreviousValue,
         usageMeter: 0, // Previous month doesn't have usage calculation
-        createdAt: prevMonthFormatted, // Set creation date to previous month
       },
-    });
-    
-    // Second API call: Create current month electric fee
-    const createCurrentMonth = axios.post(`https://api.resguru.app/api/electric-fees/`, {
-      data: {
-        room: roomId,
-        user_sign_contract: contractId,
-        electicUnit: numericPreviousValue, // Set current month meter reading to 0
-        usageMeter: 0, // Set current month usage to 0
-        createdAt: currentMonthFormatted, // Set creation date to current month
-      },
-    });
-    
-    // Execute both API calls
-    Promise.all([createPreviousMonth, createCurrentMonth])
-      .then((responses) => {
-        const [prevResponse, currentResponse] = responses;
-        
-        console.log("Previous month electric fee created:", prevResponse.data);
-        console.log("Current month electric fee created:", currentResponse.data);
+    })
+      .then((prevResponse) => {
+        console.log("Baseline electric fee created:", prevResponse.data);
+
+        return axios.post(`https://api.resguru.app/api/electric-fees/`, {
+          data: {
+            room: roomId,
+            user_sign_contract: contractId,
+            electicUnit: numericPreviousValue,
+            usageMeter: 0,
+          },
+        });
+      })
+      .then((currentResponse) => {
+        console.log("Current electric fee created:", currentResponse.data);
         
         this.$showNotification("#3A89CB", "สร้างมิเตอร์ไฟฟ้าเดือนก่อนหน้าและเดือนปัจจุบันสำเร็จ");
         
