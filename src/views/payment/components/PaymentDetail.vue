@@ -730,7 +730,7 @@
           <template #tbody>
             <vs-tr :key="i" v-for="(tr, i) in userEvidencePayment" :data="tr">
               <vs-td>
-                {{ convertDateNoTime(tr.attributes.createdAt) }}
+                {{ formatEvidenceTransferDateTime(tr.attributes) }}
               </vs-td>
               <!-- <vs-td>
                                 {{ tr.attributes.tenant_bills.data[0].attributes.invoiceNumber }}
@@ -1621,6 +1621,22 @@ export default {
       } else {
         return text;
       }
+    },
+    formatEvidenceTransferDateTime(attributes = {}) {
+      const paymentDate = attributes.paymentDate || attributes.createdAt;
+      const formattedDate = paymentDate
+        ? this.convertDateNoTime(paymentDate)
+        : "-";
+
+      const paymentTime = typeof attributes.paymentTime === "string"
+        ? attributes.paymentTime.replace(/\.\d+$/, "").trim()
+        : "";
+
+      if (!paymentTime) {
+        return formattedDate;
+      }
+
+      return `${formattedDate} ${paymentTime}`;
     },
     toMoney(value) {
       const num = Number(value);
