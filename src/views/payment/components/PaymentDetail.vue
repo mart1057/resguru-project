@@ -1622,6 +1622,24 @@ export default {
         return text;
       }
     },
+    getCurrentApprovePaymentDate(date = new Date()) {
+      return date.toISOString().slice(0, 10);
+    },
+    getCurrentApprovePaymentTime(date = new Date()) {
+      return date.toTimeString().slice(0, 5);
+    },
+    normalizeApprovePaymentDate(value) {
+      if (!value) {
+        return this.getCurrentApprovePaymentDate();
+      }
+
+      if (/^\d{2}\/\d{2}\/\d{4}$/.test(value)) {
+        const [day, month, year] = value.split("/");
+        return `${year}-${month}-${day}`;
+      }
+
+      return value;
+    },
     formatEvidenceTransferDateTime(attributes = {}) {
       const paymentDate = attributes.paymentDate || attributes.createdAt;
       const formattedDate = paymentDate
@@ -1906,6 +1924,10 @@ export default {
         // this.fullPaymentForm.accountBankName = "test"
         this.createPartialPayment = true;
       } else if (menu_option == "Approve Payment") {
+  const now = new Date();
+  this.approvePaymentForm.paymentDate = this.getCurrentApprovePaymentDate(now);
+  this.approvePaymentForm.paymentTime = this.getCurrentApprovePaymentTime(now);
+
   console.log("Payment approval for evidence ID:", trID);
   
   // For tenant evidence payments, we need to find the associated invoice
@@ -1968,11 +1990,6 @@ export default {
     if (evidencePayment.attributes.evidence && evidencePayment.attributes.evidence.data) {
       this.approvePaymentForm.evidenceUrl = 'https://api.resguru.app' + evidencePayment.attributes.evidence.data.attributes.url;
       this.approvePaymentForm.evidenceName = evidencePayment.attributes.evidence.data.attributes.name;
-    }
-    
-    // Set payment date from evidence
-    if (evidencePayment.attributes.createdAt) {
-      this.approvePaymentForm.paymentDate = this.convertDateNoTime(evidencePayment.attributes.createdAt);
     }
     
     this.approvePaymentForm.building = evidencePayment.attributes.building.data.id;
@@ -2387,6 +2404,8 @@ export default {
     // },
 createReceipt() {
   let today = new Date();
+  const paidDate = this.normalizeApprovePaymentDate(this.approvePaymentForm.paymentDate);
+  const paidTime = this.approvePaymentForm.paymentTime || this.getCurrentApprovePaymentTime(today);
       
   axios
     .post("https://api.resguru.app/api/approvePayment", {
@@ -2397,7 +2416,8 @@ createReceipt() {
         year: today.getFullYear(),
         evidenceid: this.approvePaymentForm.tenant_evidence_payment,
         paidAmount: this.approvePaymentForm.afterFine || this.approvePaymentForm.amount,
-        paidDate: this.approvePaymentForm.paymentDate || today.toISOString().split('T')[0]
+        paidDate: paidDate,
+        paidTime: paidTime
       }
     })
     .then((res) => {
