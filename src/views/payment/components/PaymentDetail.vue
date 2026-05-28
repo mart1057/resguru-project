@@ -1593,6 +1593,7 @@ export default {
         evidenceUrl: "",
         evidenceName: ""
       },
+      approvalAllocationBase: null,
       convertDateNoTime,
     };
   },
@@ -1991,6 +1992,15 @@ export default {
       const paymentSummary = this.buildApprovePaymentSummary(invoicesForApproval);
       console.log("Using invoice summary for approval:", paymentSummary, invoicesForApproval);
 
+      this.approvalAllocationBase = {
+        roomPrice: paymentSummary.roomPrice,
+        waterPrice: paymentSummary.waterPrice,
+        electricPrice: paymentSummary.electricPrice,
+        communalPrice: paymentSummary.communalPrice,
+        otherPrice: paymentSummary.otherPrice,
+        carryOverAmount: paymentSummary.carryOverAmount,
+      };
+
       this.approvePaymentForm.roomPrice = paymentSummary.roomPrice.toFixed(2);
       this.approvePaymentForm.waterPrice = paymentSummary.waterPrice.toFixed(2);
       this.approvePaymentForm.electricPrice = paymentSummary.electricPrice.toFixed(2);
@@ -2017,6 +2027,8 @@ export default {
           ? `${primaryInvoice.attributes.invoiceNumber} +${invoicesForApproval.length - 1}`
           : primaryInvoice.attributes.invoiceNumber;
       this.approvePaymentForm.invoiceID = primaryInvoice.id;
+
+      this.applyPaymentAllocationToApprovalForm();
     }
     
     // Set evidence details
@@ -2439,6 +2451,8 @@ createReceipt() {
   let today = new Date();
   const paidDate = this.normalizeApprovePaymentDate(this.approvePaymentForm.paymentDate);
   const paidTime = this.approvePaymentForm.paymentTime || this.getCurrentApprovePaymentTime(today);
+  const fineAmount = Number(this.approvePaymentForm.fineAmount) || 0;
+  const paidAmount = Number(this.approvePaymentForm.afterFine || this.approvePaymentForm.amount || 0);
       
   axios
     .post("https://api.resguru.app/api/approvePayment", {
@@ -2448,7 +2462,8 @@ createReceipt() {
         month: today.getMonth() + 1,
         year: today.getFullYear(),
         evidenceid: this.approvePaymentForm.tenant_evidence_payment,
-        paidAmount: this.approvePaymentForm.afterFine || this.approvePaymentForm.amount,
+        paidAmount,
+        fineAmount,
         paidDate: paidDate,
         paidTime: paidTime
       }
@@ -2510,13 +2525,41 @@ createReceipt() {
         this.approvePaymentForm.amount - this.approvePaymentForm.fineamount;
       document.getElementById("afterFine").value = result;
     },
+    applyPaymentAllocationToApprovalForm() {
+      if (!this.approvalAllocationBase) {
+        return;
+      }
+
+      const availablePayment = Number(this.approvePaymentForm.afterFine || this.approvePaymentForm.amount || 0);
+      let remainingPayment = Math.max(0, availablePayment);
+
+      const allocationOrder = [
+        "carryOverAmount",
+        "roomPrice",
+        "waterPrice",
+        "electricPrice",
+        "communalPrice",
+        "otherPrice",
+      ];
+
+      allocationOrder.forEach((key) => {
+        const originalAmount = Number(this.approvalAllocationBase[key] || 0);
+        const appliedAmount = Math.min(remainingPayment, originalAmount);
+        const remainingAmount = Math.max(0, originalAmount - appliedAmount);
+
+        this.approvePaymentForm[key] = remainingAmount.toFixed(2);
+        remainingPayment = Math.max(0, remainingPayment - appliedAmount);
+      });
+
+      this.recalculateVat();
+    },
     calAfterFine() {
       const fineAmount = parseFloat(this.approvePaymentForm.fineAmount) || 0;
       const amount = parseFloat(this.approvePaymentForm.amount) || 0;
-      const afterFine = amount - fineAmount;
+      const afterFine = Math.max(0, amount - fineAmount);
       
-      this.approvePaymentForm.afterFine = afterFine;
-      // No need to set DOM value as we're using v-model binding with formatting
+      this.approvePaymentForm.afterFine = Number(afterFine.toFixed(2));
+      this.applyPaymentAllocationToApprovalForm();
     },
     
     getNextReceiptNumber(baseNumber) {
@@ -2569,26 +2612,35 @@ createReceipt() {
       return `ค่าใช้จ่ายค้างจากเดือน${formattedMonth}`;
     },
 
-    formatPreviousMonthCarryOverLabel(dateString) {
+    getPreviousMonthThaiName(dateString) {
       if (!dateString) {
-        return "ค่าใช้จ่ายค้างจากเดือนก่อนหน้า";
+        return "";
       }
 
       const date = new Date(dateString);
       if (Number.isNaN(date.getTime())) {
-        return "ค่าใช้จ่ายค้างจากเดือนก่อนหน้า";
+        return "";
       }
 
       date.setMonth(date.getMonth() - 1);
-      return this.formatCarryOverLabel(date.toISOString());
+
+      const thaiMonths = [
+        "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน",
+        "พฤษภาคม", "มิถุนายน", "กรกฎาคม", "สิงหาคม",
+        "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม"
+      ];
+
+      return thaiMonths[date.getMonth()] || "";
     },
 
-    formatNewerBillCarryOverLabel(dateString) {
-      if (!dateString) return "ยอดบิลล่าสุดที่ยังค้างชำระ";
-      const date = new Date(dateString);
-      if (Number.isNaN(date.getTime())) return "ยอดบิลล่าสุดที่ยังค้างชำระ";
-      const formattedMonth = new Intl.DateTimeFormat("th-TH", { month: "long", year: "numeric" }).format(date);
-      return `ยอดบิลเดือน${formattedMonth}`;
+    formatPreviousMonthCarryOverLabel(dateString) {
+      const previousMonthName = this.getPreviousMonthThaiName(dateString);
+
+      if (!previousMonthName) {
+        return "ยอดค้างจากเดือนก่อนหน้า";
+      }
+
+      return `ยอดค้างจากเดือน${previousMonthName}`;
     },
 
     buildApprovePaymentSummary(invoices) {
@@ -2611,13 +2663,7 @@ createReceipt() {
         communalPrice: parseFloat(primaryAttributes.communalPrice) || 0,
         otherPrice: parseFloat(primaryAttributes.otherPrice) || 0,
         carryOverAmount,
-        carryOverLabel: primaryInvoice === latestInvoice && invoices.length === 1
-          ? this.formatNewerBillCarryOverLabel(primaryAttributes.createdAt)
-          : invoices.length > 1
-            ? this.formatNewerBillCarryOverLabel(
-                (invoices[invoices.length - 1]?.attributes || {}).createdAt
-              )
-            : this.formatPreviousMonthCarryOverLabel(primaryAttributes.createdAt),
+        carryOverLabel: this.formatPreviousMonthCarryOverLabel(primaryAttributes.createdAt),
         vat: parseFloat(primaryAttributes.vat) || 0,
         total: totalOutstanding,
       };
