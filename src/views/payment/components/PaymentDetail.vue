@@ -1670,21 +1670,48 @@ export default {
 
       return this.toMoney(Math.max(0, total - paid));
     },
+    getInvoiceRemainingAmount(invoice = {}) {
+      const attributes = invoice.attributes || invoice || {};
+      const storedRemainPaid = Number.isFinite(attributes.remainPaid)
+        ? this.toMoney(attributes.remainPaid)
+        : null;
+
+      if (storedRemainPaid !== null) {
+        return storedRemainPaid;
+      }
+
+      return this.getExpectedRemain(attributes);
+    },
+    getLatestInvoice(invoices = []) {
+      if (!Array.isArray(invoices) || invoices.length === 0) {
+        return null;
+      }
+
+      return [...invoices].sort((a, b) => {
+        const aDate = new Date((a.attributes || a).createdAt || 0).getTime();
+        const bDate = new Date((b.attributes || b).createdAt || 0).getTime();
+
+        if (aDate !== bDate) {
+          return bDate - aDate;
+        }
+
+        return (b.id || 0) - (a.id || 0);
+      })[0];
+    },
     computeOutstandingFromInvoices(invoices = []) {
       if (!Array.isArray(invoices) || invoices.length === 0) {
         return 0;
       }
 
-      let totalSum = 0;
-      let paidSum = 0;
+      let totalOutstanding = 0;
 
       invoices.forEach((invoice) => {
-        const attributes = invoice.attributes || invoice || {};
-        totalSum = this.toMoney(totalSum + this.toMoney(attributes.total));
-        paidSum = this.toMoney(paidSum + this.toMoney(attributes.paid));
+        totalOutstanding = this.toMoney(
+          totalOutstanding + this.getInvoiceRemainingAmount(invoice)
+        );
       });
 
-      return this.toMoney(Math.max(0, totalSum - paidSum));
+      return totalOutstanding;
     },
     derivePaymentStatus(paid, remainPaid, currentStatus) {
       // Keep review states unchanged to avoid interrupting approval flow.
@@ -1752,17 +1779,23 @@ export default {
       }
     },
     rebuildOutstandingFromLocalBills() {
+      const latestInvoice = this.getLatestInvoice(this.userInvoice);
+
       this.userUnpaidInvoice = [];
-      this.userPayRemain = this.computeOutstandingFromInvoices(this.userInvoice);
+      this.userPayRemain = 0;
 
-      this.userInvoice.forEach((invoice) => {
-        const attributes = invoice.attributes || invoice || {};
-        const remainPaid = this.getExpectedRemain(attributes);
+      if (latestInvoice) {
+        const latestRemainPaid = this.getInvoiceRemainingAmount(latestInvoice);
 
-        if (remainPaid > 0) {
-          this.userUnpaidInvoice.push(invoice);
+        if (latestRemainPaid > 0) {
+          this.userUnpaidInvoice = [latestInvoice];
+          this.userPayRemain = latestRemainPaid;
         }
-      });
+      }
+
+      if (this.userUnpaidInvoice.length === 0) {
+        this.userPayRemain = this.computeOutstandingFromInvoices(this.userInvoice);
+      }
     },
     sumRemainPaid(remainPaidArray) {
       let remainPaid = 0;
@@ -1948,11 +1981,11 @@ export default {
       this.userUnpaidInvoice.length > 0
         ? this.userUnpaidInvoice
         : this.userInvoice.length > 0
-          ? [this.userInvoice[0]]
+          ? [this.getLatestInvoice(this.userInvoice)]
           : []
-    ).slice().sort((a, b) => a.id - b.id);
+    ).filter(Boolean);
 
-    const primaryInvoice = invoicesForApproval[0] || null;
+    const primaryInvoice = this.getLatestInvoice(invoicesForApproval) || invoicesForApproval[0] || null;
 
     if (primaryInvoice) {
       const paymentSummary = this.buildApprovePaymentSummary(invoicesForApproval);
@@ -2559,7 +2592,8 @@ createReceipt() {
     },
 
     buildApprovePaymentSummary(invoices) {
-      const primaryInvoice = invoices[0];
+      const latestInvoice = this.getLatestInvoice(invoices);
+      const primaryInvoice = latestInvoice || invoices[0];
       const primaryAttributes = primaryInvoice?.attributes || primaryInvoice || {};
       const currentInvoiceAmount =
         (parseFloat(primaryAttributes.roomPrice) || 0) +
@@ -2567,10 +2601,7 @@ createReceipt() {
         (parseFloat(primaryAttributes.electricPrice) || 0) +
         (parseFloat(primaryAttributes.communalPrice) || 0) +
         (parseFloat(primaryAttributes.otherPrice) || 0);
-      const outstandingSource =
-        Array.isArray(this.userInvoice) && this.userInvoice.length > 0
-          ? this.userInvoice
-          : invoices;
+      const outstandingSource = latestInvoice ? [latestInvoice] : invoices;
       const totalOutstanding = this.computeOutstandingFromInvoices(outstandingSource);
       const carryOverAmount = Math.max(0, totalOutstanding - currentInvoiceAmount);
       return {
@@ -2580,11 +2611,13 @@ createReceipt() {
         communalPrice: parseFloat(primaryAttributes.communalPrice) || 0,
         otherPrice: parseFloat(primaryAttributes.otherPrice) || 0,
         carryOverAmount,
-        carryOverLabel: invoices.length > 1
-          ? this.formatNewerBillCarryOverLabel(
-              (invoices[invoices.length - 1]?.attributes || {}).createdAt
-            )
-          : this.formatPreviousMonthCarryOverLabel(primaryAttributes.createdAt),
+        carryOverLabel: primaryInvoice === latestInvoice && invoices.length === 1
+          ? this.formatNewerBillCarryOverLabel(primaryAttributes.createdAt)
+          : invoices.length > 1
+            ? this.formatNewerBillCarryOverLabel(
+                (invoices[invoices.length - 1]?.attributes || {}).createdAt
+              )
+            : this.formatPreviousMonthCarryOverLabel(primaryAttributes.createdAt),
         vat: parseFloat(primaryAttributes.vat) || 0,
         total: totalOutstanding,
       };
