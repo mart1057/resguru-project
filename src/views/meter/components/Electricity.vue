@@ -92,15 +92,7 @@
                   </vs-input>
                 </div>
                 <div v-else>
-                  <vs-input 
-                    v-model="tr.previousElectricValue"
-                    @blur="createPreviousMonthElectricfee(
-                      tr.id, 
-                      tr.user_sign_contract ? tr.user_sign_contract.id : null,
-                      tr.previousElectricValue,
-                      tr.electric_fees[0] ? calculateUsageMeter(tr.electric_fees[0].electicUnit, tr.previousElectricValue) : 0
-                    )"
-                  >
+                  <vs-input :value="tr.user_sign_contract ? (tr.user_sign_contract.startElectric || 0) : 0" disabled>
                     <template #icon>
                       <svg
                         width="24"
@@ -132,55 +124,14 @@
                 </div>
               </div>
             </vs-td>
-            <vs-td v-if="tr.electric_fees[0]">
-              <!-- case HAVE last month elec -->
-              <vs-input 
+            <vs-td>
+              <!-- current month's record is always created lazily by the backend -->
+              <vs-input
                 v-model="tr.electric_fees[0].electicUnit"
                 @blur="updateElectfee(
                   tr.electric_fees[0].id,
                   tr.electric_fees[0].electicUnit,
-                  tr.electric_fees[0].electicUnit - (tr.electric_fees[1] ? tr.electric_fees[1].electicUnit : tr.previousElectricValue || 0)
-                )"
-              >
-                <template #icon>
-                  <svg
-                    width="24"
-                    height="25"
-                    viewBox="0 0 24 25"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <mask
-                      id="mask0_3354_881"
-                      style="mask-type: alpha"
-                      maskUnits="userSpaceOnUse"
-                      x="0"
-                      y="0"
-                      width="24"
-                      height="25"
-                    >
-                      <rect y="0.5" width="24" height="24" fill="#D9D9D9" />
-                    </mask>
-                    <g mask="url(#mask0_3354_881)">
-                      <path
-                        d="M11.5 6.5L15.25 10.5H13V16.5H10V10.5H7.75L11.5 6.5ZM5 18.5V20.5H18V18.5H5Z"
-                        :fill="tab == 1 ? 'white' : '#003765'"
-                      />
-                    </g>
-                  </svg>
-                </template>
-              </vs-input>
-            </vs-td>
-            <vs-td v-else>
-              <!-- case no last month elec -->
-              <vs-input 
-                class="newElec" 
-                v-model="tr.newElec"
-                @blur="createNewElectricityfee(
-                  tr.id, 
-                  tr.user_sign_contract ? tr.user_sign_contract.id : null,
-                  tr.newElec,
-                  tr.newElec - (tr.previousElectricValue || 0)
+                  calculateUsageMeter(tr.electric_fees[0].electicUnit, previousReading(tr))
                 )"
               >
                 <template #icon>
@@ -213,63 +164,21 @@
               </vs-input>
             </vs-td>
             <vs-td>
-              <div v-if="tr.electric_fees[1]">
-                {{
-                  tr.electric_fees[0]
-                    ? tr.electric_fees[0].electicUnit - tr.electric_fees[1].electicUnit
-                    : 0
-                }}
-              </div>
-              <div v-else-if="!tr.electric_fees[1] && tr.electric_fees[0]">
-                {{ tr.electric_fees[0].electicUnit - (tr.previousElectricValue || 0) }}
-              </div>
-              <div v-else>
-                {{ tr.newElec - (tr.previousElectricValue || 0) }}
-              </div>
+              {{ calculateUsageMeter(tr.electric_fees[0].electicUnit, previousReading(tr)) }}
             </vs-td>
             <vs-td>
               <div>
-                <div v-if="tr.electric_fees[1]">
-                  <!-- Save when HAVE last month -->
-                  <vs-button
-                    @click="
-                      updateElectfee(
-                        tr.electric_fees[0].id,
-                        tr.electric_fees[0].electicUnit,
-                        tr.electric_fees[0].electicUnit - tr.electric_fees[1].electicUnit
-                      )
-                    "
-                    >บันทึก</vs-button
-                  >
-                </div>
-                <div v-else-if="tr.electric_fees[0]">
-                  <!-- Save when HAVE last month -->
-                  <vs-button
-                    @click="
-                      updateElectfee(
-                        tr.electric_fees[0].id,
-                        tr.electric_fees[0].electicUnit,
-                        tr.electric_fees[0].electicUnit - (tr.previousElectricValue || 0)
-                      )
-                    "
-                    >บันทึก</vs-button
-                  >
-                </div>
-                <div v-else>
-                  <!-- Save when no last month -->
-                  <vs-button
-                    :disabled="!tr.newElec"
-                    @click="
-                      createNewElectricityfee(
-                        tr.id, // roomID
-                        tr.user_sign_contract ? tr.user_sign_contract.id : null,
-                        tr.newElec,
-                        tr.newElec - (tr.previousElectricValue || 0)
-                      )
-                    "
-                    >บันทึก</vs-button
-                  >
-                </div>
+                <vs-button
+                  :disabled="tr.electric_fees[0].electicUnit === null || tr.electric_fees[0].electicUnit === undefined || tr.electric_fees[0].electicUnit === ''"
+                  @click="
+                    updateElectfee(
+                      tr.electric_fees[0].id,
+                      tr.electric_fees[0].electicUnit,
+                      calculateUsageMeter(tr.electric_fees[0].electicUnit, previousReading(tr))
+                    )
+                  "
+                  >บันทึก</vs-button
+                >
               </div>
             </vs-td>
           </vs-tr>
@@ -314,12 +223,6 @@ export default {
     this.getElectricityFee(this.id, this.month, this.year);
   },
   methods: {
-
-    sortByIdDesc(items = []) {
-      return [...(items || [])].sort((a, b) => (Number(b?.id) || 0) - (Number(a?.id) || 0));
-    },
-
-    
     // Helper method to calculate usage meter
     calculateUsageMeter(currentReading, previousReading) {
       // Ensure readings are treated as numbers
@@ -362,18 +265,15 @@ export default {
       .then((response) => response.json())
       .then((resp) => {
         console.log("Return from getElecFeeRoom()", resp.data);
-        
-        // Process the data and initialize previousElectricValue for each entry
+
+        // Backend already guarantees electric_fees[0] is this month's record
+        // (created blank if nobody has read it yet) and electric_fees[1] is
+        // last month's record, if one exists.
         const processedData = resp.data.map(item => {
-          item.electric_fees = this.sortByIdDesc(item.electric_fees || []);
-          // Initialize the previousElectricValue for entries without electric_fees[1]
-          if (!item.electric_fees[1]) {
-            // Default to starting electric value or 0
-            item.previousElectricValue = item.user_sign_contract?.startElectric || 0;
-          }
+          item.electric_fees = item.electric_fees || [];
           return item;
         });
-        
+
         if (this.code == 8) {
           this.ElectricityFee = processedData.filter((item) =>
             item.RoomNumber.toLowerCase().includes(this.text.toLowerCase())
@@ -392,68 +292,14 @@ export default {
       });
   },
 
-  // 4. UPDATE createPreviousMonthElectricfee METHOD:
-  createPreviousMonthElectricfee(roomId, contractId, electicUnit) {
-    // Skip if invalid data
-    if (!roomId || !contractId || !electicUnit) {
-      console.warn("Cannot create electric fees: Missing required data");
-      this.$showNotification("warning", "Please provide all required meter readings");
-      return;
+  // Returns the previous month's meter reading for a room: last month's
+  // actual fee record if one exists, otherwise the contract's starting
+  // reading (true baseline for a brand new tenancy with no history yet).
+  previousReading(tr) {
+    if (tr.electric_fees[1]) {
+      return tr.electric_fees[1].electicUnit;
     }
-    
-    // Save scroll position before API call
-    this.saveScrollPosition();
-    
-    const loading = this.$vs.loading();
-    
-    // Convert to number and ensure it's not negative
-    const numericPreviousValue = Math.max(0, Number(electicUnit));
-    
-    // First create a baseline(previous) record, then create current record.
-    // Keeping this sequence ensures newest(id สูงสุด) is treated as current reading.
-    axios.post(`https://api.resguru.app/api/electric-fees/`, {
-      data: {
-        room: roomId,
-        user_sign_contract: contractId,
-        electicUnit: numericPreviousValue,
-        usageMeter: 0, // Previous month doesn't have usage calculation
-      },
-    })
-      .then((prevResponse) => {
-        console.log("Baseline electric fee created:", prevResponse.data);
-
-        return axios.post(`https://api.resguru.app/api/electric-fees/`, {
-          data: {
-            room: roomId,
-            user_sign_contract: contractId,
-            electicUnit: numericPreviousValue,
-            usageMeter: 0,
-          },
-        });
-      })
-      .then((currentResponse) => {
-        console.log("Current electric fee created:", currentResponse.data);
-        
-        this.$showNotification("#3A89CB", "สร้างมิเตอร์ไฟฟ้าเดือนก่อนหน้าและเดือนปัจจุบันสำเร็จ");
-        
-        // Refresh the data to show the new records but preserve scroll position
-        this.getElectricityFee(this.id, this.month, this.year, true);
-      })
-      .catch((error) => {
-        console.error("Error creating electric fees:", error);
-        
-        let errorMessage = "Error creating electric meter records";
-        if (error.response && error.response.data && error.response.data.error) {
-          errorMessage = error.response.data.error.message || errorMessage;
-        } else if (error.message) {
-          errorMessage = error.message;
-        }
-        
-        this.$showNotification("danger", errorMessage);
-      })
-      .finally(() => {
-        loading.close();
-      });
+    return tr.user_sign_contract ? (tr.user_sign_contract.startElectric || 0) : 0;
   },
 
   // 5. UPDATE updatePreviousElectricfee METHOD:
@@ -510,51 +356,6 @@ export default {
         loading.close();
         this.$showNotification("#3A89CB", "Updated Previous Month Electric Meter Reading");
         // Refresh the data to show the updated record but preserve scroll position
-        this.getElectricityFee(this.id, this.month, this.year, true);
-      });
-  },
-
-  // 6. UPDATE createNewElectricityfee METHOD:
-  createNewElectricityfee(room, user_sign_contract, electicUnit, usageMeter) {
-    // Skip if not ready to save
-    if (!electicUnit || !user_sign_contract) {
-      return;
-    }
-    
-    // Save scroll position before API call
-    this.saveScrollPosition();
-    
-    console.log("room", room);
-    console.log("user_sign_contract", user_sign_contract);
-    console.log("electicUnit", electicUnit);
-    console.log("usageMeter", usageMeter);
-    
-    const loading = this.$vs.loading();
-    
-    // Ensure values are numeric
-    const numericElectricUnit = Number(electicUnit) || 0;
-    const numericUsageMeter = Math.max(0, Number(usageMeter) || 0);
-    
-    axios
-      .post(`https://api.resguru.app/api/electric-fees/`, {
-        data: {
-          room: room,
-          user_sign_contract: user_sign_contract,
-          electicUnit: numericElectricUnit,
-          usageMeter: numericUsageMeter,
-        },
-      })
-      .then((resp) => {})
-      .catch((error) => {
-        const errorMessage = error.message
-          ? error.message
-          : "Error updating information";
-        this.$showNotification("danger", errorMessage);
-      })
-      .finally(() => {
-        loading.close();
-        this.$showNotification("#3A89CB", "แก้ไขค่าน้ำสำเร็จ");
-        // Refresh data but preserve scroll position
         this.getElectricityFee(this.id, this.month, this.year, true);
       });
   },
