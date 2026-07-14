@@ -820,7 +820,7 @@ export default {
       this.importExcel = this.$refs.importExcel.files[0];
       if (this.importExcel.length != 0) {
         let formData = new FormData();
-        formData.append("file", this.fileBanner);
+        formData.append("file", this.importExcel);
         formData.append("building", String(this.$store.state.building));
         axios
           .put("https://api.resguru.app/api/importWater", formData, {
@@ -846,7 +846,7 @@ export default {
       this.importExcel = this.$refs.importExcel.files[0];
       if (this.importExcel.length != 0) {
         let formData = new FormData();
-        formData.append("file", this.fileBanner);
+        formData.append("file", this.importExcel);
         formData.append("building", String(this.$store.state.building));
         axios
           .put("https://api.resguru.app/api/importElectric", formData, {
