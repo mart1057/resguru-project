@@ -92,7 +92,12 @@
                   </vs-input>
                 </div>
                 <div v-else>
-                  <vs-input :value="tr.user_sign_contract ? (tr.user_sign_contract.startElectric || 0) : 0" disabled>
+                  <vs-input v-model="tr.previousElectricValue"
+                    @blur="createPreviousMonthElectricfee(
+                      tr.id,
+                      tr.user_sign_contract ? tr.user_sign_contract.id : null,
+                      tr.previousElectricValue
+                    )">
                     <template #icon>
                       <svg
                         width="24"
@@ -267,10 +272,15 @@ export default {
         console.log("Return from getElecFeeRoom()", resp.data);
 
         // Backend already guarantees electric_fees[0] is this month's record
-        // (created blank if nobody has read it yet) and electric_fees[1] is
-        // last month's record, if one exists.
+        // (created blank if nobody has read it yet). electric_fees[1] is
+        // last month's record if one exists in the DB - it often won't
+        // right after migrating from the old overwrite-in-place system, so
+        // seed an editable baseline from the contract's starting reading.
         const processedData = resp.data.map(item => {
           item.electric_fees = item.electric_fees || [];
+          if (!item.electric_fees[1]) {
+            item.previousElectricValue = item.user_sign_contract?.startElectric || 0;
+          }
           return item;
         });
 
@@ -293,13 +303,67 @@ export default {
   },
 
   // Returns the previous month's meter reading for a room: last month's
-  // actual fee record if one exists, otherwise the contract's starting
-  // reading (true baseline for a brand new tenancy with no history yet).
+  // actual fee record if one exists, otherwise whatever's currently in the
+  // editable previousElectricValue field (seeded from the contract's
+  // starting reading, but staff can correct it - see
+  // createPreviousMonthElectricfee).
   previousReading(tr) {
     if (tr.electric_fees[1]) {
       return tr.electric_fees[1].electicUnit;
     }
-    return tr.user_sign_contract ? (tr.user_sign_contract.startElectric || 0) : 0;
+    return tr.previousElectricValue || 0;
+  },
+
+  getPreviousMonthYear() {
+    const month = parseInt(this.month, 10);
+    const year = parseInt(this.year, 10);
+    if (month === 1) {
+      return { previousMonth: 12, previousYear: year - 1 };
+    }
+    return { previousMonth: month - 1, previousYear: year };
+  },
+
+  // Creates a single, correctly-tagged record for last month when no such
+  // record exists yet (new tenancy, or a room whose old data predates the
+  // billMonth/billYear tagging). Unlike the old flow this never creates a
+  // duplicate current-month record - that one is already guaranteed by
+  // the backend.
+  createPreviousMonthElectricfee(roomId, contractId, previousMeterUnit) {
+    if (!roomId || !contractId || previousMeterUnit === undefined || previousMeterUnit === null || previousMeterUnit === '') {
+      console.warn("Cannot create previous month electric fee: Missing required data");
+      this.$showNotification("warning", "กรุณาใส่ค่าไฟฟ้าเดือนก่อนหน้าก่อนบันทึก");
+      return;
+    }
+
+    this.saveScrollPosition();
+    const loading = this.$vs.loading();
+    const numericValue = Math.max(0, Number(previousMeterUnit) || 0);
+    const { previousMonth, previousYear } = this.getPreviousMonthYear();
+
+    axios
+      .post(`https://api.resguru.app/api/electric-fees/`, {
+        data: {
+          room: roomId,
+          user_sign_contract: contractId,
+          billMonth: previousMonth,
+          billYear: previousYear,
+          electicUnit: numericValue,
+          usageMeter: 0,
+        },
+      })
+      .then(() => {
+        this.$showNotification("#3A89CB", "บันทึกค่าไฟฟ้าเดือนก่อนหน้าสำเร็จ");
+        this.getElectricityFee(this.id, this.month, this.year, true);
+      })
+      .catch((error) => {
+        const errorMessage = error.response && error.response.data && error.response.data.error
+          ? error.response.data.error.message
+          : (error.message || "Error creating previous month electric fee");
+        this.$showNotification("danger", errorMessage);
+      })
+      .finally(() => {
+        loading.close();
+      });
   },
 
   // 5. UPDATE updatePreviousElectricfee METHOD:
