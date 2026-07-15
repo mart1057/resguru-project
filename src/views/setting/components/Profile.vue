@@ -161,7 +161,7 @@
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">จำนวนผู้พักอาศัยทั้งหมด</div>
-                                    <div class="text-[12px]">{{ buildingStat.buildingStat.allTenant }}</div>
+                                    <div class="text-[12px]">{{ buildingStat.buildingStat.rentRoom }}</div>
                                 </div>
                             </div>
                         </div>

@@ -1,26 +1,26 @@
 <template>
     <div hidden>
         <!-- Your HTML content to convert to PDF -->
-        <div ref="pdfContent" class="pt-3 p-2">
+        <div ref="pdfContent" class="pt-3 p-2 pdf-document">
             <img class="watermarked" :src="Res_Guru_Logo_create06" />
             <div class="flex justify-between">
                 <div class="flex">
                     <div class="ml-1">
                         <div class="text-sm font-bold">{{ $store.state.buildingInfo[0].attributes.buildingName }}</div>
-                        <div class="text-xs">{{ $store.state.buildingInfo[0].attributes.buildingAddress }}</div>
-                        <div class="text-xs">โทร: {{ $store.state.buildingInfo[0].attributes.buildingPhone }}</div>
+                        <div class="text-sm">{{ $store.state.buildingInfo[0].attributes.buildingAddress }}</div>
+                        <div class="text-sm">โทร: {{ $store.state.buildingInfo[0].attributes.buildingPhone }}</div>
                     </div>
                 </div>
                 <div class="flex flex-col justify-between">
                     <div class="text-lg font-bold"> ใบวางบิล/ใบแจ้งหนี้ </div>
-                    <div class="text-xs"> หมายเลขใบแจ้งหนี้ (invoice) {{ data_bill.tenant_bills[0]?.invoiceNumber }}</div>
-                    <div class="text-xs">
+                    <div class="text-sm"> หมายเลขใบแจ้งหนี้ (invoice) {{ data_bill.tenant_bills[0]?.invoiceNumber }}</div>
+                    <div class="text-sm">
                         <div>วันที่ออก {{ formatDate(data_bill.tenant_bills[0]?.createdAt) }}</div>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-3 text-xs mt-2">
+            <div class="grid grid-cols-3 text-sm mt-2">
                 <div class="pr-2">
                     <hr class="h-px">
                     <div class="font-bold mb-1">ผู้เช่า</div>
@@ -41,7 +41,7 @@
             
             <!-- This is the table section with improved styling -->
             <div class="mt-3">
-                <table class="text-xs w-full border-collapse invoice-table">
+                <table class="text-sm w-full border-collapse invoice-table">
                     <thead>
                         <tr>
                             <th class="py-2 px-3 text-left border" style="width: 40%;">รายการ</th>
@@ -65,7 +65,7 @@
 {{ formatNumber(getWaterBeforeUnit(data_bill.tenant_bills[0])) }} 
 - 
 {{ formatNumber(getWaterAfterUnit(data_bill.tenant_bills[0])) }})                            </td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.usageWater || 0)}}</td>
+                            <td class="py-2 px-3 text-right border">{{ formatQuantity(data_bill.tenant_bills[0]?.usageWater || 0)}}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.waterRate || ($store.state.buildingInfo[0]?.attributes?.waterUnitPrice || 0)) }}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.waterPrice) }}</td>
                         </tr>
@@ -78,7 +78,7 @@
 }} - {{
     formatNumber(getElectricAfterUnit(data_bill.tenant_bills[0]))
 }})                            </td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.usageElectric || 0) }}</td>
+                            <td class="py-2 px-3 text-right border">{{ formatQuantity(data_bill.tenant_bills[0]?.usageElectric || 0) }}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.electricRate || ($store.state.buildingInfo[0]?.attributes?.electricUnitPrice || 0)) }}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.electricPrice) }}</td>
                         </tr>
@@ -102,32 +102,38 @@
                             <td class="py-2 px-3 text-right border">{{ formatNumber(getPastUnpaidTotal(data_bill.tenant_bills[0])) }}</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(getPastUnpaidTotal(data_bill.tenant_bills[0])) }}</td>
                         </tr>
+                        <tr class="row-even" v-if="getCreditApplied(data_bill.tenant_bills[0]) > 0">
+                            <td class="py-2 px-3 border">หักเครดิตจากยอดชำระเกินคราวก่อน</td>
+                            <td class="py-2 px-3 text-right border">1</td>
+                            <td class="py-2 px-3 text-right border">-{{ formatNumber(getCreditApplied(data_bill.tenant_bills[0])) }}</td>
+                            <td class="py-2 px-3 text-right border">-{{ formatNumber(getCreditApplied(data_bill.tenant_bills[0])) }}</td>
+                        </tr>
                     </tbody>
                     <tfoot>
                         <!-- Bottom rows with progressively larger text -->
                     <tr>
-                        <td colspan="3" class="py-2 px-3 text-right border text-xs">รวมค่าใช้จ่าย</td>
-                        <td class="py-2 px-3 text-right border text-xs">{{ formatNumber(getInvoiceChargeSubtotal(data_bill.tenant_bills[0])) }}</td>
+                        <td colspan="3" class="py-2 px-3 text-right border text-sm">รวมค่าใช้จ่าย</td>
+                        <td class="py-2 px-3 text-right border text-sm">{{ formatNumber(getInvoiceChargeSubtotal(data_bill.tenant_bills[0])) }}</td>
                     </tr>
-                    <tr>                      
-                        <td colspan="3" class="py-2 px-3 text-right border text-xs">ภาษี ({{ data_bill.room_building?.vat_rate || 0 }}%)</td>
-                        <td class="py-2 px-3 text-right border text-xs">{{ formatNumber(getInvoiceVat(data_bill.tenant_bills[0])) }}</td>
+                    <tr>
+                        <td colspan="3" class="py-2 px-3 text-right border text-sm">ภาษี ({{ data_bill.room_building?.vat_rate || 0 }}%)</td>
+                        <td class="py-2 px-3 text-right border text-sm">{{ formatNumber(getInvoiceVat(data_bill.tenant_bills[0])) }}</td>
                     </tr>
-                    <tr>                        
-                        <td colspan="2" class="py-2 px-3 text-center border text-xs">( {{ numberToThaiText(getInvoiceGrandTotal(data_bill.tenant_bills[0])) }} )</td>
-                        <td class="py-2 px-3 text-right font-bold border text-sm">รวม</td>
-                        <td class="py-2 px-3 text-right font-bold text-green-600 border text-sm">{{ formatNumber(getInvoiceGrandTotal(data_bill.tenant_bills[0])) }}</td>
+                    <tr>
+                        <td colspan="2" class="py-2 px-3 text-center border text-sm">( {{ numberToThaiText(getNetPayable(data_bill.tenant_bills[0])) }} )</td>
+                        <td class="py-2 px-3 text-right font-bold border text-sm">ยอดที่ต้องชำระ</td>
+                        <td class="py-2 px-3 text-right font-bold text-green-600 border text-sm">{{ formatNumber(getNetPayable(data_bill.tenant_bills[0])) }}</td>
                     </tr>
                     </tfoot>
                 </table>
             </div>
             
-            <div class="text-xs mt-2">
+            <div class="text-sm mt-2">
                 <p>กรุณาชำระและแจ้งภายในวันที่กำหนด</p>
             </div>
             
             <div class="flex justify-end mt-4">
-                <p class="flex flex-col items-center text-xs">
+                <p class="flex flex-col items-center text-sm">
                     <span>ลงชื่อ</span>
                     <span style="height: 40px; display: block;"></span>
                     <span class="signature-line"></span>
@@ -281,6 +287,16 @@ export default {
                 let num = parseFloat(value).toFixed(2); // Ensure two decimal places
                 return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         },
+        // Quantity column shouldn't carry a fake ".00" - meter usage is a
+        // whole number of units, only fall back to decimals if it's not.
+        formatQuantity(value) {
+            const num = parseFloat(value);
+            if (!Number.isFinite(num)) return '0';
+            const rounded = Math.round(num * 100) / 100;
+            return Number.isInteger(rounded)
+                ? rounded.toLocaleString()
+                : rounded.toLocaleString(undefined, { maximumFractionDigits: 2 });
+        },
         toMoney(value) {
             const num = Number(value);
             if (!Number.isFinite(num)) return 0;
@@ -294,13 +310,11 @@ export default {
             return 0;
         },
         getPastUnpaidTotal(bill = {}) {
-            return this.toMoney(
-                this.toMoney(bill.pastRoomPrice) +
-                this.toMoney(bill.pastWaterPrice) +
-                this.toMoney(bill.pastElectricPrice) +
-                this.toMoney(bill.pastCommunalPrice) +
-                this.toMoney(bill.pastOtherPrice)
-            );
+            // carriedDebt is the actual unpaid balance rolled forward from
+            // this tenant's previous bill(s). The past*Price fields this
+            // used to sum are last month's water/electric unit cost for
+            // comparison display, unrelated to whether anything is unpaid.
+            return this.toMoney(bill.carriedDebt);
         },
         getWaterAfterUnit(bill = {}) {
             const usage = this.firstPositiveNumber([
@@ -385,36 +399,57 @@ export default {
             }
             return this.toMoney(this.getInvoiceChargeSubtotal(bill) + this.getInvoiceVat(bill));
         },
-        async generatePDF(data) {
+        getCreditApplied(bill = {}) {
+            // Leftover credit from a prior overpayment (see approvePayment)
+            // that got applied to this bill automatically at creation time.
+            return this.toMoney(bill.creditApplied);
+        },
+        getNetPayable(bill = {}) {
+            return this.toMoney(Math.max(0, this.getInvoiceGrandTotal(bill) - this.getCreditApplied(bill)));
+        },
+        // mode: 'download' triggers a named file download, 'preview' opens
+        // the PDF in a new tab instead.
+        async generatePDF(data, mode = 'download') {
             console.log("PDFdata", data);
             this.data_bill = data;
-            
+
             try {
                 // Get building ID from store
                 const buildingId = this.$store.state.building;
                 let qrCodeUrl = null;
-                
-                // Fetch QR code from building-pay-methods endpoint
+                let bankName = '';
+                let accountName = '';
+                let accountNumber = '';
+
+                // Fetch QR code + bank details from building-pay-methods endpoint
                 try {
                 const response = await axios.get(
                     `https://api.resguru.app/api/building-pay-methods?filters[building][id][$eq]=${buildingId}&populate=QRCode`
                 );
-                
+
                 console.log("Building pay methods response:", response.data);
-                
-                if (response.data && 
-                    response.data.data && 
-                    response.data.data.length > 0 && 
-                    response.data.data[0].attributes && 
-                    response.data.data[0].attributes.QRCode && 
-                    response.data.data[0].attributes.QRCode.data && 
-                    response.data.data[0].attributes.QRCode.data.attributes) {
-                    qrCodeUrl = `https://api.resguru.app${response.data.data[0].attributes.QRCode.data.attributes.url}`;
+
+                const payMethod = response.data?.data?.[0]?.attributes;
+                if (payMethod) {
+                    bankName = payMethod.bankName || '';
+                    accountName = payMethod.accountName || '';
+                    accountNumber = payMethod.accountNumber || '';
+                    if (payMethod.QRCode?.data?.attributes) {
+                        qrCodeUrl = `https://api.resguru.app${payMethod.QRCode.data.attributes.url}`;
+                    }
                 }
                 console.log("QR Code URL:", qrCodeUrl);
                 } catch (error) {
                 console.error("Error fetching QR code:", error);
                 // Continue without QR code if there's an error
+                }
+
+                // Ensure the document fonts are actually loaded before
+                // html2canvas snapshots the DOM - otherwise it can capture
+                // mid-swap (default font -> Sarabun), which is a common
+                // cause of Thai vowel/tone marks rendering misaligned.
+                if (document.fonts && document.fonts.ready) {
+                    await document.fonts.ready;
                 }
 
                 this.$nextTick(() => {
@@ -424,7 +459,7 @@ export default {
                     return; // Exit if content is not found
                 }
 
-                // Add QR code to the content if we have it
+                // Add QR code + bank details to the content if we have it
                 if (qrCodeUrl) {
                     // First check if we already have a QR code container
                     let qrContainer = content.querySelector('.qr-code-container');
@@ -432,52 +467,70 @@ export default {
                     qrContainer = document.createElement('div');
                     qrContainer.className = 'qr-code-container';
                     qrContainer.style.width = '100%';
-                    qrContainer.style.textAlign = 'center';
+                    qrContainer.style.display = 'flex';
+                    qrContainer.style.flexDirection = 'column';
+                    qrContainer.style.alignItems = 'center';
                     qrContainer.style.marginTop = '30px';
                     qrContainer.style.marginBottom = '20px';
-                    
+
                     const qrImage = document.createElement('img');
                     qrImage.src = qrCodeUrl;
-                    qrImage.style.width = '500px';
-                    qrImage.style.height = '500px';
                     qrImage.style.objectFit = 'contain';
-                    qrImage.style.maxWidth = '100%';
                     qrImage.alt = 'Payment QR Code';
                     qrImage.crossOrigin = 'anonymous'; // Handle cross-origin images
-                    
+
                     const qrLabel = document.createElement('div');
                     qrLabel.textContent = 'สแกนเพื่อชำระเงิน';
                     qrLabel.style.marginTop = '10px';
-                    qrLabel.style.fontSize = '18px';
+                    qrLabel.style.fontSize = '16px';
                     qrLabel.style.fontWeight = 'bold';
-                    
+                    qrLabel.style.textAlign = 'center';
+
                     qrContainer.appendChild(qrImage);
                     qrContainer.appendChild(qrLabel);
+
+                    if (bankName || accountName || accountNumber) {
+                        const bankDetails = document.createElement('div');
+                        bankDetails.style.marginTop = '6px';
+                        bankDetails.style.fontSize = '14px';
+                        bankDetails.style.textAlign = 'center';
+                        const lines = [];
+                        if (bankName) lines.push(`ธนาคาร ${bankName}`);
+                        if (accountName) lines.push(`ชื่อบัญชี ${accountName}`);
+                        if (accountNumber) lines.push(`เลขที่บัญชี ${accountNumber}`);
+                        bankDetails.innerHTML = lines.map(line => `<div>${line}</div>`).join('');
+                        qrContainer.appendChild(bankDetails);
+                    }
+
                     content.appendChild(qrContainer);
                     }
                 }
 
                 const opt = {
                     margin: 10,
-                    filename: `Invoice-${data.RoomNumber}.pdf`,
-                    image: { 
-                    type: "jpeg", 
-                    quality: 0.98 
+                    filename: `bill-${data.RoomNumber}.pdf`,
+                    image: {
+                    type: "jpeg",
+                    quality: 0.98
                     },
-                    html2canvas: { 
+                    html2canvas: {
                     scale: 2,
                     useCORS: true, // Enable CORS for images
                     logging: false, // Disable logging for better performance
                     allowTaint: true // Allow cross-origin images
                     },
-                    jsPDF: { 
-                    unit: "mm", 
-                    format: "a4", 
-                    orientation: "portrait" 
+                    jsPDF: {
+                    unit: "mm",
+                    format: "a4",
+                    orientation: "portrait"
                     }
                 };
 
-                // Generate the PDF and open in a new tab using the direct approach
+                // Generate the PDF, then either open it in a new tab for
+                // preview or trigger a real named download, per mode.
+                // window.open(bloburl) doesn't carry a filename through to
+                // the browser's save dialog, so download() is used for the
+                // actual download path.
                 html2pdf()
                     .from(content)
                     .set(opt)
@@ -485,9 +538,13 @@ export default {
                     .get("pdf")
                     .then(function (pdf) {
                     console.log("สร้าง PDF สำเร็จ");
-                    // This works in most browsers to open in a new tab
-                    window.open(pdf.output("bloburl"), "_blank");
-                    
+                    if (mode === 'preview') {
+                        window.open(pdf.output("bloburl"), "_blank");
+                    } else {
+                        const blob = pdf.output("blob");
+                        download(blob, opt.filename, "application/pdf");
+                    }
+
                     // Clean up - remove QR code container if we added it
                     if (qrCodeUrl) {
                         const qrContainer = content.querySelector('.qr-code-container');
@@ -498,7 +555,7 @@ export default {
                     })
                     .catch(function (error) {
                     console.error("Error generating PDF:", error);
-                    
+
                     // Clean up - remove QR code container if we added it
                     if (qrCodeUrl) {
                         const qrContainer = content.querySelector('.qr-code-container');
@@ -516,6 +573,14 @@ export default {
 };
 </script>
 <style>
+/* Explicit font on the PDF content itself (not just inherited from #app) -
+   html2canvas snapshots the DOM, so the font needs to be reliably resolved
+   on this subtree rather than relying on inheritance timing. */
+.pdf-document {
+  font-family: 'Sarabun', 'Angsana New', Arial, sans-serif;
+  line-height: 1.6;
+}
+
 /* Custom styling for the invoice table */
 .invoice-table {
   border: 2px solid #333; /* Darker border for the whole table */

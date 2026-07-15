@@ -384,6 +384,13 @@
           ดาวน์โหลดใบแจ้งหนี้
         </div>
       </div>
+      <div
+        v-if="selected.length > 0"
+        @click="PDFPrint('preview')"
+        class="h-[36px] flex items-center rounded-[12px] mt-[12px] ml-[16px] cursor-pointer text-[#003765] underline"
+      >
+        ดูตัวอย่าง
+      </div>
       <div class="mt-[20px]" v-if="tab == 1">
         <vs-table v-model="selected">
           <template #thead>
@@ -413,6 +420,7 @@
               v-for="(tr, i) in userInvoice"
               :data="tr"
               :is-selected="!!selected.includes(tr)"
+              :class="{ 'opacity-50 bg-gray-100': tr.attributes.debtMovedToNextBill }"
             >
               <!-- <vs-td checkbox>
                                 <vs-checkbox :val="tr" v-model="selected" />
@@ -535,6 +543,13 @@
               <vs-td>
                 <div class="flex items-center justify-start">
                   <div
+                    v-if="tr.attributes.debtMovedToNextBill"
+                    class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#E5E7EB] text-[#6B7280]"
+                  >
+                    ยอดคงเหลือย้ายไปบิลถัดไป
+                  </div>
+                  <div
+                    v-else
                     class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
                     :class="
                       tr.attributes.paymentStatus === 'Paid'
@@ -545,6 +560,13 @@
                     "
                   >
                     {{ tr.attributes.paymentStatus }}
+                  </div>
+                  <div
+                    v-if="parseFloat(tr.attributes.creditApplied) > 0"
+                    class="ml-[6px] h-[28px] flex items-center justify-center px-[8px] rounded-[8px] bg-[#D6F5E3] text-[#0B9A3C] text-[11px] font-semibold whitespace-nowrap"
+                    :title="'ใช้เครดิตจากยอดชำระเกินคราวก่อน ' + $formatNumber(tr.attributes.creditApplied) + ' บาท'"
+                  >
+                    ✓ ใช้เครดิต
                   </div>
                 </div>
               </vs-td>
@@ -582,37 +604,47 @@
                                 </vs-select> -->
               </vs-td>
               <vs-td>
-                <button 
-                  @click="PDFPrintInvoice(tr)"
-                  class="p-2 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 flex items-center justify-center border border-gray-200"
-                >
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="text-gray-500 hover:text-gray-700"
+                <div class="flex items-center gap-[6px]">
+                  <button
+                    @click="PDFPrintInvoice(tr, 'preview')"
+                    title="ดูตัวอย่าง"
+                    class="px-2 py-1 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 flex items-center justify-center border border-gray-200 text-gray-500 hover:text-gray-700 text-xs"
                   >
-                    <mask
-                      id="mask0_2691_23279"
-                      style="mask-type: alpha"
-                      maskUnits="userSpaceOnUse"
-                      x="0"
-                      y="0"
+                    ดูตัวอย่าง
+                  </button>
+                  <button
+                    @click="PDFPrintInvoice(tr)"
+                    title="ดาวน์โหลด"
+                    class="p-2 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 flex items-center justify-center border border-gray-200"
+                  >
+                    <svg
                       width="24"
                       height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="text-gray-500 hover:text-gray-700"
                     >
-                      <rect width="24" height="24" fill="#D9D9D9" />
-                    </mask>
-                    <g mask="url(#mask0_2691_23279)">
-                      <path
-                        d="M12 15.2386C11.8795 15.2386 11.7673 15.2194 11.6634 15.1809C11.5596 15.1425 11.4609 15.0765 11.3673 14.9829L8.2577 11.8733C8.11925 11.7348 8.04842 11.5608 8.04522 11.3512C8.04201 11.1416 8.11283 10.9643 8.2577 10.8195C8.40257 10.6746 8.58077 10.5996 8.7923 10.5945C9.00383 10.5893 9.18204 10.6592 9.32692 10.8041L11.25 12.7272V5.07712C11.25 4.86431 11.3218 4.68611 11.4654 4.54252C11.609 4.39894 11.7872 4.32715 12 4.32715C12.2128 4.32715 12.391 4.39894 12.5346 4.54252C12.6782 4.68611 12.7499 4.86431 12.7499 5.07712V12.7272L14.673 10.8041C14.8115 10.6656 14.9881 10.5974 15.2028 10.5993C15.4176 10.6012 15.5974 10.6746 15.7422 10.8195C15.8871 10.9643 15.9595 11.14 15.9595 11.3464C15.9595 11.5528 15.8871 11.7284 15.7422 11.8733L12.6327 14.9829C12.5391 15.0765 12.4403 15.1425 12.3365 15.1809C12.2327 15.2194 12.1205 15.2386 12 15.2386ZM6.3077 19.5002C5.80257 19.5002 5.375 19.3252 5.025 18.9752C4.675 18.6252 4.5 18.1976 4.5 17.6925V15.7502C4.5 15.5374 4.5718 15.3592 4.7154 15.2156C4.85898 15.072 5.03718 15.0002 5.25 15.0002C5.46282 15.0002 5.64102 15.072 5.7846 15.2156C5.92818 15.3592 5.99997 15.5374 5.99997 15.7502V17.6925C5.99997 17.7694 6.03202 17.8399 6.09612 17.904C6.16024 17.9681 6.23077 18.0002 6.3077 18.0002H17.6922C17.7692 18.0002 17.8397 17.9681 17.9038 17.904C17.9679 17.8399 18 17.7694 18 17.6925V15.7502C18 15.5374 18.0718 15.3592 18.2154 15.2156C18.3589 15.072 18.5371 15.0002 18.75 15.0002C18.9628 15.0002 19.141 15.072 19.2845 15.2156C19.4281 15.3592 19.5 15.5374 19.5 15.7502V17.6925C19.5 18.1976 19.325 18.6252 18.975 18.9752C18.625 19.3252 18.1974 19.5002 17.6922 19.5002H6.3077Z"
-                        fill="currentColor"
-                      />
-                    </g>
-                  </svg>
-                </button>
+                      <mask
+                        id="mask0_2691_23279"
+                        style="mask-type: alpha"
+                        maskUnits="userSpaceOnUse"
+                        x="0"
+                        y="0"
+                        width="24"
+                        height="24"
+                      >
+                        <rect width="24" height="24" fill="#D9D9D9" />
+                      </mask>
+                      <g mask="url(#mask0_2691_23279)">
+                        <path
+                          d="M12 15.2386C11.8795 15.2386 11.7673 15.2194 11.6634 15.1809C11.5596 15.1425 11.4609 15.0765 11.3673 14.9829L8.2577 11.8733C8.11925 11.7348 8.04842 11.5608 8.04522 11.3512C8.04201 11.1416 8.11283 10.9643 8.2577 10.8195C8.40257 10.6746 8.58077 10.5996 8.7923 10.5945C9.00383 10.5893 9.18204 10.6592 9.32692 10.8041L11.25 12.7272V5.07712C11.25 4.86431 11.3218 4.68611 11.4654 4.54252C11.609 4.39894 11.7872 4.32715 12 4.32715C12.2128 4.32715 12.391 4.39894 12.5346 4.54252C12.6782 4.68611 12.7499 4.86431 12.7499 5.07712V12.7272L14.673 10.8041C14.8115 10.6656 14.9881 10.5974 15.2028 10.5993C15.4176 10.6012 15.5974 10.6746 15.7422 10.8195C15.8871 10.9643 15.9595 11.14 15.9595 11.3464C15.9595 11.5528 15.8871 11.7284 15.7422 11.8733L12.6327 14.9829C12.5391 15.0765 12.4403 15.1425 12.3365 15.1809C12.2327 15.2194 12.1205 15.2386 12 15.2386ZM6.3077 19.5002C5.80257 19.5002 5.375 19.3252 5.025 18.9752C4.675 18.6252 4.5 18.1976 4.5 17.6925V15.7502C4.5 15.5374 4.5718 15.3592 4.7154 15.2156C4.85898 15.072 5.03718 15.0002 5.25 15.0002C5.46282 15.0002 5.64102 15.072 5.7846 15.2156C5.92818 15.3592 5.99997 15.5374 5.99997 15.7502V17.6925C5.99997 17.7694 6.03202 17.8399 6.09612 17.904C6.16024 17.9681 6.23077 18.0002 6.3077 18.0002H17.6922C17.7692 18.0002 17.8397 17.9681 17.9038 17.904C17.9679 17.8399 18 17.7694 18 17.6925V15.7502C18 15.5374 18.0718 15.3592 18.2154 15.2156C18.3589 15.072 18.5371 15.0002 18.75 15.0002C18.9628 15.0002 19.141 15.072 19.2845 15.2156C19.4281 15.3592 19.5 15.5374 19.5 15.7502V17.6925C19.5 18.1976 19.325 18.6252 18.975 18.9752C18.625 19.3252 18.1974 19.5002 17.6922 19.5002H6.3077Z"
+                          fill="currentColor"
+                        />
+                      </g>
+                    </svg>
+                  </button>
+                </div>
               </vs-td>
             </vs-tr>
           </template>
@@ -1947,7 +1979,7 @@ export default {
         this.partialPaymentForm.userID =
           tr.attributes.user_sign_contract.data.id;
 
-        // this.partialPaymentForm.invoiceID = tr.id
+        this.partialPaymentForm.invoiceID = tr.id;
         this.partialPaymentForm.accountBankName =
           this.userProfile.firstName + " " + this.userProfile.lastName;
         // Set default date/time to current (user can still change)
@@ -2530,6 +2562,10 @@ createReceipt() {
         return;
       }
 
+      // Each field shows how much of THIS payment is being applied to that
+      // line item (so the columns sum to the payment amount), not how much
+      // of the original charge is left unpaid - deducted in order: old
+      // debt first, then room, water, electric, then everything else.
       const availablePayment = Number(this.approvePaymentForm.afterFine || this.approvePaymentForm.amount || 0);
       let remainingPayment = Math.max(0, availablePayment);
 
@@ -2542,13 +2578,23 @@ createReceipt() {
         "otherPrice",
       ];
 
+      const appliedAmounts = {};
       allocationOrder.forEach((key) => {
         const originalAmount = Number(this.approvalAllocationBase[key] || 0);
         const appliedAmount = Math.min(remainingPayment, originalAmount);
-        const remainingAmount = Math.max(0, originalAmount - appliedAmount);
-
-        this.approvePaymentForm[key] = remainingAmount.toFixed(2);
+        appliedAmounts[key] = appliedAmount;
         remainingPayment = Math.max(0, remainingPayment - appliedAmount);
+      });
+
+      // If the payment is more than everything owed, put the leftover into
+      // otherPrice (the last bucket in the deduction order) so the total
+      // shown always matches the amount actually paid.
+      if (remainingPayment > 0) {
+        appliedAmounts.otherPrice += remainingPayment;
+      }
+
+      allocationOrder.forEach((key) => {
+        this.approvePaymentForm[key] = appliedAmounts[key].toFixed(2);
       });
 
       this.recalculateVat();
@@ -2647,25 +2693,30 @@ createReceipt() {
       const latestInvoice = this.getLatestInvoice(invoices);
       const primaryInvoice = latestInvoice || invoices[0];
       const primaryAttributes = primaryInvoice?.attributes || primaryInvoice || {};
-      const currentInvoiceAmount =
-        (parseFloat(primaryAttributes.roomPrice) || 0) +
-        (parseFloat(primaryAttributes.waterPrice) || 0) +
-        (parseFloat(primaryAttributes.electricPrice) || 0) +
-        (parseFloat(primaryAttributes.communalPrice) || 0) +
-        (parseFloat(primaryAttributes.otherPrice) || 0);
-      const outstandingSource = latestInvoice ? [latestInvoice] : invoices;
-      const totalOutstanding = this.computeOutstandingFromInvoices(outstandingSource);
-      const carryOverAmount = Math.max(0, totalOutstanding - currentInvoiceAmount);
+      // carriedDebt is the actual old-debt amount rolled forward onto this
+      // bill by the backend's carry-forward logic at bill-creation time -
+      // read it directly instead of back-deriving it from
+      // totalOutstanding - currentInvoiceAmount, which double-counted VAT
+      // (totalOutstanding already includes vat, currentInvoiceAmount doesn't)
+      // and produced a wrong/zero carryOverAmount whenever the two didn't
+      // line up.
+      const roomPrice = parseFloat(primaryAttributes.roomPrice) || 0;
+      const waterPrice = parseFloat(primaryAttributes.waterPrice) || 0;
+      const electricPrice = parseFloat(primaryAttributes.electricPrice) || 0;
+      const communalPrice = parseFloat(primaryAttributes.communalPrice) || 0;
+      const otherPrice = parseFloat(primaryAttributes.otherPrice) || 0;
+      const vat = parseFloat(primaryAttributes.vat) || 0;
+      const carryOverAmount = Math.max(0, parseFloat(primaryAttributes.carriedDebt) || 0);
       return {
-        roomPrice: parseFloat(primaryAttributes.roomPrice) || 0,
-        waterPrice: parseFloat(primaryAttributes.waterPrice) || 0,
-        electricPrice: parseFloat(primaryAttributes.electricPrice) || 0,
-        communalPrice: parseFloat(primaryAttributes.communalPrice) || 0,
-        otherPrice: parseFloat(primaryAttributes.otherPrice) || 0,
+        roomPrice,
+        waterPrice,
+        electricPrice,
+        communalPrice,
+        otherPrice,
         carryOverAmount,
         carryOverLabel: this.formatPreviousMonthCarryOverLabel(primaryAttributes.createdAt),
-        vat: parseFloat(primaryAttributes.vat) || 0,
-        total: totalOutstanding,
+        vat,
+        total: roomPrice + waterPrice + electricPrice + communalPrice + otherPrice + vat + carryOverAmount,
       };
     },
 
@@ -2878,36 +2929,38 @@ createReceipt() {
       this.$showNotification("#3A89CB", "กำลังสร้าง PDF หากไม่มีไฟล์เปิดขึ้นมา กรุณาตรวจสอบว่าเบราว์เซอร์บล็อก Popup อยู่หรือไม่");
       this.$refs.childComponentPDFReceipt.generatePDF(tr);
     },
-    // Method for the "Download Invoice" button at the top of the page
-    async PDFPrint() {
+    // Method for the "Download Invoice" button at the top of the page.
+    // Reuses PDFPrintInvoice's flattening instead of passing the raw
+    // Strapi {id, attributes} shape straight through - PDFgenerator reads
+    // fields like tenant_bills[0].roomPrice directly, not .attributes.roomPrice.
+    async PDFPrint(mode = 'download') {
       if (this.selected.length > 0) {
-        // Get the first selected invoice from the table
-        const selectedInvoice = this.selected[0];
-        
-        // Create a data structure expected by the PDFgenerator
-        const data = {
-          RoomNumber: this.roomDetail.data.attributes.RoomNumber,
-          user_sign_contract: this.contractProfile.data,
-          tenant_bills: [selectedInvoice],
-          room_type: this.roomDetail.data.attributes.room_type.data
-        };
-        
-        // Call the generatePDF method of the PDFgenerator component
-        this.$showNotification("#3A89CB", "กำลังสร้าง PDF หากไม่มีไฟล์เปิดขึ้นมา กรุณาตรวจสอบว่าเบราว์เซอร์บล็อก Popup อยู่หรือไม่");
-        this.$refs.childComponentPDF.generatePDF(data);
+        this.PDFPrintInvoice(this.selected[0], mode);
       } else {
         this.$showNotification("warning", "กรุณาเลือกรายการที่ต้องการพิมพ์");
       }
     },
-    async PDFPrintInvoice(invoice) {
+    async PDFPrintInvoice(invoice, mode = 'download') {
       if (!invoice || !invoice.attributes) {
         this.$showNotification("warning", "ข้อมูลใบแจ้งหนี้ไม่ครบถ้วน");
         return;
       }
 
+      const contractAttrs = this.contractProfile?.data?.attributes || {};
+      const tenantUser = contractAttrs.users_permissions_user?.data?.attributes || {};
+
       const data = {
         RoomNumber: this.roomDetail.data.attributes.RoomNumber,
-        user_sign_contract: this.contractProfile.data,
+        user_sign_contract: {
+          startWater: contractAttrs.startWater || 0,
+          startElectric: contractAttrs.startElectric || 0,
+          users_permissions_user: {
+            firstName: tenantUser.firstName || "",
+            lastName: tenantUser.lastName || "",
+            contactAddress: tenantUser.contactAddress || "",
+            phone: tenantUser.phone || "",
+          },
+        },
         tenant_bills: [{
           id: invoice.id,
           invoiceNumber: invoice.attributes.invoiceNumber || "N/A",
@@ -2932,6 +2985,8 @@ createReceipt() {
           usageMeter: invoice.attributes.usageMeter || 0,
           paymentStatus: invoice.attributes.paymentStatus || "ยังไม่ชำระ",
           remainPaid: parseFloat(invoice.attributes.remainPaid) || 0,
+          carriedDebt: parseFloat(invoice.attributes.carriedDebt) || 0,
+          creditApplied: parseFloat(invoice.attributes.creditApplied) || 0,
           pastRoomPrice: parseFloat(invoice.attributes.pastRoomPrice) || 0,
           pastWaterPrice: parseFloat(invoice.attributes.pastWaterPrice) || 0,
           pastElectricPrice: parseFloat(invoice.attributes.pastElectricPrice) || 0,
@@ -2941,8 +2996,13 @@ createReceipt() {
         room_type: this.roomDetail.data.attributes.room_type.data
       };
       
-      this.$showNotification("#3A89CB", "กำลังสร้าง PDF หากไม่มีไฟล์เปิดขึ้นมา กรุณาตรวจสอบว่าเบราว์เซอร์บล็อก Popup อยู่หรือไม่");
-      this.$refs.childComponentPDF.generatePDF(data);
+      this.$showNotification(
+        "#3A89CB",
+        mode === 'preview'
+          ? "กำลังสร้าง PDF หากไม่มีไฟล์เปิดขึ้นมา กรุณาตรวจสอบว่าเบราว์เซอร์บล็อก Popup อยู่หรือไม่"
+          : "กำลังสร้าง PDF และดาวน์โหลดไฟล์"
+      );
+      this.$refs.childComponentPDF.generatePDF(data, mode);
     }
     // Method for the download button in each table row
     // async PDFPrintInvoice(invoice) {

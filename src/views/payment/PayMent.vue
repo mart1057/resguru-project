@@ -388,6 +388,14 @@
                   >
                     ⚠ ค้างเก่า
                   </div>
+                  <!-- Credit-applied badge (from a prior overpayment) -->
+                  <div
+                    v-if="tr.user_sign_contract && tr.tenant_bills[0] && hasCreditApplied(tr.tenant_bills[0])"
+                    class="flex items-center justify-center h-[28px] px-[8px] rounded-[8px] bg-[#D6F5E3] text-[#0B9A3C] text-[11px] font-semibold whitespace-nowrap"
+                    :title="'ใช้เครดิตจากยอดชำระเกินคราวก่อน ' + $formatNumber(tr.tenant_bills[0].creditApplied) + ' บาท'"
+                  >
+                    ✓ ใช้เครดิต
+                  </div>
                 </div>
                 <!-- <div v-if="tr.attributes.paymentStatus == ชำระบางส่วน">
                                         <vs-button >
@@ -648,6 +656,13 @@
         </g>
       </svg>
     </button>
+    <div
+      v-if="tr.user_sign_contract && tr.tenant_bills[0]"
+      class="text-[#3A89CB] text-xs mt-[4px] cursor-pointer text-center"
+      @click="PDFPrint(tr, 'preview')"
+    >
+      ดูตัวอย่าง
+    </div>
               </vs-td>
             </vs-tr>
           </template>
@@ -1226,6 +1241,7 @@ export default {
         invoiceID: "",
         invoiceName: "",
         roomName: "",
+        roomID: "",
         userID: "",
         bankName: "",
         accountBankName: "",
@@ -1238,6 +1254,7 @@ export default {
         invoiceID: "",
         invoiceName: "",
         roomName: "",
+        roomID: "",
         userID: "",
         bankName: "",
         accountBankName: "",
@@ -1267,6 +1284,7 @@ export default {
         total: 0,
         completed: 0,
         success: 0,
+        skipped: 0,
         failed: 0,
       },
     };
@@ -1377,40 +1395,35 @@ export default {
     },
     selectMenu(menu_option, roomdata) {
       if (menu_option === "Full Payment") {
-        //make this.form = inputfrom function
-        // ex. this.invoiceName = roomdata.attributes.invoiceName
-        let sumAmount;
-        for (let k = 0; k < roomdata.tenant_bills.length(); k++) {
-          sumAmount = sumAmount + k.total;
-        }
-        console.log("Data from Select", roomdata);
+        // roomdata.tenant_bills[0] is the current active bill - with the
+        // debt carry-forward design, its remainPaid already IS the total
+        // amount owed (old debt + this month's charges), so it's the
+        // correct "amount" to prefill, matching PaymentDetail.vue's
+        // userPayRemain (the same field, computed the same way).
+        const bill = roomdata.tenant_bills[0];
+        const tenantUser = roomdata.user_sign_contract?.users_permissions_user || {};
         this.fullPaymentForm.roomName = roomdata.RoomNumber;
-        this.fullPaymentForm.amount = sumAmount;
-        this.fullPaymentForm.userID = roomdata.user_sign_contract.id;
+        this.fullPaymentForm.roomID = roomdata.id;
+        this.fullPaymentForm.invoiceName = bill.invoiceNumber;
+        this.fullPaymentForm.invoiceID = bill.id;
+        this.fullPaymentForm.amount = parseFloat(bill.remainPaid) || 0;
         this.fullPaymentForm.building = roomdata.room_building.id;
+        this.fullPaymentForm.userID = roomdata.user_sign_contract.id;
         this.fullPaymentForm.accountBankName =
-          this.userProfile.firstName + " " + this.userProfile.lastName;
-        this.createFullpayment = true;
-        // this.fullPaymentForm.invoiceName = roomdata.tenant_bills[0].invoiceNumber
-        // this.fullPaymentForm.invoiceID = roomdata.tenant_bills[0].id
-
-        this.fullPaymentForm.amount = this.userPayRemain;
-        this.fullPaymentForm.invoiceName = tr.attributes.invoiceNumber;
-        // this.fullPaymentForm.invoiceName = generateReNumber()
-        this.fullPaymentForm.building = tr.attributes.building.data.id;
-        this.fullPaymentForm.userID = tr.attributes.user_sign_contract.data.id;
-        this.fullPaymentForm.invoiceID = tr.id;
-        this.fullPaymentForm.accountBankName =
-          this.userProfile.firstName + " " + this.userProfile.lastName;
-        // this.fullPaymentForm.accountBankName = "test"
+          `${tenantUser.firstName || ""} ${tenantUser.lastName || ""}`.trim();
         this.createFullpayment = true;
       } else if (menu_option === "Partial Payment") {
-        this.partialPaymentForm.invoiceName =
-          roomdata.tenant_bills[0].invoiceNumber;
-        this.partialPaymentForm.invoiceID = roomdata.tenant_bills[0].id;
+        const bill = roomdata.tenant_bills[0];
+        const tenantUser = roomdata.user_sign_contract?.users_permissions_user || {};
+        this.partialPaymentForm.invoiceName = bill.invoiceNumber;
+        this.partialPaymentForm.invoiceID = bill.id;
         this.partialPaymentForm.roomName = roomdata.RoomNumber;
+        this.partialPaymentForm.roomID = roomdata.id;
+        this.partialPaymentForm.amount = parseFloat(bill.remainPaid) || 0;
         this.partialPaymentForm.userID = roomdata.user_sign_contract.id;
         this.partialPaymentForm.building = roomdata.room_building.id;
+        this.partialPaymentForm.accountBankName =
+          `${tenantUser.firstName || ""} ${tenantUser.lastName || ""}`.trim();
         this.createPartialPayment = true;
       } else if (menu_option === "CreateInvoice") {
         if (!this.canGenerateCurrentMonthInvoice(roomdata)) {
@@ -1431,26 +1444,27 @@ export default {
       }
     },
     reGenerateInvoice(invoiceID) {
-      console.log("Invoice", invoiceID);
-      console.log("building", this.$store.state.building);
-      const currentdate = new Date();
-      const month = currentdate.getMonth();
-      const year = currentdate.getFullYear();
+      const period = this.getCurrentBillingPeriod();
       axios
         .get(
-          `https://api.resguru.app/api/regenerateinvoice?buildingid=${this.$store.state.building}&invoiceid=${invoiceID}&month=${month}&year=${year}`
+          `https://api.resguru.app/api/regenerateinvoice?buildingid=${this.$store.state.building}&invoiceid=${invoiceID}&month=${period.month}&year=${period.year}`
         )
         .then((response) => {
-          // console.log("reGenerateInvoice",response.data.meta.message)
-          // this.$showNotification('#3Axw89CB', response.data.meta.message)
+          if (response.data && response.data.error) {
+            console.error("regenerateinvoice error:", response.data.error);
+            this.$showNotification(
+              "danger",
+              "เกิดข้อผิดพลาดในการอัปเดตใบแจ้งหนี้ กรุณาลองใหม่อีกครั้ง"
+            );
+            return;
+          }
+          this.$showNotification("#3A89CB", "อัปเดตใบแจ้งหนี้สำเร็จ");
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
+          console.error("regenerateinvoice request failed:", error);
           this.$showNotification(
             "danger",
-            "Please filled out all necessary information"
+            "เกิดข้อผิดพลาดในการอัปเดตใบแจ้งหนี้ กรุณาลองใหม่อีกครั้ง"
           );
         })
         .finally(() => {
@@ -1458,7 +1472,7 @@ export default {
         });
     },
     createFullPayment() {
-      let valit = validateCreateForm("full");
+      let valit = this.validateCreateForm("full");
       if (valit == false) {
         this.$showNotification(
           "danger",
@@ -1483,7 +1497,7 @@ export default {
                 ? this.fullPaymentForm.paymentTime
                 : new Date().toTimeString,
             building: this.fullPaymentForm.building,
-            room: this.$route.query.roomID,
+            room: this.fullPaymentForm.roomID,
           },
         })
         .then((resp) => {
@@ -1540,7 +1554,7 @@ export default {
       this.createFullpayment = false;
     },
     createPartial() {
-      let valit = validateCreateForm("part");
+      let valit = this.validateCreateForm("part");
       if (valit == false) {
         this.$showNotification(
           "danger",
@@ -1565,7 +1579,7 @@ export default {
                 ? this.partialPaymentForm.paymentTime
                 : new Date().toTimeString,
             building: this.partialPaymentForm.building,
-            room: this.$route.query.roomID,
+            room: this.partialPaymentForm.roomID,
           },
         })
         .then((resp) => {
@@ -1631,7 +1645,7 @@ export default {
           this.fullPaymentForm.bankName == "" ||
           this.fullPaymentForm.amount == "" ||
           this.fullPaymentForm.building == "" ||
-          this.$route.query.roomID == ""
+          this.fullPaymentForm.roomID == ""
         ) {
           return false;
         } else {
@@ -1645,7 +1659,7 @@ export default {
           this.partialPaymentForm.bankName == "" ||
           this.partialPaymentForm.amount == "" ||
           this.partialPaymentForm.building == "" ||
-          this.$route.query.roomID
+          this.partialPaymentForm.roomID == ""
         ) {
           return false;
         } else {
@@ -1906,6 +1920,7 @@ export default {
       this.invoiceQueue.total = 0;
       this.invoiceQueue.completed = 0;
       this.invoiceQueue.success = 0;
+      this.invoiceQueue.skipped = 0;
       this.invoiceQueue.failed = 0;
     },
     generateSelectedInvoices() {
@@ -1953,12 +1968,37 @@ export default {
 
         this.requestGenerateInvoice(roomid)
           .then((response) => {
+            const payload = response?.data;
+
+            if (payload?.error) {
+              // Backend returns some errors as a 200 with an `error` key
+              // instead of an HTTP failure, so this can't be caught below.
+              console.error("generateInvoice error:", payload.error);
+              this.invoiceQueue.failed += 1;
+              this.setInvoiceRoomState(roomid, "failed");
+              this.$showNotification(
+                "danger",
+                payload.error || "เกิดข้อผิดพลาดในการสร้างใบแจ้งหนี้"
+              );
+              return;
+            }
+
+            // "Already exists, nothing created" comes back as a plain
+            // string in `data` (no `meta.message`); a falsy `data` covers
+            // the same-tenant repeat-generate case, which the backend
+            // currently returns with no body at all.
+            const skipped = !payload?.data || typeof payload.data === "string";
+
+            if (skipped) {
+              this.invoiceQueue.skipped += 1;
+              this.setInvoiceRoomState(roomid, "skipped");
+              this.$showNotification("warning", "ห้องนี้มีใบแจ้งหนี้เดือนนี้แล้ว");
+              return;
+            }
+
             this.invoiceQueue.success += 1;
             this.setInvoiceRoomState(roomid, "success");
-            this.$showNotification(
-              "#3A89CB",
-              response?.data?.meta?.message || "สร้างใบแจ้งหนี้สำเร็จ"
-            );
+            this.$showNotification("#3A89CB", "สร้างใบแจ้งหนี้สำเร็จ");
           })
           .catch(() => {
             this.invoiceQueue.failed += 1;
@@ -1978,9 +2018,13 @@ export default {
             ) {
               this.invoiceQueue.inProgress = false;
               if (this.invoiceQueue.total > 1) {
+                const skippedNote =
+                  this.invoiceQueue.skipped > 0
+                    ? ` (ข้าม ${this.invoiceQueue.skipped} ห้องที่มีบิลแล้ว)`
+                    : "";
                 this.$showNotification(
                   "#3A89CB",
-                  `สร้างใบแจ้งหนี้เสร็จสิ้น สำเร็จ ${this.invoiceQueue.success}/${this.invoiceQueue.total} ห้อง`
+                  `สร้างใบแจ้งหนี้เสร็จสิ้น สำเร็จ ${this.invoiceQueue.success}/${this.invoiceQueue.total} ห้อง${skippedNote}`
                 );
               }
               this.filterByDate();
@@ -2010,14 +2054,14 @@ export default {
     setUploadFileFullPayment() {
       this.fileFullPayment = this.$refs.FullPayment.files[0];
     },
-    async PDFPrint(tr) {
+    async PDFPrint(tr, mode = 'download') {
       if (!tr || !tr.tenant_bills || tr.tenant_bills.length === 0) {
         this.$showNotification("warning", "ไม่พบข้อมูลใบแจ้งหนี้");
         return;
       }
 
       const invoice = tr.tenant_bills[0];
-      
+
       // Create standardized data structure (matching PaymentDetail.vue)
       const data = {
         RoomNumber: tr.RoomNumber,
@@ -2046,6 +2090,8 @@ export default {
           usageMeter: invoice.usageMeter || 0,
           paymentStatus: invoice.paymentStatus || "ยังไม่ชำระ",
           remainPaid: parseFloat(invoice.remainPaid) || 0,
+          carriedDebt: parseFloat(invoice.carriedDebt) || 0,
+          creditApplied: parseFloat(invoice.creditApplied) || 0,
           pastRoomPrice: parseFloat(invoice.pastRoomPrice) || 0,
           pastWaterPrice: parseFloat(invoice.pastWaterPrice) || 0,
           pastElectricPrice: parseFloat(invoice.pastElectricPrice) || 0,
@@ -2054,8 +2100,14 @@ export default {
         }],
         room_type: tr.room_type || {}
       };
-      
-      this.$refs.childComponentPDF.generatePDF(data);
+
+      this.$showNotification(
+        "#3A89CB",
+        mode === 'preview'
+          ? "กำลังสร้าง PDF หากไม่มีไฟล์เปิดขึ้นมา กรุณาตรวจสอบว่าเบราว์เซอร์บล็อก Popup อยู่หรือไม่"
+          : "กำลังสร้าง PDF และดาวน์โหลดไฟล์"
+      );
+      this.$refs.childComponentPDF.generatePDF(data, mode);
     },
     hasOldDebt(bill) {
       if (!bill) return false;
@@ -2063,13 +2115,17 @@ export default {
       if (["Paid", "In Review Progress"].includes(bill.paymentStatus)) {
         return false;
       }
-      return (
-        parseFloat(bill.pastRoomPrice) > 0 ||
-        parseFloat(bill.pastWaterPrice) > 0 ||
-        parseFloat(bill.pastElectricPrice) > 0 ||
-        parseFloat(bill.pastCommunalPrice) > 0 ||
-        parseFloat(bill.pastOtherPrice) > 0
-      );
+      // carriedDebt is the unpaid balance rolled forward from this
+      // tenant's previous bill(s) - the past*Price fields this used to
+      // check are last month's water/electric unit cost for comparison
+      // display, unrelated to whether any debt is actually outstanding.
+      return parseFloat(bill.carriedDebt) > 0;
+    },
+    hasCreditApplied(bill) {
+      if (!bill) return false;
+      // creditApplied is leftover from a prior overpayment (see
+      // approvePayment) that got applied to this bill at creation time.
+      return parseFloat(bill.creditApplied) > 0;
     },
     thaiPaymentStatus(status) {
       const map = {

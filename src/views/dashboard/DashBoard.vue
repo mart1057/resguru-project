@@ -1,18 +1,5 @@
 <template>
-  <div class="dashboard-wrapper" @click="hideOverlay()">
-    <!-- Gray Overlay -->
-    <div v-if="showOverlay && isCountUserEmpty" class="overlay">
-      <div class="highlighted-menu">
-        <p>
-          Welcome to ResGuru, Please add Room and Utility cost in our setting
-          menu here.
-        </p>
-        <button @click="routerTo('/setting')" class="highlight-button">
-          Go to Settings
-        </button>
-      </div>
-    </div>
-
+  <div class="dashboard-wrapper">
     <!-- Dashboard Content Wrapper -->
     <div class="dashboard-content">
       <!-- Your existing dashboard content -->
@@ -103,16 +90,11 @@ export default {
       db_payment: [],
       db_expense: { receive: 0, expense: [] },
       count_user: {},
-      showOverlay: true,
       isAllBuildingView: false,
       buildingNameById: {},
     };
   },
   computed: {
-    isCountUserEmpty() {
-      // Check if count_user is an empty object
-      return Object.keys(this.count_user).length === 0;
-    },
     isPackageBasic() {
       // Check if package ID is 1 (Basic package)
       const packageId = this.$store.state.buildingInfo[0]?.attributes?.package?.data?.id;
@@ -689,9 +671,6 @@ export default {
       await this.$router.push({
         path: path,
       });
-    },
-    hideOverlay() {
-      this.showOverlay = false; // Hide overlay when button is clicked
     },
     async getDashboard(check) {
       this.isAllBuildingView = check === true;

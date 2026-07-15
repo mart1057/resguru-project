@@ -772,7 +772,7 @@
                 </div>
                 <div class="col-span-4 ml-[8px]">
                   <div>
-                    <span class="text-[red] mr-[2px]">*</span>วางเงินมัดจำ (บาท)
+                    <span class="text-[red] mr-[2px]">*</span>วางเงินค่าเช่าล่วงหน้า (บาท)
                   </div>
                   <input
                     type="number"
@@ -970,7 +970,7 @@
               <div class="w-[30%] text-custom flex items-start"></div>
               <div class="grid grid-cols-8 text-custom w-[70%]">
                 <div class="col-span-4 mt-[14px]">
-                  <div class="text-[#003765]">วางเงินมัดจำ</div>
+                  <div class="text-[#003765]">วางเงินค่าเช่าล่วงหน้า</div>
                   <div class="mt-[12px]">{{ room_detail.room_deposit }}</div>
                 </div>
               </div>
@@ -1000,7 +1000,7 @@ import axios from "axios";
 import { degrees, PDFDocument, rgb, StandardFonts } from "pdf-lib";
 import download from "downloadjs";
 import fontkit from "@pdf-lib/fontkit";
-import { convertDateNoTime } from "@/components/hook/hook";
+import { convertDateNoTime, recordDepositIncome } from "@/components/hook/hook";
 import PDFgeneratorRentalContract from "@/views/rental-contract/component/PDFgeneratorRentalContract";
 export default {
   components: { PDFgeneratorRentalContract },
@@ -1233,6 +1233,21 @@ export default {
             roomStatus: this.isReservedContract() ? "Reserved" : "Checked In",
           },
         }
+      );
+    },
+    recordMoveInDepositIncome() {
+      // Only the roomDeposit (มัดจำ / ค่าเช่าล่วงหน้า) counts as income at
+      // move-in - roomInsuranceDeposit is not building revenue, and a
+      // "reserved"-status contract hasn't actually moved in yet.
+      if (this.isReservedContract()) {
+        return Promise.resolve();
+      }
+
+      return recordDepositIncome(
+        axios,
+        this.$store.state.building,
+        this.room_detail_create.room_deposit,
+        `ค่าเช่าล่วงหน้า (ทำสัญญาเช่า ห้อง ${this.create_room_number || ''})`.trim()
       );
     },
     createUtilityRecords(contractId) {
@@ -1551,6 +1566,7 @@ export default {
                 return Promise.all([
                   this.updateRoomAfterContract(),
                   this.createUtilityRecords(resp.data.data.id),
+                  this.recordMoveInDepositIncome(),
                 ]);
             })
             .catch((err) => {
@@ -1608,6 +1624,7 @@ export default {
                 return Promise.all([
                   this.updateRoomAfterContract(),
                   this.createUtilityRecords(resp.data.data.id),
+                  this.recordMoveInDepositIncome(),
                 ]);
             })
             .catch((err) => {

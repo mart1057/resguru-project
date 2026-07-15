@@ -294,17 +294,47 @@
                                 <div class="text-white font-bold ml-[8px]   flex justify-center items-center">พฤษภาคม/2023
                                 </div>
                             </div> -->
-              <div>
-                <input
-                  v-model="selectedDate"
-                  type="month"
-                  placeholder="ค้นหาตามหมายเลขห้อง"
-                  id="datepicker"
-                  @input="filterByDate()"
-                  v-bind:class="{
-                    'h-[36px] pl-[8px] text-[center] pr-[8px] bg-[#003765] flex cursor-pointer text-[white]  justify-center  rounded-[12px] mt-[12px]': true,
-                  }"
-                />
+              <div class="relative" v-if="tab != 3">
+                <button
+                  type="button"
+                  @click="showDatePicker = !showDatePicker"
+                  class="h-[36px] pl-[8px] pr-[8px] bg-[#003765] flex cursor-pointer text-[white] justify-center items-center rounded-[12px] mt-[12px]"
+                >
+                  {{ formatMonthYear(selectedDate) }}
+                </button>
+                <div
+                  v-if="showDatePicker"
+                  class="absolute top-full left-0 z-10 mt-1 bg-white shadow-lg rounded-lg p-4 text-[#003765]"
+                >
+                  <div class="flex justify-between items-center mb-2">
+                    <button
+                      type="button"
+                      @click="changeYear(-1)"
+                      class="px-2 py-1 bg-[#F3F7FA] rounded"
+                    >
+                      &lt;
+                    </button>
+                    <div class="font-bold">{{ currentYear }}</div>
+                    <button
+                      type="button"
+                      @click="changeYear(1)"
+                      class="px-2 py-1 bg-[#F3F7FA] rounded"
+                    >
+                      &gt;
+                    </button>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2">
+                    <div
+                      v-for="(month, index) in monthNames"
+                      :key="index"
+                      @click="selectMonth(index)"
+                      class="p-2 text-center cursor-pointer rounded hover:bg-[#F3F7FA]"
+                      :class="{ 'bg-[#003765] text-white': isSelectedMonth(index) }"
+                    >
+                      {{ month.substring(0, 3) }}
+                    </div>
+                  </div>
+                </div>
               </div>
               <div>
                 <div class="flex justify-start items-center mt-[5px]">
@@ -451,18 +481,18 @@
           </div>
         </div>
         <div class="flex justify-end">
-          <!-- <div v-if="tab == 1" class="flex">
+          <div v-if="tab == 1" class="flex">
             <div>
               <input
                 class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
-                id="upload"
+                id="upload-water"
                 hidden
                 type="file"
-                @change="importWater()"
-                ref="importExcel"
+                @change="handleFileSelected('water')"
+                ref="importExcelWater"
                 accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
               />
-              <label for="upload">
+              <label for="upload-water">
                 <div
                   class="h-[36px] pl-[8px] pr-[8px] bg-[#39B974] flex cursor-pointer justify-center rounded-[12px] mt-[12px]"
                 >
@@ -530,14 +560,14 @@
           <div v-else-if="tab == 2">
             <input
               class="h-[28px] w-[120px] rounded-[12px] border flex justify-start"
-              id="upload"
+              id="upload-electric"
               hidden
               type="file"
-              @change="importElectrict()"
-              ref="importExcel"
+              @change="handleFileSelected('electric')"
+              ref="importExcelElectric"
               accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
             />
-            <label for="upload">
+            <label for="upload-electric">
               <div
                 class="h-[36px] pl-[8px] pr-[8px] bg-[#39B974] flex cursor-pointer justify-center rounded-[12px] mt-[12px]"
               >
@@ -597,8 +627,69 @@
                 </div>
               </div>
             </label>
-          </div> -->
+          </div>
         </div>
+        <b-modal
+          centered
+          v-model="importPreview.open"
+          size="l"
+          hide-backdrop
+          hide-header-close
+          hide-header
+          hide-footer
+          class="text-custom"
+        >
+          <div>
+            <div class="flex justify-between">
+              <div class="text-custom flex justify-center items-center text-[16px] font-bold">
+                {{
+                  importPreview.tab === "water"
+                    ? "ยืนยันนำเข้ามิเตอร์น้ำ"
+                    : "ยืนยันนำเข้ามิเตอร์ไฟฟ้า"
+                }}
+              </div>
+              <div @click="cancelImport()" class="cursor-pointer">✕</div>
+            </div>
+            <div class="text-[13px] text-[#8396A6] mt-[4px]">
+              {{ importPreview.fileName }}
+            </div>
+            <div v-if="importPreview.error" class="mt-[14px] text-[#EA5455]">
+              {{ importPreview.error }}
+            </div>
+            <template v-else>
+              <div class="mt-[14px] max-h-[320px] overflow-y-auto">
+                <vs-table :data="importPreview.rows">
+                  <template #thead>
+                    <vs-tr>
+                      <vs-th>เลขห้อง</vs-th>
+                      <vs-th>เลขมิเตอร์ปัจจุบัน</vs-th>
+                    </vs-tr>
+                  </template>
+                  <template #tbody>
+                    <vs-tr :key="i" v-for="(row, i) in importPreview.rows" :data="row">
+                      <vs-td>{{ row.roomnumber }}</vs-td>
+                      <vs-td>{{ row.currentunit }}</vs-td>
+                    </vs-tr>
+                  </template>
+                </vs-table>
+              </div>
+              <div class="text-[13px] text-[#8396A6] mt-[8px]">
+                ทั้งหมด {{ importPreview.rows.length }} ห้อง
+              </div>
+            </template>
+            <div class="flex justify-end mt-[20px]">
+              <vs-button dark shadow @click="cancelImport()">ยกเลิก</vs-button>
+              <div class="ml-[12px]">
+                <vs-button
+                  :disabled="!!importPreview.error"
+                  @click="confirmImport()"
+                >
+                  ยืนยันนำเข้า
+                </vs-button>
+              </div>
+            </div>
+          </div>
+        </b-modal>
         <div class="flex items-center mb-[8px] mt-[14px] table-container">
           <!-- <div v-for="(data, i) in floor " class="flex-initial flex-nowrap w-32 p-2 border-1 rounded-t-lg" -->
           <div
@@ -655,6 +746,7 @@ import Electricity from "./components/Electricity.vue";
 import CommonFee from "./components/CommonFee.vue";
 import OtherFees from "./components/OtherFees.vue";
 import axios from "axios";
+import * as XLSX from "xlsx";
 export default {
   components: { Water, Electricity, CommonFee, OtherFees },
   data() {
@@ -671,11 +763,26 @@ export default {
       tab_floor: "0",
       name_floor: "",
       selectedDate: null,
+      showDatePicker: false,
+      currentYear: new Date().getFullYear(),
+      monthNames: [
+        "มกราคม", "กุมภาพันธ์", "มีนาคม", "เมษายน", "พฤษภาคม", "มิถุนายน",
+        "กรกฎาคม", "สิงหาคม", "กันยายน", "ตุลาคม", "พฤศจิกายน", "ธันวาคม",
+      ],
+      importPreview: {
+        open: false,
+        tab: null,
+        file: null,
+        fileName: "",
+        rows: [],
+        error: null,
+      },
     };
   },
   created() {
-    (this.selectedDate = new Date().toISOString().substr(0, 7)), // Set the default to current month
-      (this.$store.state.main = true);
+    this.selectedDate = new Date().toISOString().substr(0, 7); // Set the default to current month
+    this.currentYear = parseInt(this.selectedDate.split("-")[0], 10);
+    this.$store.state.main = true;
     const loading = this.$vs.loading({
       opacity: 1,
     });
@@ -737,6 +844,28 @@ export default {
         this.filter.selectedYear
       );
     },
+    changeYear(amount) {
+      this.currentYear += amount;
+    },
+    selectMonth(monthIndex) {
+      const month = String(monthIndex + 1).padStart(2, "0");
+      this.selectedDate = `${this.currentYear}-${month}`;
+      this.filterByDate();
+      this.showDatePicker = false;
+    },
+    isSelectedMonth(monthIndex) {
+      if (!this.selectedDate) return false;
+      const [year, month] = this.selectedDate.split("-");
+      return (
+        parseInt(year, 10) === this.currentYear &&
+        parseInt(month, 10) === monthIndex + 1
+      );
+    },
+    formatMonthYear(dateString) {
+      if (!dateString) return "";
+      const [year, month] = dateString.split("-");
+      return `${this.monthNames[parseInt(month, 10) - 1]} ${year}`;
+    },
     callChildFunction(id) {
       if (this.tab == 1) {
         this.$refs.childComponentRef.getWaterFee(
@@ -753,11 +882,7 @@ export default {
         );
       }
       if (this.tab == 3) {
-        this.$refs.childComponentRef.getCommonFeeRoom(
-          id,
-          this.filter.selectedMonth,
-          this.filter.selectedYear
-        );
+        this.$refs.childComponentRef.getCommonFeeRoom(id);
       }
       if (this.tab == 4) {
         this.$refs.childComponentRef.getOtherFee(
@@ -816,57 +941,122 @@ export default {
         });
     },
 
-    importWater() {
-      this.importExcel = this.$refs.importExcel.files[0];
-      if (this.importExcel.length != 0) {
-        let formData = new FormData();
-        formData.append("file", this.importExcel);
-        formData.append("building", String(this.$store.state.building));
-        axios
-          .put("https://api.resguru.app/api/importWater", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((resp) => {
-            console.log(resp);
-          })
-          .catch((error) => {
-            const errorMessage = error.message
-              ? error.message
-              : "Error updating information";
-            this.$showNotification("danger", errorMessage);
-          })
-          .finally(() => {
-            this.$showNotification("#3A89CB", "นำเข้ามิเตอร์น้ำผ่าน Excel สำเร็จ");
-          });
+    resetImportInput(type) {
+      const ref = type === "water" ? "importExcelWater" : "importExcelElectric";
+      if (this.$refs[ref]) {
+        this.$refs[ref].value = "";
       }
     },
-    importElectrict() {
-      this.importExcel = this.$refs.importExcel.files[0];
-      if (this.importExcel.length != 0) {
-        let formData = new FormData();
-        formData.append("file", this.importExcel);
-        formData.append("building", String(this.$store.state.building));
-        axios
-          .put("https://api.resguru.app/api/importElectric", formData, {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          })
-          .then((resp) => {
-            console.log(resp);
-          })
-          .catch((error) => {
-            const errorMessage = error.message
-              ? error.message
-              : "Error updating information";
-            this.$showNotification("danger", errorMessage);
-          })
-          .finally(() => {
-            this.$showNotification("#3A89CB", "นำเข้ามิเตอร์ไฟฟ้าผ่าน Excel สำเร็จ");
+    resetImportPreview() {
+      this.importPreview = {
+        open: false,
+        tab: null,
+        file: null,
+        fileName: "",
+        rows: [],
+        error: null,
+      };
+    },
+    handleFileSelected(type) {
+      const ref = type === "water" ? "importExcelWater" : "importExcelElectric";
+      const file = this.$refs[ref].files[0];
+      if (!file) return;
+
+      this.importPreview = {
+        open: true,
+        tab: type,
+        file,
+        fileName: file.name,
+        rows: [],
+        error: null,
+      };
+
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const workbook = XLSX.read(new Uint8Array(e.target.result), {
+            type: "array",
           });
-      }
+          if (!workbook.SheetNames.includes("Sheet1")) {
+            this.importPreview.error =
+              'ไม่พบชีทชื่อ "Sheet1" ในไฟล์ กรุณาใช้เทมเพลตที่กำหนด';
+            return;
+          }
+          const rows = XLSX.utils.sheet_to_json(workbook.Sheets["Sheet1"]);
+          if (rows.length === 0) {
+            this.importPreview.error = "ไม่พบข้อมูลในไฟล์";
+            return;
+          }
+          for (let i = 0; i < rows.length; i++) {
+            const row = rows[i];
+            if (row.roomnumber == null || row.currentunit == null) {
+              this.importPreview.error = `ข้อมูลไม่ครบที่แถว ${
+                i + 1
+              } (ต้องมี roomnumber และ currentunit)`;
+              return;
+            }
+            if (typeof row.currentunit !== "number") {
+              this.importPreview.error = `เลขมิเตอร์ต้องเป็นตัวเลขที่แถว ${i + 1}`;
+              return;
+            }
+          }
+          this.importPreview.rows = rows;
+        } catch (err) {
+          this.importPreview.error = "ไม่สามารถอ่านไฟล์นี้ได้ กรุณาตรวจสอบรูปแบบไฟล์";
+        }
+      };
+      reader.onerror = () => {
+        this.importPreview.error = "ไม่สามารถอ่านไฟล์นี้ได้";
+      };
+      reader.readAsArrayBuffer(file);
+    },
+    cancelImport() {
+      this.resetImportInput(this.importPreview.tab);
+      this.resetImportPreview();
+    },
+    confirmImport() {
+      if (!this.importPreview.file || this.importPreview.error) return;
+
+      const tab = this.importPreview.tab;
+      const endpoint = tab === "water" ? "importWater" : "importElectric";
+      const successMessage =
+        tab === "water"
+          ? "นำเข้ามิเตอร์น้ำผ่าน Excel สำเร็จ"
+          : "นำเข้ามิเตอร์ไฟฟ้าผ่าน Excel สำเร็จ";
+
+      let formData = new FormData();
+      formData.append("file", this.importPreview.file);
+      formData.append("building", String(this.$store.state.building));
+
+      axios
+        .put(`https://api.resguru.app/api/${endpoint}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((resp) => {
+          if (resp.data && resp.data.error) {
+            console.error("import error:", resp.data.error);
+            this.$showNotification(
+              "danger",
+              "นำเข้าข้อมูลไม่สำเร็จ กรุณาตรวจสอบไฟล์และลองใหม่อีกครั้ง"
+            );
+            return;
+          }
+          this.$showNotification("#3A89CB", successMessage);
+          this.filterByDate();
+        })
+        .catch((error) => {
+          console.error("import request failed:", error);
+          this.$showNotification(
+            "danger",
+            "นำเข้าข้อมูลไม่สำเร็จ กรุณาตรวจสอบไฟล์และลองใหม่อีกครั้ง"
+          );
+        })
+        .finally(() => {
+          this.resetImportInput(tab);
+          this.resetImportPreview();
+        });
     },
   },
 };

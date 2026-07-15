@@ -321,7 +321,7 @@
                             <div class="w-[30%] text-custom flex items-start">รายละเอียดการชำระเงิน</div>
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
                                 <div class="col-span-4">
-                                    <div>ค่ามัดจำ (บาท)</div>
+                                    <div>ค่าเช่าล่วงหน้า (บาท)</div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="earnest" required />
                                 </div>
@@ -378,6 +378,7 @@
 </template>
 <script>
 import axios from 'axios'
+import { recordDepositIncome } from '@/components/hook/hook'
 
 export default {
     data() {
@@ -532,6 +533,9 @@ export default {
                         users_permissions_user: res.data.user.id
                     }
                 }).then(this.openNotificationBookRoom('top-right', '#3A89CB', 6000))
+                    .then(() => {
+                        recordDepositIncome(axios, this.$store.state.building, this.earnest, 'ค่าเช่าล่วงหน้า (จองห้อง)')
+                    })
                     .catch(function (err) {
                         console.log(err)
                     })

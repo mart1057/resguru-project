@@ -107,7 +107,7 @@
                         <td class="w-[150px] flex justify-end">{{ item.price }}</td>
                     </tr>
                     <tr class="border-b-[1px] flex justify-between ">
-                        <td class="w-[150px]">คืนค่ามัดจำ</td>
+                        <td class="w-[150px]">คืนค่าเช่าล่วงหน้า</td>
                         <td class="w-[150px] flex justify-end">-</td>
                         <td class="w-[150px] flex justify-end">-{{ list_debt.deposit }}</td>
                         <td class="w-[150px] flex justify-end">-{{ list_debt.deposit }}</td>

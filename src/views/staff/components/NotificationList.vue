@@ -311,7 +311,7 @@
                             <div class="w-[30%] text-custom flex items-start">รายละเอียดการชำระเงิน</div>
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
                                 <div class="col-span-4">
-                                    <div>ค่ามัดจำ (บาท)</div>
+                                    <div>ค่าเช่าล่วงหน้า (บาท)</div>
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
                                 </div>
                                 <!-- <div class="col-span-4  ml-[8px]">

@@ -625,7 +625,7 @@
                                 </div>
                             </div>
                             <div class="flex justify-between w-[100%] mt-[4px]">
-                                <div class="text-custom ">คืนค่ามัดจำ</div>
+                                <div class="text-custom ">คืนค่าเช่าล่วงหน้า</div>
                                 <div class="text-custom ">
                                     -{{ list_debt.deposit }}
                                     <span class="ml-[4px] text-custom ">บาท</span>

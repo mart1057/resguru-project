@@ -796,42 +796,27 @@ export default {
             };
         },
         forgotPass() {
-            let checkEmail = false
             const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
             if (emailPattern.test(this.email_forgot)) {
                 this.errorsForgotPass = ''
                 const loading = this.$vs.loading()
-                fetch('https://api.resguru.app/api' + '/users')
-                    .then(response => response.json())
+                axios.post('https://api.resguru.app/api' + '/auth/forgot-password-mobile', {
+                    "email": this.email_forgot
+                })
                     .then((resp) => {
-                        resp.forEach(element => {
-                            if (element.username == this.email_forgot) {
-                                return checkEmail = true
-                            }
-                        });
-                        if (checkEmail) {
-                            axios.post('https://api.resguru.app/api' + '/auth/forgot-password-mobile', {
-                                "email": this.email_forgot
-                            })
-                                .then((resp) => {
-                                    loading.close()
-                                    this.openNotification2('top-right', 'success', 6000,)
-                                    this.email_forgot = ''
-                                    this.tab = 4
-                                })
-                                .catch((error) => {
-                                    loading.close()
-                                    console.log(error);
-                                })
-                        }
-                        else {
-                            loading.close();
-                            this.errorsForgotPass = 'Email address not found'
-                            this.openNotification5('top-right', 'danger', 6000)
-                        }
+                        loading.close()
+                        this.openNotification2('top-right', 'success', 6000,)
+                        this.email_forgot = ''
+                        this.tab = 4
+                    })
+                    .catch((error) => {
+                        loading.close()
+                        console.log(error);
+                        this.errorsForgotPass = 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง'
+                        this.openNotification5('top-right', 'danger', 6000)
                     })
             } else {
-                this.errorsForgotPass = 'The email format is invalid.';
+                this.errorsForgotPass = 'รูปแบบอีเมลไม่ถูกต้อง';
             }
         },
         resetPass() {

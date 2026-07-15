@@ -74,19 +74,6 @@
                         <apexchart :options="incomeChartOptions" :series="incomeData"></apexchart>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 w-[100%] gap-2 content-start mt-[14px]">
-                    <div v-for="(value, index) in incomeData" :key="index" class="h-[52px] border rounded-[12px] p-[4px]" v-if="value > 0">
-                        <div class="flex justify-between">
-                            <div class="flex items-center">
-                                <div class="w-[12px] h-[12px] rounded-[100px] mr-[8px]" :style="{ 'background-color': incomeColors[index] }"></div>
-                            </div>
-                            <div class="flex flex-col justify-around">
-                                <div class="text-[12px] text-[#B9CCDC]">{{ Math.round((value / incomeData.reduce((a, b) => a + b, 0)) * 100) }}%</div>
-                                <div class="font-bold text-[16px]" :style="{ color: incomeColors[index] }">{{ $formatNumber(value) }}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
         <!-- Package upgrade overlay for รายรับ -->
@@ -117,21 +104,9 @@
                 <!-- ... your existing รายจ่าย content ... -->
                 <div class="flex mt-[4px] w-[70%]">
                     <div class="mt-[8px]">
-                        <div class="flex items-center">
-                            <div class="w-[12px] h-[12px] bg-[#F1B826] rounded-[100px] mr-[8px]"></div>
-                            <div class="text-[12px] text-[#5C6B79]">{{ label2[0] }}</div>
-                        </div>
-                        <div class="flex items-center mt-[2px]">
-                            <div class="w-[12px] h-[12px] bg-[#008EF4] rounded-[100px] mr-[8px]"></div>
-                            <div class="text-[12px] text-[#5C6B79]">{{ label2[1] }}</div>
-                        </div>
-                        <div class="flex items-center mt-[2px]">
-                            <div class="w-[12px] h-[12px] bg-[#D44769] rounded-[100px] mr-[8px]"></div>
-                            <div class="text-[12px] text-[#5C6B79]">{{ label2[2] }}</div>
-                        </div>
-                        <div class="flex items-center mt-[2px]">
-                            <div class="w-[12px] h-[12px] bg-[#a1a1a1] rounded-[100px] mr-[8px]"></div>
-                            <div class="text-[12px] text-[#5C6B79]">{{ label2[3] }}</div>
+                        <div v-for="(label, index) in label2" :key="index" class="flex items-center mt-[2px]">
+                            <div class="w-[12px] h-[12px] rounded-[100px] mr-[8px]" :style="{ 'background-color': expenseColors[index % expenseColors.length] }"></div>
+                            <div class="text-[12px] text-[#5C6B79]">{{ label }}</div>
                         </div>
                     </div>
                 </div>
@@ -209,7 +184,7 @@
                         </div>
 
                         <div @click="create = true"
-                            class="text-white font-bold ml-[8px]   flex justify-center items-center">เพิ่มรายจ่าย</div>
+                            class="text-white font-bold ml-[8px]   flex justify-center items-center">{{ tab == 1 ? 'เพิ่มรายรับ' : 'เพิ่มรายจ่าย' }}</div>
 
                     </div>
 
@@ -295,6 +270,9 @@
                             <vs-th>
                                 จำนวนเงิน
                             </vs-th>
+                            <vs-th>
+                                จัดการ
+                            </vs-th>
                         </vs-tr>
                     </template>
                     <template #tbody>
@@ -312,8 +290,8 @@
                                 {{ tr.attributes.remark }}
                             </vs-td>
                             <vs-td class="image-cell">
-                                <img 
-                                    :src="tr.attributes.evidence.data ? 'https://api.resguru.app'+tr.attributes.evidence.data.attributes.url : ''" 
+                                <img
+                                    :src="tr.attributes.evidence.data ? 'https://api.resguru.app'+tr.attributes.evidence.data.attributes.url : ''"
                                     class="cell-image"
                                     v-if="tr.attributes.evidence.data"
                                     @click="openImagePreview(tr.attributes.evidence.data.attributes.url)"
@@ -321,8 +299,8 @@
                                 <span v-else>-</span>
                             </vs-td>
                             <vs-td class="image-cell">
-                                <img 
-                                    :src="tr.attributes.receipt.data ? 'https://api.resguru.app'+ tr.attributes.receipt.data.attributes.url : ''" 
+                                <img
+                                    :src="tr.attributes.receipt.data ? 'https://api.resguru.app'+ tr.attributes.receipt.data.attributes.url : ''"
                                     class="cell-image"
                                     v-if="tr.attributes.receipt.data"
                                     @click="openImagePreview(tr.attributes.receipt.data.attributes.url)"
@@ -331,6 +309,9 @@
                             </vs-td>
                             <vs-td>
                                 {{ $formatNumber(tr.attributes.amount) }}
+                            </vs-td>
+                            <vs-td>
+                                <vs-button danger @click="deleteExpense(tr.id)">ลบ</vs-button>
                             </vs-td>
                         </vs-tr>
                     </template>
@@ -403,6 +384,62 @@
                     </template>
                 </vs-table>
             </div>
+
+            <div class="mt-[24px]" v-if="tab == 1">
+                <div class="font-bold text-[16px] mb-[8px]">รายรับที่บันทึกเอง</div>
+                <vs-table>
+                    <template #thead>
+                        <vs-tr>
+                            <vs-th>
+                                วันที่
+                            </vs-th>
+                            <vs-th>
+                                ประเภท
+                            </vs-th>
+                            <vs-th>
+                                หมายเหตุ
+                            </vs-th>
+                            <vs-th>
+                                หลักฐาน
+                            </vs-th>
+                            <vs-th>
+                                จำนวนเงิน
+                            </vs-th>
+                            <vs-th>
+                                จัดการ
+                            </vs-th>
+                        </vs-tr>
+                    </template>
+                    <template #tbody>
+                        <vs-tr :key="i" v-for="(tr, i) in buildingIncome" :data="tr">
+                            <vs-td>
+                                {{ tr.attributes.date }}
+                            </vs-td>
+                            <vs-td>
+                                {{ parseIncomeRemark(tr.attributes.remark).category }}
+                            </vs-td>
+                            <vs-td>
+                                {{ parseIncomeRemark(tr.attributes.remark).note }}
+                            </vs-td>
+                            <vs-td class="image-cell">
+                                <img
+                                    :src="tr.attributes.evidence.data ? 'https://api.resguru.app'+tr.attributes.evidence.data.attributes.url : ''"
+                                    class="cell-image"
+                                    v-if="tr.attributes.evidence.data"
+                                    @click="openImagePreview(tr.attributes.evidence.data.attributes.url)"
+                                />
+                                <span v-else>-</span>
+                            </vs-td>
+                            <vs-td>
+                                {{ $formatNumber(tr.attributes.amount) }}
+                            </vs-td>
+                            <vs-td>
+                                <vs-button danger @click="deleteIncome(tr.id)">ลบ</vs-button>
+                            </vs-td>
+                        </vs-tr>
+                    </template>
+                </vs-table>
+            </div>
         </div>
 
         <!-- //////////////////////////// pop-up /////////////////////// -->
@@ -431,12 +468,12 @@
                         <div class="text-custom text-[14px] text-[#003765]">ประเภทรายจ่าย</div>
                         <div class="flex  items-center">
                             <select placeholder="Select"  class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]" v-model="expenseTypeValue">
-                                <option v-for="expenseType in expenseType"
+                                <option v-for="expenseType in expenseType" :key="expenseType.id"
                                     :value="expenseType.id">
-                                    {{ expenseType.attributes.expenseTypeName }} {{ expenseType.id }}
+                                    {{ expenseType.attributes.expenseTypeName }}
                                 </option>
                             </select>
-                            <div class="ml-[8px]" v-if="expenseTypeValue == 4">
+                            <div class="ml-[8px]" v-if="isOtherExpenseType()">
                                 <input class="h-[36px] w-[100%] ml-[8px] bg-[#F3F8FD] rounded-[12px]  flex justify-start"
                                     type="input" v-model="title" />
                             </div>
@@ -467,7 +504,7 @@
                                 class="flex justify-center text-custom items-center bg-[#165D98] text-[14px] cursor-pointer text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
                                 เลือกรูปภาพ</div>
                             </label>
-                            <div v-if="this.fileEvidenceForm.name" class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            <div v-if="this.fileEvidenceForm && this.fileEvidenceForm.name" class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                 {{this.fileEvidenceForm.name}}</div>
                             <div v-else class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                 ยังไม่ได้เลือกไฟล์</div>
@@ -483,7 +520,7 @@
                                 class="flex justify-center text-custom items-center bg-[#165D98] cursor-pointer text-[14px] text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
                                 เลือกรูปภาพ</div>
                             </label>
-                            <div v-if="this.fileReceiptForm.name" class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                            <div v-if="this.fileReceiptForm && this.fileReceiptForm.name" class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                 {{this.fileReceiptForm.name}}</div>
                             <div v-else class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
                                 ยังไม่ได้เลือกไฟล์</div>
@@ -505,12 +542,92 @@
                 </div>
             </div>
         </b-modal>
+
+        <b-modal  v-if="tab == 1"  centered v-model="create" size="default" hide-backdrop hide-header-close hide-header hide-footer
+            class="p-[-20px] text-custom">
+            <div>
+                <div class="flex justify-between pl-[20px] pr-[20px]">
+                    <div class="text-custom flex justify-center items-center text-[18px] font-bold">เพิ่มรายรับ</div>
+                    <div @click="create = false" class="cursor-pointer">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <mask id="mask0_417_4815" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
+                                width="24" height="24">
+                                <rect width="24" height="24" fill="#D9D9D9" />
+                            </mask>
+                            <g mask="url(#mask0_417_4815)">
+                                <path
+                                    d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                                    fill="#5C6B79" />
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+                <div class="pl-[20px] pr-[20px] mt-[24px]">
+                    <div>
+                        <div class="text-custom text-[14px] text-[#003765]">ประเภทรายรับ</div>
+                        <select placeholder="Select" class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]" v-model="incomeCategoryValue">
+                            <option v-for="category in incomeCategories" :key="category" :value="category">
+                                {{ category }}
+                            </option>
+                        </select>
+                    </div>
+                    <div class="mt-[8px]">
+                        <div class="text-custom text-[14px] text-[#003765]">หัวข้อ</div>
+                        <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                            v-model="title" />
+                    </div>
+                    <div class="mt-[8px]">
+                        <div class="text-custom text-[14px] text-[#003765]">หมายเหตุ</div>
+                        <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                            v-model="remark" />
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom text-[14px] text-[#003765]">จำนวนเงิน (บาท)</div>
+                        <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px]  flex justify-start" type="input"
+                            v-model="amount" />
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom text-[14px] text-[#003765]">วันที่</div>
+                        <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[14px] pr-[14px]  flex justify-start"
+                            type="date" v-model="date" />
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom text-[14px] text-[#003765]">หลักฐาน</div>
+                        <div class="flex mt-[4px]">
+                            <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadIncomeEvidence"
+                                ref="fileEvidence" hidden type="file" @change="tempUploadEvidence()" />
+                            <label for="uploadIncomeEvidence">
+                            <div
+                                class="flex justify-center text-custom items-center bg-[#165D98] text-[14px] cursor-pointer text-[white] pt-[8px] pb-[8px] pl-[12px] pr-[12px] rounded-[12px]">
+                                เลือกรูปภาพ</div>
+                            </label>
+                            <div v-if="this.fileEvidenceForm && this.fileEvidenceForm.name" class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                                {{this.fileEvidenceForm.name}}</div>
+                            <div v-else class="text-[#5C6B79] text-custom flex justify-center items-center ml-[8px] text-[12px]">
+                                ยังไม่ได้เลือกไฟล์</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-end mt-[30px]">
+                    <div>
+                        <vs-button dark shadow @click="create = false">
+                            <div class="text-custom">ยกเลิก</div>
+                        </vs-button>
+                    </div>
+                    <div>
+                        <vs-button @click="createIncome()" color="#003765">
+                            <div class="text-custom">เพิ่ม</div>
+                        </vs-button>
+                    </div>
+                </div>
+            </div>
+        </b-modal>
     </div>
 </template>
 <script>
 import VueApexCharts from "vue-apexcharts";
 import axios from 'axios'
-import { convertDateNoTime } from '@/components/hook/hook';
+import { convertDateNoTime, parseIncomeRemark } from '@/components/hook/hook';
 export default {
     components: {
         apexchart: VueApexCharts,
@@ -520,12 +637,14 @@ export default {
             tab: 1,
             create: false,
             popup_filter: false,
-            data: [],
             data2: [0, 0, 0, 0],
             label2: [],
             expense: [],
             expenseType: [],
             income: [],
+            buildingIncome: [],
+            incomeCategoryValue: "",
+            incomeCategories: ["ค่าห้อง", "ค่าน้ำ", "ค่าไฟ", "ค่าส่วนกลาง", "ค่าอื่นๆ"],
             title: "",
             expenseTypeValue: 0,
             amount: 0,
@@ -535,7 +654,6 @@ export default {
             receipt: "",
             fileEvidenceForm: null,
             fileReceiptForm: null,
-            dashboard: {},
             selectedDate: null,
             filter: {
                 search: '',
@@ -553,6 +671,7 @@ export default {
             incomeData: [],
             incomeLabels: ['ค่าห้อง', 'ค่าน้ำ', 'ค่าไฟ', 'ค่าส่วนกลาง', 'อื่นๆ'],
             incomeColors: ['#11d17e', '#3630a6', '#27d111', '#ac6eeb', '#a1a1a1'],
+            expenseColors: ['#F5D65E', '#008EF4', '#D44769', '#9A77FF', '#F1B826', '#11d17e', '#FF8A65', '#607D8B'],
         }
 
     },
@@ -600,7 +719,7 @@ export default {
                         },
                     },
                 },
-                colors: ["#F5D65E", "#008EF4", "#D44769", "#9A77FF"]
+                colors: this.label2.map((_, index) => this.expenseColors[index % this.expenseColors.length])
 
                 // noData: {
                 //     text: this.loading ? "Loading..." : "No Data",
@@ -657,33 +776,35 @@ export default {
             const [year, month] = dateStr.split('-');
             this.filter.selectedMonth = month
             this.filter.selectedYear = year
-            this.getDashboard(month, year);
             this.getExpense(month, year)
             this.getIncome(month, year)
+            this.getBuildingIncome(month, year)
         },
         routeTo(path) {
             this.$router.push({
                 path: path,
             })
         },
-        getDashboard(m,y) {
-            fetch(`https://api.resguru.app/api/getexpensedashboard?buildingid=${this.$store.state.building}&month=${m}&year=${y}`)
-                .then(response => response.json())
-                .then((resp) => {
-                    const receive = Number(resp?.accounting?.receive || 0);
-                    const desiredOrder = ["ค่าจ้างพนักงาน", "ค่าจ้างทำของ", "ค่าซ่อมบำรุง", "ค่าอื่นๆ"];
-                    const countList = Array.isArray(resp?.expenseCategory?.counts)
-                        ? resp.expenseCategory.counts
-                        : [];
-                    const counts = desiredOrder.map(type => {
-                        const item = countList.find(item => item.type === type);
-                        return item ? item.count : 0;
-                    });
-                    this.label2 = desiredOrder
-                    this.data2 = counts
-                    this.data = [Math.floor(receive)]
-                    this.dashboard = resp || {}
-                })
+        computeExpenseCategoryTotals() {
+            // getexpensedashboard ignores month/year and returns all-time
+            // totals, so the by-category chart is built here instead, from
+            // the already month-filtered building-expenses list below.
+            // Categories come from the actual fetched expense-type list
+            // (already sorted with "other" last), not a fixed 4-item list -
+            // this building has 7 types, and a hardcoded subset silently
+            // dropped amounts for any type not in it.
+            const totalsByType = {};
+            this.expense.forEach((item) => {
+                const typeName = item.attributes.building_expense_type.data
+                    ? item.attributes.building_expense_type.data.attributes.expenseTypeName
+                    : null;
+                if (!typeName) return;
+                const amount = parseFloat(item.attributes.amount || 0);
+                totalsByType[typeName] = (totalsByType[typeName] || 0) + amount;
+            });
+            const categoryNames = this.expenseType.map((t) => t.attributes.expenseTypeName);
+            this.label2 = categoryNames;
+            this.data2 = categoryNames.map((type) => totalsByType[type] || 0);
         },
         getExpense(m,y) {
             const loading = this.$vs.loading()
@@ -696,6 +817,7 @@ export default {
                 .then(response => response.json())
                 .then((resp) => {
                     this.expense = Array.isArray(resp?.data) ? resp.data : []
+                    this.computeExpenseCategoryTotals()
                 }).finally(() => {
                     loading.close()
                 })
@@ -704,9 +826,19 @@ export default {
             fetch(`https://api.resguru.app/api/building-expense-types`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getExpense()", resp.data);
-                    this.expenseType = resp.data
+                    const types = Array.isArray(resp?.data) ? resp.data : [];
+                    // Keep the generic "other" category last regardless of its id/creation order.
+                    this.expenseType = [...types].sort((a, b) => {
+                        const aOther = a.attributes.expenseTypeName.includes('อื่น') ? 1 : 0;
+                        const bOther = b.attributes.expenseTypeName.includes('อื่น') ? 1 : 0;
+                        return aOther - bOther;
+                    });
+                    this.computeExpenseCategoryTotals();
                 })
+        },
+        isOtherExpenseType() {
+            const selected = this.expenseType.find(t => t.id === this.expenseTypeValue);
+            return selected ? selected.attributes.expenseTypeName.includes('อื่น') : false;
         },
         tempUploadEvidence() {
             this.fileEvidenceForm = this.$refs.fileEvidence.files[0]
@@ -714,6 +846,32 @@ export default {
         tempUploadReceipt() {
             this.fileReceiptForm = this.$refs.fileReceipt.files[0]
         },
+        resetCreateForm() {
+            this.title = '';
+            this.amount = 0;
+            this.date = '';
+            this.remark = '';
+            this.expenseTypeValue = 0;
+            this.incomeCategoryValue = '';
+            this.fileEvidenceForm = null;
+            this.fileReceiptForm = null;
+            if (this.$refs.fileEvidence) this.$refs.fileEvidence.value = null;
+            if (this.$refs.fileReceipt) this.$refs.fileReceipt.value = null;
+        },
+        getBuildingIncome(m, y) {
+            const monthNum = parseInt(m);
+            const yearNum = parseInt(y);
+            const lastDay = new Date(yearNum, monthNum, 0).getDate();
+            const startDate = `${y}-${m}-01`;
+            const endDate = `${y}-${m}-${String(lastDay).padStart(2, '0')}`;
+            fetch(`https://api.resguru.app/api/building-incomes?populate=*&filters[building][id][$eq]=${this.$store.state.building}&filters[date][$gte]=${startDate}&filters[date][$lte]=${endDate}&sort[0]=id:desc`)
+                .then(response => response.json())
+                .then((resp) => {
+                    this.buildingIncome = Array.isArray(resp?.data) ? resp.data : []
+                    this.processIncomeData();
+                })
+        },
+        parseIncomeRemark,
         createExpense() {
             axios.post(`https://api.resguru.app/api/building-expenses`, {
                 data: {
@@ -723,11 +881,11 @@ export default {
                     date: this.date,
                     remark: this.remark,
                     building: this.$store.state.building,
-                    // evidence: this.evidence,
-                    // receipt: this.receipt
                 }
             })
             .then((resp) => {
+                const uploads = [];
+
                 if (this.fileEvidenceForm) {
                     let formData = new FormData();
                     formData.append("files", this.fileEvidenceForm);
@@ -735,14 +893,11 @@ export default {
                     formData.append("ref", "api::building-expense.building-expense");
                     formData.append("field", "evidence");
 
-                    axios.post("https://api.resguru.app/api/upload", formData, {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                        },
-                    }).then((result) => { console.log("Upload file", result) })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                    uploads.push(
+                        axios.post("https://api.resguru.app/api/upload", formData, {
+                            headers: { "Content-Type": "multipart/form-data" },
+                        }).catch((error) => { console.log(error); })
+                    );
                 }
 
                 if (this.fileReceiptForm) {
@@ -752,29 +907,94 @@ export default {
                     formDataReceipt.append("ref", "api::building-expense.building-expense");
                     formDataReceipt.append("field", "receipt");
 
-                    // Here's the fix: using formDataReceipt instead of formData
-                    axios.post("https://api.resguru.app/api/upload", formDataReceipt, {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                        },
-                    }).then((result) => { console.log("Upload file", result) })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                    uploads.push(
+                        axios.post("https://api.resguru.app/api/upload", formDataReceipt, {
+                            headers: { "Content-Type": "multipart/form-data" },
+                        }).catch((error) => { console.log(error); })
+                    );
                 }
+
+                // Wait for the file uploads to finish attaching before
+                // refetching the list, otherwise the refreshed row still
+                // shows no image until the next manual reload.
+                return Promise.all(uploads);
+            })
+            .then(() => {
+                this.$showNotification('#3A89CB', 'สร้างรายจ่ายสำเร็จ');
+                this.create = false;
+                this.filterByDate();
+                this.resetCreateForm();
             })
             .catch(error => {
-                const errorMessage = error.message ? error.message : 'Error updating information';
-                this.$showNotification('danger', errorMessage); 
+                console.error("createExpense error:", error);
+                this.$showNotification('danger', 'ไม่สามารถสร้างรายจ่ายได้ กรุณาลองใหม่อีกครั้ง');
+            });
+        },
+        createIncome() {
+            const category = this.incomeCategoryValue || this.incomeCategories[0];
+            const encodedRemark = `[${category}] ${this.remark || ''}`.trim();
+
+            axios.post(`https://api.resguru.app/api/building-incomes`, {
+                data: {
+                    title: this.title,
+                    amount: this.amount,
+                    date: this.date,
+                    remark: encodedRemark,
+                    building: this.$store.state.building,
+                }
             })
-            .finally(() => {
-                this.$showNotification('#3A89CB', 'สร้างรายจ่ายสำเร็จ');
-                this.create = false; // Close the modal after creation
+            .then((resp) => {
+                const uploads = [];
+
+                if (this.fileEvidenceForm) {
+                    let formData = new FormData();
+                    formData.append("files", this.fileEvidenceForm);
+                    formData.append("refId", String(resp.data.data.id));
+                    formData.append("ref", "api::building-income.building-income");
+                    formData.append("field", "evidence");
+
+                    uploads.push(
+                        axios.post("https://api.resguru.app/api/upload", formData, {
+                            headers: { "Content-Type": "multipart/form-data" },
+                        }).catch((error) => { console.log(error); })
+                    );
+                }
+
+                return Promise.all(uploads);
+            })
+            .then(() => {
+                this.$showNotification('#3A89CB', 'สร้างรายรับสำเร็จ');
+                this.create = false;
                 this.filterByDate();
-                this.fileEvidenceForm = null;
-                this.fileReceiptForm = null;
-                if (this.$refs.fileEvidence) this.$refs.fileEvidence.value = null;
-                if (this.$refs.fileReceipt) this.$refs.fileReceipt.value = null;
+                this.resetCreateForm();
+            })
+            .catch(error => {
+                console.error("createIncome error:", error);
+                this.$showNotification('danger', 'ไม่สามารถสร้างรายรับได้ กรุณาลองใหม่อีกครั้ง');
+            });
+        },
+        deleteExpense(id) {
+            if (!confirm('ยืนยันการลบรายจ่ายนี้?')) return;
+            axios.delete(`https://api.resguru.app/api/building-expenses/${id}`)
+            .then(() => {
+                this.$showNotification('#3A89CB', 'ลบรายจ่ายสำเร็จ');
+                this.filterByDate();
+            })
+            .catch(error => {
+                console.error("deleteExpense error:", error);
+                this.$showNotification('danger', 'ไม่สามารถลบรายจ่ายได้ กรุณาลองใหม่อีกครั้ง');
+            });
+        },
+        deleteIncome(id) {
+            if (!confirm('ยืนยันการลบรายรับนี้?')) return;
+            axios.delete(`https://api.resguru.app/api/building-incomes/${id}`)
+            .then(() => {
+                this.$showNotification('#3A89CB', 'ลบรายรับสำเร็จ');
+                this.filterByDate();
+            })
+            .catch(error => {
+                console.error("deleteIncome error:", error);
+                this.$showNotification('danger', 'ไม่สามารถลบรายรับได้ กรุณาลองใหม่อีกครั้ง');
             });
         },
         // createExpense() {
@@ -860,8 +1080,8 @@ export default {
             let electricTotal = 0;
             let commonTotal = 0;
             let othersTotal = 0;
-            
-            // Process each income record
+
+            // Process each auto-generated tenant payment receipt
             this.income.forEach(item => {
                 roomTotal += parseFloat(item.attributes.roomPrice || 0);
                 waterTotal += parseFloat(item.attributes.waterPrice || 0);
@@ -869,7 +1089,20 @@ export default {
                 commonTotal += parseFloat(item.attributes.communalPrice || 0);
                 othersTotal += parseFloat(item.attributes.otherPrice || 0);
             });
-            
+
+            // Fold in manually-entered income (categories share the same
+            // names as the chart buckets, e.g. when a tenant pays a fee
+            // directly to the owner outside the normal payment flow).
+            this.buildingIncome.forEach(item => {
+                const category = this.parseIncomeRemark(item.attributes.remark).category;
+                const amount = parseFloat(item.attributes.amount || 0);
+                if (category === 'ค่าห้อง') roomTotal += amount;
+                else if (category === 'ค่าน้ำ') waterTotal += amount;
+                else if (category === 'ค่าไฟ') electricTotal += amount;
+                else if (category === 'ค่าส่วนกลาง') commonTotal += amount;
+                else othersTotal += amount;
+            });
+
             // Update the income data for the chart
             this.incomeData = [roomTotal, waterTotal, electricTotal, commonTotal, othersTotal];
         },

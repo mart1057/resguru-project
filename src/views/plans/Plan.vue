@@ -915,28 +915,29 @@ export default {
   },
   methods: {
     async redirectToCheckout(productKey) {
-            const userEmail = this.$store.state.userInfo.email; // Assume this is the logged-in user's email   
+            const userEmail = this.$store.state.userInfo.email; // Assume this is the logged-in user's email
             const buildingId = this.$route.query.building ;
             const stripeProductId = productKey ;
-            console.log("ProductKey",stripeProductId)
             if(userEmail){
-                await axios.post('https://api.resguru.app/api/create-checkout-session', { 
-                    productId: stripeProductId,
-                    email: userEmail,
-                    buildingId: buildingId
-                })
-                .then( (resp) => {
-                    console.log(resp)
-                    window.location.href = resp.data.session.url;
+                try {
+                    const resp = await axios.post('https://api.resguru.app/api/create-checkout-session', {
+                        productId: stripeProductId,
+                        email: userEmail,
+                        buildingId: buildingId
+                    });
+
+                    if (resp.data && resp.data.error) {
+                        console.error("create-checkout-session error:", resp.data.error);
+                        this.$showNotification('danger', 'ไม่สามารถสร้างรายการชำระเงินได้ กรุณาลองใหม่อีกครั้ง');
+                        return;
                     }
-                )
-                .catch(error => {
-                    const errorMessage = error ? error : 'Error updating information';
-                    this.$showNotification('danger', errorMessage);
-                })
-                .finally(() => {
-                    this.$showNotification('#3A89CB', 'Reloading to checkout form')
-                })
+
+                    this.$showNotification('#3A89CB', 'กำลังไปยังหน้าชำระเงิน');
+                    window.location.href = resp.data.session.url;
+                } catch (error) {
+                    console.error("create-checkout-session request failed:", error);
+                    this.$showNotification('danger', 'ไม่สามารถสร้างรายการชำระเงินได้ กรุณาลองใหม่อีกครั้ง');
+                }
             }
     },
   }

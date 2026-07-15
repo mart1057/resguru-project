@@ -64,23 +64,6 @@ nav a.router-link-exact-active {
   font-family: 'Prompt';
 }
 
-/* input[type="month"]::-webkit-inner-spin-button,
-input[type="month"]::-webkit-calendar-picker-indicator {
-  display: none;
-  -webkit-appearance: none;
-} */
-input[type='month']::-webkit-calendar-picker-indicator {
-     color: rgba(0, 0, 0, 0);
-    opacity: 1;
-    display: block;
-    background: url(https://img.icons8.com/ios-filled/15/FFFFFF/calendar--v1.png) no-repeat;
-    width: 20px;
-    margin-top: 6px;
-    cursor: pointer;
-    height: 20px;
-    border-width: thin;
- 
-}
 .select-opt,
 textarea {
   padding-left: 10px;

@@ -56,7 +56,7 @@
                             </div>
                         </vs-td>
                         <vs-td>
-                            <vs-button  @click="updateCommunalfee(tr.communal_fees[0].id,tr.communal_fees[0].communalUnit)" >บันทึก</vs-button>
+                            <vs-button v-if="tr.communal_fees[0]" @click="updateCommunalfee(tr.communal_fees[0].id,tr.communal_fees[0].communalUnit)" >บันทึก</vs-button>
                         </vs-td>
                     </vs-tr>
                 </template>
@@ -104,8 +104,6 @@ export default {
             communalUnit:0,
             code: 0,
             text: '',
-            month:'',
-            year:'',
         }
     },
     created() {
@@ -115,29 +113,25 @@ export default {
         }, 1000)
     },
     mounted() {
-        const dateStr =  new Date().toISOString().substr(0, 7);
-        const [y, m] = dateStr.split('-');
-        this.month = m
-        this.year = y
-        this.getCommonFeeRoom(this.id,this.month,this.year);
+        this.getCommonFeeRoom(this.id);
     },
     methods: {
-        getCommonFeeRoom(id,m,y) {
+        getCommonFeeRoom(id) {
             const loading = this.$vs.loading()
-            fetch(`https://api.resguru.app/api/getcommunallist?buildingid=${this.$store.state.building}&buildingFloor=${id}&month=${m}&year=${y}`)
-            
+            fetch(`https://api.resguru.app/api/getcommunallist?buildingid=${this.$store.state.building}&buildingFloor=${id}`)
+
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getCommonFeeRoom()",resp.data);
                     if (this.code == 8) {
-                        
+
                         this.commonRoom = resp.data .filter(item =>
                             item.RoomNumber.toLowerCase().includes(this.text.toLowerCase()),
                         );
 
                     }
                     else{
-                        this.commonRoom = resp.data   
+                        this.commonRoom = resp.data
                     }
                 }).finally(() => {
                     loading.close()
@@ -148,10 +142,10 @@ export default {
                 data : {
                     communalUnit: communalUnit
                 }
-            })           
+            })
             .then( (resp) =>{
                     setTimeout(() => {
-                        this.getCommonFeeRoom(this.id,this.month,this.year)
+                        this.getCommonFeeRoom(this.id)
                     }, 1000)
                 })
             .catch(error => {
@@ -192,11 +186,11 @@ export default {
                 item.RoomNumber.toLowerCase().includes(text.toLowerCase()),
             );
             if (text == '') {
-                this.getCommonFeeRoom(this.id,this.month,this.year)
+                this.getCommonFeeRoom(this.id)
             }
             if (code == 8) {
                 this.code = 8
-                this.getCommonFeeRoom(this.id,this.month,this.year)
+                this.getCommonFeeRoom(this.id)
             }
         }
         

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "git": "git add . & git commit -m 'update' & git push & npm run serve",
+    "dev": "vue-cli-service serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "deploy": "bash scripts/deploy.sh"
@@ -23,6 +24,7 @@
     "leaflet": "^1.9.4",
     "pdf-lib": "^1.17.1",
     "thai-baht-text": "^1.0.8",
+    "v-calendar": "^2.4.2",
     "vue": "^2.7.14",
     "vue-apexcharts": "^1.6.2",
     "vue-axios": "^3.5.2",
@@ -31,7 +33,8 @@
     "vue-thailand-address-autocomplete": "^0.1.1",
     "vuesax": "^4.0.1-alpha.25",
     "vuex": "^3.6.2",
-    "vuex-persist": "^3.1.3"
+    "vuex-persist": "^3.1.3",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~5.0.0",
