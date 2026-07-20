@@ -135,7 +135,7 @@
                 </svg>
               </div>
               <div class="ml-[4px]">
-                {{ roomDetail.data.attributes.RoomNumber }}
+                {{ roomDetail?.data?.attributes?.RoomNumber }}
               </div>
             </div>
             <div class="text-[16px] mt-[4px]">
@@ -149,7 +149,7 @@
             <div class="text-[12px] text-[#B9CCDC] mt-[4px]">
               เข้าพักเมื่อวันที่:
               {{
-                contractProfile.data
+                contractProfile?.data
                   ? contractProfile.data.attributes.checkInDate
                   : "N/A"
               }}
@@ -157,8 +157,8 @@
             <div class="text-[12px] text-[#B9CCDC]">
               ประเภทห้อง:
               {{
-                roomDetail.data.attributes.room_type.data.attributes
-                  .roomTypeName
+                roomDetail?.data?.attributes?.room_type?.data?.attributes
+                  ?.roomTypeName
               }}
             </div>
           </div>
@@ -1545,8 +1545,8 @@ export default {
       userUnpaidInvoice: [],
       userPayRemain: 0,
       userReceipt: [],
-      contractProfile: [],
-      roomDetail: [],
+      contractProfile: null,
+      roomDetail: null,
       userProfileImage: "",
       userEvidencePayment: [],
       PartialPayment: [],
@@ -1698,6 +1698,14 @@ export default {
       return Math.round(num * 100) / 100;
     },
     getExpectedRemain(attributes = {}) {
+      if (attributes.debtMovedToNextBill) {
+        // This bill's remaining debt was intentionally carried forward onto
+        // a newer bill (see backend's carryForwardDebt) - remainPaid was
+        // zeroed on purpose and total/paid were left untouched, so don't
+        // reconstruct a nonzero remain from them here.
+        return 0;
+      }
+
       const total = this.toMoney(attributes.total);
       const paid = this.toMoney(attributes.paid);
 
@@ -1932,26 +1940,45 @@ export default {
         .then((response) => response.json())
         .then((resp) => {
           this.roomDetail = resp;
-          if (resp.data.attributes.user_sign_contract.data) {
+          if (resp?.data?.attributes?.user_sign_contract?.data) {
             fetch(
               `https://api.resguru.app/api/user-sign-contracts/${resp.data.attributes.user_sign_contract.data.id}?populate=*`
             ) // get id from user sign contract user_sign_contract
               .then((response) => response.json())
               .then((res) => {
                 this.contractProfile = res;
-                fetch(
-                  `https://api.resguru.app/api/users/${res.data.attributes.users_permissions_user.data.id}?populate=*`
-                ) // get id from user sign contract user_sign_contract
-                  .then((response) => response.json())
-                  .then((response) => {
-                    console.log("Return from getImage()", response);
-                    this.userProfileImage = response.filePath;
-                    this.userProfile = response;
-                  });
+                if (res?.data?.attributes?.users_permissions_user?.data) {
+                  fetch(
+                    `https://api.resguru.app/api/users/${res.data.attributes.users_permissions_user.data.id}?populate=*`
+                  ) // get id from user sign contract user_sign_contract
+                    .then((response) => response.json())
+                    .then((response) => {
+                      console.log("Return from getImage()", response);
+                      this.userProfileImage = response.filePath;
+                      this.userProfile = response;
+                    })
+                    .catch((error) => {
+                      const errorMessage = error.message
+                        ? error.message
+                        : "Error loading user profile";
+                      this.$showNotification("danger", errorMessage);
+                    });
+                }
+              })
+              .catch((error) => {
+                const errorMessage = error.message
+                  ? error.message
+                  : "Error loading contract profile";
+                this.$showNotification("danger", errorMessage);
               });
           }
         })
-
+        .catch((error) => {
+          const errorMessage = error.message
+            ? error.message
+            : "Error loading room information";
+          this.$showNotification("danger", errorMessage);
+        })
         .finally(() => {
           loading.close();
         });
@@ -2700,11 +2727,16 @@ createReceipt() {
       // (totalOutstanding already includes vat, currentInvoiceAmount doesn't)
       // and produced a wrong/zero carryOverAmount whenever the two didn't
       // line up.
-      const roomPrice = parseFloat(primaryAttributes.roomPrice) || 0;
-      const waterPrice = parseFloat(primaryAttributes.waterPrice) || 0;
-      const electricPrice = parseFloat(primaryAttributes.electricPrice) || 0;
-      const communalPrice = parseFloat(primaryAttributes.communalPrice) || 0;
-      const otherPrice = parseFloat(primaryAttributes.otherPrice) || 0;
+      // Net out amounts already recorded against this bill by earlier
+      // partial payments (tracked cumulatively by the backend in
+      // paidRoom/paidWater/paidElectric/paidCommunalPrice/paidOtherPrice)
+      // so the breakdown shown here is what's still owed per category,
+      // not the bill's original full charge.
+      const roomPrice = Math.max(0, (parseFloat(primaryAttributes.roomPrice) || 0) - (parseFloat(primaryAttributes.paidRoom) || 0));
+      const waterPrice = Math.max(0, (parseFloat(primaryAttributes.waterPrice) || 0) - (parseFloat(primaryAttributes.paidWater) || 0));
+      const electricPrice = Math.max(0, (parseFloat(primaryAttributes.electricPrice) || 0) - (parseFloat(primaryAttributes.paidElectric) || 0));
+      const communalPrice = Math.max(0, (parseFloat(primaryAttributes.communalPrice) || 0) - (parseFloat(primaryAttributes.paidCommunalPrice) || 0));
+      const otherPrice = Math.max(0, (parseFloat(primaryAttributes.otherPrice) || 0) - (parseFloat(primaryAttributes.paidOtherPrice) || 0));
       const vat = parseFloat(primaryAttributes.vat) || 0;
       const carryOverAmount = Math.max(0, parseFloat(primaryAttributes.carriedDebt) || 0);
       return {
@@ -2950,7 +2982,7 @@ createReceipt() {
       const tenantUser = contractAttrs.users_permissions_user?.data?.attributes || {};
 
       const data = {
-        RoomNumber: this.roomDetail.data.attributes.RoomNumber,
+        RoomNumber: this.roomDetail?.data?.attributes?.RoomNumber,
         user_sign_contract: {
           startWater: contractAttrs.startWater || 0,
           startElectric: contractAttrs.startElectric || 0,
@@ -2993,7 +3025,7 @@ createReceipt() {
           pastCommunalPrice: parseFloat(invoice.attributes.pastCommunalPrice) || 0,
           pastOtherPrice: parseFloat(invoice.attributes.pastOtherPrice) || 0
         }],
-        room_type: this.roomDetail.data.attributes.room_type.data
+        room_type: this.roomDetail?.data?.attributes?.room_type?.data
       };
       
       this.$showNotification(

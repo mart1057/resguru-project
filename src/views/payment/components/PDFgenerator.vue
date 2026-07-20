@@ -1,7 +1,7 @@
 <template>
     <div hidden>
         <!-- Your HTML content to convert to PDF -->
-        <div ref="pdfContent" class="pt-3 p-2 pdf-document">
+        <div v-if="data_bill && data_bill.tenant_bills" ref="pdfContent" class="pt-3 p-2 pdf-document">
             <img class="watermarked" :src="Res_Guru_Logo_create06" />
             <div class="flex justify-between">
                 <div class="flex">
@@ -156,7 +156,7 @@ import axios from 'axios';
 export default {
     data() {
         return {
-            data_bill: [],
+            data_bill: null,
             convertDateNoTime,
             Res_Guru_Logo_create12,
             Res_Guru_Logo_create06,
