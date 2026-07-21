@@ -399,187 +399,252 @@
                                 <vs-checkbox :indeterminate="selected.length == users.length" v-model="allCheck"
                                     @change="selected = $vs.checkAll(selected, users)" />
                             </vs-th> -->
+              <vs-th> </vs-th>
               <vs-th> หมายเลขใบแจ้งหนี้ </vs-th>
-              <vs-th> ค่าเช่าห้อง </vs-th>
-              <vs-th> ค่าน้ำ </vs-th>
-              <vs-th> ค่าไฟฟ้า </vs-th>
-              <vs-th> ค่าส่วนกลาง </vs-th>
-              <vs-th> ค่าบริการเสริม </vs-th>
-              <vs-th> Vat </vs-th>
               <vs-th> ยอดรวม </vs-th>
               <vs-th> ชำระแล้ว </vs-th>
               <vs-th> วันที่สร้างเอกสาร </vs-th>
               <vs-th> สถานะ </vs-th>
-              <vs-th> Action </vs-th>
               <vs-th> </vs-th>
             </vs-tr>
           </template>
           <template #tbody>
-            <vs-tr
-              :key="i"
-              v-for="(tr, i) in userInvoice"
-              :data="tr"
-              :is-selected="!!selected.includes(tr)"
-              :class="{ 'opacity-50 bg-gray-100': tr.attributes.debtMovedToNextBill }"
-            >
-              <!-- <vs-td checkbox>
+            <template v-for="(tr, i) in userInvoice">
+              <vs-tr
+                :key="'invoice-row-' + tr.id"
+                :data="tr"
+                :is-selected="!!selected.includes(tr)"
+                :class="{ 'opacity-50 bg-gray-100': tr.attributes.debtMovedToNextBill }"
+              >
+                <!-- <vs-td checkbox>
                                 <vs-checkbox :val="tr" v-model="selected" />
                             </vs-td> -->
-              <vs-td>
-                {{ tr.attributes.invoiceNumber }}
-              </vs-td>
-              <vs-td>
-                <div
-                  v-if="
-                    tr.attributes.paymentStatus === 'Paid' ||
-                    tr.attributes.paymentStatus === 'Partial Paid' ||
-                    tr.attributes.paymentStatus === 'Waiting Review'
-                  "
-                >
-                  <vs-input disabled v-model="tr.attributes.roomPrice" />
-                </div>
-                <div v-else>
-                  <vs-input
-                    v-model="tr.attributes.roomPrice"
-                    @change="activeSaveButton(tr.id)"
-                  />
-                </div>
-              </vs-td>
-              <vs-td>
-                <div
-                  v-if="
-                    tr.attributes.paymentStatus === 'Paid' ||
-                    tr.attributes.paymentStatus === 'Partial Paid' ||
-                    tr.attributes.paymentStatus === 'Waiting Review'
-                  "
-                >
-                  <vs-input disabled v-model="tr.attributes.waterPrice" />
-                </div>
-                <div v-else>
-                  <vs-input
-                    v-model="tr.attributes.waterPrice"
-                    @change="activeSaveButton(tr.id)"
-                  />
-                </div>
-              </vs-td>
-              <vs-td>
-                <div
-                  v-if="
-                    tr.attributes.paymentStatus === 'Paid' ||
-                    tr.attributes.paymentStatus === 'Partial Paid' ||
-                    tr.attributes.paymentStatus === 'Waiting Review'
-                  "
-                >
-                  <vs-input disabled v-model="tr.attributes.electricPrice" />
-                </div>
-                <div v-else>
-                  <vs-input
-                    v-model="tr.attributes.electricPrice"
-                    @change="activeSaveButton(tr.id)"
-                  />
-                </div>
-              </vs-td>
-              <vs-td>
-                <div
-                  v-if="
-                    tr.attributes.paymentStatus === 'Paid' ||
-                    tr.attributes.paymentStatus === 'Partial Paid' ||
-                    tr.attributes.paymentStatus === 'Waiting Review'
-                  "
-                >
-                  <vs-input disabled v-model="tr.attributes.communalPrice" />
-                </div>
-                <div v-else>
-                  <vs-input
-                    v-model="tr.attributes.communalPrice"
-                    @change="activeSaveButton(tr.id)"
-                  />
-                </div>
-              </vs-td>
-              <vs-td>
-                <div
-                  v-if="
-                    tr.attributes.paymentStatus === 'Paid' ||
-                    tr.attributes.paymentStatus === 'Partial Paid' ||
-                    tr.attributes.paymentStatus === 'Waiting Review'
-                  "
-                >
-                  <vs-input disabled v-model="tr.attributes.otherPrice" />
-                </div>
-                <div v-else>
-                  <vs-input
-                    v-model="tr.attributes.otherPrice"
-                    @change="activeSaveButton(tr.id)"
-                  />
-                </div>
-              </vs-td>
-              <vs-td>
-                <div
-                  v-if="
-                    tr.attributes.paymentStatus === 'Paid' ||
-                    tr.attributes.paymentStatus === 'Partial Paid' ||
-                    tr.attributes.paymentStatus === 'Waiting Review'
-                  "
-                >
-                  <vs-input disabled v-model="tr.attributes.vat" />
-                </div>
-                <div v-else>
-                  <vs-input
-                    v-model="tr.attributes.vat"
-                    @change="activeSaveButton(tr.id)"
-                  />
-                </div>
-              </vs-td>
-              <vs-td>
-                <!-- <vs-input  v-model="tr.attributes.total"/>   -->
-                {{ $formatNumber(tr.attributes.total) }}
-              </vs-td>
-              <vs-td>
-                <vs-input v-model="tr.attributes.paid" />
-              </vs-td>
-              <vs-td>
-                {{ convertDateNoTime(tr.attributes.createdAt) }}
-              </vs-td>
-              <vs-td>
-                <div class="flex items-center justify-start">
-                  <div
-                    v-if="tr.attributes.debtMovedToNextBill"
-                    class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#E5E7EB] text-[#6B7280]"
+                <vs-td>
+                  <button
+                    @click="toggleRowDetail(expandedInvoiceRows, tr.id)"
+                    title="รายละเอียด"
+                    class="p-1 rounded hover:bg-gray-100 text-gray-500"
                   >
-                    ยอดคงเหลือย้ายไปบิลถัดไป
+                    {{ isRowExpanded(expandedInvoiceRows, tr.id) ? "▲" : "▼" }}
+                  </button>
+                </vs-td>
+                <vs-td>
+                  {{ tr.attributes.invoiceNumber }}
+                </vs-td>
+                <vs-td>
+                  <!-- <vs-input  v-model="tr.attributes.total"/>   -->
+                  {{ $formatNumber(tr.attributes.total) }}
+                </vs-td>
+                <vs-td>
+                  <vs-input v-model="tr.attributes.paid" />
+                </vs-td>
+                <vs-td>
+                  {{ convertDateNoTime(tr.attributes.createdAt) }}
+                </vs-td>
+                <vs-td>
+                  <div class="flex items-center justify-start">
+                    <div
+                      v-if="tr.attributes.debtMovedToNextBill"
+                      class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px] bg-[#E5E7EB] text-[#6B7280]"
+                    >
+                      ยอดคงเหลือย้ายไปบิลถัดไป
+                    </div>
+                    <div
+                      v-else
+                      class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
+                      :class="
+                        tr.attributes.paymentStatus === 'Paid'
+                          ? 'bg-[#CFFBDA] text-[#0B9A3C]'
+                          : tr.attributes.paymentStatus === 'ยังไม่ชำระ'
+                          ? 'bg-[#FFE1E8] text-[#EA2F5C]'
+                          : 'bg-[#FFF2BC] text-[#D48C00]'
+                      "
+                    >
+                      {{ tr.attributes.paymentStatus }}
+                    </div>
+                    <div
+                      v-if="parseFloat(tr.attributes.creditApplied) > 0"
+                      class="ml-[6px] h-[28px] flex items-center justify-center px-[8px] rounded-[8px] bg-[#D6F5E3] text-[#0B9A3C] text-[11px] font-semibold whitespace-nowrap"
+                      :title="'ใช้เครดิตจากยอดชำระเกินคราวก่อน ' + $formatNumber(tr.attributes.creditApplied) + ' บาท'"
+                    >
+                      ✓ ใช้เครดิต
+                    </div>
                   </div>
-                  <div
-                    v-else
-                    class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
-                    :class="
-                      tr.attributes.paymentStatus === 'Paid'
-                        ? 'bg-[#CFFBDA] text-[#0B9A3C]'
-                        : tr.attributes.paymentStatus === 'ยังไม่ชำระ'
-                        ? 'bg-[#FFE1E8] text-[#EA2F5C]'
-                        : 'bg-[#FFF2BC] text-[#D48C00]'
-                    "
-                  >
-                    {{ tr.attributes.paymentStatus }}
+                </vs-td>
+                <vs-td>
+                  <div class="flex items-center gap-[6px]">
+                    <button
+                      @click="PDFPrintInvoice(tr, 'preview')"
+                      title="ดูตัวอย่าง"
+                      class="px-2 py-1 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 flex items-center justify-center border border-gray-200 text-gray-500 hover:text-gray-700 text-xs"
+                    >
+                      ดูตัวอย่าง
+                    </button>
+                    <button
+                      @click="PDFPrintInvoice(tr)"
+                      title="ดาวน์โหลด"
+                      class="p-2 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 flex items-center justify-center border border-gray-200"
+                    >
+                      <svg
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        class="text-gray-500 hover:text-gray-700"
+                      >
+                        <mask
+                          id="mask0_2691_23279"
+                          style="mask-type: alpha"
+                          maskUnits="userSpaceOnUse"
+                          x="0"
+                          y="0"
+                          width="24"
+                          height="24"
+                        >
+                          <rect width="24" height="24" fill="#D9D9D9" />
+                        </mask>
+                        <g mask="url(#mask0_2691_23279)">
+                          <path
+                            d="M12 15.2386C11.8795 15.2386 11.7673 15.2194 11.6634 15.1809C11.5596 15.1425 11.4609 15.0765 11.3673 14.9829L8.2577 11.8733C8.11925 11.7348 8.04842 11.5608 8.04522 11.3512C8.04201 11.1416 8.11283 10.9643 8.2577 10.8195C8.40257 10.6746 8.58077 10.5996 8.7923 10.5945C9.00383 10.5893 9.18204 10.6592 9.32692 10.8041L11.25 12.7272V5.07712C11.25 4.86431 11.3218 4.68611 11.4654 4.54252C11.609 4.39894 11.7872 4.32715 12 4.32715C12.2128 4.32715 12.391 4.39894 12.5346 4.54252C12.6782 4.68611 12.7499 4.86431 12.7499 5.07712V12.7272L14.673 10.8041C14.8115 10.6656 14.9881 10.5974 15.2028 10.5993C15.4176 10.6012 15.5974 10.6746 15.7422 10.8195C15.8871 10.9643 15.9595 11.14 15.9595 11.3464C15.9595 11.5528 15.8871 11.7284 15.7422 11.8733L12.6327 14.9829C12.5391 15.0765 12.4403 15.1425 12.3365 15.1809C12.2327 15.2194 12.1205 15.2386 12 15.2386ZM6.3077 19.5002C5.80257 19.5002 5.375 19.3252 5.025 18.9752C4.675 18.6252 4.5 18.1976 4.5 17.6925V15.7502C4.5 15.5374 4.5718 15.3592 4.7154 15.2156C4.85898 15.072 5.03718 15.0002 5.25 15.0002C5.46282 15.0002 5.64102 15.072 5.7846 15.2156C5.92818 15.3592 5.99997 15.5374 5.99997 15.7502V17.6925C5.99997 17.7694 6.03202 17.8399 6.09612 17.904C6.16024 17.9681 6.23077 18.0002 6.3077 18.0002H17.6922C17.7692 18.0002 17.8397 17.9681 17.9038 17.904C17.9679 17.8399 18 17.7694 18 17.6925V15.7502C18 15.5374 18.0718 15.3592 18.2154 15.2156C18.3589 15.072 18.5371 15.0002 18.75 15.0002C18.9628 15.0002 19.141 15.072 19.2845 15.2156C19.4281 15.3592 19.5 15.5374 19.5 15.7502V17.6925C19.5 18.1976 19.325 18.6252 18.975 18.9752C18.625 19.3252 18.1974 19.5002 17.6922 19.5002H6.3077Z"
+                            fill="currentColor"
+                          />
+                        </g>
+                      </svg>
+                    </button>
                   </div>
-                  <div
-                    v-if="parseFloat(tr.attributes.creditApplied) > 0"
-                    class="ml-[6px] h-[28px] flex items-center justify-center px-[8px] rounded-[8px] bg-[#D6F5E3] text-[#0B9A3C] text-[11px] font-semibold whitespace-nowrap"
-                    :title="'ใช้เครดิตจากยอดชำระเกินคราวก่อน ' + $formatNumber(tr.attributes.creditApplied) + ' บาท'"
-                  >
-                    ✓ ใช้เครดิต
-                  </div>
-                </div>
-              </vs-td>
-              <vs-td>
-                <vs-button
-                  :id="'saveButton' + tr.id"
-                  disabled
-                  :active="active == 1"
-                  @click="updateRoomInvoice(tr)"
-                >
-                  Save
-                </vs-button>
-                <!-- <vs-select
+                </vs-td>
+              </vs-tr>
+              <vs-tr
+                :key="'invoice-detail-' + tr.id"
+                v-if="isRowExpanded(expandedInvoiceRows, tr.id)"
+              >
+                <vs-td colspan="7">
+                  <div class="grid grid-cols-3 gap-4 p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <label class="text-xs text-gray-500">ค่าเช่าห้อง</label>
+                      <div
+                        v-if="
+                          tr.attributes.debtMovedToNextBill ||
+                          tr.attributes.paymentStatus === 'Paid' ||
+                          tr.attributes.paymentStatus === 'Partial Paid' ||
+                          tr.attributes.paymentStatus === 'Waiting Review'
+                        "
+                      >
+                        <vs-input disabled v-model="tr.attributes.roomPrice" />
+                      </div>
+                      <div v-else>
+                        <vs-input
+                          v-model="tr.attributes.roomPrice"
+                          @change="activeSaveButton(tr.id)"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label class="text-xs text-gray-500">ค่าน้ำ</label>
+                      <div
+                        v-if="
+                          tr.attributes.debtMovedToNextBill ||
+                          tr.attributes.paymentStatus === 'Paid' ||
+                          tr.attributes.paymentStatus === 'Partial Paid' ||
+                          tr.attributes.paymentStatus === 'Waiting Review'
+                        "
+                      >
+                        <vs-input disabled v-model="tr.attributes.waterPrice" />
+                      </div>
+                      <div v-else>
+                        <vs-input
+                          v-model="tr.attributes.waterPrice"
+                          @change="activeSaveButton(tr.id)"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label class="text-xs text-gray-500">ค่าไฟฟ้า</label>
+                      <div
+                        v-if="
+                          tr.attributes.debtMovedToNextBill ||
+                          tr.attributes.paymentStatus === 'Paid' ||
+                          tr.attributes.paymentStatus === 'Partial Paid' ||
+                          tr.attributes.paymentStatus === 'Waiting Review'
+                        "
+                      >
+                        <vs-input disabled v-model="tr.attributes.electricPrice" />
+                      </div>
+                      <div v-else>
+                        <vs-input
+                          v-model="tr.attributes.electricPrice"
+                          @change="activeSaveButton(tr.id)"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label class="text-xs text-gray-500">ค่าส่วนกลาง</label>
+                      <div
+                        v-if="
+                          tr.attributes.debtMovedToNextBill ||
+                          tr.attributes.paymentStatus === 'Paid' ||
+                          tr.attributes.paymentStatus === 'Partial Paid' ||
+                          tr.attributes.paymentStatus === 'Waiting Review'
+                        "
+                      >
+                        <vs-input disabled v-model="tr.attributes.communalPrice" />
+                      </div>
+                      <div v-else>
+                        <vs-input
+                          v-model="tr.attributes.communalPrice"
+                          @change="activeSaveButton(tr.id)"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label class="text-xs text-gray-500">ค่าบริการเสริม</label>
+                      <div
+                        v-if="
+                          tr.attributes.debtMovedToNextBill ||
+                          tr.attributes.paymentStatus === 'Paid' ||
+                          tr.attributes.paymentStatus === 'Partial Paid' ||
+                          tr.attributes.paymentStatus === 'Waiting Review'
+                        "
+                      >
+                        <vs-input disabled v-model="tr.attributes.otherPrice" />
+                      </div>
+                      <div v-else>
+                        <vs-input
+                          v-model="tr.attributes.otherPrice"
+                          @change="activeSaveButton(tr.id)"
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label class="text-xs text-gray-500">Vat</label>
+                      <div
+                        v-if="
+                          tr.attributes.debtMovedToNextBill ||
+                          tr.attributes.paymentStatus === 'Paid' ||
+                          tr.attributes.paymentStatus === 'Partial Paid' ||
+                          tr.attributes.paymentStatus === 'Waiting Review'
+                        "
+                      >
+                        <vs-input disabled v-model="tr.attributes.vat" />
+                      </div>
+                      <div v-else>
+                        <vs-input
+                          v-model="tr.attributes.vat"
+                          @change="activeSaveButton(tr.id)"
+                        />
+                      </div>
+                    </div>
+                    <div class="flex items-end">
+                      <vs-button
+                        :id="'saveButton' + tr.id"
+                        disabled
+                        :active="active == 1"
+                        @click="!tr.attributes.debtMovedToNextBill && updateRoomInvoice(tr)"
+                      >
+                        Save
+                      </vs-button>
+                      <!-- <vs-select
                                     v-if="tr.attributes.paymentStatus === 'Paid' || tr.attributes.paymentStatus === 'Partial Paid' || tr.attributes.paymentStatus === 'Waiting Review'"
                                     placeholder="เมนู" v-model="tr.attributes.lastEvent"
                                     @change="selectMenu(tr.attributes.lastEvent, tr)">
@@ -602,51 +667,11 @@
                                         ชำระบางส่วน
                                     </vs-option>
                                 </vs-select> -->
-              </vs-td>
-              <vs-td>
-                <div class="flex items-center gap-[6px]">
-                  <button
-                    @click="PDFPrintInvoice(tr, 'preview')"
-                    title="ดูตัวอย่าง"
-                    class="px-2 py-1 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 flex items-center justify-center border border-gray-200 text-gray-500 hover:text-gray-700 text-xs"
-                  >
-                    ดูตัวอย่าง
-                  </button>
-                  <button
-                    @click="PDFPrintInvoice(tr)"
-                    title="ดาวน์โหลด"
-                    class="p-2 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200 flex items-center justify-center border border-gray-200"
-                  >
-                    <svg
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                      class="text-gray-500 hover:text-gray-700"
-                    >
-                      <mask
-                        id="mask0_2691_23279"
-                        style="mask-type: alpha"
-                        maskUnits="userSpaceOnUse"
-                        x="0"
-                        y="0"
-                        width="24"
-                        height="24"
-                      >
-                        <rect width="24" height="24" fill="#D9D9D9" />
-                      </mask>
-                      <g mask="url(#mask0_2691_23279)">
-                        <path
-                          d="M12 15.2386C11.8795 15.2386 11.7673 15.2194 11.6634 15.1809C11.5596 15.1425 11.4609 15.0765 11.3673 14.9829L8.2577 11.8733C8.11925 11.7348 8.04842 11.5608 8.04522 11.3512C8.04201 11.1416 8.11283 10.9643 8.2577 10.8195C8.40257 10.6746 8.58077 10.5996 8.7923 10.5945C9.00383 10.5893 9.18204 10.6592 9.32692 10.8041L11.25 12.7272V5.07712C11.25 4.86431 11.3218 4.68611 11.4654 4.54252C11.609 4.39894 11.7872 4.32715 12 4.32715C12.2128 4.32715 12.391 4.39894 12.5346 4.54252C12.6782 4.68611 12.7499 4.86431 12.7499 5.07712V12.7272L14.673 10.8041C14.8115 10.6656 14.9881 10.5974 15.2028 10.5993C15.4176 10.6012 15.5974 10.6746 15.7422 10.8195C15.8871 10.9643 15.9595 11.14 15.9595 11.3464C15.9595 11.5528 15.8871 11.7284 15.7422 11.8733L12.6327 14.9829C12.5391 15.0765 12.4403 15.1425 12.3365 15.1809C12.2327 15.2194 12.1205 15.2386 12 15.2386ZM6.3077 19.5002C5.80257 19.5002 5.375 19.3252 5.025 18.9752C4.675 18.6252 4.5 18.1976 4.5 17.6925V15.7502C4.5 15.5374 4.5718 15.3592 4.7154 15.2156C4.85898 15.072 5.03718 15.0002 5.25 15.0002C5.46282 15.0002 5.64102 15.072 5.7846 15.2156C5.92818 15.3592 5.99997 15.5374 5.99997 15.7502V17.6925C5.99997 17.7694 6.03202 17.8399 6.09612 17.904C6.16024 17.9681 6.23077 18.0002 6.3077 18.0002H17.6922C17.7692 18.0002 17.8397 17.9681 17.9038 17.904C17.9679 17.8399 18 17.7694 18 17.6925V15.7502C18 15.5374 18.0718 15.3592 18.2154 15.2156C18.3589 15.072 18.5371 15.0002 18.75 15.0002C18.9628 15.0002 19.141 15.072 19.2845 15.2156C19.4281 15.3592 19.5 15.5374 19.5 15.7502V17.6925C19.5 18.1976 19.325 18.6252 18.975 18.9752C18.625 19.3252 18.1974 19.5002 17.6922 19.5002H6.3077Z"
-                          fill="currentColor"
-                        />
-                      </g>
-                    </svg>
-                  </button>
-                </div>
-              </vs-td>
-            </vs-tr>
+                    </div>
+                  </div>
+                </vs-td>
+              </vs-tr>
+            </template>
           </template>
         </vs-table>
       </div>
@@ -658,13 +683,8 @@
                                 <vs-checkbox :indeterminate="selected.length == users.length" v-model="allCheck"
                                     @change="selected = $vs.checkAll(selected, users)" />
                             </vs-th> -->
+              <vs-th> </vs-th>
               <vs-th> หมายเลขใบเสร็จรับเงิน </vs-th>
-              <vs-th> ค่าเช่าห้อง </vs-th>
-              <vs-th> ค่าน้ำ </vs-th>
-              <vs-th> ค่าไฟฟ้า </vs-th>
-              <vs-th> ค่าส่วนกลาง </vs-th>
-              <vs-th> ค่าบริการเสริม </vs-th>
-              <vs-th> Vat </vs-th>
               <vs-th> ยอดรวม </vs-th>
               <vs-th> ชำระแล้ว </vs-th>
               <vs-th> วันที่ออกใบเสร็จ </vs-th>
@@ -672,74 +692,99 @@
             </vs-tr>
           </template>
           <template #tbody>
-            <vs-tr
-              :key="i"
-              v-for="(tr, i) in userReceipt"
-              :data="tr"
-              :is-selected="!!selected.includes(tr)"
-            >
-              <!-- <vs-td checkbox>
+            <template v-for="(tr, i) in userReceipt">
+              <vs-tr
+                :key="'receipt-row-' + tr.id"
+                :data="tr"
+                :is-selected="!!selected.includes(tr)"
+              >
+                <!-- <vs-td checkbox>
                                 <vs-checkbox :val="tr" v-model="selected" />
                             </vs-td> -->
-              <vs-td>
-                {{ tr.attributes.receiptNumber }}
-              </vs-td>
-              <vs-td>
-                {{ $formatNumber(tr.attributes.roomPrice) }}
-              </vs-td>
-              <vs-td>
-                {{ $formatNumber(tr.attributes.waterPrice) }}
-              </vs-td>
-              <vs-td>
-                {{ $formatNumber(tr.attributes.electricPrice) }}
-              </vs-td>
-              <vs-td>
-                {{ $formatNumber(tr.attributes.communalPrice) }}
-              </vs-td>
-              <vs-td>
-                {{ $formatNumber(tr.attributes.otherPrice) }}
-              </vs-td>
-              <vs-td>
-                {{ $formatNumber(tr.attributes.vat) }}
-              </vs-td>
-              <vs-td>
-                {{ $formatNumber(tr.attributes.total) }}
-              </vs-td>
-              <vs-td>
-                {{ $formatNumber(tr.attributes.total) }}
-              </vs-td>
-              <vs-td>
-                {{ convertDateNoTime(tr.attributes.createdAt) }}
-              </vs-td>
-              <vs-td>
-                <svg
-                  @click="PDFPrintReceipt(tr)"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <mask
-                    id="mask0_2691_23279"
-                    style="mask-type: alpha"
-                    maskUnits="userSpaceOnUse"
-                    x="0"
-                    y="0"
+                <vs-td>
+                  <button
+                    @click="toggleRowDetail(expandedReceiptRows, tr.id)"
+                    title="รายละเอียด"
+                    class="p-1 rounded hover:bg-gray-100 text-gray-500"
+                  >
+                    {{ isRowExpanded(expandedReceiptRows, tr.id) ? "▲" : "▼" }}
+                  </button>
+                </vs-td>
+                <vs-td>
+                  {{ tr.attributes.receiptNumber }}
+                </vs-td>
+                <vs-td>
+                  {{ $formatNumber(tr.attributes.total) }}
+                </vs-td>
+                <vs-td>
+                  {{ $formatNumber(tr.attributes.paidAmount) }}
+                </vs-td>
+                <vs-td>
+                  {{ convertDateNoTime(tr.attributes.createdAt) }}
+                </vs-td>
+                <vs-td>
+                  <svg
+                    @click="PDFPrintReceipt(tr)"
                     width="24"
                     height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <rect width="24" height="24" fill="#D9D9D9" />
-                  </mask>
-                  <g mask="url(#mask0_2691_23279)">
-                    <path
-                      d="M12 15.2386C11.8795 15.2386 11.7673 15.2194 11.6634 15.1809C11.5596 15.1425 11.4609 15.0765 11.3673 14.9829L8.2577 11.8733C8.11925 11.7348 8.04842 11.5608 8.04522 11.3512C8.04201 11.1416 8.11283 10.9643 8.2577 10.8195C8.40257 10.6746 8.58077 10.5996 8.7923 10.5945C9.00383 10.5893 9.18204 10.6592 9.32692 10.8041L11.25 12.7272V5.07712C11.25 4.86431 11.3218 4.68611 11.4654 4.54252C11.609 4.39894 11.7872 4.32715 12 4.32715C12.2128 4.32715 12.391 4.39894 12.5346 4.54252C12.6782 4.68611 12.7499 4.86431 12.7499 5.07712V12.7272L14.673 10.8041C14.8115 10.6656 14.9881 10.5974 15.2028 10.5993C15.4176 10.6012 15.5974 10.6746 15.7422 10.8195C15.8871 10.9643 15.9595 11.14 15.9595 11.3464C15.9595 11.5528 15.8871 11.7284 15.7422 11.8733L12.6327 14.9829C12.5391 15.0765 12.4403 15.1425 12.3365 15.1809C12.2327 15.2194 12.1205 15.2386 12 15.2386ZM6.3077 19.5002C5.80257 19.5002 5.375 19.3252 5.025 18.9752C4.675 18.6252 4.5 18.1976 4.5 17.6925V15.7502C4.5 15.5374 4.5718 15.3592 4.7154 15.2156C4.85898 15.072 5.03718 15.0002 5.25 15.0002C5.46282 15.0002 5.64102 15.072 5.7846 15.2156C5.92818 15.3592 5.99997 15.5374 5.99997 15.7502V17.6925C5.99997 17.7694 6.03202 17.8399 6.09612 17.904C6.16024 17.9681 6.23077 18.0002 6.3077 18.0002H17.6922C17.7692 18.0002 17.8397 17.9681 17.9038 17.904C17.9679 17.8399 18 17.7694 18 17.6925V15.7502C18 15.5374 18.0718 15.3592 18.2154 15.2156C18.3589 15.072 18.5371 15.0002 18.75 15.0002C18.9628 15.0002 19.141 15.072 19.2845 15.2156C19.4281 15.3592 19.5 15.5374 19.5 15.7502V17.6925C19.5 18.1976 19.325 18.6252 18.975 18.9752C18.625 19.3252 18.1974 19.5002 17.6922 19.5002H6.3077Z"
-                      fill="#8396A6"
-                    />
-                  </g>
-                </svg>
-              </vs-td>
-            </vs-tr>
+                    <mask
+                      id="mask0_2691_23279"
+                      style="mask-type: alpha"
+                      maskUnits="userSpaceOnUse"
+                      x="0"
+                      y="0"
+                      width="24"
+                      height="24"
+                    >
+                      <rect width="24" height="24" fill="#D9D9D9" />
+                    </mask>
+                    <g mask="url(#mask0_2691_23279)">
+                      <path
+                        d="M12 15.2386C11.8795 15.2386 11.7673 15.2194 11.6634 15.1809C11.5596 15.1425 11.4609 15.0765 11.3673 14.9829L8.2577 11.8733C8.11925 11.7348 8.04842 11.5608 8.04522 11.3512C8.04201 11.1416 8.11283 10.9643 8.2577 10.8195C8.40257 10.6746 8.58077 10.5996 8.7923 10.5945C9.00383 10.5893 9.18204 10.6592 9.32692 10.8041L11.25 12.7272V5.07712C11.25 4.86431 11.3218 4.68611 11.4654 4.54252C11.609 4.39894 11.7872 4.32715 12 4.32715C12.2128 4.32715 12.391 4.39894 12.5346 4.54252C12.6782 4.68611 12.7499 4.86431 12.7499 5.07712V12.7272L14.673 10.8041C14.8115 10.6656 14.9881 10.5974 15.2028 10.5993C15.4176 10.6012 15.5974 10.6746 15.7422 10.8195C15.8871 10.9643 15.9595 11.14 15.9595 11.3464C15.9595 11.5528 15.8871 11.7284 15.7422 11.8733L12.6327 14.9829C12.5391 15.0765 12.4403 15.1425 12.3365 15.1809C12.2327 15.2194 12.1205 15.2386 12 15.2386ZM6.3077 19.5002C5.80257 19.5002 5.375 19.3252 5.025 18.9752C4.675 18.6252 4.5 18.1976 4.5 17.6925V15.7502C4.5 15.5374 4.5718 15.3592 4.7154 15.2156C4.85898 15.072 5.03718 15.0002 5.25 15.0002C5.46282 15.0002 5.64102 15.072 5.7846 15.2156C5.92818 15.3592 5.99997 15.5374 5.99997 15.7502V17.6925C5.99997 17.7694 6.03202 17.8399 6.09612 17.904C6.16024 17.9681 6.23077 18.0002 6.3077 18.0002H17.6922C17.7692 18.0002 17.8397 17.9681 17.9038 17.904C17.9679 17.8399 18 17.7694 18 17.6925V15.7502C18 15.5374 18.0718 15.3592 18.2154 15.2156C18.3589 15.072 18.5371 15.0002 18.75 15.0002C18.9628 15.0002 19.141 15.072 19.2845 15.2156C19.4281 15.3592 19.5 15.5374 19.5 15.7502V17.6925C19.5 18.1976 19.325 18.6252 18.975 18.9752C18.625 19.3252 18.1974 19.5002 17.6922 19.5002H6.3077Z"
+                        fill="#8396A6"
+                      />
+                    </g>
+                  </svg>
+                </vs-td>
+              </vs-tr>
+              <vs-tr
+                :key="'receipt-detail-' + tr.id"
+                v-if="isRowExpanded(expandedReceiptRows, tr.id)"
+              >
+                <vs-td colspan="6">
+                  <div class="grid grid-cols-3 gap-4 p-3 bg-gray-50 rounded-lg">
+                    <div>
+                      <label class="text-xs text-gray-500">ค่าเช่าห้อง</label>
+                      <div>{{ $formatNumber(tr.attributes.roomPrice) }}</div>
+                    </div>
+                    <div>
+                      <label class="text-xs text-gray-500">ค่าน้ำ</label>
+                      <div>{{ $formatNumber(tr.attributes.waterPrice) }}</div>
+                    </div>
+                    <div>
+                      <label class="text-xs text-gray-500">ค่าไฟฟ้า</label>
+                      <div>{{ $formatNumber(tr.attributes.electricPrice) }}</div>
+                    </div>
+                    <div>
+                      <label class="text-xs text-gray-500">ค่าส่วนกลาง</label>
+                      <div>{{ $formatNumber(tr.attributes.communalPrice) }}</div>
+                    </div>
+                    <div>
+                      <label class="text-xs text-gray-500">ค่าบริการเสริม</label>
+                      <div>{{ $formatNumber(tr.attributes.otherPrice) }}</div>
+                    </div>
+                    <div>
+                      <label class="text-xs text-gray-500">Vat</label>
+                      <div>{{ $formatNumber(tr.attributes.vat) }}</div>
+                    </div>
+                  </div>
+                </vs-td>
+              </vs-tr>
+            </template>
           </template>
         </vs-table>
       </div>
@@ -1547,6 +1592,8 @@ export default {
       userReceipt: [],
       contractProfile: null,
       roomDetail: null,
+      expandedInvoiceRows: [],
+      expandedReceiptRows: [],
       userProfileImage: "",
       userEvidencePayment: [],
       PartialPayment: [],
@@ -2257,6 +2304,17 @@ export default {
       saveButton.removeAttribute("disabled");
       // .setAttribute('disabled', '');
       // .removeAttribute('disabled');
+    },
+    toggleRowDetail(list, id) {
+      const index = list.indexOf(id);
+      if (index === -1) {
+        list.push(id);
+      } else {
+        list.splice(index, 1);
+      }
+    },
+    isRowExpanded(list, id) {
+      return list.includes(id);
     },
     createPartial() {
       // Validate required fields
