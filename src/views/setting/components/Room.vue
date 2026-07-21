@@ -572,7 +572,7 @@
       >
         <div
           class="border h-[100%] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px] flex flex-col justify-center items-center cursor-pointer"
-          @click="(createFloor = true), (buildingfloorName = '')"
+          @click="(createFloor = true), (floorNamesToCreate = [''])"
         >
           <div>
             <svg
@@ -663,456 +663,6 @@
         </div>
       </div>
     </div>
-
-    <b-modal
-      centered
-      v-model="create"
-      size="xl"
-      hide-backdrop
-      hide-header-close
-      hide-header
-      hide-footer
-      class="p-[-20px] text-custom"
-    >
-      <div>
-        <div class="flex justify-between pl-[20px] pr-[20px]">
-          <div
-            class="text-custom flex justify-center items-center text-[16px] font-bold"
-          >
-            แก้ไขผังหอพัก
-          </div>
-          <div @click="create = false" class="cursor-pointer">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <mask
-                id="mask0_417_4814"
-                style="mask-type: alpha"
-                maskUnits="userSpaceOnUse"
-                x="0"
-                y="0"
-                width="24"
-                height="24"
-              >
-                <rect width="24" height="24" fill="#D9D9D9" />
-              </mask>
-              <g mask="url(#mask0_417_4814)">
-                <path
-                  d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
-                  fill="#5C6B79"
-                />
-              </g>
-            </svg>
-          </div>
-        </div>
-        <div
-          class="w-[100%] h-[1px] mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"
-        ></div>
-        <div class="grid grid-cols-3 gap-4">
-          <div class="flex">
-            <div class="w-[100%]">
-              <div
-                class="h-[46px] w-[100%] rounded-[12px] bg-[#003765] flex justify-between items-center pl-[14px] pr-[14px]"
-              >
-                <div class="text-white text-[16px] text-custom">รายการห้อง</div>
-                <div>
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 22 22"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <mask
-                      id="mask0_1373_22419"
-                      style="mask-type: alpha"
-                      maskUnits="userSpaceOnUse"
-                      x="0"
-                      y="0"
-                      width="22"
-                      height="22"
-                    >
-                      <rect
-                        y="22"
-                        width="22"
-                        height="22"
-                        transform="rotate(-90 0 22)"
-                        fill="#D9D9D9"
-                      />
-                    </mask>
-                    <g mask="url(#mask0_1373_22419)">
-                      <path
-                        d="M17.1875 11.0003C17.1875 11.1952 17.1216 11.3585 16.9898 11.4901C16.8581 11.6217 16.6948 11.6875 16.5 11.6875H11.6875V16.5C11.6875 16.6948 11.6215 16.8581 11.4897 16.9898C11.3579 17.1216 11.1945 17.1875 10.9997 17.1875C10.8048 17.1875 10.6415 17.1216 10.5099 16.9898C10.3783 16.8581 10.3125 16.6948 10.3125 16.5V11.6875H5.49998C5.30519 11.6875 5.1419 11.6216 5.01013 11.4898C4.87838 11.3579 4.8125 11.1946 4.8125 10.9997C4.8125 10.8048 4.87838 10.6416 5.01013 10.51C5.1419 10.3784 5.30519 10.3125 5.49998 10.3125H10.3125V5.50002C10.3125 5.30523 10.3784 5.14195 10.5102 5.01018C10.6421 4.87842 10.8054 4.81254 11.0003 4.81254C11.1952 4.81254 11.3584 4.87842 11.49 5.01018C11.6216 5.14195 11.6875 5.30523 11.6875 5.50002V10.3125H16.5C16.6948 10.3125 16.8581 10.3785 16.9898 10.5103C17.1216 10.6421 17.1875 10.8055 17.1875 11.0003Z"
-                        fill="white"
-                      />
-                    </g>
-                  </svg>
-                </div>
-              </div>
-              <div
-                class="h-[46px] w-[100%] rounded-[12px] border flex justify-between items-center pl-[14px] pr-[14px] mt-[8px] hover:bg-[#DEEAF5]"
-              >
-                <div class="text-[16px] text-custom">อาคาร A</div>
-                <div class="cursor-pointer">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <mask
-                      id="mask0_1373_22414"
-                      style="mask-type: alpha"
-                      maskUnits="userSpaceOnUse"
-                      x="0"
-                      y="0"
-                      width="24"
-                      height="24"
-                    >
-                      <rect width="24" height="24" fill="#D9D9D9" />
-                    </mask>
-                    <g mask="url(#mask0_1373_22414)">
-                      <path
-                        d="M7.3077 20.4998C6.80257 20.4998 6.375 20.3248 6.025 19.9748C5.675 19.6248 5.5 19.1972 5.5 18.6921V5.99981H5.25C5.03718 5.99981 4.85898 5.92802 4.7154 5.78443C4.5718 5.64085 4.5 5.46265 4.5 5.24983C4.5 5.03702 4.5718 4.85882 4.7154 4.71523C4.85898 4.57163 5.03718 4.49983 5.25 4.49983H8.99997C8.99997 4.24857 9.08779 4.03832 9.26342 3.86908C9.43907 3.69985 9.65254 3.61523 9.90382 3.61523H14.0961C14.3474 3.61523 14.5609 3.69985 14.7365 3.86908C14.9122 4.03832 15 4.24857 15 4.49983H18.75C18.9628 4.49983 19.141 4.57163 19.2845 4.71523C19.4281 4.85882 19.5 5.03702 19.5 5.24983C19.5 5.46265 19.4281 5.64085 19.2845 5.78443C19.141 5.92802 18.9628 5.99981 18.75 5.99981H18.5V18.6921C18.5 19.1972 18.325 19.6248 17.975 19.9748C17.625 20.3248 17.1974 20.4998 16.6922 20.4998H7.3077ZM6.99997 5.99981V18.6921C6.99997 18.7818 7.02883 18.8556 7.08652 18.9133C7.14422 18.971 7.21795 18.9998 7.3077 18.9998H16.6922C16.782 18.9998 16.8557 18.971 16.9134 18.9133C16.9711 18.8556 17 18.7818 17 18.6921V5.99981H6.99997ZM9.40385 16.2498C9.40385 16.4626 9.47564 16.6409 9.61922 16.7844C9.76281 16.928 9.94101 16.9998 10.1538 16.9998C10.3666 16.9998 10.5448 16.928 10.6884 16.7844C10.832 16.6409 10.9038 16.4626 10.9038 16.2498V8.74978C10.9038 8.53697 10.832 8.35877 10.6884 8.21518C10.5448 8.0716 10.3666 7.99981 10.1538 7.99981C9.94101 7.99981 9.76281 8.0716 9.61922 8.21518C9.47564 8.35877 9.40385 8.53697 9.40385 8.74978V16.2498ZM13.0961 16.2498C13.0961 16.4626 13.1679 16.6409 13.3115 16.7844C13.4551 16.928 13.6333 16.9998 13.8461 16.9998C14.0589 16.9998 14.2371 16.928 14.3807 16.7844C14.5243 16.6409 14.5961 16.4626 14.5961 16.2498V8.74978C14.5961 8.53697 14.5243 8.35877 14.3807 8.21518C14.2371 8.0716 14.0589 7.99981 13.8461 7.99981C13.6333 7.99981 13.4551 8.0716 13.3115 8.21518C13.1679 8.35877 13.0961 8.53697 13.0961 8.74978V16.2498ZM6.99997 5.99981V18.6921C6.99997 18.7818 7.02883 18.8556 7.08652 18.9133C7.14422 18.971 7.21795 18.9998 7.3077 18.9998H6.99997V5.99981Z"
-                        fill="#D44769"
-                      />
-                    </g>
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="w-[1px] h-[100%] ml-[18px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700 flex justify-center items-center"
-            ></div>
-          </div>
-          <div class="flex">
-            <div class="w-[100%]">
-              <div
-                class="h-[46px] w-[100%] rounded-[12px] bg-[#008EF4] flex justify-between items-center pl-[14px] pr-[14px]"
-              >
-                <div class="text-white text-[16px] text-custom">เพิ่มชั้น</div>
-                <div>
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 22 22"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <mask
-                      id="mask0_1373_22419"
-                      style="mask-type: alpha"
-                      maskUnits="userSpaceOnUse"
-                      x="0"
-                      y="0"
-                      width="22"
-                      height="22"
-                    >
-                      <rect
-                        y="22"
-                        width="22"
-                        height="22"
-                        transform="rotate(-90 0 22)"
-                        fill="#D9D9D9"
-                      />
-                    </mask>
-                    <g mask="url(#mask0_1373_22419)">
-                      <path
-                        d="M17.1875 11.0003C17.1875 11.1952 17.1216 11.3585 16.9898 11.4901C16.8581 11.6217 16.6948 11.6875 16.5 11.6875H11.6875V16.5C11.6875 16.6948 11.6215 16.8581 11.4897 16.9898C11.3579 17.1216 11.1945 17.1875 10.9997 17.1875C10.8048 17.1875 10.6415 17.1216 10.5099 16.9898C10.3783 16.8581 10.3125 16.6948 10.3125 16.5V11.6875H5.49998C5.30519 11.6875 5.1419 11.6216 5.01013 11.4898C4.87838 11.3579 4.8125 11.1946 4.8125 10.9997C4.8125 10.8048 4.87838 10.6416 5.01013 10.51C5.1419 10.3784 5.30519 10.3125 5.49998 10.3125H10.3125V5.50002C10.3125 5.30523 10.3784 5.14195 10.5102 5.01018C10.6421 4.87842 10.8054 4.81254 11.0003 4.81254C11.1952 4.81254 11.3584 4.87842 11.49 5.01018C11.6216 5.14195 11.6875 5.30523 11.6875 5.50002V10.3125H16.5C16.6948 10.3125 16.8581 10.3785 16.9898 10.5103C17.1216 10.6421 17.1875 10.8055 17.1875 11.0003Z"
-                        fill="white"
-                      />
-                    </g>
-                  </svg>
-                </div>
-              </div>
-              <div
-                class="h-[46px] w-[100%] rounded-[12px] border flex justify-between items-center pl-[14px] pr-[14px] mt-[8px] hover:bg-[#DEEAF5]"
-              >
-                <div class="text-[16px] text-custom">ชั้น 1</div>
-                <div class="cursor-pointer">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <mask
-                      id="mask0_1373_22414"
-                      style="mask-type: alpha"
-                      maskUnits="userSpaceOnUse"
-                      x="0"
-                      y="0"
-                      width="24"
-                      height="24"
-                    >
-                      <rect width="24" height="24" fill="#D9D9D9" />
-                    </mask>
-                    <g mask="url(#mask0_1373_22414)">
-                      <path
-                        d="M7.3077 20.4998C6.80257 20.4998 6.375 20.3248 6.025 19.9748C5.675 19.6248 5.5 19.1972 5.5 18.6921V5.99981H5.25C5.03718 5.99981 4.85898 5.92802 4.7154 5.78443C4.5718 5.64085 4.5 5.46265 4.5 5.24983C4.5 5.03702 4.5718 4.85882 4.7154 4.71523C4.85898 4.57163 5.03718 4.49983 5.25 4.49983H8.99997C8.99997 4.24857 9.08779 4.03832 9.26342 3.86908C9.43907 3.69985 9.65254 3.61523 9.90382 3.61523H14.0961C14.3474 3.61523 14.5609 3.69985 14.7365 3.86908C14.9122 4.03832 15 4.24857 15 4.49983H18.75C18.9628 4.49983 19.141 4.57163 19.2845 4.71523C19.4281 4.85882 19.5 5.03702 19.5 5.24983C19.5 5.46265 19.4281 5.64085 19.2845 5.78443C19.141 5.92802 18.9628 5.99981 18.75 5.99981H18.5V18.6921C18.5 19.1972 18.325 19.6248 17.975 19.9748C17.625 20.3248 17.1974 20.4998 16.6922 20.4998H7.3077ZM6.99997 5.99981V18.6921C6.99997 18.7818 7.02883 18.8556 7.08652 18.9133C7.14422 18.971 7.21795 18.9998 7.3077 18.9998H16.6922C16.782 18.9998 16.8557 18.971 16.9134 18.9133C16.9711 18.8556 17 18.7818 17 18.6921V5.99981H6.99997ZM9.40385 16.2498C9.40385 16.4626 9.47564 16.6409 9.61922 16.7844C9.76281 16.928 9.94101 16.9998 10.1538 16.9998C10.3666 16.9998 10.5448 16.928 10.6884 16.7844C10.832 16.6409 10.9038 16.4626 10.9038 16.2498V8.74978C10.9038 8.53697 10.832 8.35877 10.6884 8.21518C10.5448 8.0716 10.3666 7.99981 10.1538 7.99981C9.94101 7.99981 9.76281 8.0716 9.61922 8.21518C9.47564 8.35877 9.40385 8.53697 9.40385 8.74978V16.2498ZM13.0961 16.2498C13.0961 16.4626 13.1679 16.6409 13.3115 16.7844C13.4551 16.928 13.6333 16.9998 13.8461 16.9998C14.0589 16.9998 14.2371 16.928 14.3807 16.7844C14.5243 16.6409 14.5961 16.4626 14.5961 16.2498V8.74978C14.5961 8.53697 14.5243 8.35877 14.3807 8.21518C14.2371 8.0716 14.0589 7.99981 13.8461 7.99981C13.6333 7.99981 13.4551 8.0716 13.3115 8.21518C13.1679 8.35877 13.0961 8.53697 13.0961 8.74978V16.2498ZM6.99997 5.99981V18.6921C6.99997 18.7818 7.02883 18.8556 7.08652 18.9133C7.14422 18.971 7.21795 18.9998 7.3077 18.9998H6.99997V5.99981Z"
-                        fill="#D44769"
-                      />
-                    </g>
-                  </svg>
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="w-[1px] h-[100%] ml-[18px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700 flex justify-center items-center"
-            ></div>
-          </div>
-          <div class="flex">
-            <div class="w-[100%]">
-              <div
-                class="h-[46px] w-[100%] rounded-[12px] bg-[#9A77FF] flex justify-between items-center pl-[14px] pr-[14px]"
-              >
-                <div class="text-white text-[16px] text-custom">เพิ่มห้อง</div>
-                <div>
-                  <svg
-                    width="22"
-                    height="22"
-                    viewBox="0 0 22 22"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <mask
-                      id="mask0_1373_22419"
-                      style="mask-type: alpha"
-                      maskUnits="userSpaceOnUse"
-                      x="0"
-                      y="0"
-                      width="22"
-                      height="22"
-                    >
-                      <rect
-                        y="22"
-                        width="22"
-                        height="22"
-                        transform="rotate(-90 0 22)"
-                        fill="#D9D9D9"
-                      />
-                    </mask>
-                    <g mask="url(#mask0_1373_22419)">
-                      <path
-                        d="M17.1875 11.0003C17.1875 11.1952 17.1216 11.3585 16.9898 11.4901C16.8581 11.6217 16.6948 11.6875 16.5 11.6875H11.6875V16.5C11.6875 16.6948 11.6215 16.8581 11.4897 16.9898C11.3579 17.1216 11.1945 17.1875 10.9997 17.1875C10.8048 17.1875 10.6415 17.1216 10.5099 16.9898C10.3783 16.8581 10.3125 16.6948 10.3125 16.5V11.6875H5.49998C5.30519 11.6875 5.1419 11.6216 5.01013 11.4898C4.87838 11.3579 4.8125 11.1946 4.8125 10.9997C4.8125 10.8048 4.87838 10.6416 5.01013 10.51C5.1419 10.3784 5.30519 10.3125 5.49998 10.3125H10.3125V5.50002C10.3125 5.30523 10.3784 5.14195 10.5102 5.01018C10.6421 4.87842 10.8054 4.81254 11.0003 4.81254C11.1952 4.81254 11.3584 4.87842 11.49 5.01018C11.6216 5.14195 11.6875 5.30523 11.6875 5.50002V10.3125H16.5C16.6948 10.3125 16.8581 10.3785 16.9898 10.5103C17.1216 10.6421 17.1875 10.8055 17.1875 11.0003Z"
-                        fill="white"
-                      />
-                    </g>
-                  </svg>
-                </div>
-              </div>
-              <div
-                class="h-[46px] w-[100%] rounded-[12px] border flex justify-between items-center pl-[14px] pr-[14px] mt-[8px] hover:bg-[#DEEAF5]"
-              >
-                <div class="text-[16px] text-custom">ห้อง 101</div>
-                <div class="cursor-pointer">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <mask
-                      id="mask0_1373_22414"
-                      style="mask-type: alpha"
-                      maskUnits="userSpaceOnUse"
-                      x="0"
-                      y="0"
-                      width="24"
-                      height="24"
-                    >
-                      <rect width="24" height="24" fill="#D9D9D9" />
-                    </mask>
-                    <g mask="url(#mask0_1373_22414)">
-                      <path
-                        d="M7.3077 20.4998C6.80257 20.4998 6.375 20.3248 6.025 19.9748C5.675 19.6248 5.5 19.1972 5.5 18.6921V5.99981H5.25C5.03718 5.99981 4.85898 5.92802 4.7154 5.78443C4.5718 5.64085 4.5 5.46265 4.5 5.24983C4.5 5.03702 4.5718 4.85882 4.7154 4.71523C4.85898 4.57163 5.03718 4.49983 5.25 4.49983H8.99997C8.99997 4.24857 9.08779 4.03832 9.26342 3.86908C9.43907 3.69985 9.65254 3.61523 9.90382 3.61523H14.0961C14.3474 3.61523 14.5609 3.69985 14.7365 3.86908C14.9122 4.03832 15 4.24857 15 4.49983H18.75C18.9628 4.49983 19.141 4.57163 19.2845 4.71523C19.4281 4.85882 19.5 5.03702 19.5 5.24983C19.5 5.46265 19.4281 5.64085 19.2845 5.78443C19.141 5.92802 18.9628 5.99981 18.75 5.99981H18.5V18.6921C18.5 19.1972 18.325 19.6248 17.975 19.9748C17.625 20.3248 17.1974 20.4998 16.6922 20.4998H7.3077ZM6.99997 5.99981V18.6921C6.99997 18.7818 7.02883 18.8556 7.08652 18.9133C7.14422 18.971 7.21795 18.9998 7.3077 18.9998H16.6922C16.782 18.9998 16.8557 18.971 16.9134 18.9133C16.9711 18.8556 17 18.7818 17 18.6921V5.99981H6.99997ZM9.40385 16.2498C9.40385 16.4626 9.47564 16.6409 9.61922 16.7844C9.76281 16.928 9.94101 16.9998 10.1538 16.9998C10.3666 16.9998 10.5448 16.928 10.6884 16.7844C10.832 16.6409 10.9038 16.4626 10.9038 16.2498V8.74978C10.9038 8.53697 10.832 8.35877 10.6884 8.21518C10.5448 8.0716 10.3666 7.99981 10.1538 7.99981C9.94101 7.99981 9.76281 8.0716 9.61922 8.21518C9.47564 8.35877 9.40385 8.53697 9.40385 8.74978V16.2498ZM13.0961 16.2498C13.0961 16.4626 13.1679 16.6409 13.3115 16.7844C13.4551 16.928 13.6333 16.9998 13.8461 16.9998C14.0589 16.9998 14.2371 16.928 14.3807 16.7844C14.5243 16.6409 14.5961 16.4626 14.5961 16.2498V8.74978C14.5961 8.53697 14.5243 8.35877 14.3807 8.21518C14.2371 8.0716 14.0589 7.99981 13.8461 7.99981C13.6333 7.99981 13.4551 8.0716 13.3115 8.21518C13.1679 8.35877 13.0961 8.53697 13.0961 8.74978V16.2498ZM6.99997 5.99981V18.6921C6.99997 18.7818 7.02883 18.8556 7.08652 18.9133C7.14422 18.971 7.21795 18.9998 7.3077 18.9998H6.99997V5.99981Z"
-                        fill="#D44769"
-                      />
-                    </g>
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="flex justify-end mt-[30px]">
-          <div>
-            <vs-button dark shadow @click="create = false">
-              <div class="text-custom">ยกเลิก</div>
-            </vs-button>
-          </div>
-          <div>
-            <vs-button @click="type" color="#003765">
-              <div class="text-custom">บันทึก</div>
-            </vs-button>
-          </div>
-        </div>
-      </div>
-    </b-modal>
-
-    <b-modal
-      centered
-      v-model="type"
-      size="l"
-      hide-backdrop
-      hide-header-close
-      hide-header
-      hide-footer
-      class="p-[-20px] text-custom"
-    >
-      <div>
-        <div class="flex justify-between">
-          <div
-            class="text-custom flex justify-center items-center text-[16px] font-bold"
-          >
-            กำหนดประเภทห้องและค่าเช่า
-          </div>
-          <div @click="type = false" class="cursor-pointer">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <mask
-                id="mask0_417_4814"
-                style="mask-type: alpha"
-                maskUnits="userSpaceOnUse"
-                x="0"
-                y="0"
-                width="24"
-                height="24"
-              >
-                <rect width="24" height="24" fill="#D9D9D9" />
-              </mask>
-              <g mask="url(#mask0_417_4814)">
-                <path
-                  d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
-                  fill="#5C6B79"
-                />
-              </g>
-            </svg>
-          </div>
-        </div>
-
-        <div
-          class="w-[100%] h-[1px] mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"
-        ></div>
-        <div class="text-custom text-[14px]">รายการห้องที่กำหนด</div>
-        <div class="grid grid-cols-4 w-[100%] gap-2 mt-[14px]">
-          <div
-            class="text-custom h-[36px] bg-[#003765] rounded-[12px] flex justify-between items-center text-[white] pl-[8px] pr-[8px]"
-          >
-            <div>ห้อง 101</div>
-            <div class="cursor-pointer">
-              <svg
-                width="19"
-                height="18"
-                viewBox="0 0 19 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect x="0.5" width="18" height="18" rx="9" fill="#003765" />
-                <mask
-                  id="mask0_902_18142"
-                  style="mask-type: alpha"
-                  maskUnits="userSpaceOnUse"
-                  x="0"
-                  y="0"
-                  width="19"
-                  height="18"
-                >
-                  <rect x="0.5" width="18" height="18" fill="#D9D9D9" />
-                </mask>
-                <g mask="url(#mask0_902_18142)">
-                  <path
-                    d="M9.50036 9.79073L5.69553 13.5955C5.59169 13.6994 5.46117 13.7525 5.30396 13.7549C5.14676 13.7573 5.01383 13.7042 4.90518 13.5955C4.79652 13.4869 4.74219 13.3552 4.74219 13.2004C4.74219 13.0456 4.79652 12.9138 4.90518 12.8052L8.70999 9.00036L4.90518 5.19553C4.80133 5.09169 4.74821 4.96117 4.74581 4.80396C4.74339 4.64676 4.79652 4.51383 4.90518 4.40518C5.01383 4.29652 5.14556 4.24219 5.30036 4.24219C5.45516 4.24219 5.58688 4.29652 5.69553 4.40518L9.50036 8.20999L13.3052 4.40518C13.409 4.30133 13.5395 4.24821 13.6968 4.24581C13.854 4.24339 13.9869 4.29652 14.0955 4.40518C14.2042 4.51383 14.2585 4.64556 14.2585 4.80036C14.2585 4.95516 14.2042 5.08688 14.0955 5.19553L10.2907 9.00036L14.0955 12.8052C14.1994 12.909 14.2525 13.0395 14.2549 13.1968C14.2573 13.354 14.2042 13.4869 14.0955 13.5955C13.9869 13.7042 13.8552 13.7585 13.7004 13.7585C13.5456 13.7585 13.4138 13.7042 13.3052 13.5955L9.50036 9.79073Z"
-                    fill="white"
-                  />
-                </g>
-              </svg>
-            </div>
-          </div>
-          <div
-            class="text-custom h-[36px] bg-[#003765] rounded-[12px] flex justify-between items-center text-[white] pl-[8px] pr-[8px]"
-          >
-            <div>ห้อง 102</div>
-            <div class="cursor-pointer">
-              <svg
-                width="19"
-                height="18"
-                viewBox="0 0 19 18"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <rect x="0.5" width="18" height="18" rx="9" fill="#003765" />
-                <mask
-                  id="mask0_902_18142"
-                  style="mask-type: alpha"
-                  maskUnits="userSpaceOnUse"
-                  x="0"
-                  y="0"
-                  width="19"
-                  height="18"
-                >
-                  <rect x="0.5" width="18" height="18" fill="#D9D9D9" />
-                </mask>
-                <g mask="url(#mask0_902_18142)">
-                  <path
-                    d="M9.50036 9.79073L5.69553 13.5955C5.59169 13.6994 5.46117 13.7525 5.30396 13.7549C5.14676 13.7573 5.01383 13.7042 4.90518 13.5955C4.79652 13.4869 4.74219 13.3552 4.74219 13.2004C4.74219 13.0456 4.79652 12.9138 4.90518 12.8052L8.70999 9.00036L4.90518 5.19553C4.80133 5.09169 4.74821 4.96117 4.74581 4.80396C4.74339 4.64676 4.79652 4.51383 4.90518 4.40518C5.01383 4.29652 5.14556 4.24219 5.30036 4.24219C5.45516 4.24219 5.58688 4.29652 5.69553 4.40518L9.50036 8.20999L13.3052 4.40518C13.409 4.30133 13.5395 4.24821 13.6968 4.24581C13.854 4.24339 13.9869 4.29652 14.0955 4.40518C14.2042 4.51383 14.2585 4.64556 14.2585 4.80036C14.2585 4.95516 14.2042 5.08688 14.0955 5.19553L10.2907 9.00036L14.0955 12.8052C14.1994 12.909 14.2525 13.0395 14.2549 13.1968C14.2573 13.354 14.2042 13.4869 14.0955 13.5955C13.9869 13.7042 13.8552 13.7585 13.7004 13.7585C13.5456 13.7585 13.4138 13.7042 13.3052 13.5955L9.50036 9.79073Z"
-                    fill="white"
-                  />
-                </g>
-              </svg>
-            </div>
-          </div>
-        </div>
-        <div class="mt-[14px]">
-          <div class="text-custom">ประเภทห้องพัก</div>
-          <div>
-            <select
-              placeholder="Select"
-              v-model="value"
-              class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
-            >
-              <option v-for="data in roomType">
-                {{ data.attributes.roomTypeName }}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="mt-[14px]">
-          <div class="text-custom">ค่าเช่าห้อง/เดือน</div>
-          <div>
-            <input
-              class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
-            />
-          </div>
-        </div>
-        <div class="flex justify-end mt-[30px]">
-          <div>
-            <vs-button dark shadow @click="type = false">
-              <div class="text-custom">ยกเลิก</div>
-            </vs-button>
-          </div>
-          <div>
-            <vs-button @click="type" color="#003765">
-              <div class="text-custom">บันทึก</div>
-            </vs-button>
-          </div>
-        </div>
-      </div>
-    </b-modal>
 
     <b-modal
       centered
@@ -1363,7 +913,7 @@
           >
             เพิ่มชั้น
           </div>
-          <div @click="create = false" class="cursor-pointer">
+          <div @click="createFloor = false" class="cursor-pointer">
             <svg
               width="24"
               height="24"
@@ -1396,11 +946,31 @@
         ></div>
         <div class="mt-[14px]">
           <div class="text-custom">ชื่อชั้น</div>
-          <div>
+          <div
+            v-for="(name, index) in floorNamesToCreate"
+            :key="index"
+            class="flex items-center mt-[8px] gap-[8px]"
+          >
             <input
-              class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
-              v-model="buildingfloorName"
+              class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA]"
+              v-model="floorNamesToCreate[index]"
+              :placeholder="'เช่น ชั้น ' + (index + 1)"
             />
+            <div
+              v-if="floorNamesToCreate.length > 1"
+              @click="removeFloorNameRow(index)"
+              class="h-[36px] w-[36px] flex-shrink-0 flex items-center justify-center rounded-[12px] bg-[#FFE1E8] text-[#EA2F5C] cursor-pointer text-[18px] font-bold select-none"
+              title="ลบแถวนี้"
+            >
+              −
+            </div>
+          </div>
+          <div
+            @click="addFloorNameRow()"
+            class="mt-[10px] h-[36px] w-[36px] flex items-center justify-center rounded-[12px] bg-[#E5F0FA] text-[#003765] cursor-pointer text-[18px] font-bold select-none"
+            title="เพิ่มแถว"
+          >
+            +
           </div>
         </div>
         <div class="flex justify-end mt-[30px]">
@@ -1410,7 +980,7 @@
             </vs-button>
           </div>
           <div>
-            <vs-button @click="create_floor()" color="#003765">
+            <vs-button @click="create_floors()" color="#003765">
               <div class="text-custom">บันทึก</div>
             </vs-button>
           </div>
@@ -1429,8 +999,6 @@ export default {
       tab_floor: "0",
       name_floor: "",
       value: 0,
-      create: false,
-      type: false,
       create_type: false,
       create_room: false,
       createFloor: false,
@@ -1442,7 +1010,7 @@ export default {
       roomName: "",
       roomTypeName: "",
       roomTypePrice: 0,
-      buildingfloorName: "",
+      floorNamesToCreate: [""],
       roomFloor_id: "",
       room_id: "",
       filter: {
@@ -1616,7 +1184,8 @@ export default {
         fetch(
           "https://api.resguru.app/api" +
             "/rooms?filters[room_building][id][$eq]=" +
-            this.$store.state.building
+            this.$store.state.building +
+            "&pagination[pageSize]=100"
         )
           .then((response) => response.json())
           .then((resp) => {
@@ -1780,33 +1349,104 @@ export default {
           this.getTypeRoom();
         });
     },
-    create_floor() {
-      axios
-        .post(`https://api.resguru.app/api/building-floors/`, {
-          data: {
-            floorName: this.buildingfloorName,
-            building: this.$store.state.building,
-          },
-        })
-        .then((resp) => {
-          this.$showNotification("#3A89CB", "สร้างชั้นสำเร็จ");
-        })
-        .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
-          this.$showNotification("danger", errorMessage);
+    addFloorNameRow() {
+      this.floorNamesToCreate.push("");
+    },
+    removeFloorNameRow(index) {
+      this.floorNamesToCreate.splice(index, 1);
+    },
+    create_floors() {
+      // Ignore blank rows (e.g. an empty trailing row left over after
+      // typing) rather than forcing the user to remove them manually.
+      const trimmedNames = this.floorNamesToCreate
+        .map((name) => (name || "").trim())
+        .filter((name) => name !== "");
+
+      if (trimmedNames.length === 0) {
+        this.$showNotification("danger", "กรุณากรอกชื่อชั้นอย่างน้อย 1 ชั้น");
+        return;
+      }
+
+      // Duplicate check within the batch itself (case-insensitive).
+      const lowerNames = trimmedNames.map((name) => name.toLowerCase());
+      const hasDuplicateInBatch = lowerNames.some(
+        (name, index) => lowerNames.indexOf(name) !== index
+      );
+      if (hasDuplicateInBatch) {
+        this.$showNotification("danger", "มีชื่อชั้นซ้ำกันในรายการที่กรอก");
+        return;
+      }
+
+      // Duplicate check against floors that already exist.
+      const existingLowerNames = this.roomFloor.map((item) =>
+        (item.attributes.floorName || "").trim().toLowerCase()
+      );
+      const alreadyExists = trimmedNames.find((name) =>
+        existingLowerNames.includes(name.toLowerCase())
+      );
+      if (alreadyExists) {
+        this.$showNotification("danger", `มีชื่อชั้น "${alreadyExists}" อยู่แล้ว`);
+        return;
+      }
+
+      const loading = this.$vs.loading();
+      Promise.allSettled(
+        trimmedNames.map((floorName) =>
+          axios.post(`https://api.resguru.app/api/building-floors/`, {
+            data: {
+              floorName,
+              building: this.$store.state.building,
+            },
+          })
+        )
+      )
+        .then((results) => {
+          const failedCount = results.filter(
+            (result) => result.status === "rejected"
+          ).length;
+          const successCount = results.length - failedCount;
+
+          if (failedCount === 0) {
+            this.$showNotification(
+              "#3A89CB",
+              `สร้างชั้นสำเร็จ ${successCount} ชั้น`
+            );
+          } else if (successCount === 0) {
+            this.$showNotification("danger", "สร้างชั้นไม่สำเร็จ");
+          } else {
+            this.$showNotification(
+              "danger",
+              `สร้างสำเร็จ ${successCount} ชั้น, ไม่สำเร็จ ${failedCount} ชั้น`
+            );
+          }
         })
         .finally(() => {
+          loading.close();
           this.createFloor = false;
           this.getFloorRoom();
         });
     },
     updateFloor(floorID, buildFloorName) {
+      const trimmedName = (buildFloorName || "").trim();
+      if (trimmedName === "") {
+        this.$showNotification("danger", "กรุณากรอกชื่อชั้น");
+        return;
+      }
+      const isDuplicate = this.roomFloor.some(
+        (item) =>
+          String(item.id) !== String(floorID) &&
+          (item.attributes.floorName || "").trim().toLowerCase() ===
+            trimmedName.toLowerCase()
+      );
+      if (isDuplicate) {
+        this.$showNotification("danger", "มีชื่อชั้นนี้อยู่แล้ว");
+        return;
+      }
+
       axios
         .put(`https://api.resguru.app/api/building-floors/${floorID}`, {
           data: {
-            floorName: buildFloorName,
+            floorName: trimmedName,
           },
         })
         .then((resp) => {
@@ -1823,25 +1463,45 @@ export default {
         });
     },
     removeFloor(floorID) {
-      if (confirm("Do you really want to delete this Admin?")) {
-        axios
-          .delete(`https://api.resguru.app/api/building-floors/${floorID}`)
-          .then
-          // this.openNotificationDeleteFloor('top-right', '#3A89CB', 6000)
-          ()
-          .then((resp) => {
-            this.$showNotification("#3A89CB", "ลบชั้นสำเร็จ");
-          })
-          .catch((error) => {
-            const errorMessage = error.message
-              ? error.message
-              : "Error updating information";
-            this.$showNotification("danger", errorMessage);
-          })
-          .finally(() => {
-            this.getFloorRoom();
-          });
-      }
+      fetch(
+        "https://api.resguru.app/api" +
+          "/rooms?filters[building_floor][id][$eq]=" +
+          floorID +
+          "&pagination[pageSize]=1"
+      )
+        .then((response) => response.json())
+        .then((resp) => {
+          if (resp.data && resp.data.length > 0) {
+            this.$showNotification(
+              "danger",
+              "ไม่สามารถลบชั้นนี้ได้ เนื่องจากยังมีห้องอยู่ในชั้นนี้"
+            );
+            return;
+          }
+
+          if (confirm("คุณต้องการลบชั้นนี้ใช่หรือไม่?")) {
+            axios
+              .delete(`https://api.resguru.app/api/building-floors/${floorID}`)
+              .then((resp) => {
+                this.$showNotification("#3A89CB", "ลบชั้นสำเร็จ");
+              })
+              .catch((error) => {
+                const errorMessage = error.message
+                  ? error.message
+                  : "Error updating information";
+                this.$showNotification("danger", errorMessage);
+              })
+              .finally(() => {
+                this.getFloorRoom();
+              });
+          }
+        })
+        .catch((error) => {
+          const errorMessage = error.message
+            ? error.message
+            : "Error checking rooms on this floor";
+          this.$showNotification("danger", errorMessage);
+        });
     },
   },
 };
