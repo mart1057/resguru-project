@@ -158,6 +158,12 @@ module.exports = {
       fuchsia: colors.fuchsia,
       pink: colors.pink,
       rose: colors.rose,
+      resguru: {
+        navy: '#003765',
+        blue: '#3A89CB',
+        yellow: '#F5D65E',
+        light: '#F3F7FA',
+      },
     }),
     columns: {
       auto: 'auto',

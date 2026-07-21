@@ -78,11 +78,27 @@
         
         <!-- REGISTRATION FORM - IMPROVED -->
         <div class="h-[100%] flex" v-if="tab == 2">
-            <div class="flex flex-col justify-between h-[100vh!important] w-[30%]">
-                <div>
+            <div class="flex flex-col justify-between h-[100vh!important] w-[35%] bg-resguru-navy relative overflow-hidden">
+                <div class="pl-[8px] pt-[8px] relative z-10">
                     <img :src="Logo01" />
                 </div>
-                <div class="ml-[-20px] ">
+                <div class="flex flex-col items-center justify-center px-[40px] relative z-10">
+                    <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="24" y="40" width="48" height="64" rx="4" stroke="#F5D65E" stroke-width="3" />
+                        <rect x="34" y="52" width="10" height="10" rx="1" fill="#F5D65E" />
+                        <rect x="52" y="52" width="10" height="10" rx="1" fill="#F5D65E" />
+                        <rect x="34" y="70" width="10" height="10" rx="1" fill="#F5D65E" />
+                        <rect x="52" y="70" width="10" height="10" rx="1" fill="#F5D65E" />
+                        <rect x="43" y="88" width="14" height="16" fill="#F5D65E" />
+                        <path d="M76 60L96 44V84L76 68" stroke="white" stroke-width="3" stroke-linejoin="round" />
+                        <circle cx="60" cy="18" r="10" stroke="#F5D65E" stroke-width="3" />
+                        <path d="M60 24V32M56 28H64" stroke="#F5D65E" stroke-width="3" stroke-linecap="round" />
+                    </svg>
+                    <div class="text-white text-[20px] font-semibold mt-[24px] text-center leading-relaxed">
+                        จัดการหอพักของคุณ<br />ได้ง่ายในที่เดียว
+                    </div>
+                </div>
+                <div class="ml-[-20px] relative z-10">
                     <svg width="307" height="323" viewBox="0 0 307 323" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <g opacity="0.1">
                             <path
@@ -94,24 +110,30 @@
                         </g>
                     </svg>
                 </div>
+                <div class="absolute -right-12 -top-12 w-[160px] h-[160px] rounded-full bg-resguru-yellow opacity-[0.12]"></div>
+                <div class="absolute -left-16 bottom-[120px] w-[100px] h-[100px] rounded-full bg-resguru-yellow opacity-[0.08]"></div>
             </div>
-            <div class="w-[40%]  flex flex-col justify-center items-center mt-[-40px]">
-                <div class="text-[white] text-[28px] mt-[20px]">สร้างบัญชี</div>
+            <div class="w-[65%] flex flex-col justify-center items-center py-[32px]">
+                <div class="text-resguru-navy text-[28px] font-bold">สร้างบัญชี</div>
+                <div class="text-gray-500 text-sm mt-[4px]">เริ่มต้นจัดการหอพักของคุณวันนี้</div>
                 <div
-                    class=" mt-[20px]  text-[12px] w-[549px] rounded-[20px] bg-[white] pt-[14px] pl-[30px] pr-[30px] pb-[14px]">
+                    class="mt-[20px] text-sm w-[560px] max-w-[92%] rounded-[20px] bg-white pt-[24px] pl-[32px] pr-[32px] pb-[24px] shadow-xl">
                     <form @submit.prevent="registerSubmit()">
                         <div>
+                            <div class="text-resguru-navy font-bold text-base mb-[12px] pb-[8px] border-b border-gray-100">
+                                ข้อมูลส่วนตัว
+                            </div>
                             <!-- Name Fields -->
                             <div class="grid grid-cols-2 w-[100%] gap-4 mt-[10px] ">
                                 <div>
-                                    <div class="font-bold">
+                                    <div class="font-semibold text-gray-700">
                                         ชื่อ <span class="text-red-500">*</span>
                                     </div>
-                                    <div class="">
-                                        <input 
-                                            type="text" 
-                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] px-3 border border-gray-200 focus:border-blue-500 focus:outline-none"
-                                            v-model="dataRegister.name" 
+                                    <div class="mt-[6px]">
+                                        <input
+                                            type="text"
+                                            class="h-[40px] w-[100%] rounded-[12px] bg-resguru-light px-3 border border-gray-200 focus:border-resguru-blue focus:outline-none"
+                                            v-model="dataRegister.name"
                                             required
                                             :class="{'border-red-500': validationErrors.name}" />
                                         <div v-if="validationErrors.name" class="text-red-500 text-xs mt-1">
@@ -120,14 +142,14 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <div class="font-bold">
+                                    <div class="font-semibold text-gray-700">
                                         นามสกุล <span class="text-red-500">*</span>
                                     </div>
-                                    <div class="">
-                                        <input 
-                                            type="text" 
-                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] px-3 border border-gray-200 focus:border-blue-500 focus:outline-none"
-                                            v-model="dataRegister.last" 
+                                    <div class="mt-[6px]">
+                                        <input
+                                            type="text"
+                                            class="h-[40px] w-[100%] rounded-[12px] bg-resguru-light px-3 border border-gray-200 focus:border-resguru-blue focus:outline-none"
+                                            v-model="dataRegister.last"
                                             required
                                             :class="{'border-red-500': validationErrors.last}" />
                                         <div v-if="validationErrors.last" class="text-red-500 text-xs mt-1">
@@ -138,15 +160,15 @@
                             </div>
 
                             <!-- Birth Date - DD/MM/YYYY format -->
-                            <div class="mt-[10px]">
-                                <div class="font-bold">
+                            <div class="mt-[16px]">
+                                <div class="font-semibold text-gray-700">
                                     วันเกิด (วัน/เดือน/ปี) <span class="text-red-500">*</span>
                                 </div>
-                                <div class="grid grid-cols-3 gap-2">
+                                <div class="grid grid-cols-3 gap-2 mt-[6px]">
                                     <div>
-                                        <select 
-                                            v-model="dataRegister.birthDay" 
-                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] px-3 border border-gray-200 focus:border-blue-500 focus:outline-none"
+                                        <select
+                                            v-model="dataRegister.birthDay"
+                                            class="h-[40px] w-[100%] rounded-[12px] bg-resguru-light px-3 border border-gray-200 focus:border-resguru-blue focus:outline-none"
                                             required
                                             :class="{'border-red-500': validationErrors.birth}">
                                             <option value="">วัน</option>
@@ -154,9 +176,9 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <select 
-                                            v-model="dataRegister.birthMonth" 
-                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] px-3 border border-gray-200 focus:border-blue-500 focus:outline-none"
+                                        <select
+                                            v-model="dataRegister.birthMonth"
+                                            class="h-[40px] w-[100%] rounded-[12px] bg-resguru-light px-3 border border-gray-200 focus:border-resguru-blue focus:outline-none"
                                             required
                                             :class="{'border-red-500': validationErrors.birth}">
                                             <option value="">เดือน</option>
@@ -164,9 +186,9 @@
                                         </select>
                                     </div>
                                     <div>
-                                        <select 
-                                            v-model="dataRegister.birthYear" 
-                                            class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] px-3 border border-gray-200 focus:border-blue-500 focus:outline-none"
+                                        <select
+                                            v-model="dataRegister.birthYear"
+                                            class="h-[40px] w-[100%] rounded-[12px] bg-resguru-light px-3 border border-gray-200 focus:border-resguru-blue focus:outline-none"
                                             required
                                             :class="{'border-red-500': validationErrors.birth}">
                                             <option value="">ปี</option>
@@ -180,16 +202,16 @@
                             </div>
 
                             <!-- ID Card -->
-                            <div class="mt-[10px]">
-                                <div class="font-bold">
+                            <div class="mt-[16px]">
+                                <div class="font-semibold text-gray-700">
                                     หมายเลขบัตรประชาชน หรือ พาสปอร์ต <span class="text-red-500">*</span>
                                 </div>
-                                <div class="">
-                                    <input 
-                                        type="text" 
-                                        placeholder="เลขบัตรประชาชน 13 หลัก หรือ หมายเลขพาสปอร์ต" 
-                                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] px-3 border border-gray-200 focus:border-blue-500 focus:outline-none"
-                                        v-model="dataRegister.CID" 
+                                <div class="mt-[6px]">
+                                    <input
+                                        type="text"
+                                        placeholder="เลขบัตรประชาชน 13 หลัก หรือ หมายเลขพาสปอร์ต"
+                                        class="h-[40px] w-[100%] rounded-[12px] bg-resguru-light px-3 border border-gray-200 focus:border-resguru-blue focus:outline-none"
+                                        v-model="dataRegister.CID"
                                         required
                                         @input="onCIDInput"
                                         :class="{'border-red-500': validationErrors.CID}" />
@@ -199,17 +221,21 @@
                                 </div>
                             </div>
 
+                            <div class="text-resguru-navy font-bold text-base mt-[24px] mb-[12px] pb-[8px] border-b border-gray-100">
+                                บัญชีผู้ใช้
+                            </div>
+
                             <!-- Email -->
                             <div class="mt-[10px]">
-                                <div class="font-bold">
+                                <div class="font-semibold text-gray-700">
                                     Email <span class="text-red-500">*</span>
                                 </div>
-                                <div class="">
-                                    <input 
-                                        type="email" 
+                                <div class="mt-[6px]">
+                                    <input
+                                        type="email"
                                         placeholder="example@email.com"
-                                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] px-3 border border-gray-200 focus:border-blue-500 focus:outline-none" 
-                                        v-model="dataRegister.email" 
+                                        class="h-[40px] w-[100%] rounded-[12px] bg-resguru-light px-3 border border-gray-200 focus:border-resguru-blue focus:outline-none"
+                                        v-model="dataRegister.email"
                                         required
                                         @blur="validateEmail"
                                         :class="{'border-red-500': validationErrors.email}" />
@@ -220,17 +246,17 @@
                             </div>
 
                             <!-- Phone -->
-                            <div class="mt-[10px]">
-                                <div class="font-bold">
+                            <div class="mt-[16px]">
+                                <div class="font-semibold text-gray-700">
                                     เบอร์โทรศัพท์ <span class="text-red-500">*</span>
                                 </div>
-                                <div class="">
-                                    <input 
-                                        type="tel" 
-                                        placeholder="08x-xxx-xxxx" 
+                                <div class="mt-[6px]">
+                                    <input
+                                        type="tel"
+                                        placeholder="08x-xxx-xxxx"
                                         @input="onPhoneNumberInput"
-                                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] px-3 border border-gray-200 focus:border-blue-500 focus:outline-none" 
-                                        v-model="dataRegister.phone" 
+                                        class="h-[40px] w-[100%] rounded-[12px] bg-resguru-light px-3 border border-gray-200 focus:border-resguru-blue focus:outline-none"
+                                        v-model="dataRegister.phone"
                                         required
                                         maxlength="10"
                                         :class="{'border-red-500': validationErrors.phone}" />
@@ -241,16 +267,16 @@
                             </div>
 
                             <!-- Password -->
-                            <div class="mt-[10px]">
-                                <div class="font-bold">
+                            <div class="mt-[16px]">
+                                <div class="font-semibold text-gray-700">
                                     รหัสผ่าน <span class="text-red-500">*</span>
                                 </div>
-                                <div class="">
-                                    <input 
-                                        type="password" 
+                                <div class="mt-[6px]">
+                                    <input
+                                        type="password"
                                         placeholder="อย่างน้อย 8 ตัวอักษร"
-                                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] px-3 border border-gray-200 focus:border-blue-500 focus:outline-none" 
-                                        v-model="dataRegister.pass" 
+                                        class="h-[40px] w-[100%] rounded-[12px] bg-resguru-light px-3 border border-gray-200 focus:border-resguru-blue focus:outline-none"
+                                        v-model="dataRegister.pass"
                                         required
                                         minlength="8"
                                         @input="validatePassword"
@@ -262,16 +288,16 @@
                             </div>
 
                             <!-- Confirm Password -->
-                            <div class="mt-[10px]">
-                                <div class="font-bold">
+                            <div class="mt-[16px]">
+                                <div class="font-semibold text-gray-700">
                                     ยืนยันรหัสผ่าน <span class="text-red-500">*</span>
                                 </div>
-                                <div class="">
-                                    <input 
-                                        type="password" 
+                                <div class="mt-[6px]">
+                                    <input
+                                        type="password"
                                         placeholder="ยืนยันรหัสผ่าน"
-                                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] px-3 border border-gray-200 focus:border-blue-500 focus:outline-none" 
-                                        v-model="dataRegister.pass_con" 
+                                        class="h-[40px] w-[100%] rounded-[12px] bg-resguru-light px-3 border border-gray-200 focus:border-resguru-blue focus:outline-none"
+                                        v-model="dataRegister.pass_con"
                                         required
                                         @input="validatePasswordConfirm"
                                         :class="{'border-red-500': validationErrors.pass_con}" />
@@ -281,15 +307,19 @@
                                 </div>
                             </div>
 
+                            <div class="text-resguru-navy font-bold text-base mt-[24px] mb-[12px] pb-[8px] border-b border-gray-100">
+                                ข้อมูลเพิ่มเติม
+                            </div>
+
                             <!-- Gender -->
                             <div class="mt-[10px]">
-                                <div class="font-bold">
+                                <div class="font-semibold text-gray-700">
                                     เพศ <span class="text-red-500">*</span>
                                 </div>
-                                <div class="flex">
+                                <div class="flex mt-[6px]">
                                     <div @click="dataRegister.sex = true"
-                                        class="h-[41px] w-[78px] rounded-[12px]  border items-center flex justify-around cursor-pointer"
-                                        :class="dataRegister.sex === true? 'bg-[#008EF4] text-[white] border-[#008EF4]' : 'border-gray-200 hover:border-[#008EF4]'">
+                                        class="h-[41px] w-[90px] rounded-[12px]  border items-center flex justify-around cursor-pointer gender-option"
+                                        :class="dataRegister.sex === true? 'bg-resguru-navy text-[white] border-resguru-navy' : 'border-gray-200 hover:border-resguru-navy'">
                                         <div><svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <mask id="mask0_902_17193" style="mask-type:alpha" maskUnits="userSpaceOnUse"
@@ -299,15 +329,15 @@
                                                 <g mask="url(#mask0_902_17193)">
                                                     <path
                                                         d="M9.50085 19.75C8.03745 19.75 6.79646 19.241 5.77788 18.223C4.75929 17.2049 4.25 15.9642 4.25 14.5009C4.25 13.0375 4.75908 11.7965 5.77725 10.7779C6.79543 9.75929 8.03634 9.25 9.49998 9.25C10.0628 9.25 10.6093 9.34198 11.1394 9.52595C11.6695 9.70993 12.166 9.96859 12.6288 10.3019L17.1808 5.74995H15C14.7875 5.74995 14.6094 5.67805 14.4656 5.53425C14.3219 5.39043 14.25 5.21223 14.25 4.99965C14.25 4.78705 14.3219 4.60896 14.4656 4.46538C14.6094 4.32179 14.7875 4.25 15 4.25H18.8461C19.1022 4.25 19.3169 4.33662 19.4901 4.50985C19.6633 4.68308 19.75 4.89774 19.75 5.15383V8.99998C19.75 9.21248 19.6781 9.3906 19.5343 9.53435C19.3904 9.67808 19.2122 9.74995 18.9997 9.74995C18.7871 9.74995 18.609 9.67808 18.4654 9.53435C18.3218 9.3906 18.25 9.21248 18.25 8.99998V6.82878L13.698 11.3461C14.0211 11.8192 14.2772 12.3203 14.4663 12.8495C14.6554 13.3787 14.75 13.9288 14.75 14.5C14.75 15.9636 14.241 17.2045 13.223 18.2227C12.2049 19.2409 10.9642 19.75 9.50085 19.75ZM9.49843 10.75C8.46228 10.75 7.57849 11.1162 6.84708 11.8486C6.11566 12.5811 5.74995 13.4654 5.74995 14.5015C5.74995 15.5377 6.11618 16.4215 6.84863 17.1529C7.58108 17.8843 8.46538 18.25 9.50153 18.25C10.5377 18.25 11.4215 17.8838 12.1529 17.1513C12.8843 16.4189 13.25 15.5346 13.25 14.4984C13.25 13.4623 12.8838 12.5785 12.1513 11.8471C11.4189 11.1157 10.5346 10.75 9.49843 10.75Z"
-                                                        :fill="dataRegister.sex === true ? 'white' : '#008EF4'" />
+                                                        :fill="dataRegister.sex === true ? 'white' : '#003765'" />
                                                 </g>
                                             </svg>
                                         </div>
                                         <div>ชาย</div>
                                     </div>
                                     <div @click="dataRegister.sex = false"
-                                        class="h-[41px] ml-[14px] w-[78px] rounded-[12px]  border items-center flex justify-around cursor-pointer"
-                                        :class="dataRegister.sex === false ? 'bg-[#CC00FF] text-[white] border-[#CC00FF]' : 'border-gray-200 hover:border-[#CC00FF]'">
+                                        class="h-[41px] ml-[14px] w-[90px] rounded-[12px]  border items-center flex justify-around cursor-pointer gender-option"
+                                        :class="dataRegister.sex === false ? 'bg-resguru-blue text-[white] border-resguru-blue' : 'border-gray-200 hover:border-resguru-blue'">
                                         <div>
                                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                 xmlns="http://www.w3.org/2000/svg">
@@ -318,7 +348,7 @@
                                                 <g mask="url(#mask0_902_17246)">
                                                     <path
                                                         d="M11.25 14.6884C9.95257 14.5 8.87821 13.9125 8.02692 12.9259C7.17564 11.9394 6.75 10.7872 6.75 9.4692C6.75 8.01677 7.26186 6.78379 8.28558 5.77028C9.30928 4.75676 10.5474 4.25 12 4.25C13.4525 4.25 14.6907 4.75676 15.7144 5.77028C16.7381 6.78379 17.25 8.01677 17.25 9.4692C17.25 10.7872 16.8243 11.9394 15.973 12.9259C15.1217 13.9125 14.0474 14.5 12.7499 14.6884V17.25H14C14.2125 17.25 14.3906 17.3219 14.5343 17.4657C14.6781 17.6095 14.75 17.7877 14.75 18.0003C14.75 18.2129 14.6781 18.391 14.5343 18.5346C14.3906 18.6782 14.2125 18.75 14 18.75H12.7499V20C12.7499 20.2125 12.678 20.3906 12.5342 20.5343C12.3904 20.6781 12.2122 20.75 11.9997 20.75C11.7871 20.75 11.609 20.6781 11.4654 20.5343C11.3218 20.3906 11.25 20.2125 11.25 20V18.75H9.99997C9.78747 18.75 9.60936 18.6781 9.46563 18.5343C9.32188 18.3904 9.25 18.2122 9.25 17.9997C9.25 17.7871 9.32188 17.609 9.46563 17.4654C9.60936 17.3218 9.78747 17.25 9.99997 17.25H11.25V14.6884ZM12.0015 13.25C13.0377 13.25 13.9215 12.8838 14.6529 12.1513C15.3843 11.4189 15.75 10.5346 15.75 9.49843C15.75 8.46228 15.3838 7.57849 14.6513 6.84708C13.9189 6.11566 13.0346 5.74995 11.9984 5.74995C10.9623 5.74995 10.0785 6.11618 9.34707 6.84863C8.61566 7.58108 8.24995 8.46538 8.24995 9.50153C8.24995 10.5377 8.61618 11.4215 9.34863 12.1529C10.0811 12.8843 10.9654 13.25 12.0015 13.25Z"
-                                                        :fill="dataRegister.sex === false ? 'white' : '#CC00FF'" />
+                                                        :fill="dataRegister.sex === false ? 'white' : '#3A89CB'" />
                                                 </g>
                                             </svg>
                                         </div>
@@ -328,13 +358,13 @@
                             </div>
 
                             <!-- Terms and Conditions -->
-                            <div class="mt-[10px]">
+                            <div class="mt-[16px]">
                                 <vs-checkbox color="#003765" v-model="dataRegister.check" required>
-                                    <div class="text-[12px]">
+                                    <div class="text-sm">
                                         <span class="text-red-500">*</span> คุณได้อ่านและยอมรับ
-                                        <a href="#" class="text-blue-600 underline">นโยบายคุ้มครองความเป็นส่วนตัว</a>
+                                        <a href="#" class="text-resguru-blue underline">นโยบายคุ้มครองความเป็นส่วนตัว</a>
                                         และ
-                                        <a href="#" class="text-blue-600 underline">เงื่อนไขการใช้บริการ</a>
+                                        <a href="#" class="text-resguru-blue underline">เงื่อนไขการใช้บริการ</a>
                                     </div>
                                 </vs-checkbox>
                                 <div v-if="validationErrors.check" class="text-red-500 text-xs mt-1">
@@ -349,13 +379,13 @@
                         </div>
 
                         <!-- Submit Buttons -->
-                        <div class="mt-[18px]">
-                            <button 
+                        <div class="mt-[20px]">
+                            <button
                                 type="submit"
-                                class="bg-[#003765] w-[100%] h-[38px] rounded-[12px] text-center text-[white] hover:bg-[#004080] disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                                class="bg-resguru-navy w-[100%] h-[42px] rounded-[12px] text-center text-[white] font-semibold hover:bg-[#004080] disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
                                 :disabled="!isFormValid">สร้างบัญชี</button>
                             <button @click="tab = 1" type="button"
-                                class="bg-[#3A89CB] w-[100%] h-[38px] rounded-[12px] text-center text-[white] mt-[8px] hover:bg-[#2980B9] transition-colors">คุณมีบัญชีอยู่แล้ว
+                                class="bg-resguru-blue w-[100%] h-[42px] rounded-[12px] text-center text-[white] font-semibold mt-[10px] hover:bg-[#2980B9] transition-colors">คุณมีบัญชีอยู่แล้ว
                                 ? เข้าสู่ระบบที่นี่</button>
                         </div>
                     </form>
