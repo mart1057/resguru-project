@@ -6,9 +6,9 @@
             <div class="flex justify-between">
                 <div class="flex">
                     <div class="ml-1">
-                        <div class="text-sm font-bold">{{ $store.state.buildingInfo[0].attributes.buildingName }}</div>
-                        <div class="text-sm">{{ $store.state.buildingInfo[0].attributes.buildingAddress }}</div>
-                        <div class="text-sm">โทร: {{ $store.state.buildingInfo[0].attributes.buildingPhone }}</div>
+                        <div class="text-sm font-bold">{{ $store.state.buildingInfo[0]?.attributes?.buildingName }}</div>
+                        <div class="text-sm">{{ $store.state.buildingInfo[0]?.attributes?.buildingAddress }}</div>
+                        <div class="text-sm">โทร: {{ $store.state.buildingInfo[0]?.attributes?.buildingPhone }}</div>
                     </div>
                 </div>
                 <div class="flex flex-col justify-between">
@@ -35,7 +35,7 @@
                 <div class="pr-2">
                     <hr class="h-px">
                     <div class="font-bold mb-1">กำหนดชำระ</div>
-                    <div>วันที่ {{ formatDueDate(data_bill.tenant_bills[0]?.createdAt, $store.state.buildingInfo[0].attributes.BuildingDueDate) }}</div>
+                    <div>วันที่ {{ formatDueDate(data_bill.tenant_bills[0]?.createdAt, $store.state.buildingInfo[0]?.attributes?.BuildingDueDate) }}</div>
                 </div>
             </div>
             
@@ -393,11 +393,11 @@ export default {
             return this.toMoney(bill.vat);
         },
         getInvoiceGrandTotal(bill = {}) {
-            const totalField = this.toMoney(bill.total);
-            if (totalField > 0) {
-                return totalField;
+            const itemizedTotal = this.toMoney(this.getInvoiceChargeSubtotal(bill) + this.getInvoiceVat(bill));
+            if (itemizedTotal > 0) {
+                return itemizedTotal;
             }
-            return this.toMoney(this.getInvoiceChargeSubtotal(bill) + this.getInvoiceVat(bill));
+            return this.toMoney(bill.total);
         },
         getCreditApplied(bill = {}) {
             // Leftover credit from a prior overpayment (see approvePayment)

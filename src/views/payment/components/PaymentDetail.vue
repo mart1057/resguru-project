@@ -452,15 +452,9 @@
                     <div
                       v-else
                       class="h-[36px] w-[auto] flex items-center justify-center pl-[12px] pr-[12px] rounded-[12px] pb-[4px] pt-[4px]"
-                      :class="
-                        tr.attributes.paymentStatus === 'Paid'
-                          ? 'bg-[#CFFBDA] text-[#0B9A3C]'
-                          : tr.attributes.paymentStatus === 'ยังไม่ชำระ'
-                          ? 'bg-[#FFE1E8] text-[#EA2F5C]'
-                          : 'bg-[#FFF2BC] text-[#D48C00]'
-                      "
+                      :class="paymentStatusClass(tr.attributes.paymentStatus)"
                     >
-                      {{ tr.attributes.paymentStatus }}
+                      {{ thaiPaymentStatus(tr.attributes.paymentStatus) }}
                     </div>
                     <div
                       v-if="parseFloat(tr.attributes.creditApplied) > 0"
@@ -1695,6 +1689,30 @@ export default {
         path: path,
       });
     },
+    thaiPaymentStatus(status) {
+      const map = {
+        'Not Paid':          'ยังไม่ชำระ',
+        'Partial Paid':      'ชำระบางส่วน',
+        'Paid':              'ชำระแล้ว',
+        'Waiting Review':    'รอตรวจสอบ',
+        'In Review Progress':'กำลังตรวจสอบ',
+        'Over Due':          'เกินกำหนดชำระ',
+      };
+      return map[status] || status || '-';
+    },
+    paymentStatusClass(status) {
+      if (status === 'Paid') {
+        return 'bg-[#CFFBDA] text-[#0B9A3C]';
+      }
+      if (status === 'Not Paid' || status === 'Over Due') {
+        return 'bg-[#FFE1E8] text-[#EA2F5C]';
+      }
+      if (status === 'Waiting Review' || status === 'In Review Progress') {
+        return 'bg-[#DBEAFE] text-[#1D4ED8]';
+      }
+      // Partial Paid and any other
+      return 'bg-[#FFF2BC] text-[#D48C00]';
+    },
     checkNull(text) {
       if (text == "" || text === null) {
         return "-";
@@ -2208,6 +2226,9 @@ export default {
             )
             .then((res) => {
               console.log("Response in Edit Invoice", res);
+            })
+            .catch((error) => {
+              console.error("Error updating invoice status:", error);
             });
 
           if (this.fileFullPayment.length != 0) {
@@ -2365,6 +2386,9 @@ export default {
               .then((res) => {
                 console.log("Response in Edit Invoice", res);
               })
+              .catch((error) => {
+                console.error("Error updating invoice status:", error);
+              })
               .finally(() => {
                 this.getInvoice();
               });
@@ -2442,6 +2466,12 @@ export default {
           console.log("Return from getReceipt()", resp.data);
           this.userReceipt = resp.data;
         })
+        .catch((error) => {
+          const errorMessage = error.message
+            ? error.message
+            : "Error loading receipt information";
+          this.$showNotification("danger", errorMessage);
+        })
         .finally(() => {
           loading.close();
         });
@@ -2456,6 +2486,12 @@ export default {
         .then((resp) => {
           console.log("Return from getEvidence()", resp.data);
           this.userEvidencePayment = resp.data;
+        })
+        .catch((error) => {
+          const errorMessage = error.message
+            ? error.message
+            : "Error loading payment evidence";
+          this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
           loading.close();
