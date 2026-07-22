@@ -440,6 +440,9 @@ export default {
                     this.announcement = resp.data;
                     // Calculate current month count after fetching
                     this.getCurrentMonthAnnouncementCount();
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading announcements";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
                 })

@@ -72,7 +72,7 @@
                         <div class=" w-[100%] pt-[8px] p-[12px]">
                             <div class="flex justify-between items-center">
                                 <div class="font-bold text-[18px] truncate w-[450px] ">ห้อง {{
-                                    data.attributes.user_sign_contract.data.attributes.room.data.attributes.RoomNumber }} |
+                                    data.attributes.user_sign_contract?.data?.attributes?.room?.data?.attributes?.RoomNumber }} |
                                     {{ data.attributes.title }} <span class="text-[10px] font-normal text-[#8396A6]"> {{
                                         convertDateNoTime(data.attributes.createdAt) }}</span></div>
                                 <div
@@ -370,7 +370,7 @@ export default {
             this.text = text
             console.log('filter', text);
             this.service = this.service.filter(item =>
-                item.attributes.user_sign_contract.data.attributes.room.data.attributes.RoomNumber.toLowerCase().includes(text.toLowerCase()),
+                (item.attributes.user_sign_contract?.data?.attributes?.room?.data?.attributes?.RoomNumber || "").toLowerCase().includes(text.toLowerCase()),
             );
             if (text == '') {
                 this.getService(this.id)
@@ -392,7 +392,7 @@ export default {
                     console.log("Return from getService()", resp.data);
                     if (this.code == 8) {
                         this.service = resp.data.filter(item =>
-                            item.attributes.user_sign_contract.data.attributes.room.data.attributes.RoomNumber.toLowerCase().includes(this.text.toLowerCase()),
+                            (item.attributes.user_sign_contract?.data?.attributes?.room?.data?.attributes?.RoomNumber || "").toLowerCase().includes(this.text.toLowerCase()),
                         );
                     }
                     else {
@@ -400,6 +400,9 @@ export default {
                         this.service = resp.data
 
                     }
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading service requests";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
                 })
@@ -412,6 +415,9 @@ export default {
                 .then((resp) => {
                     console.log("Return from getEmployee()", resp.data);
                     this.employee = resp.data
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading employees";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
                 })

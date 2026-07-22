@@ -252,7 +252,7 @@
                 ประเภทห้อง
               </div>
               <div class="mt-[]">
-                {{ data.attributes.room_type.data.attributes.roomTypeName }}
+                {{ data.attributes.room_type.data?.attributes?.roomTypeName }}
                 <!-- <select placeholder="Select" v-model="data.attributes.room_type.data.id" disabled
                                     class="w-[200px] h-[32px] border rounded-[12px] pl-[8px] pr-[8px]"
                                     :class="value == 1 ? 'bg-[#FFF2BC] text-[#EEA10B]' : ''"
@@ -432,7 +432,7 @@
             >
               <div>ราคา</div>
               <div>
-                {{ data.attributes.room_type.data.attributes.roomPrice }}
+                {{ data.attributes.room_type.data?.attributes?.roomPrice }}
               </div>
             </div>
           </div>
@@ -1087,6 +1087,10 @@ export default {
           console.log("Return from getRoom()", resp.data);
           this.room = resp.data;
         })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading rooms";
+          this.$showNotification("danger", errorMessage);
+        })
         .finally(() => {
           loading.close();
         });
@@ -1099,8 +1103,12 @@ export default {
           console.log(resp);
           this.room_id = resp.data.id;
           this.roomName = resp.data.attributes.RoomNumber;
-          this.room_type_id = resp.data.attributes.room_type.data.id;
-          this.roomFloor_id = resp.data.attributes.building_floor.data.id;
+          this.room_type_id = resp.data.attributes.room_type.data?.id;
+          this.roomFloor_id = resp.data.attributes.building_floor.data?.id;
+        })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading room detail";
+          this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
           this.create_room = true;
@@ -1121,6 +1129,10 @@ export default {
           console.log("Return from getRoomType()", resp.data);
           this.roomType = resp.data;
         })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading room types";
+          this.$showNotification("danger", errorMessage);
+        })
         .finally(() => {
           loading.close();
         });
@@ -1133,6 +1145,10 @@ export default {
           this.roomTypeId = resp.data.id;
           this.roomTypeName = resp.data.attributes.roomTypeName;
           this.roomTypePrice = resp.data.attributes.roomPrice;
+        })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading room type detail";
+          this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
           loading.close();
@@ -1168,6 +1184,10 @@ export default {
               String(selectedFloor.id)
             );
           }
+        })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading floors";
+          this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
           console.log(this.filter.floor);
@@ -1252,6 +1272,10 @@ export default {
             } else {
               this.$showNotification("danger", "หมายเลขห้องซ้ำ");
             }
+          })
+          .catch((error) => {
+            const errorMessage = error.message ? error.message : "Error checking room number";
+            this.$showNotification("danger", errorMessage);
           })
           .finally(() => {
             loading.close();

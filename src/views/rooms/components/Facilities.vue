@@ -362,6 +362,9 @@ export default {
                 .then(response => response.json())
                 .then((resp) => {
                     this.items = resp.data[0]?.attributes.other_of_buildings.data;
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading facilities";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     this.add_on = false
                     loading.close()
@@ -374,6 +377,9 @@ export default {
                 .then((resp) => {
                     console.log("Return from getOther()", resp.data);
                     this.otherOfBuilding = resp.data
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading services";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
                 })
@@ -391,8 +397,13 @@ export default {
                     data: {
                         "other_of_buildings": ids,
                     }
+                }).catch((error) => {
+                    console.error("Error setting services:", error);
                 })
 
+            }).catch((error) => {
+                const errorMessage = error.message ? error.message : "Error updating services";
+                this.$showNotification("danger", errorMessage);
             }).finally(() => {
                 this.add_on = false
                 setTimeout(() => {
@@ -418,6 +429,9 @@ export default {
                         this.facilities.remain = resp.data.attributes.remain,
                         this.facilities.discount = resp.data.attributes.discount,
                         this.facilities.discountAmount = resp.data.attributes.discountAmount
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading service detail";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     this.create = true,
                         loading.close()
@@ -432,6 +446,10 @@ export default {
                     // note: this.facilities.note,
                 }
             })
+                .catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error updating service";
+                    this.$showNotification("danger", errorMessage);
+                })
                 .finally(() => {
                     this.create = false,
                         this.getFacilities()
@@ -441,6 +459,10 @@ export default {
         delectFacilities(id) {
             const loading = this.$vs.loading()
             axios.delete('https://api.resguru.app/api' + '/other-of-buildings/' + id)
+                .catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error deleting service";
+                    this.$showNotification("danger", errorMessage);
+                })
                 .finally(() => {
                     this.create = false,
                         this.getFacilities()

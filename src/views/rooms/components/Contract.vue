@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 w-[100%] gap-4 mt-[14px]">
-            <div class="h-[125px] w-[13.25rem] border rounded-[12px] flex flex-col p-[12px] cursor-pointer " @click="openNewTab('https://api.resguru.app'+item.attributes.user_sign_contract.data.attributes.PDFfile.data[0]?.attributes.url)"
+            <div class="h-[125px] w-[13.25rem] border rounded-[12px] flex flex-col p-[12px] cursor-pointer " @click="openNewTab('https://api.resguru.app'+item.attributes.user_sign_contract?.data?.attributes.PDFfile.data[0]?.attributes.url)"
                 v-for="item in contract">
                 <div class="flex justify-between w-[100%]">
                     <div class="flex">
@@ -37,13 +37,13 @@
                 <div class="mt-[14px]">
                     <div class="flex">
                         <div class="text-[12px] text-[#5C6B79]">วันที่ทำสัญญา</div>
-                        <div class="ml-[14px]">{{ item.attributes.user_sign_contract.data.attributes.checkInDate ?
-                            item.attributes.user_sign_contract.data.attributes.checkInDate : 'ไม่มีข้อมูล' }}</div>
+                        <div class="ml-[14px]">{{ item.attributes.user_sign_contract?.data?.attributes.checkInDate ?
+                            item.attributes.user_sign_contract?.data?.attributes.checkInDate : 'ไม่มีข้อมูล' }}</div>
                     </div>
                     <div class="flex">
                         <div class="text-[12px] text-[#5C6B79]">วันที่สิ้นสุดสัญญา</div>
-                        <div class="ml-[14px]">{{ item.attributes.user_sign_contract.data.attributes.contractEndDate ?
-                            item.attributes.user_sign_contract.data.attributes.contractEndDate : 'ไม่มีข้อมูล' }}</div>
+                        <div class="ml-[14px]">{{ item.attributes.user_sign_contract?.data?.attributes.contractEndDate ?
+                            item.attributes.user_sign_contract?.data?.attributes.contractEndDate : 'ไม่มีข้อมูล' }}</div>
                     </div>
                 </div>
             </div>
@@ -808,6 +808,9 @@ export default {
                 .then((resp) => {
                     console.log("Return from getRentalContract()", resp.data);
                     this.contract = resp.data
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading contracts";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
                 })

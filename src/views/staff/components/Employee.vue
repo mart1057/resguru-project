@@ -6,7 +6,7 @@
                 <div class="flex justify-between">
                     <div class="flex">
                         <div class="flex">
-                            <div v-if="data.attributes.employeeImage.data">
+                            <div v-if="data.attributes.employeeImage?.data">
                                 <img class="w-[125px] h-[125px] rounded-[12px] bg-[red]" :src="'https://api.resguru.app' + data.attributes.employeeImage.data.attributes.url">
                             </div>
                             <div v-else>
@@ -82,6 +82,9 @@ export default {
                 .then((resp) => {
                     console.log("Return from getEmployer()",resp.data);
                     this.employee = resp.data
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading employees";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
                 })

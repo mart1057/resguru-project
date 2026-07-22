@@ -344,10 +344,13 @@ export default {
              // console.log("test v model", this.buildingName)
              axios.put(`https://api.resguru.app/api/buildings/${buildingid}`,{
                 data : {
-                    colorCode: color, 
+                    colorCode: color,
                 }
+            }).catch((error) => {
+                const errorMessage = error.message ? error.message : "Error updating building color";
+                this.$showNotification("danger", errorMessage);
             })
-               
+
         },
         getBuilding() {
             const loading = this.$vs.loading()
@@ -357,6 +360,9 @@ export default {
                     console.log(resp.data);
                     this.building = resp.data
                     this.$store.commit('setBuildingInfo',resp.data);
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading buildings";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
                 })

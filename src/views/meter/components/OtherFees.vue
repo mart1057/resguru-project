@@ -21,13 +21,13 @@
                 <div
                   class="pl-[12px] pr-[12px] pb-[4px] pt-[4px] rounded-[12px] text-center"
                   :class="
-                    tr.attributes.user_sign_contract.data
+                    tr.attributes.user_sign_contract?.data
                       ? 'text-[#1DC56A] bg-[#D8FAD5]'
                       : 'text-[#8396A6] bg-[#DEEAF5]'
                   "
                 >
                   {{
-                    tr.attributes.user_sign_contract.data
+                    tr.attributes.user_sign_contract?.data
                       ? "มีผู้เข้าพัก"
                       : "ห้องว่าง"
                   }}
@@ -36,22 +36,22 @@
             </vs-td>
             <vs-td>
               {{
-                tr.attributes.user_sign_contract.data &&
-                tr.attributes.user_sign_contract.data.attributes
+                tr.attributes.user_sign_contract?.data &&
+                tr.attributes.user_sign_contract?.data.attributes
                   .users_permissions_user.data &&
-                tr.attributes.user_sign_contract.data.attributes
+                tr.attributes.user_sign_contract?.data.attributes
                   .users_permissions_user.data.attributes.firstName
-                  ? tr.attributes.user_sign_contract.data.attributes
+                  ? tr.attributes.user_sign_contract?.data.attributes
                       .users_permissions_user.data.attributes.firstName
                   : ""
               }}
               {{
-                tr.attributes.user_sign_contract.data &&
-                tr.attributes.user_sign_contract.data.attributes
+                tr.attributes.user_sign_contract?.data &&
+                tr.attributes.user_sign_contract?.data.attributes
                   .users_permissions_user.data &&
-                tr.attributes.user_sign_contract.data.attributes
+                tr.attributes.user_sign_contract?.data.attributes
                   .users_permissions_user.data.attributes.lastName
-                  ? tr.attributes.user_sign_contract.data.attributes
+                  ? tr.attributes.user_sign_contract?.data.attributes
                       .users_permissions_user.data.attributes.lastName
                   : ""
               }}
@@ -60,7 +60,7 @@
               <div class="flex flex-wrap items-center gap-2">
                 <!-- Existing service chips with remove button -->
                 <div
-                  v-for="data in tr.attributes.other_of_buildings.data"
+                  v-for="data in (tr.attributes.other_of_buildings.data || [])"
                   :key="data.id"
                   class="bg-[#3A89CB] pl-[10px] pr-[10px] pb-[6px] pt-[6px] rounded-[12px] text-[white] flex items-center"
                 >
@@ -156,6 +156,10 @@ export default {
             this.OtherFee = resp.data;
           }
         })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading rooms";
+          this.$showNotification("danger", errorMessage);
+        })
         .finally(() => {
           loading.close();
         });
@@ -167,6 +171,10 @@ export default {
         .then((res) => res.json())
         .then((resp) => {
           this.allServices = resp.data || [];
+        })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading services";
+          this.$showNotification("danger", errorMessage);
         });
     },
     availableServices(tr) {

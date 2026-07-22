@@ -330,6 +330,9 @@ export default {
                 .then((resp) => {
                     console.log("Return from getHistory()",resp.data);
                     this.History = resp.data
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading history";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
                 })

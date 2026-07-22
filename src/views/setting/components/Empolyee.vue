@@ -203,7 +203,7 @@
                     <div class="flex justify-between">
                         <div class="flex">
                             <div class="flex">
-                                <div v-if=data.attributes.employeeImage.data>
+                                <div v-if="data.attributes.employeeImage?.data">
                                     <img class="w-[125px] h-[125px] rounded-[12px]"
                                         :src="'https://api.resguru.app' + data.attributes.employeeImage?.data?.attributes.url" />
                                 </div>
@@ -651,7 +651,7 @@ export default {
     },
     computed: {
         isBusinessPackage() {
-            return this.$store.state.buildingInfo[0].attributes.package.data?.id === 1;
+            return this.$store.state.buildingInfo[0]?.attributes?.package?.data?.id === 1;
         },
         adminCount() {
             return this.UserBuilding.length;
@@ -677,6 +677,9 @@ export default {
                 .then((resp) => {
                     console.log("Return from getEmployer()", resp.data);
                     this.employee = resp.data
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading employees";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
                 })
@@ -699,6 +702,9 @@ export default {
                         this.NewProfileAdmin.line = resp.line
                     this.NewProfileAdmin.imageProfile = resp.imageProfile?.url
                     this.NewProfileAdmin.coverProfile = 'https://api.resguru.app' + resp.imageBanner?.url
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading user detail";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     this.profile_admin = true
                 })
@@ -719,6 +725,9 @@ export default {
                         this.NewProfileAdmin.phone = resp.data.attributes.phone,
                         this.NewProfileAdmin.imageProfile =  resp.data.attributes.employeeImage?.data?.attributes.url
                     this.NewProfileAdmin.line = resp.data.attributes.line
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading employee detail";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     this.profile_admin = true
                 })

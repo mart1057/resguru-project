@@ -990,6 +990,10 @@ export default {
           this.user_detail =
             resp.data?.attributes.users_permissions_user.data?.attributes;
         })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading contract detail";
+          this.$showNotification("danger", errorMessage);
+        })
         .finally(() => {
           fetch(
             "https://api.resguru.app/api" +
@@ -1029,6 +1033,10 @@ export default {
                 ? currentBill?.attributes.otherPrice
                 : 0;
             })
+            .catch((error) => {
+              const errorMessage = error.message ? error.message : "Error loading bill detail";
+              this.$showNotification("danger", errorMessage);
+            })
             .finally(() => {
               fetch(
                 "https://api.resguru.app/api" +
@@ -1067,7 +1075,9 @@ export default {
                           }
                         );
                       })
-                      .finally(() => {});
+                      .catch((error) => {
+                        console.error("Error loading room detail:", error);
+                      });
                   } else {
                     this.tab = resp.data[0]?.attributes.ExitType == "Missing";
                     this.date_moveout =
@@ -1076,6 +1086,9 @@ export default {
                       resp.data[0]?.attributes.room_detect_histories.data || []
                     );
                   }
+                })
+                .catch((error) => {
+                  console.error("Error loading room history:", error);
                 });
               this.sumValue();
             });

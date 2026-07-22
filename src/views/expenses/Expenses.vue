@@ -818,6 +818,9 @@ export default {
                 .then((resp) => {
                     this.expense = Array.isArray(resp?.data) ? resp.data : []
                     this.computeExpenseCategoryTotals()
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading expenses";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
                 })
@@ -834,6 +837,9 @@ export default {
                         return aOther - bOther;
                     });
                     this.computeExpenseCategoryTotals();
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading expense types";
+                    this.$showNotification("danger", errorMessage);
                 })
         },
         isOtherExpenseType() {
@@ -869,6 +875,10 @@ export default {
                 .then((resp) => {
                     this.buildingIncome = Array.isArray(resp?.data) ? resp.data : []
                     this.processIncomeData();
+                })
+                .catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading building income";
+                    this.$showNotification("danger", errorMessage);
                 })
         },
         parseIncomeRemark,
@@ -1069,6 +1079,9 @@ export default {
                 .then((resp) => {
                     this.income = Array.isArray(resp?.data) ? resp.data : [];
                     this.processIncomeData();
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading income";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close();
                 });

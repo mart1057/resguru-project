@@ -25,7 +25,7 @@
     <div
       class="bg-[white] pt-[14px] pb-[24px] pl-[24px] pr-[24px] rounded-b-lg"
     >
-      <div class="grid grid-cols-3 gap-4 mt-[14px] w-[100%]">
+      <div v-if="building[0]" class="grid grid-cols-3 gap-4 mt-[14px] w-[100%]">
         <div
           class="border h-[auto] rounded-[12px] pl-[8px] pr-[8px] pt-[12px] pb-[12px]"
         >
@@ -959,6 +959,10 @@ export default {
           console.log("Return from getRoom()", resp.data);
           this.building = resp.data;
         })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading building";
+          this.$showNotification("danger", errorMessage);
+        })
         .finally(() => {
           loading.close();
         });
@@ -975,6 +979,10 @@ export default {
           console.log("Return from getOther()", resp.data);
           this.otherOfBuilding = resp.data;
         })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading services";
+          this.$showNotification("danger", errorMessage);
+        })
         .finally(() => {
           loading.close();
         });
@@ -990,6 +998,10 @@ export default {
             (this.title = resp.data.attributes.title),
             (this.price = resp.data.attributes.price);
           //this.discountAmount = resp.data.attributes.discountAmount
+        })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading service detail";
+          this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
           this.getUserBuilding();

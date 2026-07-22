@@ -935,6 +935,10 @@ export default {
             );
           }
         })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading floors";
+          this.$showNotification("danger", errorMessage);
+        })
         .finally(() => {
           this.filterByDate();
           // this.callChildFunctionEle(this.filter.floor)

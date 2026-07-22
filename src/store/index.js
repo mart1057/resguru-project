@@ -53,14 +53,14 @@ export default new Vuex.Store({
             }
             else{
               const errorMessage = 'บัญชีของคุณไม่มีสิทธิ์เข้าใช้งาน';
-              // this.$showNotification('danger', errorMessage); 
+              // this.$showNotification('danger', errorMessage);
               alert(errorMessage)
             }
           })
-        // .catch((err)=>{
-        //   console.log(err);
-        //   commit('setErr', err.response.data.error.message);
-        // })
+          .catch((err) => {
+            console.log(err)
+            alert('เกิดข้อผิดพลาด กรุณาลองเข้าสู่ระบบใหม่อีกครั้ง')
+          })
       })
         .catch(error => {
           console.log(error)

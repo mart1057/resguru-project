@@ -6,9 +6,9 @@
                 <div class="text-[18px] font-bold">สัญญาเช่าห้องพักอาศัย</div>
             </div>
             <div class="text-[16px] mt-[16px] pl-[14px] pr-[14px]">
-                <div><span class="ml-[42px]">สัญญานี้ทำที่ {{ $store.state.buildingInfo[0].attributes.buildingName }}</span>
+                <div><span class="ml-[42px]">สัญญานี้ทำที่ {{ $store.state.buildingInfo[0]?.attributes?.buildingName }}</span>
                     เมื่อวันที่ {{ convertDateNoTime(detail.createdAt) }}
-                    ระหว่าง {{ $store.state.buildingInfo[0].attributes.buildingName + ' ' + 'และ' + ' '+detail_sing.name +' '+detail_sing.last_name }}
+                    ระหว่าง {{ $store.state.buildingInfo[0]?.attributes?.buildingName + ' ' + 'และ' + ' '+detail_sing.name +' '+detail_sing.last_name }}
                     <div>ที่อยู่ {{detail_sing.address }}
                         ซึ่งต่อไปในสัญญานี้จะเรียกว่า "ผู้เช่า" อีกฝ่ายหนึ่ง</div>
                 </div>
@@ -17,12 +17,12 @@
                 </div>
                 <div>
                     <span class="ml-[42px]">ข้อ ๑</span> ผู้เช่าตกลงเช่าและผู้ให้เช่าตกลงให้เช่าห้องพักอาศัยห้องเลขที่ {{
-                        detail.RoomNumber }} ของ {{ $store.state.buildingInfo[0].attributes.buildingName }} ซึ่งตั้งอยู่ที่ {{
-        $store.state.buildingInfo[0].attributes.buildingAddress }} ตำบล {{
-        $store.state.buildingInfo[0].attributes.buildingSubDistrict }} อำเภอ/เขต {{
-        $store.state.buildingInfo[0].attributes.buildingDistrict }}
-                    จังหวัด {{ $store.state.buildingInfo[0].attributes.buildingProvince }} เพื่อใช้เป็นที่พักอาศัย
-                    ในอัตราค่าเช่าเดือนละ {{ detail.room_type.roomPrice }} บาท/เดือน
+                        detail.RoomNumber }} ของ {{ $store.state.buildingInfo[0]?.attributes?.buildingName }} ซึ่งตั้งอยู่ที่ {{
+        $store.state.buildingInfo[0]?.attributes?.buildingAddress }} ตำบล {{
+        $store.state.buildingInfo[0]?.attributes?.buildingSubDistrict }} อำเภอ/เขต {{
+        $store.state.buildingInfo[0]?.attributes?.buildingDistrict }}
+                    จังหวัด {{ $store.state.buildingInfo[0]?.attributes?.buildingProvince }} เพื่อใช้เป็นที่พักอาศัย
+                    ในอัตราค่าเช่าเดือนละ {{ detail.room_type?.roomPrice }} บาท/เดือน
                     ค่าเช่านี้ไม่รวมถึงค่าไฟฟ้า ค่าน้ำปะปา ค่าโทรศัพท์
                     ซึ่งผู้เช่าจะต้องชำระแก่ผู้ให้เช่าตามอัตราที่กำหนดไว้ในข้อ ๔
                 </div>
@@ -134,7 +134,7 @@
                         </div>
                         <div class="flex justify-center flex-col items-center mt-[8px]">
                             <div>ลงชื่อ...........................ผู้ให้เช่า</div>
-                            <div class=" mt-[8px] ml-[-18px]">( {{ $store.state.buildingInfo[0].attributes.buildingName }} )
+                            <div class=" mt-[8px] ml-[-18px]">( {{ $store.state.buildingInfo[0]?.attributes?.buildingName }} )
                             </div>
                         </div>
                         <div class="flex justify-center flex-col items-center  mt-[8px]">
@@ -184,7 +184,7 @@ export default {
         return this.$store.state.buildingInfo && 
                 this.$store.state.buildingInfo[0] && 
                 this.$store.state.buildingInfo[0].attributes ? 
-                this.$store.state.buildingInfo[0].attributes.buildingName : '';
+                this.$store.state.buildingInfo[0]?.attributes?.buildingName : '';
         },
         
         // Also fix the convertDateNoTime function call

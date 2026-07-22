@@ -38,7 +38,7 @@
                             <div class="text-[18px] ml-[4px]">{{ contract.attributes.title }}</div>
                         </div>
                         <div class="flex">
-                            <svg @click="viewUploadFile(contract.attributes.templatePDF.data.attributes.url)" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <svg @click="viewUploadFile(contract.attributes.templatePDF.data?.attributes?.url)" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <mask id="mask0_1744_19039" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0" y="0"
                                     width="20" height="20">
                                     <rect width="20" height="20" fill="#D9D9D9" />
@@ -192,6 +192,9 @@ export default {
                 .then((resp) => {
                     console.log("Return from getcontract()",resp.data);
                     this.contract = resp.data
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading contract templates";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
                 })

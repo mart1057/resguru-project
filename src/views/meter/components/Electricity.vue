@@ -45,9 +45,9 @@
             <vs-td>
               {{
                 tr.user_sign_contract
-                  ? tr.user_sign_contract.users_permissions_user.firstName +
+                  ? (tr.user_sign_contract.users_permissions_user?.firstName || "") +
                     " " +
-                    tr.user_sign_contract.users_permissions_user.lastName
+                    (tr.user_sign_contract.users_permissions_user?.lastName || "")
                   : ""
               }}
             </vs-td>
@@ -278,6 +278,11 @@ export default {
         // seed an editable baseline from the contract's starting reading.
         const processedData = resp.data.map(item => {
           item.electric_fees = item.electric_fees || [];
+          // Defensive fallback in case the backend's guarantee above ever
+          // doesn't hold - avoids crashing the whole page on a bad record.
+          if (!item.electric_fees[0]) {
+            item.electric_fees[0] = { id: null, electicUnit: null };
+          }
           if (!item.electric_fees[1]) {
             item.previousElectricValue = item.user_sign_contract?.startElectric || 0;
           }
@@ -291,11 +296,15 @@ export default {
         } else {
           this.ElectricityFee = processedData;
         }
-        
+
         // Restore scroll position if preserved
         if (preserveScroll) {
           this.restoreScrollPosition();
         }
+      })
+      .catch((error) => {
+        const errorMessage = error.message ? error.message : "Error loading electricity fees";
+        this.$showNotification("danger", errorMessage);
       })
       .finally(() => {
         loading.close();

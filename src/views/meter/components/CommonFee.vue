@@ -47,7 +47,7 @@
                             {{ tr.user_sign_contract && tr.user_sign_contract.users_permissions_user && tr.user_sign_contract.users_permissions_user.lastName  ? tr.user_sign_contract.users_permissions_user.lastName : "" }} 
                         </vs-td>
                         <vs-td>
-                            <div v-if=tr.communal_fees[0]>
+                            <div v-if="tr.communal_fees[0]">
                                 <vs-input v-model="tr.communal_fees[0].communalUnit">
                                 </vs-input>
                             </div>
@@ -133,6 +133,9 @@ export default {
                     else{
                         this.commonRoom = resp.data
                     }
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading common fees";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
                 })
@@ -171,6 +174,10 @@ export default {
                                 loading.close()
                                 this.$showNotification('#3A89CB', 'แก้ไขค่าส่วนกลางสำเร็จทั้งหมด')
                             }
+                        }).catch((error) => {
+                            loading.close()
+                            const errorMessage = error.message ? error.message : "Error updating common fees";
+                            this.$showNotification("danger", errorMessage);
                         })
                     }
 

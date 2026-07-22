@@ -46,9 +46,9 @@
             <vs-td>
               {{
                 tr.user_sign_contract
-                  ? tr.user_sign_contract.users_permissions_user.firstName +
+                  ? (tr.user_sign_contract.users_permissions_user?.firstName || "") +
                     " " +
-                    tr.user_sign_contract.users_permissions_user.lastName
+                    (tr.user_sign_contract.users_permissions_user?.lastName || "")
                   : ""
               }}
             </vs-td>
@@ -271,6 +271,11 @@ export default {
         // an editable baseline from the contract's starting reading.
         const processedData = resp.data.map(item => {
           item.water_fees = item.water_fees || [];
+          // Defensive fallback in case the backend's guarantee above ever
+          // doesn't hold - avoids crashing the whole page on a bad record.
+          if (!item.water_fees[0]) {
+            item.water_fees[0] = { id: null, meterUnit: null };
+          }
           if (!item.water_fees[1]) {
             item.previousWaterValue = item.user_sign_contract?.startWater || 0;
           }
@@ -289,6 +294,10 @@ export default {
         if (preserveScroll) {
           this.restoreScrollPosition();
         }
+      })
+      .catch((error) => {
+        const errorMessage = error.message ? error.message : "Error loading water fees";
+        this.$showNotification("danger", errorMessage);
       })
       .finally(() => {
         loading.close();

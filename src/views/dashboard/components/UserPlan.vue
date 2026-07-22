@@ -17,7 +17,7 @@
                         </svg>
                     </div>
                     <div class="text-[1.44vw] text-white ml-[10px]">{{
-                        $store.state.buildingInfo[0].attributes.package.data?.attributes.title }} Plan</div>
+                        $store.state.buildingInfo[0]?.attributes?.package?.data?.attributes.title }} Plan</div>
                 </div>
                 <!-- Toggle switch component - will be disabled if package ID is 1 -->
                 <div
@@ -203,7 +203,7 @@ export default {
     },
     computed: {
         isPackageBasic() {
-            const packageId = this.$store.state.buildingInfo[0].attributes.package.data?.id;
+            const packageId = this.$store.state.buildingInfo[0]?.attributes?.package?.data?.id;
             return packageId === 1; // Business package (ID = 1)
         },
         occupiedRoomCount() {

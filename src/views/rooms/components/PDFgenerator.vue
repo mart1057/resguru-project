@@ -6,13 +6,13 @@
             <div class="flex justify-between">
                 <div class="flex">
                     <div>
-                        <img :src="'http://203.170.190.170:1337' + $store.state.buildingInfo[0].attributes.buildingLogo.data.attributes.formats.large.url"
+                        <img :src="'http://203.170.190.170:1337' + ($store.state.buildingInfo[0]?.attributes?.buildingLogo?.data?.attributes?.formats?.large?.url || '')"
                             class="w-[70px] h-[70px]" />
                     </div>
                     <div class="ml-[8px]">
-                        <div class="font-bold">{{ $store.state.buildingInfo[0].attributes.buildingName }}</div>
-                        <div>{{ $store.state.buildingInfo[0].attributes.buildingAddress }}</div>
-                        <div>Tel. {{ $store.state.buildingInfo[0].attributes.buildingPhone }}</div>
+                        <div class="font-bold">{{ $store.state.buildingInfo[0]?.attributes?.buildingName }}</div>
+                        <div>{{ $store.state.buildingInfo[0]?.attributes?.buildingAddress }}</div>
+                        <div>Tel. {{ $store.state.buildingInfo[0]?.attributes?.buildingPhone }}</div>
                     </div>
                 </div>
                 <div class="">
@@ -25,7 +25,7 @@
             </div>
             <hr class="mt-[32px] mb-[32] h-[10px]">
             <div>
-                <div class="text-[24px] font-bold">{{ $store.state.buildingInfo[0].attributes.buildingName }}</div>
+                <div class="text-[24px] font-bold">{{ $store.state.buildingInfo[0]?.attributes?.buildingName }}</div>
                 <div class="mt-[4px] mb-[15px]">กรุณาชำระทุกวันที่ 1-5 ของเดือนถัดไป ล่าช้าปรับวันละ 100 บาท </div>
             </div>
             <div class="grid grid-cols-3">

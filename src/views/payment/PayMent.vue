@@ -1515,6 +1515,9 @@ export default {
             )
             .then((res) => {
               // console.log("Response in Edit Invoice", res)
+            })
+            .catch((error) => {
+              console.error("Error updating invoice status:", error);
             });
 
           if (this.fileFullPayment.length != 0) {
@@ -1597,6 +1600,9 @@ export default {
             )
             .then((res) => {
               console.log("Response in Edit Invoice", res);
+            })
+            .catch((error) => {
+              console.error("Error updating invoice status:", error);
             });
 
           if (this.file.length != 0) {
@@ -1820,6 +1826,13 @@ export default {
           this.allPayments = await this.enrichRoomsWithLatestBills(rows);
           this.applyClientFilters(code);
         })
+        .catch((error) => {
+          console.error("getRoomBill error:", error);
+          this.$showNotification(
+            "danger",
+            "โหลดข้อมูลรายการชำระเงินไม่สำเร็จ กรุณาลองใหม่อีกครั้ง"
+          );
+        })
         .finally(() => {
           loading.close();
         });
@@ -1848,6 +1861,13 @@ export default {
             );
             this.savePaymentFilters();
           }
+        })
+        .catch((error) => {
+          console.error("getfloor error:", error);
+          this.$showNotification(
+            "danger",
+            "โหลดข้อมูลชั้นไม่สำเร็จ กรุณาลองใหม่อีกครั้ง"
+          );
         })
         .finally(() => {
           this.filterByDate();

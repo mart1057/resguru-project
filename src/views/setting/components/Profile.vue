@@ -15,7 +15,7 @@
         </div>
         <div class="mt-[14px]">
             <div v-if="tabSetting == 2">
-                <div v-if="buildingData.attributes.buildingBanner">
+                <div v-if="buildingData.attributes && buildingData.attributes.buildingBanner">
                     <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]"
                         v-bind:style="{ backgroundImage: 'url(https://api.resguru.app' + buildingData.attributes.buildingBanner.data?.attributes.url + ')' }">
                         <!-- <img :src="`https://api.resguru.app${buildingData.attributes.buildingBanner.data.attributes.url}`" > -->
@@ -83,9 +83,9 @@
                             </label>
                         </div>
                         <div v-else>
-                            <img v-if="$store.state.buildingInfo[0].attributes.buildingLogo.data"
+                            <img v-if="$store.state.buildingInfo[0]?.attributes?.buildingLogo?.data"
                                 class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
-                                :src="'https://api.resguru.app' + buildingData.attributes.buildingLogo.data?.attributes.url" />
+                                :src="'https://api.resguru.app' + (buildingData.attributes?.buildingLogo?.data?.attributes?.url || '')" />
                             <img v-else class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
                                 src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile"
@@ -99,7 +99,7 @@
                         <div class="text-[1.1vw] font-bold mt-[8px]" v-if="tabSetting == 1">{{ userData.firstName }}
                             {{ userData.lastName }}</div>
                         <div class="text-[1.1vw]font-bold mt-[8px]" v-else>
-                            {{ $store.state.buildingInfo[0].attributes.buildingName }}</div>
+                            {{ $store.state.buildingInfo[0]?.attributes?.buildingName }}</div>
                         <div class="w-[100%]" v-if="tabSetting == 2">
                             <!-- <div class="w-[100%] mt-[8px]">
                                 <div class="pt-[4px] w-[100%] rounded-[12px] flex justify-center bg-[#003765]">
@@ -125,7 +125,7 @@
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ชั้น/ห้อง</div>
                                     <div class="text-[12px]">
-                                        {{ buildingStat.buildingStat.allFloor }}/{{ buildingStat.buildingStat.allRoom }}
+                                        {{ buildingStat.buildingStat?.allFloor }}/{{ buildingStat.buildingStat?.allRoom }}
                                     </div>
                                 </div>
                             </div>
@@ -133,35 +133,35 @@
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ห้องว่าง</div>
-                                    <div class="text-[12px]">{{ buildingStat.buildingStat.availableRoom }}</div>
+                                    <div class="text-[12px]">{{ buildingStat.buildingStat?.availableRoom }}</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ห้องที่มีผู้เช่า</div>
-                                    <div class="text-[12px]">{{ buildingStat.buildingStat.rentRoom }}</div>
+                                    <div class="text-[12px]">{{ buildingStat.buildingStat?.rentRoom }}</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ห้องจอง</div>
-                                    <div class="text-[12px]">{{ buildingStat.buildingStat.reservedRoom }}</div>
+                                    <div class="text-[12px]">{{ buildingStat.buildingStat?.reservedRoom }}</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">ยังไม่พร้อมปล่อยเช่า</div>
-                                    <div class="text-[12px]">{{ buildingStat.buildingStat.maintenanceRoom }}</div>
+                                    <div class="text-[12px]">{{ buildingStat.buildingStat?.maintenanceRoom }}</div>
                                 </div>
                             </div>
                             <div class="w-[100%] mt-[8px]">
                                 <div
                                     class="border pt-[4px] w-[100%] rounded-[12px] pb-[4px] pl-[8px] pr-[8px] flex justify-between">
                                     <div class="text-[12px]">จำนวนผู้พักอาศัยทั้งหมด</div>
-                                    <div class="text-[12px]">{{ buildingStat.buildingStat.rentRoom }}</div>
+                                    <div class="text-[12px]">{{ buildingStat.buildingStat?.rentRoom }}</div>
                                 </div>
                             </div>
                         </div>
@@ -593,6 +593,9 @@ export default {
                 .then((resp) => {
                     console.log("Return from getUser()", resp);
                     this.userData = resp
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading user detail";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
                 })
@@ -749,6 +752,9 @@ export default {
                 .then((resp) => {
                     console.log("Return from getBuildingStat()", resp);
                     this.buildingStat = resp
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading building stats";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
                 })
@@ -1127,7 +1133,10 @@ export default {
                         // Set default value if not defined
                         this.buildingData.attributes.parking = "1";
                     }
-                    
+
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading building data";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
                 })

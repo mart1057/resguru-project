@@ -477,6 +477,10 @@ export default {
           console.log("Return from getOther()", resp.data);
           this.buildingPayment = resp.data;
         })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading payment methods";
+          this.$showNotification("danger", errorMessage);
+        })
         .finally(() => {
           loading.close();
         });

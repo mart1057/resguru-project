@@ -327,6 +327,9 @@ export default {
                         },
                     })
                     .then((result) => { console.log("Upload file", result) })
+                    .catch((error) => {
+                        console.error("Error uploading building logo:", error);
+                    })
                 }
                 this.routeToPlan(resp.data.data.id)
             })
