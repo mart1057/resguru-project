@@ -325,10 +325,11 @@
                                     <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                                         v-model="earnest" required />
                                 </div>
-                                <!-- <div class="col-span-4  ml-[8px]">
-                                    <div>เลือกห้อง</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
-                                </div> -->
+                                <div class="col-span-4  ml-[8px]">
+                                    <div>ค่าประกัน (บาท)</div>
+                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                                        v-model="roomInsuranceDeposit" />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -401,6 +402,7 @@ export default {
             checkInDate: "",
             bookRoom: "",
             earnest: 0,
+            roomInsuranceDeposit: 0,
             floorRoom: [],
             roomID:'',
             filter: {
@@ -485,6 +487,9 @@ export default {
                     else {
                         this.room = resp.data
                     }
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading rooms";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
                 })
@@ -505,6 +510,9 @@ export default {
                         this.tab_floor = this.roomFloor.findIndex((item) => String(item.id) === String(selectedFloor.id))
                         localStorage.setItem(this.getFloorStorageKey(), String(selectedFloor.id))
                     }
+                }).catch((error) => {
+                    const errorMessage = error.message ? error.message : "Error loading floors";
+                    this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     this.getRoom()
                     // loading.close()
@@ -530,9 +538,19 @@ export default {
                         checkInDate: this.checkInDate,
                         bookRoom: this.bookRoom,
                         earnest: this.earnest,
+                        roomInsuranceDeposit: this.roomInsuranceDeposit,
+                        contractStatus: 'reserved',
                         users_permissions_user: res.data.user.id
                     }
-                }).then(this.openNotificationBookRoom('top-right', '#3A89CB', 6000))
+                }).then(() => {
+                        // Mark the room Reserved so the Contract page can
+                        // detect this booking and pull its data in rather
+                        // than opening a blank contract form.
+                        return axios.put('https://api.resguru.app/api/rooms/' + this.roomNumber, {
+                            data: { roomStatus: 'Reserved' }
+                        })
+                    })
+                    .then(this.openNotificationBookRoom('top-right', '#3A89CB', 6000))
                     .then(() => {
                         recordDepositIncome(axios, this.$store.state.building, this.earnest, 'ค่าเช่าล่วงหน้า (จองห้อง)')
                     })
@@ -573,6 +591,9 @@ export default {
                 data: {
                     roomStatus: 'Available'
                 }
+            }).catch((error) => {
+                const errorMessage = error.message ? error.message : "Error updating room";
+                this.$showNotification("danger", errorMessage);
             }).finally(()=>{
                 this.edit_room = false,
                 this.check_final=false

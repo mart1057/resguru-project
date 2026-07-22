@@ -408,6 +408,26 @@
               </div>
             </div>
 
+            <!-- Deposit Information Section -->
+            <div class="grid grid-cols-6 gap-4 mt-4">
+              <div class="col-span-2">
+                <div class="mb-1">วางเงินค่าเช่าล่วงหน้า (บาท)</div>
+                <input
+                  type="text"
+                  class="h-[36px] w-full rounded-[12px] bg-[#dadfe3] px-3"
+                  v-model="room_detail.earnest"
+                />
+              </div>
+              <div class="col-span-2">
+                <div class="mb-1">ค่าประกันห้อง (บาท)</div>
+                <input
+                  type="text"
+                  class="h-[36px] w-full rounded-[12px] bg-[#dadfe3] px-3"
+                  v-model="room_detail.roomInsuranceDeposit"
+                />
+              </div>
+            </div>
+
             <!-- Address & ID Card Section -->
             <div class="grid grid-cols-6 gap-4 mt-4">
               <div class="col-span-4">
@@ -813,6 +833,8 @@ export default {
         roomInsurance_deposit: "",
         contract_duration: "",
         room_deposit: "",
+        earnest: "",
+        roomInsuranceDeposit: "",
         type_room: "",
         emergencyPerson: "",
         relation: "",
@@ -887,6 +909,8 @@ export default {
       this.room_detail.emergencyPhone = "";
       this.room_detail.lineID = "";
       this.room_detail.vehicles = [];
+      this.room_detail.earnest = "";
+      this.room_detail.roomInsuranceDeposit = "";
       this.showPassword = false;
       this.showConfirmPassword = false;
       this.create = false;
@@ -914,6 +938,8 @@ export default {
       this.room_detail.lineID = "";
       this.room_detail.image_card_name = "";
       this.room_detail.vehicles = [];
+      this.room_detail.earnest = "";
+      this.room_detail.roomInsuranceDeposit = "";
       this.room_detail.check_user = true;
       this.showPassword = false;
       this.showConfirmPassword = false;
@@ -941,6 +967,8 @@ export default {
       this.room_detail.lineID = "";
       this.room_detail.image_card_name = "";
       this.room_detail.vehicles = [];
+      this.room_detail.earnest = "";
+      this.room_detail.roomInsuranceDeposit = "";
       this.room_detail.check_user = false;
       this.showPassword = false;
       this.showConfirmPassword = false;
@@ -1023,6 +1051,10 @@ export default {
           }, []);
           this.roomFloor = { data: transformedData };
         })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading floors";
+          this.$showNotification("danger", errorMessage);
+        })
         .finally(() => {
           loading.close();
         });
@@ -1040,6 +1072,10 @@ export default {
           this.user = resp;
           this.name_user = resp[0]?.firstName + " " + resp[0]?.lastName;
         })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading user";
+          this.$showNotification("danger", errorMessage);
+        })
         .finally(() => {
           loading.close();
         });
@@ -1053,6 +1089,10 @@ export default {
         .then((response) => response.json())
         .then((resp) => {
           this.users = resp;
+        })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading users";
+          this.$showNotification("danger", errorMessage);
         });
     },
     deleteContract() {
@@ -1062,6 +1102,10 @@ export default {
             "/user-sign-contracts/" +
             this.id_contract
         )
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error deleting contract";
+          this.$showNotification("danger", errorMessage);
+        })
         .finally(() => {
           this.$router.push({
             path: "/rooms",
@@ -1116,6 +1160,10 @@ export default {
             this.room_detail.vehicles = [];
           }
         })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading user detail";
+          this.$showNotification("danger", errorMessage);
+        })
         .finally(() => {
           if (this.id_user) {
             fetch(
@@ -1127,6 +1175,9 @@ export default {
               .then((response) => response.json())
               .then((resp) => {
                 this.room_detail.vehicles = this.normalizeVehicles(resp.tenant_vehicles);
+              })
+              .catch((error) => {
+                console.error("Error loading vehicles:", error);
               });
           }
         });
@@ -1143,59 +1194,66 @@ export default {
         .then((response) => response.json())
         .then((resp) => {
           this.room_detail.name =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.firstName;
+            resp.data[0]?.attributes.user_sign_contract?.data?.attributes.users_permissions_user.data?.attributes.firstName;
           this.room_detail.email =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.email;
+            resp.data[0]?.attributes.user_sign_contract?.data?.attributes.users_permissions_user.data?.attributes.email;
           this.room_detail.last_name =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.lastName;
+            resp.data[0]?.attributes.user_sign_contract?.data?.attributes.users_permissions_user.data?.attributes.lastName;
           this.room_detail.nick_name =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.nickName;
+            resp.data[0]?.attributes.user_sign_contract?.data?.attributes.users_permissions_user.data?.attributes.nickName;
           this.room_detail.phone =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.phone;
+            resp.data[0]?.attributes.user_sign_contract?.data?.attributes.users_permissions_user.data?.attributes.phone;
           this.room_detail.id_card =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.idCard;
+            resp.data[0]?.attributes.user_sign_contract?.data?.attributes.users_permissions_user.data?.attributes.idCard;
           this.room_detail.address =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.contactAddress;
+            resp.data[0]?.attributes.user_sign_contract?.data?.attributes.users_permissions_user.data?.attributes.contactAddress;
           this.room_detail.sex =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.sex === true || resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.sex === 1 || resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.sex === "true";
+            resp.data[0]?.attributes.user_sign_contract?.data?.attributes.users_permissions_user.data?.attributes.sex === true || resp.data[0]?.attributes.user_sign_contract?.data?.attributes.users_permissions_user.data?.attributes.sex === 1 || resp.data[0]?.attributes.user_sign_contract?.data?.attributes.users_permissions_user.data?.attributes.sex === "true";
           this.room_detail.birth =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.dateOfBirth;
+            resp.data[0]?.attributes.user_sign_contract?.data?.attributes.users_permissions_user.data?.attributes.dateOfBirth;
           this.room_detail.date_sign =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.checkInDate;
+            resp.data[0]?.attributes.user_sign_contract?.data?.attributes.checkInDate;
           this.room_detail.type_room =
             resp.data[0]?.attributes.room_type.data?.attributes.roomTypeName;
           this.room_detail.contract_duration =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.contractDuration;
+            resp.data[0]?.attributes.user_sign_contract?.data?.attributes.contractDuration;
           this.room_detail.roomInsurance_deposit =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.roomInsuranceDeposit;
+            resp.data[0]?.attributes.user_sign_contract?.data?.attributes.roomInsuranceDeposit;
           this.room_detail.room_deposit =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.roomDeposit;
+            resp.data[0]?.attributes.user_sign_contract?.data?.attributes.roomDeposit;
           this.room_detail.emergencyPerson =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.emergencyPerson;
+            resp.data[0]?.attributes.user_sign_contract?.data?.attributes.users_permissions_user.data?.attributes.emergencyPerson;
           this.room_detail.relation =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.relation;
+            resp.data[0]?.attributes.user_sign_contract?.data?.attributes.users_permissions_user.data?.attributes.relation;
           this.room_detail.emergencyPhone =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.emergencyPhone;
+            resp.data[0]?.attributes.user_sign_contract?.data?.attributes.users_permissions_user.data?.attributes.emergencyPhone;
           this.room_detail.lineID =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.users_permissions_user.data?.attributes.lineID;
+            resp.data[0]?.attributes.user_sign_contract?.data?.attributes.users_permissions_user.data?.attributes.lineID;
           this.room_detail.image_card =
             "https://api.resguru.app" +
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.imgCard
-              .data?.attributes.formats.thumbnail.url;
+            (resp.data[0]?.attributes.user_sign_contract?.data?.attributes.imgCard
+              ?.data?.attributes?.formats?.thumbnail?.url || "");
           this.room_detail.image_card_name =
-            resp.data[0]?.attributes.user_sign_contract.data?.attributes.imgCard.data?.attributes.name;
+            resp.data[0]?.attributes.user_sign_contract?.data?.attributes.imgCard.data?.attributes.name;
           
           fetch(
             "https://api.resguru.app/api" +
               "/users/" +
-              resp.data[0]?.attributes.user_sign_contract.data?.attributes
+              resp.data[0]?.attributes.user_sign_contract?.data?.attributes
                 .users_permissions_user.data?.id +
               "?&populate=*"
           )
             .then((response) => response.json())
             .then((resp) => {
                 this.room_detail.vehicles = this.normalizeVehicles(resp.tenant_vehicles);
+            })
+            .catch((error) => {
+              console.error("Error loading vehicles:", error);
             });
+        })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading contract detail";
+          this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
           loading.close();
@@ -1217,6 +1275,9 @@ export default {
                 licensePlate: data.licensePlate,
                 users_permissions_user: data.users_permissions_user,
               },
+            })
+            .catch((error) => {
+              console.error("Error creating vehicle:", error);
             })
             .finally(() => {
               this.create = false;
@@ -1249,6 +1310,9 @@ export default {
                           room: this.id_room,
                           contractStatus: "reserved",
                           users_permissions_user: this.room_detail.id,
+                          earnest: parseInt(this.room_detail.earnest) || 0,
+                          roomInsuranceDeposit:
+                            parseInt(this.room_detail.roomInsuranceDeposit) || 0,
                         },
                       }
                     )
@@ -1301,7 +1365,9 @@ export default {
                           emergencyPhone: this.room_detail.emergencyPhone,
                           lineID: this.room_detail.lineID,
                         }
-                      );
+                      ).catch((error) => {
+                        console.error("Error updating user:", error);
+                      });
                     })
                     .then(() => {
                       const newVehicles = this.getNewVehiclesToCreate(
@@ -1318,8 +1384,14 @@ export default {
                               users_permissions_user: data.users_permissions_user,
                             },
                           }
-                        );
+                        ).catch((error) => {
+                          console.error("Error creating vehicle:", error);
+                        });
                       });
+                    })
+                    .catch((error) => {
+                      const errorMessage = error.message ? error.message : "Error creating contract";
+                      this.$showNotification("danger", errorMessage);
                     })
                     .finally(() => {
                       axios.put(
@@ -1331,7 +1403,9 @@ export default {
                             roomStatus: "Reserved",
                           },
                         }
-                      );
+                      ).catch((error) => {
+                        console.error("Error updating room status:", error);
+                      });
                       this.$router.push({
                         path: "/room-detail",
                         query: {
@@ -1350,6 +1424,11 @@ export default {
                   loading.close();
                   this.$showNotification("danger", "ผู้เช่ามีห้องอยู่แล้ว");
                 }
+              })
+              .catch((error) => {
+                loading.close();
+                const errorMessage = error.message ? error.message : "Error checking existing contract";
+                this.$showNotification("danger", errorMessage);
               });
           } else {
             this.$showNotification("danger", "กรุณากรอกข้อมูลให้ครบ");
@@ -1398,6 +1477,9 @@ export default {
                         room: this.id_room,
                         contractStatus: "reserved",
                         users_permissions_user: resp.data.id,
+                        earnest: parseInt(this.room_detail.earnest) || 0,
+                        roomInsuranceDeposit:
+                          parseInt(this.room_detail.roomInsuranceDeposit) || 0,
                       },
                     }
                   )
@@ -1426,6 +1508,9 @@ export default {
                         .finally(() => {});
                     }
                   })
+                  .catch((error) => {
+                    console.error("Error creating contract:", error);
+                  })
                   .finally(() => {
                     axios.put(
                       "https://api.resguru.app/api" +
@@ -1436,7 +1521,9 @@ export default {
                           roomStatus: "Reserved",
                         },
                       }
-                    );
+                    ).catch((error) => {
+                      console.error("Error updating room status:", error);
+                    });
                     newVehicles.forEach((data) => {
                       axios
                         .post(
@@ -1450,9 +1537,15 @@ export default {
                             },
                           }
                         )
-                        .then(() => {});
+                        .catch((error) => {
+                          console.error("Error creating vehicle:", error);
+                        });
                     });
                   });
+              })
+              .catch((error) => {
+                const errorMessage = error.message ? error.message : "Error creating user";
+                this.$showNotification("danger", errorMessage);
               })
               .finally(() => {
                 this.$router.push({
@@ -1512,7 +1605,13 @@ export default {
                 users_permissions_user: this.$route.query.id_user,
                 contractStatus: "reserved",
               },
+            }).catch((error) => {
+              console.error("Error creating contract:", error);
             });
+          })
+          .catch((error) => {
+            const errorMessage = error.message ? error.message : "Error moving room";
+            this.$showNotification("danger", errorMessage);
           })
           .finally(() => {
             this.confirm = false;
@@ -1534,6 +1633,10 @@ export default {
             }
           )
           .then(() => {})
+          .catch((error) => {
+            const errorMessage = error.message ? error.message : "Error moving room";
+            this.$showNotification("danger", errorMessage);
+          })
           .finally(() => {
             this.confirm = false;
             loading.close();

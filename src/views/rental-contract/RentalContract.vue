@@ -246,7 +246,8 @@
                           'reserved',
                           data.user_sign_contract.users_permissions_user
                             ?.idCard,
-                          data.room_type.id
+                          data.room_type.id,
+                          data.user_sign_contract
                         ),
                         (data_mock = data))
                       : (create_sign(data.id, data.RoomNumber),
@@ -1062,6 +1063,7 @@ export default {
         contract_duration: "",
         room_deposit: "",
         type_room: "",
+        existing_contract_id: "",
 
       },
       room_type: [],
@@ -1224,6 +1226,23 @@ export default {
 
       return payload;
     },
+    // Update the existing reserved booking's record in place when one
+    // exists, instead of POSTing a second row - room.user_sign_contract is
+    // oneToOne, so a second POST for the same room would orphan the
+    // original booking record rather than replace it.
+    saveContractRecord(payload) {
+      if (this.room_detail_create.existing_contract_id) {
+        return axios.put(
+          "https://api.resguru.app/api/user-sign-contracts/" +
+            this.room_detail_create.existing_contract_id,
+          { data: payload }
+        );
+      }
+
+      return axios.post("https://api.resguru.app/api/user-sign-contracts", {
+        data: payload,
+      });
+    },
     updateRoomAfterContract() {
       return axios.put(
         "https://api.resguru.app/api/rooms/" + this.room_detail_create.id_room,
@@ -1250,10 +1269,27 @@ export default {
         `ค่าเช่าล่วงหน้า (ทำสัญญาเช่า ห้อง ${this.create_room_number || ''})`.trim()
       );
     },
+    // Move-in meter readings are saved as the previous month's baseline
+    // fee record (billMonth/billYear = the month before check-in), same
+    // shape as Water.vue/Electricity.vue's createPreviousMonthWaterfee -
+    // so this month's real reading (entered later on the Meter page)
+    // computes usage against a real, correctly-tagged record instead of
+    // relying only on the startWater/startElectric fallback.
+    getPreviousMonthYearFromCheckIn() {
+      const checkIn = new Date(this.room_detail_create.date_sign);
+      const month = checkIn.getMonth() + 1;
+      const year = checkIn.getFullYear();
+      if (month === 1) {
+        return { previousMonth: 12, previousYear: year - 1 };
+      }
+      return { previousMonth: month - 1, previousYear: year };
+    },
     createUtilityRecords(contractId) {
       if (this.isReservedContract()) {
         return Promise.resolve();
       }
+
+      const { previousMonth, previousYear } = this.getPreviousMonthYearFromCheckIn();
 
       return Promise.all([
         axios.post("https://api.resguru.app/api/water-fees", {
@@ -1261,7 +1297,9 @@ export default {
             meterUnit: this.room_detail_create.water,
             user_sign_contract: contractId,
             room: this.room_detail_create.id_room,
-            usageMeter: this.room_detail_create.water,
+            billMonth: previousMonth,
+            billYear: previousYear,
+            usageMeter: 0,
           },
         }),
         axios.post("https://api.resguru.app/api/electric-fees", {
@@ -1269,7 +1307,9 @@ export default {
             electicUnit: this.room_detail_create.ele,
             user_sign_contract: contractId,
             room: this.room_detail_create.id_room,
-            usageMeter: this.room_detail_create.ele,
+            billMonth: previousMonth,
+            billYear: previousYear,
+            usageMeter: 0,
           },
         }),
       ]);
@@ -1327,6 +1367,10 @@ export default {
           }
           console.log("Return from getRentalContract()", resp.data);
         })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading contracts";
+          this.$showNotification("danger", errorMessage);
+        })
         .finally(() => {
           loading.close();
         });
@@ -1360,6 +1404,10 @@ export default {
               String(selectedFloor.id)
             );
           }
+        })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading floors";
+          this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
           this.getRentalContract();
@@ -1405,6 +1453,10 @@ export default {
           this.room_detail.room_deposit = resp.data.attributes.roomDeposit;
           this.room_detail.exp_date = resp.data.attributes.checkInDate;
         })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading contract detail";
+          this.$showNotification("danger", errorMessage);
+        })
         .finally(() => {
           loading.close();
           this.detail = true;
@@ -1421,6 +1473,10 @@ export default {
         .then((resp) => {
           // console.log(resp);
           this.users = resp;
+        })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading users";
+          this.$showNotification("danger", errorMessage);
         });
     },
     getRoomType() {
@@ -1433,6 +1489,10 @@ export default {
         .then((response) => response.json())
         .then((resp) => {
           this.room_type = resp.data;
+        })
+        .catch((error) => {
+          const errorMessage = error.message ? error.message : "Error loading room types";
+          this.$showNotification("danger", errorMessage);
         });
     },
     getUserDetail(id_room) {
@@ -1482,7 +1542,7 @@ export default {
           console.log("object");
         });
     },
-    create_sign(id_room, number, status, idCard, room_type) {
+    create_sign(id_room, number, status, idCard, room_type, existingContract) {
       this.check_rent = status;
       this.getRoomType();
       this.create = true;
@@ -1502,10 +1562,16 @@ export default {
       this.room_detail_create.id_room = id_room;
       this.room_detail_create.water = 0;
       this.room_detail_create.ele = 0;
-      this.room_detail_create.room_deposit = "";
-      this.room_detail_create.roomInsuranceDeposit = "";
+      // Carry over the amount already paid at booking (earnest) as the
+      // contract's advance-rent field - same real-world payment, admin can
+      // still edit it before signing.
+      this.room_detail_create.room_deposit = existingContract?.earnest ?? "";
+      this.room_detail_create.roomInsuranceDeposit =
+        existingContract?.roomInsuranceDeposit ?? "";
       this.room_detail_create.contract_duration = "";
       this.room_detail_create.type_room = room_type;
+      this.room_detail_create.date_sign = existingContract?.checkInDate ?? "";
+      this.room_detail_create.existing_contract_id = existingContract?.id ?? "";
       this.room_detail.date_sign = "";
       this.room_detail.exp_date = "";
       this.originalUserData = null;
@@ -1541,11 +1607,10 @@ export default {
         const loading = this.$vs.loading();
       this.syncExistingUserIfNeeded()
         .then(() =>
-          axios
-            .post("https://api.resguru.app/api" + "/user-sign-contracts", {
-          data: this.buildContractPayload(this.room_detail_create.id),
-            })
-                )
+          this.saveContractRecord(
+            this.buildContractPayload(this.room_detail_create.id)
+          )
+        )
             .then((resp) => {
                 this.id_sign = resp.data.data.id;
                 
@@ -1577,6 +1642,11 @@ export default {
                         err.response?.data?.error?.message,
                         6000
                     );
+                } else {
+                    this.$showNotification(
+                        "danger",
+                        "เกิดข้อผิดพลาด ไม่สามารถบันทึกสัญญาได้"
+                    );
                 }
             })
             .finally(() => {
@@ -1605,9 +1675,9 @@ export default {
                 building: this.$store.state.building,
             })
             .then((resp) => {
-                return axios.post("https://api.resguru.app/api/user-sign-contracts", {
-                  data: this.buildContractPayload(resp.data.id),
-                });
+                return this.saveContractRecord(
+                  this.buildContractPayload(resp.data.id)
+                );
             })
             .then((resp) => {
                 this.id_sign = resp.data.data.id;
@@ -1634,6 +1704,11 @@ export default {
                         "danger",
                         err.response?.data?.error?.message,
                         6000
+                    );
+                } else {
+                    this.$showNotification(
+                        "danger",
+                        "เกิดข้อผิดพลาด ไม่สามารถบันทึกสัญญาได้"
                     );
                 }
             })
