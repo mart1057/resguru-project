@@ -204,19 +204,19 @@
                         <div class="flex">
                             <div class="flex">
                                 <div v-if="data.attributes.employeeImage?.data">
-                                    <img class="w-[125px] h-[125px] rounded-[12px]"
+                                    <img class="w-[125px] h-[125px] rounded-[12px] object-cover"
                                         :src="'https://api.resguru.app' + data.attributes.employeeImage?.data?.attributes.url" />
                                 </div>
-                                <div v-else>
-                                    <img class="w-[125px] h-[125px] rounded-[12px]"
-                                        src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
+                                <div v-else
+                                    class="w-[125px] h-[125px] rounded-[12px] bg-[#003765] text-white flex items-center justify-center text-[36px] font-bold">
+                                    {{ initials(data.attributes.name, data.attributes.lastname) }}
                                 </div>
                                 <div class="ml-[12px]">
                                     <div class="flex flex-col justify-between h-[100%]">
                                         <div class="">
                                             <div
                                                 class="h-[24px] rounded-[12px] text-center font-bold text-[#D48C00] pl-[12px] pr-[12px] flex items-center justify-center bg-[#FFF2BC]">
-                                                {{ data.attributes.position }}
+                                                {{ positionLabel(data.attributes.position) }}
                                             </div>
 
                                             <div class="mt-[14px] text-[18px] font-bold">{{ data.attributes.name }} {{
@@ -265,7 +265,7 @@
                     </div>
                 </div>
                 <div class="bg-white rounded-[12px] h-[150px] border flex flex-col p-[12px] cursor-pointer items-center justify-center "
-                    @click="profile_admin = true">
+                    @click="openNewEmployeeForm()">
                     <div class="flex flex-col items-center justify-center">
                         <div>
 
@@ -430,11 +430,13 @@
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile"
                                 ref="fileUploadAdminProfileForm" hidden type="file" @change="tempImageUploadAdmin()" />
                             <label for="uploadProfile">
-                                <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
+                                <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border object-cover"
                                     v-if="NewProfileAdmin.imageProfile"
                                     :src="'https://api.resguru.app' + NewProfileAdmin.imageProfile" />
-                                <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border" v-else
-                                    src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
+                                <div v-else
+                                    class="rounded-[22px] w-[150px] h-[150px] border bg-[#003765] text-white flex items-center justify-center text-[44px] font-bold">
+                                    {{ initials(NewProfileAdmin.firstName, NewProfileAdmin.lastName) }}
+                                </div>
 
                                 <div
                                     class="rounded-[22px] text-[1vw] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] mt-[4px]  text-custom cursor-pointer">
@@ -485,8 +487,8 @@
         </div>
         <input 
             class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start border"
-            :class="{'border-red-500': !NewProfileAdmin.firstName.trim()}"
-            v-model="NewProfileAdmin.firstName" 
+            :class="{'border-red-500': !(NewProfileAdmin.firstName || '').trim()}"
+            v-model="NewProfileAdmin.firstName"
             type="text" 
             placeholder="กรุณากรอกชื่อ"
             required
@@ -495,18 +497,28 @@
     
     <div class="mt-[8px] col-span-2">
         <div class="text-custom text-[14px] text-[#003765]">
-            นามสกุล <span class="text-red-500">*</span>
+            นามสกุล <span class="text-red-500" v-if="tab == 1">*</span>
         </div>
-        <input 
+        <input
             class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start border"
-            :class="{'border-red-500': !NewProfileAdmin.lastName.trim()}"
-            v-model="NewProfileAdmin.lastName" 
-            type="text" 
+            :class="{'border-red-500': tab == 1 && !(NewProfileAdmin.lastName || '').trim()}"
+            v-model="NewProfileAdmin.lastName"
+            type="text"
             placeholder="กรุณากรอกนามสกุล"
-            required
         />
     </div>
-    
+
+    <div class="mt-[8px] col-span-2" v-if="tab != 1">
+        <div class="text-custom text-[14px] text-[#003765]">
+            ประเภทพนักงาน <span class="text-red-500">*</span>
+        </div>
+        <select
+            class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start border px-[8px]"
+            v-model="NewProfileAdmin.position">
+            <option v-for="opt in positionOptions" :key="opt.value" :value="opt.value">{{ opt.label }}</option>
+        </select>
+    </div>
+
     <div class="mt-[8px] col-span-4">
         <div class="text-custom text-[14px] text-[#003765]">ที่อยู่</div>
         <input 
@@ -523,8 +535,8 @@
         </div>
         <input 
             class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start border"
-            :class="{'border-red-500': !NewProfileAdmin.phone.trim()}"
-            v-model="NewProfileAdmin.phone" 
+            :class="{'border-red-500': !(NewProfileAdmin.phone || '').trim()}"
+            v-model="NewProfileAdmin.phone"
             type="tel" 
             placeholder="กรุณากรอกเบอร์ติดต่อ"
             required
@@ -563,6 +575,12 @@ export default {
             profile_em: false,
             profile_admin: false,
             employee: [],
+            // Employee position types. Untyped (older) records are treated as 'Cleaner' / แม่บ้าน.
+            positionOptions: [
+                { value: 'Cleaner', label: 'แม่บ้าน' },
+                { value: 'Technician', label: 'ช่างซ่อม' },
+                { value: 'Security', label: 'ความปลอดภัย' },
+            ],
             UserBuilding: [],
             fileProfileForm: [],
             fileAdminProfileForm: [],
@@ -725,6 +743,8 @@ export default {
                         this.NewProfileAdmin.phone = resp.data.attributes.phone,
                         this.NewProfileAdmin.imageProfile =  resp.data.attributes.employeeImage?.data?.attributes.url
                     this.NewProfileAdmin.line = resp.data.attributes.line
+                    // Untyped older records default to แม่บ้าน, but stay editable.
+                    this.NewProfileAdmin.position = resp.data.attributes.position || 'Cleaner'
                 }).catch((error) => {
                     const errorMessage = error.message ? error.message : "Error loading employee detail";
                     this.$showNotification("danger", errorMessage);
@@ -881,14 +901,14 @@ export default {
                 if (!this.NewProfileAdmin.phone.trim()) {
                     errors.push('เบอร์ติดต่อจำเป็นต้องกรอก');
                 }
-            } else { // Employee tab
-                if (!this.NewProfileAdmin.firstName.trim()) {
+            } else { // Employee tab - only name, type and phone are required
+                if (!(this.NewProfileAdmin.firstName || '').trim()) {
                     errors.push('ชื่อจำเป็นต้องกรอก');
                 }
-                if (!this.NewProfileAdmin.lastName.trim()) {
-                    errors.push('นามสกุลจำเป็นต้องกรอก');
+                if (!this.NewProfileAdmin.position) {
+                    errors.push('ประเภทพนักงานจำเป็นต้องเลือก');
                 }
-                if (!this.NewProfileAdmin.phone.trim()) {
+                if (!(this.NewProfileAdmin.phone || '').trim()) {
                     errors.push('เบอร์ติดต่อจำเป็นต้องกรอก');
                 }
             }
@@ -988,6 +1008,42 @@ export default {
                 this.is_edit = false;
                 this.profile_admin = true;
             },
+
+            // Add-employee card opens the shared modal - make sure it starts clean
+            // (create mode, no stale data from a previous edit) and defaults to แม่บ้าน.
+            openNewEmployeeForm() {
+                this.NewProfileAdmin = {
+                    id: '',
+                    firstName: '',
+                    lastName: '',
+                    contactAddress: '',
+                    province: '',
+                    district: '',
+                    amphoe: '',
+                    zipcode: '',
+                    phone: '',
+                    email: '',
+                    line: '',
+                    position: 'Cleaner',
+                    building: '',
+                    password: ''
+                };
+                this.fileAdminProfileForm = [];
+                this.fileAdminCoverForm = [];
+                this.is_edit = false;
+                this.profile_admin = true;
+            },
+
+            positionLabel(pos) {
+                const found = this.positionOptions.find((o) => o.value === pos);
+                return found ? found.label : 'แม่บ้าน';
+            },
+
+            initials(name, lastname) {
+                const a = (name || '').trim().charAt(0);
+                const b = (lastname || '').trim().charAt(0);
+                return (a + b).toUpperCase() || '?';
+            },
             
             async addExistingAdmin() {
                 if (!this.selectedExistingAdmin) {
@@ -1071,7 +1127,7 @@ export default {
                         console.log("User updated:", resp);
                         
                         // Upload profile image if one was selected
-                        if (this.fileAdminProfileForm) {
+                        if (this.fileAdminProfileForm instanceof File) {
                             await this.uploadImage(
                                 this.fileAdminProfileForm,
                                 resp.data.id,
@@ -1081,7 +1137,7 @@ export default {
                         }
                         
                         // Upload cover image if one was selected
-                        if (this.fileAdminCoverForm) {
+                        if (this.fileAdminCoverForm instanceof File) {
                             await this.uploadImage(
                                 this.fileAdminCoverForm,
                                 resp.data.id,
@@ -1101,14 +1157,14 @@ export default {
                                 address: this.NewProfileAdmin.contactAddress,
                                 phone: this.NewProfileAdmin.phone,
                                 line: this.NewProfileAdmin.line,
-                                position: 'Technician',
+                                position: this.NewProfileAdmin.position || 'Cleaner',
                             }
                         });
-                        
+
                         console.log("Employee updated:", resp);
                         
                         // Upload employee profile image if one was selected
-                        if (this.fileAdminProfileForm) {
+                        if (this.fileAdminProfileForm instanceof File) {
                             await this.uploadImage(
                                 this.fileAdminProfileForm,
                                 resp.data.data.id,
@@ -1142,7 +1198,7 @@ export default {
                         // Handle image uploads if files exist
                         const uploadPromises = [];
                         
-                        if (this.fileAdminProfileForm) {
+                        if (this.fileAdminProfileForm instanceof File) {
                             uploadPromises.push(
                                 this.uploadImage(
                                     this.fileAdminProfileForm,
@@ -1153,7 +1209,7 @@ export default {
                             );
                         }
                         
-                        if (this.fileAdminCoverForm) {
+                        if (this.fileAdminCoverForm instanceof File) {
                             uploadPromises.push(
                                 this.uploadImage(
                                     this.fileAdminCoverForm,
@@ -1187,7 +1243,7 @@ export default {
                                 address: this.NewProfileAdmin.contactAddress,
                                 phone: this.NewProfileAdmin.phone,
                                 line: this.NewProfileAdmin.line,
-                                position: 'Technician',
+                                position: this.NewProfileAdmin.position || 'Cleaner',
                                 building: this.$store.state.building
                             }
                         });
@@ -1195,7 +1251,7 @@ export default {
                         console.log("Employee created:", resp);
                         
                         // Upload employee image if selected
-                        if (this.fileAdminProfileForm) {
+                        if (this.fileAdminProfileForm instanceof File) {
                             await this.uploadImage(
                                 this.fileAdminProfileForm,
                                 resp.data.data.id,
