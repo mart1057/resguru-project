@@ -810,7 +810,7 @@
                 {{ tr.attributes.bankName }}
               </vs-td>
               <vs-td>
-                <div v-if="tr.attributes.evidence.data">
+                <div v-if="tr.attributes.evidence?.data">
                   <a
                     :href="
                       'https://api.resguru.app' +
@@ -832,7 +832,7 @@
                 {{ tr.attributes.evidenceStatus }}
               </vs-td>
               <vs-td>
-                <div v-if="tr.attributes.tenant_receipt.data">
+                <div v-if="tr.attributes.tenant_receipt?.data">
                   {{
                     tr.attributes.tenant_receipt.data.attributes.receiptNumber
                   }}

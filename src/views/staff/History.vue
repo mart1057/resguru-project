@@ -102,7 +102,7 @@
                                 <div>
                                     <div class="text-[12px] text-[#8396A6] mt-[8px]">พนักงานผู้รับผิดชอบ</div>
                                     <div>
-                                        <div v-if="data.attributes.responEmployee.data">
+                                        <div v-if="data.attributes.responEmployee?.data">
                                             <div class="mt-[5px]">
                                                 <div>{{ data.attributes.responEmployee.data.attributes.name }} {{ data.attributes.responEmployee.data.attributes.lastname }}
                                                     <span class="text-[12px] text-[#8396A6]">({{ positionLabel(data.attributes.responEmployee.data.attributes.position) }})</span>

@@ -291,19 +291,19 @@
                             </vs-td>
                             <vs-td class="image-cell">
                                 <img
-                                    :src="tr.attributes.evidence.data ? 'https://api.resguru.app'+tr.attributes.evidence.data.attributes.url : ''"
+                                    :src="tr.attributes.evidence?.data ? 'https://api.resguru.app'+tr.attributes.evidence?.data.attributes.url : ''"
                                     class="cell-image"
-                                    v-if="tr.attributes.evidence.data"
-                                    @click="openImagePreview(tr.attributes.evidence.data.attributes.url)"
+                                    v-if="tr.attributes.evidence?.data"
+                                    @click="openImagePreview(tr.attributes.evidence?.data.attributes.url)"
                                 />
                                 <span v-else>-</span>
                             </vs-td>
                             <vs-td class="image-cell">
                                 <img
-                                    :src="tr.attributes.receipt.data ? 'https://api.resguru.app'+ tr.attributes.receipt.data.attributes.url : ''"
+                                    :src="tr.attributes.receipt?.data ? 'https://api.resguru.app'+ tr.attributes.receipt?.data.attributes.url : ''"
                                     class="cell-image"
-                                    v-if="tr.attributes.receipt.data"
-                                    @click="openImagePreview(tr.attributes.receipt.data.attributes.url)"
+                                    v-if="tr.attributes.receipt?.data"
+                                    @click="openImagePreview(tr.attributes.receipt?.data.attributes.url)"
                                 />
                                 <span v-else>-</span>
                             </vs-td>
@@ -423,10 +423,10 @@
                             </vs-td>
                             <vs-td class="image-cell">
                                 <img
-                                    :src="tr.attributes.evidence.data ? 'https://api.resguru.app'+tr.attributes.evidence.data.attributes.url : ''"
+                                    :src="tr.attributes.evidence?.data ? 'https://api.resguru.app'+tr.attributes.evidence?.data.attributes.url : ''"
                                     class="cell-image"
-                                    v-if="tr.attributes.evidence.data"
-                                    @click="openImagePreview(tr.attributes.evidence.data.attributes.url)"
+                                    v-if="tr.attributes.evidence?.data"
+                                    @click="openImagePreview(tr.attributes.evidence?.data.attributes.url)"
                                 />
                                 <span v-else>-</span>
                             </vs-td>

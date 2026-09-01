@@ -136,7 +136,7 @@
           </div>
 
           <div
-            v-if="data.attributes.QRCode.data"
+            v-if="data.attributes.QRCode?.data"
             class="flex justify-center w-[100%] mt-[14px] h-[100%]"
           >
             <img
