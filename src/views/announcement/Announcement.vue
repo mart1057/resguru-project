@@ -49,7 +49,7 @@
                                 </div>
                                 
                                 <!-- Delete button -->
-                                <div v-if="selected.length > 0" @click="delete_popup = true"
+                                <div v-if="selected.length > 0" @click="confirmDeleteSelected()"
                                     class="h-[36px] pl-[12px] pr-[12px] bg-[#D44769] flex cursor-pointer justify-center rounded-[12px] mt-[12px] ml-[14px]">
                                     <div class="text-white font-bold flex justify-center items-center">ลบประกาศ</div>
                                 </div>
@@ -80,9 +80,9 @@
                                 <vs-th>
                                     <div class="flex">
                                         <div>
-                                            <vs-checkbox :indeterminate="selected.length == announcement.length"
+                                            <vs-checkbox :indeterminate="selected.length > 0 && selected.length < activeAnnouncements.length"
                                                 v-model="allCheck"
-                                                @change="selected = $vs.checkAll(selected, announcement)" />
+                                                @change="selected = $vs.checkAll(selected, activeAnnouncements)" />
                                         </div>
                                         <div class="ml-[24px]">วันที่ประกาศ</div>
                                     </div>
@@ -90,11 +90,13 @@
                                 <vs-th>วันที่สิ้นสุด</vs-th>
                                 <vs-th>หัวข้อ</vs-th>
                                 <vs-th>เรื่องที่ประกาศ</vs-th>
+                                <vs-th>รูปภาพ</vs-th>
                                 <vs-th>ผู้สร้างประกาศ</vs-th>
+                                <vs-th>จัดการ</vs-th>
                             </vs-tr>
                         </template>
                         <template #tbody>
-                            <vs-tr :key="i" v-for="(tr, i) in announcement" :data="tr">
+                            <vs-tr :key="tr.id" v-for="tr in activeAnnouncements" :data="tr">
                                 <vs-td checkbox>
                                     <div class="flex">
                                         <div>
@@ -113,6 +115,14 @@
                                     <div class="text-custom">{{ tr.attributes.description }}</div>
                                 </vs-td>
                                 <vs-td>
+                                    <div class="flex items-center">
+                                        <img v-for="img in announcementImages(tr)" :key="img.id" :src="img.thumb"
+                                            @click="previewImg(img.full)"
+                                            class="h-[36px] w-[36px] object-cover rounded-[6px] border mr-[4px] cursor-pointer" />
+                                        <span v-if="announcementImages(tr).length === 0" class="text-custom text-[#5C6B79]">-</span>
+                                    </div>
+                                </vs-td>
+                                <vs-td>
                                     <div class="text-custom flex">
                                         <div>
                                             <vs-avatar circle>
@@ -121,14 +131,32 @@
                                             </vs-avatar>
                                         </div>
                                         <div class="flex justify-center items-center ml-[8px]">
-                                            {{ tr.attributes.users_created.data.attributes.firstName }} 
+                                            {{ tr.attributes.users_created.data.attributes.firstName }}
                                             {{ tr.attributes.users_created.data.attributes.lastName }}
+                                        </div>
+                                    </div>
+                                </vs-td>
+                                <vs-td>
+                                    <div class="flex items-center">
+                                        <div @click.stop="openEditAnnouncement(tr)" title="แก้ไข"
+                                            class="h-[32px] w-[32px] flex justify-center items-center rounded-[8px] bg-[#F3F8FD] cursor-pointer mr-[8px]">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M4 20h4l10.5-10.5a2.121 2.121 0 0 0-3-3L5 17v3z" stroke="#003765" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
+                                        </div>
+                                        <div @click.stop="confirmDeleteAnnouncement(tr)" title="ลบ"
+                                            class="h-[32px] w-[32px] flex justify-center items-center rounded-[8px] bg-[#FBE9EE] cursor-pointer">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3" stroke="#D44769" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            </svg>
                                         </div>
                                     </div>
                                 </vs-td>
                             </vs-tr>
                         </template>
                     </vs-table>
+                    <div v-if="activeAnnouncements.length === 0"
+                        class="text-custom text-center text-[#5C6B79] py-[16px]">ยังไม่มีประกาศ</div>
                 </div>
             </div>
         </div>
@@ -191,13 +219,80 @@
                 </div>
                 <div class="flex justify-end mt-[30px]">
                     <div>
-                        <vs-button dark shadow @click="create_ann = false">
+                        <vs-button dark shadow :disabled="creating" @click="create_ann = false">
                             <div class="text-custom">ยกเลิก</div>
                         </vs-button>
                     </div>
                     <div>
-                        <vs-button @click="createAnnouncement()" color="#003765">
+                        <vs-button :loading="creating" @click="createAnnouncement()" color="#003765">
                             <div class="text-custom">ประกาศ</div>
+                        </vs-button>
+                    </div>
+                </div>
+            </div>
+        </b-modal>
+
+        <!-- Edit Announcement Modal -->
+        <b-modal centered v-model="edit_ann" size="l" hide-backdrop hide-header-close hide-header hide-footer
+            class="p-[-20px] text-custom">
+            <div>
+                <div class="flex justify-between pl-[20px] pr-[20px]">
+                    <div class="text-custom flex justify-center items-center text-[18px] font-bold">แก้ไขประกาศ</div>
+                    <div @click="edit_ann = false" class="cursor-pointer">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path
+                                d="M12.0005 13.0538L6.92737 18.1269C6.78892 18.2654 6.61489 18.3362 6.40527 18.3394C6.19567 18.3426 6.01844 18.2718 5.87357 18.1269C5.72869 17.982 5.65625 17.8064 5.65625 17.6C5.65625 17.3936 5.72869 17.218 5.87357 17.0731L10.9466 12L5.87357 6.92689C5.73511 6.78844 5.66427 6.6144 5.66107 6.40479C5.65786 6.19519 5.72869 6.01795 5.87357 5.87309C6.01844 5.7282 6.19407 5.65576 6.40047 5.65576C6.60687 5.65576 6.78251 5.7282 6.92737 5.87309L12.0005 10.9462L17.0736 5.87309C17.212 5.73462 17.3861 5.66379 17.5957 5.66059C17.8053 5.65737 17.9825 5.7282 18.1274 5.87309C18.2723 6.01795 18.3447 6.19359 18.3447 6.39999C18.3447 6.60639 18.2723 6.78202 18.1274 6.92689L13.0543 12L18.1274 17.0731C18.2658 17.2115 18.3367 17.3856 18.3399 17.5952C18.3431 17.8048 18.2723 17.982 18.1274 18.1269C17.9825 18.2718 17.8069 18.3442 17.6005 18.3442C17.3941 18.3442 17.2184 18.2718 17.0736 18.1269L12.0005 13.0538Z"
+                                fill="#5C6B79" />
+                        </svg>
+                    </div>
+                </div>
+                <div class="pl-[20px] pr-[20px] mt-[24px]">
+                    <div>
+                        <div class="text-custom text-[14px] text-[#003765]">เรื่องที่ประกาศ *</div>
+                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[12px] pr-[12px] flex justify-start" type="input"
+                            v-model="editTopic" />
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom text-[14px] text-[#003765]">รายละเอียดการแจ้ง *</div>
+                        <textarea class="h-[60px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[12px] pr-[12px] pt-[8px] flex justify-start" type="input"
+                            v-model="editDescription" />
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom text-[14px] text-[#003765]">วันที่สิ้นสุด *</div>
+                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[12px] pr-[12px] flex justify-start"
+                            type="date" v-model="editDateExecute" />
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="text-custom text-[14px] text-[#003765]">รูปภาพ</div>
+                        <div class="flex items-center mt-[4px]">
+                            <img v-for="img in editExistingImages" :key="img.id" :src="img.thumb"
+                                @click="previewImg(img.full)"
+                                class="h-[40px] w-[40px] object-cover rounded-[6px] border mr-[4px] cursor-pointer" />
+                            <span v-if="editExistingImages.length === 0" class="text-[#5C6B79] text-custom text-[12px]">ยังไม่มีรูปภาพ</span>
+                        </div>
+                        <div class="flex items-center mt-[8px]" v-if="!editNewImage">
+                            <input class="hidden" id="edit-upload" @change="previewEditImage" type="file" accept="image/*" hidden />
+                            <label for="edit-upload">
+                                <div class="h-[28px] pl-[12px] pr-[12px] flex justify-center text-custom items-center bg-[#165D98] text-[14px] text-[white] rounded-[12px] cursor-pointer">
+                                    เพิ่มรูปภาพ</div>
+                            </label>
+                        </div>
+                        <div class="flex items-center mt-[8px]" v-else>
+                            <div @click="previewImg(editNewImagePreview)"
+                                class="text-[#5C6B79] text-custom text-[12px] cursor-pointer">{{ editNewImageName }}</div>
+                            <div @click="clearEditNewImage()" class="text-[#D44769] text-custom text-[12px] cursor-pointer ml-[8px]">ลบ</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-end mt-[30px]">
+                    <div>
+                        <vs-button dark shadow :disabled="saving" @click="edit_ann = false">
+                            <div class="text-custom">ยกเลิก</div>
+                        </vs-button>
+                    </div>
+                    <div>
+                        <vs-button :loading="saving" @click="updateAnnouncement()" color="#003765">
+                            <div class="text-custom">บันทึก</div>
                         </vs-button>
                     </div>
                 </div>
@@ -233,22 +328,31 @@
                                     <vs-th><div class="text-custom">วันที่สิ้นสุด</div></vs-th>
                                     <vs-th><div class="text-custom">เรื่องที่ประกาศ</div></vs-th>
                                     <vs-th><div class="text-custom">รายละเอียด</div></vs-th>
+                                    <vs-th><div class="text-custom">รูปภาพ</div></vs-th>
                                     <vs-th><div class="text-custom">ผู้สร้างประกาศ</div></vs-th>
                                 </vs-tr>
                             </template>
                             <template #tbody>
-                                <vs-tr :key="i" v-for="(tr, i) in announcement" :data="tr">
+                                <vs-tr :key="tr.id" v-for="tr in expiredAnnouncements" :data="tr">
                                     <vs-td>
                                         <div class="text-custom">{{ convertDateNoTime(tr.attributes.createdAt) }}</div>
                                     </vs-td>
                                     <vs-td>
-                                        <div class="text-custom">{{ tr.attributes.date_execute }}</div>
+                                        <div class="text-custom">{{ convertDateNoTime(tr.attributes.date_execute) }}</div>
                                     </vs-td>
                                     <vs-td>
                                         <div class="text-custom">{{ tr.attributes.topic }}</div>
                                     </vs-td>
                                     <vs-td>
                                         <div class="text-custom">{{ tr.attributes.description }}</div>
+                                    </vs-td>
+                                    <vs-td>
+                                        <div class="flex items-center">
+                                            <img v-for="img in announcementImages(tr)" :key="img.id" :src="img.thumb"
+                                                @click="previewImg(img.full)"
+                                                class="h-[36px] w-[36px] object-cover rounded-[6px] border mr-[4px] cursor-pointer" />
+                                            <span v-if="announcementImages(tr).length === 0" class="text-custom text-[#5C6B79]">-</span>
+                                        </div>
                                     </vs-td>
                                     <vs-td>
                                         <div class="text-custom flex">
@@ -259,7 +363,7 @@
                                                 </vs-avatar>
                                             </div>
                                             <div class="flex justify-center items-center ml-[8px]">
-                                                {{ tr.attributes.users_created.data.attributes.firstName }} 
+                                                {{ tr.attributes.users_created.data.attributes.firstName }}
                                                 {{ tr.attributes.users_created.data.attributes.lastName }}
                                             </div>
                                         </div>
@@ -267,6 +371,8 @@
                                 </vs-tr>
                             </template>
                         </vs-table>
+                        <div v-if="expiredAnnouncements.length === 0"
+                            class="text-custom text-center text-[#5C6B79] py-[16px]">ไม่มีประกาศที่หมดอายุ</div>
                     </div>
                 </div>
             </div>
@@ -274,19 +380,26 @@
 
         <!-- Delete Confirmation Dialog -->
         <vs-dialog width="550px" not-center v-model="delete_popup">
-            <div class="flex justify-center items-center text-[24px] h-[100%] mt-[5%]">
-                <p class="fle justify-center items-center">
-                    ต้องการลบประกาศหรือไม่?
+            <div class="text-custom mt-[12px]">
+                <p class="text-[18px] font-bold text-center">
+                    ต้องการลบประกาศ {{ deleteTargets.length }} รายการหรือไม่?
                 </p>
+                <ul class="mt-[12px] mb-[8px] max-h-[180px] overflow-y-auto">
+                    <li v-for="t in deleteTargets" :key="t.id" class="text-[14px] py-[2px] border-b">
+                        {{ t.attributes.topic || '(ไม่มีหัวข้อ)' }}
+                        <span class="text-[#5C6B79] text-[12px]">— สิ้นสุด {{ convertDateNoTime(t.attributes.date_execute) }}</span>
+                    </li>
+                </ul>
             </div>
             <template #footer>
                 <div class="con-footer flex justify-between">
-                    <vs-button @click="delete_popup = false" dark transparent>
+                    <vs-button @click="delete_popup = false" :disabled="deleting" dark transparent>
                         <div class="flex items-center">ยกเลิก</div>
                     </vs-button>
-                    <div class="h-[36px] pl-[12px] pr-[12px] bg-[#003765] flex cursor-pointer justify-center rounded-[12px]">
+                    <div class="h-[36px] pl-[12px] pr-[12px] bg-[#D44769] flex cursor-pointer justify-center rounded-[12px]"
+                        :class="deleting ? 'opacity-50 pointer-events-none' : ''">
                         <div class="text-white font-bold flex justify-center items-center" @click="deleteAnnouncement()">
-                            ยืนยัน
+                            ยืนยันการลบ
                         </div>
                     </div>
                 </div>
@@ -317,6 +430,21 @@ export default {
             create_ann: false,
             history_ann: false,
             delete_popup: false,
+            creating: false,
+            // edit
+            edit_ann: false,
+            saving: false,
+            editId: null,
+            editTopic: "",
+            editDescription: "",
+            editDateExecute: "",
+            editExistingImages: [],
+            editNewImage: null,
+            editNewImageName: "",
+            editNewImagePreview: "",
+            // delete
+            deleteTargets: [],
+            deleting: false,
             convertDateNoTime,
             currentMonthAnnouncementCount: 0,
             BUSINESS_PACKAGE_ANNOUNCEMENT_LIMIT: 5,
@@ -335,6 +463,23 @@ export default {
     },
     
     computed: {
+        // Newest first (defensive - the API already sorts id:desc, but don't rely on it).
+        sortedAnnouncements() {
+            return [...this.announcement].sort((a, b) => {
+                return new Date(b?.attributes?.createdAt || 0) - new Date(a?.attributes?.createdAt || 0);
+            });
+        },
+
+        // Active = end date (date_execute) has not fully passed yet. Shown in the main table.
+        activeAnnouncements() {
+            return this.sortedAnnouncements.filter((a) => !this.isExpired(a));
+        },
+
+        // Expired = end date is in the past. Shown in the history modal.
+        expiredAnnouncements() {
+            return this.sortedAnnouncements.filter((a) => this.isExpired(a));
+        },
+
         packageId() {
             return this.$store.state.buildingInfo[0]?.attributes?.package?.data?.id;
         },
@@ -431,13 +576,48 @@ export default {
             this.create_ann = true;
         },
         
+        isExpired(a) {
+            const end = a?.attributes?.date_execute;
+            if (!end) return false;
+            const endDate = new Date(end);
+            if (isNaN(endDate.getTime())) return false;
+            // date_execute is the last day the announcement is valid - it stays
+            // active through the end of that calendar day.
+            endDate.setHours(23, 59, 59, 999);
+            return endDate.getTime() < Date.now();
+        },
+
+        announcementImages(tr) {
+            const data = tr?.attributes?.image?.data;
+            if (!Array.isArray(data)) return [];
+            return data.map((img) => {
+                const attr = img?.attributes || {};
+                const path = attr.formats?.thumbnail?.url || attr.url || '';
+                const full = attr.url || '';
+                return {
+                    id: img.id,
+                    name: attr.name,
+                    thumb: path ? 'https://api.resguru.app' + path : '',
+                    full: full ? 'https://api.resguru.app' + full : '',
+                };
+            }).filter((img) => img.thumb);
+        },
+
+        previewImg(url) {
+            if (url) window.open(url, '_blank');
+        },
+
+        hasSelectedImage() {
+            return this.image instanceof File || (Array.isArray(this.image) && this.image.length > 0);
+        },
+
         getAnnouncement() {
             const loading = this.$vs.loading()
-            fetch(`https://api.resguru.app/api/announcements?filters[building][id][$eq]=${this.$store.state.building}&populate=*&sort[0]=id:desc`)
+            return fetch(`https://api.resguru.app/api/announcements?filters[building][id][$eq]=${this.$store.state.building}&populate=*&sort[0]=id:desc`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getAnnouncement()", resp.data);
-                    this.announcement = resp.data;
+                    this.announcement = Array.isArray(resp.data) ? resp.data : [];
                     // Calculate current month count after fetching
                     this.getCurrentMonthAnnouncementCount();
                 }).catch((error) => {
@@ -448,14 +628,20 @@ export default {
                 })
         },
         
-        createAnnouncement() {
+        async createAnnouncement() {
             // Check limit before creating
             if (!this.checkAnnouncementLimit()) {
                 return;
             }
-            
-            if (this.date_execute && this.topic && this.image.length != 0) {
-                axios.post('https://api.resguru.app/api/announcements', {
+
+            if (!this.topic || !this.description || !this.date_execute || !this.hasSelectedImage()) {
+                this.$showNotification('danger', 'กรุณากรอกข้อมูลให้ครบถ้วน');
+                return;
+            }
+
+            this.creating = true;
+            try {
+                const resp = await axios.post('https://api.resguru.app/api/announcements', {
                     data: {
                         topic: this.topic,
                         description: this.description,
@@ -463,73 +649,160 @@ export default {
                         users_created: this.$store.state.userInfo.id,
                         building: this.$store.state.building
                     }
-                })
-                .then((resp) => {
-                    if (this.image.length != 0) {
-                        let formData = new FormData();
-                        formData.append("files", this.image);
-                        formData.append("refId", String(resp.data.data.id));
-                        formData.append("ref", "api::announcement.announcement");
-                        formData.append("field", "image");
+                });
 
-                        axios.post("https://api.resguru.app/api/upload", formData, {
-                            headers: {
-                                "Content-Type": "multipart/form-data",
-                            },
-                        }).then((result) => { 
-                            console.log("Upload file", result) 
-                        })
-                        .catch((error) => {
-                            console.log(error);
-                        })
-                    }
-                    this.$showNotification('#3A89CB', 'สร้างประกาศสำเร็จ');
-                })
-                .catch(error => {
-                    const errorMessage = error.response ? error.response.data.message : 'พบข้อผิดพลาดในการอัพเดทข้อมูล';
-                    this.$showNotification('danger', errorMessage);
-                }).finally(() => {
-                    this.getAnnouncement();
-                    this.create_ann = false;
-                })
-            } else {
-                this.$showNotification('danger', 'กรุณากรอกข้อมูลให้ครบถ้วน');
+                // Attach the image and wait for it - only report success once it lands.
+                if (this.hasSelectedImage()) {
+                    const formData = new FormData();
+                    formData.append("files", this.image);
+                    formData.append("refId", String(resp.data.data.id));
+                    formData.append("ref", "api::announcement.announcement");
+                    formData.append("field", "image");
+
+                    await axios.post("https://api.resguru.app/api/upload", formData, {
+                        headers: { "Content-Type": "multipart/form-data" },
+                    });
+                }
+
+                this.$showNotification('#3A89CB', 'สร้างประกาศสำเร็จ');
+                this.create_ann = false;
+                await this.getAnnouncement();
+            } catch (error) {
+                const errorMessage = error.response ? error.response.data.message : 'พบข้อผิดพลาดในการอัพเดทข้อมูล';
+                this.$showNotification('danger', errorMessage);
+            } finally {
+                this.creating = false;
             }
         },
-        
+
         previewImage(event) {
-            const file = event.target.files[0];
-            this.image = event.target.files[0]
-            this.image_name = event.target.files[0].name
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    this.image_e = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            }
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            this.image = file;
+            this.image_name = file.name;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.image_e = e.target.result;
+            };
+            reader.readAsDataURL(file);
         },
         
-        deleteAnnouncement() {
-            const loading = this.$vs.loading({
-                color: '#003765'
-            })
-            this.selected.forEach(element => {
-                console.log(element.id);
-                axios.delete('https://api.resguru.app/api/announcements/' + element.id)
-                    .then(() => { 
-                        this.$showNotification('warn', 'ลบประกาศสำเร็จ'); 
-                    })
-                    .catch(error => {
-                        const errorMessage = error.response ? error.response.data.message : 'Error updating information';
-                        this.$showNotification('danger', errorMessage);
-                    })
-            });
-            setTimeout(() => {
-                this.getAnnouncement()
-                this.delete_popup = false
-                loading.close()
-            }, 1000)
+        toDateInput(dt) {
+            if (!dt) return "";
+            const d = new Date(dt);
+            if (isNaN(d.getTime())) return "";
+            const y = d.getFullYear();
+            const m = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${y}-${m}-${day}`;
+        },
+
+        openEditAnnouncement(tr) {
+            this.editId = tr.id;
+            this.editTopic = tr.attributes.topic || "";
+            this.editDescription = tr.attributes.description || "";
+            this.editDateExecute = this.toDateInput(tr.attributes.date_execute);
+            this.editExistingImages = this.announcementImages(tr);
+            this.editNewImage = null;
+            this.editNewImageName = "";
+            this.editNewImagePreview = "";
+            this.edit_ann = true;
+        },
+
+        previewEditImage(event) {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            this.editNewImage = file;
+            this.editNewImageName = file.name;
+            const reader = new FileReader();
+            reader.onload = (e) => { this.editNewImagePreview = e.target.result; };
+            reader.readAsDataURL(file);
+        },
+
+        clearEditNewImage() {
+            this.editNewImage = null;
+            this.editNewImageName = "";
+            this.editNewImagePreview = "";
+        },
+
+        async updateAnnouncement() {
+            if (!this.editTopic || !this.editDescription || !this.editDateExecute) {
+                this.$showNotification('danger', 'กรุณากรอกข้อมูลให้ครบถ้วน');
+                return;
+            }
+
+            this.saving = true;
+            try {
+                await axios.put('https://api.resguru.app/api/announcements/' + this.editId, {
+                    data: {
+                        topic: this.editTopic,
+                        description: this.editDescription,
+                        date_execute: this.editDateExecute,
+                    }
+                });
+
+                if (this.editNewImage) {
+                    const formData = new FormData();
+                    formData.append("files", this.editNewImage);
+                    formData.append("refId", String(this.editId));
+                    formData.append("ref", "api::announcement.announcement");
+                    formData.append("field", "image");
+                    await axios.post("https://api.resguru.app/api/upload", formData, {
+                        headers: { "Content-Type": "multipart/form-data" },
+                    });
+                }
+
+                this.$showNotification('#3A89CB', 'แก้ไขประกาศสำเร็จ');
+                this.edit_ann = false;
+                await this.getAnnouncement();
+            } catch (error) {
+                const errorMessage = error.response ? error.response.data.message : 'พบข้อผิดพลาดในการแก้ไขข้อมูล';
+                this.$showNotification('danger', errorMessage);
+            } finally {
+                this.saving = false;
+            }
+        },
+
+        confirmDeleteAnnouncement(tr) {
+            this.deleteTargets = [tr];
+            this.delete_popup = true;
+        },
+
+        confirmDeleteSelected() {
+            if (!this.selected.length) return;
+            this.deleteTargets = [...this.selected];
+            this.delete_popup = true;
+        },
+
+        async deleteAnnouncement() {
+            if (!this.deleteTargets.length) {
+                this.delete_popup = false;
+                return;
+            }
+
+            this.deleting = true;
+            const loading = this.$vs.loading({ color: '#003765' });
+            try {
+                const results = await Promise.allSettled(
+                    this.deleteTargets.map((el) =>
+                        axios.delete('https://api.resguru.app/api/announcements/' + el.id)
+                    )
+                );
+                const failed = results.filter((r) => r.status === 'rejected').length;
+                const ok = results.length - failed;
+
+                if (ok) this.$showNotification('warn', `ลบประกาศสำเร็จ ${ok} รายการ`);
+                if (failed) this.$showNotification('danger', `ลบไม่สำเร็จ ${failed} รายการ`);
+
+                this.selected = [];
+                this.allCheck = false;
+                this.deleteTargets = [];
+                this.delete_popup = false;
+                await this.getAnnouncement();
+            } finally {
+                this.deleting = false;
+                loading.close();
+            }
         }
     }
 }
