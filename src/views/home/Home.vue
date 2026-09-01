@@ -116,9 +116,21 @@
                     <div class="p-[16px] flex flex-col gap-[12px] flex-1">
                         <div class="text-[16px] font-bold text-[#1A2733] text-custom truncate">{{ data.attributes.buildingName }}</div>
 
-                        <div class="flex items-center justify-between text-[12px] text-custom text-[#5C6B79] border-t border-[#EEF2F6] pt-[10px]">
-                            <span>สร้างเมื่อ</span>
-                            <span class="text-[#1A2733]">{{ covertDate(data.attributes.createdAt) }}</span>
+                        <div class="flex flex-col gap-[6px] text-[12px] text-custom text-[#5C6B79] border-t border-[#EEF2F6] pt-[10px]">
+                            <div class="flex items-center justify-between">
+                                <span>สร้างเมื่อ</span>
+                                <span class="text-[#1A2733]">{{ covertDate(data.attributes.createdAt) }}</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span>ใช้งานได้ถึง</span>
+                                <span :class="expClass(data.attributes.buildingExpDate)">
+                                    <template v-if="data.attributes.buildingExpDate">
+                                        {{ covertDate(data.attributes.buildingExpDate) }}
+                                        <span class="font-normal">({{ expLabel(data.attributes.buildingExpDate) }})</span>
+                                    </template>
+                                    <template v-else>-</template>
+                                </span>
+                            </div>
                         </div>
 
                         <div class="mt-auto flex items-center gap-[8px] pt-[4px]">
@@ -225,6 +237,29 @@ export default {
         },
         packageTitle(data) {
             return data?.attributes?.package?.data?.attributes?.title || '';
+        },
+        expDaysLeft(dateStr) {
+            if (!dateStr) return null
+            const exp = new Date(dateStr)
+            if (isNaN(exp.getTime())) return null
+            exp.setHours(0, 0, 0, 0)
+            const today = new Date()
+            today.setHours(0, 0, 0, 0)
+            return Math.round((exp.getTime() - today.getTime()) / 86400000)
+        },
+        expLabel(dateStr) {
+            const d = this.expDaysLeft(dateStr)
+            if (d === null) return ''
+            if (d < 0) return `เกินกำหนด ${Math.abs(d)} วัน`
+            if (d === 0) return 'หมดอายุวันนี้'
+            return `อีก ${d} วัน`
+        },
+        expClass(dateStr) {
+            const d = this.expDaysLeft(dateStr)
+            if (d === null) return 'text-[#1A2733]'
+            if (d <= 7) return 'text-[#D44769] font-bold'
+            if (d <= 30) return 'text-[#C77700] font-bold'
+            return 'text-[#1A2733]'
         },
         covertDate(createDate) {
             var date = new Date(createDate);
