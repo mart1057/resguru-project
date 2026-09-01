@@ -435,7 +435,7 @@
           <div
             class="text-custom flex justify-center items-center text-[18px] font-bold"
           >
-            เพิ่มสัญญาเช่าห้อง {{ create_room_number }}
+            {{ check_rent == 'reserved' ? 'ยืนยันการจอง' : 'เพิ่มสัญญาเช่า' }}ห้อง {{ create_room_number }}
           </div>
           <div @click="create = false" class="cursor-pointer">
             <svg
@@ -467,10 +467,17 @@
         </div>
         <!-- <div class="w-[100%] h-[1px]  mt-[24px] mb-[14px] bg-gray-200 border-0 dark:bg-gray-700"></div> -->
         <div class="pl-[20px] pr-[20px] mt-[24px]">
+          <div
+            v-if="check_rent == 'reserved'"
+            class="mb-[8px] rounded-[10px] bg-[#EAF3FB] text-[#003765] text-[13px] px-[14px] py-[10px]"
+          >
+            ห้องนี้มีการจองอยู่ — ข้อมูลผู้เช่า เงินมัดจำ และวันเข้าพัก
+            ถูกดึงมาจากการจองห้องให้แล้ว ตรวจสอบและแก้ไขได้ก่อนบันทึก
+          </div>
           <div class="mt-[24px]">
             <div class="w-[100%] flex">
-              <div class="w-[30%] text-custom flex items-start">ข้อมูลหลัก</div>
-              <dvi class="w-[70%]">
+              <div class="w-[30%] text-custom flex items-start font-bold text-[#003765]">ผู้เช่า</div>
+              <div class="w-[70%]">
                 <div class="grid grid-cols-2 text-custom">
                   <div class="flex">
                     <vs-radio
@@ -499,15 +506,22 @@
                       <span class="text-[red] mr-[2px]">*</span
                       >ค้นหาผู้เช่าด้วยอีเมล
                     </div>
-                    <div>
+                    <div class="flex items-center gap-[8px]">
                       <input
                         type="input"
-                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                        class="h-[36px] flex-1 rounded-[12px] bg-[#F3F7FA]"
                         v-model="searchEmail"
+                        @keyup.enter="getUserDetail(searchEmail)"
                       />
                       <vs-button primary @click="getUserDetail(searchEmail)"
                         >ค้นหา</vs-button
                       >
+                    </div>
+                    <div
+                      v-if="room_detail_create.id"
+                      class="text-[11px] text-[#8A97A2] mt-[4px]"
+                    >
+                      แก้ไขข้อมูลด้านล่างจะอัปเดตโปรไฟล์ผู้เช่าในระบบด้วย
                     </div>
                   </div>
                 </div>
@@ -533,9 +547,9 @@
                       v-model="room_detail_create.name"
                       required
                     />
-                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                            {{ errorFieldMessage }}
-                                        </div> -->
+                    <div v-if="fieldErrors.name" class="text-[red] text-[12px] mt-[2px]">
+                      {{ fieldErrors.name }}
+                    </div>
                   </div>
                   <div class="col-span-3 ml-[8px]">
                     <div><span class="text-[red] mr-[2px]">*</span>สกุล</div>
@@ -545,9 +559,9 @@
                       v-model="room_detail_create.last_name"
                       required
                     />
-                    <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                            {{ errorFieldMessage }}
-                                        </div> -->
+                    <div v-if="fieldErrors.last_name" class="text-[red] text-[12px] mt-[2px]">
+                      {{ fieldErrors.last_name }}
+                    </div>
                   </div>
                   <div class="ml-[8px]">
                     <div>ชื่อเล่น</div>
@@ -558,7 +572,7 @@
                     />
                   </div>
                 </div>
-              </dvi>
+              </div>
             </div>
             <div class="w-[100%] flex mt-[14px]">
               <div class="w-[30%] text-custom flex items-start"></div>
@@ -568,26 +582,33 @@
                     <span class="text-[red] mr-[2px]">*</span>เบอร์โทรศัพท์
                   </div>
                   <input
-                    type="input"
+                    type="tel"
+                    maxlength="10"
                     class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                     v-model="room_detail_create.phone"
+                    @input="onPhoneInput"
                     required
                   />
+                  <div v-if="fieldErrors.phone" class="text-[red] text-[12px] mt-[2px]">
+                    {{ fieldErrors.phone }}
+                  </div>
                 </div>
                 <div class="col-span-4 ml-[8px]">
                   <div>
-                    <span class="text-[red] mr-[2px]">*</span>หมายเลขบัตรประชาชน
+                    <span class="text-[red] mr-[2px]">*</span>หมายเลขบัตรประชาชน / พาสปอร์ต
                     <span class="text-[#5C6B79]"></span>
                   </div>
                   <input
                     type="input"
+                    maxlength="20"
                     class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
                     v-model="room_detail_create.id_card"
+                    @input="onIdCardInput"
                     required
                   />
-                  <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
+                  <div v-if="fieldErrors.id_card" class="text-[red] text-[12px] mt-[2px]">
+                    {{ fieldErrors.id_card }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -607,9 +628,9 @@
                     v-model="room_detail_create.email"
                     required
                   />
-                  <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
+                  <div v-if="fieldErrors.email" class="text-[red] text-[12px] mt-[2px]">
+                    {{ fieldErrors.email }}
+                  </div>
                 </div>
                 <div class="col-span-3 ml-[8px]">
                   <div>
@@ -621,6 +642,9 @@
                     v-model="room_detail_create.birth"
                     :required="true"
                   />
+                  <div v-if="fieldErrors.birth" class="text-[red] text-[12px] mt-[2px]">
+                    {{ fieldErrors.birth }}
+                  </div>
                 </div>
               </div>
             </div>
@@ -635,12 +659,15 @@
                     v-model="room_detail_create.address"
                     required
                   />
+                  <div v-if="fieldErrors.address" class="text-[red] text-[12px] mt-[2px]">
+                    {{ fieldErrors.address }}
+                  </div>
                 </div>
               </div>
             </div>
-            <div class="w-[100%] flex mt-[16px]">
-              <div class="w-[30%] text-custom flex items-start text-white">
-                .
+            <div class="w-[100%] flex mt-[24px]">
+              <div class="w-[30%] text-custom flex items-start font-bold text-[#003765]">
+                สัญญา
               </div>
               <div class="grid grid-cols-8 text-custom w-[70%]">
                 <div class="col-span-4">
@@ -652,54 +679,70 @@
                     v-model="room_detail_create.date_sign"
                     :required="true"
                   />
-                  <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
+                  <div v-if="fieldErrors.date_sign" class="text-[red] text-[12px] mt-[2px]">
+                    {{ fieldErrors.date_sign }}
+                  </div>
                 </div>
                 <div class="col-span-4 ml-[8px]">
                   <div>
-                    <span class="text-[red] mr-[2px]">*</span>วันสิ้นสุดสัญญา
+                    <span class="text-[red] mr-[2px]">*</span>ระยะเวลาสัญญา (เดือน)
+                  </div>
+                  <div class="flex gap-[6px] mt-[6px]">
+                    <button
+                      v-for="p in [3, 6, 12]"
+                      :key="p"
+                      type="button"
+                      @click="room_detail_create.contract_duration = String(p)"
+                      class="h-[36px] px-[12px] rounded-[12px] text-[13px] border transition-colors"
+                      :class="String(room_detail_create.contract_duration) === String(p)
+                        ? 'bg-[#003765] text-white border-[#003765]'
+                        : 'bg-[#F3F7FA] text-[#5C6B79] border-[#E3EAF1] hover:border-[#B9CCDC]'"
+                    >
+                      {{ p }} เดือน
+                    </button>
+                    <select
+                      v-model="room_detail_create.contract_duration"
+                      class="h-[36px] flex-1 rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA] border border-[#E3EAF1]"
+                    >
+                      <option value="">อื่น ๆ</option>
+                      <option v-for="n in 24" :key="n" :value="String(n)">{{ n }} เดือน</option>
+                    </select>
+                  </div>
+                  <div v-if="fieldErrors.contract_duration" class="text-[red] text-[12px] mt-[2px]">
+                    {{ fieldErrors.contract_duration }}
+                  </div>
+                </div>
+                <div class="col-span-4 mt-[16px]">
+                  <div class="flex items-center justify-between">
+                    <span>
+                      <span class="text-[red] mr-[2px]">*</span>วันสิ้นสุดสัญญา
+                    </span>
+                    <span
+                      v-if="!expDateTouched && room_detail_create.date_sign && room_detail_create.contract_duration"
+                      class="text-[11px] text-[#8A97A2]"
+                    >
+                      คำนวณอัตโนมัติ
+                    </span>
+                    <button
+                      v-else-if="expDateTouched"
+                      type="button"
+                      class="text-[11px] text-[#3A89CB]"
+                      @click="expDateTouched = false; recomputeExpDate()"
+                    >
+                      คำนวณใหม่
+                    </button>
                   </div>
                   <DateField
                     class="w-[100%] mt-[6px]"
                     v-model="room_detail_create.exp_date"
                     :required="true"
+                    @input="expDateTouched = true"
                   />
-                  <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
-                </div>
-                <div class="col-span-4 mt-[16px]">
-                  <div>
-                    <span class="text-[red] mr-[2px]">*</span
-                    >เลขมิเตอร์ค่าน้ำเดือนล่าสุด
+                  <div v-if="fieldErrors.exp_date" class="text-[red] text-[12px] mt-[2px]">
+                    {{ fieldErrors.exp_date }}
                   </div>
-                  <input
-                    type="number"
-                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                    v-model="room_detail_create.water"
-                    required
-                  />
-                  <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
                 </div>
-                <div class="col-span-4 mt-[16px] ml-[8px]">
-                  <div>
-                    <span class="text-[red] mr-[2px]">*</span
-                    >เลขมิเตอร์ค่าไฟเดือนล่าสุด
-                  </div>
-                  <input
-                    type="number"
-                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                    v-model="room_detail_create.ele"
-                    required
-                  />
-                  <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
-                </div>
-                <div class="col-span-4 mt-[16px]">
+                <div class="col-span-4 ml-[8px] mt-[16px]">
                   <div>
                     <span class="text-[red] mr-[2px]">*</span>ประเภทห้องพัก
                   </div>
@@ -716,57 +759,62 @@
                       {{ type_room.attributes.roomTypeName }}
                     </option>
                   </select>
-                  <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
-                </div>
-                <div class="col-span-4 ml-[8px] mt-[16px]">
-                  <div>
-                    <span class="text-[red] mr-[2px]">*</span>ระยะเวลาสัญญา
-                    (เดือน)
-                  </div>
-                  <select
-                    placeholder="Select"
-                    v-model="room_detail_create.contract_duration"
-                    class="h-[36px] w-[100%] mt-[6px] rounded-[12px] pl-[8px] pr-[8px] bg-[#F3F7FA]"
-                  >
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                    <option>9</option>
-                    <option>10</option>
-                    <option>11</option>
-                    <option>12</option>
-                  </select>
-                  <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
                 </div>
               </div>
             </div>
-            <div class="w-[100%] flex mt-[14px]">
-              <div class="w-[30%] text-custom flex items-start text-white">
-                .
+            <div class="w-[100%] flex mt-[24px]" v-if="check_rent != 'reserved'">
+              <div class="w-[30%] text-custom flex items-start font-bold text-[#003765]">
+                มิเตอร์เริ่มต้น
               </div>
               <div class="grid grid-cols-8 text-custom w-[70%]">
                 <div class="col-span-4">
+                  <div>
+                    <span class="text-[red] mr-[2px]">*</span>เลขมิเตอร์ค่าน้ำเดือนล่าสุด
+                  </div>
+                  <input
+                    type="number"
+                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px]"
+                    v-model="room_detail_create.water"
+                    required
+                  />
+                  <div v-if="fieldErrors.water" class="text-[red] text-[12px] mt-[2px]">
+                    {{ fieldErrors.water }}
+                  </div>
+                </div>
+                <div class="col-span-4 ml-[8px]">
+                  <div>
+                    <span class="text-[red] mr-[2px]">*</span>เลขมิเตอร์ค่าไฟเดือนล่าสุด
+                  </div>
+                  <input
+                    type="number"
+                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px]"
+                    v-model="room_detail_create.ele"
+                    required
+                  />
+                  <div v-if="fieldErrors.ele" class="text-[red] text-[12px] mt-[2px]">
+                    {{ fieldErrors.ele }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="w-[100%] flex mt-[24px]">
+              <div class="w-[30%] text-custom flex items-start font-bold text-[#003765]">
+                เงินมัดจำ
+              </div>
+              <div class="grid grid-cols-8 text-custom w-[70%]">
+                <div class="col-span-4" v-if="check_rent != 'reserved'">
                   <div>
                     <span class="text-[red] mr-[2px]">*</span>ค่าประกันห้อง
                   </div>
                   <input
                     type="number"
-                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px]"
                     v-model="room_detail_create.roomInsuranceDeposit"
                     required
                   />
-                  <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
+                  <div v-if="fieldErrors.roomInsuranceDeposit" class="text-[red] text-[12px] mt-[2px]">
+                    {{ fieldErrors.roomInsuranceDeposit }}
+                  </div>
                 </div>
                 <div class="col-span-4 ml-[8px]">
                   <div>
@@ -774,18 +822,14 @@
                   </div>
                   <input
                     type="number"
-                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
+                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px]"
                     v-model="room_detail_create.room_deposit"
                     required
                   />
-                  <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
-                                        {{ errorFieldMessage }}
-                                    </div> -->
+                  <div v-if="fieldErrors.room_deposit" class="text-[red] text-[12px] mt-[2px]">
+                    {{ fieldErrors.room_deposit }}
+                  </div>
                 </div>
-                <!-- <div class="col-span-4  ml-[8px]">
-                                    <div>เลือกห้อง</div>
-                                    <input type="input" class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA]" />
-                                </div> -->
               </div>
             </div>
           </div>
@@ -898,7 +942,7 @@
                   </div>
                 </div>
                 <div class="col-span-4 ml-[8px] mt-[14px]">
-                  <div class="text-[#003765]">หมายเลขบัตรประชาชน</div>
+                  <div class="text-[#003765]">หมายเลขบัตรประชาชน / พาสปอร์ต</div>
                   <div class="mt-[12px]">
                     {{ room_detail.id_card ? room_detail.id_card : "-" }}
                   </div>
@@ -910,7 +954,7 @@
               <div class="grid grid-cols-6 text-custom w-[70%]">
                 <div class="col-span-2 mt-[14px]">
                   <div class="text-[#003765]">วัน/เดือน/ปีเกิด (ค.ศ.)</div>
-                  <div class="mt-[12px]">{{ room_detail.birth }}</div>
+                  <div class="mt-[12px]">{{ fmtDate(room_detail.birth) }}</div>
                 </div>
               </div>
             </div>
@@ -944,14 +988,12 @@
               <div class="w-[30%] text-custom flex items-start"></div>
               <div class="grid grid-cols-8 text-custom w-[70%]">
                 <div class="col-span-4 mt-[14px]">
-                  <div class="text-[#003765]">ประเภทห่องเช่า</div>
+                  <div class="text-[#003765]">ประเภทห้องเช่า</div>
                   <div class="mt-[12px]">{{ room_detail.type_room }}</div>
                 </div>
                 <div class="col-span-4 ml-[8px] mt-[14px]">
                   <div class="text-[#003765]">ค่าประกันห้อง</div>
-                  <div class="mt-[12px]">
-                    {{ room_detail.roomInsurance_deposit }}
-                  </div>
+                  <div class="mt-[12px]">{{ money(room_detail.roomInsurance_deposit) }}</div>
                 </div>
               </div>
             </div>
@@ -960,7 +1002,16 @@
               <div class="grid grid-cols-8 text-custom w-[70%]">
                 <div class="col-span-4 mt-[14px]">
                   <div class="text-[#003765]">วันสิ้นสุดสัญญา</div>
-                  <div class="mt-[12px]">{{ fmtDate(room_detail.exp_date) }}</div>
+                  <div class="mt-[12px] flex items-center gap-[8px]">
+                    {{ fmtDate(room_detail.exp_date) }}
+                    <span
+                      v-if="expDaysLeftLabel(room_detail.exp_date)"
+                      class="text-[11px] px-[8px] py-[2px] rounded-full"
+                      :class="expDaysLeftClass(room_detail.exp_date)"
+                    >
+                      {{ expDaysLeftLabel(room_detail.exp_date) }}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -969,7 +1020,7 @@
               <div class="grid grid-cols-8 text-custom w-[70%]">
                 <div class="col-span-4 mt-[14px]">
                   <div class="text-[#003765]">วางเงินค่าเช่าล่วงหน้า</div>
-                  <div class="mt-[12px]">{{ room_detail.room_deposit }}</div>
+                  <div class="mt-[12px]">{{ money(room_detail.room_deposit) }}</div>
                 </div>
               </div>
             </div>
@@ -1056,19 +1107,31 @@ export default {
         address: "",
         date_sign: "",
         exp_date: "",
-        roomInsurance_deposit: "",
+        roomInsuranceDeposit: "",
         contract_duration: "",
         room_deposit: "",
         type_room: "",
         existing_contract_id: "",
-
       },
+      // exp_date auto-fills from date_sign + contract_duration until the admin
+      // edits it by hand (then this flag stops the overwrite).
+      expDateTouched: false,
+      // per-field validation errors, keyed by room_detail_create field name
+      fieldErrors: {},
       room_type: [],
       floorRoom: [],
       originalUserData: null,
       errorFieldMessage: "",
       id_sign: "",
     };
+  },
+  watch: {
+    "room_detail_create.date_sign"() {
+      this.recomputeExpDate();
+    },
+    "room_detail_create.contract_duration"() {
+      this.recomputeExpDate();
+    },
   },
   mounted() {
     this.filter.checkSelect = [
@@ -1093,6 +1156,82 @@ export default {
     convertDateNoTime,
     fmtDate(d) {
       return d ? convertDateNoTime(d) : "-";
+    },
+    money(v) {
+      if (v === null || v === undefined || v === "") return "-";
+      return `${this.$formatNumber(Number(v))} บาท`;
+    },
+    // days between today and a YYYY-MM-DD contract end date
+    expDaysLeft(dateStr) {
+      if (!dateStr) return null;
+      const end = new Date(dateStr + "T00:00:00");
+      if (isNaN(end.getTime())) return null;
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      return Math.round((end.getTime() - today.getTime()) / 86400000);
+    },
+    expDaysLeftLabel(dateStr) {
+      const d = this.expDaysLeft(dateStr);
+      if (d === null) return "";
+      if (d < 0) return `หมดอายุแล้ว ${Math.abs(d)} วัน`;
+      if (d === 0) return "หมดอายุวันนี้";
+      return `เหลืออีก ${d} วัน`;
+    },
+    expDaysLeftClass(dateStr) {
+      const d = this.expDaysLeft(dateStr);
+      if (d === null) return "";
+      if (d <= 7) return "bg-[#FFE1E8] text-[#D44769]";
+      if (d <= 30) return "bg-[#FFF2BC] text-[#C77700]";
+      return "bg-[#CFFBDA] text-[#0B9A3C]";
+    },
+    // Fill the tenant fields of the create form from a users-permissions user
+    // object (flat shape - id/firstName/lastName/...). Used for booked rooms
+    // (data already populated), the email search, and the idCard lookup.
+    applyUserToForm(u) {
+      if (!u) return;
+      this.room_detail_create.id = u.id || "";
+      this.room_detail_create.name = u.firstName || "";
+      this.room_detail_create.last_name = u.lastName || "";
+      this.room_detail_create.nick_name = u.nickName || "";
+      this.room_detail_create.phone = u.phone || "";
+      this.room_detail_create.email = u.email || "";
+      this.room_detail_create.id_card = u.idCard || "";
+      this.room_detail_create.address = u.contactAddress || "";
+      this.room_detail_create.birth = u.dateOfBirth || "";
+      this.searchEmail = u.email || "";
+      this.setOriginalUserData(u);
+    },
+    clearFormUser() {
+      this.room_detail_create.id = "";
+      this.room_detail_create.name = "";
+      this.room_detail_create.last_name = "";
+      this.room_detail_create.nick_name = "";
+      this.room_detail_create.phone = "";
+      this.room_detail_create.email = "";
+      this.room_detail_create.id_card = "";
+      this.room_detail_create.address = "";
+      this.room_detail_create.birth = "";
+      this.originalUserData = null;
+    },
+    // exp_date = date_sign + N months - 1 day (Thai lease convention), unless
+    // the admin has edited the end date by hand (expDateTouched).
+    recomputeExpDate() {
+      if (this.expDateTouched) return;
+      const start = this.room_detail_create.date_sign;
+      const months = parseInt(this.room_detail_create.contract_duration, 10);
+      if (!start || !months) return;
+      const d = new Date(start + "T00:00:00");
+      if (isNaN(d.getTime())) return;
+      const startDay = d.getDate();
+      d.setMonth(d.getMonth() + months);
+      // month overflow (e.g. 31 Jan + 1 -> 3 Mar): pull back to last day of the
+      // target month
+      if (d.getDate() !== startDay) d.setDate(0);
+      d.setDate(d.getDate() - 1);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const dd = String(d.getDate()).padStart(2, "0");
+      this.room_detail_create.exp_date = `${y}-${m}-${dd}`;
     },
     getFloorStorageKey() {
       return `rentalContractSelectedFloor_${this.$store.state.building}`;
@@ -1315,30 +1454,65 @@ export default {
         }),
       ]);
     },
+    onPhoneInput(e) {
+      this.room_detail_create.phone = (e.target.value || "")
+        .replace(/\D/g, "")
+        .slice(0, 10);
+    },
+    onIdCardInput(e) {
+      this.room_detail_create.id_card = (e.target.value || "")
+        .replace(/[^a-zA-Z0-9]/g, "")
+        .slice(0, 20);
+    },
     validateField(a, b) {
-      const missingBaseFields =
-        this.room_detail_create.name == "" ||
-        this.room_detail_create.last_name == "" ||
-        this.room_detail_create.email == "" ||
-        this.room_detail_create.date_sign == "" ||
-        this.room_detail_create.room_deposit == "";
-      const missingRentFields =
-        !this.isReservedContract() &&
-        (this.room_detail_create.water == "" ||
-          this.room_detail_create.ele == "" ||
-          this.room_detail_create.exp_date == "" ||
-          this.room_detail_create.roomInsuranceDeposit == "" ||
-          this.room_detail_create.contract_duration == "" ||
-          this.room_detail_create.type_room == "");
+      const f = this.room_detail_create;
+      const errors = {};
+      const req = (key, msg) => {
+        if (f[key] === "" || f[key] === null || f[key] === undefined)
+          errors[key] = msg;
+      };
 
-      if (missingBaseFields || missingRentFields) {
-        this.$showNotification("danger", "กรุณากรอกข้อมูลให้ครบถ้วน");
-        this.errorFieldMessage = "กรุณากรอกข้อมูลให้ครบถ้วน";
-      } else {
-        console.log(this.room_detail_create);
-        this.errorFieldMessage = "";
-        this.submitSign(a, b);
+      req("name", "กรุณากรอกชื่อ");
+      req("last_name", "กรุณากรอกนามสกุล");
+      req("address", "กรุณากรอกที่อยู่");
+      req("birth", "กรุณาเลือกวันเกิด");
+      req("date_sign", "กรุณาเลือกวันที่ทำสัญญา");
+      req("room_deposit", "กรุณากรอกเงินค่าเช่าล่วงหน้า");
+
+      if (!f.email) errors.email = "กรุณากรอกอีเมล";
+      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email))
+        errors.email = "รูปแบบอีเมลไม่ถูกต้อง";
+
+      if (!f.phone) errors.phone = "กรุณากรอกเบอร์โทรศัพท์";
+      else if (!/^0\d{9}$/.test(f.phone))
+        errors.phone = "เบอร์โทรศัพท์ต้องขึ้นต้นด้วย 0 และมี 10 หลัก";
+
+      if (!f.id_card) errors.id_card = "กรุณากรอกหมายเลขบัตรประชาชน / พาสปอร์ต";
+      else if (!/^\d{13}$/.test(f.id_card) && f.id_card.length < 6)
+        errors.id_card = "หมายเลขไม่ถูกต้อง";
+
+      if (!this.isReservedContract()) {
+        req("water", "กรุณากรอกเลขมิเตอร์ค่าน้ำ");
+        req("ele", "กรุณากรอกเลขมิเตอร์ค่าไฟ");
+        req("exp_date", "กรุณาเลือกวันสิ้นสุดสัญญา");
+        req("roomInsuranceDeposit", "กรุณากรอกค่าประกันห้อง");
+        req("contract_duration", "กรุณาเลือกระยะเวลาสัญญา");
+        req("type_room", "ห้องนี้ยังไม่ได้กำหนดประเภทห้อง");
+
+        if (f.date_sign && f.exp_date && f.exp_date <= f.date_sign)
+          errors.exp_date = "วันสิ้นสุดสัญญาต้องอยู่หลังวันที่ทำสัญญา";
       }
+
+      this.fieldErrors = errors;
+
+      if (Object.keys(errors).length > 0) {
+        this.$showNotification("danger", "กรุณาตรวจสอบข้อมูลที่ทำเครื่องหมายสีแดง");
+        this.errorFieldMessage = "กรุณากรอกข้อมูลให้ครบถ้วน";
+        return;
+      }
+
+      this.errorFieldMessage = "";
+      this.submitSign(a, b);
     },
     getRentalContract(code) {
       this.contract = [];
@@ -1496,51 +1670,35 @@ export default {
           this.$showNotification("danger", errorMessage);
         });
     },
-    getUserDetail(id_room) {
+    getUserDetail(email) {
+      if (!email) {
+        this.$showNotification("warning", "กรุณากรอกอีเมลผู้เช่า");
+        return;
+      }
       const loading = this.$vs.loading();
-      fetch(`https://api.resguru.app/api/users?filters[email][$eq]=${encodeURIComponent(id_room)}`)
+      fetch(
+        `https://api.resguru.app/api/users?filters[email][$eq]=${encodeURIComponent(
+          email
+        )}`
+      )
         .then((response) => response.json())
         .then((resp) => {
-          if (resp.length > 0) {
-            console.log("detail from get user", resp);
-            this.room_detail_create.id = resp[0].id;
-            this.room_detail_create.name = resp[0].firstName;
-            this.room_detail_create.last_name = resp[0].lastName;
-            this.room_detail_create.nick_name = resp[0].nickName;
-            this.room_detail_create.phone = resp[0].phone;
-            this.room_detail_create.email = resp[0].email;
-            this.room_detail_create.id_card = resp[0].idCard;
-            this.room_detail_create.address = resp[0].contactAddress;
-            // this.room_detail_create.sex = resp[0].sex
-            this.room_detail_create.birth = resp[0].dateOfBirth;
-            this.setOriginalUserData(resp[0]);
+          if (Array.isArray(resp) && resp.length > 0) {
+            this.applyUserToForm(resp[0]);
+            this.$showNotification("success", "พบผู้เช่าในระบบ");
           } else {
-            this.$showNotification("danger", "ไม่พบผู้ใช้");
-            this.room_detail_create.id = "";
-            this.room_detail_create.name = "";
-            this.room_detail_create.last_name = "";
-            this.room_detail_create.nick_name = "";
-            this.room_detail_create.phone = "";
-            this.room_detail_create.email = "";
-            this.room_detail_create.id_card = "";
-            this.room_detail_create.address = "";
-            // this.room_detail_create.sex = ''
-            this.room_detail_create.birth = "";
-            this.originalUserData = null;
+            this.clearFormUser();
+            this.$showNotification("warning", "ไม่พบผู้เช่าที่ใช้อีเมลนี้");
           }
         })
-        .catch(() => {
-          loading.close();
-          this.openNotificationRenralPage(
-            "top-right",
+        .catch((error) => {
+          this.$showNotification(
             "danger",
-            "User not found",
-            6000
+            this.$errMsg(error, "ค้นหาผู้เช่า")
           );
         })
         .finally(() => {
           loading.close();
-          console.log("object");
         });
     },
     create_sign(id_room, number, status, idCard, room_type, existingContract) {
@@ -1550,55 +1708,63 @@ export default {
       this.create_room_number = number;
       this.id_user = "";
       this.filter.Id_card = idCard;
-      this.room_detail_create.id = "";
-      this.room_detail_create.name = "";
-      this.room_detail_create.last_name = "";
-      this.room_detail_create.nick_name = "";
-      this.room_detail_create.phone = "";
-      this.room_detail_create.id_card = "";
-      this.room_detail_create.address = "";
-      // this.room_detail_create.sex = ''
-      this.room_detail_create.birth = "";
-      this.room_detail_create.email = "";
+      this.fieldErrors = {};
+      this.errorFieldMessage = "";
+      this.expDateTouched = false;
+      this.searchEmail = "";
+
+      this.clearFormUser();
       this.room_detail_create.id_room = id_room;
       this.room_detail_create.water = 0;
       this.room_detail_create.ele = 0;
-      // Carry over the amount already paid at booking (earnest) as the
-      // contract's advance-rent field - same real-world payment, admin can
-      // still edit it before signing.
+      this.room_detail_create.type_room = room_type;
+      this.room_detail_create.check_user = true;
+      this.room_detail.date_sign = "";
+      this.room_detail.exp_date = "";
+
+      // Carry over everything already captured when the room was booked in
+      // "จองห้อง" (earnest -> advance rent, insurance deposit, check-in date).
+      // All editable before signing.
       this.room_detail_create.room_deposit = existingContract?.earnest ?? "";
       this.room_detail_create.roomInsuranceDeposit =
         existingContract?.roomInsuranceDeposit ?? "";
-      this.room_detail_create.contract_duration = "";
-      this.room_detail_create.type_room = room_type;
+      this.room_detail_create.contract_duration =
+        existingContract?.contractDuration
+          ? String(existingContract.contractDuration)
+          : "";
       this.room_detail_create.date_sign = existingContract?.checkInDate ?? "";
+      this.room_detail_create.exp_date = existingContract?.contractEndDate ?? "";
       this.room_detail_create.existing_contract_id = existingContract?.id ?? "";
-      this.room_detail.date_sign = "";
-      this.room_detail.exp_date = "";
-      this.originalUserData = null;
-      this.room_detail_create.check_user = true;
-      if (idCard) {
-        // Fetch user by idCard to get email and populate form
-        fetch(`https://api.resguru.app/api/users?filters[idCard][$eq]=${encodeURIComponent(idCard)}`)
+
+      // Prefill the tenant. The booking's user is already populated on
+      // existingContract.users_permissions_user - use it directly so the admin
+      // never has to retype the tenant's details. Fall back to an idCard lookup
+      // only if that relation is missing.
+      const bookedUser = existingContract?.users_permissions_user;
+      if (bookedUser && bookedUser.id) {
+        this.applyUserToForm(bookedUser);
+      } else if (idCard) {
+        fetch(
+          `https://api.resguru.app/api/users?filters[idCard][$eq]=${encodeURIComponent(
+            idCard
+          )}`
+        )
           .then((response) => response.json())
           .then((resp) => {
-            if (resp.length > 0) {
-              const u = resp[0];
-              this.searchEmail = u.email || "";
-              this.room_detail_create.id = u.id || "";
-              this.room_detail_create.name = u.firstName || "";
-              this.room_detail_create.last_name = u.lastName || "";
-              this.room_detail_create.nick_name = u.nickName || "";
-              this.room_detail_create.phone = u.phone || "";
-              this.room_detail_create.email = u.email || "";
-              this.room_detail_create.id_card = u.idCard || "";
-              this.room_detail_create.address = u.contactAddress || "";
-              this.room_detail_create.birth = u.dateOfBirth || "";
-              this.setOriginalUserData(u);
+            if (Array.isArray(resp) && resp.length > 0) {
+              this.applyUserToForm(resp[0]);
+            } else {
+              this.$showNotification(
+                "warning",
+                "ไม่พบข้อมูลผู้เช่าจากการจอง กรุณากรอกข้อมูลผู้เช่า"
+              );
             }
           })
-          .catch(() => {
-            // Handle error if needed
+          .catch((error) => {
+            this.$showNotification(
+              "danger",
+              this.$errMsg(error, "โหลดข้อมูลผู้เช่า")
+            );
           });
       }
     },
@@ -1634,6 +1800,9 @@ export default {
                   this.createUtilityRecords(resp.data.data.id),
                   this.recordMoveInDepositIncome(),
                 ]);
+            })
+            .then(() => {
+                this.notifyContractSaved();
             })
             .catch((err) => {
                 if (err.response?.data?.error?.message) {
@@ -1672,6 +1841,7 @@ export default {
                 phone: this.room_detail_create.phone,
                 idCard: this.room_detail_create.id_card,
                 contactAddress: this.room_detail_create.address,
+                dateOfBirth: this.room_detail_create.birth,
                 password: this.room_detail_create.id_card,
                 building: this.$store.state.building,
             })
@@ -1698,6 +1868,9 @@ export default {
                   this.recordMoveInDepositIncome(),
                 ]);
             })
+            .then(() => {
+                this.notifyContractSaved();
+            })
             .catch((err) => {
                 if (err.response?.data?.error?.message) {
                     this.openNotificationRenralPage(
@@ -1722,6 +1895,23 @@ export default {
             });
     }
 },
+    notifyContractSaved() {
+      const reserved = this.isReservedContract();
+      const parts = reserved
+        ? ["บันทึกการจอง", "ดาวน์โหลดเอกสาร"]
+        : [
+            "สร้างสัญญาเช่า",
+            "อัปเดตสถานะห้องเป็น 'เข้าพักแล้ว'",
+            "บันทึกเลขมิเตอร์เริ่มต้น",
+            "บันทึกรายรับค่าเช่าล่วงหน้า",
+            "ดาวน์โหลดสัญญา (PDF)",
+          ];
+      this.$showNotification(
+        "success",
+        (reserved ? "ยืนยันการจองสำเร็จ • " : "ทำสัญญาเช่าสำเร็จ • ") +
+          parts.join(" • ")
+      );
+    },
     filterData() {
       this.contract = this.contract.filter((item) =>
         item.RoomNumber.toLowerCase().includes(this.filter.search.toLowerCase())
