@@ -435,7 +435,7 @@
           <div
             class="text-custom flex justify-center items-center text-[18px] font-bold"
           >
-            {{ check_rent == 'reserved' ? 'ยืนยันการจอง' : 'เพิ่มสัญญาเช่า' }}ห้อง {{ create_room_number }}
+            เพิ่มสัญญาเช่าห้อง {{ create_room_number }}
           </div>
           <div @click="create = false" class="cursor-pointer">
             <svg
@@ -471,8 +471,8 @@
             v-if="check_rent == 'reserved'"
             class="mb-[8px] rounded-[10px] bg-[#EAF3FB] text-[#003765] text-[13px] px-[14px] py-[10px]"
           >
-            ห้องนี้มีการจองอยู่ — ข้อมูลผู้เช่า เงินมัดจำ และวันเข้าพัก
-            ถูกดึงมาจากการจองห้องให้แล้ว ตรวจสอบและแก้ไขได้ก่อนบันทึก
+            ห้องนี้มีการจองอยู่ — ข้อมูลผู้เช่าและเงินที่ชำระตอนจองถูกกรอกให้แล้ว
+            กรอกข้อมูลที่เหลือแล้วกด "บันทึก" เพื่อทำสัญญาเช่า (สถานะห้องจะเปลี่ยนเป็น "เข้าพักแล้ว")
           </div>
           <div class="mt-[24px]">
             <div class="w-[100%] flex">
@@ -762,7 +762,7 @@
                 </div>
               </div>
             </div>
-            <div class="w-[100%] flex mt-[24px]" v-if="check_rent != 'reserved'">
+            <div class="w-[100%] flex mt-[24px]">
               <div class="w-[30%] text-custom flex items-start font-bold text-[#003765]">
                 มิเตอร์เริ่มต้น
               </div>
@@ -802,7 +802,7 @@
                 เงินมัดจำ
               </div>
               <div class="grid grid-cols-8 text-custom w-[70%]">
-                <div class="col-span-4" v-if="check_rent != 'reserved'">
+                <div class="col-span-4">
                   <div>
                     <span class="text-[red] mr-[2px]">*</span>ค่าประกันห้อง
                   </div>
@@ -1116,6 +1116,9 @@ export default {
       // exp_date auto-fills from date_sign + contract_duration until the admin
       // edits it by hand (then this flag stops the overwrite).
       expDateTouched: false,
+      // earnest already recorded as income at booking time - so converting a
+      // booking to a contract only books the additional advance-rent, if any.
+      bookedEarnest: 0,
       // per-field validation errors, keyed by room_detail_create field name
       fieldErrors: {},
       room_type: [],
@@ -1340,31 +1343,27 @@ export default {
           this.setOriginalUserData(payload);
         });
     },
-    isReservedContract() {
-      return this.check_rent == "reserved";
+    // True only for the form-open case (banner, hides "ผู้เช่าใหม่" radio).
+    // Saving this form ALWAYS creates a full "rent" contract - a booking is
+    // not a rent, it just pre-fills the data.
+    isFromBooking() {
+      return !!this.room_detail_create.existing_contract_id;
     },
     buildContractPayload(userId) {
-      const payload = {
+      return {
         room: this.room_detail_create.id_room,
-        contractStatus: this.isReservedContract() ? "reserved" : "rent",
+        contractStatus: "rent",
         users_permissions_user: userId,
         checkInDate: this.room_detail_create.date_sign,
+        contractEndDate: this.room_detail_create.exp_date,
         roomDeposit: parseInt(this.room_detail_create.room_deposit),
-      };
-
-      if (!this.isReservedContract()) {
-        payload.contractEndDate = this.room_detail_create.exp_date;
-        payload.startElectric = this.room_detail_create.ele;
-        payload.startWater = this.room_detail_create.water;
-        payload.roomInsuranceDeposit = parseInt(
+        startElectric: this.room_detail_create.ele,
+        startWater: this.room_detail_create.water,
+        roomInsuranceDeposit: parseInt(
           this.room_detail_create.roomInsuranceDeposit
-        );
-        payload.contractDuration = parseInt(
-          this.room_detail_create.contract_duration
-        );
-      }
-
-      return payload;
+        ),
+        contractDuration: parseInt(this.room_detail_create.contract_duration),
+      };
     },
     // Update the existing reserved booking's record in place when one
     // exists, instead of POSTing a second row - room.user_sign_contract is
@@ -1389,23 +1388,27 @@ export default {
         {
           data: {
             room_type: this.room_detail_create.type_room,
-            roomStatus: this.isReservedContract() ? "Reserved" : "Checked In",
+            roomStatus: "Checked In",
           },
         }
       );
     },
     recordMoveInDepositIncome() {
-      // Only the roomDeposit (มัดจำ / ค่าเช่าล่วงหน้า) counts as income at
-      // move-in - roomInsuranceDeposit is not building revenue, and a
-      // "reserved"-status contract hasn't actually moved in yet.
-      if (this.isReservedContract()) {
+      // roomDeposit (advance rent) is income at move-in; roomInsuranceDeposit
+      // is not building revenue. When converting a booking, its earnest was
+      // already recorded as income in "จองห้อง" - only book the difference.
+      const total = Number(this.room_detail_create.room_deposit) || 0;
+      const alreadyBooked = this.isFromBooking()
+        ? Number(this.bookedEarnest) || 0
+        : 0;
+      const amount = total - alreadyBooked;
+      if (amount <= 0) {
         return Promise.resolve();
       }
-
       return recordDepositIncome(
         axios,
         this.$store.state.building,
-        this.room_detail_create.room_deposit,
+        amount,
         `ค่าเช่าล่วงหน้า (ทำสัญญาเช่า ห้อง ${this.create_room_number || ''})`.trim()
       );
     },
@@ -1425,10 +1428,6 @@ export default {
       return { previousMonth: month - 1, previousYear: year };
     },
     createUtilityRecords(contractId) {
-      if (this.isReservedContract()) {
-        return Promise.resolve();
-      }
-
       const { previousMonth, previousYear } = this.getPreviousMonthYearFromCheckIn();
 
       return Promise.all([
@@ -1491,17 +1490,15 @@ export default {
       else if (!/^\d{13}$/.test(f.id_card) && f.id_card.length < 6)
         errors.id_card = "หมายเลขไม่ถูกต้อง";
 
-      if (!this.isReservedContract()) {
-        req("water", "กรุณากรอกเลขมิเตอร์ค่าน้ำ");
-        req("ele", "กรุณากรอกเลขมิเตอร์ค่าไฟ");
-        req("exp_date", "กรุณาเลือกวันสิ้นสุดสัญญา");
-        req("roomInsuranceDeposit", "กรุณากรอกค่าประกันห้อง");
-        req("contract_duration", "กรุณาเลือกระยะเวลาสัญญา");
-        req("type_room", "ห้องนี้ยังไม่ได้กำหนดประเภทห้อง");
+      req("water", "กรุณากรอกเลขมิเตอร์ค่าน้ำ");
+      req("ele", "กรุณากรอกเลขมิเตอร์ค่าไฟ");
+      req("exp_date", "กรุณาเลือกวันสิ้นสุดสัญญา");
+      req("roomInsuranceDeposit", "กรุณากรอกค่าประกันห้อง");
+      req("contract_duration", "กรุณาเลือกระยะเวลาสัญญา");
+      req("type_room", "ห้องนี้ยังไม่ได้กำหนดประเภทห้อง");
 
-        if (f.date_sign && f.exp_date && f.exp_date <= f.date_sign)
-          errors.exp_date = "วันสิ้นสุดสัญญาต้องอยู่หลังวันที่ทำสัญญา";
-      }
+      if (f.date_sign && f.exp_date && f.exp_date <= f.date_sign)
+        errors.exp_date = "วันสิ้นสุดสัญญาต้องอยู่หลังวันที่ทำสัญญา";
 
       this.fieldErrors = errors;
 
@@ -1725,6 +1722,7 @@ export default {
       // Carry over everything already captured when the room was booked in
       // "จองห้อง" (earnest -> advance rent, insurance deposit, check-in date).
       // All editable before signing.
+      this.bookedEarnest = existingContract?.earnest ?? 0;
       this.room_detail_create.room_deposit = existingContract?.earnest ?? "";
       this.room_detail_create.roomInsuranceDeposit =
         existingContract?.roomInsuranceDeposit ?? "";
@@ -1896,21 +1894,14 @@ export default {
     }
 },
     notifyContractSaved() {
-      const reserved = this.isReservedContract();
-      const parts = reserved
-        ? ["บันทึกการจอง", "ดาวน์โหลดเอกสาร"]
-        : [
-            "สร้างสัญญาเช่า",
-            "อัปเดตสถานะห้องเป็น 'เข้าพักแล้ว'",
-            "บันทึกเลขมิเตอร์เริ่มต้น",
-            "บันทึกรายรับค่าเช่าล่วงหน้า",
-            "ดาวน์โหลดสัญญา (PDF)",
-          ];
-      this.$showNotification(
-        "success",
-        (reserved ? "ยืนยันการจองสำเร็จ • " : "ทำสัญญาเช่าสำเร็จ • ") +
-          parts.join(" • ")
-      );
+      const parts = [
+        this.isFromBooking() ? "สร้างสัญญาเช่าจากการจอง" : "สร้างสัญญาเช่า",
+        "อัปเดตสถานะห้องเป็น 'เข้าพักแล้ว'",
+        "บันทึกเลขมิเตอร์เริ่มต้น",
+        "บันทึกรายรับค่าเช่าล่วงหน้า",
+        "ดาวน์โหลดสัญญา (PDF)",
+      ];
+      this.$showNotification("success", "ทำสัญญาเช่าสำเร็จ • " + parts.join(" • "));
     },
     filterData() {
       this.contract = this.contract.filter((item) =>
