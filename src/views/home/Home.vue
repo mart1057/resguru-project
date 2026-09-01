@@ -209,9 +209,15 @@ export default {
         routeToEditBuilding(buidingId) {
             this.$store.commit('setMain', true);
             this.$store.commit('setBuilding', buidingId);
+
+            const selectedBuilding = this.building.find(b => b.id === buidingId);
+            if (selectedBuilding) {
+                this.$store.commit('setBuildingInfo', [selectedBuilding]);
+            }
+
             router.push({
                 path: '/setting?tab=1&tabsetting=2',
-            })
+            }).catch(() => {})
         },
         logoUrl(data) {
             const url = data?.attributes?.buildingLogo?.data?.attributes?.url;

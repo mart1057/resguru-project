@@ -168,7 +168,7 @@
                     </div>
                     <div class="h-[107px]  rounded-[22px] mt-[14px] p-[14px]"
                         v-if="tabSetting == 1"
-                        :class="$store.state.buildingInfo[0].attributes.package.data?.attributes.title == 'Professional' ? 'bg-[#9A77FF] ' : 'bg-[#187EE7]'">
+                        :class="$store.state.buildingInfo[0]?.attributes?.package.data?.attributes.title == 'Professional' ? 'bg-[#9A77FF] ' : 'bg-[#187EE7]'">
 
                         <div>
                             <svg width="21" height="24" viewBox="0 0 21 24" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -179,7 +179,7 @@
                         </div>
                         <div class="text-white mt-[4px]">แพ็กเกจปัจจุบัน</div>
                         <div class="text-[18px] font-bold mt-[4px] text-white"> {{
-                            $store.state.buildingInfo[0].attributes.package.data?.attributes.title }}</div>
+                            $store.state.buildingInfo[0]?.attributes?.package.data?.attributes.title }}</div>
                     </div>
                 </div>
                 <div class="w-[100%] ml-[1.57vw] mt-[8px]" v-if="tabSetting == 1">
@@ -340,15 +340,15 @@
                             <div class="text-custom text-[14px] text-[#003765]">ไลน์ติดต่อ</div>
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingLine" 
-                                :disabled="$store.state.buildingInfo[0].attributes.package.data?.id === 1"
-                                :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
+                                :disabled="$store.state.buildingInfo[0]?.attributes?.package.data?.id === 1"
+                                :class="$store.state.buildingInfo[0]?.attributes?.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
                         </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765]">เฟสบุ๊ค</div>
                             <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start" type="input"
                                 v-model="buildingData.attributes.buildingFacebook" 
-                                :disabled="$store.state.buildingInfo[0].attributes.package.data?.id === 1"
-                                :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
+                                :disabled="$store.state.buildingInfo[0]?.attributes?.package.data?.id === 1"
+                                :class="$store.state.buildingInfo[0]?.attributes?.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
                         </div>
                         <div class="col-span-2">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">อินเตอร์เน็ต</div>
@@ -370,15 +370,15 @@
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">ช่วงราคาห้อง (ใส่ตัวเลขและ - ได้)</div>
                             <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
                                 v-model="buildingData.attributes.buildingPrice" placeholder="เช่น 4,000 - 8,000"
-                                :disabled="$store.state.buildingInfo[0].attributes.package.data?.id === 1"
-                                :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
+                                :disabled="$store.state.buildingInfo[0]?.attributes?.package.data?.id === 1"
+                                :class="$store.state.buildingInfo[0]?.attributes?.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
                         </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">ขนาดห้อง (ใส่ตัวเลขและ - ได้)</div>
                             <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
                                 v-model="buildingData.attributes.buildingArea" placeholder="เช่น 23 - 40"
-                                :disabled="$store.state.buildingInfo[0].attributes.package.data?.id === 1"
-                                :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
+                                :disabled="$store.state.buildingInfo[0]?.attributes?.package.data?.id === 1"
+                                :class="$store.state.buildingInfo[0]?.attributes?.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
                         </div>
                         <!-- Separator Line -->
                         <div class="mt-[20px] mb-[10px] col-span-4">
@@ -397,7 +397,7 @@
 
                         <!-- Building Image Upload Section -->
 
-                        <div class="mt-[8px] col-span-4" :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'opacity-60 pointer-events-none' : ''">
+                        <div class="mt-[8px] col-span-4" :class="$store.state.buildingInfo[0]?.attributes?.package.data?.id === 1 ? 'opacity-60 pointer-events-none' : ''">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">รูปภาพหอพัก</div>
 
 
@@ -406,17 +406,17 @@
                             
                         <!-- File Upload Area -->
                         <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 mb-4" 
-                            :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'bg-gray-200' : 'bg-gray-50'">
+                            :class="$store.state.buildingInfo[0]?.attributes?.package.data?.id === 1 ? 'bg-gray-200' : 'bg-gray-50'">
                             <div class="flex flex-col items-center justify-center">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-400 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                                 </svg>
                                 <p class="text-sm text-gray-500 mb-1">ลากไฟล์มาวางที่นี่ หรือ</p>
                                 <label for="file-upload" class="cursor-pointer bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm" 
-                                    :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'opacity-60 pointer-events-none' : ''">
+                                    :class="$store.state.buildingInfo[0]?.attributes?.package.data?.id === 1 ? 'opacity-60 pointer-events-none' : ''">
                                     เลือกไฟล์
                                     <input id="file-upload" type="file" multiple accept="image/*" @change="handleFileUpload" class="hidden" 
-                                        :disabled="$store.state.buildingInfo[0].attributes.package.data?.id === 1" />
+                                        :disabled="$store.state.buildingInfo[0]?.attributes?.package.data?.id === 1" />
                                 </label>
                                 <p class="text-xs text-gray-400 mt-2">รองรับไฟล์: JPG, PNG, GIF (ขนาดไม่เกิน 5MB)</p>
                             </div>
@@ -488,15 +488,15 @@
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">Latitude</div>
                             <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
                                 v-model="buildingData.attributes.lat" placeholder="เช่น 13.7563"
-                                :disabled="$store.state.buildingInfo[0].attributes.package.data?.id === 1"
-                                :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
+                                :disabled="$store.state.buildingInfo[0]?.attributes?.package.data?.id === 1"
+                                :class="$store.state.buildingInfo[0]?.attributes?.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
                         </div>
                         <div class="mt-[8px] col-span-2">
                             <div class="text-custom text-[14px] text-[#003765] mb-[6px]">Longitude</div>
                             <input type="input" class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] flex justify-start"
                                 v-model="buildingData.attributes.long" placeholder="เช่น 100.5333"
-                                :disabled="$store.state.buildingInfo[0].attributes.package.data?.id === 1"
-                                :class="$store.state.buildingInfo[0].attributes.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
+                                :disabled="$store.state.buildingInfo[0]?.attributes?.package.data?.id === 1"
+                                :class="$store.state.buildingInfo[0]?.attributes?.package.data?.id === 1 ? 'bg-gray-200 opacity-60 cursor-not-allowed' : ''" />
                         </div>
                     </div>
                     <!-- Popup for Lat/Long Help -->
@@ -556,8 +556,8 @@ export default {
     data() {
         return {
             tabSetting: 1,
-            userData: [],
-            buildingData: [],
+            userData: {},
+            buildingData: { attributes: {} },
             buildingStat: [],
             district: '',
             amphoe: '',
@@ -1103,8 +1103,12 @@ export default {
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getBuilding()", resp);
+                    if (!resp || !resp.data || !resp.data.attributes) {
+                        this.buildingData = { attributes: {} };
+                        return;
+                    }
                     this.buildingData = resp.data;
-                    
+
                     // Convert BuildingDueDate to dueDate if needed
                     if (this.buildingData.attributes.BuildingDueDate && !this.buildingData.attributes.dueDate) {
                         this.buildingData.attributes.dueDate = parseInt(this.buildingData.attributes.BuildingDueDate);

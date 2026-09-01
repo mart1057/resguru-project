@@ -163,9 +163,11 @@ const routes = [
     name: 'plan',
     component:Plan
   },
-  
-  
- 
+  {
+    path: '*',
+    name: 'notfound',
+    component: () => import('@/views/NotFound.vue')
+  }
 ]
 
 const originalPush = VueRouter.prototype.push;
@@ -187,5 +189,14 @@ const router = new VueRouter({
   routes
 })
 
+// A stale index.html after a deploy points at chunk hashes that no longer
+// exist -> "Loading chunk N failed". Reload once to pick up the new build
+// instead of leaving the user on a blank screen.
+router.onError((error) => {
+  const msg = String((error && error.message) || '')
+  if (/loading chunk \S+ failed|ChunkLoadError|loading css chunk/i.test(msg)) {
+    window.location.reload()
+  }
+})
 
 export default router

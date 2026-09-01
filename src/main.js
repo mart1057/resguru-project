@@ -21,7 +21,7 @@ import VueApexCharts from 'vue-apexcharts'
 
 import axios from 'axios'
 import VueAxios from 'vue-axios'
-import notification from '@/components/hook/notify';
+import notification, { shouldShow } from '@/components/hook/notify';
 import formatNumber from '@/components/hook/formatNumber';
 
 
@@ -34,31 +34,45 @@ Vue.use(VueAxios, axios)
 Vue.use(notification);
 Vue.use(formatNumber);
 
-// Safety net: a single unguarded fetch/promise or render error anywhere in
-// the app used to be able to crash the whole page to a white screen / the
-// dev-server's red error overlay instead of just failing that one action.
-// These two handlers catch anything that slips through individual
-// .catch()/try-catch blocks, log it for debugging, and show a toast
-// instead of taking down the page.
-window.addEventListener('unhandledrejection', (event) => {
-  console.error('Unhandled promise rejection:', event.reason);
+// Safety net for anything that slips past individual .catch()/try-catch.
+// The visible recovery UX for render crashes is the error boundary in App.vue;
+// these handlers just log and (at most) show ONE calm, auto-dismissing toast.
+const GENERIC_ERROR = 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง';
+
+function toastOnce(title) {
+  if (!shouldShow(title, 6000)) return;
   Vue.prototype.$vs.notification({
-    sticky: true,
+    duration: 6000,
     color: 'danger',
     position: 'top-right',
-    title: 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง',
+    title,
   });
+}
+
+function isBenign(reason) {
+  if (!reason) return true;
+  const name = reason.name || '';
+  if (/^Navigation(Duplicated|Redirected|Cancelled|Aborted)$/.test(name)) return true;
+  const msg = String(reason.message || reason);
+  if (/ResizeObserver loop/i.test(msg)) return true;
+  if (/loading chunk \S+ failed|ChunkLoadError|loading css chunk/i.test(msg)) return true; // router.onError reloads
+  if (axios.isCancel && axios.isCancel(reason)) return true;
+  return false;
+}
+
+window.addEventListener('unhandledrejection', (event) => {
+  if (isBenign(event.reason)) {
+    event.preventDefault();
+    return;
+  }
+  console.error('Unhandled promise rejection:', event.reason);
+  toastOnce(GENERIC_ERROR);
   event.preventDefault();
 });
 
 Vue.config.errorHandler = (err, vm, info) => {
   console.error('Vue error:', err, info);
-  Vue.prototype.$vs.notification({
-    sticky: true,
-    color: 'danger',
-    position: 'top-right',
-    title: 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง',
-  });
+  toastOnce(GENERIC_ERROR);
 };
 
 new Vue({
