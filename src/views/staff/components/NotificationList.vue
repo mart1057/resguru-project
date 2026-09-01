@@ -75,16 +75,39 @@
                                     data.attributes.user_sign_contract?.data?.attributes?.room?.data?.attributes?.RoomNumber }} |
                                     {{ data.attributes.title }} <span class="text-[10px] font-normal text-[#8396A6]"> {{
                                         convertDateNoTime(data.attributes.createdAt) }}</span></div>
-                                <div
-                                    class="bg-[#FFF2BC] text-[#D48C00] pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[12px]">
-                                    {{ data.attributes.serviceStatus }}</div>
+                                <div class="pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[12px]"
+                                    :style="{ backgroundColor: serviceStatusInfo(data.attributes.serviceStatus, data.attributes.appointmentDate).bg, color: serviceStatusInfo(data.attributes.serviceStatus, data.attributes.appointmentDate).text }">
+                                    {{ serviceStatusInfo(data.attributes.serviceStatus, data.attributes.appointmentDate).label }}</div>
                             </div>
                             <div class="flex justify-between mt-[4px]">
-                                <div class="flex flex-col">
+                                <div class="flex flex-col w-[550px]">
                                     <div>
-                                        <div class="text-[12px] text-[#8396A6]">รายละเอียด</div>
+                                        <div class="text-[12px] text-[#8396A6]">รายละเอียดจากผู้เช่า</div>
                                     </div>
-                                    <div class="truncate w-[550px]"> {{ data.attributes.description }}</div>
+                                    <div class="w-[550px] whitespace-pre-wrap break-words">{{ data.attributes.description || '-' }}</div>
+                                    <div v-if="tenantEvidence(data).length" class="mt-[6px]">
+                                        <div class="text-[12px] text-[#8396A6]">รูปภาพจากผู้เช่า</div>
+                                        <div class="flex flex-wrap mt-[4px]">
+                                            <img v-for="img in tenantEvidence(data)" :key="img.id" :src="img.thumb"
+                                                @click="previewImg(img.full)"
+                                                class="h-[56px] w-[56px] object-cover rounded-[8px] border mr-[6px] mb-[6px] cursor-pointer" />
+                                        </div>
+                                    </div>
+                                    <div class="mt-[6px]">
+                                        <div class="text-[12px] text-[#8396A6]">รูปภาพจากผู้ดูแล</div>
+                                        <div class="flex items-center flex-wrap mt-[4px]">
+                                            <img v-for="img in adminEvidence(data)" :key="img.id" :src="img.thumb"
+                                                @click="previewImg(img.full)"
+                                                class="h-[56px] w-[56px] object-cover rounded-[8px] border mr-[8px] mb-[6px] cursor-pointer" />
+                                            <input :id="'adminEvi-' + data.id" type="file" accept="image/*" hidden
+                                                @change="uploadAdminEvidence($event, data.id)" />
+                                            <label :for="'adminEvi-' + data.id"
+                                                class="h-[28px] px-[12px] flex items-center bg-[#165D98] text-[white] text-[12px] rounded-[10px] cursor-pointer"
+                                                :class="uploadingEvidence[data.id] ? 'opacity-50 pointer-events-none' : ''">
+                                                เพิ่มรูปภาพ
+                                            </label>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div>
                                     <div class="flex flex-col justify-between items-center">
@@ -125,8 +148,8 @@
                                                 <option disabled value="">
                                                     เลือก..
                                                 </option>
-                                                <option v-for="selectEmployee in employee" :value="selectEmployee.id">
-                                                    {{ selectEmployee.attributes.name }}
+                                                <option v-for="selectEmployee in employee" :key="selectEmployee.id" :value="selectEmployee.id">
+                                                    {{ selectEmployee.attributes.name }} {{ selectEmployee.attributes.lastname }} ({{ positionLabel(selectEmployee.attributes.position) }})
                                                 </option>
 
                                             </select>
@@ -340,7 +363,7 @@
 </template>
 <script>
 import axios from 'axios'
-import { convertDateNoTime } from '@/components/hook/hook'
+import { convertDateNoTime, serviceStatusInfo } from '@/components/hook/hook'
 
 export default {
     data() {
@@ -352,7 +375,14 @@ export default {
             employee: [],
             code: 0,
             text: '',
-            convertDateNoTime
+            positionOptions: [
+                { value: 'Cleaner', label: 'แม่บ้าน' },
+                { value: 'Technician', label: 'ช่างซ่อม' },
+                { value: 'Security', label: 'ความปลอดภัย' },
+            ],
+            uploadingEvidence: {},
+            convertDateNoTime,
+            serviceStatusInfo
         }
     },
     created() {
@@ -366,6 +396,61 @@ export default {
         this.getEmployeeOption();
     },
     methods: {
+        positionLabel(pos) {
+            const found = this.positionOptions.find((o) => o.value === pos);
+            return found ? found.label : 'แม่บ้าน';
+        },
+        // All photos attached to the report. The `evidence` field is shared:
+        // the tenant's photo is uploaded first (at report creation), so the
+        // first entry is treated as the tenant's and any later ones as the
+        // admin's.
+        evidenceList(data) {
+            const arr = data?.attributes?.evidence?.data;
+            if (!Array.isArray(arr)) return [];
+            return arr.map((img) => {
+                const attr = img?.attributes || {};
+                const thumb = attr.formats?.thumbnail?.url || attr.url || '';
+                return {
+                    id: img.id,
+                    thumb: thumb ? 'https://api.resguru.app' + thumb : '',
+                    full: attr.url ? 'https://api.resguru.app' + attr.url : '',
+                };
+            }).filter((img) => img.thumb);
+        },
+        tenantEvidence(data) {
+            return this.evidenceList(data).slice(0, 1);
+        },
+        adminEvidence(data) {
+            return this.evidenceList(data).slice(1);
+        },
+        previewImg(url) {
+            if (url) window.open(url, '_blank');
+        },
+        async uploadAdminEvidence(event, serviceId) {
+            const file = event.target.files && event.target.files[0];
+            event.target.value = '';
+            if (!file) return;
+            this.$set(this.uploadingEvidence, serviceId, true);
+            const loading = this.$vs.loading({ color: '#003765' });
+            try {
+                const formData = new FormData();
+                formData.append('files', file);
+                formData.append('refId', String(serviceId));
+                formData.append('ref', 'api::service.service');
+                formData.append('field', 'evidence');
+                await axios.post('https://api.resguru.app/api/upload', formData, {
+                    headers: { 'Content-Type': 'multipart/form-data' },
+                });
+                this.$showNotification('#3A89CB', 'อัพโหลดรูปภาพสำเร็จ');
+                await this.getService();
+            } catch (error) {
+                const errorMessage = error.response ? error.response.data.message : 'อัพโหลดรูปภาพไม่สำเร็จ';
+                this.$showNotification('danger', errorMessage);
+            } finally {
+                this.$set(this.uploadingEvidence, serviceId, false);
+                loading.close();
+            }
+        },
         filterData(text, code) {
             this.text = text
             console.log('filter', text);
@@ -383,7 +468,7 @@ export default {
         getService() {
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`https://api.resguru.app/api/services?populate=deep,3&sort[0]=id:desc&filters[serviceStatus][$ne]=completed&filters[building][id][$eq]=${this.$store.state.building}`)
+            fetch(`https://api.resguru.app/api/services?populate=deep,3&sort[0]=id:desc&filters[serviceStatus][$notIn][0]=Completed&filters[serviceStatus][$notIn][1]=Canceled&filters[building][id][$eq]=${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
                     resp.data.forEach(item => {
@@ -423,7 +508,10 @@ export default {
                 })
         },
         updateService(serviceId, empId, date) {
-            console.log();
+            if (!empId) {
+                this.$showNotification('danger', 'กรุณาเลือกพนักงานผู้ดูแล');
+                return;
+            }
             axios.put(`https://api.resguru.app/api/services/${serviceId}`, {
                 data: {
                     responEmployee: empId,
@@ -434,14 +522,14 @@ export default {
             })
                 .then((resp) => {
                     console.log(resp)
+                    this.$showNotification('#3A89CB', 'มอบหมายงานสำเร็จ')
                 })
                 .catch(error => {
                     const errorMessage = error.message ? error.message : 'Error updating information';
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
-                    this.$showNotification('#3A89CB', 'แก่ไข่ข้อมูลสำเร็จ')
-
+                    this.getService()
                 })
 
         },
@@ -467,6 +555,7 @@ export default {
             axios.put(`https://api.resguru.app/api/services/${serviceId}`, {
                 data: {
                     serviceStatus: "Completed",
+                    completeJobDate: new Date().toISOString(),
                 }
             })
                 .then((resp) => {

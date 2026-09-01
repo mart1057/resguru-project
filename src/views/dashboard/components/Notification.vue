@@ -106,9 +106,8 @@
                             </div>
                             <div class="flex flex-col justify-between items-end">
                                 <div class="pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[8px]"
-                                    :class="item.serviceStatus == 'Completed' ? 'bg-[#CFFBDA] text-[#0B9A3C]' : item.serviceStatus == 'In Progress' ? 'bg-[#FFF2BC] text-[#D48C00]' : 'bg-[#FFE1E8] text-[#EA2F5C]'">
-                                    {{ item.serviceStatus == "Completed" ? 'เสร็จสิ้น' : item.serviceStatus == "In Progress"
-                                        ? 'กำลังดำเนินการ' : 'ยกเลิก' }}</div>
+                                    :style="{ backgroundColor: serviceStatusInfo(item.serviceStatus, item.appointmentDate).bg, color: serviceStatusInfo(item.serviceStatus, item.appointmentDate).text }">
+                                    {{ serviceStatusInfo(item.serviceStatus, item.appointmentDate).label }}</div>
                                 <div class="text-[12px] text-[#8396A6]"> {{ timeDiff(item.createdAt) }}</div>
                             </div>
                         </div>
@@ -127,6 +126,7 @@
     </div>
 </template>
 <script>
+import { serviceStatusInfo } from '@/components/hook/hook'
 export default {
     props: {
         data: {
@@ -146,6 +146,7 @@ export default {
         return {
             tab: 1,
             screenW: 0,
+            serviceStatusInfo,
         }
     },
     created() {

@@ -59,9 +59,9 @@
                             <div class="flex justify-between items-center">
                                 <div class="font-bold text-[18px] truncate w-[28.125rem] ">ห้อง  {{ data.attributes.user_sign_contract.data?.attributes.room.data?.attributes.RoomNumber  }} | {{ data.attributes.title }} <span
                                         class="text-[10px] font-normal text-[#8396A6]">{{  convertDateNoTime(data.attributes.createdAt) }}</span></div>
-                                <div
-                                    class="bg-[#CFFBDA] text-[#0B9A3C] pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[12px]">
-                                    {{  data.attributes.serviceStatus }}</div>
+                                <div class="pl-[12px] pr-[12px] pt-[7px] pb-[7px] rounded-[12px]"
+                                    :style="{ backgroundColor: serviceStatusInfo(data.attributes.serviceStatus, data.attributes.appointmentDate).bg, color: serviceStatusInfo(data.attributes.serviceStatus, data.attributes.appointmentDate).text }">
+                                    {{ serviceStatusInfo(data.attributes.serviceStatus, data.attributes.appointmentDate).label }}</div>
                             </div>
                             <div class="flex justify-between mt-[4px]">
                                 <div class="flex flex-col">
@@ -77,13 +77,26 @@
                             <div class="flex justify-between mt-[4px] w-[100%]">
                                 <div class="flex flex-col w-[100%]">
                                     <div class="w-[100%]">
-                                        <div class="text-[12px] text-[#8396A6] ]">รายละเอียด</div>
+                                        <div class="text-[12px] text-[#8396A6] ]">รายละเอียดจากผู้เช่า</div>
                                     </div>
-                                    <div class="truncate w-[550px]">{{ data.attributes.description }}</div>
+                                    <div class="w-[550px] whitespace-pre-wrap break-words">{{ data.attributes.description || '-' }}</div>
+                                    <div v-if="tenantEvidence(data).length" class="mt-[6px]">
+                                        <div class="text-[12px] text-[#8396A6]">รูปภาพจากผู้เช่า</div>
+                                        <div class="flex flex-wrap mt-[4px]">
+                                            <img v-for="img in tenantEvidence(data)" :key="img.id" :src="img.thumb"
+                                                @click="previewImg(img.full)"
+                                                class="h-[56px] w-[56px] object-cover rounded-[8px] border mr-[6px] mb-[6px] cursor-pointer" />
+                                        </div>
+                                    </div>
+                                    <div v-if="adminEvidence(data).length" class="mt-[6px]">
+                                        <div class="text-[12px] text-[#8396A6]">รูปภาพจากผู้ดูแล</div>
+                                        <div class="flex flex-wrap mt-[4px]">
+                                            <img v-for="img in adminEvidence(data)" :key="img.id" :src="img.thumb"
+                                                @click="previewImg(img.full)"
+                                                class="h-[56px] w-[56px] object-cover rounded-[8px] border mr-[6px] mb-[6px] cursor-pointer" />
+                                        </div>
+                                    </div>
                                 </div>
-                                <!-- <div class="flex flex-col justify-between items-center">
-                                    <div class="text-[12px] text-[#8396A6]">7 วันที่แล้ว</div>
-                                </div> -->
                             </div>
                             <div class="grid grid-cols-2 w-[100%] gap-2">
                                 <div>
@@ -91,7 +104,9 @@
                                     <div>
                                         <div v-if="data.attributes.responEmployee.data">
                                             <div class="mt-[5px]">
-                                                <div>{{ data.attributes.responEmployee.data.attributes.name }} {{ data.attributes.responEmployee.data.attributes.lastname }}</div>
+                                                <div>{{ data.attributes.responEmployee.data.attributes.name }} {{ data.attributes.responEmployee.data.attributes.lastname }}
+                                                    <span class="text-[12px] text-[#8396A6]">({{ positionLabel(data.attributes.responEmployee.data.attributes.position) }})</span>
+                                                </div>
                                             </div>
                                         </div>
                                         <div v-else>
@@ -303,13 +318,19 @@
     </div>
 </template>
 <script>
-import { convertDateNoTime } from '@/components/hook/hook'
+import { convertDateNoTime, serviceStatusInfo } from '@/components/hook/hook'
 export default {
     data() {
         return {
             create: false,
             History: [],
-            convertDateNoTime
+            positionOptions: [
+                { value: 'Cleaner', label: 'แม่บ้าน' },
+                { value: 'Technician', label: 'ช่างซ่อม' },
+                { value: 'Security', label: 'ความปลอดภัย' },
+            ],
+            convertDateNoTime,
+            serviceStatusInfo
         }
     },
      created() {
@@ -322,10 +343,36 @@ export default {
         this.getHistory();
     },
     methods: {
+        positionLabel(pos) {
+            const found = this.positionOptions.find((o) => o.value === pos);
+            return found ? found.label : 'แม่บ้าน';
+        },
+        evidenceImages(data) {
+            const arr = data?.attributes?.evidence?.data;
+            if (!Array.isArray(arr)) return [];
+            return arr.map((img) => {
+                const attr = img?.attributes || {};
+                const thumb = attr.formats?.thumbnail?.url || attr.url || '';
+                return {
+                    id: img.id,
+                    thumb: thumb ? 'https://api.resguru.app' + thumb : '',
+                    full: attr.url ? 'https://api.resguru.app' + attr.url : '',
+                };
+            }).filter((img) => img.thumb);
+        },
+        tenantEvidence(data) {
+            return this.evidenceImages(data).slice(0, 1);
+        },
+        adminEvidence(data) {
+            return this.evidenceImages(data).slice(1);
+        },
+        previewImg(url) {
+            if (url) window.open(url, '_blank');
+        },
         getHistory() {
             const loading = this.$vs.loading()
             // fetch('https://api.resguru.app/api' + '/announcements?filters[building][id][$eq]=' + this.$store.state.building +'&poopulate=*')
-            fetch(`https://api.resguru.app/api/services?populate=deep,3&sort[0]=id:desc&filters[serviceStatus][$eq]=completed&filters[building][id][$eq]=${this.$store.state.building}`)
+            fetch(`https://api.resguru.app/api/services?populate=deep,3&sort[0]=id:desc&filters[serviceStatus][$in][0]=Completed&filters[serviceStatus][$in][1]=Canceled&filters[building][id][$eq]=${this.$store.state.building}`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getHistory()",resp.data);
