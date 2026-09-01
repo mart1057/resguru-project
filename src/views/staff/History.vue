@@ -378,7 +378,7 @@ export default {
                     console.log("Return from getHistory()",resp.data);
                     this.History = resp.data
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading history";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลประวัติ');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()

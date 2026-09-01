@@ -1088,7 +1088,7 @@ export default {
           this.room = resp.data;
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading rooms";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลห้องพัก');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -1107,7 +1107,7 @@ export default {
           this.roomFloor_id = resp.data.attributes.building_floor.data?.id;
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading room detail";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลห้องพัก');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -1130,7 +1130,7 @@ export default {
           this.roomType = resp.data;
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading room types";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลประเภทห้อง');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -1147,7 +1147,7 @@ export default {
           this.roomTypePrice = resp.data.attributes.roomPrice;
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading room type detail";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลประเภทห้อง');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -1186,7 +1186,7 @@ export default {
           }
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading floors";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลชั้น');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -1236,9 +1236,7 @@ export default {
                     this.$showNotification("#3A89CB", "แก้ไขห้องสำเร็จ");
                   })
                   .catch((error) => {
-                    const errorMessage = error.message
-                      ? error.message
-                      : "Error updating information";
+                    const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
                     this.$showNotification("danger", errorMessage);
                   })
                   .finally(() => {
@@ -1259,9 +1257,7 @@ export default {
                     this.$showNotification("#3A89CB", "สร้างห้องสำเร็จ");
                   })
                   .catch((error) => {
-                    const errorMessage = error.message
-                      ? error.message
-                      : "Error updating information";
+                    const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
                     this.$showNotification("danger", errorMessage);
                   })
                   .finally(() => {
@@ -1274,7 +1270,7 @@ export default {
             }
           })
           .catch((error) => {
-            const errorMessage = error.message ? error.message : "Error checking room number";
+            const errorMessage = this.$errMsg(error, 'ตรวจสอบหมายเลขห้อง');
             this.$showNotification("danger", errorMessage);
           })
           .finally(() => {
@@ -1297,9 +1293,7 @@ export default {
           this.$showNotification("#3A89CB", "แก้ไขห้องสำเร็จ");
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
+          const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -1320,9 +1314,7 @@ export default {
             this.$showNotification("#3A89CB", "สร้างประเภทห้องสำเร็จ");
           })
           .catch((error) => {
-            const errorMessage = error.message
-              ? error.message
-              : "Error updating information";
+            const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
             this.$showNotification("danger", errorMessage);
           })
           .finally(() => {
@@ -1342,9 +1334,7 @@ export default {
             this.$showNotification("#3A89CB", "สร้างประเภทห้องสำเร็จ");
           })
           .catch((error) => {
-            const errorMessage = error.message
-              ? error.message
-              : "Error updating information";
+            const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
             this.$showNotification("danger", errorMessage);
           })
           .finally(() => {
@@ -1364,9 +1354,7 @@ export default {
           this.$showNotification("#3A89CB", "แก้ไขประเภทห้องสำเร็จ");
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
+          const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -1477,9 +1465,7 @@ export default {
           this.$showNotification("#3A89CB", "แก้ไขชั้นสำเร็จ");
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
+          const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -1510,9 +1496,7 @@ export default {
                 this.$showNotification("#3A89CB", "ลบชั้นสำเร็จ");
               })
               .catch((error) => {
-                const errorMessage = error.message
-                  ? error.message
-                  : "Error updating information";
+                const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
                 this.$showNotification("danger", errorMessage);
               })
               .finally(() => {
@@ -1521,9 +1505,7 @@ export default {
           }
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error checking rooms on this floor";
+          const errorMessage = this.$errMsg(error);
           this.$showNotification("danger", errorMessage);
         });
     },

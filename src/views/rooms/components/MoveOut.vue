@@ -991,7 +991,7 @@ export default {
             resp.data?.attributes.users_permissions_user.data?.attributes;
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading contract detail";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลสัญญาเช่า');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -1034,7 +1034,7 @@ export default {
                 : 0;
             })
             .catch((error) => {
-              const errorMessage = error.message ? error.message : "Error loading bill detail";
+              const errorMessage = this.$errMsg(error, 'โหลดข้อมูลบิล');
               this.$showNotification("danger", errorMessage);
             })
             .finally(() => {
@@ -1358,9 +1358,7 @@ export default {
           this.$showNotification("#3A89CB", response.data.meta.message);
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
+          const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {

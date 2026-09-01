@@ -819,7 +819,7 @@ export default {
                     this.expense = Array.isArray(resp?.data) ? resp.data : []
                     this.computeExpenseCategoryTotals()
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading expenses";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลรายจ่าย');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
@@ -838,7 +838,7 @@ export default {
                     });
                     this.computeExpenseCategoryTotals();
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading expense types";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลประเภทรายจ่าย');
                     this.$showNotification("danger", errorMessage);
                 })
         },
@@ -877,7 +877,7 @@ export default {
                     this.processIncomeData();
                 })
                 .catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading building income";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลรายรับหอพัก');
                     this.$showNotification("danger", errorMessage);
                 })
         },
@@ -1059,7 +1059,7 @@ export default {
         //         }
         //         )
         //         .catch(error => {
-        //             const errorMessage = error.message ? error.message : 'Error updating information';
+        //             const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
         //             this.$showNotification('danger', errorMessage); 
         //         })
         //         .finally(()=>{
@@ -1080,7 +1080,7 @@ export default {
                     this.income = Array.isArray(resp?.data) ? resp.data : [];
                     this.processIncomeData();
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading income";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลรายรับ');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close();

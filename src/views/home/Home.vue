@@ -245,7 +245,7 @@ export default {
                     colorCode: color,
                 }
             }).catch((error) => {
-                const errorMessage = error.message ? error.message : "Error updating building color";
+                const errorMessage = this.$errMsg(error, 'บันทึกข้อมูลสีธีมหอพัก');
                 this.$showNotification("danger", errorMessage);
             })
 
@@ -259,7 +259,7 @@ export default {
                     this.building = resp.data
                     this.$store.commit('setBuildingInfo',resp.data);
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading buildings";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลหอพัก');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()

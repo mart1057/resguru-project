@@ -1923,9 +1923,7 @@ export default {
           this.$showNotification("#3A89CB", "แก้ไขราคาห้องสำเร็จ");
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
+          const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
           this.$showNotification("danger", errorMessage);
         });
     },
@@ -1940,9 +1938,7 @@ export default {
           this.$showNotification("#3A89CB", "แก้ไขค่าน้ำสำเร็จ");
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
+          const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
           this.$showNotification("danger", errorMessage);
         });
     },
@@ -1957,9 +1953,7 @@ export default {
           this.$showNotification("#3A89CB", "แก้ไขค่าไปสำเร็จ");
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
+          const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
           this.$showNotification("danger", errorMessage);
         });
     },
@@ -1974,9 +1968,7 @@ export default {
           this.$showNotification("#3A89CB", "แก้ไขค่าส่วนกลางสำเร็จ");
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
+          const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
           this.$showNotification("danger", errorMessage);
         });
     },
@@ -1991,9 +1983,7 @@ export default {
           this.$showNotification("#3A89CB", "แก้ไขสำเร็จ"); //other price
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
+          const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
           this.$showNotification("danger", errorMessage);
         });
     },
@@ -2023,25 +2013,19 @@ export default {
                       this.userProfile = response;
                     })
                     .catch((error) => {
-                      const errorMessage = error.message
-                        ? error.message
-                        : "Error loading user profile";
+                      const errorMessage = this.$errMsg(error, 'โหลดข้อมูลผู้ใช้');
                       this.$showNotification("danger", errorMessage);
                     });
                 }
               })
               .catch((error) => {
-                const errorMessage = error.message
-                  ? error.message
-                  : "Error loading contract profile";
+                const errorMessage = this.$errMsg(error, 'โหลดข้อมูลสัญญาเช่า');
                 this.$showNotification("danger", errorMessage);
               });
           }
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error loading room information";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลห้องพัก');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -2256,9 +2240,7 @@ export default {
           }
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
+          const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -2313,9 +2295,7 @@ export default {
           this.$showNotification("#3A89CB", "แก้ไขค่าห้องสำเร็จ");
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
+          const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
           this.$showNotification("danger", errorMessage);
         });
     },
@@ -2424,9 +2404,7 @@ export default {
           this.$showNotification("#3A89CB", "สร้างการชำระเงินสำเร็จ");
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
+          const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
           this.$showNotification("danger", errorMessage);
         });
       this.createPartialPayment = false;
@@ -2447,9 +2425,7 @@ export default {
           this.rebuildOutstandingFromLocalBills();
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error loading invoice information";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลใบแจ้งหนี้');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -2467,9 +2443,7 @@ export default {
           this.userReceipt = resp.data;
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error loading receipt information";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลใบเสร็จ');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -2488,9 +2462,7 @@ export default {
           this.userEvidencePayment = resp.data;
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error loading payment evidence";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลหลักฐานการชำระเงิน');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -2524,7 +2496,7 @@ export default {
     //         }
     //         )
     //         .catch(error => {
-    //             const errorMessage = error.message ? error.message : 'Error updating information';
+    //             const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
     //             this.$showNotification('danger', errorMessage);
     //         })
 
@@ -2545,7 +2517,7 @@ export default {
     //         }
     //         )
     //         .catch(error => {
-    //             const errorMessage = error.message ? error.message : 'Error updating information';
+    //             const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
     //             this.$showNotification('danger', errorMessage);
     //         })
     //     // console.log(this.userInvoice[0])
@@ -2582,7 +2554,7 @@ export default {
     //             }
     //             )
     //             .catch(error => {
-    //                 const errorMessage = error.message ? error.message : 'Error updating information';
+    //                 const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
     //                 this.$showNotification('danger', errorMessage);
     //             })
     //             .finally(() => {
@@ -2625,9 +2597,7 @@ createReceipt() {
       this.$showNotification("#3A89CB", "อนุมัติการชำระเงินสำเร็จ");
     })
     .catch((error) => {
-      const errorMessage = error.message
-        ? error.message
-        : "พบปัญหาระหว่างการแก้ไข";
+      const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
       this.$showNotification("danger", errorMessage);
     })
     .finally(() => {
@@ -2658,9 +2628,7 @@ createReceipt() {
           this.$showNotification("#3A89CB", "อนุมัติการชำระเงินสำเร็จ");
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "พบปัญหาระหว่างการแก้ไข";
+          const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -2956,7 +2924,7 @@ createReceipt() {
     //     }
     //     )
     //     .catch(error => {
-    //         const errorMessage = error.message ? error.message : 'Error updating information';
+    //         const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
     //         this.$showNotification('danger', errorMessage);
     //     })
     //     .finally(() => {
@@ -3039,9 +3007,7 @@ createReceipt() {
           this.$showNotification("#3A89CB", "ยกเลิกการชำระเงินสำเร็จ");
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
+          const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {

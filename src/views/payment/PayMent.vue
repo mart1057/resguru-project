@@ -1545,9 +1545,7 @@ export default {
           }
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
+          const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
           this.$showNotification("danger", "พบข้อผิดพลาดในการสร้างการชำระเงิน");
         })
         .finally(() => {
@@ -1635,9 +1633,7 @@ export default {
           this.$showNotification("#3A89CB", "สร้างการชำระเงินสำเร็จ");
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
+          const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
           this.$showNotification("danger", "พบข้อผิดพลาดในการสร้างการชำระเงิน");
         });
       this.createPartialPayment = false;

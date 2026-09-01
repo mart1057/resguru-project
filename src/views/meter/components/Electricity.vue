@@ -303,7 +303,7 @@ export default {
         }
       })
       .catch((error) => {
-        const errorMessage = error.message ? error.message : "Error loading electricity fees";
+        const errorMessage = this.$errMsg(error, 'โหลดข้อมูลค่าไฟ');
         this.$showNotification("danger", errorMessage);
       })
       .finally(() => {
@@ -365,9 +365,7 @@ export default {
         this.getElectricityFee(this.id, this.month, this.year, true);
       })
       .catch((error) => {
-        const errorMessage = error.response && error.response.data && error.response.data.error
-          ? error.response.data.error.message
-          : (error.message || "Error creating previous month electric fee");
+        const errorMessage = this.$errMsg(error, 'บันทึกค่าไฟเดือนก่อนหน้า');
         this.$showNotification("danger", errorMessage);
       })
       .finally(() => {
@@ -420,9 +418,7 @@ export default {
         }
       })
       .catch((error) => {
-        const errorMessage = error.message
-          ? error.message
-          : "Error updating previous month electric meter reading";
+        const errorMessage = this.$errMsg(error, 'บันทึกค่าไฟเดือนก่อนหน้า');
         this.$showNotification("danger", errorMessage);
       })
       .finally(() => {
@@ -464,9 +460,7 @@ export default {
       })
       .then((resp) => {})
       .catch((error) => {
-        const errorMessage = error.message
-          ? error.message
-          : "Error updating information";
+        const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
         this.$showNotification("danger", errorMessage);
       })
       .finally(() => {
@@ -542,9 +536,7 @@ export default {
             this.getElectricityFee(this.id, this.month, this.year);
           })
           .catch((error) => {
-            const errorMessage = error.message
-              ? error.message
-              : "Error updating some electric fees";
+            const errorMessage = this.$errMsg(error, 'บันทึกข้อมูลค่าไฟ');
             this.$showNotification("danger", errorMessage);
           })
           .finally(() => {

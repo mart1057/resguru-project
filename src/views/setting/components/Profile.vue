@@ -594,7 +594,7 @@ export default {
                     console.log("Return from getUser()", resp);
                     this.userData = resp
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading user detail";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลผู้ใช้');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
@@ -613,7 +613,7 @@ export default {
                     this.$store.commit('setUser', resp.data);
                 })
                 .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
@@ -738,7 +738,7 @@ export default {
                 console.log("Error response data:", error.response.data);
                 console.log("Error response status:", error.response.status);
             }
-            const errorMessage = error.message ? error.message : 'Error updating information';
+            const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
             this.$showNotification('danger', errorMessage);
         } finally {
             this.getBuildingData();
@@ -753,7 +753,7 @@ export default {
                     console.log("Return from getBuildingStat()", resp);
                     this.buildingStat = resp
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading building stats";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลสถิติหอพัก');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
@@ -846,7 +846,7 @@ export default {
                     console.log("Error response data:", error.response.data);
                     console.log("Error response status:", error.response.status);
                 }
-                const errorMessage = error.message ? error.message : 'Error updating information';
+                const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
                 this.$showNotification('danger', errorMessage);
             } finally {
                 this.getBuildingData();
@@ -931,7 +931,7 @@ export default {
         //         })
         //         .catch(error => {
         //             console.log("Err", error)
-        //             const errorMessage = error.message ? error.message : 'Error updating information';
+        //             const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
         //             this.$showNotification('danger', errorMessage);
         //         })
         //         .finally(() => {
@@ -994,7 +994,7 @@ export default {
                         console.log(resp)
                     })
                     .catch(error => {
-                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
                         this.$showNotification('danger', errorMessage);
                     })
                     .finally(() => { 
@@ -1022,7 +1022,7 @@ export default {
                         console.log(resp)
                     })
                     .catch(error => {
-                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
                         this.$showNotification('danger', errorMessage);
                     })
                     .finally(() => {
@@ -1061,7 +1061,7 @@ export default {
                         console.log(resp)
                     })
                     .catch(error => {
-                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
                         this.$showNotification('danger', errorMessage);
                     })
                     .finally(() => {
@@ -1088,7 +1088,7 @@ export default {
                         console.log(resp)
                     })
                     .catch(error => {
-                        const errorMessage = error.message ? error.message : 'Error updating information';
+                        const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
                         this.$showNotification('danger', errorMessage);
                     })
                     .finally(() => {
@@ -1139,7 +1139,7 @@ export default {
                     }
 
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading building data";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลหอพัก');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()

@@ -15,6 +15,27 @@ export function shouldShow(title, windowMs = 4000) {
   return true;
 }
 
+// Build a Thai, user-facing error message that still carries something support
+// can act on (an HTTP status, or "connection failed"). The full raw error is
+// logged to the console for developers.
+//   $errMsg(err, 'โหลดข้อมูลห้องพัก')
+//     -> "โหลดข้อมูลห้องพักไม่สำเร็จ (รหัส 500) — ลองใหม่อีกครั้ง หากยังพบปัญหาโปรดแจ้งทีมสนับสนุน"
+export function buildErrMsg(err, context) {
+  try {
+    console.error('[errMsg]' + (context ? ' ' + context : ''), err);
+  } catch (e) { /* noop */ }
+  const status = err && err.response && err.response.status;
+  const netFail = err && (
+    err.message === 'Failed to fetch' ||
+    err.message === 'Network Error' ||
+    err.code === 'ERR_NETWORK' ||
+    err.code === 'ECONNABORTED'
+  );
+  const ref = status ? ` (รหัส ${status})` : netFail ? ' (เชื่อมต่อไม่ได้)' : '';
+  const what = context ? `${context}ไม่สำเร็จ` : 'เกิดข้อผิดพลาด';
+  return `${what}${ref} — ลองใหม่อีกครั้ง หากยังพบปัญหาโปรดแจ้งทีมสนับสนุน`;
+}
+
 export default {
   install(Vue) {
     Vue.prototype.$showNotification = (color, title, position = 'top-right') => {
@@ -26,5 +47,7 @@ export default {
         title,
       });
     };
+
+    Vue.prototype.$errMsg = (err, context) => buildErrMsg(err, context);
   },
 };

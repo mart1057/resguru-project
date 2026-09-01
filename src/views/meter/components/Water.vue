@@ -296,7 +296,7 @@ export default {
         }
       })
       .catch((error) => {
-        const errorMessage = error.message ? error.message : "Error loading water fees";
+        const errorMessage = this.$errMsg(error, 'โหลดข้อมูลค่าน้ำ');
         this.$showNotification("danger", errorMessage);
       })
       .finally(() => {
@@ -357,9 +357,7 @@ export default {
         this.getWaterFee(this.id, this.month, this.year, true);
       })
       .catch((error) => {
-        const errorMessage = error.response && error.response.data && error.response.data.error
-          ? error.response.data.error.message
-          : (error.message || "Error creating previous month water fee");
+        const errorMessage = this.$errMsg(error, 'บันทึกค่าน้ำเดือนก่อนหน้า');
         this.$showNotification("danger", errorMessage);
       })
       .finally(() => {
@@ -398,9 +396,7 @@ export default {
       })
       .then((resp) => {})
       .catch((error) => {
-        const errorMessage = error.message
-          ? error.message
-          : "Error updating information";
+        const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
         this.$showNotification("danger", errorMessage);
       })
       .finally(() => {
@@ -456,9 +452,7 @@ export default {
         }
       })
       .catch((error) => {
-        const errorMessage = error.message
-          ? error.message
-          : "Error updating previous month water meter reading";
+        const errorMessage = this.$errMsg(error, 'บันทึกค่าน้ำเดือนก่อนหน้า');
         this.$showNotification("danger", errorMessage);
       })
       .finally(() => {
@@ -544,9 +538,7 @@ export default {
             this.getWaterFee(this.id, this.month, this.year);
           })
           .catch((error) => {
-            const errorMessage = error.message
-              ? error.message
-              : "Error updating some water fees";
+            const errorMessage = this.$errMsg(error, 'บันทึกข้อมูลค่าน้ำ');
             this.$showNotification("danger", errorMessage);
           })
           .finally(() => {

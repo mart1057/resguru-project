@@ -809,7 +809,7 @@ export default {
                     console.log("Return from getRentalContract()", resp.data);
                     this.contract = resp.data
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading contracts";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลสัญญาเช่า');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()

@@ -35,26 +35,8 @@
               </div>
             </vs-td>
             <vs-td>
-              {{
-                tr.attributes.user_sign_contract?.data &&
-                tr.attributes.user_sign_contract?.data.attributes
-                  .users_permissions_user.data &&
-                tr.attributes.user_sign_contract?.data.attributes
-                  .users_permissions_user.data.attributes.firstName
-                  ? tr.attributes.user_sign_contract?.data.attributes
-                      .users_permissions_user.data.attributes.firstName
-                  : ""
-              }}
-              {{
-                tr.attributes.user_sign_contract?.data &&
-                tr.attributes.user_sign_contract?.data.attributes
-                  .users_permissions_user.data &&
-                tr.attributes.user_sign_contract?.data.attributes
-                  .users_permissions_user.data.attributes.lastName
-                  ? tr.attributes.user_sign_contract?.data.attributes
-                      .users_permissions_user.data.attributes.lastName
-                  : ""
-              }}
+              {{ tr.attributes.user_sign_contract?.data?.attributes?.users_permissions_user?.data?.attributes?.firstName || "" }}
+              {{ tr.attributes.user_sign_contract?.data?.attributes?.users_permissions_user?.data?.attributes?.lastName || "" }}
             </vs-td>
             <vs-td>
               <div class="flex flex-wrap items-center gap-2">
@@ -157,7 +139,7 @@ export default {
           }
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading rooms";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลห้องพัก');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -173,7 +155,7 @@ export default {
           this.allServices = resp.data || [];
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading services";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลรายการแจ้ง');
           this.$showNotification("danger", errorMessage);
         });
     },

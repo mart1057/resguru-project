@@ -1368,7 +1368,7 @@ export default {
           console.log("Return from getRentalContract()", resp.data);
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading contracts";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลสัญญาเช่า');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -1406,7 +1406,7 @@ export default {
           }
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading floors";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลชั้น');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -1443,9 +1443,9 @@ export default {
             resp.data.attributes.users_permissions_user.data?.attributes.dateOfBirth;
           this.room_detail.date_sign = resp.data.attributes.checkInDate;
           this.room_detail.type_room =
-            resp.data.attributes.room.data.attributes.room_type.data.attributes.roomTypeName;
+            resp.data.attributes.room?.data?.attributes?.room_type?.data?.attributes?.roomTypeName || '';
           this.room_detail.number_room =
-            resp.data.attributes.room.data.attributes.RoomNumber;
+            resp.data.attributes.room?.data?.attributes?.RoomNumber || '';
           this.room_detail.contract_duration =
             resp.data.attributes.contractDuration;
           this.room_detail.roomInsurance_deposit =
@@ -1454,7 +1454,7 @@ export default {
           this.room_detail.exp_date = resp.data.attributes.checkInDate;
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading contract detail";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลสัญญาเช่า');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -1475,7 +1475,7 @@ export default {
           this.users = resp;
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading users";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลผู้ใช้');
           this.$showNotification("danger", errorMessage);
         });
     },
@@ -1491,7 +1491,7 @@ export default {
           this.room_type = resp.data;
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading room types";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลประเภทห้อง');
           this.$showNotification("danger", errorMessage);
         });
     },

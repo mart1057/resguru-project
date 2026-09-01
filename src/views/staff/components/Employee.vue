@@ -83,7 +83,7 @@ export default {
                     console.log("Return from getEmployer()",resp.data);
                     this.employee = resp.data
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading employees";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลพนักงาน');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()

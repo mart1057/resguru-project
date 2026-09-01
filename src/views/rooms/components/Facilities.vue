@@ -363,7 +363,7 @@ export default {
                 .then((resp) => {
                     this.items = resp.data[0]?.attributes.other_of_buildings.data;
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading facilities";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลสิ่งอำนวยความสะดวก');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     this.add_on = false
@@ -378,7 +378,7 @@ export default {
                     console.log("Return from getOther()", resp.data);
                     this.otherOfBuilding = resp.data
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading services";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลรายการแจ้ง');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
@@ -402,7 +402,7 @@ export default {
                 })
 
             }).catch((error) => {
-                const errorMessage = error.message ? error.message : "Error updating services";
+                const errorMessage = this.$errMsg(error, 'บันทึกข้อมูลรายการแจ้ง');
                 this.$showNotification("danger", errorMessage);
             }).finally(() => {
                 this.add_on = false
@@ -430,7 +430,7 @@ export default {
                         this.facilities.discount = resp.data.attributes.discount,
                         this.facilities.discountAmount = resp.data.attributes.discountAmount
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading service detail";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลรายการแจ้ง');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     this.create = true,
@@ -447,7 +447,7 @@ export default {
                 }
             })
                 .catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error updating service";
+                    const errorMessage = this.$errMsg(error, 'บันทึกข้อมูลรายการแจ้ง');
                     this.$showNotification("danger", errorMessage);
                 })
                 .finally(() => {
@@ -460,7 +460,7 @@ export default {
             const loading = this.$vs.loading()
             axios.delete('https://api.resguru.app/api' + '/other-of-buildings/' + id)
                 .catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error deleting service";
+                    const errorMessage = this.$errMsg(error, 'ลบรายการแจ้ง');
                     this.$showNotification("danger", errorMessage);
                 })
                 .finally(() => {

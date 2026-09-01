@@ -478,7 +478,7 @@ export default {
           this.buildingPayment = resp.data;
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading payment methods";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลช่องทางชำระเงิน');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -527,9 +527,7 @@ export default {
             this.getPaymentBuilding();
           })
           .catch((error) => {
-            const errorMessage = error.message
-              ? error.message
-              : "Error updating information";
+            const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
             this.$showNotification("danger", errorMessage);
           })
           .finally(() => {
@@ -551,9 +549,7 @@ export default {
           console.log(resp);
         })
         .catch((error) => {
-          const errorMessage = error.message
-            ? error.message
-            : "Error updating information";
+          const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -594,9 +590,7 @@ export default {
             console.log(resp);
           })
           .catch((error) => {
-            const errorMessage = error.message
-              ? error.message
-              : "Error updating information";
+            const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
             this.$showNotification("danger", errorMessage);
           })
           .finally(() => {

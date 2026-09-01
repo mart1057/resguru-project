@@ -488,7 +488,7 @@ export default {
                         this.room = resp.data
                     }
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading rooms";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลห้องพัก');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
@@ -511,7 +511,7 @@ export default {
                         localStorage.setItem(this.getFloorStorageKey(), String(selectedFloor.id))
                     }
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading floors";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลชั้น');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     this.getRoom()
@@ -592,7 +592,7 @@ export default {
                     roomStatus: 'Available'
                 }
             }).catch((error) => {
-                const errorMessage = error.message ? error.message : "Error updating room";
+                const errorMessage = this.$errMsg(error, 'บันทึกข้อมูลห้อง');
                 this.$showNotification("danger", errorMessage);
             }).finally(()=>{
                 this.edit_room = false,

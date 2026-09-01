@@ -131,8 +131,8 @@
                                             </vs-avatar>
                                         </div>
                                         <div class="flex justify-center items-center ml-[8px]">
-                                            {{ tr.attributes.users_created.data.attributes.firstName }}
-                                            {{ tr.attributes.users_created.data.attributes.lastName }}
+                                            {{ tr.attributes.users_created?.data?.attributes?.firstName }}
+                                            {{ tr.attributes.users_created?.data?.attributes?.lastName }}
                                         </div>
                                     </div>
                                 </vs-td>
@@ -363,8 +363,8 @@
                                                 </vs-avatar>
                                             </div>
                                             <div class="flex justify-center items-center ml-[8px]">
-                                                {{ tr.attributes.users_created.data.attributes.firstName }}
-                                                {{ tr.attributes.users_created.data.attributes.lastName }}
+                                                {{ tr.attributes.users_created?.data?.attributes?.firstName }}
+                                                {{ tr.attributes.users_created?.data?.attributes?.lastName }}
                                             </div>
                                         </div>
                                     </vs-td>
@@ -621,7 +621,7 @@ export default {
                     // Calculate current month count after fetching
                     this.getCurrentMonthAnnouncementCount();
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading announcements";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลประกาศ');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
@@ -668,7 +668,7 @@ export default {
                 this.create_ann = false;
                 await this.getAnnouncement();
             } catch (error) {
-                const errorMessage = error.response ? error.response.data.message : 'พบข้อผิดพลาดในการอัพเดทข้อมูล';
+                const errorMessage = 'พบข้อผิดพลาดในการอัพเดทข้อมูล';
                 this.$showNotification('danger', errorMessage);
             } finally {
                 this.creating = false;
@@ -756,7 +756,7 @@ export default {
                 this.edit_ann = false;
                 await this.getAnnouncement();
             } catch (error) {
-                const errorMessage = error.response ? error.response.data.message : 'พบข้อผิดพลาดในการแก้ไขข้อมูล';
+                const errorMessage = 'พบข้อผิดพลาดในการแก้ไขข้อมูล';
                 this.$showNotification('danger', errorMessage);
             } finally {
                 this.saving = false;

@@ -696,7 +696,7 @@ export default {
                     console.log("Return from getEmployer()", resp.data);
                     this.employee = resp.data
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading employees";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลพนักงาน');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
@@ -721,7 +721,7 @@ export default {
                     this.NewProfileAdmin.imageProfile = resp.imageProfile?.url
                     this.NewProfileAdmin.coverProfile = 'https://api.resguru.app' + resp.imageBanner?.url
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading user detail";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลผู้ใช้');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     this.profile_admin = true
@@ -746,7 +746,7 @@ export default {
                     // Untyped older records default to แม่บ้าน, but stay editable.
                     this.NewProfileAdmin.position = resp.data.attributes.position || 'Cleaner'
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading employee detail";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลพนักงาน');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     this.profile_admin = true
@@ -855,7 +855,7 @@ export default {
             }
             )
                 .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {
@@ -1074,7 +1074,7 @@ export default {
                     
                     let errorMessage = 'เกิดข้อผิดพลาดในการเพิ่มแอดมิน';
                     if (error.response?.data?.error?.message) {
-                        errorMessage = error.response.data.error.message;
+                        errorMessage = this.$errMsg(error);
                     }
                     
                     this.$showNotification('danger', errorMessage);

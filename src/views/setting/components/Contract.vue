@@ -193,7 +193,7 @@ export default {
                     console.log("Return from getcontract()",resp.data);
                     this.contract = resp.data
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading contract templates";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลเทมเพลตสัญญา');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
@@ -209,7 +209,7 @@ export default {
                    console.log(resp)
                 })
             .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
+            const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
             this.$showNotification('danger', errorMessage); 
             })
             .finally(()=>{
@@ -257,7 +257,7 @@ export default {
                             console.log(resp)
                         })
                     .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
                     this.$showNotification('danger', errorMessage); 
                     })
                     .finally(()=>{
@@ -297,7 +297,7 @@ export default {
                     }
                 )
                 .catch(error => {
-                const errorMessage = error.message ? error.message : 'Error updating information';
+                const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
                 this.$showNotification('danger', errorMessage); 
                 })
                 .finally(()=>{

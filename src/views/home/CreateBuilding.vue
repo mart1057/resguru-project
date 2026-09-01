@@ -329,7 +329,7 @@ export default {
                 this.$showNotification('#3A89CB', 'สร้างหอพักใหม่สำเร็จ');
                 this.routeToPlan(resp.data.data.id);
             } catch (error) {
-                const errorMessage = error.response ? error.response.data.message : 'เกิดข้อผิดพลาดในการสร้างหอพัก กรุณาลองใหม่อีกครั้ง';
+                const errorMessage = 'เกิดข้อผิดพลาดในการสร้างหอพัก กรุณาลองใหม่อีกครั้ง';
                 this.$showNotification('danger', errorMessage);
             } finally {
                 this.submitted = false;

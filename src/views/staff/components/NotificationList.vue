@@ -444,7 +444,7 @@ export default {
                 this.$showNotification('#3A89CB', 'อัพโหลดรูปภาพสำเร็จ');
                 await this.getService();
             } catch (error) {
-                const errorMessage = error.response ? error.response.data.message : 'อัพโหลดรูปภาพไม่สำเร็จ';
+                const errorMessage = 'อัพโหลดรูปภาพไม่สำเร็จ';
                 this.$showNotification('danger', errorMessage);
             } finally {
                 this.$set(this.uploadingEvidence, serviceId, false);
@@ -486,7 +486,7 @@ export default {
 
                     }
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading service requests";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลรายการแจ้ง');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
@@ -501,7 +501,7 @@ export default {
                     console.log("Return from getEmployee()", resp.data);
                     this.employee = resp.data
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading employees";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลพนักงาน');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
@@ -525,7 +525,7 @@ export default {
                     this.$showNotification('#3A89CB', 'มอบหมายงานสำเร็จ')
                 })
                 .catch(error => {
-                    const errorMessage = error.message ? error.message : 'Error updating information';
+                    const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
                     this.$showNotification('danger', errorMessage);
                 })
                 .finally(() => {

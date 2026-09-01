@@ -1052,7 +1052,7 @@ export default {
           this.roomFloor = { data: transformedData };
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading floors";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลชั้น');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -1073,7 +1073,7 @@ export default {
           this.name_user = resp[0]?.firstName + " " + resp[0]?.lastName;
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading user";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลผู้ใช้');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -1091,7 +1091,7 @@ export default {
           this.users = resp;
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading users";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลผู้ใช้');
           this.$showNotification("danger", errorMessage);
         });
     },
@@ -1103,7 +1103,7 @@ export default {
             this.id_contract
         )
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error deleting contract";
+          const errorMessage = this.$errMsg(error, 'ลบสัญญาเช่า');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -1161,7 +1161,7 @@ export default {
           }
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading user detail";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลผู้ใช้');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -1252,7 +1252,7 @@ export default {
             });
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading contract detail";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลสัญญาเช่า');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {
@@ -1390,7 +1390,7 @@ export default {
                       });
                     })
                     .catch((error) => {
-                      const errorMessage = error.message ? error.message : "Error creating contract";
+                      const errorMessage = this.$errMsg(error, 'สร้างสัญญาเช่า');
                       this.$showNotification("danger", errorMessage);
                     })
                     .finally(() => {
@@ -1427,7 +1427,7 @@ export default {
               })
               .catch((error) => {
                 loading.close();
-                const errorMessage = error.message ? error.message : "Error checking existing contract";
+                const errorMessage = this.$errMsg(error, 'ตรวจสอบสัญญาเช่า');
                 this.$showNotification("danger", errorMessage);
               });
           } else {
@@ -1544,7 +1544,7 @@ export default {
                   });
               })
               .catch((error) => {
-                const errorMessage = error.message ? error.message : "Error creating user";
+                const errorMessage = this.$errMsg(error, 'สร้างผู้ใช้');
                 this.$showNotification("danger", errorMessage);
               })
               .finally(() => {
@@ -1610,7 +1610,7 @@ export default {
             });
           })
           .catch((error) => {
-            const errorMessage = error.message ? error.message : "Error moving room";
+            const errorMessage = this.$errMsg(error, 'ย้ายห้อง');
             this.$showNotification("danger", errorMessage);
           })
           .finally(() => {
@@ -1634,7 +1634,7 @@ export default {
           )
           .then(() => {})
           .catch((error) => {
-            const errorMessage = error.message ? error.message : "Error moving room";
+            const errorMessage = this.$errMsg(error, 'ย้ายห้อง');
             this.$showNotification("danger", errorMessage);
           })
           .finally(() => {

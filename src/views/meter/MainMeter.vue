@@ -936,7 +936,7 @@ export default {
           }
         })
         .catch((error) => {
-          const errorMessage = error.message ? error.message : "Error loading floors";
+          const errorMessage = this.$errMsg(error, 'โหลดข้อมูลชั้น');
           this.$showNotification("danger", errorMessage);
         })
         .finally(() => {

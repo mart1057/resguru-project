@@ -134,7 +134,7 @@ export default {
                         this.commonRoom = resp.data
                     }
                 }).catch((error) => {
-                    const errorMessage = error.message ? error.message : "Error loading common fees";
+                    const errorMessage = this.$errMsg(error, 'โหลดข้อมูลค่าส่วนกลาง');
                     this.$showNotification("danger", errorMessage);
                 }).finally(() => {
                     loading.close()
@@ -152,7 +152,7 @@ export default {
                     }, 1000)
                 })
             .catch(error => {
-            const errorMessage = error.message ? error.message : 'Error updating information';
+            const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
             this.$showNotification('danger', errorMessage); 
             })
             .finally(()=>{
@@ -176,7 +176,7 @@ export default {
                             }
                         }).catch((error) => {
                             loading.close()
-                            const errorMessage = error.message ? error.message : "Error updating common fees";
+                            const errorMessage = this.$errMsg(error, 'บันทึกข้อมูลค่าส่วนกลาง');
                             this.$showNotification("danger", errorMessage);
                         })
                     }
