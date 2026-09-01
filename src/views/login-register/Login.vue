@@ -61,14 +61,15 @@
                                 @click="tab = 3">ลืมรหัสผ่าน</div>
                         </div>
                     </div>
-                    <div v-if="$store.state.err" class="flex justify-center text-[red]">
-                        <div>{{ dataRegister.err }}</div>
+                    <div v-if="loginError" class="flex justify-center text-red-500 text-[13px] mt-[8px]">
+                        <div>{{ loginError }}</div>
                     </div>
                     <div class="mt-[18px]">
-                        <button @click="loginSubmit()"
-                            class="bg-[#003765] w-[100%] h-[38px] rounded-[12px] text-center text-[white]">เข้าสู่ระบบ</button>
-                        <button @click="tab = 2"
-                            class="bg-[#3A89CB] w-[100%] h-[38px] rounded-[12px] text-center text-[white] mt-[8px]">คุณยังไม่มีบัญชี
+                        <button @click="loginSubmit()" type="button" :disabled="loggingIn"
+                            class="bg-[#003765] w-[100%] h-[38px] rounded-[12px] text-center text-[white] hover:bg-[#004080] disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors">
+                            {{ loggingIn ? 'กำลังเข้าสู่ระบบ...' : 'เข้าสู่ระบบ' }}</button>
+                        <button @click="tab = 2" type="button" :disabled="loggingIn"
+                            class="bg-[#3A89CB] w-[100%] h-[38px] rounded-[12px] text-center text-[white] mt-[8px] hover:bg-[#2980B9] disabled:opacity-60 transition-colors">คุณยังไม่มีบัญชี
                             ? กดสร้างบัญชีที่นี่</button>
                     </div>
                 </div>
@@ -504,7 +505,7 @@
                     </div>
                     <div class="mt-[18px]">
                         <button @click="resetPass()"
-                            class="bg-[#003765] w-[100%] h-[38px] rounded-[12px] text-center text-[white] hover:bg-[#004080] transition-colors">Reset</button>
+                            class="bg-[#003765] w-[100%] h-[38px] rounded-[12px] text-center text-[white] hover:bg-[#004080] transition-colors">ยืนยัน</button>
                     </div>
                 </div>
             </div>
@@ -521,6 +522,8 @@ export default {
         return {
             Logo01,
             tab: 1,
+            loggingIn: false,
+            loginError: '',
             value: '',
             days: [...Array(31).keys()].map((day) => day + 1),
             months: [
@@ -594,7 +597,6 @@ export default {
     },
     created() {
         this.runYears()
-        this.$router.push('/')
     },
     methods: {
         runYears() {
@@ -714,10 +716,24 @@ export default {
                 text: 'กรุณาลองใหม่อีกครั้ง'
             })
         },
-        loginSubmit() {
-            const loading = this.$vs.loading()
-            this.$store.dispatch('loginUser', this.dataLogin)
-            loading.close()
+        async loginSubmit() {
+            if (this.loggingIn) return;
+            this.loginError = '';
+            if (!this.dataLogin.user || !this.dataLogin.pass) {
+                this.loginError = 'กรุณากรอกอีเมลและรหัสผ่าน';
+                return;
+            }
+            this.loggingIn = true;
+            try {
+                const res = await this.$store.dispatch('loginUser', this.dataLogin);
+                if (res && res.ok) {
+                    this.$router.push('/').catch(() => {});
+                } else {
+                    this.loginError = (res && res.message) || 'เข้าสู่ระบบไม่สำเร็จ';
+                }
+            } finally {
+                this.loggingIn = false;
+            }
         },
         registerSubmit() {
             // Clear previous errors
@@ -825,7 +841,7 @@ export default {
             };
         },
         forgotPass() {
-            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             if (emailPattern.test(this.email_forgot)) {
                 this.errorsForgotPass = ''
                 const loading = this.$vs.loading()
@@ -849,37 +865,34 @@ export default {
             }
         },
         resetPass() {
-            if (this.reset_pass != '' & this.reset_pass_con != '' & this.code_reset != '') {
-                if (this.reset_pass == this.reset_pass_con) {
-                    const loading = this.$vs.loading()
-                    axios.post('https://api.resguru.app/api' + '/auth/reset-password', {
-                        "password": this.reset_pass,
-                        "passwordConfirmation": this.reset_pass_con,
-                        "code": this.code_reset
-                    })
-                        .then((resp) => {
-                            this.openNotification3('top-right', 'success', 6000)
-                            this.reset_pass = '';
-                            this.reset_pass_con = '';
-                            this.code_reset = '';
-                            this.errorsResrtPass = '';
-                            loading.close()
-                            setTimeout(() => {
-                                this.tab = 1
-                            }, 300)
-                        })
-                        .catch(() => {
-                            loading.close()
-                            this.$showNotification('danger', 'Incorrect code provided');
-                        })
-                }
-                else {
-                    this.$showNotification('danger', 'Passwords do not match');
-                }
+            if (!this.reset_pass || !this.reset_pass_con || !this.code_reset) {
+                this.$showNotification('danger', 'กรุณากรอกข้อมูลให้ครบถ้วน');
+                return;
             }
-            else {
-                this.$showNotification('danger', 'Please fill out the information completely.');
+            if (this.reset_pass !== this.reset_pass_con) {
+                this.$showNotification('danger', 'รหัสผ่านไม่ตรงกัน');
+                return;
             }
+            const loading = this.$vs.loading()
+            axios.post('https://api.resguru.app/api/auth/reset-password', {
+                "password": this.reset_pass,
+                "passwordConfirmation": this.reset_pass_con,
+                "code": this.code_reset
+            })
+                .then(() => {
+                    this.openNotification3('top-right', 'success', 6000)
+                    this.reset_pass = '';
+                    this.reset_pass_con = '';
+                    this.code_reset = '';
+                    this.errorsResrtPass = '';
+                    this.tab = 1
+                })
+                .catch(() => {
+                    this.$showNotification('danger', 'รหัสยืนยันไม่ถูกต้อง');
+                })
+                .finally(() => {
+                    loading.close()
+                })
         }
     },
     watch: {

@@ -76,7 +76,7 @@
                                 <div>
                                     <div class="font-semibold text-gray-700">ชื่อหอพัก <span class="text-red-500">*</span></div>
                                     <div class="mt-[6px]">
-                                        <input type="input" v-model="buildingName"
+                                        <input type="input" v-model="buildingName" @input="errors.buildingName = ''"
                                             :class="['h-[40px] w-[100%] rounded-[12px] bg-resguru-light px-3 border focus:border-resguru-blue focus:outline-none', errors.buildingName ? 'border-red-500' : 'border-gray-200']" />
                                         <div v-if="errors.buildingName" class="text-red-500 text-sm mt-1">
                                             {{ errors.buildingName }}
@@ -171,7 +171,7 @@
                                 <div>
                                     <div class="font-semibold text-gray-700">หอพักเก็บภาษีหรือไม่ <span class="text-red-500">*</span></div>
                                     <div class="mt-[6px]">
-                                        <vs-select v-model="buildingTax"
+                                        <vs-select v-model="buildingTax" @input="errors.buildingTax = ''"
                                             :class="{'border border-red-500 rounded-[12px]': errors.buildingTax}">
                                             <vs-option label="0%" value="0">0%</vs-option>
                                             <vs-option label="7%" value="7">7%</vs-option>
@@ -184,7 +184,7 @@
                                 <div>
                                     <div class="font-semibold text-gray-700">วันครบรอบชำระเงิน <span class="text-red-500">*</span></div>
                                     <div class="mt-[6px]">
-                                        <vs-select v-model="buildingDueDate"
+                                        <vs-select v-model="buildingDueDate" @input="errors.buildingDueDate = ''"
                                             :class="{'border border-red-500 rounded-[12px]': errors.buildingDueDate}">
                                             <vs-option v-for="day in 29" :key="day-1" :label="`${day-1}`" :value="day-1">
                                                 {{ day-1 }}
@@ -200,8 +200,9 @@
                     </div>
                 </div>
                 <div class="pl-[50px] pr-[50px] flex justify-end mt-[20px]">
-                    <button @click="createBuilding()"
-                        class="h-[40px] bg-resguru-navy text-white pl-[28px] pr-[28px] text-center rounded-[12px] font-semibold hover:bg-[#004080] transition-colors">สร้าง</button>
+                    <button @click="createBuilding()" type="button" :disabled="submitted"
+                        class="h-[40px] bg-resguru-navy text-white pl-[28px] pr-[28px] text-center rounded-[12px] font-semibold hover:bg-[#004080] disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors">
+                        {{ submitted ? 'กำลังสร้าง...' : 'สร้าง' }}</button>
                 </div>
             </div>
         </div>
@@ -239,20 +240,18 @@ export default {
         }
     },
     mounted() {
-        this.$store.state.main = false
+        this.$store.commit('setMain', false)
     },
     methods: {
         previewImage(event) {
-            const file = event.target.files[0];
-            this.tempBuilding = event.target.files[0];
-            if (file) {
-                // Read the file as a URL
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    this.imageUrl = e.target.result; // Set the image URL for preview
-                };
-                reader.readAsDataURL(file);
-            }
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+            this.tempBuilding = file;
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                this.imageUrl = e.target.result;
+            };
+            reader.readAsDataURL(file);
         },
         validateForm() {
             // Reset all errors
@@ -284,62 +283,57 @@ export default {
             
             return isValid;
         },
-        createBuilding() {
+        async createBuilding() {
+            if (this.submitted) return;
             if (!this.validateForm()) {
                 this.$showNotification('danger', "กรุณากรอกข้อมูลที่จำเป็น");
                 return;
             }
-            
-            // Proceed with form submission
-            axios.post('https://api.resguru.app/api' + '/buildings', {
-                data: {
-                    buildingName: this.buildingName,
-                    buildingAddress: this.buildingAddress,
-                    user_owner: this.$store.state.userInfo.id,
-                    buildingProvince: this.buildingProvince,
-                    buildingDistrict: this.buildingDistrict,
-                    buildingSubDistrict: this.buildingSubDistrict,
-                    buildingPostcode: this.buildingPostcode,
-                    waterUnitPrice: 0,
-                    electricUnitPrice: 0,
-                    communalUnitPrice: 0,
-                    buildingPhone: this.buildingPhone,
-                    buildingEmail: this.buildingEmail,
-                    buildingLine: this.buildingLine,
-                    buildingFacebook: this.buildingFacebook,
-                    vat_rate: this.buildingTax,
-                    BuildingDueDate: this.buildingDueDate,
-                    publishedAt: null,
-                    colorCode: '#E0ECE4'
-                }
-            })
-            .then((resp) => {
-                if (this.tempBuilding.length != 0) {
-                    let formData = new FormData();
+
+            this.submitted = true;
+            try {
+                const resp = await axios.post('https://api.resguru.app/api/buildings', {
+                    data: {
+                        buildingName: this.buildingName,
+                        buildingAddress: this.buildingAddress,
+                        user_owner: this.$store.state.userInfo.id,
+                        buildingProvince: this.buildingProvince,
+                        buildingDistrict: this.buildingDistrict,
+                        buildingSubDistrict: this.buildingSubDistrict,
+                        buildingPostcode: this.buildingPostcode,
+                        waterUnitPrice: 0,
+                        electricUnitPrice: 0,
+                        communalUnitPrice: 0,
+                        buildingPhone: this.buildingPhone,
+                        buildingEmail: this.buildingEmail,
+                        buildingLine: this.buildingLine,
+                        buildingFacebook: this.buildingFacebook,
+                        vat_rate: this.buildingTax,
+                        BuildingDueDate: this.buildingDueDate,
+                        publishedAt: null,
+                        colorCode: '#E0ECE4'
+                    }
+                });
+
+                if (this.tempBuilding instanceof File) {
+                    const formData = new FormData();
                     formData.append("files", this.tempBuilding);
                     formData.append("refId", String(resp.data.data.id));
                     formData.append("ref", "api::building.building");
                     formData.append("field", "buildingLogo");
-
-                    axios.post("https://api.resguru.app/api/upload", formData, {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                        },
-                    })
-                    .then((result) => { console.log("Upload file", result) })
-                    .catch((error) => {
-                        console.error("Error uploading building logo:", error);
-                    })
+                    await axios.post("https://api.resguru.app/api/upload", formData, {
+                        headers: { "Content-Type": "multipart/form-data" },
+                    });
                 }
-                this.routeToPlan(resp.data.data.id)
-            })
-            .catch(error => {
-                const errorMessage = error.message ? error.message : 'Error updating information';
-                this.$showNotification('danger', errorMessage);
-            })
-            .finally(() => {
+
                 this.$showNotification('#3A89CB', 'สร้างหอพักใหม่สำเร็จ');
-            })
+                this.routeToPlan(resp.data.data.id);
+            } catch (error) {
+                const errorMessage = error.response ? error.response.data.message : 'เกิดข้อผิดพลาดในการสร้างหอพัก กรุณาลองใหม่อีกครั้ง';
+                this.$showNotification('danger', errorMessage);
+            } finally {
+                this.submitted = false;
+            }
         },
         setTempUploadbuildingProfile() {
             this.tempBuilding = this.$refs.buildingProfile.files[0]

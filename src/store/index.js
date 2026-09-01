@@ -37,37 +37,37 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    loginUser({ commit }, user) {
-      axios.post('https://api.resguru.app/api' + '/auth/local', {
-        "identifier": user.user,
-        "password": user.pass
-      }).then((resp) => {
-        console.log(resp.data);
-        fetch('https://api.resguru.app/api/users/' + resp.data.user.id + '?populate=*')
-          .then(response => response.json())
-          .then((resp2) => {
-            if (resp2.role.id == 6) {
-              commit('setUser', resp2)
-              commit('setLogin', true)
-              localStorage.setItem("is_login", true)
-            }
-            else{
-              const errorMessage = 'บัญชีของคุณไม่มีสิทธิ์เข้าใช้งาน';
-              // this.$showNotification('danger', errorMessage);
-              alert(errorMessage)
-            }
-          })
-          .catch((err) => {
-            console.log(err)
-            alert('เกิดข้อผิดพลาด กรุณาลองเข้าสู่ระบบใหม่อีกครั้ง')
-          })
-      })
-        .catch(error => {
-          console.log(error)
-          const errorMessage = 'Email หรือ Password ผิดพลาด';
-          // this.$showNotification('danger', errorMessage); 
-          alert(errorMessage)
+    // Resolves to { ok: true } on success or { ok: false, message } on any
+    // failure - the caller (Login.vue) shows the message inline. Never throws,
+    // so it can't trip the global unhandledrejection toast in main.js.
+    async loginUser({ commit }, user) {
+      let auth
+      try {
+        auth = await axios.post('https://api.resguru.app/api/auth/local', {
+          identifier: user.user,
+          password: user.pass,
         })
+      } catch (error) {
+        console.log(error)
+        return { ok: false, message: 'อีเมลหรือรหัสผ่านไม่ถูกต้อง' }
+      }
+
+      try {
+        const detailRes = await fetch(
+          'https://api.resguru.app/api/users/' + auth.data.user.id + '?populate=*'
+        )
+        const detail = await detailRes.json()
+
+        if (detail && detail.role && detail.role.id == 6) {
+          commit('setUser', detail)
+          commit('setLogin', true)
+          return { ok: true }
+        }
+        return { ok: false, message: 'บัญชีของคุณไม่มีสิทธิ์เข้าใช้งาน' }
+      } catch (err) {
+        console.log(err)
+        return { ok: false, message: 'เกิดข้อผิดพลาด กรุณาลองเข้าสู่ระบบใหม่อีกครั้ง' }
+      }
     }
   },
   modules: {
