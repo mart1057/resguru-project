@@ -16,7 +16,7 @@
       </div>
     </div>
     <div v-else-if="$store.state.login">
-      <Toolbar v-if="$store.state.main == true" />
+      <Toolbar v-if="$store.state.main === true && $route.name !== 'home' && Array.isArray($store.state.buildingInfo) && $store.state.buildingInfo.length" />
       <router-view :class="$store.state.main == true ? 'pl-[20px] pr-[20px] pt-[10px]' : ''" />
     </div>
     <div v-else>

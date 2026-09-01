@@ -24,7 +24,7 @@
     </svg>
 </div>
                         <div class="ml-[16px] flex flex-col justify-between">
-                            <div class="text-[22px] font-bold">{{ $store.state.buildingInfo[0].attributes.buildingName }}</div>
+                            <div class="text-[22px] font-bold">{{ $store.state.buildingInfo[0]?.attributes?.buildingName }}</div>
                             <div class="text-[16px] text-[#003765]">{{ $route.meta.desc }}</div>
                             <!-- 8396A6  -->
                         </div>
@@ -124,7 +124,7 @@
                         </div>
                         <div @click="routerTo('/plan')"
                             class=" ml-[10px] h-[15px] bg-[#E7E2F7] pl-[12px] pr-[12px] pt-[12px] pb-[12px] rounded-[13px] text-[#9A77FF] text-center cursor-pointer flex items-center">
-                            {{ $store.state.buildingInfo[0].attributes.package.data?.attributes.title }}
+                            {{ $store.state.buildingInfo[0]?.attributes?.package?.data?.attributes?.title }}
                         </div>
 
                         <!-- Profile popup: transparent overlay for outside-click-to-close -->
@@ -136,15 +136,15 @@
                                     :class="profile_popup ? 'bg-black/10' : 'hover:bg-black/[0.06]'"
                                     @click.stop="profile_popup = !profile_popup"
                                 >
-                                    <vs-avatar size="40" v-if="$store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.url">
-                                        <img :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.url" />
+                                    <vs-avatar size="40" v-if="$store.state.buildingInfo[0]?.attributes?.buildingLogo?.data?.attributes?.url">
+                                        <img :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes?.buildingLogo?.data?.attributes?.url" />
                                     </vs-avatar>
                                     <div v-else class="w-[40px] h-[40px] rounded-full bg-[#003765] flex items-center justify-center overflow-hidden">
                                         <img src="../assets/img/Logo-01.png" class="w-[26px] h-[26px] object-contain" />
                                     </div>
                                     <div class="ml-[8px]">
                                         <div class="text-[13px] font-bold text-[#003765] leading-tight">
-                                            {{ $store.state.buildingInfo[0].attributes.buildingName }}
+                                            {{ $store.state.buildingInfo[0]?.attributes?.buildingName }}
                                         </div>
                                         <div class="text-[12px] text-[#8396A6]">
                                             {{ $store.state.userInfo.firstName }} {{ $store.state.userInfo.lastName }}
@@ -163,9 +163,9 @@
                                     <div class="content-tooltip p-[8px]">
                                         <div class="flex">
                                             <div>
-                                                <vs-avatar size="40" v-if="$store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.url">
+                                                <vs-avatar size="40" v-if="$store.state.buildingInfo[0]?.attributes?.buildingLogo?.data?.attributes?.url">
                                                     <img
-                                                        :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes.buildingLogo?.data?.attributes.url" />
+                                                        :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes?.buildingLogo?.data?.attributes?.url" />
                                                 </vs-avatar>
                                                 <div v-else class="w-[40px] h-[40px] rounded-full bg-[#003765] flex items-center justify-center overflow-hidden">
                                                     <img src="../assets/img/Logo-01.png" class="w-[26px] h-[26px] object-contain" />
@@ -173,14 +173,14 @@
                                             </div>
                                             <div
                                                 class="flex items-center text-[16px] font-bold ml-[8px] text-custom w-[150px]">
-                                                {{ $store.state.buildingInfo[0]?.attributes.buildingName }}</div>
+                                                {{ $store.state.buildingInfo[0]?.attributes?.buildingName }}</div>
                                         </div>
                                         <div
                                             class="w-[100%] h-[1px]  mt-[12px] mb-[12px] bg-gray-200 border-0 dark:bg-gray-700">
                                         </div>
                                         <div @click="routerTo('/plan')"
                                             class="h-[29px] flex items-center justify-center rounded-[12px] bg-[#E7E2F7] pl-[8px] pr-[8px] pb-[7px] pt-[7px] text-custom text-[#9A77FF] font-bold">
-                                            {{ $store.state.buildingInfo[0].attributes.package.data?.attributes.title }}
+                                            {{ $store.state.buildingInfo[0]?.attributes?.package?.data?.attributes?.title }}
                                         </div>
                                         <div class="flex mt-[12px] cursor-pointer" @click="routerTo('/setting')">
                                             <div>

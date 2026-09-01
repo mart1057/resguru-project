@@ -175,7 +175,7 @@ export default {
         }
     },
     mounted() {
-        this.$store.state.main = false
+        this.$store.commit('setMain', false)
         this.getBuilding()
     },
     methods: {
