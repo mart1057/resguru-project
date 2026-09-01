@@ -65,8 +65,8 @@
                 </div>
             </div>
         </div>
-        <div class="w-[55%] pt-[50px]">
-            <div class="flex justify-end pr-[50px] mb-[8px]">
+        <div class="flex-1 min-w-0 h-[100vh] overflow-y-auto pt-[40px] px-[44px]">
+            <div class="flex justify-end mb-[28px]">
                 <div class="flex items-center gap-[10px]">
                     <vs-avatar size="40" v-if="$store.state.userInfo.imageProfile?.formats?.small?.url">
                         <img :src="'https://api.resguru.app' + $store.state.userInfo.imageProfile?.formats?.small?.url" />
@@ -79,200 +79,85 @@
                     </div>
                 </div>
             </div>
-            <div class="text-center text-[24px] font-bold">เลือกหอพักหอพักของคุณ</div>
-            <div class="flex flex-col justify-between">
-                <div class=" text-[18px]  mt-[50px] grid grid-cols-2 gap-5">
 
-                    <div></div>
+            <div class="text-[26px] font-bold text-[#003765] text-custom">เลือกหอพักของคุณ</div>
+            <div class="text-[14px] text-[#5C6B79] text-custom mt-[6px] mb-[28px]">เลือกหอพักที่ต้องการจัดการ หรือสร้างหอพักใหม่</div>
+
+            <div class="grid gap-[20px] pb-[48px] [grid-template-columns:repeat(auto-fill,minmax(320px,1fr))]">
+
+                <div v-for="data in building" :key="data.id"
+                    class="rounded-[18px] border border-[#E3EAF1] bg-white overflow-hidden flex flex-col transition-shadow duration-200 hover:shadow-[0_8px_28px_rgba(0,55,101,0.12)]"
+                    :class="{ 'opacity-70': data.attributes.buildingPaymentStatus == 'Inactive' }">
+
+                    <div class="h-[128px] relative flex items-center justify-center"
+                        :style="{ background: data.attributes.colorCode || '#003765' }">
+                        <img v-if="logoUrl(data)" :src="logoUrl(data)"
+                            class="h-[78px] w-[78px] rounded-[16px] object-cover bg-white/25 shadow-sm" />
+                        <img v-else :src="Logo01" class="h-[60px] w-[60px] object-contain opacity-90" />
+
+                        <span v-if="packageTitle(data)"
+                            class="absolute top-[10px] left-[12px] text-[11px] text-custom px-[8px] py-[2px] rounded-full bg-black/25 text-white">
+                            {{ packageTitle(data) }}
+                        </span>
+                        <span v-if="data.attributes.buildingPaymentStatus == 'Inactive'"
+                            class="absolute top-[10px] right-[12px] text-[11px] text-custom font-bold px-[8px] py-[3px] rounded-full bg-white text-[#D44769]">
+                            ค้างชำระ
+                        </span>
+                        <button type="button" @click="routeToEditBuilding(data.id)" title="ตั้งค่าหอพัก"
+                            class="absolute bottom-[10px] right-[12px] h-[28px] w-[28px] rounded-full bg-white/90 hover:bg-white flex items-center justify-center transition-colors">
+                            <svg width="4" height="16" viewBox="0 0 4 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <ellipse cx="2.0013" cy="2.16667" rx="1.66667" ry="1.66667" transform="rotate(90 2.0013 2.16667)" fill="#5C6B79" />
+                                <circle cx="2.0013" cy="7.99967" r="1.66667" transform="rotate(90 2.0013 7.99967)" fill="#5C6B79" />
+                                <ellipse cx="2.0013" cy="13.8337" rx="1.66667" ry="1.66667" transform="rotate(90 2.0013 13.8337)" fill="#5C6B79" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="p-[16px] flex flex-col gap-[12px] flex-1">
+                        <div class="text-[16px] font-bold text-[#1A2733] text-custom truncate">{{ data.attributes.buildingName }}</div>
+
+                        <div class="flex items-center justify-between text-[12px] text-custom text-[#5C6B79] border-t border-[#EEF2F6] pt-[10px]">
+                            <span>สร้างเมื่อ</span>
+                            <span class="text-[#1A2733]">{{ covertDate(data.attributes.createdAt) }}</span>
+                        </div>
+
+                        <div class="mt-auto flex items-center gap-[8px] pt-[4px]">
+                            <button v-if="data.attributes.buildingPaymentStatus == 'Active'" type="button"
+                                @click="routeToMain(data.id)"
+                                class="flex-1 h-[40px] rounded-[12px] bg-[#003765] hover:bg-[#00294d] text-white text-[14px] font-bold text-custom transition-colors">
+                                เข้าใช้งาน
+                            </button>
+                            <div v-else
+                                class="flex-1 h-[40px] rounded-[12px] bg-[#F1F3F5] text-[#8A97A2] text-[13px] font-bold text-custom flex items-center justify-center cursor-not-allowed"
+                                title="โปรดชำระค่าต่ออายุประจำเดือนของหอพัก หรือติดต่อแอดมิน">
+                                ต่ออายุก่อนใช้งาน
+                            </div>
+
+                            <label title="เปลี่ยนธีมสี"
+                                class="relative h-[40px] w-[40px] rounded-[12px] border border-[#E3EAF1] hover:border-[#B9CCDC] flex items-center justify-center cursor-pointer transition-colors">
+                                <span class="h-[16px] w-[16px] rounded-full border border-[#D9E1E8]"
+                                    :style="{ background: data.attributes.colorCode || '#003765' }"></span>
+                                <input type="color" v-model="data.attributes.colorCode"
+                                    @change="updateBuildingColor(data.id, data.attributes.colorCode)"
+                                    class="absolute inset-0 opacity-0 cursor-pointer" />
+                            </label>
+                        </div>
+                    </div>
                 </div>
+
+                <button type="button" @click="routeTo()"
+                    class="rounded-[18px] border-2 border-dashed border-[#C9D6E2] bg-[#F7FAFD] hover:border-[#003765] hover:bg-[#F0F6FC] text-[#5C6B79] hover:text-[#003765] flex flex-col items-center justify-center gap-[10px] min-h-[260px] transition-colors cursor-pointer">
+                    <span class="h-[52px] w-[52px] rounded-full bg-white border border-[#E3EAF1] flex items-center justify-center">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                        </svg>
+                    </span>
+                    <span class="text-[14px] font-bold text-custom">สร้างหอพักใหม่</span>
+                </button>
             </div>
-            <div class="flex flex-col justify-center items-center">
-                <div class="grid grid-cols-2 gap-5 mt-[10px] ">
-                    <div class="w-[360px] text-[18px]  rounded-[16px] flex cursor-pointer">
-                        <div>รายการหอพัก</div>
-                    </div>
-                </div>
-            </div>
-            <div class="flex flex-col justify-center items-center mt-[10px]">
-                <div class="grid grid-cols-2 gap-5 mt-[10px]">
-                    <div class="w-[23.5vw] border border-[#B9CCDC]  rounded-[16px] flex"
-                        v-for="data in building">
-                        
-                        <div class="w-[30%]  h-[100%] rounded-[16px] flex flex-col items-center justify-center" 
-                            :style="{ background: data.attributes.colorCode }" v-if="data.attributes.buildingLogo?.data">
-                            <img :src="'https://api.resguru.app' + data.attributes.buildingLogo?.data?.attributes.url"
-                                class="w-[90px] h-[90px] rounded-[22px]" />
-                            <div class="text-[0.79vw] mt-[4px]"
-                                :class="data.attributes.colorCode == '#ffffff' ? '' : 'text-[white]'">{{ data.attributes.package?.data ? data.attributes.package?.data?.attributes.title : "" }}</div>
-                        </div>
-                       
-                     
-                        <div v-else class="w-[30%]  h-[100%] rounded-[16px] flex flex-col items-center justify-center" 
-                            :style="{ background: data.attributes.colorCode }">
-                            <img src="../../assets/img/Logo-01.png"
-                                class="w-[90px] h-[90px] rounded-[0px]" />
-                                <div class="text-[0.79vw] mt-[4px]"
-                                :class="data.attributes.colorCode == '#ffffff' ? '' : 'text-[white]'">{{ data.attributes.package?.data ? data.attributes.package?.data?.attributes.title : "" }}</div>
-                        </div>
-                      
 
-                        <div class="w-[70%] p-[8px] flex flex-col cursor-pointer" v-if="data.attributes.buildingPaymentStatus =='Active'">
-                            <div  @click="routeToMain(data.id)">
-                                <div class="flex justify-between">
-                                    <div class="text-[14px] font-bold">{{ data.attributes.buildingName }}</div>
-                                    <div class="flex justify-center items-center cursor-pointer"><svg width="4" height="12"
-                                            viewBox="0 0 4 16" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                            @click="routeToEditBuilding(data.id)">
-                                            <ellipse cx="2.0013" cy="2.16667" rx="1.66667" ry="1.66667"
-                                                transform="rotate(90 2.0013 2.16667)" fill="#5C6B79" />
-                                            <circle cx="2.0013" cy="7.99967" r="1.66667"
-                                                transform="rotate(90 2.0013 7.99967)" fill="#5C6B79" />
-                                            <ellipse cx="2.0013" cy="13.8337" rx="1.66667" ry="1.66667"
-                                                transform="rotate(90 2.0013 13.8337)" fill="#5C6B79" />
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div
-                                    class="w-[100%] rounded-[16px] border border-[#B9CCDC] flex justify-between pl-[8px] pr-[8px] mt-[8px]">
-                                    <div class="text-[0.79vw]">สร้างเมื่อวันที่</div>
-                                    <div class="text-[0.79vw]">{{ covertDate(data.attributes.createdAt) }}</div>
-                                </div>
-                                <div
-                                    class="w-[100%] rounded-[16px] border border-[#B9CCDC]  flex justify-between pl-[8px] pr-[8px] mt-[8px]">
-                                    <div class="text-[0.79vw]">จำนวน ชั้น/ห้อง</div>
-                                    <div class="text-[0.79vw]">2/12</div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="color"> <button
-                                        class="w-[100%] h-[28px] mt-[14px] flex justify-center items-center rounded-[16px] border border-[#B9CCDC] "
-                                        :style="{ background: data.attributes.colorCode }">
-                                        <div class="flex justify-center items-center mr-[4px]"><svg width="16" height="17"
-                                                viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M1.09025 16.2914C0.854023 16.2914 0.656878 16.2124 0.498814 16.0543C0.340751 15.8962 0.261719 15.6991 0.261719 15.4629V12.935C0.261719 12.8246 0.281702 12.7194 0.321669 12.6195C0.36162 12.5196 0.424488 12.4267 0.510273 12.341L8.32486 4.52638L7.32003 3.53919C7.17782 3.40287 7.10907 3.24099 7.11378 3.05354C7.11849 2.8661 7.19193 2.70128 7.33412 2.55907C7.47045 2.42276 7.63233 2.35461 7.81977 2.35461C8.00722 2.35461 8.17203 2.42276 8.31422 2.55907L9.7351 3.97642L12.7037 1.00782C12.8424 0.869142 13.0181 0.799805 13.2308 0.799805C13.4435 0.799805 13.6192 0.869142 13.7578 1.00782L15.5171 2.76706C15.6558 2.90574 15.7251 3.08143 15.7251 3.29415C15.7251 3.50686 15.6558 3.68255 15.5171 3.82123L12.5309 6.80745L13.994 8.27061C14.1304 8.40694 14.2 8.56647 14.2029 8.74921C14.2059 8.93194 14.1362 9.09442 13.994 9.23662C13.8518 9.37881 13.6885 9.44991 13.504 9.44991C13.3195 9.44991 13.1561 9.37881 13.0139 9.23662L12.0091 8.24589L4.21216 16.0428C4.12636 16.1286 4.03352 16.1915 3.93363 16.2315C3.83375 16.2714 3.72857 16.2914 3.61809 16.2914H1.09025ZM1.6367 14.9164H3.4242L11.0325 7.26226L9.29086 5.52059L1.6367 13.1289V14.9164ZM11.5543 5.83792L14.0981 3.29415L13.2308 2.42684L10.687 4.97061L11.5543 5.83792Z"
-                                                    :fill="data.attributes.colorCode == '#ffffff' ? '#003765' : '#ffffff'" />
-                                            </svg>
-                                        </div><span
-                                            :class="data.attributes.colorCode == '#ffffff' ? 'text-[#003765]' : 'text-[#ffffff]'">เปลี่ยนธีมสี</span>
-                                    </button>
-                                    <input @change="updateBuildingColor(data.id,data.attributes.colorCode)" type="color" v-model="data.attributes.colorCode" class="custom-picker" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div disabled class="w-[70%] p-[8px] flex flex-col cursor-not-allowed" title="โปรดชำระค่าต่ออายุประจำเดือนของหอพัก หรือติดต่อแอดมิน" v-if="data.attributes.buildingPaymentStatus =='Inactive'">
-                            <div >
-                                <div class="flex justify-between">
-                                    <div class="text-[14px] font-bold">{{ data.attributes.buildingName }}</div>
-                                    <div class="flex justify-center items-center cursor-pointer"><svg width="4" height="12"
-                                            viewBox="0 0 4 16" fill="none" xmlns="http://www.w3.org/2000/svg"
-                                            >
-                                            <ellipse cx="2.0013" cy="2.16667" rx="1.66667" ry="1.66667"
-                                                transform="rotate(90 2.0013 2.16667)" fill="#5C6B79" />
-                                            <circle cx="2.0013" cy="7.99967" r="1.66667"
-                                                transform="rotate(90 2.0013 7.99967)" fill="#5C6B79" />
-                                            <ellipse cx="2.0013" cy="13.8337" rx="1.66667" ry="1.66667"
-                                                transform="rotate(90 2.0013 13.8337)" fill="#5C6B79" />
-                                        </svg>
-                                    </div>
-                                </div>
-                                <div
-                                    class="w-[100%] rounded-[16px] border border-[#B9CCDC] flex justify-between pl-[8px] pr-[8px] mt-[8px]">
-                                    <div class="text-[12px]">สร้างเมื่อวันที่</div>
-                                    <div class="text-[12px]">{{ covertDate(data.attributes.createdAt) }}</div>
-                                </div>
-                                <div
-                                    class="w-[100%] rounded-[16px] border border-[#B9CCDC]  flex justify-between pl-[8px] pr-[8px] mt-[8px]">
-                                    <div class="text-[12px]">จำนวน ชั้น/ห้อง</div>
-                                    <div class="text-[12px]">2/12</div>
-                                </div>
-                            </div>
-                            <div>
-                                <div class="color"> <button
-                                        class="w-[100%] h-[28px] mt-[14px] flex justify-center items-center rounded-[16px] border border-[#B9CCDC] "
-                                        :style="{ background: data.attributes.colorCode }">
-                                        <div class="flex justify-center items-center mr-[4px]"><svg width="16" height="17"
-                                                viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                <path
-                                                    d="M1.09025 16.2914C0.854023 16.2914 0.656878 16.2124 0.498814 16.0543C0.340751 15.8962 0.261719 15.6991 0.261719 15.4629V12.935C0.261719 12.8246 0.281702 12.7194 0.321669 12.6195C0.36162 12.5196 0.424488 12.4267 0.510273 12.341L8.32486 4.52638L7.32003 3.53919C7.17782 3.40287 7.10907 3.24099 7.11378 3.05354C7.11849 2.8661 7.19193 2.70128 7.33412 2.55907C7.47045 2.42276 7.63233 2.35461 7.81977 2.35461C8.00722 2.35461 8.17203 2.42276 8.31422 2.55907L9.7351 3.97642L12.7037 1.00782C12.8424 0.869142 13.0181 0.799805 13.2308 0.799805C13.4435 0.799805 13.6192 0.869142 13.7578 1.00782L15.5171 2.76706C15.6558 2.90574 15.7251 3.08143 15.7251 3.29415C15.7251 3.50686 15.6558 3.68255 15.5171 3.82123L12.5309 6.80745L13.994 8.27061C14.1304 8.40694 14.2 8.56647 14.2029 8.74921C14.2059 8.93194 14.1362 9.09442 13.994 9.23662C13.8518 9.37881 13.6885 9.44991 13.504 9.44991C13.3195 9.44991 13.1561 9.37881 13.0139 9.23662L12.0091 8.24589L4.21216 16.0428C4.12636 16.1286 4.03352 16.1915 3.93363 16.2315C3.83375 16.2714 3.72857 16.2914 3.61809 16.2914H1.09025ZM1.6367 14.9164H3.4242L11.0325 7.26226L9.29086 5.52059L1.6367 13.1289V14.9164ZM11.5543 5.83792L14.0981 3.29415L13.2308 2.42684L10.687 4.97061L11.5543 5.83792Z"
-                                                    :fill="data.attributes.colorCode == '#ffffff' ? '#003765' : '#ffffff'" />
-                                            </svg>
-                                        </div><span
-                                            :class="data.attributes.colorCode == '#ffffff' ? 'text-[#003765]' : 'text-[#ffffff]'">เปลี่ยนธีมสี</span>
-                                    </button>
-                                    <input @change="updateBuildingColor(data.id,data.attributes.colorCode)" type="color" v-model="data.attributes.colorCode" class="custom-picker" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- <div class="w-[360px] border border-[#B9CCDC]  rounded-[16px]  flex">
-                        <div class="w-[30%] bg-[#c9edee] h-[100%] rounded-[16px] flex flex-col items-center justify-center">
-                            <div class="w-[90px] h-[90px] rounded-[22px] bg-slate-300"></div>
-                            <div class="text-[12px] mt-[4px]">Professional</div>
-                        </div>
-                        <div class="w-[70%] p-[8px] flex flex-col">
-                            <div class="flex justify-between">
-                                <div class="text-[14px] font-bold">Avenue Apartments</div>
-                                <div class="flex justify-center items-center cursor-pointer"><svg width="4" height="12"
-                                        viewBox="0 0 4 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <ellipse cx="2.0013" cy="2.16667" rx="1.66667" ry="1.66667"
-                                            transform="rotate(90 2.0013 2.16667)" fill="#5C6B79" />
-                                        <circle cx="2.0013" cy="7.99967" r="1.66667" transform="rotate(90 2.0013 7.99967)"
-                                            fill="#5C6B79" />
-                                        <ellipse cx="2.0013" cy="13.8337" rx="1.66667" ry="1.66667"
-                                            transform="rotate(90 2.0013 13.8337)" fill="#5C6B79" />
-                                    </svg>
-                                </div>
-                            </div>
-                            <div
-                                class="w-[100%] rounded-[16px] border border-indigo-600 flex justify-between pl-[8px] pr-[8px] mt-[8px]">
-                                <div class="text-[12px]">สร้างเมื่อวันที่</div>
-                                <div class="text-[12px]">12/02/2022</div>
-                            </div>
-                            <div
-                                class="w-[100%] rounded-[16px] border border-[#B9CCDC]  flex justify-between pl-[8px] pr-[8px] mt-[8px]">
-                                <div class="text-[12px]">จำนวน ชั้น/ห้อง</div>
-                                <div class="text-[12px]">2/12</div>
-                            </div>
-                            <div>
-                                <button
-                                    class="w-[100%] h-[28px] mt-[14px] flex justify-center items-center rounded-[16px] border border-[#B9CCDC] bg-[#c9edee]">
-                                    <div class="flex justify-center items-center mr-[4px]"><svg width="16" height="17"
-                                            viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M1.09025 16.2914C0.854023 16.2914 0.656878 16.2124 0.498814 16.0543C0.340751 15.8962 0.261719 15.6991 0.261719 15.4629V12.935C0.261719 12.8246 0.281702 12.7194 0.321669 12.6195C0.36162 12.5196 0.424488 12.4267 0.510273 12.341L8.32486 4.52638L7.32003 3.53919C7.17782 3.40287 7.10907 3.24099 7.11378 3.05354C7.11849 2.8661 7.19193 2.70128 7.33412 2.55907C7.47045 2.42276 7.63233 2.35461 7.81977 2.35461C8.00722 2.35461 8.17203 2.42276 8.31422 2.55907L9.7351 3.97642L12.7037 1.00782C12.8424 0.869142 13.0181 0.799805 13.2308 0.799805C13.4435 0.799805 13.6192 0.869142 13.7578 1.00782L15.5171 2.76706C15.6558 2.90574 15.7251 3.08143 15.7251 3.29415C15.7251 3.50686 15.6558 3.68255 15.5171 3.82123L12.5309 6.80745L13.994 8.27061C14.1304 8.40694 14.2 8.56647 14.2029 8.74921C14.2059 8.93194 14.1362 9.09442 13.994 9.23662C13.8518 9.37881 13.6885 9.44991 13.504 9.44991C13.3195 9.44991 13.1561 9.37881 13.0139 9.23662L12.0091 8.24589L4.21216 16.0428C4.12636 16.1286 4.03352 16.1915 3.93363 16.2315C3.83375 16.2714 3.72857 16.2914 3.61809 16.2914H1.09025ZM1.6367 14.9164H3.4242L11.0325 7.26226L9.29086 5.52059L1.6367 13.1289V14.9164ZM11.5543 5.83792L14.0981 3.29415L13.2308 2.42684L10.687 4.97061L11.5543 5.83792Z"
-                                                fill="#003765" />
-                                        </svg>
-                                    </div>เปลี่ยนธีมสี
-
-                                </button>
-                                <input type="color" hidden /> <label>assds</label>
-                            </div>
-                        </div>
-                    </div> -->
-                    <div @click="routeTo()"
-                        class="w-[23.5vw] border border-[#B9CCDC] rounded-[16px] h-[147px] flex justify-center items-center cursor-pointer">
-                        <div>
-                            <div class="flex justify-center items-center">
-                                <svg width="55" height="55" viewBox="0 0 55 55" fill="none"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <circle cx="27.5" cy="27.5" r="27.5" fill="#F3F7FA" />
-                                    <mask id="mask0_967_26014" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="5"
-                                        y="5" width="45" height="45">
-                                        <rect x="5.5" y="5.49902" width="44" height="44" fill="#D9D9D9" />
-                                    </mask>
-                                    <g mask="url(#mask0_967_26014)">
-                                        <path
-                                            d="M27.4994 39.8739C27.1096 39.8739 26.7831 39.7422 26.5199 39.4787C26.2566 39.2151 26.125 38.8886 26.125 38.499V28.8739H16.5C16.1104 28.8739 15.7838 28.7421 15.5203 28.4785C15.2568 28.2148 15.125 27.8881 15.125 27.4984C15.125 27.1086 15.2568 26.7821 15.5203 26.5189C15.7838 26.2556 16.1104 26.124 16.5 26.124H26.125V16.499C26.125 16.1094 26.2568 15.7828 26.5204 15.5193C26.7841 15.2558 27.1108 15.124 27.5005 15.124C27.8903 15.124 28.2168 15.2558 28.4801 15.5193C28.7433 15.7828 28.8749 16.1094 28.8749 16.499V26.124H38.5C38.8895 26.124 39.2161 26.2558 39.4796 26.5195C39.7432 26.7831 39.8749 27.1098 39.8749 27.4996C39.8749 27.8893 39.7432 28.2158 39.4796 28.4791C39.2161 28.7423 38.8895 28.8739 38.5 28.8739H28.8749V38.499C28.8749 38.8886 28.7431 39.2151 28.4795 39.4787C28.2158 39.7422 27.8891 39.8739 27.4994 39.8739Z"
-                                            fill="#B9CCDC" />
-                                    </g>
-                                </svg>
-                            </div>
-                            <div class="mt-[4px]">สร้างหอพักหอพัก</div>
-                        </div>
-                    </div>
-                </div>
+            <div v-if="building.length === 0" class="text-center text-[#8A97A2] text-custom py-[32px]">
+                ยังไม่มีหอพัก กดปุ่ม “สร้างหอพักใหม่” เพื่อเริ่มต้น
             </div>
         </div>
     </div>
@@ -327,6 +212,13 @@ export default {
             router.push({
                 path: '/setting?tab=1&tabsetting=2',
             })
+        },
+        logoUrl(data) {
+            const url = data?.attributes?.buildingLogo?.data?.attributes?.url;
+            return url ? 'https://api.resguru.app' + url : '';
+        },
+        packageTitle(data) {
+            return data?.attributes?.package?.data?.attributes?.title || '';
         },
         covertDate(createDate) {
             var date = new Date(createDate);
