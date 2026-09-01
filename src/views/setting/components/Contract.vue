@@ -251,7 +251,7 @@ export default {
         //     })
         // },
         deleteContract(contractID){
-                if(confirm("Do you really want to delete this contract template?")){
+                if(confirm("ต้องการลบเทมเพลตสัญญานี้หรือไม่?")){
                     axios.delete(`https://api.resguru.app/api/contract-templates/${contractID}`)
                     .then( (resp) =>{
                             console.log(resp)

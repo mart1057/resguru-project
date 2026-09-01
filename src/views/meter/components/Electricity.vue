@@ -427,7 +427,7 @@ export default {
       })
       .finally(() => {
         loading.close();
-        this.$showNotification("#3A89CB", "Updated Previous Month Electric Meter Reading");
+        this.$showNotification("#3A89CB", "บันทึกค่าไฟเดือนก่อนหน้าสำเร็จ");
         // Refresh the data to show the updated record but preserve scroll position
         this.getElectricityFee(this.id, this.month, this.year, true);
       });

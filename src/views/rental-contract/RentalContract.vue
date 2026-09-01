@@ -1331,8 +1331,8 @@ export default {
           this.room_detail_create.type_room == "");
 
       if (missingBaseFields || missingRentFields) {
-        this.$showNotification("danger", "Please fill this form");
-        this.errorFieldMessage = "Please fill this form";
+        this.$showNotification("danger", "กรุณากรอกข้อมูลให้ครบถ้วน");
+        this.errorFieldMessage = "กรุณากรอกข้อมูลให้ครบถ้วน";
       } else {
         console.log(this.room_detail_create);
         this.errorFieldMessage = "";

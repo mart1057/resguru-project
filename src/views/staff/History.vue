@@ -389,7 +389,7 @@ export default {
                 sticky: true,
                 color,
                 position,
-                title: 'Create Service Success',
+                title: 'สร้างงานบริการสำเร็จ',
             })
         },
     }

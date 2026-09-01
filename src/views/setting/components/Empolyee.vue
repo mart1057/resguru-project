@@ -446,7 +446,7 @@
                                 {{ NewProfileAdmin.lastName }}</div>
                             <div
                                 class="h-[24px] mt-[8px] text-custom rounded-[12px] font-bold text-[#003765] pl-[12px] pr-[12px] flex items-center bg-[#F0F8FF]">
-                                {{ tab == 1 ? 'Admin' : 'พนักงาน' }}
+                                {{ tab == 1 ? 'ผู้ดูแล' : 'พนักงาน' }}
                             </div>
                         </div>
                     </div>
@@ -775,7 +775,7 @@ export default {
                 });
         },
         removeAdmin(adminID) {
-            if (confirm("Do you really want to delete this Admin?")) {
+            if (confirm("ต้องการลบผู้ดูแลคนนี้หรือไม่?")) {
                 axios.put(`https://api.resguru.app/api/buildings/${this.$store.state.building}`, {
                     data: {
                         users_admin: { disconnect: [adminID] } // Changed from users to users_admin
@@ -794,7 +794,7 @@ export default {
             }
         },
         deleteEmployee(employeeID) {
-            if (confirm("Do you really want to delete this employee?")) {
+            if (confirm("ต้องการลบพนักงานคนนี้หรือไม่?")) {
                 axios.delete(`https://api.resguru.app/api/building-employees/${employeeID}`)
                     .then((resp) => {
                         console.log(resp)

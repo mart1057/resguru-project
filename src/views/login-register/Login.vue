@@ -25,12 +25,12 @@
                     <div>
                         <div>
                             <div class="font-bold">
-                                Email <span class="text-red-500">*</span>
+                                อีเมล <span class="text-red-500">*</span>
                             </div>
                             <div class="">
-                                <input 
-                                    type="email" 
-                                    placeholder="Email" 
+                                <input
+                                    type="email"
+                                    placeholder="อีเมล"
                                     v-model="dataLogin.user"
                                     required
                                     class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] px-3 border border-gray-200 focus:border-blue-500 focus:outline-none" />
@@ -38,7 +38,7 @@
                         </div>
                         <div class="mt-[10px]">
                             <div class="font-bold">
-                                Password <span class="text-red-500">*</span>
+                                รหัสผ่าน <span class="text-red-500">*</span>
                             </div>
                             <div class="">
                                 <input 
@@ -53,13 +53,12 @@
                             <div class="flex justify-center items-center">
                                 <div>
                                     <vs-checkbox color="#003765" v-model="option">
-                                        <div class="text-[12px]">Remember me</div>
+                                        <div class="text-[12px]">จดจำฉัน</div>
                                     </vs-checkbox>
                                 </div>
                             </div>
                             <div class="text-[#D44769] text-center flex justify-center items-center cursor-pointer"
-                                @click="tab = 3">Forgot
-                                password</div>
+                                @click="tab = 3">ลืมรหัสผ่าน</div>
                         </div>
                     </div>
                     <div v-if="$store.state.err" class="flex justify-center text-[red]">
@@ -422,14 +421,14 @@
                 </div>
             </div>
             <div class="w-[40%]  flex flex-col justify-center items-center">
-                <div class="text-[white] text-[28px]">Forgot password</div>
+                <div class="text-[white] text-[28px]">ลืมรหัสผ่าน</div>
                 <div
                     class=" flex flex-col justify-center  mt-[60px]  text-[12px] w-[423px] rounded-[20px] bg-[white] pt-[40px] pl-[30px] pr-[30px] pb-[10px]">
                     <div>
                         <div>
-                            <div class="font-bold">Email <span class="text-red-500">*</span></div>
+                            <div class="font-bold">อีเมล <span class="text-red-500">*</span></div>
                             <div class="">
-                                <input type="email" placeholder="Email" v-model="email_forgot"
+                                <input type="email" placeholder="อีเมล" v-model="email_forgot"
                                     class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] px-3 border border-gray-200 focus:border-blue-500 focus:outline-none" required />
                             </div>
                         </div>
@@ -474,26 +473,26 @@
                 </div>
             </div>
             <div class="w-[40%]  flex flex-col justify-center items-center">
-                <div class="text-[white] text-[28px]">Reset password</div>
+                <div class="text-[white] text-[28px]">รีเซ็ตรหัสผ่าน</div>
                 <div
                     class=" mt-[60px] h-[363px] text-[12px] w-[423px] rounded-[20px] bg-[white] pt-[40px] pl-[30px] pr-[30px] pb-[10px]">
                     <div>
                         <div class="">
-                            <div class="font-bold">Code <span class="text-red-500">*</span></div>
+                            <div class="font-bold">รหัสยืนยัน <span class="text-red-500">*</span></div>
                             <div class="">
                                 <input type="text" placeholder="รหัสยืนยัน" v-model="code_reset"
                                     class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] px-3 border border-gray-200 focus:border-blue-500 focus:outline-none" required />
                             </div>
                         </div>
                         <div class="mt-[10px]">
-                            <div class="font-bold">Password <span class="text-red-500">*</span></div>
+                            <div class="font-bold">รหัสผ่าน <span class="text-red-500">*</span></div>
                             <div class="">
                                 <input type="password" placeholder="รหัสผ่านใหม่" v-model="reset_pass"
                                     class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] px-3 border border-gray-200 focus:border-blue-500 focus:outline-none" required />
                             </div>
                         </div>
                         <div class="mt-[10px]">
-                            <div class="font-bold">Confirm password <span class="text-red-500">*</span></div>
+                            <div class="font-bold">ยืนยันรหัสผ่าน <span class="text-red-500">*</span></div>
                             <div class="">
                                 <input type="password" placeholder="ยืนยันรหัสผ่านใหม่" v-model="reset_pass_con"
                                     class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] px-3 border border-gray-200 focus:border-blue-500 focus:outline-none" required />

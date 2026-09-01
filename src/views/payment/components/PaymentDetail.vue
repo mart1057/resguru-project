@@ -2168,7 +2168,7 @@ export default {
     
     this.createApprovePayment = true;
   } else {
-    this.$showNotification("danger", "Cannot find payment evidence details");
+    this.$showNotification("danger", "ไม่พบข้อมูลหลักฐานการชำระเงิน");
   }
       } else if (menu_option == "Old Approve Payment") {
         this.approvePaymentForm.amount = tr.attributes.amount;

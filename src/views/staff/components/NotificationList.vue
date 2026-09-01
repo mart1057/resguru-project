@@ -587,7 +587,7 @@ export default {
 
             // Check if the date is valid
             if (isNaN(date.getTime())) {
-                return "Invalid date"; // Return an error message if the input date is invalid
+                return "-"; // invalid / missing date
             }
 
             // Format the date to the desired output format (YYYY-MM-DDTHH:MM:SS.SSSZ)

@@ -537,7 +537,7 @@ export default {
             this.$showNotification("#3A89CB", "สร้างการชำระเงินสำเร็จ");
           });
       } else {
-        this.$showNotification("danger", "Please fill this form");
+        this.$showNotification("danger", "กรุณากรอกข้อมูลให้ครบถ้วน");
       }
     },
     updateUserBuildingPayment(buildingID) {
@@ -584,7 +584,7 @@ export default {
       // alert("QRCode is uploaded")
     },
     removePayment(adminID) {
-      if (confirm("Do you really want to delete this payment method?")) {
+      if (confirm("ต้องการลบช่องทางการชำระเงินนี้หรือไม่?")) {
         axios
           .delete(
             `https://api.resguru.app/api/building-pay-methods/${adminID}`,
