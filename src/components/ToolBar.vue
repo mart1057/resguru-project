@@ -31,7 +31,7 @@
                     </div>
                     <div class="flex justify-center items-center">
                         <vs-tooltip bottom shadow not-hover not-arrow v-model="noti_popup" @mouseleave="noti_popup = false">
-                            <div class="cursor-pointer" @click="noti_popup = true"><svg width="28" height="28"
+                            <div class="cursor-pointer relative" @click="noti_popup = true; getNoti()"><svg width="28" height="28"
                                     viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
                                     <mask id="mask0_1490_26602" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="0"
                                         y="0" width="28" height="28">
@@ -43,6 +43,8 @@
                                             fill="#003765" />
                                     </g>
                                 </svg>
+                                <span v-if="data_noti.length"
+                                    class="absolute -top-[2px] -right-[2px] min-w-[16px] h-[16px] px-[3px] flex items-center justify-center bg-[#D44769] text-white text-[10px] font-bold rounded-full">{{ data_noti.length > 99 ? '99+' : data_noti.length }}</span>
                             </div>
                             <template #tooltip>
                                 <div class="w-[340px] p-[8px]">
@@ -83,8 +85,10 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div>
-                                        <div v-for="data in data_noti"
+                                    <div class="max-h-[360px] overflow-y-auto">
+                                        <div v-if="!data_noti.length"
+                                            class="text-[#8396A6] text-custom text-center py-[24px]">ไม่มีการแจ้งเตือน</div>
+                                        <div v-for="data in data_noti" :key="data.id"
                                             class="p-[8px] mt-[14px]  hover:bg-[#F3F7FA] rounded-[6px]">
                                             <div class="flex justify-between">
                                                 <div class="flex justify-start">
@@ -95,24 +99,18 @@
                                                     </div>
                                                     <div
                                                         class="flex flex-col items-start justify-start ml-[8px] text-[#003765] text-custom">
-                                                        <div class="font-bold">{{
-                                                            data.attributes.toUser.data?.attributes.firstName }}</div>
-                                                        <div class="">
+                                                        <div>
                                                             <div></div>
                                                             <div>{{ data.attributes.message }}</div>
                                                         </div>
-                                                        <!-- <div v-if="data.type == 'connect'" class="flex mt-[4px]">
-                                                            <div
-                                                                class="pt-[4px] pb-[4px] pl-[8px] pr-[8px] bg-[#003765] rounded-[12px] text-[white] cursor-pointer ">
-                                                                ยืนยัน</div>
-                                                            <div
-                                                                class="pt-[4px] pb-[4px] pl-[8px] pr-[8px] bg-[#D44769] rounded-[12px] text-[white] ml-[8px] cursor-pointer ">
-                                                                ยกเลิก</div>
-                                                        </div> -->
                                                     </div>
                                                 </div>
-                                                <div class="text-[#8396A6] text-[10px] text-custom">{{
-                                                    data.attributes.createdAt }}</div>
+                                                <div class="flex flex-col items-end ml-[8px]">
+                                                    <div class="text-[#8396A6] text-[10px] text-custom whitespace-nowrap">{{
+                                                        notiDate(data.attributes.createdAt) }}</div>
+                                                    <div class="text-[#D44769] text-[10px] text-custom cursor-pointer mt-[4px]"
+                                                        @click="dismissNoti(data.id)">ปิด</div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -486,6 +484,9 @@ export default {
         }
 
     },
+    created() {
+        this.getNoti()
+    },
     methods: {
         async routerTo(path) {
             this.profile_popup = false
@@ -516,12 +517,40 @@ export default {
             window.location.reload()
         },
         async getNoti() {
-            fetch(`https://api.resguru.app/api/notification-logs?filters[toUser][id][$eq]=${this.$store.state.userInfo.id}&populate=*&sort[0]=id:desc`)
+            fetch(`https://api.resguru.app/api/notification-logs?filters[toUser][id][$eq]=${this.$store.state.userInfo.id}&filters[show][$eq]=true&populate=*&sort[0]=id:desc&pagination[pageSize]=50`)
                 .then(response => response.json())
                 .then((resp) => {
                     console.log("Return from getNoti()", resp.data);
-                    this.data_noti = resp.data
+                    this.data_noti = Array.isArray(resp.data) ? resp.data : []
                 })
+                .catch((err) => {
+                    console.log(err)
+                })
+        },
+        notiDate(value) {
+            const d = new Date(value);
+            if (isNaN(d.getTime())) return '';
+            const diff = Date.now() - d.getTime();
+            const mins = Math.floor(diff / 60000);
+            if (mins < 1) return 'เมื่อสักครู่';
+            if (mins < 60) return `${mins} นาทีที่แล้ว`;
+            const hrs = Math.floor(mins / 60);
+            if (hrs < 24) return `${hrs} ชั่วโมงที่แล้ว`;
+            const day = String(d.getDate()).padStart(2, '0');
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            return `${day}/${month}/${d.getFullYear()}`;
+        },
+        async dismissNoti(id) {
+            this.data_noti = this.data_noti.filter(n => n.id !== id);
+            try {
+                await fetch(`https://api.resguru.app/api/notification-logs/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ data: { show: false } }),
+                });
+            } catch (err) {
+                console.log(err);
+            }
         },
         async logoutTo() {
             await this.clearLocalDtorage()
