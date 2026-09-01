@@ -12,7 +12,7 @@ function recordDepositIncome(axios, buildingId, amount, title) {
         data: {
             title,
             amount: numericAmount,
-            date: new Date().toISOString(),
+            date: new Date().toISOString().slice(0, 10), // building-income.date is a `date` field -> YYYY-MM-DD
             remark: `[ค่าเช่าล่วงหน้า] ${title}`,
             building: buildingId,
         }

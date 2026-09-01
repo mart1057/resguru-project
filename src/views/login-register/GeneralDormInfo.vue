@@ -28,11 +28,11 @@
           </div>
           <div class="form-group">
             <label for="startDate">หอพักของคุณกำหนดวันเริ่มต้นการจ่ายเงินเมื่อไหร่?</label>
-            <input type="date" id="startDate" v-model="startDate" />
+            <DateField v-model="startDate" />
           </div>
           <div class="form-group">
             <label for="endDate">กำหนดวันที่สิ้นสุดการจ่ายเงิน</label>
-            <input type="date" id="endDate" v-model="endDate" />
+            <DateField v-model="endDate" />
           </div>
           <button type="submit">บันทึก</button>
         </form>

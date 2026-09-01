@@ -37,13 +37,11 @@
                 <div class="mt-[14px]">
                     <div class="flex">
                         <div class="text-[12px] text-[#5C6B79]">วันที่ทำสัญญา</div>
-                        <div class="ml-[14px]">{{ item.attributes.user_sign_contract?.data?.attributes.checkInDate ?
-                            item.attributes.user_sign_contract?.data?.attributes.checkInDate : 'ไม่มีข้อมูล' }}</div>
+                        <div class="ml-[14px]">{{ fmtDate(item.attributes.user_sign_contract?.data?.attributes.checkInDate) }}</div>
                     </div>
                     <div class="flex">
                         <div class="text-[12px] text-[#5C6B79]">วันที่สิ้นสุดสัญญา</div>
-                        <div class="ml-[14px]">{{ item.attributes.user_sign_contract?.data?.attributes.contractEndDate ?
-                            item.attributes.user_sign_contract?.data?.attributes.contractEndDate : 'ไม่มีข้อมูล' }}</div>
+                        <div class="ml-[14px]">{{ fmtDate(item.attributes.user_sign_contract?.data?.attributes.contractEndDate) }}</div>
                     </div>
                 </div>
             </div>
@@ -783,6 +781,7 @@
     </div>
 </template>
 <script>
+import { convertDateNoTime } from '@/components/hook/hook'
 export default {
     data() {
         return {
@@ -800,6 +799,9 @@ export default {
         this.getRentalContract()
     },
     methods: {
+        fmtDate(d) {
+            return d ? convertDateNoTime(d) : 'ไม่มีข้อมูล'
+        },
         getRentalContract() {
             this.contract = []
             const loading = this.$vs.loading()

@@ -45,7 +45,7 @@
                         วันที่เข้าพัก</div>
                     <div
                         class=" pl-[8px] pr-[8px] pt-[1px] pb-[1px] flex justify-center items-center text-[12px] rounded-[8px]">
-                        {{ user.attributes.date_moveout }}</div>
+                        {{ fmtDate(user.attributes.date_moveout) }}</div>
                 </div>
                 <div class="flex justify-around w-[100%]">
                     <div
@@ -53,7 +53,7 @@
                         วันที่ย้ายออก</div>
                     <div
                         class=" pl-[8px] pr-[8px] pt-[1px] pb-[1px] flex justify-center items-center text-[12px] rounded-[8px]">
-                        {{ user.attributes.date_moveout }}</div>
+                        {{ fmtDate(user.attributes.date_moveout) }}</div>
                 </div>
             </div>
         </div>
@@ -177,9 +177,8 @@
                             <div class="grid grid-cols-6  text-custom w-[70%] ">
                                 <div class="col-span-2">
                                     <div>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
-                                    <input type="date"
-                                        class="h-[36px] mt-[6px] pl-[8px] pr-[8px] w-[100%] rounded-[12px] bg-[#F3F7FA]"
-                                        v-model="room_detail.birth" disabled />
+                                    <DateField class="w-[100%] mt-[6px]"
+                                        v-model="room_detail.birth" :disabled="true" />
                                 </div>
                             </div>
                         </div>
@@ -658,9 +657,8 @@
                         </div>
                         <div class="text-custom text-[12px] font-bold text-[#003765] mt-[24px]">วันที่ย้ายออก</div>
                         <div>
-                            <input
-                                class="h-[28px] w-[180px] bg-[#F3F8FD] rounded-[12px] mt-[4px]  flex justify-start pl-[8px] pr-[8px]"
-                                type="date" v-model="date_moveout" disabled />
+                            <DateField class="w-[180px] mt-[4px]"
+                                v-model="date_moveout" :disabled="true" />
                         </div>
                         <div class="flex mt-[14px]">
                             <button @click="PDFPrint()"
@@ -693,6 +691,7 @@
     </div>
 </template>
 <script>
+import { convertDateNoTime } from '@/components/hook/hook'
 export default {
     data() {
         return {
@@ -746,6 +745,9 @@ export default {
         }, 1000)
     },
     methods: {
+        fmtDate(d) {
+            return d ? convertDateNoTime(d) : '-'
+        },
         getHistory() {
             fetch('https://api.resguru.app/api' + '/room-histories?populate=deep,3&filters[building][id][$eq]=' + this.$store.state.building + '&filters[room][id][$eq]=' + this.$route.query.id_room)
                 .then(response => response.json())

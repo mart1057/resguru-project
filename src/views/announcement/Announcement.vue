@@ -194,8 +194,7 @@
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">วันที่สิ้นสุด *</div>
-                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[12px] pr-[12px] flex justify-start"
-                            type="date" v-model="date_execute" />
+                        <DateField class="w-[100%]" v-model="date_execute" />
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">รูปภาพ *</div>
@@ -259,8 +258,7 @@
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">วันที่สิ้นสุด *</div>
-                        <input class="h-[28px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[12px] pr-[12px] flex justify-start"
-                            type="date" v-model="editDateExecute" />
+                        <DateField class="w-[100%]" v-model="editDateExecute" />
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">รูปภาพ</div>
@@ -645,7 +643,7 @@ export default {
                     data: {
                         topic: this.topic,
                         description: this.description,
-                        date_execute: this.date_execute,
+                        date_execute: this.toDateExecute(this.date_execute),
                         users_created: this.$store.state.userInfo.id,
                         building: this.$store.state.building
                     }
@@ -696,6 +694,13 @@ export default {
             const day = String(d.getDate()).padStart(2, '0');
             return `${y}-${m}-${day}`;
         },
+        // date_execute is a Strapi `datetime` field - send a full ISO string
+        // (a bare YYYY-MM-DD is the ambiguous case the backend warns about).
+        toDateExecute(v) {
+            if (!v) return null;
+            const d = new Date(v);
+            return isNaN(d.getTime()) ? null : d.toISOString();
+        },
 
         openEditAnnouncement(tr) {
             this.editId = tr.id;
@@ -737,7 +742,7 @@ export default {
                     data: {
                         topic: this.editTopic,
                         description: this.editDescription,
-                        date_execute: this.editDateExecute,
+                        date_execute: this.toDateExecute(this.editDateExecute),
                     }
                 });
 

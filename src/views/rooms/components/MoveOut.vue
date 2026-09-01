@@ -530,9 +530,8 @@
               วันที่ย้ายออก
             </div>
             <div>
-              <input
-                class="h-[28px] w-[180px] bg-[#F3F8FD] rounded-[12px] mt-[4px] flex justify-start pl-[8px] pr-[8px]"
-                type="date"
+              <DateField
+                class="w-[180px] mt-[4px]"
                 v-model="date_moveout"
               />
             </div>
@@ -1348,7 +1347,8 @@ export default {
     },
     generateInvoice() {
       const currentdate = new Date();
-      const month = currentdate.getMonth();
+      // backend generateInvoice expects a 1-12 month (it does its own -1)
+      const month = currentdate.getMonth() + 1;
       const year = currentdate.getFullYear();
       axios
         .get(

@@ -555,7 +555,7 @@ export default {
             axios.put(`https://api.resguru.app/api/services/${serviceId}`, {
                 data: {
                     serviceStatus: "Completed",
-                    completeJobDate: new Date().toISOString(),
+                    completeJobDate: new Date().toISOString().slice(0, 10), // service.completeJobDate is a `date` field
                 }
             })
                 .then((resp) => {

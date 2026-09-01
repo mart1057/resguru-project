@@ -16,7 +16,7 @@
                     <div>invoice# {{ data_bill.attributes.tenant_bill.data?.attributes.invoiceNumber }}</div>
                     <div>
                         <div>Issue date</div>
-                        <div>{{ data_bill.attributes.tenant_bill.data?.attributes.createdAt }}</div>
+                        <div>{{ convertDateNoTime(data_bill.attributes.tenant_bill.data?.attributes.createdAt) }}</div>
                     </div>
                 </div>
             </div>

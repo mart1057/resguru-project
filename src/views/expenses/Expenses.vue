@@ -278,7 +278,7 @@
                     <template #tbody>
                         <vs-tr :key="i" v-for="(tr, i) in expense" :data="tr">
                             <vs-td>
-                                {{ tr.attributes.date }}
+                                {{ tr.attributes.date ? convertDateNoTime(tr.attributes.date) : '-' }}
                             </vs-td>
                             <vs-td>
                                 {{ tr.attributes.building_expense_type.data ? tr.attributes.building_expense_type.data.attributes.expenseTypeName : "" }}
@@ -413,7 +413,7 @@
                     <template #tbody>
                         <vs-tr :key="i" v-for="(tr, i) in buildingIncome" :data="tr">
                             <vs-td>
-                                {{ tr.attributes.date }}
+                                {{ tr.attributes.date ? convertDateNoTime(tr.attributes.date) : '-' }}
                             </vs-td>
                             <vs-td>
                                 {{ parseIncomeRemark(tr.attributes.remark).category }}
@@ -491,8 +491,7 @@
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">วันที่</div>
-                        <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[14px] pr-[14px]  flex justify-start"
-                            type="date" v-model="date" />
+                        <DateField class="w-[100%]" v-model="date" />
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">หลักฐานการจ่ายเงิน</div>
@@ -588,8 +587,7 @@
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">วันที่</div>
-                        <input class="h-[36px] w-[100%] bg-[#F3F8FD] rounded-[12px] pl-[14px] pr-[14px]  flex justify-start"
-                            type="date" v-model="date" />
+                        <DateField class="w-[100%]" v-model="date" />
                     </div>
                     <div class="mt-[14px]">
                         <div class="text-custom text-[14px] text-[#003765]">หลักฐาน</div>

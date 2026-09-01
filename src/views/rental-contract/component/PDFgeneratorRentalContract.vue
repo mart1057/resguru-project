@@ -29,8 +29,8 @@
                 <div>
                     <span class="ml-[42px]">ข้อ ๒</span> ผู้เช่าตกลงเช่าห้องพักอาศัยตามสัญญาข้อ ๑ มีกำหนดเวลา {{
                         detail.user_sign_contract?.contractDuration }} เดือน นับตั้งแต่วันที่ {{
-        detail.user_sign_contract?.checkInDate }}
-                    ถึงวันที่ {{ detail.user_sign_contract?.contractEndDate }}
+        formatDate(detail.user_sign_contract?.checkInDate) }}
+                    ถึงวันที่ {{ formatDate(detail.user_sign_contract?.contractEndDate) }}
                 </div>
                 <div>
                     <span class="ml-[42px]">ข้อ ๓</span> การชําระค่าเช่า

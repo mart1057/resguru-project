@@ -400,9 +400,8 @@
               </div>
               <div class="col-span-2">
                 <div class="mb-1">  <span class="text-red-500 mr-1">*</span>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
-                <input
-                  type="date"
-                  class="h-[36px] w-full rounded-[12px] bg-[#dadfe3] px-3"
+                <DateField
+                  class="w-full"
                   v-model="room_detail.birth"
                 />
               </div>
@@ -1443,8 +1442,6 @@ export default {
             this.room_detail.password != "" &&
             this.validatePassword()
           ) {
-            const date = new Date(this.room_detail.birth);
-            const isoString = date.toISOString();
             const loading = this.$vs.loading();
             axios
               .post("https://api.resguru.app/api" + "/users", {
@@ -1458,7 +1455,7 @@ export default {
                 idCard: this.room_detail.id_card,
                 contactAddress: this.room_detail.address,
                 sex: this.room_detail.sex === true,
-                dateOfBirth: isoString,
+                dateOfBirth: this.room_detail.birth,
                 password: this.room_detail.password,
                 building: this.$store.state.building,
                 emergencyPerson: this.room_detail.emergencyPerson,

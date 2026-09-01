@@ -294,9 +294,8 @@
                             <div class="grid grid-cols-6  text-custom w-[70%] ">
                                 <div class="col-span-2">
                                     <div>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
-                                    <input type="date"
-                                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
-                                        v-model="birthDate" required>
+                                    <DateField class="w-[100%] mt-[6px]"
+                                        v-model="birthDate" :required="true" />
                                 </div>
 
                             </div>
@@ -306,9 +305,8 @@
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
                                 <div class="col-span-4">
                                     <div>วันที่เข้าพัก</div>
-                                    <input type="date"
-                                        class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
-                                        v-model="checkInDate" required />
+                                    <DateField class="w-[100%] mt-[6px]"
+                                        v-model="checkInDate" :required="true" />
                                 </div>
                                 <div class="col-span-4  ml-[8px]">
                                     <div>เลือกห้อง</div>

@@ -23,6 +23,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 import notification, { shouldShow } from '@/components/hook/notify';
 import formatNumber from '@/components/hook/formatNumber';
+import DateField from '@/components/DateField.vue';
 
 
 
@@ -33,6 +34,9 @@ Vue.use(VueMaterial)
 Vue.use(VueAxios, axios)
 Vue.use(notification);
 Vue.use(formatNumber);
+
+// dd/mm/yyyy date picker, drop-in for <input type="date"> (v-model = "YYYY-MM-DD")
+Vue.component('DateField', DateField);
 
 // Safety net for anything that slips past individual .catch()/try-catch.
 // The visible recovery UX for render crashes is the error boundary in App.vue;

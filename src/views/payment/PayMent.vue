@@ -881,9 +881,8 @@
           <div class="mt-[14px]">
             <div class="text-custom">วันที่</div>
             <div>
-              <input
-                type="date"
-                class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+              <DateField
+                class="w-[100%] mt-[8px]"
                 v-model="fullPaymentForm.paymentDate"
               />
             </div>
@@ -1035,9 +1034,8 @@
           <div class="mt-[14px]">
             <div class="text-custom">วันที่</div>
             <div>
-              <input
-                type="date"
-                class="w-[100%] h-[36px] rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+              <DateField
+                class="w-[100%] mt-[8px]"
                 v-model="partialPaymentForm.paymentDate"
               />
             </div>
@@ -1168,8 +1166,7 @@
                     <div class="mt-[14px]">
                         <div class="text-custom">วันที่</div>
                         <div>
-                            <input type="date"
-                                class="w-[100%] h-[36px]  rounded-[12px] pl-[8px] pr-[8px] text-custom bg-[#F3F7FA] mt-[8px]"
+                            <DateField class="w-[100%] mt-[8px]"
                                 v-model="partialPaymentForm.paymentDate" />
                         </div>
                     </div>

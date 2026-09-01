@@ -616,11 +616,10 @@
                     <span class="text-[red] mr-[2px]">*</span>วัน/เดือน/ปีเกิด
                     (ค.ศ.)
                   </div>
-                  <input
-                    type="date"
-                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
+                  <DateField
+                    class="w-[100%] mt-[6px]"
                     v-model="room_detail_create.birth"
-                    required
+                    :required="true"
                   />
                 </div>
               </div>
@@ -648,11 +647,10 @@
                   <div>
                     <span class="text-[red] mr-[2px]">*</span>วันที่ทำสัญญา
                   </div>
-                  <input
-                    type="date"
-                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
+                  <DateField
+                    class="w-[100%] mt-[6px]"
                     v-model="room_detail_create.date_sign"
-                    required
+                    :required="true"
                   />
                   <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
                                         {{ errorFieldMessage }}
@@ -662,11 +660,10 @@
                   <div>
                     <span class="text-[red] mr-[2px]">*</span>วันสิ้นสุดสัญญา
                   </div>
-                  <input
-                    type="date"
-                    class="h-[36px] w-[100%] rounded-[12px] bg-[#F3F7FA] mt-[6px] pl-[12px] pr-[12px]"
+                  <DateField
+                    class="w-[100%] mt-[6px]"
                     v-model="room_detail_create.exp_date"
-                    required
+                    :required="true"
                   />
                   <!-- <div v-if="errorFieldMessage !== ''" class="text-danger">
                                         {{ errorFieldMessage }}
@@ -933,7 +930,7 @@
               <div class="grid grid-cols-8 text-custom w-[70%]">
                 <div class="col-span-4 mt-[14px]">
                   <div class="text-[#003765]">วันที่ทำสัญญา</div>
-                  <div class="mt-[12px]">{{ room_detail.date_sign }}</div>
+                  <div class="mt-[12px]">{{ fmtDate(room_detail.date_sign) }}</div>
                 </div>
                 <div class="col-span-4 ml-[8px] mt-[14px]">
                   <div class="text-[#003765]">ระยะเวลาสัญญา</div>
@@ -963,7 +960,7 @@
               <div class="grid grid-cols-8 text-custom w-[70%]">
                 <div class="col-span-4 mt-[14px]">
                   <div class="text-[#003765]">วันสิ้นสุดสัญญา</div>
-                  <div class="mt-[12px]">{{ room_detail.exp_date }}</div>
+                  <div class="mt-[12px]">{{ fmtDate(room_detail.exp_date) }}</div>
                 </div>
               </div>
             </div>
@@ -1093,6 +1090,10 @@ export default {
     // }, 1000)
   },
   methods: {
+    convertDateNoTime,
+    fmtDate(d) {
+      return d ? convertDateNoTime(d) : "-";
+    },
     getFloorStorageKey() {
       return `rentalContractSelectedFloor_${this.$store.state.building}`;
     },
@@ -1451,7 +1452,7 @@ export default {
           this.room_detail.roomInsurance_deposit =
             resp.data.attributes.roomInsuranceDeposit;
           this.room_detail.room_deposit = resp.data.attributes.roomDeposit;
-          this.room_detail.exp_date = resp.data.attributes.checkInDate;
+          this.room_detail.exp_date = resp.data.attributes.contractEndDate || "";
         })
         .catch((error) => {
           const errorMessage = this.$errMsg(error, 'โหลดข้อมูลสัญญาเช่า');
