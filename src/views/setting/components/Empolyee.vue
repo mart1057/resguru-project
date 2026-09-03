@@ -421,7 +421,7 @@
                         <div class="bg-[white] rounded-[22px] w-[16vw] border p-[14px] flex flex-col items-center">
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile"
                                 ref="fileUploadAdminProfileForm" hidden type="file" @change="tempImageUploadAdmin()" />
-                            <label for="uploadProfile">
+                            <label for="uploadProfile" class="flex flex-col items-center">
                                 <Avatar
                                     :src="NewProfileAdmin.imageProfile"
                                     :name="(NewProfileAdmin.firstName || '') + ' ' + (NewProfileAdmin.lastName || '')"

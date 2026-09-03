@@ -69,7 +69,7 @@
             <div class="flex w-[100%]">
                 <div class="w-[20%] ml-[18px] mt-[-70px]">
                     <div class="bg-[white] rounded-[22px] w-[16vw] border p-[14px] flex flex-col items-center">
-                        <div v-if="tabSetting == 1">
+                        <div v-if="tabSetting == 1" class="flex flex-col items-center">
                             <Avatar
                                 :src="userData.imageProfile && userData.imageProfile.url"
                                 :name="(userData.firstName || '') + ' ' + (userData.lastName || '')"
@@ -82,7 +82,7 @@
                                     เปลี่ยนรูปภาพโปรไฟล์</div>
                             </label>
                         </div>
-                        <div v-else>
+                        <div v-else class="flex flex-col items-center">
                             <Avatar
                                 type="building"
                                 :src="buildingData.attributes && buildingData.attributes.buildingLogo && buildingData.attributes.buildingLogo.data && buildingData.attributes.buildingLogo.data.attributes.url"

@@ -5,7 +5,7 @@
       width: size + 'px',
       height: size + 'px',
       borderRadius: square ? radius + 'px' : '9999px',
-      background: showImg ? '#EAF0F6' : (type === 'building' ? '#EAF0F6' : bg),
+      background: showImg ? '#EAF0F6' : (type === 'building' ? '#003765' : bg),
     }"
   >
     <img
@@ -20,28 +20,19 @@
       class="rg-avatar__initials"
       :style="{ fontSize: Math.round(size * 0.4) + 'px' }"
     >{{ letters }}</span>
-    <svg
+    <img
       v-else
+      :src="logoMark"
       class="rg-avatar__glyph"
-      :width="Math.round(size * 0.55)"
-      :height="Math.round(size * 0.55)"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M4 21V6a1 1 0 0 1 1-1h8a1 1 0 0 1 1 1v15M14 21V10a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v11M3 21h18M7 9h2M7 13h2M17 13h.01M17 17h.01"
-        stroke="#5C6B79"
-        stroke-width="1.6"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
+      :style="{ width: Math.round(size * 0.62) + 'px', height: Math.round(size * 0.62) + 'px' }"
+      alt=""
+    />
   </div>
 </template>
 
 <script>
 import { initials, avatarColor } from '@/components/hook/hook';
+import logoMark from '@/assets/img/Logo-01.png';
 
 const API = 'https://api.resguru.app';
 
@@ -56,7 +47,7 @@ export default {
     radius: { type: [Number, String], default: 12 },
   },
   data() {
-    return { broken: false };
+    return { broken: false, logoMark };
   },
   watch: {
     src() {
@@ -104,5 +95,9 @@ export default {
   font-weight: 700;
   font-family: 'Prompt', sans-serif;
   user-select: none;
+}
+.rg-avatar__glyph {
+  object-fit: contain;
+  display: block;
 }
 </style>
