@@ -72,9 +72,40 @@ function parseIncomeRemark(remark) {
     return { category: '-', note: remark || '' };
 }
 
+// "Kai", "Doe"  ->  "KD"   |  "Kai Doe" (single arg) -> "KD"  |  nothing -> "?"
+function initials(a, b) {
+    let first = (a || '').trim();
+    let last = (b || '').trim();
+    if (!last && first.includes(' ')) {
+        const parts = first.split(/\s+/);
+        first = parts[0];
+        last = parts[1] || '';
+    }
+    const s = (first.charAt(0) + last.charAt(0)).toUpperCase();
+    return s || '?';
+}
+
+// Deterministic, pleasant mid-tone colour from a name (Gmail/Slack style).
+// All pass white-text contrast.
+const AVATAR_COLORS = [
+    '#2F6F9F', '#3E7C4A', '#B4622D', '#7A5AA6',
+    '#357B87', '#B03A5B', '#8A6D1D', '#4C5D8A',
+];
+function avatarColor(name) {
+    const s = (name || '').trim() || '?';
+    let hash = 0;
+    for (let i = 0; i < s.length; i++) {
+        hash = (hash << 5) - hash + s.charCodeAt(i);
+        hash |= 0;
+    }
+    return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+}
+
 export {
     convertDateNoTime,
     parseIncomeRemark,
     recordDepositIncome,
     serviceStatusInfo,
+    initials,
+    avatarColor,
 }

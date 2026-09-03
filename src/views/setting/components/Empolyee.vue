@@ -25,14 +25,10 @@
                     <!-- Clickable area for edit (left side) -->
                     <div class="flex cursor-pointer flex-1" @click="getDetail(data.id)">
                         <div class="flex">
-                            <div v-if="data.imageProfile">
-                                <img class="w-[125px] min-h-[125px] rounded-[12px]"
-                                    :src="'https://api.resguru.app' + data.imageProfile.url" />
-                            </div>
-                            <div v-else>
-                                <img class="w-[125px] min-h-[125px] rounded-[12px]"
-                                    src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
-                            </div>
+                            <Avatar
+                                :src="data.imageProfile && data.imageProfile.url"
+                                :name="(data.firstName || '') + ' ' + (data.lastName || '')"
+                                :size="125" square />
                             <div class="ml-[12px]">
                                 <div class="flex flex-col justify-between h-[100%]">
                                     <div class="">
@@ -203,14 +199,10 @@
                     <div class="flex justify-between">
                         <div class="flex">
                             <div class="flex">
-                                <div v-if="data.attributes.employeeImage?.data">
-                                    <img class="w-[125px] h-[125px] rounded-[12px] object-cover"
-                                        :src="'https://api.resguru.app' + data.attributes.employeeImage?.data?.attributes.url" />
-                                </div>
-                                <div v-else
-                                    class="w-[125px] h-[125px] rounded-[12px] bg-[#003765] text-white flex items-center justify-center text-[36px] font-bold">
-                                    {{ initials(data.attributes.name, data.attributes.lastname) }}
-                                </div>
+                                <Avatar
+                                    :src="data.attributes.employeeImage && data.attributes.employeeImage.data && data.attributes.employeeImage.data.attributes.url"
+                                    :name="(data.attributes.name || '') + ' ' + (data.attributes.lastname || '')"
+                                    :size="125" square />
                                 <div class="ml-[12px]">
                                     <div class="flex flex-col justify-between h-[100%]">
                                         <div class="">
@@ -360,10 +352,10 @@
                     <div v-if="selectedExistingAdmin && selectedAdminDetails" class="border rounded-[12px] p-[16px] bg-[#F8F9FA]">
                         <h4 class="font-bold text-[#003765] mb-[12px]">แอดมินที่เลือก</h4>
                         <div class="flex items-center">
-                            <img class="w-[60px] h-[60px] rounded-[12px] object-cover"
-                                :src="selectedAdminDetails.imageProfile ? 
-                                    'https://api.resguru.app' + selectedAdminDetails.imageProfile.url : 
-                                    'https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg'" />
+                            <Avatar
+                                :src="selectedAdminDetails.imageProfile && selectedAdminDetails.imageProfile.url"
+                                :name="(selectedAdminDetails.firstName || '') + ' ' + (selectedAdminDetails.lastName || '')"
+                                :size="60" square />
                             <div class="ml-[12px]">
                                 <div class="font-bold text-[16px]">{{ selectedAdminDetails.firstName }} {{ selectedAdminDetails.lastName }}</div>
                                 <div class="text-sm text-gray-600">{{ selectedAdminDetails.email }}</div>
@@ -430,13 +422,10 @@
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile"
                                 ref="fileUploadAdminProfileForm" hidden type="file" @change="tempImageUploadAdmin()" />
                             <label for="uploadProfile">
-                                <img class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border object-cover"
-                                    v-if="NewProfileAdmin.imageProfile"
-                                    :src="'https://api.resguru.app' + NewProfileAdmin.imageProfile" />
-                                <div v-else
-                                    class="rounded-[22px] w-[150px] h-[150px] border bg-[#003765] text-white flex items-center justify-center text-[44px] font-bold">
-                                    {{ initials(NewProfileAdmin.firstName, NewProfileAdmin.lastName) }}
-                                </div>
+                                <Avatar
+                                    :src="NewProfileAdmin.imageProfile"
+                                    :name="(NewProfileAdmin.firstName || '') + ' ' + (NewProfileAdmin.lastName || '')"
+                                    :size="150" square :radius="22" />
 
                                 <div
                                     class="rounded-[22px] text-[1vw] pl-[8px] pr-[8px] bg-[white] pt-[4px] pb-[4px] mt-[4px]  text-custom cursor-pointer">

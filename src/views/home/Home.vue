@@ -68,12 +68,10 @@
         <div class="flex-1 min-w-0 h-[100vh] overflow-y-auto pt-[40px] px-[44px]">
             <div class="flex justify-end mb-[28px]">
                 <div class="flex items-center gap-[10px]">
-                    <vs-avatar size="40" v-if="$store.state.userInfo.imageProfile?.formats?.small?.url">
-                        <img :src="'https://api.resguru.app' + $store.state.userInfo.imageProfile?.formats?.small?.url" />
-                    </vs-avatar>
-                    <vs-avatar size="40" v-else>
-                        {{ ($store.state.userInfo.firstName || '?').charAt(0).toUpperCase() }}
-                    </vs-avatar>
+                    <Avatar
+                        :src="($store.state.userInfo.imageProfile && ($store.state.userInfo.imageProfile.formats && $store.state.userInfo.imageProfile.formats.small && $store.state.userInfo.imageProfile.formats.small.url)) || ($store.state.userInfo.imageProfile && $store.state.userInfo.imageProfile.url)"
+                        :name="($store.state.userInfo.firstName || '') + ' ' + ($store.state.userInfo.lastName || '')"
+                        :size="40" />
                     <div class="text-[14px] font-semibold text-[#003765]">
                         {{ $store.state.userInfo.firstName }} {{ $store.state.userInfo.lastName }}
                     </div>
@@ -91,9 +89,11 @@
 
                     <div class="h-[128px] relative flex items-center justify-center"
                         :style="{ background: data.attributes.colorCode || '#003765' }">
-                        <img v-if="logoUrl(data)" :src="logoUrl(data)"
-                            class="h-[78px] w-[78px] rounded-[16px] object-cover bg-white/25 shadow-sm" />
-                        <img v-else :src="Logo01" class="h-[60px] w-[60px] object-contain opacity-90" />
+                        <Avatar
+                            type="building"
+                            :src="data.attributes.buildingLogo && data.attributes.buildingLogo.data && data.attributes.buildingLogo.data.attributes.url"
+                            :name="data.attributes.buildingName"
+                            :size="78" square :radius="16" />
 
                         <span v-if="packageTitle(data)"
                             class="absolute top-[10px] left-[12px] text-[11px] text-custom px-[8px] py-[2px] rounded-full bg-black/25 text-white">

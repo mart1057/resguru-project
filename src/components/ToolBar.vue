@@ -136,12 +136,11 @@
                                     :class="profile_popup ? 'bg-black/10' : 'hover:bg-black/[0.06]'"
                                     @click.stop="profile_popup = !profile_popup"
                                 >
-                                    <vs-avatar size="40" v-if="$store.state.buildingInfo[0]?.attributes?.buildingLogo?.data?.attributes?.url">
-                                        <img :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes?.buildingLogo?.data?.attributes?.url" />
-                                    </vs-avatar>
-                                    <div v-else class="w-[40px] h-[40px] rounded-full bg-[#003765] flex items-center justify-center overflow-hidden">
-                                        <img src="../assets/img/Logo-01.png" class="w-[26px] h-[26px] object-contain" />
-                                    </div>
+                                    <Avatar
+                                        type="building"
+                                        :src="$store.state.buildingInfo[0] && $store.state.buildingInfo[0].attributes && $store.state.buildingInfo[0].attributes.buildingLogo && $store.state.buildingInfo[0].attributes.buildingLogo.data && $store.state.buildingInfo[0].attributes.buildingLogo.data.attributes.url"
+                                        :name="$store.state.buildingInfo[0] && $store.state.buildingInfo[0].attributes && $store.state.buildingInfo[0].attributes.buildingName"
+                                        :size="40" />
                                     <div class="ml-[8px]">
                                         <div class="text-[13px] font-bold text-[#003765] leading-tight">
                                             {{ $store.state.buildingInfo[0]?.attributes?.buildingName }}
@@ -163,13 +162,11 @@
                                     <div class="content-tooltip p-[8px]">
                                         <div class="flex">
                                             <div>
-                                                <vs-avatar size="40" v-if="$store.state.buildingInfo[0]?.attributes?.buildingLogo?.data?.attributes?.url">
-                                                    <img
-                                                        :src="'https://api.resguru.app' + $store.state.buildingInfo[0]?.attributes?.buildingLogo?.data?.attributes?.url" />
-                                                </vs-avatar>
-                                                <div v-else class="w-[40px] h-[40px] rounded-full bg-[#003765] flex items-center justify-center overflow-hidden">
-                                                    <img src="../assets/img/Logo-01.png" class="w-[26px] h-[26px] object-contain" />
-                                                </div>
+                                                <Avatar
+                                                    type="building"
+                                                    :src="$store.state.buildingInfo[0] && $store.state.buildingInfo[0].attributes && $store.state.buildingInfo[0].attributes.buildingLogo && $store.state.buildingInfo[0].attributes.buildingLogo.data && $store.state.buildingInfo[0].attributes.buildingLogo.data.attributes.url"
+                                                    :name="$store.state.buildingInfo[0] && $store.state.buildingInfo[0].attributes && $store.state.buildingInfo[0].attributes.buildingName"
+                                                    :size="40" />
                                             </div>
                                             <div
                                                 class="flex items-center text-[16px] font-bold ml-[8px] text-custom w-[150px]">

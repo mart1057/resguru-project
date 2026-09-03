@@ -5,17 +5,15 @@
                 v-for="user in history" @click="getDetailRentalContract(user.attributes
                     .users_permissions_user
                     .data?.id)">
-                <!-- <img   v-if="user.attributes.users_permissions_user.data?.attributes.imageProfile":src="user.attributes
-                    .users_permissions_user
-                    .data.attributes.
-                    imageProfile" /> -->
-                <div v-if="user.attributes
-                    .users_permissions_user
-                    .data?.attributes.imageProfile.data">
-                    <img class="w-[78px] h-[78px] rounded-[22px] " :src="'https://api.resguru.app' + user.attributes
-                        .users_permissions_user
-                        .data?.attributes.imageProfile?.data.attributes.url" />
-                </div>
+                <Avatar
+                    :src="user.attributes.users_permissions_user.data
+                        && user.attributes.users_permissions_user.data.attributes.imageProfile
+                        && user.attributes.users_permissions_user.data.attributes.imageProfile.data
+                        && user.attributes.users_permissions_user.data.attributes.imageProfile.data.attributes.url"
+                    :name="user.attributes.users_permissions_user.data
+                        ? ((user.attributes.users_permissions_user.data.attributes.firstName || '') + ' ' + (user.attributes.users_permissions_user.data.attributes.lastName || ''))
+                        : ''"
+                    :size="78" square :radius="22" />
                 <div>{{ user.attributes
                     .users_permissions_user
                     .data?.attributes.firstName }} {{ user.attributes

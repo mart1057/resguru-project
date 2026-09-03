@@ -124,12 +124,10 @@
                                 </vs-td>
                                 <vs-td>
                                     <div class="text-custom flex">
-                                        <div>
-                                            <vs-avatar circle>
-                                                <img src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-picture-icon-png-people-person-profile--4.png"
-                                                    alt="">
-                                            </vs-avatar>
-                                        </div>
+                                        <Avatar
+                                            :src="tr.attributes.users_created && tr.attributes.users_created.data && tr.attributes.users_created.data.attributes.imageProfile && tr.attributes.users_created.data.attributes.imageProfile.data && tr.attributes.users_created.data.attributes.imageProfile.data.attributes.url"
+                                            :name="tr.attributes.users_created && tr.attributes.users_created.data ? ((tr.attributes.users_created.data.attributes.firstName || '') + ' ' + (tr.attributes.users_created.data.attributes.lastName || '')) : ''"
+                                            :size="32" />
                                         <div class="flex justify-center items-center ml-[8px]">
                                             {{ tr.attributes.users_created?.data?.attributes?.firstName }}
                                             {{ tr.attributes.users_created?.data?.attributes?.lastName }}
@@ -354,12 +352,10 @@
                                     </vs-td>
                                     <vs-td>
                                         <div class="text-custom flex">
-                                            <div>
-                                                <vs-avatar circle>
-                                                    <img src="https://www.freeiconspng.com/thumbs/profile-icon-png/profile-picture-icon-png-people-person-profile--4.png"
-                                                        alt="">
-                                                </vs-avatar>
-                                            </div>
+                                            <Avatar
+                                                :src="tr.attributes.users_created && tr.attributes.users_created.data && tr.attributes.users_created.data.attributes.imageProfile && tr.attributes.users_created.data.attributes.imageProfile.data && tr.attributes.users_created.data.attributes.imageProfile.data.attributes.url"
+                                                :name="tr.attributes.users_created && tr.attributes.users_created.data ? ((tr.attributes.users_created.data.attributes.firstName || '') + ' ' + (tr.attributes.users_created.data.attributes.lastName || '')) : ''"
+                                                :size="32" />
                                             <div class="flex justify-center items-center ml-[8px]">
                                                 {{ tr.attributes.users_created?.data?.attributes?.firstName }}
                                                 {{ tr.attributes.users_created?.data?.attributes?.lastName }}

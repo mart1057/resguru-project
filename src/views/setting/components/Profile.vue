@@ -16,7 +16,7 @@
         <div class="mt-[14px]">
             <div v-if="tabSetting == 2">
                 <div v-if="buildingData.attributes && buildingData.attributes.buildingBanner">
-                    <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]"
+                    <div class="h-[238px] rounded-[22px] bg-[#5C6B79] bg-cover bg-center bg-no-repeat flex justify-end items-end p-[14px]"
                         v-bind:style="{ backgroundImage: 'url(https://api.resguru.app' + buildingData.attributes.buildingBanner.data?.attributes.url + ')' }">
                         <!-- <img :src="`https://api.resguru.app${buildingData.attributes.buildingBanner.data.attributes.url}`" > -->
                         <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload"
@@ -28,7 +28,7 @@
                     </div>
                 </div>
                 <div v-else>
-                    <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]">
+                    <div class="h-[238px] rounded-[22px] bg-[#5C6B79] bg-cover bg-center bg-no-repeat flex justify-end items-end p-[14px]">
 
                         <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload"
                             ref="buildingBanner" hidden type="file" @change="editBannerwithUpload(2)" />
@@ -41,7 +41,7 @@
             </div>
             <div v-else>
                 <div v-if="userData.imageBanner">
-                    <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]"
+                    <div class="h-[238px] rounded-[22px] bg-[#5C6B79] bg-cover bg-center bg-no-repeat flex justify-end items-end p-[14px]"
                         v-bind:style="{ backgroundImage: 'url(https://api.resguru.app' + userData.imageBanner.url + ')' }">
                         <!-- <img :src="`https://api.resguru.app${buildingData.attributes.buildingBanner.data.attributes.url}`" > -->
                         <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload"
@@ -53,7 +53,7 @@
                     </div>
                 </div>
                 <div v-else>
-                    <div class="h-[238px] rounded-[22px] bg-[#5C6B79] flex justify-end items-end p-[14px]">
+                    <div class="h-[238px] rounded-[22px] bg-[#5C6B79] bg-cover bg-center bg-no-repeat flex justify-end items-end p-[14px]">
 
                         <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="upload"
                             ref="buildingBannerUser" hidden type="file" @change="editBannerwithUpload2()" />
@@ -70,10 +70,10 @@
                 <div class="w-[20%] ml-[18px] mt-[-70px]">
                     <div class="bg-[white] rounded-[22px] w-[16vw] border p-[14px] flex flex-col items-center">
                         <div v-if="tabSetting == 1">
-                            <img v-if="userData.imageProfile" class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
-                                :src="`https://api.resguru.app${userData.imageProfile.url}`" />
-                            <img v-else class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
-                                src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
+                            <Avatar
+                                :src="userData.imageProfile && userData.imageProfile.url"
+                                :name="(userData.firstName || '') + ' ' + (userData.lastName || '')"
+                                :size="150" square :radius="22" />
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile"
                                 ref="buildingProfile" hidden type="file" @change="editProfilewithUpload()" />
                             <label for="uploadProfile">
@@ -83,11 +83,11 @@
                             </label>
                         </div>
                         <div v-else>
-                            <img v-if="$store.state.buildingInfo[0]?.attributes?.buildingLogo?.data"
-                                class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
-                                :src="'https://api.resguru.app' + (buildingData.attributes?.buildingLogo?.data?.attributes?.url || '')" />
-                            <img v-else class="bg-[#f7f3f3] rounded-[22px] w-[150px] h-[150px] border"
-                                src="https://i.pinimg.com/474x/44/95/12/4495124f97de536535464aa6558b4452.jpg" />
+                            <Avatar
+                                type="building"
+                                :src="buildingData.attributes && buildingData.attributes.buildingLogo && buildingData.attributes.buildingLogo.data && buildingData.attributes.buildingLogo.data.attributes.url"
+                                :name="buildingData.attributes && buildingData.attributes.buildingName"
+                                :size="150" square :radius="22" />
                             <input class="h-[28px] w-[120px] rounded-[12px] border flex justify-start " id="uploadProfile"
                                 ref="buildingProfileCom" hidden type="file" @change=" editBannerwithUpload(1)" />
                             <label for="uploadProfile">

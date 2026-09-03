@@ -27,14 +27,13 @@
         </div>
         
         <!-- Tenant Profile Image -->
-        <img
-          v-if="data.imageProfile"
-          :src="'https://api.resguru.app' + data.imageProfile?.url"
-          @click="getDetailRentalContract()"
-          class="w-[78px] h-[78px] rounded-[22px] object-cover"
-          alt="Tenant Profile"
+        <Avatar
+          :src="data.imageProfile && data.imageProfile.url"
+          :name="(data.firstName || '') + ' ' + (data.lastName || '')"
+          :size="78" square :radius="22"
+          @click.native="getDetailRentalContract()"
         />
-        
+
         <!-- Tenant Name -->
         <div @click="getDetailRentalContract()" class="text-[18px] font-medium text-center">
           {{ data.firstName }} {{ data.lastName }}
