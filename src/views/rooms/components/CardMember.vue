@@ -987,12 +987,55 @@ export default {
     previewImg(url) {
       window.open(url, "_blank");
     },
-    autoGenMail() {
-      const ran = Math.floor(100 + Math.random() * 900); // Generates a random 3-digit number
+    // Old version used a 3-digit random number (100-999) per building -
+    // only 900 possible values, so any building doing more than a few
+    // dozen bookings hits real collisions (birthday-paradox math puts
+    // ~50% collision odds around the 35th booking in the same building).
+    // Now: a much higher-entropy id (timestamp + random, base36), plus
+    // an actual existence check against the backend before accepting it
+    // - matching the same /users/?filters[email][$eq]= pattern already
+    // used by getUserDetail() above - with a few retries in the rare
+    // case a collision still happens.
+    genCandidateEmail(matchingBuilding) {
+      const idPart =
+        Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+      return `${idPart}.${matchingBuilding}@resguru.app`.toLowerCase();
+    },
+    async emailExists(email) {
+      const res = await fetch(
+        "https://api.resguru.app/api" +
+          "/users/?filters[email][$eq]=" +
+          encodeURIComponent(email)
+      );
+      const resp = await res.json();
+      return Array.isArray(resp) && resp.length > 0;
+    },
+    async autoGenMail() {
       const matchingBuilding = this.$store.state.buildingInfo
         .find((item) => item.id === this.$store.state.building)
         .attributes.buildingName.replace(/\s+/g, "");
-      this.room_detail.email = ran + matchingBuilding + "@resguru.app";
+
+      const maxAttempts = 5;
+      for (let attempt = 0; attempt < maxAttempts; attempt++) {
+        const candidate = this.genCandidateEmail(matchingBuilding);
+        try {
+          if (!(await this.emailExists(candidate))) {
+            this.room_detail.email = candidate;
+            return;
+          }
+        } catch (error) {
+          // If the existence check itself fails (network hiccup), still
+          // fall back to using the high-entropy candidate rather than
+          // blocking the booking - a genuine collision at this entropy
+          // level is astronomically unlikely anyway.
+          this.room_detail.email = candidate;
+          return;
+        }
+      }
+      this.$showNotification(
+        "danger",
+        "ไม่สามารถสร้างอีเมลล์ชั่วคราวได้ กรุณาลองอีกครั้ง"
+      );
     },
     validatePassword() {
       const password = this.room_detail.password;
