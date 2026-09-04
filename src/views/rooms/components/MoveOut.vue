@@ -443,6 +443,45 @@
               </div>
             </div>
           </div>
+          <div class="w-[50%] flex flex-col justify-end mt-[14px]">
+            เลขมิเตอร์ตอนย้ายออก
+            <div class="w-[50%] flex justify-between mt-[8px]">
+              <div>
+                <div class="text-[12px] text-[#8396A6]">รายการ</div>
+                <div class="mt-[8px]">
+                  <div
+                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
+                  >
+                    เลขมิเตอร์น้ำ
+                  </div>
+                </div>
+                <div class="mt-[8px]">
+                  <div
+                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
+                  >
+                    เลขมิเตอร์ไฟ
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div class="text-[12px] text-[#8396A6]">เลขมิเตอร์</div>
+                <div class="flex">
+                  <input
+                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center"
+                    type="number"
+                    v-model="end_meter.water"
+                  />
+                </div>
+                <div class="flex mt-[-8px]">
+                  <input
+                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start"
+                    type="number"
+                    v-model="end_meter.electric"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="flex w-[100%] justify-end mt-[50px]">
           <div class="w-[90%] flex flex-col items-center">
@@ -813,6 +852,13 @@ export default {
       ],
       items_other: [],
       bill_detail: {},
+      // Meter reading at the moment this tenant moves out - saved onto
+      // their user-sign-contract as endWater/endElectric so the next
+      // tenant's first bill (and this tenant's own final usage, going
+      // forward) has an unambiguous baseline instead of relying on the
+      // shared room+month water-fee/electric-fee record, which breaks
+      // when two tenants' readings need to land in the same month.
+      end_meter: { water: null, electric: null },
       user_detail: {
         ele: 0,
         water: 0,
@@ -1299,6 +1345,17 @@ export default {
                   {
                     data: {
                       room: null,
+                      // Previously never set anywhere in the codebase -
+                      // contractStatus stayed "rent" forever after
+                      // move-out, with room:null as the only real signal
+                      // a tenant had left. Anything filtering by
+                      // contractStatus === 'rent' to mean "currently
+                      // renting" (e.g. billing eligibility) was wrong for
+                      // every past tenant.
+                      contractStatus: "move out",
+                      endWater: this.toNumber(this.end_meter.water) || null,
+                      endElectric:
+                        this.toNumber(this.end_meter.electric) || null,
                     },
                   }
                 ),

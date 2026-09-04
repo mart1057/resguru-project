@@ -1412,47 +1412,19 @@ export default {
         `ค่าเช่าล่วงหน้า (ทำสัญญาเช่า ห้อง ${this.create_room_number || ''})`.trim()
       );
     },
-    // Move-in meter readings are saved as the previous month's baseline
-    // fee record (billMonth/billYear = the month before check-in), same
-    // shape as Water.vue/Electricity.vue's createPreviousMonthWaterfee -
-    // so this month's real reading (entered later on the Meter page)
-    // computes usage against a real, correctly-tagged record instead of
-    // relying only on the startWater/startElectric fallback.
-    getPreviousMonthYearFromCheckIn() {
-      const checkIn = new Date(this.room_detail_create.date_sign);
-      const month = checkIn.getMonth() + 1;
-      const year = checkIn.getFullYear();
-      if (month === 1) {
-        return { previousMonth: 12, previousYear: year - 1 };
-      }
-      return { previousMonth: month - 1, previousYear: year };
-    },
-    createUtilityRecords(contractId) {
-      const { previousMonth, previousYear } = this.getPreviousMonthYearFromCheckIn();
-
-      return Promise.all([
-        axios.post("https://api.resguru.app/api/water-fees", {
-          data: {
-            meterUnit: this.room_detail_create.water,
-            user_sign_contract: contractId,
-            room: this.room_detail_create.id_room,
-            billMonth: previousMonth,
-            billYear: previousYear,
-            usageMeter: 0,
-          },
-        }),
-        axios.post("https://api.resguru.app/api/electric-fees", {
-          data: {
-            electicUnit: this.room_detail_create.ele,
-            user_sign_contract: contractId,
-            room: this.room_detail_create.id_room,
-            billMonth: previousMonth,
-            billYear: previousYear,
-            usageMeter: 0,
-          },
-        }),
-      ]);
-    },
+    // Removed createUtilityRecords()/getPreviousMonthYearFromCheckIn():
+    // they used to backdate a "previous month" water-fee/electric-fee
+    // record to the move-in reading, tagged to the calendar month before
+    // check-in. That collides with a real record for that room+month
+    // whenever the room was occupied the prior month (a mid-month tenant
+    // handoff) - Strapi has no uniqueness constraint on
+    // (room, billMonth, billYear), so it silently created a second,
+    // conflicting record instead of erroring. The backend's
+    // generateInvoice/reGenerateInvoice now falls back to
+    // user_sign_contract.startWater/startElectric directly when no
+    // previous-month record exists, so this baseline no longer needs a
+    // synthetic record at all - startWater/startElectric (still set in
+    // buildContractPayload() above) is sufficient on its own.
     onPhoneInput(e) {
       this.room_detail_create.phone = (e.target.value || "")
         .replace(/\D/g, "")
@@ -1795,7 +1767,6 @@ export default {
 
                 return Promise.all([
                   this.updateRoomAfterContract(),
-                  this.createUtilityRecords(resp.data.data.id),
                   this.recordMoveInDepositIncome(),
                 ]);
             })
@@ -1862,7 +1833,6 @@ export default {
 
                 return Promise.all([
                   this.updateRoomAfterContract(),
-                  this.createUtilityRecords(resp.data.data.id),
                   this.recordMoveInDepositIncome(),
                 ]);
             })
