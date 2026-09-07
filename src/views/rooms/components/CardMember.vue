@@ -146,25 +146,23 @@
               <div class="w-[30%] text-custom">ข้อมูลหลัก</div>
               <div class="w-[70%]">
                 <!-- User Type Selection (New or Existing) -->
-                <div class="grid grid-cols-2 text-custom" v-if="is_edit == false">
-                  <div class="flex space-x-4">
-                    <vs-radio
-                      v-model="room_detail.check_user"
-                      color="#003765"
-                      :val="true"
-                      @input="clearButton1()"
-                    >
-                      ผู้เช่าในระบบ
-                    </vs-radio>
-                    <vs-radio
-                      v-model="room_detail.check_user"
-                      color="#003765"
-                      :val="false"
-                      @input="clearButton2()"
-                    >
-                      ผู้เช่าใหม่
-                    </vs-radio>
-                  </div>
+                <div class="flex gap-2 text-custom" v-if="is_edit == false">
+                  <button
+                    type="button"
+                    class="h-[36px] px-4 rounded-[12px] text-[14px] border transition-colors"
+                    :class="room_detail.check_user ? 'bg-[#003765] text-white border-[#003765]' : 'bg-white text-[#003765] border-[#B9CCDC]'"
+                    @click="clearButton1()"
+                  >
+                    ผู้เช่าในระบบ
+                  </button>
+                  <button
+                    type="button"
+                    class="h-[36px] px-4 rounded-[12px] text-[14px] border transition-colors"
+                    :class="!room_detail.check_user ? 'bg-[#003765] text-white border-[#003765]' : 'bg-white text-[#003765] border-[#B9CCDC]'"
+                    @click="clearButton2()"
+                  >
+                    ผู้เช่าใหม่
+                  </button>
                 </div>
                 
                 <!-- Existing User Search -->
@@ -227,7 +225,7 @@
                   <div class="grid grid-cols-2 text-custom mt-4 gap-4">
                     <div class="col-span-1">
                       <div class="mb-1">
-                        <span class="text-red-500 mr-1">*</span>รหัสผ่าน (อย่างน้อย 6 ตัว มีตัวอักษรและตัวเลข)
+                        รหัสผ่าน (อย่างน้อย 6 ตัว มีตัวอักษรและตัวเลข — เว้นว่างเพื่อสร้างอัตโนมัติ)
                       </div>
                       <div class="relative">
                         <input
@@ -250,7 +248,7 @@
                           </svg>
                         </button>
                       </div>
-                      <div class="text-[12px] text-[#8396A6] mt-1">
+                      <div class="text-[12px] text-[#8396A6] mt-1" v-if="room_detail.password">
                         <span v-if="room_detail.password.length < 6" class="text-red-500">❌ อย่างน้อย 6 ตัว</span>
                         <span v-else class="text-green-600">✓ ความยาว OK</span>
                         &nbsp;
@@ -263,7 +261,7 @@
                     </div>
                     <div class="col-span-1">
                       <div class="mb-1">
-                        <span class="text-red-500 mr-1">*</span>ยืนยันรหัสผ่าน
+                        ยืนยันรหัสผ่าน
                       </div>
                       <div class="relative">
                         <input
@@ -297,7 +295,7 @@
                   <!-- Gender Selection -->
                   <div class="mt-4">
                     <div class="font-medium mb-2">
-                      <span class="text-red-500 mr-1">*</span>เพศ
+                      เพศ
                     </div>
                     <div class="flex space-x-4">
                       <div
@@ -398,7 +396,7 @@
                 />
               </div>
               <div class="col-span-2">
-                <div class="mb-1">  <span class="text-red-500 mr-1">*</span>วัน/เดือน/ปีเกิด (ค.ศ.)</div>
+                <div class="mb-1">วัน/เดือน/ปีเกิด (ค.ศ.)</div>
                 <DateField
                   class="w-full"
                   v-model="room_detail.birth"
@@ -429,7 +427,7 @@
             <!-- Address & ID Card Section -->
             <div class="grid grid-cols-6 gap-4 mt-4">
               <div class="col-span-4">
-                <div class="mb-1"><span class="text-red-500 mr-1">*</span>ที่อยู่</div>
+                <div class="mb-1">ที่อยู่</div>
                 <input
                   type="text"
                   class="h-[36px] w-full rounded-[12px] bg-[#dadfe3] px-3"
@@ -1046,6 +1044,33 @@ export default {
       const passwordsMatch = password === passwordConfirm && password !== "";
       return hasMinLength && hasLetters && hasNumbers && passwordsMatch;
     },
+    // Only first name, last name, email and phone are mandatory to book a
+    // room now - everything else (address, birth, gender, id card, nickname,
+    // password) is optional. Returns the first problem as a Thai message, or
+    // "" when the required fields are all present and valid.
+    bookingRequiredError() {
+      const d = this.room_detail;
+      if (!d.name || !d.name.trim()) return "กรุณากรอกชื่อ";
+      if (!d.last_name || !d.last_name.trim()) return "กรุณากรอกนามสกุล";
+      if (!d.email || !d.email.trim()) return "กรุณากรอกอีเมล";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(d.email.trim()))
+        return "รูปแบบอีเมลไม่ถูกต้อง";
+      if (!d.phone || !d.phone.trim()) return "กรุณากรอกเบอร์โทรศัพท์";
+      return "";
+    },
+    // A valid auto password for a new tenant who was not given one: 8 letters
+    // + 2 digits, so it always passes validatePassword()'s letter+digit+length
+    // rule and Strapi's own minimum.
+    genPassword() {
+      const letters = "abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ";
+      const digits = "23456789";
+      let p = "";
+      for (let i = 0; i < 8; i++)
+        p += letters[Math.floor(Math.random() * letters.length)];
+      p += digits[Math.floor(Math.random() * digits.length)];
+      p += digits[Math.floor(Math.random() * digits.length)];
+      return p;
+    },
     getFloorRoom() {
       const loading = this.$vs.loading();
       fetch(
@@ -1301,7 +1326,7 @@ export default {
           this.create = true;
         });
     },
-    createOrEdit() {
+    async createOrEdit() {
       this.room_detail.vehicles = this.normalizeVehicles(this.room_detail.vehicles);
       const id_con = "";
       if (this.is_edit == true) {
@@ -1328,11 +1353,9 @@ export default {
       } else {
         if (this.room_detail.check_user == true) {
           if (
-            this.room_detail.email != "" &&
-            this.room_detail.name != "" &&
-            this.room_detail.last_name != "" &&
-            this.room_detail.phone != "" &&
-            this.room_detail.address.trim() != ""
+            !this.bookingRequiredError() &&
+            this.id_user &&
+            this.room_detail.id
           ) {
             const loading = this.$vs.loading();
             fetch(
@@ -1400,7 +1423,7 @@ export default {
                           idCard: this.room_detail.id_card,
                           contactAddress: this.room_detail.address,
                           sex: this.room_detail.sex === true,
-                          dateOfBirth: this.room_detail.birth,
+                          dateOfBirth: this.room_detail.birth || null,
                           emergencyPerson: this.room_detail.emergencyPerson,
                           relation: this.room_detail.relation,
                           emergencyPhone: this.room_detail.emergencyPhone,
@@ -1472,18 +1495,48 @@ export default {
                 this.$showNotification("danger", errorMessage);
               });
           } else {
-            this.$showNotification("danger", "กรุณากรอกข้อมูลให้ครบ");
+            const reqErr = this.bookingRequiredError();
+            this.$showNotification(
+              "danger",
+              reqErr ||
+                'กรุณาค้นหาผู้เช่าด้วยอีเมลแล้วกด "ค้นหา" เพื่อเลือกผู้เช่าก่อนบันทึก'
+            );
           }
         } else {
-          if (
-            this.room_detail.email != "" &&
-            this.room_detail.name != "" &&
-            this.room_detail.last_name != "" &&
-            this.room_detail.phone != "" &&
-            this.room_detail.address.trim() != "" &&
-            this.room_detail.password != "" &&
-            this.validatePassword()
-          ) {
+          const reqErr = this.bookingRequiredError();
+          if (reqErr) {
+            this.$showNotification("danger", reqErr);
+            return;
+          }
+          try {
+            if (await this.emailExists(this.room_detail.email.trim())) {
+              this.$showNotification(
+                "danger",
+                'อีเมลนี้ถูกใช้งานแล้ว กรุณาเปลี่ยนอีเมล หรือเลือกแท็บ "ผู้เช่าในระบบ" เพื่อใช้บัญชีเดิม'
+              );
+              return;
+            }
+          } catch (e) {
+            // Existence check failed (network). Fall through - Strapi still
+            // rejects a genuine duplicate on POST and $errMsg surfaces it.
+          }
+          let newPassword = (this.room_detail.password || "").trim();
+          if (newPassword) {
+            if (newPassword !== this.room_detail.password_confirm) {
+              this.$showNotification("danger", "รหัสผ่านไม่ตรงกัน");
+              return;
+            }
+            if (!this.validatePassword()) {
+              this.$showNotification(
+                "danger",
+                "รหัสผ่านต้องมีอย่างน้อย 6 ตัว และมีทั้งตัวอักษรและตัวเลข"
+              );
+              return;
+            }
+          } else {
+            newPassword = this.genPassword();
+          }
+          {
             const loading = this.$vs.loading();
             axios
               .post("https://api.resguru.app/api" + "/users", {
@@ -1497,8 +1550,8 @@ export default {
                 idCard: this.room_detail.id_card,
                 contactAddress: this.room_detail.address,
                 sex: this.room_detail.sex === true,
-                dateOfBirth: this.room_detail.birth,
-                password: this.room_detail.password,
+                dateOfBirth: this.room_detail.birth || null,
+                password: newPassword,
                 building: this.$store.state.building,
                 emergencyPerson: this.room_detail.emergencyPerson,
                 relation: this.room_detail.relation,
@@ -1600,18 +1653,6 @@ export default {
                 this.create = false;
                 loading.close();
               });
-          } else {
-            if (!this.room_detail.password) {
-              this.$showNotification("danger", "กรุณากรอกรหัสผ่าน");
-            } else if (!this.room_detail.password_confirm) {
-              this.$showNotification("danger", "กรุณายืนยันรหัสผ่าน");
-            } else if (this.room_detail.password !== this.room_detail.password_confirm) {
-              this.$showNotification("danger", "รหัสผ่านไม่ตรงกัน");
-            } else if (!this.validatePassword()) {
-              this.$showNotification("danger", "รหัสผ่านต้องมีอย่างน้อย 6 ตัว และมีตัวอักษรและตัวเลข");
-            } else {
-              this.$showNotification("danger", "กรุณากรอกข้อมูลให้ครบ");
-            }
           }
         }
       }
