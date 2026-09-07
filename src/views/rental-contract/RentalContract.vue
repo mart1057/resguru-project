@@ -435,7 +435,8 @@
           <div
             class="text-custom flex justify-center items-center text-[18px] font-bold"
           >
-            เพิ่มสัญญาเช่าห้อง {{ create_room_number }}
+            {{ isEditContract ? "แก้ไขสัญญาเช่าห้อง" : "เพิ่มสัญญาเช่าห้อง" }}
+            {{ create_room_number }}
           </div>
           <div @click="create = false" class="cursor-pointer">
             <svg
@@ -474,11 +475,18 @@
             ห้องนี้มีการจองอยู่ — ข้อมูลผู้เช่าและเงินที่ชำระตอนจองถูกกรอกให้แล้ว
             กรอกข้อมูลที่เหลือแล้วกด "บันทึก" เพื่อทำสัญญาเช่า (สถานะห้องจะเปลี่ยนเป็น "เข้าพักแล้ว")
           </div>
+          <div
+            v-if="isEditContract"
+            class="mb-[8px] rounded-[10px] bg-[#EAF3FB] text-[#003765] text-[13px] px-[14px] py-[10px]"
+          >
+            กำลังแก้ไขสัญญาเช่าที่มีอยู่ — การบันทึกจะอัปเดตสัญญาฉบับเดิม
+            (ไม่สร้างสัญญาใหม่ ไม่แตะเลขมิเตอร์เริ่มต้นและรายรับที่บันทึกไว้แล้ว)
+          </div>
           <div class="mt-[24px]">
             <div class="w-[100%] flex">
               <div class="w-[30%] text-custom flex items-start font-bold text-[#003765]">ผู้เช่า</div>
               <div class="w-[70%]">
-                <div class="grid grid-cols-2 text-custom">
+                <div class="grid grid-cols-2 text-custom" v-if="!isEditContract">
                   <div class="flex">
                     <vs-radio
                       v-model="room_detail_create.check_user"
@@ -499,7 +507,7 @@
                 </div>
                 <div
                   class="grid grid-cols-2 text-custom mt-[14px]"
-                  v-if="room_detail_create.check_user == true"
+                  v-if="room_detail_create.check_user == true && !isEditContract"
                 >
                   <div>
                     <div class="">
@@ -762,7 +770,7 @@
                 </div>
               </div>
             </div>
-            <div class="w-[100%] flex mt-[24px]">
+            <div class="w-[100%] flex mt-[24px]" v-if="!isEditContract">
               <div class="w-[30%] text-custom flex items-start font-bold text-[#003765]">
                 มิเตอร์เริ่มต้น
               </div>
@@ -1024,6 +1032,18 @@
                 </div>
               </div>
             </div>
+            <div class="flex justify-end mt-[30px]">
+              <div>
+                <vs-button dark shadow @click="detail = false">
+                  <div class="text-custom">ปิด</div>
+                </vs-button>
+              </div>
+              <div>
+                <vs-button @click="editContract()" color="#003765">
+                  <div class="text-custom">แก้ไขสัญญาเช่า</div>
+                </vs-button>
+              </div>
+            </div>
             <!-- <div class="w-[100%] flex mt-[14px]">
                             <div class="w-[30%] text-custom flex items-start">รายละเอียดการจอง</div>
                             <div class="grid grid-cols-8  text-custom w-[70%] ">
@@ -1119,6 +1139,10 @@ export default {
       // earnest already recorded as income at booking time - so converting a
       // booking to a contract only books the additional advance-rent, if any.
       bookedEarnest: 0,
+      // true when the create form is reused to EDIT an already-signed contract
+      // (opened from the detail modal): PUT in place, no meter/deposit-income
+      // side effects, no room-status change beyond what already holds.
+      isEditContract: false,
       // per-field validation errors, keyed by room_detail_create field name
       fieldErrors: {},
       room_type: [],
@@ -1350,20 +1374,24 @@ export default {
       return !!this.room_detail_create.existing_contract_id;
     },
     buildContractPayload(userId) {
-      return {
+      const payload = {
         room: this.room_detail_create.id_room,
         contractStatus: "rent",
         users_permissions_user: userId,
         checkInDate: this.room_detail_create.date_sign,
         contractEndDate: this.room_detail_create.exp_date,
         roomDeposit: parseInt(this.room_detail_create.room_deposit),
-        startElectric: this.room_detail_create.ele,
-        startWater: this.room_detail_create.water,
         roomInsuranceDeposit: parseInt(
           this.room_detail_create.roomInsuranceDeposit
         ),
         contractDuration: parseInt(this.room_detail_create.contract_duration),
       };
+      // Editing a signed contract must not rewrite the move-in meter baselines.
+      if (!this.isEditContract) {
+        payload.startElectric = this.room_detail_create.ele;
+        payload.startWater = this.room_detail_create.water;
+      }
+      return payload;
     },
     // Update the existing reserved booking's record in place when one
     // exists, instead of POSTing a second row - room.user_sign_contract is
@@ -1462,8 +1490,10 @@ export default {
       else if (!/^\d{13}$/.test(f.id_card) && f.id_card.length < 6)
         errors.id_card = "หมายเลขไม่ถูกต้อง";
 
-      req("water", "กรุณากรอกเลขมิเตอร์ค่าน้ำ");
-      req("ele", "กรุณากรอกเลขมิเตอร์ค่าไฟ");
+      if (!this.isEditContract) {
+        req("water", "กรุณากรอกเลขมิเตอร์ค่าน้ำ");
+        req("ele", "กรุณากรอกเลขมิเตอร์ค่าไฟ");
+      }
       req("exp_date", "กรุณาเลือกวันสิ้นสุดสัญญา");
       req("roomInsuranceDeposit", "กรุณากรอกค่าประกันห้อง");
       req("contract_duration", "กรุณาเลือกระยะเวลาสัญญา");
@@ -1672,6 +1702,7 @@ export default {
     },
     create_sign(id_room, number, status, idCard, room_type, existingContract) {
       this.check_rent = status;
+      this.isEditContract = false;
       this.getRoomType();
       this.create = true;
       this.create_room_number = number;
@@ -1738,6 +1769,81 @@ export default {
           });
       }
     },
+    // Reuse the create form to EDIT the signed contract shown in the detail
+    // modal. Opened from data_mock (the room-grid row). saveContractRecord()
+    // already PUTs in place when existing_contract_id is set; isEditContract
+    // suppresses the meter-baseline write, the deposit-income posting and the
+    // "new tenant" path.
+    editContract() {
+      const row = this.data_mock;
+      const contractId = row && row.user_sign_contract && row.user_sign_contract.id;
+      if (!contractId) {
+        this.$showNotification("danger", "ไม่พบสัญญาเช่าของห้องนี้");
+        return;
+      }
+      this.check_rent = "edit";
+      this.isEditContract = true;
+      this.create_room_number = row.RoomNumber;
+      this.id_user = "";
+      this.fieldErrors = {};
+      this.errorFieldMessage = "";
+      this.searchEmail = "";
+      // existing contract already has an end date - don't let the
+      // date_sign/duration watchers recompute it out from under the admin.
+      this.expDateTouched = true;
+
+      this.getRoomType();
+      this.clearFormUser();
+      this.room_detail_create.check_user = true;
+      this.room_detail_create.id_room = row.id;
+      this.room_detail_create.type_room = row.room_type ? row.room_type.id : "";
+      this.room_detail_create.existing_contract_id = contractId;
+      this.room_detail_create.water = 0;
+      this.room_detail_create.ele = 0;
+      this.bookedEarnest = 0;
+
+      const loading = this.$vs.loading();
+      fetch(
+        "https://api.resguru.app/api/user-sign-contracts/" +
+          contractId +
+          "?populate=deep,3"
+      )
+        .then((response) => response.json())
+        .then((resp) => {
+          const attr = (resp && resp.data && resp.data.attributes) || {};
+          const user = attr.users_permissions_user && attr.users_permissions_user.data;
+          if (user) {
+            this.applyUserToForm({ id: user.id, ...(user.attributes || {}) });
+          }
+          this.room_detail_create.date_sign = attr.checkInDate || "";
+          this.room_detail_create.exp_date = attr.contractEndDate || "";
+          this.room_detail_create.room_deposit = attr.roomDeposit ?? "";
+          this.room_detail_create.roomInsuranceDeposit =
+            attr.roomInsuranceDeposit ?? "";
+          this.room_detail_create.contract_duration =
+            attr.contractDuration != null ? String(attr.contractDuration) : "";
+          const rtId =
+            attr.room &&
+            attr.room.data &&
+            attr.room.data.attributes &&
+            attr.room.data.attributes.room_type &&
+            attr.room.data.attributes.room_type.data &&
+            attr.room.data.attributes.room_type.data.id;
+          if (rtId) this.room_detail_create.type_room = rtId;
+        })
+        .catch((error) => {
+          this.$showNotification(
+            "danger",
+            this.$errMsg(error, "โหลดข้อมูลสัญญาเช่า")
+          );
+        })
+        .finally(() => {
+          loading.close();
+        });
+
+      this.detail = false;
+      this.create = true;
+    },
     submitSign(a, b) {
     if (this.room_detail_create.check_user == true) {
         console.log("1");
@@ -1767,7 +1873,9 @@ export default {
 
                 return Promise.all([
                   this.updateRoomAfterContract(),
-                  this.recordMoveInDepositIncome(),
+                  this.isEditContract
+                    ? Promise.resolve()
+                    : this.recordMoveInDepositIncome(),
                 ]);
             })
             .then(() => {
@@ -1791,6 +1899,7 @@ export default {
             .finally(() => {
                 loading.close();
                 this.create = false;
+                this.isEditContract = false;
                 setTimeout(() => {
                     this.getRentalContract(0);
                 }, 500);
@@ -1833,7 +1942,9 @@ export default {
 
                 return Promise.all([
                   this.updateRoomAfterContract(),
-                  this.recordMoveInDepositIncome(),
+                  this.isEditContract
+                    ? Promise.resolve()
+                    : this.recordMoveInDepositIncome(),
                 ]);
             })
             .then(() => {
@@ -1857,6 +1968,7 @@ export default {
             .finally(() => {
                 loading.close();
                 this.create = false;
+                this.isEditContract = false;
                 setTimeout(() => {
                     this.getRentalContract(0);
                 }, 500);
@@ -1864,6 +1976,13 @@ export default {
     }
 },
     notifyContractSaved() {
+      if (this.isEditContract) {
+        this.$showNotification(
+          "success",
+          "แก้ไขสัญญาเช่าสำเร็จ • อัปเดตสัญญาฉบับเดิม • ออกสัญญาใหม่ (PDF)"
+        );
+        return;
+      }
       const parts = [
         this.isFromBooking() ? "สร้างสัญญาเช่าจากการจอง" : "สร้างสัญญาเช่า",
         "อัปเดตสถานะห้องเป็น 'เข้าพักแล้ว'",
