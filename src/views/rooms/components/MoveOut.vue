@@ -913,15 +913,20 @@ export default {
       this.resetInspectionState();
 
       savedItems.forEach((item) => {
+        const remark = item.attributes?.remark || "เสียหาย";
+        // The owner mobile app persists the FULL checklist, so a saved row can
+        // be an explicit "ไม่เสียหาย" (OK) — restore it as not-damaged and keep
+        // it out of `options` (which only holds damaged lines).
+        const isOk = remark === "ไม่เสียหาย";
         const restoredItem = {
           id: item.id,
           name: item.attributes?.name,
           price: this.toNumber(item.attributes?.charge),
           img_bf: "",
           img_af: "",
-          remark: item.attributes?.remark || "เสียหาย",
-          check: true,
-          checked: false,
+          remark: remark,
+          check: !isOk,
+          checked: isOk,
         };
         const matchedItem = this.list_items.find(
           (listItem) => listItem.name === restoredItem.name
@@ -931,25 +936,28 @@ export default {
           matchedItem.id = restoredItem.id;
           matchedItem.price = restoredItem.price;
           matchedItem.remark = restoredItem.remark;
-          matchedItem.check = true;
-          matchedItem.checked = false;
-          this.addOptions(matchedItem);
+          matchedItem.check = !isOk;
+          matchedItem.checked = isOk;
+          if (!isOk) this.addOptions(matchedItem);
           return;
         }
 
         this.items_other.push(restoredItem);
-        this.addOptions(restoredItem);
+        if (!isOk) this.addOptions(restoredItem);
       });
     },
     syncRoomDetectHistories(roomHistoryId, existingItems = []) {
-      const currentOptionNames = new Set(
-        this.options.map((item) => item.name)
-      );
-      const requests = this.options.map((element) => {
+      // Persist the FULL checklist (every fixed item + any custom ones), each
+      // tagged เสียหาย / ไม่เสียหาย, so the record matches what the owner app
+      // writes and a web draft-save never drops the "OK" rows.
+      const allItems = [...this.list_items, ...this.items_other];
+      const currentNames = new Set(allItems.map((item) => item.name));
+      const requests = allItems.map((element) => {
+        const damaged = element.check === true && element.checked !== true;
         const payload = {
           data: {
-            remark: element.remark || "เสียหาย",
-            charge: this.toNumber(element.price),
+            remark: damaged ? "เสียหาย" : "ไม่เสียหาย",
+            charge: damaged ? this.toNumber(element.price) : 0,
             room_history: roomHistoryId,
             name: element.name,
           },
@@ -981,7 +989,7 @@ export default {
       });
 
       existingItems.forEach((item) => {
-        if (!currentOptionNames.has(item.attributes?.name)) {
+        if (!currentNames.has(item.attributes?.name)) {
           requests.push(
             axios.delete(
               "https://api.resguru.app/api" +

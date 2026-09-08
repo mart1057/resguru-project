@@ -322,9 +322,12 @@
                 <div class="mt-[24px]">
                     <div class="text-[18px] text-[#141629] text-custom font-bold" v-if="items_other.length > 0">
                         รายการตรวจจับ</div>
+                    <div class="text-[13px] text-[#5C6B79] mt-[4px]" v-if="items_other.length > 0">
+                        เสียหาย {{ damagedInspectionItems.length }} รายการ · รวมค่าปรับ ฿{{ inspectionDamageTotal }}
+                    </div>
                 </div>
                 <div class="mt-[14px]">
-                    <div class="flex" v-for="item in items_other">
+                    <div class="flex" v-for="item in damagedInspectionItems">
                         <div class="">
                             <svg width="70" height="82" viewBox="0 0 70 82" fill="none" xmlns="http://www.w3.org/2000/svg"
                                 v-if="item.name == 'ค่าทาสีผนัง'">
@@ -611,7 +614,7 @@
                                     <span class="ml-[4px] text-custom ">บาท</span>
                                 </div>
                             </div>
-                            <div class="flex justify-between w-[100%] mt-[4px]" v-for="item in items_other">
+                            <div class="flex justify-between w-[100%] mt-[4px]" v-for="item in damagedInspectionItems">
                                 <div class="text-custom ">
                                     ค่าปรับทรัพย์สินเสียหาย
                                     ({{ item.name }})
@@ -741,6 +744,18 @@ export default {
         setTimeout(() => {
             loading.close()
         }, 1000)
+    },
+    computed: {
+        // The owner mobile app records the FULL checklist (damaged + OK); the
+        // damage list only shows the เสียหาย rows.
+        damagedInspectionItems() {
+            return this.items_other.filter((i) => i.remark !== 'ไม่เสียหาย')
+        },
+        inspectionDamageTotal() {
+            return this.damagedInspectionItems
+                .reduce((s, i) => s + (Number(i.price) || 0), 0)
+                .toLocaleString()
+        },
     },
     methods: {
         fmtDate(d) {
