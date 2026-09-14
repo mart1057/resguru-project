@@ -431,7 +431,7 @@
                     v-if="bill_detail.room"
                     class="font-bold text-custom text-[14px] flex justify-start items-start pl-[16px] mt-[24px]"
                   >
-                    {{ total }}
+                    {{ formatMoney(getCurrentBillTotal()) }}
                   </div>
                   <div
                     v-else
@@ -1009,6 +1009,15 @@ export default {
 
       return Promise.all(requests);
     },
+    // Not every building charges VAT - read the building's own rate
+    // (0 for a no-VAT building) instead of hardcoding 7%. Same fallback
+    // PaymentDetail.vue already uses: only default to 7 when the building
+    // genuinely has no vat_rate set (undefined/null), never override an
+    // explicit 0.
+    getVatRate() {
+      const vatRate = this.$store.state.buildingInfo?.[0]?.attributes?.vat_rate;
+      return vatRate !== undefined && vatRate !== null ? Number(vatRate) : 7;
+    },
     getBillPayload(publishedAt) {
       const roomPrice = this.toNumber(this.bill_detail.room);
       const waterPrice = this.toNumber(this.bill_detail.water);
@@ -1017,7 +1026,7 @@ export default {
       const communalPrice = this.toNumber(this.bill_detail.communalPrice);
       const subtotal = roomPrice + waterPrice + electricPrice + otherPrice;
       const total =
-        subtotal + communalPrice + (subtotal + communalPrice) * 0.07;
+        subtotal + communalPrice + (subtotal + communalPrice) * (this.getVatRate() / 100);
       const payload = {
         roomPrice,
         waterPrice,
@@ -1089,7 +1098,7 @@ export default {
                 .communalPrice
                 ? currentBill?.attributes.communalPrice
                 : 0;
-              this.bill_detail.vat = 7;
+              this.bill_detail.vat = this.getVatRate();
               this.bill_detail.invoiceNumber =
                 currentBill?.attributes.invoiceNumber;
               this.bill_detail.room = currentBill?.attributes.roomPrice
@@ -1212,7 +1221,7 @@ export default {
       const otherPrice = this.toNumber(this.bill_detail.other);
       const communalPrice = this.toNumber(this.bill_detail.communalPrice);
       const subtotal = roomPrice + waterPrice + electricPrice + otherPrice;
-      return subtotal + communalPrice + (subtotal + communalPrice) * 0.07;
+      return subtotal + communalPrice + (subtotal + communalPrice) * (this.getVatRate() / 100);
     },
     getPaidTotal() {
       return (
