@@ -1275,6 +1275,10 @@ export default {
                   date_moveout: this.date_moveout,
                   user_sign_contract: this.$route.query.id_contract,
                   ExitType: this.tab ? "Missing" : "Move",
+                  // Strapi 4 auto-publishes a draftAndPublish create unless
+                  // the request explicitly nulls this - omitting it here
+                  // silently made every draft save a real, notified move-out.
+                  publishedAt: null,
                 },
               })
               .then((response) => {
