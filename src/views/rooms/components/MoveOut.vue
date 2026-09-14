@@ -85,7 +85,7 @@
           class="flex flex-col justify-between min-h-[126px] rounded-[22px] border border-[#F8D4DE] bg-[#FFF8FA] p-[16px] mt-[14px]"
         >
           <div class="text-[#D44769] font-bold text-[18px] leading-[1.4]">
-            ยอดค้างชำระสะสม
+            ยอดค้างชำระสะสม (เดือนอื่นๆ)
           </div>
           <div class="text-[#D44769] font-bold text-[24px]">
             {{ formatMoney(list_debt.total) }}
@@ -521,9 +521,16 @@
                   ค่าใช้จ่ายที่เกิดขึ้น
                 </div>
                 <div class="mt-[8px] flex justify-between w-[100%] text-[#D44769]">
-                  <div>ยอดค้างชำระสะสม</div>
+                  <div>ยอดค้างชำระสะสม (เดือนอื่นๆ)</div>
                   <div class="font-semibold">
                     {{ formatMoney(getOutstandingTotal()) }}
+                    <span class="ml-[4px]">บาท</span>
+                  </div>
+                </div>
+                <div class="mt-[4px] flex justify-between w-[100%] text-[#D44769]">
+                  <div>ยอดบิลเดือนล่าสุด (แก้ไขได้)</div>
+                  <div class="font-semibold">
+                    {{ formatMoney(getCurrentBillTotal()) }}
                     <span class="ml-[4px]">บาท</span>
                   </div>
                 </div>
@@ -1064,7 +1071,13 @@ export default {
               const currentBill = bills[0];
 
               console.log("bill", currentBill);
-              this.list_debt.total = this.getAccumulatedOutstanding(bills);
+              // Excludes the current bill - its live total is shown/summed
+              // separately (getCurrentBillTotal()) since the fields below are
+              // editable and getChargeTotal() must reflect edits immediately,
+              // not the stale as-loaded total.
+              this.list_debt.total = this.getAccumulatedOutstanding(
+                bills.filter((b) => b.id !== currentBill?.id)
+              );
               this.bill_detail.id = currentBill?.id;
               this.bill_detail.ele = currentBill?.attributes.electricPrice
                 ? currentBill?.attributes.electricPrice
@@ -1188,7 +1201,18 @@ export default {
       }, 0);
     },
     getOutstandingTotal() {
+      // Other unpaid bills only - the current bill is summed live via
+      // getCurrentBillTotal() instead, so editing it moves the total.
       return this.toNumber(this.list_debt.total);
+    },
+    getCurrentBillTotal() {
+      const roomPrice = this.toNumber(this.bill_detail.room);
+      const waterPrice = this.toNumber(this.bill_detail.water);
+      const electricPrice = this.toNumber(this.bill_detail.ele);
+      const otherPrice = this.toNumber(this.bill_detail.other);
+      const communalPrice = this.toNumber(this.bill_detail.communalPrice);
+      const subtotal = roomPrice + waterPrice + electricPrice + otherPrice;
+      return subtotal + communalPrice + (subtotal + communalPrice) * 0.07;
     },
     getPaidTotal() {
       return (
@@ -1197,7 +1221,11 @@ export default {
       );
     },
     getChargeTotal() {
-      return this.getOutstandingTotal() + this.totalBillItems();
+      return (
+        this.getOutstandingTotal() +
+        this.getCurrentBillTotal() +
+        this.totalBillItems()
+      );
     },
     getNetSettlement() {
       return this.getChargeTotal() - this.getPaidTotal();
@@ -1386,15 +1414,49 @@ export default {
                   }
                 ),
               ]);
+            })
+            .then(() => {
+              // Folds the damage checklist into the just-updated bill, then
+              // applies the deposit + insurance deposit as a payment across
+              // it (and any older unpaid bills), creating a real receipt for
+              // whatever it covers. No receipt if the deposit only leaves a
+              // refund owed - that stays a manual step.
+              return axios.post(
+                "https://api.resguru.app/api" + "/finalize-move-out",
+                {
+                  data: {
+                    contractId: this.$route.query.id_contract,
+                    roomId: this.$route.query.id_room,
+                    buildingId: this.$store.state.building,
+                    billId: this.bill_detail.id,
+                  },
+                }
+              );
             });
         })
-        .then(() => {
+        .then((response) => {
           this.move_confirm = false;
           this.move_done = true;
+          const settlement = response?.data?.data;
           this.$router.push({
             path: "/rooms",
           });
-          this.$showNotification("#3A89CB", "สำเร็จ");
+          if (settlement && settlement.direction) {
+            const label =
+              settlement.direction === "tenant_pays"
+                ? "ผู้เช่าต้องชำระเพิ่ม"
+                : settlement.direction === "building_refunds"
+                ? "หอพักต้องคืนเงิน"
+                : "ยอดพอดี";
+            this.$showNotification(
+              "#3A89CB",
+              `สำเร็จ - ${label} ${this.formatMoney(
+                Math.abs(settlement.net)
+              )} บาท`
+            );
+          } else {
+            this.$showNotification("#3A89CB", "สำเร็จ");
+          }
         })
         .catch((error) => {
           console.error(error);
