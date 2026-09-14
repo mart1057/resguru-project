@@ -783,15 +783,15 @@
         </div>
       </template>
     </vs-dialog>
-    <PDFgenerator ref="childComponentPDFMoveOut" />
+    <PDFMoveOut ref="childComponentPDFMoveOut" />
   </div>
 </template>
 <script>
 import axios from "axios";
-import PDFgenerator from "./PDFgenerator.vue";
+import PDFMoveOut from "./PDFMoveOut.vue";
 export default {
   components: {
-    PDFgenerator,
+    PDFMoveOut,
   },
   data() {
     return {
@@ -1473,13 +1473,52 @@ export default {
         });
     },
     PDFPrint() {
-      console.log("sdf");
-      this.$refs.childComponentPDFMoveOut.generatePDF(
-        this.user_detail,
-        this.bill_detail,
-        this.options,
-        this.list_debt
-      );
+      // Same numbers as the on-screen settlement panel - options only ever
+      // holds เสียหาย rows (ไม่เสียหาย items are never added to it), so the
+      // PDF's damage table already only shows damaged items, nothing extra
+      // needed for that.
+      const vatRate = this.getVatRate();
+      const currentBillTotal = this.getCurrentBillTotal();
+      const preVatSubtotal =
+        this.toNumber(this.bill_detail.room) +
+        this.toNumber(this.bill_detail.water) +
+        this.toNumber(this.bill_detail.ele) +
+        this.toNumber(this.bill_detail.other) +
+        this.toNumber(this.bill_detail.communalPrice);
+      const netSettlement = this.getNetSettlement();
+      const direction =
+        netSettlement > 0
+          ? "tenant_pays"
+          : netSettlement < 0
+          ? "building_refunds"
+          : "even";
+
+      this.$refs.childComponentPDFMoveOut.generatePDF({
+        roomNumber: this.$route.query.number_room,
+        tenantName: `${this.user_detail.sex ? "นาง" : "นาย"} ${
+          this.user_detail.firstName || ""
+        } ${this.user_detail.lastName || ""}`.trim(),
+        dateMoveout: this.date_moveout,
+        endMeterWater: this.end_meter.water,
+        endMeterElectric: this.end_meter.electric,
+        billDetail: { ...this.bill_detail },
+        vatRate,
+        vatAmount: currentBillTotal - preVatSubtotal,
+        currentBillTotal,
+        otherOutstanding: this.getOutstandingTotal(),
+        damageItems: this.options.map((item) => ({
+          name: item.name,
+          price: this.toNumber(item.price),
+        })),
+        damageTotal: this.totalBillItems(),
+        deposit: this.toNumber(this.list_debt.deposit),
+        deposit2: this.toNumber(this.list_debt.deposit2),
+        paidTotal: this.getPaidTotal(),
+        chargeTotal: this.getChargeTotal(),
+        netAmount: this.getAbsoluteNetSettlement(),
+        direction,
+        netLabel: this.getNetSettlementLabel(),
+      });
     },
     generateInvoice() {
       const currentdate = new Date();
