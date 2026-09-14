@@ -1119,8 +1119,6 @@ export default {
                   this.$store.state.building +
                   "&filters[room][id][$eq]=" +
                   this.$route.query.id_room +
-                  "&filters[user_sign_contract][id][$eq]=" +
-                  this.$route.query.id_contract +
                   "&filters[publishedAt][$null]=true&publicationState=preview"
               )
                 .then((response) => response.json())
@@ -1258,8 +1256,6 @@ export default {
           this.$store.state.building +
           "&filters[room][id][$eq]=" +
           this.$route.query.id_room +
-          "&filters[user_sign_contract][id][$eq]=" +
-          this.$route.query.id_contract +
           "&filters[publishedAt][$null]=true&publicationState=preview"
       )
         .then((response) => response.json())
@@ -1340,8 +1336,6 @@ export default {
           this.$store.state.building +
           "&filters[room][id][$eq]=" +
           this.$route.query.id_room +
-          "&filters[user_sign_contract][id][$eq]=" +
-          this.$route.query.id_contract +
           "&filters[publishedAt][$null]=true&publicationState=preview"
       )
         .then((response) => response.json())
