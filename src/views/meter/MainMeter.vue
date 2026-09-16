@@ -490,7 +490,7 @@
                 type="file"
                 @change="handleFileSelected('water')"
                 ref="importExcelWater"
-                accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                accept=".csv,.xlsx,.xls,.ods, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
               />
               <label for="upload-water">
                 <div
@@ -542,19 +542,16 @@
                     </svg>
                   </div>
                   <div
-                    class="text-white font-bold ml-[8px] flex justify-center items-center"
+                    class="text-white font-bold ml-[8px] flex justify-center items-center cursor-pointer"
+                    @click="downloadTemplate('water')"
                   >
-                    <a
-                      href="https://api.resguru.app/uploads/meter_Template_a0c087bcd6.xlsx"
-                      class="text-white"
-                      target="_blank"
-                      download
-                    >
-                      Download Excel Template
-                    </a>
+                    Download Excel Template
                   </div>
                 </div>
               </label>
+              <div class="text-[11px] text-[#8396A6] mt-[2px]">
+                รองรับไฟล์ .xlsx .xls .csv - ไฟล์ Numbers ให้ Export เป็น Excel/CSV ก่อน
+              </div>
             </div>
           </div>
           <div v-else-if="tab == 2">
@@ -565,7 +562,7 @@
               type="file"
               @change="handleFileSelected('electric')"
               ref="importExcelElectric"
-              accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+              accept=".csv,.xlsx,.xls,.ods, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
             />
             <label for="upload-electric">
               <div
@@ -615,18 +612,16 @@
                   </svg>
                 </div>
                 <div
-                  class="text-white font-bold ml-[8px] flex justify-center items-center"
+                  class="text-white font-bold ml-[8px] flex justify-center items-center cursor-pointer"
+                  @click="downloadTemplate('electric')"
                 >
-                  <a
-                    href="https://api.resguru.app/uploads/meter_Template_a0c087bcd6.xlsx"
-                    class="text-white"
-                    target="_blank"
-                    download
-                    >Download Excel Template
-                  </a>
+                  Download Excel Template
                 </div>
               </div>
             </label>
+            <div class="text-[11px] text-[#8396A6] mt-[2px]">
+              รองรับไฟล์ .xlsx .xls .csv - ไฟล์ Numbers ให้ Export เป็น Excel/CSV ก่อน
+            </div>
           </div>
         </div>
         <b-modal
@@ -658,7 +653,7 @@
             </div>
             <template v-else>
               <div class="mt-[14px] max-h-[320px] overflow-y-auto">
-                <vs-table :data="importPreview.rows">
+                <vs-table :data="importRowsToImport">
                   <template #thead>
                     <vs-tr>
                       <vs-th>เลขห้อง</vs-th>
@@ -666,22 +661,25 @@
                     </vs-tr>
                   </template>
                   <template #tbody>
-                    <vs-tr :key="i" v-for="(row, i) in importPreview.rows" :data="row">
-                      <vs-td>{{ row.roomnumber }}</vs-td>
+                    <vs-tr :key="i" v-for="(row, i) in importRowsToImport" :data="row">
+                      <vs-td>{{ row.roomnumber || "(ตามลำดับในไฟล์)" }}</vs-td>
                       <vs-td>{{ row.currentunit }}</vs-td>
                     </vs-tr>
                   </template>
                 </vs-table>
               </div>
               <div class="text-[13px] text-[#8396A6] mt-[8px]">
-                ทั้งหมด {{ importPreview.rows.length }} ห้อง
+                นำเข้า {{ importRowsToImport.length }} ห้อง
+                <span v-if="importPreview.skipped">
+                  · ข้าม {{ importPreview.skipped }} แถวที่ไม่มีเลขมิเตอร์
+                </span>
               </div>
             </template>
             <div class="flex justify-end mt-[20px]">
               <vs-button dark shadow @click="cancelImport()">ยกเลิก</vs-button>
               <div class="ml-[12px]">
                 <vs-button
-                  :disabled="!!importPreview.error"
+                  :disabled="!!importPreview.error || importRowsToImport.length === 0"
                   @click="confirmImport()"
                 >
                   ยืนยันนำเข้า
@@ -775,9 +773,19 @@ export default {
         file: null,
         fileName: "",
         rows: [],
+        skipped: 0,
         error: null,
       },
     };
+  },
+  computed: {
+    // Rows with a value to actually write - what the preview table shows
+    // and what "confirm" is enabled/disabled on. importPreview.rows itself
+    // stays the full, original-order array (including blank rows) because
+    // the backend resolves a blank roomnumber by position in that array.
+    importRowsToImport() {
+      return this.importPreview.rows.filter((r) => r.currentunit != null);
+    },
   },
   created() {
     this.selectedDate = new Date().toISOString().substr(0, 7); // Set the default to current month
@@ -958,6 +966,7 @@ export default {
         file: null,
         fileName: "",
         rows: [],
+        skipped: 0,
         error: null,
       };
     },
@@ -972,8 +981,18 @@ export default {
         file,
         fileName: file.name,
         rows: [],
+        skipped: 0,
         error: null,
       };
+
+      // Native Apple Numbers bundles aren't a real xlsx/csv - SheetJS will
+      // fail to parse one below, but give a specific pointer instead of the
+      // generic "can't read this file" message.
+      if (/\.numbers$/i.test(file.name)) {
+        this.importPreview.error =
+          "ไฟล์ Numbers (.numbers) ไม่รองรับโดยตรง กรุณาเปิดไฟล์ใน Numbers แล้ว Export เป็น Excel (.xlsx) หรือ CSV ก่อนนำเข้า";
+        return;
+      }
 
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -986,27 +1005,34 @@ export default {
               'ไม่พบชีทชื่อ "Sheet1" ในไฟล์ กรุณาใช้เทมเพลตที่กำหนด';
             return;
           }
-          const rows = XLSX.utils.sheet_to_json(workbook.Sheets["Sheet1"]);
-          if (rows.length === 0) {
+          const rawRows = XLSX.utils.sheet_to_json(workbook.Sheets["Sheet1"]);
+          if (rawRows.length === 0) {
             this.importPreview.error = "ไม่พบข้อมูลในไฟล์";
             return;
           }
-          for (let i = 0; i < rows.length; i++) {
-            const row = rows[i];
-            if (row.roomnumber == null || row.currentunit == null) {
-              this.importPreview.error = `ข้อมูลไม่ครบที่แถว ${
-                i + 1
-              } (ต้องมี roomnumber และ currentunit)`;
-              return;
+          // Keep every row, in original sheet order - the backend resolves a
+          // blank roomnumber by the row's POSITION in this array (matching
+          // the template's floor+room order), so filtering here would shift
+          // indices and misassign rooms. A row with no currentunit is just
+          // skipped server-side (that room isn't being read this cycle).
+          let skipped = 0;
+          const rows = rawRows.map((row, i) => {
+            if (row.currentunit == null || row.currentunit === "") {
+              skipped++;
+              return { roomnumber: row.roomnumber ?? null, currentunit: null };
             }
             if (typeof row.currentunit !== "number") {
-              this.importPreview.error = `เลขมิเตอร์ต้องเป็นตัวเลขที่แถว ${i + 1}`;
-              return;
+              throw { __rowError: `เลขมิเตอร์ต้องเป็นตัวเลขที่แถว ${i + 1}` };
             }
-          }
+            return { roomnumber: row.roomnumber ?? null, currentunit: row.currentunit };
+          });
           this.importPreview.rows = rows;
+          this.importPreview.skipped = skipped;
         } catch (err) {
-          this.importPreview.error = "ไม่สามารถอ่านไฟล์นี้ได้ กรุณาตรวจสอบรูปแบบไฟล์";
+          this.importPreview.error =
+            err && err.__rowError
+              ? err.__rowError
+              : "ไม่สามารถอ่านไฟล์นี้ได้ กรุณาตรวจสอบรูปแบบไฟล์";
         }
       };
       reader.onerror = () => {
@@ -1020,6 +1046,7 @@ export default {
     },
     confirmImport() {
       if (!this.importPreview.file || this.importPreview.error) return;
+      if (this.importRowsToImport.length === 0) return;
 
       const tab = this.importPreview.tab;
       const endpoint = tab === "water" ? "importWater" : "importElectric";
@@ -1028,15 +1055,18 @@ export default {
           ? "นำเข้ามิเตอร์น้ำผ่าน Excel สำเร็จ"
           : "นำเข้ามิเตอร์ไฟฟ้าผ่าน Excel สำเร็จ";
 
-      let formData = new FormData();
-      formData.append("file", this.importPreview.file);
-      formData.append("building", String(this.$store.state.building));
-
+      // Send the already-parsed rows as JSON (client-side SheetJS already
+      // read the file - xlsx/xls/csv/ods all land here the same way, the
+      // backend never has to know or care what format the original file
+      // was). rows stays the FULL original-order array (blank-currentunit
+      // rows included) so the backend's row-position fallback lines up with
+      // the same order the template was generated in.
       axios
-        .put(`https://api.resguru.app/api/${endpoint}`, formData, {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
+        .put(`https://api.resguru.app/api/${endpoint}`, {
+          building: String(this.$store.state.building),
+          month: this.filter.selectedMonth,
+          year: this.filter.selectedYear,
+          rows: this.importPreview.rows,
         })
         .then((resp) => {
           if (resp.data && resp.data.error) {
@@ -1060,6 +1090,40 @@ export default {
         .finally(() => {
           this.resetImportInput(tab);
           this.resetImportPreview();
+        });
+    },
+    // Builds the template client-side from the same room list the grid
+    // already uses - every room of every floor, floor-sorted the same way
+    // the floor tabs are, with this month's unit pre-filled if it's been
+    // read. Row order here is exactly what import's blank-roomnumber
+    // position fallback resolves against (both come from getOrderedRooms
+    // on the backend).
+    downloadTemplate(type) {
+      const endpoint = type === "water" ? "getwatermetertemplate" : "getelectricmetertemplate";
+      axios
+        .get(`https://api.resguru.app/api/${endpoint}`, {
+          params: {
+            buildingid: this.$store.state.building,
+            month: this.filter.selectedMonth,
+            year: this.filter.selectedYear,
+          },
+        })
+        .then((resp) => {
+          if (resp.data && resp.data.error) {
+            throw new Error(resp.data.error);
+          }
+          const rows = resp.data.data || [];
+          const ws = XLSX.utils.json_to_sheet(rows, {
+            header: ["roomnumber", "currentunit"],
+          });
+          const wb = XLSX.utils.book_new();
+          XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+          const label = `${this.filter.selectedYear}-${this.filter.selectedMonth}`;
+          XLSX.writeFile(wb, `${type === "water" ? "water" : "electric"}-meter-${label}.xlsx`);
+        })
+        .catch((error) => {
+          const errorMessage = this.$errMsg(error, "สร้างเทมเพลต");
+          this.$showNotification("danger", errorMessage);
         });
     },
   },
