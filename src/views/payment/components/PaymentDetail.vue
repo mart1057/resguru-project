@@ -870,7 +870,7 @@
         </vs-table>
       </div>
       <div>
-        <PDFgenerator ref="childComponentPDFReceipt" />
+        <PDFgeneratorReceipt ref="childComponentPDFReceipt" />
         <PDFgenerator ref="childComponentPDF" />
       </div>
     </div>
@@ -1514,12 +1514,12 @@ import axios from "axios";
 import { degrees, PDFDocument, rgb, StandardFonts } from "pdf-lib";
 import { convertDateNoTime } from "@/components/hook/hook";
 import download from "downloadjs";
-// import PDFgenerator from "@/views/payment/components/PDFgeneratorReceipt";
 import PDFgenerator from "@/views/payment/components/PDFgenerator";
+import PDFgeneratorReceipt from "@/views/payment/components/PDFgeneratorReceipt";
 
 
 export default {
-  components: { PDFgenerator },
+  components: { PDFgenerator, PDFgeneratorReceipt },
   data() {
     return {
       popup_filter: false,
@@ -2592,6 +2592,7 @@ createReceipt() {
     })
     .then((res) => {
       this.$showNotification("#3A89CB", "อนุมัติการชำระเงินสำเร็จ");
+      this.generateReceiptPDFs(res.data?.receiptIds || []);
     })
     .catch((error) => {
       const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
@@ -2604,6 +2605,24 @@ createReceipt() {
       this.createApprovePayment = false;
     });
 },
+    // Renders + uploads the receipt PDF for each newly-created tenant-receipt
+    // right after approval, with no owner action needed - this is what makes
+    // the receipt available for the tenant app to fetch afterward.
+    generateReceiptPDFs(receiptIds) {
+      receiptIds.forEach((id) => {
+        axios
+          .get(`https://api.resguru.app/api/tenant-receipts/${id}?populate=deep,3`)
+          .then((resp) => {
+            const receipt = resp.data?.data;
+            if (receipt) {
+              this.$refs.childComponentPDFReceipt.generatePDF(receipt, true, id);
+            }
+          })
+          .catch((error) => {
+            console.error('Failed to generate receipt PDF', id, error);
+          });
+      });
+    },
     OldcreateReceipt() {
       //ส่งบอกว่า evident ถูก approve แล้ว หลังบ้านจะไป update invoice, current evident, และ สร้าง reciept ตามจำเป็น
       let today = new Date();
