@@ -335,150 +335,106 @@
                         </div> -->
             </div>
           </div>
-          <div class="w-[50%] flex flex-col justify-end mt-[14px]">
-            รายการชำระเงิน
-            <div class="w-[50%] flex justify-between mt-[8px]">
-              <div>
-                <div class="text-[12px] text-[#8396A6]">รายการ</div>
-                <div class="mt-[8px]">
-                  <div
-                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
-                  >
-                    ค่าหอพัก
-                  </div>
+          <div class="w-[100%] flex flex-col justify-end mt-[14px]">
+            รายการชำระเงิน ณ วันที่ย้ายออก
+            <div class="mt-[8px] space-y-[8px]">
+              <div class="flex justify-between items-center">
+                <div
+                  class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
+                >
+                  ค่าหอพัก
                 </div>
-                <div class="mt-[8px]">
-                  <div
-                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
-                  >
-                    ค่าน้ำ
-                  </div>
-                </div>
-                <div class="mt-[8px]">
-                  <div
-                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
-                  >
-                    ค่าไฟ
-                  </div>
-                </div>
-
-                <div class="mt-[8px]">
-                  <div
-                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
-                  >
-                    ค่าส่วนกลาง
-                  </div>
-                </div>
-                <div class="mt-[8px]">
-                  <div
-                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
-                  >
-                    ค่าอื่น ๆ
-                  </div>
-                </div>
-                <div class="mt-[32px]">
-                  <div
-                    class="font-bold text-custom text-[14px] flex justify-start items-start ml-[16px]"
-                  >
-                    รวมทั้งหมด
-                  </div>
-                </div>
+                <input
+                  class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
+                  type="number"
+                  v-model="bill_detail.room"
+                />
               </div>
               <div>
-                <div class="text-[12px] text-[#8396A6]">จำนวนเงินบาท</div>
-                <div class="flex">
-                  <input
-                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center"
-                    type="number"
-                    v-model="bill_detail.room"
-                    @input="sumValue"
-                  />
-                </div>
-                <div class="flex mt-[-8px]">
-                  <input
-                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start"
-                    type="number"
-                    v-model="bill_detail.water"
-                    @input="sumValue"
-                  />
-                </div>
-                <div class="flex mt-[-8px]">
-                  <input
-                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start"
-                    type="number"
-                    v-model="bill_detail.ele"
-                    @input="sumValue"
-                  />
-                </div>
-                <div class="flex mt-[-8px]">
-                  <input
-                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start"
-                    type="number"
-                    v-model="bill_detail.communalPrice"
-                    @input="sumValue"
-                  />
-                </div>
-                <div class="flex mt-[-8px]">
-                  <input
-                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start"
-                    type="number"
-                    v-model="bill_detail.other"
-                    @input="sumValue"
-                  />
-                </div>
-                <div>
-                  <div
-                    v-if="bill_detail.room"
-                    class="font-bold text-custom text-[14px] flex justify-start items-start pl-[16px] mt-[24px]"
-                  >
-                    {{ formatMoney(getCurrentBillTotal()) }}
-                  </div>
-                  <div
-                    v-else
-                    class="font-bold text-custom text-[14px] flex justify-start items-start pl-[16px] mt-[24px]"
-                  >
-                    -
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="w-[50%] flex flex-col justify-end mt-[14px]">
-            เลขมิเตอร์ตอนย้ายออก
-            <div class="w-[50%] flex justify-between mt-[8px]">
-              <div>
-                <div class="text-[12px] text-[#8396A6]">รายการ</div>
-                <div class="mt-[8px]">
+                <div class="flex justify-between items-center">
                   <div
                     class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
                   >
-                    เลขมิเตอร์น้ำ
+                    ค่าน้ำ (เลขมิเตอร์ใหม่)
                   </div>
-                </div>
-                <div class="mt-[8px]">
-                  <div
-                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
-                  >
-                    เลขมิเตอร์ไฟ
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div class="text-[12px] text-[#8396A6]">เลขมิเตอร์</div>
-                <div class="flex">
                   <input
-                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center"
+                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
                     type="number"
                     v-model="end_meter.water"
                   />
                 </div>
-                <div class="flex mt-[-8px]">
+                <div
+                  v-if="getWaterUnitError()"
+                  class="text-[#D44769] text-[12px] mt-[4px]"
+                >
+                  {{ getWaterUnitError() }}
+                </div>
+                <div v-else class="text-[#8396A6] text-[12px] mt-[4px]">
+                  (เดิม {{ formatMoney(previousWaterUnit) }} → ใหม่
+                  {{ formatMoney(end_meter.water) }} = ใช้
+                  {{ formatMoney(getWaterUsage()) }} หน่วย :
+                  {{ formatMoney(getWaterPrice()) }} บาท)
+                </div>
+              </div>
+              <div>
+                <div class="flex justify-between items-center">
+                  <div
+                    class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
+                  >
+                    ค่าไฟ (เลขมิเตอร์ใหม่)
+                  </div>
                   <input
-                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start"
+                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
                     type="number"
                     v-model="end_meter.electric"
                   />
                 </div>
+                <div
+                  v-if="getElectricUnitError()"
+                  class="text-[#D44769] text-[12px] mt-[4px]"
+                >
+                  {{ getElectricUnitError() }}
+                </div>
+                <div v-else class="text-[#8396A6] text-[12px] mt-[4px]">
+                  (เดิม {{ formatMoney(previousElectricUnit) }} → ใหม่
+                  {{ formatMoney(end_meter.electric) }} = ใช้
+                  {{ formatMoney(getElectricUsage()) }} หน่วย :
+                  {{ formatMoney(getElectricPrice()) }} บาท)
+                </div>
+              </div>
+              <div class="flex justify-between items-center">
+                <div
+                  class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
+                >
+                  ค่าส่วนกลาง
+                </div>
+                <input
+                  class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
+                  type="number"
+                  v-model="bill_detail.communalPrice"
+                />
+              </div>
+              <div class="flex justify-between items-center">
+                <div
+                  class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
+                >
+                  ค่าอื่น ๆ
+                </div>
+                <input
+                  class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
+                  type="number"
+                  v-model="bill_detail.other"
+                />
+              </div>
+              <div class="flex justify-between items-center mt-[24px]">
+                <div class="font-bold text-custom text-[14px]">รวมทั้งหมด</div>
+                <div
+                  v-if="bill_detail.room"
+                  class="font-bold text-custom text-[14px]"
+                >
+                  {{ formatMoney(getCurrentBillTotal()) }}
+                </div>
+                <div v-else class="font-bold text-custom text-[14px]">-</div>
               </div>
             </div>
           </div>
@@ -528,7 +484,7 @@
                   </div>
                 </div>
                 <div class="mt-[4px] flex justify-between w-[100%] text-[#D44769]">
-                  <div>ยอดบิลเดือนล่าสุด (แก้ไขได้)</div>
+                  <div>รายการชำระเงิน ณ วันที่ย้ายออก (แก้ไขได้)</div>
                   <div class="font-semibold">
                     {{ formatMoney(getCurrentBillTotal()) }}
                     <span class="ml-[4px]">บาท</span>
@@ -621,6 +577,8 @@
               </button>
               <button
                 @click="move_confirm = true"
+                :disabled="hasMeterError()"
+                :class="hasMeterError() ? 'opacity-50 cursor-not-allowed' : ''"
                 class="bg-[#D44769] ml-[8px] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]"
               >
                 <div class="flex">
@@ -656,6 +614,8 @@
               </button>
               <button
                 @click="darftBill()"
+                :disabled="hasMeterError()"
+                :class="hasMeterError() ? 'opacity-50 cursor-not-allowed' : ''"
                 class="bg-[#003765] ml-[8px] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]"
               >
                 <div class="flex">
@@ -693,7 +653,7 @@
           <vs-button
             @click="submitBill()"
             color="#003765"
-            :disabled="check_final == false"
+            :disabled="check_final == false || hasMeterError()"
           >
             <div class="text-[white] text-[14px]">ยืนยันการย้ายออก</div>
           </vs-button>
@@ -858,7 +818,9 @@ export default {
         { name: "หลอดไฟห้องน้ำ", price: 0, check: false, checked: true },
       ],
       items_other: [],
-      bill_detail: {},
+      bill_detail: { room: 0, communalPrice: 0, other: 0 },
+      previousWaterUnit: null,
+      previousElectricUnit: null,
       // Meter reading at the moment this tenant moves out - saved onto
       // their user-sign-contract as endWater/endElectric so the next
       // tenant's first bill (and this tenant's own final usage, going
@@ -884,6 +846,7 @@ export default {
     // this.date_moveout= `${month}/${day}/${year}`;
     // console.log(this.date_moveout);
     this.getDetailRoom();
+    this.fetchPreviousMeterUnits();
     setTimeout(() => {
       loading.close();
     }, 1000);
@@ -1020,8 +983,8 @@ export default {
     },
     getBillPayload(publishedAt) {
       const roomPrice = this.toNumber(this.bill_detail.room);
-      const waterPrice = this.toNumber(this.bill_detail.water);
-      const electricPrice = this.toNumber(this.bill_detail.ele);
+      const waterPrice = this.getWaterPrice();
+      const electricPrice = this.getElectricPrice();
       const otherPrice = this.toNumber(this.bill_detail.other);
       const communalPrice = this.toNumber(this.bill_detail.communalPrice);
       const subtotal = roomPrice + waterPrice + electricPrice + otherPrice;
@@ -1088,12 +1051,6 @@ export default {
                 bills.filter((b) => b.id !== currentBill?.id)
               );
               this.bill_detail.id = currentBill?.id;
-              this.bill_detail.ele = currentBill?.attributes.electricPrice
-                ? currentBill?.attributes.electricPrice
-                : 0;
-              this.bill_detail.water = currentBill?.attributes.waterPrice
-                ? currentBill?.attributes.waterPrice
-                : 0;
               this.bill_detail.communalPrice = currentBill?.attributes
                 .communalPrice
                 ? currentBill?.attributes.communalPrice
@@ -1214,12 +1171,65 @@ export default {
     },
     getCurrentBillTotal() {
       const roomPrice = this.toNumber(this.bill_detail.room);
-      const waterPrice = this.toNumber(this.bill_detail.water);
-      const electricPrice = this.toNumber(this.bill_detail.ele);
+      const waterPrice = this.getWaterPrice();
+      const electricPrice = this.getElectricPrice();
       const otherPrice = this.toNumber(this.bill_detail.other);
       const communalPrice = this.toNumber(this.bill_detail.communalPrice);
       const subtotal = roomPrice + waterPrice + electricPrice + otherPrice;
       return subtotal + communalPrice + (subtotal + communalPrice) * (this.getVatRate() / 100);
+    },
+    fetchPreviousMeterUnits() {
+      const room = this.$route.query.id_room;
+      if (!room) return;
+      axios
+        .get("https://api.resguru.app/api/getlatestwaterunit", { params: { room } })
+        .then((resp) => {
+          this.previousWaterUnit = resp.data?.meterUnit ?? null;
+        })
+        .catch((error) => {
+          const errorMessage = this.$errMsg(error, "โหลดเลขมิเตอร์น้ำล่าสุด");
+          this.$showNotification("danger", errorMessage);
+        });
+      axios
+        .get("https://api.resguru.app/api/getlatestelectricunit", { params: { room } })
+        .then((resp) => {
+          this.previousElectricUnit = resp.data?.electicUnit ?? null;
+        })
+        .catch((error) => {
+          const errorMessage = this.$errMsg(error, "โหลดเลขมิเตอร์ไฟล่าสุด");
+          this.$showNotification("danger", errorMessage);
+        });
+    },
+    getWaterUsage() {
+      return Math.max(0, this.toNumber(this.end_meter.water) - this.toNumber(this.previousWaterUnit));
+    },
+    getElectricUsage() {
+      return Math.max(0, this.toNumber(this.end_meter.electric) - this.toNumber(this.previousElectricUnit));
+    },
+    getWaterPrice() {
+      const rate = this.toNumber(this.$store.state.buildingInfo?.[0]?.attributes?.waterUnitPrice);
+      return this.getWaterUsage() * rate;
+    },
+    getElectricPrice() {
+      const rate = this.toNumber(this.$store.state.buildingInfo?.[0]?.attributes?.electricUnitPrice);
+      return this.getElectricUsage() * rate;
+    },
+    getWaterUnitError() {
+      if (this.end_meter.water == null || this.end_meter.water === "") return null;
+      if (this.toNumber(this.end_meter.water) < this.toNumber(this.previousWaterUnit)) {
+        return `เลขมิเตอร์น้ำใหม่ต้องไม่น้อยกว่าเลขเดิม (${this.formatMoney(this.previousWaterUnit)})`;
+      }
+      return null;
+    },
+    getElectricUnitError() {
+      if (this.end_meter.electric == null || this.end_meter.electric === "") return null;
+      if (this.toNumber(this.end_meter.electric) < this.toNumber(this.previousElectricUnit)) {
+        return `เลขมิเตอร์ไฟใหม่ต้องไม่น้อยกว่าเลขเดิม (${this.formatMoney(this.previousElectricUnit)})`;
+      }
+      return null;
+    },
+    hasMeterError() {
+      return !!(this.getWaterUnitError() || this.getElectricUnitError());
     },
     getPaidTotal() {
       return (
@@ -1477,10 +1487,12 @@ export default {
       // needed for that.
       const vatRate = this.getVatRate();
       const currentBillTotal = this.getCurrentBillTotal();
+      const waterPrice = this.getWaterPrice();
+      const electricPrice = this.getElectricPrice();
       const preVatSubtotal =
         this.toNumber(this.bill_detail.room) +
-        this.toNumber(this.bill_detail.water) +
-        this.toNumber(this.bill_detail.ele) +
+        waterPrice +
+        electricPrice +
         this.toNumber(this.bill_detail.other) +
         this.toNumber(this.bill_detail.communalPrice);
       const netSettlement = this.getNetSettlement();
@@ -1499,7 +1511,7 @@ export default {
         dateMoveout: this.date_moveout,
         endMeterWater: this.end_meter.water,
         endMeterElectric: this.end_meter.electric,
-        billDetail: { ...this.bill_detail },
+        billDetail: { ...this.bill_detail, water: waterPrice, ele: electricPrice },
         vatRate,
         vatAmount: currentBillTotal - preVatSubtotal,
         currentBillTotal,
