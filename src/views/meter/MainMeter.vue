@@ -745,6 +745,13 @@ import CommonFee from "./components/CommonFee.vue";
 import OtherFees from "./components/OtherFees.vue";
 import axios from "axios";
 import * as XLSX from "xlsx";
+
+// Excel column headers - match the grid's own column labels (Water.vue /
+// Electricity.vue) instead of internal English field names, so the sheet
+// reads the same as the screen it came from.
+const COL_ROOM = "เลขห้อง";
+const COL_UNIT = "เลขมิเตอร์เดือนล่าสุด";
+
 export default {
   components: { Water, Electricity, CommonFee, OtherFees },
   data() {
@@ -1015,16 +1022,21 @@ export default {
           // the template's floor+room order), so filtering here would shift
           // indices and misassign rooms. A row with no currentunit is just
           // skipped server-side (that room isn't being read this cycle).
+          // Read by the Thai header (what the template actually has), with
+          // the old English keys as a fallback so a hand-built or older file
+          // still works.
           let skipped = 0;
           const rows = rawRows.map((row, i) => {
-            if (row.currentunit == null || row.currentunit === "") {
+            const roomnumber = row[COL_ROOM] ?? row.roomnumber ?? null;
+            const currentunit = row[COL_UNIT] ?? row.currentunit;
+            if (currentunit == null || currentunit === "") {
               skipped++;
-              return { roomnumber: row.roomnumber ?? null, currentunit: null };
+              return { roomnumber, currentunit: null };
             }
-            if (typeof row.currentunit !== "number") {
+            if (typeof currentunit !== "number") {
               throw { __rowError: `เลขมิเตอร์ต้องเป็นตัวเลขที่แถว ${i + 1}` };
             }
-            return { roomnumber: row.roomnumber ?? null, currentunit: row.currentunit };
+            return { roomnumber, currentunit };
           });
           this.importPreview.rows = rows;
           this.importPreview.skipped = skipped;
@@ -1112,9 +1124,12 @@ export default {
           if (resp.data && resp.data.error) {
             throw new Error(resp.data.error);
           }
-          const rows = resp.data.data || [];
+          const rows = (resp.data.data || []).map((r) => ({
+            [COL_ROOM]: r.roomnumber,
+            [COL_UNIT]: r.currentunit,
+          }));
           const ws = XLSX.utils.json_to_sheet(rows, {
-            header: ["roomnumber", "currentunit"],
+            header: [COL_ROOM, COL_UNIT],
           });
           const wb = XLSX.utils.book_new();
           XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
