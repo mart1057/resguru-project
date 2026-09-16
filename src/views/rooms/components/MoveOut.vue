@@ -338,27 +338,27 @@
           <div class="w-[100%] flex flex-col justify-end mt-[14px]">
             รายการชำระเงิน ณ วันที่ย้ายออก
             <div class="mt-[8px] space-y-[8px]">
-              <div class="flex justify-between items-center">
+              <div class="flex items-center">
                 <div
                   class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
                 >
                   ค่าหอพัก
                 </div>
                 <input
-                  class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
+                  class="ml-[8px] h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
                   type="number"
                   v-model="bill_detail.room"
                 />
               </div>
               <div>
-                <div class="flex justify-between items-center">
+                <div class="flex items-center">
                   <div
                     class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
                   >
                     ค่าน้ำ (เลขมิเตอร์ใหม่)
                   </div>
                   <input
-                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
+                    class="ml-[8px] h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
                     type="number"
                     v-model="end_meter.water"
                   />
@@ -377,14 +377,14 @@
                 </div>
               </div>
               <div>
-                <div class="flex justify-between items-center">
+                <div class="flex items-center">
                   <div
                     class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
                   >
                     ค่าไฟ (เลขมิเตอร์ใหม่)
                   </div>
                   <input
-                    class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
+                    class="ml-[8px] h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
                     type="number"
                     v-model="end_meter.electric"
                   />
@@ -402,39 +402,39 @@
                   {{ formatMoney(getElectricPrice()) }} บาท)
                 </div>
               </div>
-              <div class="flex justify-between items-center">
+              <div class="flex items-center">
                 <div
                   class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
                 >
                   ค่าส่วนกลาง
                 </div>
                 <input
-                  class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
+                  class="ml-[8px] h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
                   type="number"
                   v-model="bill_detail.communalPrice"
                 />
               </div>
-              <div class="flex justify-between items-center">
+              <div class="flex items-center">
                 <div
                   class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
                 >
                   ค่าอื่น ๆ
                 </div>
                 <input
-                  class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
+                  class="ml-[8px] h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
                   type="number"
                   v-model="bill_detail.other"
                 />
               </div>
-              <div class="flex justify-between items-center mt-[24px]">
-                <div class="font-bold text-custom text-[14px]">รวมทั้งหมด</div>
+              <div class="flex items-center mt-[24px]">
+                <div class="font-bold text-custom text-[14px] w-[215px] pl-[8px]">รวมทั้งหมด</div>
                 <div
                   v-if="bill_detail.room"
-                  class="font-bold text-custom text-[14px]"
+                  class="ml-[8px] font-bold text-custom text-[14px]"
                 >
                   {{ formatMoney(getCurrentBillTotal()) }}
                 </div>
-                <div v-else class="font-bold text-custom text-[14px]">-</div>
+                <div v-else class="ml-[8px] font-bold text-custom text-[14px]">-</div>
               </div>
             </div>
           </div>
