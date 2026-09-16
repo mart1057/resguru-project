@@ -545,7 +545,7 @@
                     class="text-white font-bold ml-[8px] flex justify-center items-center cursor-pointer"
                     @click="downloadTemplate('water')"
                   >
-                    Download Excel Template
+                    ดาวน์โหลดเทมเพลต Excel
                   </div>
                 </div>
               </label>
@@ -615,7 +615,7 @@
                   class="text-white font-bold ml-[8px] flex justify-center items-center cursor-pointer"
                   @click="downloadTemplate('electric')"
                 >
-                  Download Excel Template
+                  ดาวน์โหลดเทมเพลต Excel
                 </div>
               </div>
             </label>
