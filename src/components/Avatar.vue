@@ -5,7 +5,7 @@
       width: size + 'px',
       height: size + 'px',
       borderRadius: square ? radius + 'px' : '9999px',
-      background: (showImg || showPlaceholder) ? '#EAF0F6' : (type === 'building' ? '#EAF0F6' : bg),
+      background: showPlaceholder ? '#003765' : (showImg ? '#EAF0F6' : (type === 'building' ? '#EAF0F6' : bg)),
     }"
   >
     <img
