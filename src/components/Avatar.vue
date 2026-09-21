@@ -5,7 +5,7 @@
       width: size + 'px',
       height: size + 'px',
       borderRadius: square ? radius + 'px' : '9999px',
-      background: showImg ? '#EAF0F6' : (type === 'building' ? '#EAF0F6' : bg),
+      background: (showImg || showPlaceholder) ? '#EAF0F6' : (type === 'building' ? '#EAF0F6' : bg),
     }"
   >
     <img
@@ -14,6 +14,12 @@
       class="rg-avatar__img"
       :alt="name || ''"
       @error="broken = true"
+    />
+    <img
+      v-else-if="showPlaceholder"
+      :src="placeholderSrc"
+      class="rg-avatar__img rg-avatar__placeholder"
+      alt=""
     />
     <span
       v-else-if="type === 'user'"
@@ -53,6 +59,7 @@ export default {
     size: { type: [Number, String], default: 40 },
     square: { type: Boolean, default: false },
     radius: { type: [Number, String], default: 12 },
+    placeholderSrc: { type: String, default: '' },
   },
   data() {
     return { broken: false };
@@ -71,6 +78,9 @@ export default {
     },
     showImg() {
       return !!this.resolvedSrc && !this.broken;
+    },
+    showPlaceholder() {
+      return !this.showImg && !(this.name || '').trim() && !!this.placeholderSrc;
     },
     letters() {
       return initials(this.name);
@@ -107,5 +117,10 @@ export default {
 .rg-avatar__glyph {
   object-fit: contain;
   display: block;
+}
+.rg-avatar__placeholder {
+  object-fit: contain;
+  padding: 22%;
+  box-sizing: border-box;
 }
 </style>

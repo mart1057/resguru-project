@@ -117,6 +117,7 @@
                         <Avatar
                             :src="data.user_sign_contract && data.user_sign_contract.users_permissions_user && data.user_sign_contract.users_permissions_user.imageProfile && data.user_sign_contract.users_permissions_user.imageProfile.url"
                             :name="data.user_sign_contract && data.user_sign_contract.users_permissions_user ? ((data.user_sign_contract.users_permissions_user.firstName || '') + ' ' + (data.user_sign_contract.users_permissions_user.lastName || '')) : ''"
+                            :placeholder-src="ResguruLogo"
                             :size="132" square :radius="16" />
                         <div class="ml-[14px]">
 
@@ -337,10 +338,12 @@
 <script>
 import axios from 'axios'
 import { recordDepositIncome } from '@/components/hook/hook'
+import ResguruLogo from '@/assets/img/Logo-01.png'
 
 export default {
     data() {
         return {
+            ResguruLogo,
             check_final:false,
             create: false,
             edit_room: false,

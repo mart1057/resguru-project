@@ -72,6 +72,17 @@ function parseIncomeRemark(remark) {
     return { category: '-', note: remark || '' };
 }
 
+// Thai leading vowels (เ แ โ ใ ไ) are written before the consonant they
+// modify, so charAt(0) on a Thai word can land on a vowel instead of the
+// consonant a reader expects as the "initial" (e.g. "ใจดี" -> "ใ", not "จ").
+const THAI_LEADING_VOWELS = ['เ', 'แ', 'โ', 'ใ', 'ไ'];
+function firstLetter(str) {
+    const s = (str || '').trim();
+    let i = 0;
+    while (i < s.length - 1 && THAI_LEADING_VOWELS.includes(s.charAt(i))) i++;
+    return s.charAt(i) || '';
+}
+
 // "Kai", "Doe"  ->  "KD"   |  "Kai Doe" (single arg) -> "KD"  |  nothing -> "?"
 function initials(a, b) {
     let first = (a || '').trim();
@@ -81,7 +92,7 @@ function initials(a, b) {
         first = parts[0];
         last = parts[1] || '';
     }
-    const s = (first.charAt(0) + last.charAt(0)).toUpperCase();
+    const s = (firstLetter(first) + firstLetter(last)).toUpperCase();
     return s || '?';
 }
 

@@ -557,6 +557,7 @@
 import axios from 'axios'
 import ThailandAutoComplete from 'vue-thailand-address-autocomplete'
 import ThailandAutoCompleteAdmin from 'vue-thailand-address-autocomplete'
+import { initials as nameInitials } from '@/components/hook/hook'
 export default {
     data() {
         return {
@@ -1029,9 +1030,7 @@ export default {
             },
 
             initials(name, lastname) {
-                const a = (name || '').trim().charAt(0);
-                const b = (lastname || '').trim().charAt(0);
-                return (a + b).toUpperCase() || '?';
+                return nameInitials(name, lastname);
             },
             
             async addExistingAdmin() {
