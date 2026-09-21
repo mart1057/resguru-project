@@ -38,7 +38,7 @@
                     <div>โทร: {{
                         data_bill.user_sign_contract?.users_permissions_user?.phone }}</div>
                 </div>
-                <div class="pr-2">
+                <div class="pr-2 text-right">
                     <hr class="h-px">
                     <div class="font-bold mb-1">กำหนดชำระ</div>
                     <div>วันที่ {{ formatDueDate(data_bill.tenant_bills[0]?.createdAt, $store.state.buildingInfo[0]?.attributes?.BuildingDueDate) }}</div>
