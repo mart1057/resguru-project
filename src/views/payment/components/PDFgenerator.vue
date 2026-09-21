@@ -35,7 +35,9 @@
                      once fetched - this middle column had unused space, and
                      putting them here (rather than appended after the
                      signature block, as before) is what lets the whole
-                     document fit on one A5 page. -->
+                     document fit in the top half of the A4 page (kept as
+                     a4, not a5, so a future 2-up print can stack two of
+                     these on one sheet). -->
                 <div class="pr-2" ref="qrSlot"></div>
                 <div class="pr-2">
                     <hr class="h-px">
@@ -527,7 +529,7 @@ export default {
                     },
                     jsPDF: {
                     unit: "mm",
-                    format: "a5",
+                    format: "a4",
                     orientation: "portrait"
                     }
                 };
