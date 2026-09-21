@@ -23,21 +23,15 @@
 
                     </div>
                 </div>
-                <div class="flex justify-between">
-                    <div class="text-[20px] flex justify-start items-center">ค่าน้ำรวม</div>
-                    <!-- <div>
-                        <svg width="24" height="23" viewBox="0 0 24 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <mask id="mask0_119_1460" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="1" y="0"
-                                width="22" height="22">
-                                <rect x="1.71484" y="0.856934" width="20.5714" height="20.5714" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_119_1460)">
-                                <path
-                                    d="M12.0001 17.6701L11.0836 16.7668L16.065 11.7855H5.47266V10.4998H16.065L11.0836 5.51851L12.0001 4.61523L18.5275 11.1427L12.0001 17.6701Z"
-                                    fill="white" />
-                            </g>
+                <div class="flex justify-between items-center">
+                    <div class="text-[20px] flex justify-start items-center">Unit น้ำที่ใช้</div>
+                    <div :title="waterTooltipText" class="cursor-help opacity-80 hover:opacity-100">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="white" stroke-width="1.5" />
+                            <path d="M12 11v5.5" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+                            <circle cx="12" cy="7.75" r="1" fill="white" />
                         </svg>
-                    </div> -->
+                    </div>
                 </div>
             </div>
             <div class="h-[110px] p-[18px] flex flex-col justify-between bg-[#F5D65E] rounded-[22px] text-[#003765]  ">
@@ -56,21 +50,15 @@
 
                     </div>
                 </div>
-                <div class="flex justify-between">
-                    <div class="text-[20px] flex justify-start items-center">ค่าไฟรวม</div>
-                    <!-- <div>
-                        <svg width="24" height="23" viewBox="0 0 24 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <mask id="mask0_119_1460" style="mask-type:alpha" maskUnits="userSpaceOnUse" x="1" y="0"
-                                width="22" height="22">
-                                <rect x="1.71484" y="0.856934" width="20.5714" height="20.5714" fill="#D9D9D9" />
-                            </mask>
-                            <g mask="url(#mask0_119_1460)">
-                                <path
-                                    d="M12.0001 17.6701L11.0836 16.7668L16.065 11.7855H5.47266V10.4998H16.065L11.0836 5.51851L12.0001 4.61523L18.5275 11.1427L12.0001 17.6701Z"
-                                    fill="#003765" />
-                            </g>
+                <div class="flex justify-between items-center">
+                    <div class="text-[20px] flex justify-start items-center">Unit ไฟที่ใช้</div>
+                    <div :title="electricTooltipText" class="cursor-help opacity-80 hover:opacity-100">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="12" cy="12" r="10" stroke="#003765" stroke-width="1.5" />
+                            <path d="M12 11v5.5" stroke="#003765" stroke-width="1.5" stroke-linecap="round" />
+                            <circle cx="12" cy="7.75" r="1" fill="#003765" />
                         </svg>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -137,6 +125,12 @@ export default {
         },
         hasElectricValue() {
             return this.electricValue !== undefined;
+        },
+        waterTooltipText() {
+            return "คำนวณจากผลรวมหน่วยน้ำที่ใช้ของทุกห้อง โดยแต่ละห้องคิดจาก (เลขมิเตอร์ครั้งล่าสุด - เลขมิเตอร์ครั้งก่อนหน้า) แล้วนำมารวมกันทั้งตึก";
+        },
+        electricTooltipText() {
+            return "คำนวณจากผลรวมหน่วยไฟที่ใช้ของทุกห้อง โดยแต่ละห้องคิดจาก (เลขมิเตอร์ครั้งล่าสุด - เลขมิเตอร์ครั้งก่อนหน้า) แล้วนำมารวมกันทั้งตึก";
         },
     },
     name: 'PhBuildingsLight',
