@@ -515,7 +515,7 @@
                   <div
                     class="text-white font-bold ml-[8px] flex justify-center items-center"
                   >
-                    นำเข้ามิเตอร์น้ำผ่าน Excel
+                    นำเข้ามิเตอร์น้ำ+ไฟฟ้าผ่าน Excel
                   </div>
                 </div>
               </label>
@@ -543,7 +543,7 @@
                   </div>
                   <div
                     class="text-white font-bold ml-[8px] flex justify-center items-center cursor-pointer"
-                    @click="downloadTemplate('water')"
+                    @click="downloadTemplate()"
                   >
                     ดาวน์โหลดเทมเพลต Excel
                   </div>
@@ -587,7 +587,7 @@
                 <div
                   class="text-white font-bold ml-[8px] flex justify-center items-center"
                 >
-                  นำเข้ามิเตอร์ไฟฟ้าผ่าน Excel
+                  นำเข้ามิเตอร์น้ำ+ไฟฟ้าผ่าน Excel
                 </div>
               </div>
             </label>
@@ -613,7 +613,7 @@
                 </div>
                 <div
                   class="text-white font-bold ml-[8px] flex justify-center items-center cursor-pointer"
-                  @click="downloadTemplate('electric')"
+                  @click="downloadTemplate()"
                 >
                   ดาวน์โหลดเทมเพลต Excel
                 </div>
@@ -637,11 +637,7 @@
           <div>
             <div class="flex justify-between">
               <div class="text-custom flex justify-center items-center text-[16px] font-bold">
-                {{
-                  importPreview.tab === "water"
-                    ? "ยืนยันนำเข้ามิเตอร์น้ำ"
-                    : "ยืนยันนำเข้ามิเตอร์ไฟฟ้า"
-                }}
+                ยืนยันนำเข้ามิเตอร์น้ำและไฟฟ้า
               </div>
               <div @click="cancelImport()" class="cursor-pointer">✕</div>
             </div>
@@ -657,13 +653,15 @@
                   <template #thead>
                     <vs-tr>
                       <vs-th>เลขห้อง</vs-th>
-                      <vs-th>เลขมิเตอร์ปัจจุบัน</vs-th>
+                      <vs-th>เลขมิเตอร์น้ำ</vs-th>
+                      <vs-th>เลขมิเตอร์ไฟฟ้า</vs-th>
                     </vs-tr>
                   </template>
                   <template #tbody>
                     <vs-tr :key="i" v-for="(row, i) in importRowsToImport" :data="row">
                       <vs-td>{{ row.roomnumber || "(ตามลำดับในไฟล์)" }}</vs-td>
-                      <vs-td>{{ row.currentunit }}</vs-td>
+                      <vs-td>{{ row.waterunit ?? "-" }}</vs-td>
+                      <vs-td>{{ row.electricunit ?? "-" }}</vs-td>
                     </vs-tr>
                   </template>
                 </vs-table>
@@ -748,9 +746,12 @@ import * as XLSX from "xlsx";
 
 // Excel column headers - match the grid's own column labels (Water.vue /
 // Electricity.vue) instead of internal English field names, so the sheet
-// reads the same as the screen it came from.
+// reads the same as the screen it came from. One file/template now covers
+// both water and electric - the water and electric tabs' import/template
+// buttons both drive this same combined sheet.
 const COL_ROOM = "เลขห้อง";
-const COL_UNIT = "เลขมิเตอร์เดือนล่าสุด";
+const COL_WATER = "เลขมิเตอร์น้ำเดือนล่าสุด";
+const COL_ELECTRIC = "เลขมิเตอร์ไฟฟ้าเดือนล่าสุด";
 
 export default {
   components: { Water, Electricity, CommonFee, OtherFees },
@@ -791,7 +792,9 @@ export default {
     // stays the full, original-order array (including blank rows) because
     // the backend resolves a blank roomnumber by position in that array.
     importRowsToImport() {
-      return this.importPreview.rows.filter((r) => r.currentunit != null);
+      return this.importPreview.rows.filter(
+        (r) => r.waterunit != null || r.electricunit != null
+      );
     },
   },
   created() {
@@ -1020,23 +1023,30 @@ export default {
           // Keep every row, in original sheet order - the backend resolves a
           // blank roomnumber by the row's POSITION in this array (matching
           // the template's floor+room order), so filtering here would shift
-          // indices and misassign rooms. A row with no currentunit is just
-          // skipped server-side (that room isn't being read this cycle).
-          // Read by the Thai header (what the template actually has), with
-          // the old English keys as a fallback so a hand-built or older file
-          // still works.
+          // indices and misassign rooms. A row with neither unit filled in is
+          // just skipped server-side (that room isn't being read this
+          // cycle); a row can have only one of the two units filled in and
+          // still import that one. Read by the Thai headers (what the
+          // template actually has), with the old English keys as a fallback
+          // so a hand-built or older file still works.
           let skipped = 0;
           const rows = rawRows.map((row, i) => {
             const roomnumber = row[COL_ROOM] ?? row.roomnumber ?? null;
-            const currentunit = row[COL_UNIT] ?? row.currentunit;
-            if (currentunit == null || currentunit === "") {
+            const rawWater = row[COL_WATER] ?? row.waterunit;
+            const rawElectric = row[COL_ELECTRIC] ?? row.electricunit;
+            const waterunit = rawWater == null || rawWater === "" ? null : rawWater;
+            const electricunit = rawElectric == null || rawElectric === "" ? null : rawElectric;
+            if (waterunit == null && electricunit == null) {
               skipped++;
-              return { roomnumber, currentunit: null };
+              return { roomnumber, waterunit: null, electricunit: null };
             }
-            if (typeof currentunit !== "number") {
-              throw { __rowError: `เลขมิเตอร์ต้องเป็นตัวเลขที่แถว ${i + 1}` };
+            if (waterunit != null && typeof waterunit !== "number") {
+              throw { __rowError: `เลขมิเตอร์น้ำต้องเป็นตัวเลขที่แถว ${i + 1}` };
             }
-            return { roomnumber, currentunit };
+            if (electricunit != null && typeof electricunit !== "number") {
+              throw { __rowError: `เลขมิเตอร์ไฟฟ้าต้องเป็นตัวเลขที่แถว ${i + 1}` };
+            }
+            return { roomnumber, waterunit, electricunit };
           });
           this.importPreview.rows = rows;
           this.importPreview.skipped = skipped;
@@ -1061,20 +1071,17 @@ export default {
       if (this.importRowsToImport.length === 0) return;
 
       const tab = this.importPreview.tab;
-      const endpoint = tab === "water" ? "importWater" : "importElectric";
-      const successMessage =
-        tab === "water"
-          ? "นำเข้ามิเตอร์น้ำผ่าน Excel สำเร็จ"
-          : "นำเข้ามิเตอร์ไฟฟ้าผ่าน Excel สำเร็จ";
+      const successMessage = "นำเข้ามิเตอร์น้ำและไฟฟ้าผ่าน Excel สำเร็จ";
 
       // Send the already-parsed rows as JSON (client-side SheetJS already
       // read the file - xlsx/xls/csv/ods all land here the same way, the
       // backend never has to know or care what format the original file
-      // was). rows stays the FULL original-order array (blank-currentunit
-      // rows included) so the backend's row-position fallback lines up with
-      // the same order the template was generated in.
+      // was). rows stays the FULL original-order array (blank rows
+      // included) so the backend's row-position fallback lines up with the
+      // same order the template was generated in. One combined endpoint
+      // handles both services regardless of which tab's button was used.
       axios
-        .put(`https://api.resguru.app/api/${endpoint}`, {
+        .put(`https://api.resguru.app/api/importCombinedMeter`, {
           building: String(this.$store.state.building),
           month: this.filter.selectedMonth,
           year: this.filter.selectedYear,
@@ -1110,10 +1117,11 @@ export default {
     // read. Row order here is exactly what import's blank-roomnumber
     // position fallback resolves against (both come from getOrderedRooms
     // on the backend).
-    downloadTemplate(type) {
-      const endpoint = type === "water" ? "getwatermetertemplate" : "getelectricmetertemplate";
+    // Same combined template regardless of which tab's button triggered
+    // this - one file covers both water and electric.
+    downloadTemplate() {
       axios
-        .get(`https://api.resguru.app/api/${endpoint}`, {
+        .get(`https://api.resguru.app/api/getcombinedmetertemplate`, {
           params: {
             buildingid: this.$store.state.building,
             month: this.filter.selectedMonth,
@@ -1126,15 +1134,16 @@ export default {
           }
           const rows = (resp.data.data || []).map((r) => ({
             [COL_ROOM]: r.roomnumber,
-            [COL_UNIT]: r.currentunit,
+            [COL_WATER]: r.waterunit,
+            [COL_ELECTRIC]: r.electricunit,
           }));
           const ws = XLSX.utils.json_to_sheet(rows, {
-            header: [COL_ROOM, COL_UNIT],
+            header: [COL_ROOM, COL_WATER, COL_ELECTRIC],
           });
           const wb = XLSX.utils.book_new();
           XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
           const label = `${this.filter.selectedYear}-${this.filter.selectedMonth}`;
-          XLSX.writeFile(wb, `${type === "water" ? "water" : "electric"}-meter-${label}.xlsx`);
+          XLSX.writeFile(wb, `meter-${label}.xlsx`);
         })
         .catch((error) => {
           const errorMessage = this.$errMsg(error, "สร้างเทมเพลต");
