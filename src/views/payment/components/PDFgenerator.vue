@@ -67,9 +67,9 @@
                         <!-- CORRECTED Water Row -->
                         <tr class="row-odd">
                             <td class="py-1 px-2 border">ค่าน้ำ(
-{{ formatNumber(getWaterBeforeUnit(data_bill.tenant_bills[0])) }} 
-- 
-{{ formatNumber(getWaterAfterUnit(data_bill.tenant_bills[0])) }})                            </td>
+{{ formatQuantity(getWaterBeforeUnit(data_bill.tenant_bills[0])) }}
+-
+{{ formatQuantity(getWaterAfterUnit(data_bill.tenant_bills[0])) }})                            </td>
                             <td class="py-1 px-2 text-right border">{{ formatQuantity(data_bill.tenant_bills[0]?.usageWater || 0)}}</td>
                             <td class="py-1 px-2 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.waterRate || ($store.state.buildingInfo[0]?.attributes?.waterUnitPrice || 0)) }}</td>
                             <td class="py-1 px-2 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.waterPrice) }}</td>
@@ -78,10 +78,10 @@
                         <!-- CORRECTED Electric Row -->
                         <tr class="row-even">
                             <td class="py-1 px-2 border">
-ค่าไฟ ({{ 
-    formatNumber(getElectricBeforeUnit(data_bill.tenant_bills[0])) 
+ค่าไฟ ({{
+    formatQuantity(getElectricBeforeUnit(data_bill.tenant_bills[0]))
 }} - {{
-    formatNumber(getElectricAfterUnit(data_bill.tenant_bills[0]))
+    formatQuantity(getElectricAfterUnit(data_bill.tenant_bills[0]))
 }})                            </td>
                             <td class="py-1 px-2 text-right border">{{ formatQuantity(data_bill.tenant_bills[0]?.usageElectric || 0) }}</td>
                             <td class="py-1 px-2 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.electricRate || ($store.state.buildingInfo[0]?.attributes?.electricUnitPrice || 0)) }}</td>
@@ -621,7 +621,12 @@ export default {
   min-height: 85px !important;
   max-width: 85px !important;
   max-height: 85px !important;
-  object-fit: none !important; /* Prevents aspect ratio preservation */
+  /* object-fit: none rendered at the source image's native size and just
+     clipped it to the box - not predictable if the uploaded QR isn't
+     already exactly 85x85. contain always scales the whole QR (never
+     crops into its pattern) down/up to fit the fixed box, so the box size
+     alone is a reliable prediction of the final rendered size. */
+  object-fit: contain !important;
 }
 
 .watermarked {
