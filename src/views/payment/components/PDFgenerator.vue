@@ -3,7 +3,7 @@
         <!-- Your HTML content to convert to PDF -->
         <div v-if="data_bill && data_bill.tenant_bills" ref="pdfContent" class="pt-1 p-2 pdf-document">
             <img class="watermarked" :src="Res_Guru_Logo_create06" />
-            <div class="flex justify-between">
+            <div class="flex justify-between items-start">
                 <div class="flex">
                     <div class="ml-1">
                         <div class="text-sm font-bold">{{ $store.state.buildingInfo[0]?.attributes?.buildingName }}</div>
@@ -11,6 +11,13 @@
                         <div class="text-sm">โทร: {{ $store.state.buildingInfo[0]?.attributes?.buildingPhone }}</div>
                     </div>
                 </div>
+                <!-- QR code + bank details get injected here by generatePDF()
+                     once fetched - level with the header instead of taking
+                     its own row further down, so the whole document is
+                     shorter and still fits in the top half of the A4 page
+                     (kept as a4, not a5, so a future 2-up print can stack
+                     two of these on one sheet). -->
+                <div ref="qrSlot"></div>
                 <div class="flex flex-col justify-between">
                     <div class="text-lg font-bold"> ใบวางบิล/ใบแจ้งหนี้ </div>
                     <div class="text-sm"> หมายเลขใบแจ้งหนี้ (invoice) {{ data_bill.tenant_bills[0]?.invoiceNumber }}</div>
@@ -20,7 +27,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-3 text-sm mt-1">
+            <div class="grid grid-cols-2 text-sm mt-1">
                 <div class="pr-2">
                     <hr class="h-px">
                     <div class="font-bold mb-1">ผู้เช่า</div>
@@ -31,14 +38,6 @@
                     <div>โทร: {{
                         data_bill.user_sign_contract?.users_permissions_user?.phone }}</div>
                 </div>
-                <!-- QR code + bank details get injected here by generatePDF()
-                     once fetched - this middle column had unused space, and
-                     putting them here (rather than appended after the
-                     signature block, as before) is what lets the whole
-                     document fit in the top half of the A4 page (kept as
-                     a4, not a5, so a future 2-up print can stack two of
-                     these on one sheet). -->
-                <div class="pr-2" ref="qrSlot"></div>
                 <div class="pr-2">
                     <hr class="h-px">
                     <div class="font-bold mb-1">กำหนดชำระ</div>
@@ -51,10 +50,10 @@
                 <table class="text-sm w-full border-collapse invoice-table">
                     <thead>
                         <tr>
-                            <th class="py-1 px-2 text-left border" style="width: 40%;">รายการ</th>
-                            <th class="py-1 px-2 text-right border" style="width: 20%;">จำนวน</th>
-                            <th class="py-1 px-2 text-right border" style="width: 20%;">ราคาต่อหน่วย</th>
-                            <th class="py-1 px-2 text-right border" style="width: 20%;">ราคารวม</th>
+                            <th class="py-2 px-2 text-left border" style="width: 40%;">รายการ</th>
+                            <th class="py-2 px-2 text-right border" style="width: 20%;">จำนวน</th>
+                            <th class="py-2 px-2 text-right border" style="width: 20%;">ราคาต่อหน่วย</th>
+                            <th class="py-2 px-2 text-right border" style="width: 20%;">ราคารวม</th>
                         </tr>
                     </thead>
                     <!-- Corrected table rows for water and electric -->
@@ -601,6 +600,13 @@ export default {
 
 .invoice-table thead tr {
   background-color: #f0f0f0; /* Light gray header */
+}
+
+.invoice-table thead th {
+  /* The table's compact 1.35 line-height (inherited from .pdf-document)
+     clips Thai vowel/tone marks on bold header text - give the header
+     row its own taller line-height so nothing touches the cell border. */
+  line-height: 1.6;
 }
 
 /* Alternating row colors: transparent and light gray */
