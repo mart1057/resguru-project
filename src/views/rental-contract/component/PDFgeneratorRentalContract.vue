@@ -27,10 +27,10 @@
                 <div>
                     <span class="ml-[42px]">ข้อ ๑</span> ผู้เช่าตกลงเช่าและผู้ให้เช่าตกลงให้เช่าห้องพักอาศัยห้องเลขที่ {{
                         detail.RoomNumber }} ของ {{ $store.state.buildingInfo[0]?.attributes?.buildingName }} ซึ่งตั้งอยู่ที่ {{
-        $store.state.buildingInfo[0]?.attributes?.buildingAddress }} ตำบล {{
-        $store.state.buildingInfo[0]?.attributes?.buildingSubDistrict }} อำเภอ/เขต {{
-        $store.state.buildingInfo[0]?.attributes?.buildingDistrict }}
-                    จังหวัด {{ $store.state.buildingInfo[0]?.attributes?.buildingProvince }} เพื่อใช้เป็นที่พักอาศัย
+        $store.state.buildingInfo[0]?.attributes?.buildingAddress || '-' }} ตำบล {{
+        $store.state.buildingInfo[0]?.attributes?.buildingSubDistrict || '-' }} อำเภอ/เขต {{
+        $store.state.buildingInfo[0]?.attributes?.buildingDistrict || '-' }}
+                    จังหวัด {{ $store.state.buildingInfo[0]?.attributes?.buildingProvince || '-' }} เพื่อใช้เป็นที่พักอาศัย
                     ในอัตราค่าเช่าเดือนละ {{ detail.room_type?.roomPrice }} บาท/เดือน
                     ค่าเช่านี้ไม่รวมถึงค่าไฟฟ้า ค่าน้ำปะปา ค่าโทรศัพท์
                     ซึ่งผู้เช่าจะต้องชำระแก่ผู้ให้เช่าตามอัตราที่กำหนดไว้ในข้อ ๔
