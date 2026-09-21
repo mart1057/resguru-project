@@ -1,7 +1,7 @@
 <template>
     <div hidden>
         <!-- Your HTML content to convert to PDF -->
-        <div v-if="data_bill && data_bill.tenant_bills" ref="pdfContent" class="pt-3 p-2 pdf-document">
+        <div v-if="data_bill && data_bill.tenant_bills" ref="pdfContent" class="pt-1 p-2 pdf-document">
             <img class="watermarked" :src="Res_Guru_Logo_create06" />
             <div class="flex justify-between">
                 <div class="flex">
@@ -20,7 +20,7 @@
                 </div>
             </div>
 
-            <div class="grid grid-cols-3 text-sm mt-2">
+            <div class="grid grid-cols-3 text-sm mt-1">
                 <div class="pr-2">
                     <hr class="h-px">
                     <div class="font-bold mb-1">ผู้เช่า</div>
@@ -31,111 +31,116 @@
                     <div>โทร: {{
                         data_bill.user_sign_contract?.users_permissions_user?.phone }}</div>
                 </div>
-                <div class="pr-2"></div>
+                <!-- QR code + bank details get injected here by generatePDF()
+                     once fetched - this middle column had unused space, and
+                     putting them here (rather than appended after the
+                     signature block, as before) is what lets the whole
+                     document fit on one A5 page. -->
+                <div class="pr-2" ref="qrSlot"></div>
                 <div class="pr-2">
                     <hr class="h-px">
                     <div class="font-bold mb-1">กำหนดชำระ</div>
                     <div>วันที่ {{ formatDueDate(data_bill.tenant_bills[0]?.createdAt, $store.state.buildingInfo[0]?.attributes?.BuildingDueDate) }}</div>
                 </div>
             </div>
-            
+
             <!-- This is the table section with improved styling -->
-            <div class="mt-3">
+            <div class="mt-1">
                 <table class="text-sm w-full border-collapse invoice-table">
                     <thead>
                         <tr>
-                            <th class="py-2 px-3 text-left border" style="width: 40%;">รายการ</th>
-                            <th class="py-2 px-3 text-right border" style="width: 20%;">จำนวน</th>
-                            <th class="py-2 px-3 text-right border" style="width: 20%;">ราคาต่อหน่วย</th>
-                            <th class="py-2 px-3 text-right border" style="width: 20%;">ราคารวม</th>
+                            <th class="py-1 px-2 text-left border" style="width: 40%;">รายการ</th>
+                            <th class="py-1 px-2 text-right border" style="width: 20%;">จำนวน</th>
+                            <th class="py-1 px-2 text-right border" style="width: 20%;">ราคาต่อหน่วย</th>
+                            <th class="py-1 px-2 text-right border" style="width: 20%;">ราคารวม</th>
                         </tr>
                     </thead>
                     <!-- Corrected table rows for water and electric -->
                     <tbody>
                         <tr class="row-even">
-                            <td class="py-2 px-3 border">ค่าห้อง</td>
-                            <td class="py-2 px-3 text-right border">1</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.roomPrice) }}</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.roomPrice) }}</td>
+                            <td class="py-1 px-2 border">ค่าห้อง</td>
+                            <td class="py-1 px-2 text-right border">1</td>
+                            <td class="py-1 px-2 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.roomPrice) }}</td>
+                            <td class="py-1 px-2 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.roomPrice) }}</td>
                         </tr>
                         
                         <!-- CORRECTED Water Row -->
                         <tr class="row-odd">
-                            <td class="py-2 px-3 border">ค่าน้ำ(
+                            <td class="py-1 px-2 border">ค่าน้ำ(
 {{ formatNumber(getWaterBeforeUnit(data_bill.tenant_bills[0])) }} 
 - 
 {{ formatNumber(getWaterAfterUnit(data_bill.tenant_bills[0])) }})                            </td>
-                            <td class="py-2 px-3 text-right border">{{ formatQuantity(data_bill.tenant_bills[0]?.usageWater || 0)}}</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.waterRate || ($store.state.buildingInfo[0]?.attributes?.waterUnitPrice || 0)) }}</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.waterPrice) }}</td>
+                            <td class="py-1 px-2 text-right border">{{ formatQuantity(data_bill.tenant_bills[0]?.usageWater || 0)}}</td>
+                            <td class="py-1 px-2 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.waterRate || ($store.state.buildingInfo[0]?.attributes?.waterUnitPrice || 0)) }}</td>
+                            <td class="py-1 px-2 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.waterPrice) }}</td>
                         </tr>
                         
                         <!-- CORRECTED Electric Row -->
                         <tr class="row-even">
-                            <td class="py-2 px-3 border">
+                            <td class="py-1 px-2 border">
 ค่าไฟ ({{ 
     formatNumber(getElectricBeforeUnit(data_bill.tenant_bills[0])) 
 }} - {{
     formatNumber(getElectricAfterUnit(data_bill.tenant_bills[0]))
 }})                            </td>
-                            <td class="py-2 px-3 text-right border">{{ formatQuantity(data_bill.tenant_bills[0]?.usageElectric || 0) }}</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.electricRate || ($store.state.buildingInfo[0]?.attributes?.electricUnitPrice || 0)) }}</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.electricPrice) }}</td>
+                            <td class="py-1 px-2 text-right border">{{ formatQuantity(data_bill.tenant_bills[0]?.usageElectric || 0) }}</td>
+                            <td class="py-1 px-2 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.electricRate || ($store.state.buildingInfo[0]?.attributes?.electricUnitPrice || 0)) }}</td>
+                            <td class="py-1 px-2 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.electricPrice) }}</td>
                         </tr>
                         
                         <tr class="row-odd">
-                            <td class="py-2 px-3 border">ค่าส่วนกลาง</td>
-                            <td class="py-2 px-3 text-right border">1</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.communalPrice) }}</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.communalPrice) }}</td>
+                            <td class="py-1 px-2 border">ค่าส่วนกลาง</td>
+                            <td class="py-1 px-2 text-right border">1</td>
+                            <td class="py-1 px-2 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.communalPrice) }}</td>
+                            <td class="py-1 px-2 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.communalPrice) }}</td>
                         </tr>
                         <tr class="row-even">
-                            <td class="py-2 px-3 border">ค่าปรับ</td>
-                            <td class="py-2 px-3 text-right border">1</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.otherPrice) }}</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.otherPrice) }}</td>
+                            <td class="py-1 px-2 border">ค่าปรับ</td>
+                            <td class="py-1 px-2 text-right border">1</td>
+                            <td class="py-1 px-2 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.otherPrice) }}</td>
+                            <td class="py-1 px-2 text-right border">{{ formatNumber(data_bill.tenant_bills[0]?.otherPrice) }}</td>
                         </tr>
                         
                         <tr class="row-odd" v-if="getPastUnpaidTotal(data_bill.tenant_bills[0]) > 0">
-                            <td class="py-2 px-3 border">ยอดค้างจากเดือน{{ getPreviousMonthThai(data_bill.tenant_bills[0]?.createdAt) }}</td>
-                            <td class="py-2 px-3 text-right border">1</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(getPastUnpaidTotal(data_bill.tenant_bills[0])) }}</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(getPastUnpaidTotal(data_bill.tenant_bills[0])) }}</td>
+                            <td class="py-1 px-2 border">ยอดค้างจากเดือน{{ getPreviousMonthThai(data_bill.tenant_bills[0]?.createdAt) }}</td>
+                            <td class="py-1 px-2 text-right border">1</td>
+                            <td class="py-1 px-2 text-right border">{{ formatNumber(getPastUnpaidTotal(data_bill.tenant_bills[0])) }}</td>
+                            <td class="py-1 px-2 text-right border">{{ formatNumber(getPastUnpaidTotal(data_bill.tenant_bills[0])) }}</td>
                         </tr>
                         <tr class="row-even" v-if="getCreditApplied(data_bill.tenant_bills[0]) > 0">
-                            <td class="py-2 px-3 border">หักเครดิตจากยอดชำระเกินคราวก่อน</td>
-                            <td class="py-2 px-3 text-right border">1</td>
-                            <td class="py-2 px-3 text-right border">-{{ formatNumber(getCreditApplied(data_bill.tenant_bills[0])) }}</td>
-                            <td class="py-2 px-3 text-right border">-{{ formatNumber(getCreditApplied(data_bill.tenant_bills[0])) }}</td>
+                            <td class="py-1 px-2 border">หักเครดิตจากยอดชำระเกินคราวก่อน</td>
+                            <td class="py-1 px-2 text-right border">1</td>
+                            <td class="py-1 px-2 text-right border">-{{ formatNumber(getCreditApplied(data_bill.tenant_bills[0])) }}</td>
+                            <td class="py-1 px-2 text-right border">-{{ formatNumber(getCreditApplied(data_bill.tenant_bills[0])) }}</td>
                         </tr>
                     </tbody>
                     <tfoot>
                         <!-- Bottom rows with progressively larger text -->
                     <tr>
-                        <td colspan="3" class="py-2 px-3 text-right border text-sm">รวมค่าใช้จ่าย</td>
-                        <td class="py-2 px-3 text-right border text-sm">{{ formatNumber(getInvoiceChargeSubtotal(data_bill.tenant_bills[0])) }}</td>
+                        <td colspan="3" class="py-1 px-2 text-right border text-sm">รวมค่าใช้จ่าย</td>
+                        <td class="py-1 px-2 text-right border text-sm">{{ formatNumber(getInvoiceChargeSubtotal(data_bill.tenant_bills[0])) }}</td>
                     </tr>
                     <tr>
-                        <td colspan="3" class="py-2 px-3 text-right border text-sm">ภาษี ({{ data_bill.room_building?.vat_rate || 0 }}%)</td>
-                        <td class="py-2 px-3 text-right border text-sm">{{ formatNumber(getInvoiceVat(data_bill.tenant_bills[0])) }}</td>
+                        <td colspan="3" class="py-1 px-2 text-right border text-sm">ภาษี ({{ data_bill.room_building?.vat_rate || 0 }}%)</td>
+                        <td class="py-1 px-2 text-right border text-sm">{{ formatNumber(getInvoiceVat(data_bill.tenant_bills[0])) }}</td>
                     </tr>
                     <tr>
-                        <td colspan="2" class="py-2 px-3 text-center border text-sm">( {{ numberToThaiText(getNetPayable(data_bill.tenant_bills[0])) }} )</td>
-                        <td class="py-2 px-3 text-right font-bold border text-sm">ยอดที่ต้องชำระ</td>
-                        <td class="py-2 px-3 text-right font-bold text-green-600 border text-sm">{{ formatNumber(getNetPayable(data_bill.tenant_bills[0])) }}</td>
+                        <td colspan="2" class="py-1 px-2 text-center border text-sm">( {{ numberToThaiText(getNetPayable(data_bill.tenant_bills[0])) }} )</td>
+                        <td class="py-1 px-2 text-right font-bold border text-sm">ยอดที่ต้องชำระ</td>
+                        <td class="py-1 px-2 text-right font-bold text-green-600 border text-sm">{{ formatNumber(getNetPayable(data_bill.tenant_bills[0])) }}</td>
                     </tr>
                     </tfoot>
                 </table>
             </div>
             
-            <div class="text-sm mt-2">
+            <div class="text-sm mt-1">
                 <p>กรุณาชำระและแจ้งภายในวันที่กำหนด</p>
             </div>
-            
-            <div class="flex justify-end mt-4">
+
+            <div class="flex justify-end mt-2">
                 <p class="flex flex-col items-center text-sm">
                     <span>ลงชื่อ</span>
-                    <span style="height: 40px; display: block;"></span>
+                    <span style="height: 20px; display: block;"></span>
                     <span class="signature-line"></span>
                     <span>ผู้จัดทำ</span>
                 </p>
@@ -459,19 +464,20 @@ export default {
                     return; // Exit if content is not found
                 }
 
-                // Add QR code + bank details to the content if we have it
+                // Add QR code + bank details into the header grid's middle
+                // column (qrSlot) - was appended after the signature block
+                // before, pushing the document past one page; putting it in
+                // that already-unused column keeps everything on page 1.
                 if (qrCodeUrl) {
-                    // First check if we already have a QR code container
+                    const qrSlot = this.$refs.qrSlot;
                     let qrContainer = content.querySelector('.qr-code-container');
-                    if (!qrContainer) {
+                    if (!qrContainer && qrSlot) {
                     qrContainer = document.createElement('div');
                     qrContainer.className = 'qr-code-container';
                     qrContainer.style.width = '100%';
                     qrContainer.style.display = 'flex';
                     qrContainer.style.flexDirection = 'column';
                     qrContainer.style.alignItems = 'center';
-                    qrContainer.style.marginTop = '30px';
-                    qrContainer.style.marginBottom = '20px';
 
                     const qrImage = document.createElement('img');
                     qrImage.src = qrCodeUrl;
@@ -481,8 +487,8 @@ export default {
 
                     const qrLabel = document.createElement('div');
                     qrLabel.textContent = 'สแกนเพื่อชำระเงิน';
-                    qrLabel.style.marginTop = '10px';
-                    qrLabel.style.fontSize = '16px';
+                    qrLabel.style.marginTop = '4px';
+                    qrLabel.style.fontSize = '11px';
                     qrLabel.style.fontWeight = 'bold';
                     qrLabel.style.textAlign = 'center';
 
@@ -491,8 +497,8 @@ export default {
 
                     if (bankName || accountName || accountNumber) {
                         const bankDetails = document.createElement('div');
-                        bankDetails.style.marginTop = '6px';
-                        bankDetails.style.fontSize = '14px';
+                        bankDetails.style.marginTop = '2px';
+                        bankDetails.style.fontSize = '10px';
                         bankDetails.style.textAlign = 'center';
                         const lines = [];
                         if (bankName) lines.push(`ธนาคาร ${bankName}`);
@@ -502,12 +508,12 @@ export default {
                         qrContainer.appendChild(bankDetails);
                     }
 
-                    content.appendChild(qrContainer);
+                    qrSlot.appendChild(qrContainer);
                     }
                 }
 
                 const opt = {
-                    margin: 10,
+                    margin: 6,
                     filename: `bill-${data.RoomNumber}.pdf`,
                     image: {
                     type: "jpeg",
@@ -521,7 +527,7 @@ export default {
                     },
                     jsPDF: {
                     unit: "mm",
-                    format: "a4",
+                    format: "a5",
                     orientation: "portrait"
                     }
                 };
@@ -549,7 +555,7 @@ export default {
                     if (qrCodeUrl) {
                         const qrContainer = content.querySelector('.qr-code-container');
                         if (qrContainer) {
-                        content.removeChild(qrContainer);
+                        qrContainer.remove();
                         }
                     }
                     })
@@ -560,7 +566,7 @@ export default {
                     if (qrCodeUrl) {
                         const qrContainer = content.querySelector('.qr-code-container');
                         if (qrContainer) {
-                        content.removeChild(qrContainer);
+                        qrContainer.remove();
                         }
                     }
                     });
@@ -578,7 +584,7 @@ export default {
    on this subtree rather than relying on inheritance timing. */
 .pdf-document {
   font-family: 'Sarabun', 'Angsana New', Arial, sans-serif;
-  line-height: 1.6;
+  line-height: 1.35;
 }
 
 /* Custom styling for the invoice table */
@@ -609,12 +615,12 @@ export default {
 }
 
 .qr-code-container img {
-  width: 150px !important;
-  height: 150px !important;
-  min-width: 150px !important;
-  min-height: 150px !important;
-  max-width: 150px !important;
-  max-height: 150px !important;
+  width: 85px !important;
+  height: 85px !important;
+  min-width: 85px !important;
+  min-height: 85px !important;
+  max-width: 85px !important;
+  max-height: 85px !important;
   object-fit: none !important; /* Prevents aspect ratio preservation */
 }
 
