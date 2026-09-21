@@ -310,6 +310,7 @@ export default {
                         buildingFacebook: this.buildingFacebook,
                         vat_rate: this.buildingTax,
                         BuildingDueDate: this.buildingDueDate,
+                        buildingPaymentMonthlyDate: 5,
                         publishedAt: null,
                         colorCode: '#E0ECE4'
                     }
