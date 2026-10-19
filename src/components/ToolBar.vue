@@ -517,7 +517,6 @@ export default {
             fetch(`https://api.resguru.app/api/notification-logs?filters[toUser][id][$eq]=${this.$store.state.userInfo.id}&filters[show][$eq]=true&populate=*&sort[0]=id:desc&pagination[pageSize]=50`)
                 .then(response => response.json())
                 .then((resp) => {
-                    console.log("Return from getNoti()", resp.data);
                     this.data_noti = Array.isArray(resp.data) ? resp.data : []
                 })
                 .catch((err) => {

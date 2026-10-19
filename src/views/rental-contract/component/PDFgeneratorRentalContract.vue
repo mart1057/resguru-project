@@ -4,7 +4,7 @@
         <div ref="pdfContent" class="p-[8px]">
             <img class="watermarked" :src="Res_Guru_Logo_create06" />
             <div class="flex">
-                <div><img :src="'http://203.170.190.170:1337'+($store.state.buildingInfo[0]?.attributes?.buildingLogo?.data?.attributes?.formats?.large?.url || '')" class="w-[70px] h-[70px]" /></div>
+                <div><img :src="'https://api.resguru.app'+($store.state.buildingInfo[0]?.attributes?.buildingLogo?.data?.attributes?.formats?.large?.url || '')" class="w-[70px] h-[70px]" /></div>
                 <div class="ml-[8px]">
                     <div class="font-bold">{{ $store.state.buildingInfo[0]?.attributes?.buildingName }}</div>
                     <div>{{ $store.state.buildingInfo[0]?.attributes?.buildingAddress }}</div>
@@ -209,7 +209,6 @@ export default {
         }
         },
         generatePDF(data, check, id, data2) {
-        console.log('PDF Generation Data:', { data, data2, check, id });
         
         // Validate required data
         if (!data) {
@@ -268,7 +267,6 @@ export default {
             return;
         }
         
-        console.log('Using userData for PDF:', userData);
         
         // Set the data
         this.detail = data;

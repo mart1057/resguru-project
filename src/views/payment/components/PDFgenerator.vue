@@ -416,7 +416,6 @@ export default {
         // mode: 'download' triggers a named file download, 'preview' opens
         // the PDF in a new tab instead.
         async generatePDF(data, mode = 'download') {
-            console.log("PDFdata", data);
             this.data_bill = data;
 
             try {
@@ -433,7 +432,6 @@ export default {
                     `https://api.resguru.app/api/building-pay-methods?filters[building][id][$eq]=${buildingId}&populate=QRCode`
                 );
 
-                console.log("Building pay methods response:", response.data);
 
                 const payMethod = response.data?.data?.[0]?.attributes;
                 if (payMethod) {
@@ -444,7 +442,6 @@ export default {
                         qrCodeUrl = `https://api.resguru.app${payMethod.QRCode.data.attributes.url}`;
                     }
                 }
-                console.log("QR Code URL:", qrCodeUrl);
                 } catch (error) {
                 console.error("Error fetching QR code:", error);
                 // Continue without QR code if there's an error

@@ -950,6 +950,7 @@
 </template>
 <script>
 import axios from "axios";
+import { authHeaders } from "@/utils/authHeaders";
 import { degrees, PDFDocument, rgb, StandardFonts } from "pdf-lib";
 import download from "downloadjs";
 import PDFgenerator from "@/views/payment/components/PDFgenerator";
@@ -1157,7 +1158,8 @@ export default {
       const period = this.getCurrentBillingPeriod();
       axios
         .get(
-          `https://api.resguru.app/api/regenerateinvoice?buildingid=${this.$store.state.building}&invoiceid=${invoiceID}&month=${period.month}&year=${period.year}`
+          `https://api.resguru.app/api/regenerateinvoice?buildingid=${this.$store.state.building}&invoiceid=${invoiceID}&month=${period.month}&year=${period.year}`,
+          authHeaders()
         )
         .then((response) => {
           if (response.data && response.data.error) {
@@ -1670,7 +1672,8 @@ export default {
       const month = currentdate.getMonth() + 1;
       const year = currentdate.getFullYear();
       return axios.get(
-        `https://api.resguru.app/api/generateInvoice?buildingid=${this.$store.state.building}&roomid=${roomid}&month=${month}&year=${year}`
+        `https://api.resguru.app/api/generateInvoice?buildingid=${this.$store.state.building}&roomid=${roomid}&month=${month}&year=${year}`,
+        authHeaders()
       );
     },
     generateInvoice(roomid) {

@@ -748,6 +748,7 @@
 </template>
 <script>
 import axios from "axios";
+import { authHeaders } from "@/utils/authHeaders";
 import PDFMoveOut from "./PDFMoveOut.vue";
 export default {
   components: {
@@ -1030,7 +1031,7 @@ export default {
           fetch(
             "https://api.resguru.app/api" +
               "/tenant-bills" +
-              "?populate=*&filters[user_sign_contract][id][$eq]=" +
+              "?populate=*&sort[0]=createdAt:desc&sort[1]=id:desc&filters[user_sign_contract][id][$eq]=" +
               this.$route.query.id_contract
           )
             .then((response) => response.json())
@@ -1447,7 +1448,8 @@ export default {
                     buildingId: this.$store.state.building,
                     billId: this.bill_detail.id,
                   },
-                }
+                },
+                authHeaders()
               );
             });
         })
@@ -1537,7 +1539,8 @@ export default {
       const year = currentdate.getFullYear();
       axios
         .get(
-          `https://api.resguru.app/api/generateInvoice?buildingid=${this.$store.state.building}&roomid=${this.$route.query.id_room}&month=${month}&year=${year}`
+          `https://api.resguru.app/api/generateInvoice?buildingid=${this.$store.state.building}&roomid=${this.$route.query.id_room}&month=${month}&year=${year}`,
+          authHeaders()
         )
         .then((response) => {
           this.$showNotification("#3A89CB", response.data.meta.message);

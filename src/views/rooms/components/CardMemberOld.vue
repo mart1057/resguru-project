@@ -662,7 +662,9 @@
                                 v-model="date_moveout" :disabled="true" />
                         </div>
                         <div class="flex mt-[14px]">
-                            <button @click="PDFPrint()"
+                            <!-- Hidden: PDFPrint() was never implemented here and its PDF
+                                 component is commented out below, so the click did nothing. -->
+                            <button v-if="false" @click="PDFPrint()"
                                 class="bg-[#165D98] mb-[36px] rounded-[12px] flex justify-center items-center mt-[8px] pl-[14px] pr-[14px] pt-[4px] pb-[4px]">
                                 <div class="flex">
                                     <div class="flex justify-center items-center ">

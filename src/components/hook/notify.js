@@ -33,6 +33,10 @@ export function buildErrMsg(err, context) {
   );
   const ref = status ? ` (รหัส ${status})` : netFail ? ' (เชื่อมต่อไม่ได้)' : '';
   const what = context ? `${context}ไม่สำเร็จ` : 'เกิดข้อผิดพลาด';
+  // Routes guarded by the backend's is-building-staff policy answer 401 when
+  // the saved login token is missing/expired and 403 for another building.
+  if (status === 401) return `${what}${ref} — เซสชันหมดอายุ กรุณาออกจากระบบแล้วเข้าสู่ระบบใหม่`;
+  if (status === 403) return `${what}${ref} — บัญชีนี้ไม่มีสิทธิ์ทำรายการนี้`;
   return `${what}${ref} — ลองใหม่อีกครั้ง หากยังพบปัญหาโปรดแจ้งทีมสนับสนุน`;
 }
 

@@ -6,7 +6,7 @@
             <div class="flex justify-between">
                 <div class="flex">
                     <div>
-                        <img :src="'http://203.170.190.170:1337' + ($store.state.buildingInfo[0]?.attributes?.buildingLogo?.data?.attributes?.formats?.large?.url || '')"
+                        <img :src="'https://api.resguru.app' + ($store.state.buildingInfo[0]?.attributes?.buildingLogo?.data?.attributes?.formats?.large?.url || '')"
                             class="w-[70px] h-[70px]" />
                     </div>
                     <div class="ml-[8px]">

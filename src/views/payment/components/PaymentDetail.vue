@@ -1511,6 +1511,7 @@
 </template>
 <script>
 import axios from "axios";
+import { authHeaders } from "@/utils/authHeaders";
 import { degrees, PDFDocument, rgb, StandardFonts } from "pdf-lib";
 import { convertDateNoTime } from "@/components/hook/hook";
 import download from "downloadjs";
@@ -1674,7 +1675,6 @@ export default {
     }, 1000);
   },
   mounted() {
-    console.log("URL Param: ", this.$route.query.profileId);
     this.getUserProfile();
     this.getInvoice();
     this.getReceipt();
@@ -2005,7 +2005,6 @@ export default {
                   ) // get id from user sign contract user_sign_contract
                     .then((response) => response.json())
                     .then((response) => {
-                      console.log("Return from getImage()", response);
                       this.userProfileImage = response.filePath;
                       this.userProfile = response;
                     })
@@ -2067,14 +2066,12 @@ export default {
   this.approvePaymentForm.paymentDate = this.getCurrentApprovePaymentDate(now);
   this.approvePaymentForm.paymentTime = this.getCurrentApprovePaymentTime(now);
 
-  console.log("Payment approval for evidence ID:", trID);
   
   // For tenant evidence payments, we need to find the associated invoice
   // The evidence might not have a direct tenant_bill reference
   
   // First, get the full evidence payment details
   const evidencePayment = this.userEvidencePayment.find(ep => ep.id === trID);
-  console.log("Found evidence payment:", evidencePayment);
   
   if (evidencePayment) {
     // Set evidence data
@@ -2095,7 +2092,6 @@ export default {
 
     if (primaryInvoice) {
       const paymentSummary = this.buildApprovePaymentSummary(invoicesForApproval);
-      console.log("Using invoice summary for approval:", paymentSummary, invoicesForApproval);
 
       this.approvalAllocationBase = {
         roomPrice: paymentSummary.roomPrice,
@@ -2193,8 +2189,6 @@ export default {
           },
         })
         .then((resp) => {
-          console.log("Response in create", resp);
-          console.log("Response Evidence ID", resp.data.data.id);
           axios
             .put(
               "https://api.resguru.app/api/tenant-bills/" +
@@ -2206,7 +2200,6 @@ export default {
               }
             )
             .then((res) => {
-              console.log("Response in Edit Invoice", res);
             })
             .catch((error) => {
               console.error("Error updating invoice status:", error);
@@ -2229,7 +2222,6 @@ export default {
                 },
               })
               .then((result) => {
-                console.log("Upload file", result);
               })
               .catch((error) => {
                 console.log(error);
@@ -2249,7 +2241,6 @@ export default {
       // alert("Full payment is created")
     },
     updateRoomInvoice(inData) {
-      console.log("upfateINvoice", inData);
       let name = "saveButton" + inData.id;
       document.getElementById(name).setAttribute("disabled", "");
 
@@ -2321,8 +2312,6 @@ export default {
         return;
       }
 
-      console.log("dateeeee", this.partialPaymentForm.paymentDate);
-      console.log("timeeeee", this.partialPaymentForm.paymentTime);
       
       // Format time to HH:mm:ss if needed
       const paymentTime = this.partialPaymentForm.paymentTime.length === 5 
@@ -2346,8 +2335,6 @@ export default {
           },
         })
         .then((resp) => {
-          console.log("Response in create", resp);
-          console.log("this.userUnpaidInvoice", this.userUnpaidInvoice);
 
           for (let j = 0; j < this.userUnpaidInvoice.length; j++) {
             axios
@@ -2361,7 +2348,6 @@ export default {
                 }
               )
               .then((res) => {
-                console.log("Response in Edit Invoice", res);
               })
               .catch((error) => {
                 console.error("Error updating invoice status:", error);
@@ -2370,7 +2356,6 @@ export default {
                 this.getInvoice();
               });
           }
-          console.log("HERE0");
           if (this.filePartialPayment.length != 0) {
             let formData = new FormData();
             formData.append("files", this.filePartialPayment);
@@ -2388,7 +2373,6 @@ export default {
                 },
               })
               .then((result) => {
-                console.log("Upload file", result);
               })
               .catch((error) => {
                 console.log(error);
@@ -2415,7 +2399,6 @@ export default {
       )
         .then((response) => response.json())
         .then(async (resp) => {
-          console.log("Return from getInvoice()", resp.data);
           this.userInvoice = resp.data || [];
 
           await this.reconcileTenantBillsForCurrentRoom();
@@ -2436,7 +2419,6 @@ export default {
       )
         .then((response) => response.json())
         .then((resp) => {
-          console.log("Return from getReceipt()", resp.data);
           this.userReceipt = resp.data;
         })
         .catch((error) => {
@@ -2455,7 +2437,6 @@ export default {
         // fetch(`https://api.resguru.app/api/tenant-evidence-payments`)
         .then((response) => response.json())
         .then((resp) => {
-          console.log("Return from getEvidence()", resp.data);
           this.userEvidencePayment = resp.data;
         })
         .catch((error) => {
@@ -2589,7 +2570,7 @@ createReceipt() {
         paidDate: paidDate,
         paidTime: paidTime
       }
-    })
+    }, authHeaders())
     .then((res) => {
       this.$showNotification("#3A89CB", "อนุมัติการชำระเงินสำเร็จ");
       this.generateReceiptPDFs(res.data?.receiptIds || []);
@@ -2872,7 +2853,6 @@ createReceipt() {
         this.approvePaymentForm.subtotal = (subtotal - totalVat).toFixed(2);
         this.approvePaymentForm.total = (subtotalNoRoom + totalVat + roomPrice).toFixed(2);
       }
-      console.log("Recalculated VAT and totals", vatRate, this.approvePaymentForm.vat);
     },
     
     // Modify the existing calculateTotal method

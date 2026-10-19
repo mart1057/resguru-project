@@ -12,7 +12,10 @@ export default new Vuex.Store({
     errLogin: '',
     main: false,
     building: 0,
-    buildingInfo: []
+    buildingInfo: [],
+    // API token from login. Sent only on the routes that require a signed-in
+    // owner/admin (see src/utils/authHeaders.js), not on every request.
+    jwt: ''
   },
   getters: {
   },
@@ -34,6 +37,9 @@ export default new Vuex.Store({
     },
     setBuildingInfo(state, data) {
       state.buildingInfo = data
+    },
+    setJwt(state, data) {
+      state.jwt = data || ''
     }
   },
   actions: {
@@ -60,6 +66,7 @@ export default new Vuex.Store({
 
         if (detail && detail.role && detail.role.id == 6) {
           commit('setUser', detail)
+          commit('setJwt', auth.data.jwt)
           commit('setLogin', true)
           return { ok: true }
         }

@@ -887,6 +887,7 @@
 <script>
 import { StripeCheckout } from '@vue-stripe/vue-stripe';
 import axios from 'axios'
+import { authHeaders } from '@/utils/authHeaders'
 
 export default {
   components: {
@@ -924,7 +925,7 @@ export default {
                         productId: stripeProductId,
                         email: userEmail,
                         buildingId: buildingId
-                    });
+                    }, authHeaders());
 
                     if (resp.data && resp.data.error) {
                         console.error("create-checkout-session error:", resp.data.error);

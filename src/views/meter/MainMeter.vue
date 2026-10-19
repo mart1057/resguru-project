@@ -742,6 +742,7 @@ import Electricity from "./components/Electricity.vue";
 import CommonFee from "./components/CommonFee.vue";
 import OtherFees from "./components/OtherFees.vue";
 import axios from "axios";
+import { authHeaders } from "@/utils/authHeaders";
 import * as XLSX from "xlsx";
 
 // Excel column headers - match the grid's own column labels (Water.vue /
@@ -1086,7 +1087,7 @@ export default {
           month: this.filter.selectedMonth,
           year: this.filter.selectedYear,
           rows: this.importPreview.rows,
-        })
+        }, authHeaders())
         .then((resp) => {
           if (resp.data && resp.data.error) {
             console.error("import error:", resp.data.error);
