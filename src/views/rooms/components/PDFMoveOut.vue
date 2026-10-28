@@ -47,9 +47,13 @@
                         </tr>
                     </tbody>
                     <tfoot>
+                        <tr v-if="doc.damageVat > 0">
+                            <td class="py-2 px-3 text-right border text-sm">ภาษีค่าเสียหาย ({{ doc.vatRate }}%)</td>
+                            <td class="py-2 px-3 text-right border text-sm">{{ formatNumber(doc.damageVat) }}</td>
+                        </tr>
                         <tr>
                             <td class="py-2 px-3 text-right border text-sm font-bold">รวมค่าเสียหาย</td>
-                            <td class="py-2 px-3 text-right border text-sm font-bold">{{ formatNumber(doc.damageTotal) }}</td>
+                            <td class="py-2 px-3 text-right border text-sm font-bold">{{ formatNumber(doc.damageTotal + (doc.damageVat || 0)) }}</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -79,15 +83,23 @@
                             <td class="py-2 px-3 border">ค่าอื่น ๆ</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(doc.billDetail.other) }}</td>
                         </tr>
-                        <tr class="row-odd" v-if="doc.otherOutstanding > 0">
-                            <td class="py-2 px-3 border">ยอดค้างชำระสะสม (เดือนอื่นๆ)</td>
-                            <td class="py-2 px-3 text-right border">{{ formatNumber(doc.otherOutstanding) }}</td>
-                        </tr>
                     </tbody>
                     <tfoot>
-                        <tr>
+                        <tr v-if="doc.vatAmount > 0">
                             <td class="py-2 px-3 text-right border text-sm">ภาษี ({{ doc.vatRate }}%)</td>
                             <td class="py-2 px-3 text-right border text-sm">{{ formatNumber(doc.vatAmount) }}</td>
+                        </tr>
+                        <tr v-if="doc.carriedDebt > 0">
+                            <td class="py-2 px-3 text-right border text-sm">ยอดค้างยกมาในบิลนี้</td>
+                            <td class="py-2 px-3 text-right border text-sm">{{ formatNumber(doc.carriedDebt) }}</td>
+                        </tr>
+                        <tr v-if="doc.billPaid > 0">
+                            <td class="py-2 px-3 text-right border text-sm">ชำระแล้วในบิลนี้</td>
+                            <td class="py-2 px-3 text-right border text-sm">-{{ formatNumber(doc.billPaid) }}</td>
+                        </tr>
+                        <tr v-if="doc.otherOutstanding > 0">
+                            <td class="py-2 px-3 text-right border text-sm">ยอดค้างชำระสะสม (เดือนอื่นๆ)</td>
+                            <td class="py-2 px-3 text-right border text-sm">{{ formatNumber(doc.otherOutstanding) }}</td>
                         </tr>
                         <tr>
                             <td class="py-2 px-3 text-right border text-sm font-bold">รวมค่าใช้จ่าย (ไม่รวมค่าเสียหาย)</td>
@@ -106,7 +118,7 @@
                             <td class="py-2 px-3 text-right border">{{ formatNumber(doc.deposit) }}</td>
                         </tr>
                         <tr class="row-odd">
-                            <td class="py-2 px-3 border">เงินประกัน</td>
+                            <td class="py-2 px-3 border">เงินประกัน (คืนให้ผู้เช่า)</td>
                             <td class="py-2 px-3 text-right border">{{ formatNumber(doc.deposit2) }}</td>
                         </tr>
                     </tbody>

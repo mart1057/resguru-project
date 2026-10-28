@@ -312,9 +312,18 @@
                     <div>
                       <input
                         class="h-[36px] w-[120px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
-                        type="input"
-                        v-model="list_debt.deposit2"
+                        type="number"
+                        min="0"
+                        :max="list_debt.deposit2"
+                        v-model="insurance_refund"
                       />
+                    </div>
+                    <div
+                      v-if="getInsuranceKept() > 0"
+                      class="text-[#8396A6] text-[12px] mt-[4px]"
+                    >
+                      (หักไว้ {{ formatMoney(getInsuranceKept()) }} บาท จาก
+                      {{ formatMoney(list_debt.deposit2) }} บาท)
                     </div>
                   </div>
                 </div>
@@ -370,9 +379,13 @@
                   {{ getWaterUnitError() }}
                 </div>
                 <div v-else class="text-[#8396A6] text-[12px] mt-[4px]">
-                  (เดิม {{ formatMoney(previousWaterUnit) }} → ใหม่
-                  {{ formatMoney(end_meter.water) }} = ใช้
-                  {{ formatMoney(getWaterUsage()) }} หน่วย :
+                  (เลขเดิม {{ formatMoney(getWaterBaseUnit()) }}
+                  <template v-if="hasEndMeter('water')">
+                    → ใหม่ {{ formatMoney(end_meter.water) }} = ใช้เพิ่ม
+                    {{ formatMoney(getWaterUsage()) }} หน่วย
+                  </template>
+                  : ในบิล {{ formatMoney(bill_detail.waterBase) }} + เพิ่ม
+                  {{ formatMoney(getWaterExtraPrice()) }} =
                   {{ formatMoney(getWaterPrice()) }} บาท)
                 </div>
               </div>
@@ -396,9 +409,13 @@
                   {{ getElectricUnitError() }}
                 </div>
                 <div v-else class="text-[#8396A6] text-[12px] mt-[4px]">
-                  (เดิม {{ formatMoney(previousElectricUnit) }} → ใหม่
-                  {{ formatMoney(end_meter.electric) }} = ใช้
-                  {{ formatMoney(getElectricUsage()) }} หน่วย :
+                  (เลขเดิม {{ formatMoney(getElectricBaseUnit()) }}
+                  <template v-if="hasEndMeter('electric')">
+                    → ใหม่ {{ formatMoney(end_meter.electric) }} = ใช้เพิ่ม
+                    {{ formatMoney(getElectricUsage()) }} หน่วย
+                  </template>
+                  : ในบิล {{ formatMoney(bill_detail.electricBase) }} + เพิ่ม
+                  {{ formatMoney(getElectricExtraPrice()) }} =
                   {{ formatMoney(getElectricPrice()) }} บาท)
                 </div>
               </div>
@@ -426,15 +443,41 @@
                   v-model="bill_detail.other"
                 />
               </div>
+              <div v-if="getVatRate() > 0" class="flex items-center">
+                <div
+                  class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
+                >
+                  ภาษีมูลค่าเพิ่ม ({{ getVatRate() }}%)
+                </div>
+                <div class="ml-[8px] pl-[8px]">
+                  {{ formatMoney(getCurrentBillTotals().vat) }}
+                </div>
+              </div>
+              <div v-if="toNumber(bill_detail.carriedDebt) > 0" class="flex items-center">
+                <div
+                  class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
+                >
+                  ยอดค้างยกมาในบิลนี้
+                </div>
+                <div class="ml-[8px] pl-[8px]">
+                  {{ formatMoney(bill_detail.carriedDebt) }}
+                </div>
+              </div>
+              <div v-if="toNumber(bill_detail.paid) > 0" class="flex items-center">
+                <div
+                  class="h-[36px] w-[215px] bg-[#F3F8FD] rounded-[12px] flex justify-start items-center pl-[8px]"
+                >
+                  ชำระแล้วในบิลนี้
+                </div>
+                <div class="ml-[8px] pl-[8px]">
+                  -{{ formatMoney(bill_detail.paid) }}
+                </div>
+              </div>
               <div class="flex items-center mt-[24px]">
                 <div class="font-bold text-custom text-[14px] w-[215px] pl-[8px]">รวมทั้งหมด</div>
-                <div
-                  v-if="bill_detail.room"
-                  class="ml-[8px] font-bold text-custom text-[14px]"
-                >
-                  {{ formatMoney(getCurrentBillTotal()) }}
+                <div class="ml-[8px] font-bold text-custom text-[14px]">
+                  {{ formatMoney(getCurrentBillOwed()) }}
                 </div>
-                <div v-else class="ml-[8px] font-bold text-custom text-[14px]">-</div>
               </div>
             </div>
           </div>
@@ -457,9 +500,9 @@
                   </div>
                 </div>
                 <div class="mt-[4px] flex justify-between w-[100%] text-[#16803C]">
-                  <div>เงินประกัน (จ่ายตอนทำสัญญา)</div>
+                  <div>เงินประกัน (คืนให้ผู้เช่า)</div>
                   <div class="font-semibold">
-                    {{ formatMoney(list_debt.deposit2) }}
+                    {{ formatMoney(getInsuranceRefund()) }}
                     <span class="ml-[4px]">บาท</span>
                   </div>
                 </div>
@@ -486,7 +529,7 @@
                 <div class="mt-[4px] flex justify-between w-[100%] text-[#D44769]">
                   <div>รายการชำระเงิน ณ วันที่ย้ายออก (แก้ไขได้)</div>
                   <div class="font-semibold">
-                    {{ formatMoney(getCurrentBillTotal()) }}
+                    {{ formatMoney(getCurrentBillOwed()) }}
                     <span class="ml-[4px]">บาท</span>
                   </div>
                 </div>
@@ -498,6 +541,16 @@
                   <div>ค่าปรับทรัพย์สินเสียหาย ({{ item.name }})</div>
                   <div class="font-semibold">
                     {{ formatMoney(item.price) }}
+                    <span class="ml-[4px]">บาท</span>
+                  </div>
+                </div>
+                <div
+                  v-if="getDamageVat() > 0"
+                  class="mt-[4px] flex justify-between w-[100%] text-[#D44769]"
+                >
+                  <div>ภาษีมูลค่าเพิ่มค่าปรับ ({{ getVatRate() }}%)</div>
+                  <div class="font-semibold">
+                    {{ formatMoney(getDamageVat()) }}
                     <span class="ml-[4px]">บาท</span>
                   </div>
                 </div>
@@ -749,6 +802,12 @@
 <script>
 import axios from "axios";
 import { authHeaders } from "@/utils/authHeaders";
+import {
+  toMoney,
+  getVatRate,
+  computeBillTotals,
+  billOwed,
+} from "@/utils/billMath";
 import PDFMoveOut from "./PDFMoveOut.vue";
 export default {
   components: {
@@ -770,6 +829,10 @@ export default {
         deposit: 0,
         deposit2: 0,
       },
+      // How much of the insurance deposit (list_debt.deposit2) goes back to
+      // the tenant - editable, defaults to all of it.
+      insurance_refund: 0,
+      invoice_requested: false,
       options: [],
       sections: [
           { name: 'ทำความสะอาด & สี', collapsed: true },
@@ -819,7 +882,21 @@ export default {
         { name: "หลอดไฟห้องน้ำ", price: 0, check: false, checked: true },
       ],
       items_other: [],
-      bill_detail: { room: 0, communalPrice: 0, other: 0 },
+      // Current (newest) bill. room/communalPrice/other are editable;
+      // waterBase/electricBase are what the bill already charges, and the
+      // move-out meter usage is added on top (see getWaterPrice).
+      bill_detail: {
+        room: 0,
+        communalPrice: 0,
+        other: 0,
+        waterBase: 0,
+        electricBase: 0,
+        carriedDebt: 0,
+        paid: 0,
+        lastWaterUnit: 0,
+        lastElecUnit: 0,
+        debtMovedToNextBill: false,
+      },
       previousWaterUnit: null,
       previousElectricUnit: null,
       // Meter reading at the moment this tenant moves out - saved onto
@@ -835,7 +912,6 @@ export default {
         room: 0,
         other: 0,
       },
-      total: 0,
     };
   },
   created() {
@@ -973,32 +1049,26 @@ export default {
 
       return Promise.all(requests);
     },
-    // Not every building charges VAT - read the building's own rate
-    // (0 for a no-VAT building) instead of hardcoding 7%. Same fallback
-    // PaymentDetail.vue already uses: only default to 7 when the building
-    // genuinely has no vat_rate set (undefined/null), never override an
-    // explicit 0.
-    getVatRate() {
-      const vatRate = this.$store.state.buildingInfo?.[0]?.attributes?.vat_rate;
-      return vatRate !== undefined && vatRate !== null ? Number(vatRate) : 7;
+    getBuildingAttributes() {
+      const buildingInfo = this.$store.state.buildingInfo;
+      if (!Array.isArray(buildingInfo)) return buildingInfo?.attributes || {};
+      const activeBuilding =
+        buildingInfo.find((building) => building.id === this.$store.state.building) ||
+        buildingInfo[0];
+      return activeBuilding?.attributes || {};
     },
+    getVatRate() {
+      return getVatRate(this.getBuildingAttributes());
+    },
+    // Only the editable prices. The backend recomputes subtotal/vat/total/
+    // remainPaid on every price change (keeping carriedDebt and paid), and
+    // finalize-move-out adds the move-out meter usage and damage itself, so
+    // water/electric stay as billed here.
     getBillPayload(publishedAt) {
-      const roomPrice = this.toNumber(this.bill_detail.room);
-      const waterPrice = this.getWaterPrice();
-      const electricPrice = this.getElectricPrice();
-      const otherPrice = this.toNumber(this.bill_detail.other);
-      const communalPrice = this.toNumber(this.bill_detail.communalPrice);
-      const subtotal = roomPrice + waterPrice + electricPrice + otherPrice;
-      const total =
-        subtotal + communalPrice + (subtotal + communalPrice) * (this.getVatRate() / 100);
       const payload = {
-        roomPrice,
-        waterPrice,
-        electricPrice,
-        otherPrice,
-        communalPrice,
-        subtotal,
-        total,
+        roomPrice: this.toNumber(this.bill_detail.room),
+        communalPrice: this.toNumber(this.bill_detail.communalPrice),
+        otherPrice: this.toNumber(this.bill_detail.other),
       };
 
       if (publishedAt !== undefined) {
@@ -1018,10 +1088,15 @@ export default {
       )
         .then((response) => response.json())
         .then((resp) => {
-          this.list_debt.deposit = resp.data?.attributes.roomDeposit;
-          this.list_debt.deposit2 = resp.data?.attributes.roomInsuranceDeposit;
+          const contract = resp.data?.attributes || {};
+          this.list_debt.deposit = contract.roomDeposit;
+          this.list_debt.deposit2 = contract.roomInsuranceDeposit;
+          this.insurance_refund = this.toNumber(contract.roomInsuranceDeposit);
+          // A saved draft keeps the move-out meter readings on the contract.
+          this.end_meter.water = contract.endWater ?? null;
+          this.end_meter.electric = contract.endElectric ?? null;
           this.user_detail =
-            resp.data?.attributes.users_permissions_user.data?.attributes;
+            contract.users_permissions_user?.data?.attributes;
         })
         .catch((error) => {
           const errorMessage = this.$errMsg(error, 'โหลดข้อมูลสัญญาเช่า');
@@ -1036,35 +1111,40 @@ export default {
           )
             .then((response) => response.json())
             .then((resp) => {
-              if (resp.data.length == 0) {
-                this.generateInvoice();
-                //window.location.reload()
-              }
               const bills = Array.isArray(resp.data) ? resp.data : [];
+              if (bills.length == 0) {
+                // Once per page load, so a room the backend will not bill
+                // cannot loop generate -> reload -> generate.
+                if (!this.invoice_requested) {
+                  this.invoice_requested = true;
+                  this.generateInvoice();
+                }
+                return;
+              }
               const currentBill = bills[0];
+              const attributes = currentBill.attributes || {};
 
-              console.log("bill", currentBill);
-              // Excludes the current bill - its live total is shown/summed
-              // separately (getCurrentBillTotal()) since the fields below are
-              // editable and getChargeTotal() must reflect edits immediately,
-              // not the stale as-loaded total.
-              this.list_debt.total = this.getAccumulatedOutstanding(
-                bills.filter((b) => b.id !== currentBill?.id)
+              // Other bills only - the current bill is recomputed live from
+              // its editable fields (getCurrentBillTotals). A bill whose debt
+              // moved into a newer one counts 0 here; that debt is already
+              // inside the current bill's carriedDebt.
+              this.list_debt.total = toMoney(
+                bills
+                  .filter((b) => b.id !== currentBill.id)
+                  .reduce((sum, b) => sum + billOwed(b.attributes), 0)
               );
-              this.bill_detail.id = currentBill?.id;
-              this.bill_detail.communalPrice = currentBill?.attributes
-                .communalPrice
-                ? currentBill?.attributes.communalPrice
-                : 0;
-              this.bill_detail.vat = this.getVatRate();
-              this.bill_detail.invoiceNumber =
-                currentBill?.attributes.invoiceNumber;
-              this.bill_detail.room = currentBill?.attributes.roomPrice
-                ? currentBill?.attributes.roomPrice
-                : 0;
-              this.bill_detail.other = currentBill?.attributes.otherPrice
-                ? currentBill?.attributes.otherPrice
-                : 0;
+              this.bill_detail.id = currentBill.id;
+              this.bill_detail.invoiceNumber = attributes.invoiceNumber;
+              this.bill_detail.room = this.toNumber(attributes.roomPrice);
+              this.bill_detail.communalPrice = this.toNumber(attributes.communalPrice);
+              this.bill_detail.other = this.toNumber(attributes.otherPrice);
+              this.bill_detail.waterBase = this.toNumber(attributes.waterPrice);
+              this.bill_detail.electricBase = this.toNumber(attributes.electricPrice);
+              this.bill_detail.carriedDebt = this.toNumber(attributes.carriedDebt);
+              this.bill_detail.paid = this.toNumber(attributes.paid);
+              this.bill_detail.lastWaterUnit = this.toNumber(attributes.lastWaterUnit);
+              this.bill_detail.lastElecUnit = this.toNumber(attributes.lastElecUnit);
+              this.bill_detail.debtMovedToNextBill = !!attributes.debtMovedToNextBill;
             })
             .catch((error) => {
               const errorMessage = this.$errMsg(error, 'โหลดข้อมูลบิล');
@@ -1121,7 +1201,6 @@ export default {
                 .catch((error) => {
                   console.error("Error loading room history:", error);
                 });
-              this.sumValue();
             });
         });
       loading.close();
@@ -1149,35 +1228,45 @@ export default {
       return Number.isFinite(parsedValue) ? parsedValue : 0;
     },
     formatMoney(value) {
-      return this.toNumber(value).toLocaleString("en-US");
-    },
-    getAccumulatedOutstanding(bills = []) {
-      return bills.reduce((sum, bill) => {
-        const attributes = bill?.attributes || {};
-        const remainPaid = this.toNumber(attributes.remainPaid);
-
-        if (remainPaid > 0) {
-          return sum + remainPaid;
-        }
-
-        const total = this.toNumber(attributes.total);
-        const paid = this.toNumber(attributes.paid);
-        return sum + Math.max(0, total - paid);
-      }, 0);
+      return this.toNumber(value).toLocaleString("en-US", {
+        maximumFractionDigits: 2,
+      });
     },
     getOutstandingTotal() {
       // Other unpaid bills only - the current bill is summed live via
-      // getCurrentBillTotal() instead, so editing it moves the total.
+      // getCurrentBillOwed() instead, so editing it moves the total.
       return this.toNumber(this.list_debt.total);
     },
-    getCurrentBillTotal() {
-      const roomPrice = this.toNumber(this.bill_detail.room);
-      const waterPrice = this.getWaterPrice();
-      const electricPrice = this.getElectricPrice();
-      const otherPrice = this.toNumber(this.bill_detail.other);
-      const communalPrice = this.toNumber(this.bill_detail.communalPrice);
-      const subtotal = roomPrice + waterPrice + electricPrice + otherPrice;
-      return subtotal + communalPrice + (subtotal + communalPrice) * (this.getVatRate() / 100);
+    // The current bill as finalize-move-out will store it: edited prices,
+    // water/electric including the move-out usage, the bill's own
+    // carriedDebt and paid. withDamage folds the damage total into
+    // otherPrice, exactly like the backend does.
+    getCurrentBillTotals(withDamage = false) {
+      return computeBillTotals(
+        {
+          roomPrice: this.bill_detail.room,
+          waterPrice: this.getWaterPrice(),
+          electricPrice: this.getElectricPrice(),
+          communalPrice: this.bill_detail.communalPrice,
+          otherPrice:
+            this.toNumber(this.bill_detail.other) +
+            (withDamage ? this.totalBillItems() : 0),
+          carriedDebt: this.bill_detail.carriedDebt,
+          paid: this.bill_detail.paid,
+          debtMovedToNextBill: this.bill_detail.debtMovedToNextBill,
+        },
+        this.getVatRate()
+      );
+    },
+    // Still owed on the current bill before damage (left panel total).
+    getCurrentBillOwed() {
+      return this.getCurrentBillTotals(false).remainPaid;
+    },
+    // Damage is charged inside the bill's otherPrice, so it carries VAT.
+    getDamageVat() {
+      return toMoney(
+        this.getCurrentBillTotals(true).vat - this.getCurrentBillTotals(false).vat
+      );
     },
     fetchPreviousMeterUnits() {
       const room = this.$route.query.id_room;
@@ -1201,52 +1290,86 @@ export default {
           this.$showNotification("danger", errorMessage);
         });
     },
+    hasEndMeter(kind) {
+      const value = this.end_meter[kind];
+      return value !== null && value !== undefined && value !== "";
+    },
+    // The reading the current bill was charged up to. Same baseline
+    // finalize-move-out uses: the bill's own last reading, else the room's
+    // latest reading (old bills that never stored one).
+    getWaterBaseUnit() {
+      return this.bill_detail.lastWaterUnit > 0
+        ? this.bill_detail.lastWaterUnit
+        : this.toNumber(this.previousWaterUnit);
+    },
+    getElectricBaseUnit() {
+      return this.bill_detail.lastElecUnit > 0
+        ? this.bill_detail.lastElecUnit
+        : this.toNumber(this.previousElectricUnit);
+    },
     getWaterUsage() {
-      return Math.max(0, this.toNumber(this.end_meter.water) - this.toNumber(this.previousWaterUnit));
+      if (!this.hasEndMeter("water")) return 0;
+      return Math.max(0, this.toNumber(this.end_meter.water) - this.getWaterBaseUnit());
     },
     getElectricUsage() {
-      return Math.max(0, this.toNumber(this.end_meter.electric) - this.toNumber(this.previousElectricUnit));
+      if (!this.hasEndMeter("electric")) return 0;
+      return Math.max(0, this.toNumber(this.end_meter.electric) - this.getElectricBaseUnit());
     },
+    getWaterExtraPrice() {
+      return toMoney(
+        this.getWaterUsage() * this.toNumber(this.getBuildingAttributes().waterUnitPrice)
+      );
+    },
+    getElectricExtraPrice() {
+      return toMoney(
+        this.getElectricUsage() * this.toNumber(this.getBuildingAttributes().electricUnitPrice)
+      );
+    },
+    // Water already on the bill + usage since its last reading.
     getWaterPrice() {
-      const rate = this.toNumber(this.$store.state.buildingInfo?.[0]?.attributes?.waterUnitPrice);
-      return this.getWaterUsage() * rate;
+      return toMoney(this.toNumber(this.bill_detail.waterBase) + this.getWaterExtraPrice());
     },
     getElectricPrice() {
-      const rate = this.toNumber(this.$store.state.buildingInfo?.[0]?.attributes?.electricUnitPrice);
-      return this.getElectricUsage() * rate;
+      return toMoney(this.toNumber(this.bill_detail.electricBase) + this.getElectricExtraPrice());
     },
     getWaterUnitError() {
-      if (this.end_meter.water == null || this.end_meter.water === "") return null;
-      if (this.toNumber(this.end_meter.water) < this.toNumber(this.previousWaterUnit)) {
-        return `เลขมิเตอร์น้ำใหม่ต้องไม่น้อยกว่าเลขเดิม (${this.formatMoney(this.previousWaterUnit)})`;
+      if (!this.hasEndMeter("water")) return null;
+      if (this.toNumber(this.end_meter.water) < this.getWaterBaseUnit()) {
+        return `เลขมิเตอร์น้ำใหม่ต้องไม่น้อยกว่าเลขเดิม (${this.formatMoney(this.getWaterBaseUnit())})`;
       }
       return null;
     },
     getElectricUnitError() {
-      if (this.end_meter.electric == null || this.end_meter.electric === "") return null;
-      if (this.toNumber(this.end_meter.electric) < this.toNumber(this.previousElectricUnit)) {
-        return `เลขมิเตอร์ไฟใหม่ต้องไม่น้อยกว่าเลขเดิม (${this.formatMoney(this.previousElectricUnit)})`;
+      if (!this.hasEndMeter("electric")) return null;
+      if (this.toNumber(this.end_meter.electric) < this.getElectricBaseUnit()) {
+        return `เลขมิเตอร์ไฟใหม่ต้องไม่น้อยกว่าเลขเดิม (${this.formatMoney(this.getElectricBaseUnit())})`;
       }
       return null;
     },
     hasMeterError() {
       return !!(this.getWaterUnitError() || this.getElectricUnitError());
     },
-    getPaidTotal() {
-      return (
-        this.toNumber(this.list_debt.deposit) +
-        this.toNumber(this.list_debt.deposit2)
-      );
+    // 0..insurance deposit, same clamp as finalize-move-out.
+    getInsuranceRefund() {
+      const deposit = this.toNumber(this.list_debt.deposit2);
+      if (this.insurance_refund === null || this.insurance_refund === "") return deposit;
+      return Math.min(deposit, Math.max(0, this.toNumber(this.insurance_refund)));
     },
+    getInsuranceKept() {
+      return toMoney(this.toNumber(this.list_debt.deposit2) - this.getInsuranceRefund());
+    },
+    getPaidTotal() {
+      return toMoney(this.toNumber(this.list_debt.deposit) + this.getInsuranceRefund());
+    },
+    // Same as finalize-move-out's tenantOwes: other bills' owed + the
+    // current bill's owed with damage folded in.
     getChargeTotal() {
-      return (
-        this.getOutstandingTotal() +
-        this.getCurrentBillTotal() +
-        this.totalBillItems()
+      return toMoney(
+        this.getOutstandingTotal() + this.getCurrentBillTotals(true).remainPaid
       );
     },
     getNetSettlement() {
-      return this.getChargeTotal() - this.getPaidTotal();
+      return toMoney(this.getChargeTotal() - this.getPaidTotal());
     },
     getAbsoluteNetSettlement() {
       return Math.abs(this.getNetSettlement());
@@ -1259,6 +1382,22 @@ export default {
       if (netSettlement > 0) return "ผู้เช่าต้องชำระเพิ่ม";
       if (netSettlement < 0) return "หอพักต้องคืนเงิน";
       return "ยอดพอดี";
+    },
+    getEndMeterValue(kind) {
+      return this.hasEndMeter(kind) ? this.toNumber(this.end_meter[kind]) : null;
+    },
+    // Keeps the draft's move-out readings on the contract (endWater/
+    // endElectric are only read back by this page, never by billing).
+    saveEndMeters() {
+      return axios.put(
+        "https://api.resguru.app/api/user-sign-contracts/" + this.$route.query.id_contract,
+        {
+          data: {
+            endWater: this.getEndMeterValue("water"),
+            endElectric: this.getEndMeterValue("electric"),
+          },
+        }
+      );
     },
     darftBill() {
       fetch(
@@ -1336,6 +1475,7 @@ export default {
               );
             });
         })
+        .then(() => this.saveEndMeters())
         .then(() => {
           this.$showNotification("#3A89CB", "บันทึกแบบร่างสำเร็จ");
         })
@@ -1407,9 +1547,8 @@ export default {
                       // renting" (e.g. billing eligibility) was wrong for
                       // every past tenant.
                       contractStatus: "move out",
-                      endWater: this.toNumber(this.end_meter.water) || null,
-                      endElectric:
-                        this.toNumber(this.end_meter.electric) || null,
+                      endWater: this.getEndMeterValue("water"),
+                      endElectric: this.getEndMeterValue("electric"),
                     },
                   }
                 ),
@@ -1434,11 +1573,11 @@ export default {
               ]);
             })
             .then(() => {
-              // Folds the damage checklist into the just-updated bill, then
-              // applies the deposit + insurance deposit as a payment across
-              // it (and any older unpaid bills), creating a real receipt for
-              // whatever it covers. No receipt if the deposit only leaves a
-              // refund owed - that stays a manual step.
+              // Adds the move-out meter usage and the damage checklist to the
+              // just-updated bill, then applies the deposit + insurance refund
+              // as a payment across it (and any older unpaid bills), creating
+              // a real receipt for whatever it covers. No receipt if the
+              // deposit only leaves a refund owed - that stays a manual step.
               return axios.post(
                 "https://api.resguru.app/api" + "/finalize-move-out",
                 {
@@ -1447,6 +1586,9 @@ export default {
                     roomId: this.$route.query.id_room,
                     buildingId: this.$store.state.building,
                     billId: this.bill_detail.id,
+                    endWater: this.getEndMeterValue("water"),
+                    endElectric: this.getEndMeterValue("electric"),
+                    insuranceRefund: this.getInsuranceRefund(),
                   },
                 },
                 authHeaders()
@@ -1488,15 +1630,9 @@ export default {
       // PDF's damage table already only shows damaged items, nothing extra
       // needed for that.
       const vatRate = this.getVatRate();
-      const currentBillTotal = this.getCurrentBillTotal();
+      const currentBill = this.getCurrentBillTotals(false);
       const waterPrice = this.getWaterPrice();
       const electricPrice = this.getElectricPrice();
-      const preVatSubtotal =
-        this.toNumber(this.bill_detail.room) +
-        waterPrice +
-        electricPrice +
-        this.toNumber(this.bill_detail.other) +
-        this.toNumber(this.bill_detail.communalPrice);
       const netSettlement = this.getNetSettlement();
       const direction =
         netSettlement > 0
@@ -1515,16 +1651,19 @@ export default {
         endMeterElectric: this.end_meter.electric,
         billDetail: { ...this.bill_detail, water: waterPrice, ele: electricPrice },
         vatRate,
-        vatAmount: currentBillTotal - preVatSubtotal,
-        currentBillTotal,
+        vatAmount: currentBill.vat,
+        carriedDebt: this.toNumber(this.bill_detail.carriedDebt),
+        billPaid: this.toNumber(this.bill_detail.paid),
+        currentBillTotal: currentBill.remainPaid,
         otherOutstanding: this.getOutstandingTotal(),
         damageItems: this.options.map((item) => ({
           name: item.name,
           price: this.toNumber(item.price),
         })),
         damageTotal: this.totalBillItems(),
+        damageVat: this.getDamageVat(),
         deposit: this.toNumber(this.list_debt.deposit),
-        deposit2: this.toNumber(this.list_debt.deposit2),
+        deposit2: this.getInsuranceRefund(),
         paidTotal: this.getPaidTotal(),
         chargeTotal: this.getChargeTotal(),
         netAmount: this.getAbsoluteNetSettlement(),
@@ -1543,23 +1682,19 @@ export default {
           authHeaders()
         )
         .then((response) => {
-          this.$showNotification("#3A89CB", response.data.meta.message);
+          // generateInvoice answers 200 with { error } when it refuses
+          // (e.g. meter not read yet) - only reload once a bill exists.
+          if (response.data?.error) {
+            this.$showNotification("danger", response.data.error);
+            return;
+          }
+          this.$showNotification("#3A89CB", response.data?.meta?.message || "สร้างใบแจ้งหนี้แล้ว");
+          this.getDetailRoom();
         })
         .catch((error) => {
           const errorMessage = this.$errMsg(error, 'บันทึกข้อมูล');
           this.$showNotification("danger", errorMessage);
-        })
-        .finally(() => {
-          // window.location.reload()
         });
-    },
-    sumValue() {
-      this.total =
-        this.toNumber(this.bill_detail.room) +
-        this.toNumber(this.bill_detail.water) +
-        this.toNumber(this.bill_detail.ele) +
-        this.toNumber(this.bill_detail.other) +
-        this.toNumber(this.bill_detail.communalPrice);
     },
     getSectionItems(sectionIndex) {
         const customGroups = {

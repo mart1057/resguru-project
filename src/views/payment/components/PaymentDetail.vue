@@ -611,22 +611,10 @@
                       </div>
                     </div>
                     <div>
+                      <!-- Computed by the backend from the building's VAT rate on save. -->
                       <label class="text-xs text-gray-500">Vat</label>
-                      <div
-                        v-if="
-                          tr.attributes.debtMovedToNextBill ||
-                          tr.attributes.paymentStatus === 'Paid' ||
-                          tr.attributes.paymentStatus === 'Partial Paid' ||
-                          tr.attributes.paymentStatus === 'Waiting Review'
-                        "
-                      >
+                      <div>
                         <vs-input disabled v-model="tr.attributes.vat" />
-                      </div>
-                      <div v-else>
-                        <vs-input
-                          v-model="tr.attributes.vat"
-                          @change="activeSaveButton(tr.id)"
-                        />
                       </div>
                     </div>
                     <div class="flex items-end">
@@ -1512,6 +1500,7 @@
 <script>
 import axios from "axios";
 import { authHeaders } from "@/utils/authHeaders";
+import { getVatRate } from "@/utils/billMath";
 import { degrees, PDFDocument, rgb, StandardFonts } from "pdf-lib";
 import { convertDateNoTime } from "@/components/hook/hook";
 import download from "downloadjs";
@@ -2244,38 +2233,17 @@ export default {
       let name = "saveButton" + inData.id;
       document.getElementById(name).setAttribute("disabled", "");
 
-      let tempRoom = parseInt(inData.attributes.roomPrice);
-      let tempWater = parseInt(inData.attributes.waterPrice);
-      let tempelEctric = parseInt(inData.attributes.electricPrice);
-      let tempCoomu = parseInt(inData.attributes.communalPrice);
-      let tempOther = parseInt(inData.attributes.otherPrice);
-      let tempVat = parseInt(inData.attributes.vat);
-
+      // Prices only - the backend recomputes subtotal/vat/total/remainPaid
+      // from them (keeping carriedDebt and what was already paid). The old
+      // payload dropped carriedDebt, ignored paid and cut decimals.
       axios
         .put("https://api.resguru.app/api/tenant-bills/" + inData.id, {
           data: {
-            roomPrice: tempRoom,
-            waterPrice: tempWater,
-            electricPrice: tempelEctric,
-            communalPrice: tempCoomu,
-            otherPrice: tempOther,
-            vat: tempVat,
-            subtotal:
-              tempRoom + tempWater + tempelEctric + tempCoomu + tempOther,
-            total:
-              tempRoom +
-              tempWater +
-              tempelEctric +
-              tempCoomu +
-              tempOther +
-              tempVat,
-            remainPaid:
-              tempRoom +
-              tempWater +
-              tempelEctric +
-              tempCoomu +
-              tempOther +
-              tempVat,
+            roomPrice: this.toMoney(inData.attributes.roomPrice),
+            waterPrice: this.toMoney(inData.attributes.waterPrice),
+            electricPrice: this.toMoney(inData.attributes.electricPrice),
+            communalPrice: this.toMoney(inData.attributes.communalPrice),
+            otherPrice: this.toMoney(inData.attributes.otherPrice),
           },
         })
         .then((res) => {
@@ -2718,12 +2686,10 @@ createReceipt() {
           buildingInfo.find((building) => building.id === activeBuildingId) ||
           buildingInfo[0];
 
-        const vatRate = activeBuilding?.attributes?.vat_rate;
-        return vatRate !== undefined && vatRate !== null ? Number(vatRate) : 7;
+        return getVatRate(activeBuilding?.attributes);
       }
 
-      const vatRate = buildingInfo?.attributes?.vat_rate;
-      return vatRate !== undefined && vatRate !== null ? Number(vatRate) : 7;
+      return getVatRate(buildingInfo?.attributes);
     },
 
     formatCarryOverLabel(dateString) {
